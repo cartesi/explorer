@@ -10,29 +10,55 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
-import { useBalance, useProxyManager } from '../utils/ethereum';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+import { useBalance, useProxyManager, useAccount } from '../utils/ethereum';
 
 export interface InfoProps {
     address: string;
 }
 
+const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 export const Info = (props: InfoProps) => {
     const balance = useBalance(props.address);
+    const account = useAccount(0);
 
+    const [error, setError] = useState<string>('');
     const proxyManager = useProxyManager();
     const [owner, setOwner] = useState<string>('');
 
     useEffect(() => {
-        if (proxyManager) {
+        if (proxyManager && account) {
             proxyManager.methods.getOwner(props.address).call().then(setOwner);
         }
-    }, [props.address, proxyManager]);
+    }, [props.address, proxyManager, account]);
+
+    const claimProxy = () => {
+        if (proxyManager && account) {
+            const value = 100000000;
+            proxyManager.methods
+                .claimProxy(props.address, [])
+                .send({ from: account, value: value })
+                .then(tr => {
+                    // query owner again
+                    proxyManager.methods.getOwner(props.address).call().then(setOwner);
+                })
+                .catch(e => {
+                    setError(e.message);
+                });
+        }
+    };
 
     return (
         <div>
+            {error && <Alert key="error" variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
             <p>Address: {props.address}</p>
             <p>Balance: {balance}</p>
             <p>Owner: {owner}</p>
+            {proxyManager && account && owner === NULL_ADDRESS && (
+                <Button onClick={claimProxy}>Claim proxy</Button>
+            )}
         </div>
     );
 };

@@ -40,6 +40,16 @@ export const useBalance = (address: string) => {
     return balance;
 };
 
+export const useAccount = (index: number) => {
+    const [account, setAccount] = useState<string>('');
+    useEffect(() => {
+        provider.eth.requestAccounts().then(accounts => {
+            setAccount(accounts.length > 0 ? accounts[index] : '');
+        });
+    }, [index]);
+    return account;
+}
+
 export const useProxyManager = () => {
     const [proxyManager, setProxyManager] = useState<ProxyManager>();
 
