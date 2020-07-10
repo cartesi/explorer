@@ -11,8 +11,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useBalance, useProxyManager } from '../utils/ethereum';
-import { ethers } from 'ethers';
-import Alert from 'react-bootstrap/Alert';
 
 export interface InfoProps {
     address: string;
@@ -26,13 +24,15 @@ export const Info = (props: InfoProps) => {
 
     useEffect(() => {
         if (proxyManager) {
-            proxyManager.getOwner(props.address).then(setOwner);
+            proxyManager.methods.getOwner(props.address).call().then(setOwner);
         }
     }, [props.address, proxyManager]);
 
-    return <div>
-        <p>Address: {props.address}</p>
-        <p>Balance: {balance && ethers.utils.formatEther(balance)} ETH</p>
-        <p>Owner: {owner}</p>
-    </div>;
+    return (
+        <div>
+            <p>Address: {props.address}</p>
+            <p>Balance: {balance}</p>
+            <p>Owner: {owner}</p>
+        </div>
+    );
 };

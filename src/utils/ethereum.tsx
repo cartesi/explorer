@@ -10,13 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { ethers, BigNumber } from 'ethers';
-import proxyManagerJson from '@cartesi/util/build/contracts/ProxyManager.json';
-import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
+import Web3 from 'web3';
 import { ProxyManager } from '../contracts/ProxyManager';
+const proxyManagerJson = require('@cartesi/util/build/contracts/ProxyManager.json');
 
-export const provider = new ethers.providers.Web3Provider(window.ethereum);
-const proxyManagerFactory = new ProxyManagerFactory(provider.getSigner('0x18930e8a66a1DbE21D00581216789AAB7460Afd0'));
+export const provider = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 const getAddress = (json: any, networkId: string): string | undefined => {
     const networks: any = json.networks;
@@ -24,7 +22,7 @@ const getAddress = (json: any, networkId: string): string | undefined => {
     if (deployedNetworks.length === 0) {
         return undefined;
     }
-    // XXX: not a nice way to do it. ethers.js don't give me the correct network id of local ganache :-(
+    // XXX: not a nice way to do it
     const addressEntry =
         networkId === '*'
             ? networks[Object.keys(networks)[0]]
@@ -35,9 +33,9 @@ const getAddress = (json: any, networkId: string): string | undefined => {
 };
 
 export const useBalance = (address: string) => {
-    const [balance, setBalance] = useState<BigNumber | undefined>(undefined);
+    const [balance, setBalance] = useState<string>('');
     useEffect(() => {
-        provider.getBalance(address).then(setBalance);
+        provider.eth.getBalance(address).then(setBalance);
     }, [address]);
     return balance;
 };
@@ -47,19 +45,15 @@ export const useProxyManager = () => {
 
     useEffect(() => {
         // query the provider network
-        provider.getNetwork().then((network) => {
-            // XXX: not a nice way to do it. ethers.js don't give me the correct network id of local ganache :-(
-            const networkId =
-                network.name === 'unknown' ? '*' : network.chainId.toString();
-
-            const address = getAddress(proxyManagerJson, networkId);
+        provider.eth.net.getId().then((network) => {
+            const address = getAddress(proxyManagerJson, network.toString());
             if (!address) {
                 throw new Error(
-                    `ProxyManager not deployed at network ${networkId}`
+                    `ProxyManager not deployed at network ${network}`
                 );
             }
             console.log(`Attaching ProxyManager to address '${address}'`);
-            setProxyManager(proxyManagerFactory.attach(address));
+            setProxyManager((new provider.eth.Contract(proxyManagerJson.abi, address) as any) as ProxyManager);
         });
     }, []);
     return proxyManager;
