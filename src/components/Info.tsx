@@ -9,9 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { useBalance } from '../utils/ethereum';
+import React, { useEffect, useState } from 'react';
+import { useBalance, useProxyManager } from '../utils/ethereum';
 import { ethers } from 'ethers';
+import Alert from 'react-bootstrap/Alert';
 
 export interface InfoProps {
     address: string;
@@ -20,8 +21,18 @@ export interface InfoProps {
 export const Info = (props: InfoProps) => {
     const balance = useBalance(props.address);
 
+    const proxyManager = useProxyManager();
+    const [owner, setOwner] = useState<string>('');
+
+    useEffect(() => {
+        if (proxyManager) {
+            proxyManager.getOwner(props.address).then(setOwner);
+        }
+    }, [props.address, proxyManager]);
+
     return <div>
         <p>Address: {props.address}</p>
         <p>Balance: {balance && ethers.utils.formatEther(balance)} ETH</p>
+        <p>Owner: {owner}</p>
     </div>;
 };
