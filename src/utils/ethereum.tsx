@@ -9,19 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { useBalance } from '../utils/ethereum';
-import { ethers } from 'ethers';
+import { useState, useEffect } from 'react';
+import { ethers, BigNumber } from 'ethers';
 
-export interface InfoProps {
-    address: string;
-}
+export const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-export const Info = (props: InfoProps) => {
-    const balance = useBalance(props.address);
-
-    return <div>
-        <p>Address: {props.address}</p>
-        <p>Balance: {balance && ethers.utils.formatEther(balance)} ETH</p>
-    </div>;
+export const useBalance = (address: string) => {
+    const [balance, setBalance] = useState<BigNumber | undefined>(undefined);
+    useEffect(() => {
+        const getBalance = async () => {
+            setBalance(await provider.getBalance(address));
+        };
+        getBalance();
+    }, [address]);
+    return balance;
 };
