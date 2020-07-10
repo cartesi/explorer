@@ -27,7 +27,8 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/build/contracts/*.json'"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -45,6 +46,8 @@
         ]
     },
     "devDependencies": {
-        "prettier": "^2.0.5"
+        "@typechain/ethers-v5": "^0.0.2",
+        "prettier": "^2.0.5",
+        "typechain": "^2.0.0"
     }
 }

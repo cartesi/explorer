@@ -12,52 +12,38 @@
 import { useState, useEffect } from 'react';
 import { ethers, BigNumber } from 'ethers';
 import proxyManagerJson from '@cartesi/util/build/contracts/ProxyManager.json';
+import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
+import { ProxyManager } from '../contracts/ProxyManager';
 
 export const provider = new ethers.providers.Web3Provider(window.ethereum);
+const proxyManagerFactory = new ProxyManagerFactory(provider.getSigner('0x18930e8a66a1DbE21D00581216789AAB7460Afd0'));
 
-const createContract = async (json: any, networkId: string) => {
-    const { contractName, abi } = json;
+const getAddress = (json: any, networkId: string): string | undefined => {
     const networks: any = json.networks;
-
-    // use provider network to get the address from the json
-    // const networkId = network.chainId.toString();
     const deployedNetworks = Object.keys(networks);
-
     if (deployedNetworks.length === 0) {
-        throw new Error(
-            `Contract '${contractName}' not deployed to any network`
-        );
+        return undefined;
     }
-
     // XXX: not a nice way to do it. ethers.js don't give me the correct network id of local ganache :-(
     const addressEntry =
         networkId === '*'
             ? networks[Object.keys(networks)[0]]
             : networks[networkId];
-    if (!addressEntry)
-        throw new Error(
-            `Contract '${contractName}' not deployed at network ${networkId}`
-        );
+    if (!addressEntry) return undefined;
 
-    console.log(
-        `Creating '${contractName}' instance deployed at ${addressEntry.address} at network ${networkId}`
-    );
-    return new ethers.Contract(addressEntry.address, abi, provider);
+    return addressEntry.address;
 };
 
 export const useBalance = (address: string) => {
     const [balance, setBalance] = useState<BigNumber | undefined>(undefined);
     useEffect(() => {
-        const getBalance = async () => {
-            setBalance(await provider.getBalance(address));
-        };
-        getBalance();
+        provider.getBalance(address).then(setBalance);
     }, [address]);
     return balance;
 };
 
 export const useProxyManager = () => {
-    const [proxyManager, setProxyManager] = useState<ethers.Contract>();
+    const [proxyManager, setProxyManager] = useState<ProxyManager>();
 
     useEffect(() => {
         // query the provider network
@@ -65,7 +51,15 @@ export const useProxyManager = () => {
             // XXX: not a nice way to do it. ethers.js don't give me the correct network id of local ganache :-(
             const networkId =
                 network.name === 'unknown' ? '*' : network.chainId.toString();
-            createContract(proxyManagerJson, networkId).then(setProxyManager);
+
+            const address = getAddress(proxyManagerJson, networkId);
+            if (!address) {
+                throw new Error(
+                    `ProxyManager not deployed at network ${networkId}`
+                );
+            }
+            console.log(`Attaching ProxyManager to address '${address}'`);
+            setProxyManager(proxyManagerFactory.attach(address));
         });
     }, []);
     return proxyManager;
