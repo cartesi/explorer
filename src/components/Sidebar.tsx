@@ -10,15 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Node } from './Node';
-import './App.css';
+import logo from '../logo.svg';
 
-function App() {
+export interface SidebarProps {}
+
+export const Sidebar = (props: SidebarProps) => {
     return (
-        <div className="App">
-            <Node address="0xe4961315b13d1557B25e36f184C7C604DD0663BD" />
+        <div>
+            <img src={logo} alt="logo" />
         </div>
     );
-}
-
-export default App;
+};

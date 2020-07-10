@@ -10,15 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Node } from './Node';
-import './App.css';
 
-function App() {
-    return (
-        <div className="App">
-            <Node address="0xe4961315b13d1557B25e36f184C7C604DD0663BD" />
-        </div>
-    );
+export interface InfoProps {
+    address: string;
 }
 
-export default App;
+export const Info = (props: InfoProps) => {
+    return <div>{props.address}</div>;
+};
