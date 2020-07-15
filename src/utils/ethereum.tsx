@@ -11,10 +11,14 @@
 
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import { ProxyManager } from '../contracts/ProxyManager';
+import {
+    ProxyManager,
+    ProxyClaim,
+    ProxyRelease,
+} from '../contracts/ProxyManager';
 const proxyManagerJson = require('@cartesi/util/build/contracts/ProxyManager.json');
 
-export const provider = new Web3(Web3.givenProvider || "ws://localhost:8545");
+export const provider = new Web3(Web3.givenProvider || 'ws://localhost:8545');
 
 const getAddress = (json: any, networkId: string): string | undefined => {
     const networks: any = json.networks;
@@ -41,14 +45,16 @@ export const useBalance = (address: string) => {
 };
 
 export const useAccount = (index: number) => {
-    const [account, setAccount] = useState<string>('');
+    const [account, setAccount] = useState<string>(
+        '0x0000000000000000000000000000000000000000'
+    );
     useEffect(() => {
-        provider.eth.requestAccounts().then(accounts => {
+        provider.eth.requestAccounts().then((accounts) => {
             setAccount(accounts.length > 0 ? accounts[index] : '');
         });
     }, [index]);
     return account;
-}
+};
 
 export const useProxyManager = () => {
     const [proxyManager, setProxyManager] = useState<ProxyManager>();
@@ -62,9 +68,55 @@ export const useProxyManager = () => {
                     `ProxyManager not deployed at network ${network}`
                 );
             }
-            console.log(`Attaching ProxyManager to address '${address}'`);
-            setProxyManager((new provider.eth.Contract(proxyManagerJson.abi, address) as any) as ProxyManager);
+            console.log(
+                `Attaching ProxyManager to address '${address}' deployed at network '${network}'`
+            );
+            setProxyManager(
+                (new provider.eth.Contract(
+                    proxyManagerJson.abi,
+                    address
+                ) as any) as ProxyManager
+            );
         });
     }, []);
     return proxyManager;
+};
+
+export const useUserProxies = (user: string, proxy: string) => {
+    const proxyManager = useProxyManager();
+    const [proxies, setProxies] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (proxyManager) {
+            proxyManager
+                .getPastEvents('allEvents', {
+                    fromBlock: 'earliest',
+                    filter: {
+                        proxy: proxy,
+                        user: user,
+                    },
+                })
+                .then((events) => {
+                    const proxies = events.reduce(
+                        (array: string[], ev, index) => {
+                            if (ev.event === 'ProxyClaim') {
+                                const event = (ev as any) as ProxyClaim;
+                                array.push(event.returnValues.proxy);
+                            } else if (ev.event === 'ProxyRelease') {
+                                const event = (ev as any) as ProxyRelease;
+                                array.splice(
+                                    array.indexOf(event.returnValues.proxy),
+                                    1
+                                );
+                            }
+                            return array;
+                        },
+                        []
+                    );
+                    setProxies(proxies);
+                });
+        }
+    }, [proxyManager, user, proxy]);
+
+    return proxies;
 };

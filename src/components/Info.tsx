@@ -10,10 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
+import Web3 from 'web3';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import { useBalance, useProxyManager, useAccount } from '../utils/ethereum';
+import {
+    useBalance,
+    useProxyManager,
+    useAccount,
+    useUserProxies,
+} from '../utils/ethereum';
 
 export interface InfoProps {
     address: string;
@@ -22,30 +28,54 @@ export interface InfoProps {
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const Info = (props: InfoProps) => {
-    const balance = useBalance(props.address);
     const account = useAccount(0);
+    const proxyBalance = useBalance(props.address);
+    const userBalance = useBalance(account);
 
     const [error, setError] = useState<string>('');
     const proxyManager = useProxyManager();
     const [owner, setOwner] = useState<string>('');
+    const proxies = useUserProxies(account, props.address);
 
     useEffect(() => {
         if (proxyManager) {
-            proxyManager.methods.getOwner(props.address).call().then(setOwner);
+            proxyManager.methods.getUser(props.address).call().then(setOwner);
         }
-    }, [props.address, proxyManager]);
+    }, [props.address, proxyManager, account]);
 
     const claimProxy = () => {
         if (proxyManager && account) {
-            const value = 100000000;
+            const value = Web3.utils.toWei('1', 'finney');
             proxyManager.methods
-                .claimProxy(props.address, [])
-                .send({ from: account, gas: 200000000, gasPrice: 30000 })
-                .then(tr => {
+                .claimProxy(props.address)
+                .send({ from: account, value })
+                .then((tr) => {
                     // query owner again
-                    proxyManager.methods.getOwner(props.address).call().then(setOwner);
+                    proxyManager.methods
+                        .getUser(props.address)
+                        .call()
+                        .then(setOwner);
                 })
-                .catch(e => {
+                .catch((e) => {
+                    setError(e.message);
+                    console.error(e);
+                });
+        }
+    };
+
+    const releaseProxy = () => {
+        if (proxyManager && account) {
+            proxyManager.methods
+                .freeProxy(props.address, [])
+                .send({ from: account })
+                .then((tr) => {
+                    // query owner again
+                    proxyManager.methods
+                        .getUser(props.address)
+                        .call()
+                        .then(setOwner);
+                })
+                .catch((e) => {
                     setError(e.message);
                     console.error(e);
                 });
@@ -55,7 +85,16 @@ export const Info = (props: InfoProps) => {
     return (
         <div>
             <h1>Proxy information</h1>
-            {error && <Alert key="error" variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
+            {error && (
+                <Alert
+                    key="error"
+                    variant="danger"
+                    onClose={() => setError('')}
+                    dismissible
+                >
+                    {error}
+                </Alert>
+            )}
             <Table striped bordered>
                 <tbody>
                     <tr>
@@ -64,12 +103,19 @@ export const Info = (props: InfoProps) => {
                     </tr>
                     <tr>
                         <th>Balance</th>
-                        <td>{balance}</td>
+                        <td>{Web3.utils.fromWei(proxyBalance)} ETH</td>
                     </tr>
                     <tr>
                         <th>Owner</th>
                         <td>
-                            {owner === NULL_ADDRESS ? <i>&lt;none&gt;</i> : owner}
+                            {owner === NULL_ADDRESS ? (
+                                <i>&lt;none&gt;</i>
+                            ) : (
+                                owner
+                            )}{' '}
+                            {owner === account && owner !== NULL_ADDRESS && (
+                                <i>(you)</i>
+                            )}
                         </td>
                     </tr>
                 </tbody>
@@ -77,6 +123,42 @@ export const Info = (props: InfoProps) => {
             {proxyManager && account && owner === NULL_ADDRESS && (
                 <Button onClick={claimProxy}>Claim proxy</Button>
             )}
+            {proxyManager && account && owner === account && (
+                <Button onClick={releaseProxy}>Release proxy</Button>
+            )}
+
+            <h1>User information</h1>
+            <Table striped bordered>
+                <tbody>
+                    <tr>
+                        <th>Address</th>
+                        <td>{account}</td>
+                    </tr>
+                    <tr>
+                        <th>Balance</th>
+                        <td>{Web3.utils.fromWei(userBalance)} ETH</td>
+                    </tr>
+                </tbody>
+            </Table>
+
+            <h2>Proxies</h2>
+            <Table striped bordered>
+                <thead>
+                    <tr>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {proxies.map((proxy) => (
+                        <tr key={proxy}>
+                            <td>
+                                {proxy}{' '}
+                                {proxy === props.address && <i>(this)</i>}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </div>
     );
 };
