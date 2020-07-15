@@ -12,6 +12,7 @@
 import React, { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 import { useBalance, useProxyManager, useAccount } from '../utils/ethereum';
 
 export interface InfoProps {
@@ -29,33 +30,50 @@ export const Info = (props: InfoProps) => {
     const [owner, setOwner] = useState<string>('');
 
     useEffect(() => {
-        if (proxyManager && account) {
+        if (proxyManager) {
             proxyManager.methods.getOwner(props.address).call().then(setOwner);
         }
-    }, [props.address, proxyManager, account]);
+    }, [props.address, proxyManager]);
 
     const claimProxy = () => {
         if (proxyManager && account) {
             const value = 100000000;
             proxyManager.methods
                 .claimProxy(props.address, [])
-                .send({ from: account, value: value })
+                .send({ from: account, gas: 200000000, gasPrice: 30000 })
                 .then(tr => {
                     // query owner again
                     proxyManager.methods.getOwner(props.address).call().then(setOwner);
                 })
                 .catch(e => {
                     setError(e.message);
+                    console.error(e);
                 });
         }
     };
 
     return (
         <div>
+            <h1>Proxy information</h1>
             {error && <Alert key="error" variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
-            <p>Address: {props.address}</p>
-            <p>Balance: {balance}</p>
-            <p>Owner: {owner}</p>
+            <Table striped bordered>
+                <tbody>
+                    <tr>
+                        <th>Address</th>
+                        <td>{props.address}</td>
+                    </tr>
+                    <tr>
+                        <th>Balance</th>
+                        <td>{balance}</td>
+                    </tr>
+                    <tr>
+                        <th>Owner</th>
+                        <td>
+                            {owner === NULL_ADDRESS ? <i>&lt;none&gt;</i> : owner}
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
             {proxyManager && account && owner === NULL_ADDRESS && (
                 <Button onClick={claimProxy}>Claim proxy</Button>
             )}
