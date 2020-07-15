@@ -27,9 +27,6 @@ export const Node = (props: NodeProps) => {
         <Container>
             <Row>
                 <Col>
-                    <Sidebar />
-                </Col>
-                <Col>
                     <Header address={props.address} />
                     <Routes>
                         <Route path="/" element={<Info {...props} />} />
