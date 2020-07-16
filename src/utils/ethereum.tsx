@@ -10,15 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import Web3 from 'web3';
-import {
-    ProxyManager,
-    ProxyClaim,
-    ProxyRelease,
-} from '../contracts/ProxyManager';
+import { Web3Provider } from '@ethersproject/providers';
+import { BigNumber} from '@ethersproject/bignumber';
+import { ProxyManager } from '../contracts/ProxyManager';
+import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
 const proxyManagerJson = require('@cartesi/util/build/contracts/ProxyManager.json');
 
-export const provider = new Web3(Web3.givenProvider || 'ws://localhost:8545');
+export const provider = new Web3Provider(window.ethereum);
 
 const getAddress = (json: any, networkId: string): string | undefined => {
     const networks: any = json.networks;
@@ -37,9 +35,9 @@ const getAddress = (json: any, networkId: string): string | undefined => {
 };
 
 export const useBalance = (address: string) => {
-    const [balance, setBalance] = useState<string>('');
+    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     useEffect(() => {
-        provider.eth.getBalance(address).then(setBalance);
+        provider.getBalance(address).then(setBalance);
     }, [address]);
     return balance;
 };
@@ -49,7 +47,7 @@ export const useAccount = (index: number) => {
         '0x0000000000000000000000000000000000000000'
     );
     useEffect(() => {
-        provider.eth.requestAccounts().then((accounts) => {
+        provider.listAccounts().then((accounts) => {
             setAccount(accounts.length > 0 ? accounts[index] : '');
         });
     }, [index]);
@@ -60,63 +58,56 @@ export const useProxyManager = () => {
     const [proxyManager, setProxyManager] = useState<ProxyManager>();
 
     useEffect(() => {
+        // create the factory
+        const factory = new ProxyManagerFactory(provider.getSigner());
+
         // query the provider network
-        provider.eth.net.getId().then((network) => {
-            const address = getAddress(proxyManagerJson, network.toString());
+        provider.getNetwork().then((network) => {
+            const address = getAddress(proxyManagerJson, network.chainId.toString());
             if (!address) {
                 throw new Error(
                     `ProxyManager not deployed at network ${network}`
                 );
             }
             console.log(
-                `Attaching ProxyManager to address '${address}' deployed at network '${network}'`
+                `Attaching ProxyManager to address '${address}' deployed at network '${network.chainId}'`
             );
-            setProxyManager(
-                (new provider.eth.Contract(
-                    proxyManagerJson.abi,
-                    address
-                ) as any) as ProxyManager
-            );
+            setProxyManager(factory.attach(address));
         });
     }, []);
     return proxyManager;
 };
 
-export const useUserProxies = (user: string, proxy: string) => {
+export const useUserProxies = (user: string) => {
     const proxyManager = useProxyManager();
     const [proxies, setProxies] = useState<string[]>([]);
 
     useEffect(() => {
         if (proxyManager) {
-            proxyManager
-                .getPastEvents('allEvents', {
-                    fromBlock: 'earliest',
-                    filter: {
-                        proxy: proxy,
-                        user: user,
-                    },
-                })
-                .then((events) => {
-                    const proxies = events.reduce(
-                        (array: string[], ev, index) => {
-                            if (ev.event === 'ProxyClaim') {
-                                const event = (ev as any) as ProxyClaim;
-                                array.push(event.returnValues.proxy);
-                            } else if (ev.event === 'ProxyRelease') {
-                                const event = (ev as any) as ProxyRelease;
-                                array.splice(
-                                    array.indexOf(event.returnValues.proxy),
-                                    1
-                                );
-                            }
-                            return array;
-                        },
-                        []
-                    );
-                    setProxies(proxies);
-                });
+            Promise.all([
+                proxyManager.queryFilter(proxyManager.filters.ProxyClaim(null, user)),
+                proxyManager.queryFilter(proxyManager.filters.ProxyRelease(null, user))
+            ]).then(([claims, releases]) => {
+                // merge claim and release events into a single list
+                // and sort by block number
+                const events = [...claims, ...releases].sort((a,b) => a.blockNumber - b.blockNumber);
+
+                // build final list of proxies considering every claim and release event
+                // in history for the user
+                const proxies = events.reduce((array: string[], ev) => {
+                    const args: any = ev.args;
+                    const proxy = args.proxy;
+                    if (ev.event === 'ProxyClaim') {
+                        array.push(proxy);
+                    } else if (ev.event === 'ProxyRelease') {
+                        array.splice(array.indexOf(proxy), 1);
+                    }
+                    return array;
+                }, []);
+                setProxies(proxies);
+            });
         }
-    }, [proxyManager, user, proxy]);
+    }, [proxyManager, user]);
 
     return proxies;
 };

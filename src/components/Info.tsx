@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
-import Web3 from 'web3';
+import { formatEther, parseUnits } from '@ethersproject/units';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
@@ -35,45 +35,38 @@ export const Info = (props: InfoProps) => {
     const [error, setError] = useState<string>('');
     const proxyManager = useProxyManager();
     const [owner, setOwner] = useState<string>('');
-    const proxies = useUserProxies(account, props.address);
+    const proxies = useUserProxies(account);
 
     useEffect(() => {
         if (proxyManager) {
-            proxyManager.methods.getUser(props.address).call().then(setOwner);
+            proxyManager.getUser(props.address).then(setOwner);
         }
     }, [props.address, proxyManager, account]);
 
     const claimProxy = () => {
         if (proxyManager && account) {
-            const value = Web3.utils.toWei('1', 'finney');
-            proxyManager.methods
-                .claimProxy(props.address)
-                .send({ from: account, value })
-                .then((tr) => {
+            const value = parseUnits('1', 'finney');
+            console.log(value);
+            proxyManager
+                .claimProxy(props.address, { value })
+                .then((_tr) => {
                     // query owner again
-                    proxyManager.methods
-                        .getUser(props.address)
-                        .call()
-                        .then(setOwner);
+                    proxyManager.getUser(props.address).then(setOwner);
                 })
                 .catch((e) => {
                     setError(e.message);
-                    console.error(e);
+                    console.error(e.code, e.message, e.stack);
                 });
         }
     };
 
     const releaseProxy = () => {
         if (proxyManager && account) {
-            proxyManager.methods
-                .freeProxy(props.address, [])
-                .send({ from: account })
-                .then((tr) => {
+            proxyManager
+                .freeProxy(props.address)
+                .then((_tr) => {
                     // query owner again
-                    proxyManager.methods
-                        .getUser(props.address)
-                        .call()
-                        .then(setOwner);
+                    proxyManager.getUser(props.address).then(setOwner);
                 })
                 .catch((e) => {
                     setError(e.message);
@@ -103,7 +96,7 @@ export const Info = (props: InfoProps) => {
                     </tr>
                     <tr>
                         <th>Balance</th>
-                        <td>{Web3.utils.fromWei(proxyBalance)} ETH</td>
+                        <td>{formatEther(proxyBalance)} ETH</td>
                     </tr>
                     <tr>
                         <th>Owner</th>
@@ -136,7 +129,7 @@ export const Info = (props: InfoProps) => {
                     </tr>
                     <tr>
                         <th>Balance</th>
-                        <td>{Web3.utils.fromWei(userBalance)} ETH</td>
+                        <td>{formatEther(userBalance)} ETH</td>
                     </tr>
                 </tbody>
             </Table>

@@ -7,6 +7,7 @@
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",
+        "@typechain/ethers-v5": "^0.0.2",
         "@typechain/web3-v1": "^1.0.0",
         "@types/jest": "^24.0.0",
         "@types/node": "^12.0.0",
@@ -14,6 +15,7 @@
         "@types/react-bootstrap": "^1.0.1",
         "@types/react-dom": "^16.9.0",
         "bootstrap": "^4.5.0",
+        "ethers": "^5.0.5",
         "history": "^5.0.0",
         "react": "^16.13.1",
         "react-bootstrap": "^1.1.1",
@@ -21,15 +23,14 @@
         "react-router": "^6.0.0-beta.0",
         "react-router-dom": "^6.0.0-beta.0",
         "react-scripts": "3.4.1",
-        "typescript": "~3.7.2",
-        "web3": "^1.2.9"
+        "typescript": "~3.7.2"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "postinstall": "typechain --target=web3-v1 --outDir src/contracts './node_modules/@cartesi/**/build/contracts/*.json'"
+        "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/build/contracts/*.json'"
     },
     "eslintConfig": {
         "extends": "react-app"
