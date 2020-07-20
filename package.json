@@ -2,6 +2,13 @@
     "name": "descartes-console",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json'"
+    },
     "dependencies": {
         "@cartesi/util": "^0.3.0",
         "@testing-library/jest-dom": "^4.2.4",
@@ -15,7 +22,7 @@
         "@types/react-bootstrap": "^1.0.1",
         "@types/react-dom": "^16.9.0",
         "bootstrap": "^4.5.0",
-        "ethers": "^5.0.5",
+        "ethers": "^5.0.7",
         "history": "^5.0.0",
         "react": "^16.13.1",
         "react-bootstrap": "^1.1.1",
@@ -25,12 +32,9 @@
         "react-scripts": "3.4.1",
         "typescript": "~3.7.2"
     },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/build/contracts/*.json'"
+    "devDependencies": {
+        "prettier": "^2.0.5",
+        "typechain": "^2.0.0"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -46,9 +50,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "devDependencies": {
-        "prettier": "^2.0.5",
-        "typechain": "^2.0.0"
     }
 }

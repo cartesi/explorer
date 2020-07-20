@@ -14,24 +14,13 @@ import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber} from '@ethersproject/bignumber';
 import { ProxyManager } from '../contracts/ProxyManager';
 import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
-const proxyManagerJson = require('@cartesi/util/build/contracts/ProxyManager.json');
 
 export const provider = new Web3Provider(window.ethereum);
 
-const getAddress = (json: any, networkId: string): string | undefined => {
-    const networks: any = json.networks;
-    const deployedNetworks = Object.keys(networks);
-    if (deployedNetworks.length === 0) {
-        return undefined;
-    }
-    // XXX: not a nice way to do it
-    const addressEntry =
-        networkId === '*'
-            ? networks[Object.keys(networks)[0]]
-            : networks[networkId];
-    if (!addressEntry) return undefined;
-
-    return addressEntry.address;
+const getAddress = (contractName: string, networkId: string, chainId: number): string | undefined => {
+    const json = require(`@cartesi/util/deployments/${networkId}_${chainId}.json`);
+    const abi = json.contracts[contractName];
+    return abi.address;
 };
 
 export const useBalance = (address: string) => {
@@ -63,10 +52,10 @@ export const useProxyManager = () => {
 
         // query the provider network
         provider.getNetwork().then((network) => {
-            const address = getAddress(proxyManagerJson, network.chainId.toString());
+            const address = getAddress('ProxyManager', 'dev', network.chainId);
             if (!address) {
                 throw new Error(
-                    `ProxyManager not deployed at network ${network}`
+                    `ProxyManager not deployed at network ${network.chainId}`
                 );
             }
             console.log(

@@ -46,7 +46,6 @@ export const Info = (props: InfoProps) => {
     const claimProxy = () => {
         if (proxyManager && account) {
             const value = parseUnits('1', 'finney');
-            console.log(value);
             proxyManager
                 .claimProxy(props.address, { value })
                 .then((_tr) => {
@@ -63,7 +62,7 @@ export const Info = (props: InfoProps) => {
     const releaseProxy = () => {
         if (proxyManager && account) {
             proxyManager
-                .freeProxy(props.address)
+                .freeProxy(props.address, [])
                 .then((_tr) => {
                     // query owner again
                     proxyManager.getUser(props.address).then(setOwner);
