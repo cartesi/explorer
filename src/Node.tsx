@@ -16,7 +16,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
-import { Info } from './components/Info';
+import { Proxy } from './components/Proxy';
+import { User } from './components/User';
 
 export interface NodeProps {
     address: string;
@@ -29,7 +30,8 @@ export const Node = (props: NodeProps) => {
                 <Col>
                     <Header address={props.address} />
                     <Routes>
-                        <Route path="/" element={<Info {...props} />} />
+                        <Route path="/" element={<Proxy {...props} />} />
+                        <Route path="/user" element={<User {...props} />} />
                     </Routes>
                 </Col>
             </Row>

@@ -19,19 +19,17 @@ import {
     useBalance,
     useProxyManager,
     useAccount,
-    useUserProxies,
 } from '../utils/ethereum';
 
-export interface InfoProps {
+export interface ProxyProps {
     address: string;
 }
 
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-export const Info = (props: InfoProps) => {
+export const Proxy = (props: ProxyProps) => {
     const account = useAccount(0);
-    const proxyBalance = useBalance(props.address);
-    const userBalance = useBalance(account);
+    const balance = useBalance(props.address);
 
     const {
         proxyManager,
@@ -42,8 +40,7 @@ export const Info = (props: InfoProps) => {
         claimProxy,
         releaseProxy,
     } = useProxyManager(props.address);
-    // const proxies = useUserProxies(account);
-    const proxies: any[] = [];
+    // const proxies: any[] = [];
 
     return (
         <div>
@@ -61,7 +58,7 @@ export const Info = (props: InfoProps) => {
                     </tr>
                     <tr>
                         <th>Balance</th>
-                        <td>{formatEther(proxyBalance)} ETH</td>
+                        <td>{formatEther(balance)} ETH</td>
                     </tr>
                     <tr>
                         <th>Owner</th>
@@ -109,46 +106,6 @@ export const Info = (props: InfoProps) => {
                     Release proxy
                 </Button>
             )}
-
-            <h1>User information</h1>
-            <Table striped bordered>
-                <tbody>
-                    <tr>
-                        <th>Address</th>
-                        <td>{account}</td>
-                    </tr>
-                    <tr>
-                        <th>Balance</th>
-                        <td>{formatEther(userBalance)} ETH</td>
-                    </tr>
-                </tbody>
-            </Table>
-
-            <h2>Proxies</h2>
-            <Table striped bordered>
-                <thead>
-                    <tr>
-                        <th>Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {proxies.length === 0 && (
-                        <tr>
-                            <td>
-                                <i>No proxies</i>
-                            </td>
-                        </tr>
-                    )}
-                    {proxies.map((proxy) => (
-                        <tr key={proxy}>
-                            <td>
-                                {proxy}{' '}
-                                {proxy === props.address && <i>(this)</i>}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
         </div>
     );
 };
