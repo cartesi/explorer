@@ -9,11 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
-import { formatEther, parseUnits } from '@ethersproject/units';
+import React from 'react';
+import { formatEther } from '@ethersproject/units';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Spinner from 'react-bootstrap/Spinner';
 import {
     useBalance,
     useProxyManager,
@@ -32,58 +33,23 @@ export const Info = (props: InfoProps) => {
     const proxyBalance = useBalance(props.address);
     const userBalance = useBalance(account);
 
-    const [error, setError] = useState<string>('');
-    const proxyManager = useProxyManager();
-    const [owner, setOwner] = useState<string>('');
-    const proxies = useUserProxies(account);
-
-    useEffect(() => {
-        if (proxyManager) {
-            proxyManager.getUser(props.address).then(setOwner);
-        }
-    }, [props.address, proxyManager, account]);
-
-    const claimProxy = () => {
-        if (proxyManager && account) {
-            const value = parseUnits('1', 'finney');
-            proxyManager
-                .claimProxy(props.address, { value })
-                .then((_tr) => {
-                    // query owner again
-                    proxyManager.getUser(props.address).then(setOwner);
-                })
-                .catch((e) => {
-                    setError(e.message);
-                    console.error(e.code, e.message, e.stack);
-                });
-        }
-    };
-
-    const releaseProxy = () => {
-        if (proxyManager && account) {
-            proxyManager
-                .freeProxy(props.address, [])
-                .then((_tr) => {
-                    // query owner again
-                    proxyManager.getUser(props.address).then(setOwner);
-                })
-                .catch((e) => {
-                    setError(e.message);
-                    console.error(e);
-                });
-        }
-    };
+    const {
+        proxyManager,
+        owner,
+        error,
+        loading,
+        submitting,
+        claimProxy,
+        releaseProxy,
+    } = useProxyManager(props.address);
+    // const proxies = useUserProxies(account);
+    const proxies: any[] = [];
 
     return (
         <div>
             <h1>Proxy information</h1>
             {error && (
-                <Alert
-                    key="error"
-                    variant="danger"
-                    onClose={() => setError('')}
-                    dismissible
-                >
+                <Alert key="error" variant="danger">
                     {error}
                 </Alert>
             )}
@@ -100,6 +66,9 @@ export const Info = (props: InfoProps) => {
                     <tr>
                         <th>Owner</th>
                         <td>
+                            {loading && (
+                                <Spinner animation="border" size="sm" />
+                            )}
                             {owner === NULL_ADDRESS ? (
                                 <i>&lt;none&gt;</i>
                             ) : (
@@ -113,10 +82,32 @@ export const Info = (props: InfoProps) => {
                 </tbody>
             </Table>
             {proxyManager && account && owner === NULL_ADDRESS && (
-                <Button onClick={claimProxy}>Claim proxy</Button>
+                <Button onClick={claimProxy}>
+                    {submitting && (
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    )}
+                    Claim proxy
+                </Button>
             )}
             {proxyManager && account && owner === account && (
-                <Button onClick={releaseProxy}>Release proxy</Button>
+                <Button onClick={releaseProxy}>
+                    {submitting && (
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    )}
+                    Release proxy
+                </Button>
             )}
 
             <h1>User information</h1>
@@ -141,6 +132,13 @@ export const Info = (props: InfoProps) => {
                     </tr>
                 </thead>
                 <tbody>
+                    {proxies.length === 0 && (
+                        <tr>
+                            <td>
+                                <i>No proxies</i>
+                            </td>
+                        </tr>
+                    )}
                     {proxies.map((proxy) => (
                         <tr key={proxy}>
                             <td>

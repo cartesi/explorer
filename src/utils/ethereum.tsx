@@ -11,17 +11,17 @@
 
 import { useState, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber} from '@ethersproject/bignumber';
+import { BigNumber } from '@ethersproject/bignumber';
 import { ProxyManager } from '../contracts/ProxyManager';
 import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
+import { parseUnits } from '@ethersproject/units';
+
+type AbiMap = Record<number, any>;
+const proxyManagerJson: AbiMap = {
+    31337: require('@cartesi/util/deployments/localhost_31337/ProxyManager.json'),
+};
 
 export const provider = new Web3Provider(window.ethereum);
-
-const getAddress = (contractName: string, networkId: string, chainId: number): string | undefined => {
-    const json = require(`@cartesi/util/deployments/${networkId}_${chainId}.json`);
-    const abi = json.contracts[contractName];
-    return abi.address;
-};
 
 export const useBalance = (address: string) => {
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
@@ -43,16 +43,17 @@ export const useAccount = (index: number) => {
     return account;
 };
 
-export const useProxyManager = () => {
+export const useProxyManager = (proxy: string) => {
     const [proxyManager, setProxyManager] = useState<ProxyManager>();
 
+    // create the ProxyManager, asynchronously
     useEffect(() => {
         // create the factory
         const factory = new ProxyManagerFactory(provider.getSigner());
 
         // query the provider network
         provider.getNetwork().then((network) => {
-            const address = getAddress('ProxyManager', 'dev', network.chainId);
+            const address = proxyManagerJson[network.chainId].address;
             if (!address) {
                 throw new Error(
                     `ProxyManager not deployed at network ${network.chainId}`
@@ -64,22 +65,109 @@ export const useProxyManager = () => {
             setProxyManager(factory.attach(address));
         });
     }, []);
-    return proxyManager;
+
+    const [owner, setOwner] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [submitting, setSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+
+    useEffect(() => {
+        if (proxyManager) {
+            setLoading(true);
+            setError('');
+            proxyManager
+                .getUser(proxy)
+                .then((owner) => {
+                    setLoading(false);
+                    setOwner(owner);
+                })
+                .catch((e) => {
+                    setError(e.message);
+                });
+        }
+    }, [proxyManager, proxy]);
+
+    const claimProxy = async () => {
+        if (proxyManager) {
+            // XXX: move this to a parameter
+            const value = parseUnits('1', 'finney');
+
+            try {
+                setError('');
+                setSubmitting(true);
+
+                // send transaction
+                const transaction = await proxyManager.claimProxy(proxy, {
+                    value,
+                });
+
+                // wait for confirmation
+                await transaction.wait(1);
+
+                // query owner again
+                const owner = await proxyManager.getUser(proxy);
+                setOwner(owner);
+                setSubmitting(false);
+            } catch (e) {
+                setError(e.message);
+                setSubmitting(false);
+            }
+        }
+    };
+
+    const releaseProxy = async () => {
+        if (proxyManager) {
+            try {
+                setError('');
+                setSubmitting(true);
+
+                // send transaction
+                const transaction = await proxyManager.freeProxy(proxy, []);
+
+                // wait for confirmation
+                await transaction.wait(1);
+
+                // query owner again
+                const owner = await proxyManager.getUser(proxy);
+                setOwner(owner);
+                setSubmitting(false);
+            } catch (e) {
+                setError(e.message);
+                setSubmitting(false);
+            }
+        }
+    };
+
+    return {
+        proxyManager,
+        owner,
+        loading,
+        submitting,
+        error,
+        claimProxy,
+        releaseProxy,
+    };
 };
 
-export const useUserProxies = (user: string) => {
-    const proxyManager = useProxyManager();
+export const useUserProxies = (proxy: string, user: string) => {
+    const { proxyManager } = useProxyManager(proxy);
     const [proxies, setProxies] = useState<string[]>([]);
 
     useEffect(() => {
         if (proxyManager) {
             Promise.all([
-                proxyManager.queryFilter(proxyManager.filters.ProxyClaim(null, user)),
-                proxyManager.queryFilter(proxyManager.filters.ProxyRelease(null, user))
+                proxyManager.queryFilter(
+                    proxyManager.filters.ProxyClaim(null, user)
+                ),
+                proxyManager.queryFilter(
+                    proxyManager.filters.ProxyRelease(null, user)
+                ),
             ]).then(([claims, releases]) => {
                 // merge claim and release events into a single list
                 // and sort by block number
-                const events = [...claims, ...releases].sort((a,b) => a.blockNumber - b.blockNumber);
+                const events = [...claims, ...releases].sort(
+                    (a, b) => a.blockNumber - b.blockNumber
+                );
 
                 // build final list of proxies considering every claim and release event
                 // in history for the user
