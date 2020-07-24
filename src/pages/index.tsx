@@ -9,12 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import Head from 'next/head';
 
-export interface HeaderProps {
-    address: string;
+export default function Home() {
+    return (
+        <div className="container">
+            <Head>
+                <title>Create Next App</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
+            <main></main>
+
+            <footer></footer>
+        </div>
+    );
 }
-
-export const Header = (props: HeaderProps) => {
-    return <div></div>;
-};

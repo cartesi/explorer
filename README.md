@@ -10,12 +10,11 @@ This web application shows several informations about a Descartes Node:
 
 ## Running
 
-This is a React application which uses smart contracts deployed by the `solidity-util` project.
+This is a [Next.js](https://nextjs.org) application which uses smart contracts deployed by the [solidity-util](https://github.com/cartesi/solidity-util) project.
 In order to run the application you need to:
 
-- run a local ganache
-- deploy `solidity-util` contracts
+- run `solidity-util` local node with the contracts deployed
 - yarn link this project to `solidity-util` project, so it uses the same build files with contract information
-- `yarn start`
+- `yarn dev`
 - open [http://localhost:3000](http://localhost:3000)
 

@@ -10,26 +10,21 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
+import { useRouter } from 'next/router';
 import { formatEther } from '@ethersproject/units';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
-import {
-    useBalance,
-    useProxyManager,
-    useAccount,
-} from '../utils/ethereum';
+import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
+import { useProxyManager } from '../../services/proxyManager';
 
-export interface ProxyProps {
-    address: string;
-}
-
-const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-export const Proxy = (props: ProxyProps) => {
+export default () => {
+    const router = useRouter();
+    let { address } = router.query;
+    address = address as string;
     const account = useAccount(0);
-    const balance = useBalance(props.address);
+    const balance = useBalance(address);
 
     const {
         proxyManager,
@@ -39,8 +34,7 @@ export const Proxy = (props: ProxyProps) => {
         submitting,
         claimProxy,
         releaseProxy,
-    } = useProxyManager(props.address);
-    // const proxies: any[] = [];
+    } = useProxyManager(address);
 
     return (
         <div>
@@ -54,7 +48,7 @@ export const Proxy = (props: ProxyProps) => {
                 <tbody>
                     <tr>
                         <th>Address</th>
-                        <td>{props.address}</td>
+                        <td>{address}</td>
                     </tr>
                     <tr>
                         <th>Balance</th>

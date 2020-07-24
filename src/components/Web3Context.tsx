@@ -9,15 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import logo from '../logo.svg';
+import { createContext } from 'react';
+import { Web3Provider } from '@ethersproject/providers';
 
-export interface SidebarProps {}
+const Web3Context = createContext<Web3Provider>(undefined);
 
-export const Sidebar = (props: SidebarProps) => {
-    return (
-        <div>
-            <img src={logo} alt="logo" />
-        </div>
-    );
-};
+export default Web3Context;

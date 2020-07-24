@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from '@ethersproject/bignumber';
+import { useContext, useState, useEffect } from 'react';
+import Web3Context from '../components/Web3Context';
 import { ProxyManager } from '../contracts/ProxyManager';
 import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
 import { parseUnits } from '@ethersproject/units';
@@ -21,50 +20,31 @@ const proxyManagerJson: AbiMap = {
     31337: require('@cartesi/util/deployments/localhost_31337/ProxyManager.json'),
 };
 
-export const provider = new Web3Provider(window.ethereum);
-
-export const useBalance = (address: string) => {
-    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
-    useEffect(() => {
-        provider.getBalance(address).then(setBalance);
-    }, [address]);
-    return balance;
-};
-
-export const useAccount = (index: number) => {
-    const [account, setAccount] = useState<string>(
-        '0x0000000000000000000000000000000000000000'
-    );
-    useEffect(() => {
-        provider.listAccounts().then((accounts) => {
-            setAccount(accounts.length > 0 ? accounts[index] : '');
-        });
-    }, [index]);
-    return account;
-};
-
 export const useProxyManager = (proxy: string) => {
+    const provider = useContext(Web3Context);
     const [proxyManager, setProxyManager] = useState<ProxyManager>();
 
     // create the ProxyManager, asynchronously
     useEffect(() => {
-        // create the factory
-        const factory = new ProxyManagerFactory(provider.getSigner());
+        if (provider) {
+            // create the factory
+            const factory = new ProxyManagerFactory(provider.getSigner());
 
-        // query the provider network
-        provider.getNetwork().then((network) => {
-            const address = proxyManagerJson[network.chainId].address;
-            if (!address) {
-                throw new Error(
-                    `ProxyManager not deployed at network ${network.chainId}`
+            // query the provider network
+            provider.getNetwork().then((network) => {
+                const address = proxyManagerJson[network.chainId].address;
+                if (!address) {
+                    throw new Error(
+                        `ProxyManager not deployed at network ${network.chainId}`
+                    );
+                }
+                console.log(
+                    `Attaching ProxyManager to address '${address}' deployed at network '${network.chainId}'`
                 );
-            }
-            console.log(
-                `Attaching ProxyManager to address '${address}' deployed at network '${network.chainId}'`
-            );
-            setProxyManager(factory.attach(address));
-        });
-    }, []);
+                setProxyManager(factory.attach(address));
+            });
+        }
+    }, [provider]);
 
     const [owner, setOwner] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);

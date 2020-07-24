@@ -10,15 +10,17 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Node } from './Node';
-import './App.css';
+import { AppProps } from 'next/app';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import dynamic from 'next/dynamic';
+const Web3Container = dynamic(() => import('../components/Web3Container'), {
+    ssr: false,
+});
 
-function App() {
+export default ({ Component, pageProps }: AppProps) => {
     return (
-        <div className="App">
-            <Node address="0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0" />
-        </div>
+        <Web3Container>
+            <Component {...pageProps} />
+        </Web3Container>
     );
-}
-
-export default App;
+};
