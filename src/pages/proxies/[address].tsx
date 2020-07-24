@@ -13,10 +13,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { formatEther } from '@ethersproject/units';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Spinner from 'react-bootstrap/Spinner';
+import { Alert, Button, Descriptions, Spin } from 'antd';
 import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
 import { useProxyManager } from '../../services/proxyManager';
 
@@ -44,64 +41,45 @@ export default () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <h1>Proxy information</h1>
-                {error && (
-                    <Alert key="error" variant="danger">
-                        {error}
-                    </Alert>
-                )}
-                <Table striped bordered>
-                    <tbody>
-                        <tr>
-                            <th>Address</th>
-                            <td>{address}</td>
-                        </tr>
-                        <tr>
-                            <th>Balance</th>
-                            <td>{formatEther(balance)} ETH</td>
-                        </tr>
-                        <tr>
-                            <th>Owner</th>
-                            <td>
-                                {loading && (
-                                    <Spinner animation="border" size="sm" />
-                                )}
-                                {owner === NULL_ADDRESS ? (
-                                    <i>&lt;none&gt;</i>
-                                ) : (
-                                    owner
-                                )}{' '}
-                                {owner === account &&
-                                    owner !== NULL_ADDRESS && <i>(you)</i>}
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
-                {proxyManager && account && owner === NULL_ADDRESS && (
-                    <Button onClick={claimProxy}>
-                        {submitting && (
-                            <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                            />
+                {error && <Alert key="error" message={error} type="error" />}
+                <Descriptions
+                    title="Proxy information"
+                    bordered
+                    column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}
+                >
+                    <Descriptions.Item label="Address">
+                        {address}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Balance">
+                        {formatEther(balance)} ETH
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Owner">
+                        {loading && <Spin />}
+                        {owner === NULL_ADDRESS ? (
+                            <i>&lt;none&gt;</i>
+                        ) : (
+                            owner
+                        )}{' '}
+                        {owner === account && owner !== NULL_ADDRESS && (
+                            <i>(you)</i>
                         )}
+                    </Descriptions.Item>
+                </Descriptions>
+                {proxyManager && account && owner === NULL_ADDRESS && (
+                    <Button
+                        onClick={claimProxy}
+                        type="primary"
+                        loading={submitting}
+                    >
                         Claim proxy
                     </Button>
                 )}
                 {proxyManager && account && owner === account && (
-                    <Button onClick={releaseProxy}>
-                        {submitting && (
-                            <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                            />
-                        )}
+                    <Button
+                        onClick={releaseProxy}
+                        type="primary"
+                        loading={submitting}
+                    >
                         Release proxy
                     </Button>
                 )}

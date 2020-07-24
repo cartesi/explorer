@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { AppProps } from 'next/app';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'antd/dist/antd.css';
 import dynamic from 'next/dynamic';
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,

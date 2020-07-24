@@ -9,12 +9,10 @@
     "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json'"
   },
   "dependencies": {
-    "@types/react-bootstrap": "^1.0.1",
-    "bootstrap": "^4.5.0",
+    "antd": "^4.4.3",
     "ethers": "^5.0.7",
     "next": "9.4.4",
     "react": "16.13.1",
-    "react-bootstrap": "^1.2.2",
     "react-dom": "16.13.1"
   },
   "devDependencies": {
