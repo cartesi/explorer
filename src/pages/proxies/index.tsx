@@ -13,31 +13,34 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { Breadcrumb } from 'antd';
+import Layout from '../../components/Layout';
 
 export default ({ proxies }) => {
     const router = useRouter();
     return (
-        <div className="container">
+        <Layout>
             <Head>
                 <title>Proxies</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <main>
-                <h1>Proxies</h1>
-                <ul>
-                    {proxies.map((address) => (
-                        <li key={address}>
-                            <Link href={`/proxies/${address}`}>
-                                <a>{address}</a>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </main>
-
-            <footer></footer>
-        </div>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>
+                    <Link href="/">Home</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>Proxies</Breadcrumb.Item>
+            </Breadcrumb>
+            <h1>Local node</h1>
+            <ul>
+                {proxies.map((address) => (
+                    <li key={address}>
+                        <Link href={`/proxies/${address}`}>
+                            <a>{address}</a>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </Layout>
     );
 };
 

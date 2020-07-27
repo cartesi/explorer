@@ -9,13 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import { formatEther } from '@ethersproject/units';
-import { Alert, Button, Descriptions, Spin } from 'antd';
+import { Alert, Breadcrumb, Button, Descriptions, Spin } from 'antd';
 import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
 import { useProxyManager } from '../../services/proxyManager';
+import Layout from '../../components/Layout';
 
 export default () => {
     const router = useRouter();
@@ -35,55 +37,57 @@ export default () => {
     } = useProxyManager(address);
 
     return (
-        <div className="container">
+        <Layout>
             <Head>
                 <title>Proxies</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main>
-                {error && <Alert key="error" message={error} type="error" />}
-                <Descriptions
-                    title="Proxy information"
-                    bordered
-                    column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}
+            <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>
+                    <Link href="/">Home</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                    <Link href="/proxies">Proxies</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>{address}</Breadcrumb.Item>
+            </Breadcrumb>
+            {error && <Alert key="error" message={error} type="error" />}
+            <Descriptions
+                bordered
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+            >
+                <Descriptions.Item label="Address">{address}</Descriptions.Item>
+                <Descriptions.Item label="Balance">
+                    {formatEther(balance)} ETH
+                </Descriptions.Item>
+                <Descriptions.Item label="Owner">
+                    {loading && <Spin />}
+                    {owner === NULL_ADDRESS ? <i>&lt;none&gt;</i> : owner}{' '}
+                    {owner === account && owner !== NULL_ADDRESS && (
+                        <i>(you)</i>
+                    )}
+                </Descriptions.Item>
+            </Descriptions>
+            {proxyManager && account && owner === NULL_ADDRESS && (
+                <Button
+                    onClick={claimProxy}
+                    type="primary"
+                    style={{ marginTop: '16px' }}
+                    loading={submitting}
                 >
-                    <Descriptions.Item label="Address">
-                        {address}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Balance">
-                        {formatEther(balance)} ETH
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Owner">
-                        {loading && <Spin />}
-                        {owner === NULL_ADDRESS ? (
-                            <i>&lt;none&gt;</i>
-                        ) : (
-                            owner
-                        )}{' '}
-                        {owner === account && owner !== NULL_ADDRESS && (
-                            <i>(you)</i>
-                        )}
-                    </Descriptions.Item>
-                </Descriptions>
-                {proxyManager && account && owner === NULL_ADDRESS && (
-                    <Button
-                        onClick={claimProxy}
-                        type="primary"
-                        loading={submitting}
-                    >
-                        Claim proxy
-                    </Button>
-                )}
-                {proxyManager && account && owner === account && (
-                    <Button
-                        onClick={releaseProxy}
-                        type="primary"
-                        loading={submitting}
-                    >
-                        Release proxy
-                    </Button>
-                )}
-            </main>
-        </div>
+                    Claim proxy
+                </Button>
+            )}
+            {proxyManager && account && owner === account && (
+                <Button
+                    onClick={releaseProxy}
+                    type="primary"
+                    style={{ marginTop: '16px' }}
+                    loading={submitting}
+                >
+                    Release proxy
+                </Button>
+            )}
+        </Layout>
     );
 };
