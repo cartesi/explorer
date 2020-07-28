@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -39,7 +39,7 @@ export default () => {
     return (
         <Layout>
             <Head>
-                <title>Proxies</title>
+                <title>Nodes</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Breadcrumb style={{ margin: '16px 0' }}>
@@ -47,7 +47,7 @@ export default () => {
                     <Link href="/">Home</Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                    <Link href="/proxies">Proxies</Link>
+                    <Link href="/nodes">Nodes</Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>{address}</Breadcrumb.Item>
             </Breadcrumb>
@@ -75,7 +75,7 @@ export default () => {
                     style={{ marginTop: '16px' }}
                     loading={submitting}
                 >
-                    Claim proxy
+                    Claim node
                 </Button>
             )}
             {proxyManager && account && owner === account && (
@@ -85,7 +85,7 @@ export default () => {
                     style={{ marginTop: '16px' }}
                     loading={submitting}
                 >
-                    Release proxy
+                    Release node
                 </Button>
             )}
         </Layout>

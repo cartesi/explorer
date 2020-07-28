@@ -23,8 +23,8 @@ const Sidebar = (props: SidebarProps) => {
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className={styles.logo}></div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['proxy']}>
-                <Menu.Item key="proxy">Proxies</Menu.Item>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={['node']}>
+                <Menu.Item key="node">Nodes</Menu.Item>
             </Menu>
         </Sider>
     );
