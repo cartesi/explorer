@@ -10,10 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Divider, List, Typography } from 'antd';
 import Layout from '../../components/Layout';
 
 export interface NodesProps {
@@ -23,7 +22,14 @@ export interface NodesProps {
 
 export default (props: NodesProps) => {
     const { localNode, nodes } = props;
-    const router = useRouter();
+    const nodeRender = (item: string) => (
+        <List.Item>
+            <Link href={`/nodes/${item}`}>
+                <a>{item}</a>
+            </Link>
+        </List.Item>
+    );
+
     return (
         <Layout>
             <Head>
@@ -36,24 +42,23 @@ export default (props: NodesProps) => {
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>Nodes</Breadcrumb.Item>
             </Breadcrumb>
-            <h1>Local node</h1>
-            <ul>
-                <li key={localNode}>
-                    <Link href={`/nodes/${localNode}`}>
-                        <a>{localNode}</a>
-                    </Link>
-                </li>
-            </ul>
-            <h1>Cartesi PaaS nodes</h1>
-            <ul>
-                {nodes.map((address) => (
-                    <li key={address}>
-                        <Link href={`/nodes/${address}`}>
-                            <a>{address}</a>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            <List
+                header={
+                    <Typography.Title level={4}>Local node</Typography.Title>
+                }
+                dataSource={[localNode]}
+                renderItem={nodeRender}
+            />
+            <Divider />
+            <List
+                header={
+                    <Typography.Title level={4}>
+                        Cartesi PaaS nodes
+                    </Typography.Title>
+                }
+                dataSource={nodes}
+                renderItem={nodeRender}
+            />
         </Layout>
     );
 };
@@ -63,7 +68,7 @@ export const getServerSideProps = async () => {
     const nodes = [
         '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
         '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
-        '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba'
+        '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
     ];
 
     // XXX: query local node to get its address
