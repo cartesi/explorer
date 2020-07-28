@@ -15,14 +15,14 @@ import { BigNumber } from '@ethersproject/bignumber';
 
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-export const useBalance = (address: string) => {
+export const useBalance = (address: string, deps: any[] = []) => {
     const provider = useContext(Web3Context);
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     useEffect(() => {
         if (provider) {
             provider.getBalance(address).then(setBalance);
         }
-    }, [provider, address]);
+    }, [provider, address, ...deps]);
     return balance;
 };
 

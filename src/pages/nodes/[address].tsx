@@ -24,10 +24,8 @@ export default () => {
     let { address } = router.query;
     address = address as string;
     const account = useAccount(0);
-    const balance = useBalance(address);
 
     const {
-        proxyManager,
         owner,
         error,
         loading,
@@ -35,6 +33,9 @@ export default () => {
         claimProxy,
         releaseProxy,
     } = useProxyManager(address);
+
+    // make balance depend on owner, so if it changes we update the balance
+    const balance = useBalance(address, [owner]);
 
     return (
         <Layout>
@@ -68,7 +69,7 @@ export default () => {
                     )}
                 </Descriptions.Item>
             </Descriptions>
-            {proxyManager && account && owner === NULL_ADDRESS && (
+            {account && owner === NULL_ADDRESS && (
                 <Button
                     onClick={claimProxy}
                     type="primary"
@@ -78,7 +79,7 @@ export default () => {
                     Claim node
                 </Button>
             )}
-            {proxyManager && account && owner === account && (
+            {account && owner === account && (
                 <Button
                     onClick={releaseProxy}
                     type="primary"
