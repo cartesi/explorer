@@ -11,20 +11,45 @@
 
 import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
+import Link from 'next/link';
+import { AppstoreOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import styles from './Sidebar.module.css';
+
 const { Sider } = Layout;
 
 export interface SidebarProps {
-    // collapsed: boolean;
+    active: string;
 }
 
 const Sidebar = (props: SidebarProps) => {
     const [collapsed, setCollapsed] = useState(false);
+
+    const items = [
+        {
+            key: 'nodes',
+            label: 'Nodes',
+            href: '/nodes',
+            icon: <AppstoreOutlined />,
+        },
+        {
+            key: 'descartes',
+            label: 'Descartes',
+            href: '/descartes',
+            icon: <ThunderboltOutlined />,
+        },
+    ];
+
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className={styles.logo}></div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['node']}>
-                <Menu.Item key="node">Nodes</Menu.Item>
+            <Menu theme="dark" defaultSelectedKeys={[items[0].key]}>
+                {items.map((item) => (
+                    <Menu.Item key={item.key} icon={item.icon}>
+                        <Link href={item.href}>
+                            <a>{item.label}</a>
+                        </Link>
+                    </Menu.Item>
+                ))}
             </Menu>
         </Sider>
     );

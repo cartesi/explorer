@@ -9,6 +9,7 @@
     "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json'"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "antd": "^4.4.3",
     "ethers": "^5.0.7",
     "next": "9.4.4",
