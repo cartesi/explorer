@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { Layout, Menu } from 'antd';
 import Link from 'next/link';
 import { AppstoreOutlined, ThunderboltOutlined } from '@ant-design/icons';
@@ -18,10 +19,10 @@ import styles from './Sidebar.module.css';
 const { Sider } = Layout;
 
 export interface SidebarProps {
-    active: string;
 }
 
 const Sidebar = (props: SidebarProps) => {
+    const router = useRouter();
     const [collapsed, setCollapsed] = useState(false);
 
     const items = [
@@ -39,6 +40,7 @@ const Sidebar = (props: SidebarProps) => {
         },
     ];
 
+    // XXX: use router to figure out the active item
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className={styles.logo}></div>

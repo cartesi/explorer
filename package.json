@@ -9,17 +9,17 @@
     "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json'"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.2.1",
-    "antd": "^4.4.3",
-    "ethers": "^5.0.7",
-    "next": "9.4.4",
+    "@ant-design/icons": "^4.2.2",
+    "antd": "^4.5.3",
+    "ethers": "^5.0.8",
+    "next": "9.5.2",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^0.0.3",
-    "@types/node": "^14.0.24",
-    "@types/react": "^16.9.43",
+    "@typechain/ethers-v5": "^1.0.0",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.46",
     "prettier": "^2.0.5",
     "typechain": "^2.0.0",
     "typescript": "^3.9.7"

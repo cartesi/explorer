@@ -10,18 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import Head from 'next/head';
+import Layout from '../components/Layout';
 
 export default function Home() {
     return (
-        <div className="container">
+        <Layout>
             <Head>
-                <title>Create Next App</title>
+                <title>Cartesi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <main></main>
-
-            <footer></footer>
-        </div>
+            <h1>Cartesi</h1>
+        </Layout>
     );
 }

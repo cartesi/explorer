@@ -14,7 +14,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import Web3Context from './Web3Context';
 
 const Web3Container = ({ children }) => {
-    const [provider, setProvider] = useState<Web3Provider>(undefined);
+    const [provider, setProvider] = useState<Web3Provider | undefined>(undefined);
     useEffect(() => {
         setProvider(new Web3Provider(window.ethereum));
     }, []);

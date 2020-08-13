@@ -14,18 +14,19 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Breadcrumb, Divider, List, Typography } from 'antd';
 import Layout from '../../components/Layout';
+import { Node, getLocalNode } from '../../services/node';
 
 export interface NodesProps {
-    localNode: string;
-    nodes: string[];
+    localNode: Node;
+    nodes: Node[];
 }
 
 export default (props: NodesProps) => {
     const { localNode, nodes } = props;
-    const nodeRender = (item: string) => (
+    const nodeRender = (item: Node) => (
         <List.Item>
-            <Link href={`/nodes/${item}`}>
-                <a>{item}</a>
+            <Link href={`/nodes/${item.address}`}>
+                <a>{item.address}</a>
             </Link>
         </List.Item>
     );
@@ -46,7 +47,7 @@ export default (props: NodesProps) => {
                 header={
                     <Typography.Title level={4}>Local node</Typography.Title>
                 }
-                dataSource={[localNode]}
+                dataSource={localNode ? [localNode] : []}
                 renderItem={nodeRender}
             />
             <Divider />
@@ -69,10 +70,11 @@ export const getServerSideProps = async () => {
         '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
         '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
         '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
-    ];
+    ].map(address => ({ address, chainId: 30137 }));
 
     // XXX: query local node to get its address
-    const localNode = '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0';
+    // const localNode = { address: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0', chainId: 30137 };
+    const localNode = await getLocalNode();
 
     return { props: { localNode, nodes } };
 };

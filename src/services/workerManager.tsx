@@ -11,64 +11,67 @@
 
 import { useContext, useState, useEffect } from 'react';
 import Web3Context from '../components/Web3Context';
-import { ProxyManager } from '../contracts/ProxyManager';
-import { ProxyManagerFactory } from '../contracts/ProxyManagerFactory';
+import { WorkerManager } from '../contracts/WorkerManager';
+import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
 
 type AbiMap = Record<number, any>;
-const proxyManagerJson: AbiMap = {
-    31337: require('@cartesi/util/deployments/localhost_31337/ProxyManager.json'),
+const workerManagerJson: AbiMap = {
+    31337: require('@cartesi/util/deployments/localhost_31337/WorkerManagerImpl.json'),
 };
 
-export const useProxyManager = (proxy: string) => {
+export const useWorkerManager = (address: string) => {
     const provider = useContext(Web3Context);
-    const [proxyManager, setProxyManager] = useState<ProxyManager>();
+    const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
-    // create the ProxyManager, asynchronously
+    // create the WorkerManager, asynchronously
     useEffect(() => {
         if (provider) {
-            // create the factory
-            const factory = new ProxyManagerFactory(provider.getSigner());
-
             // query the provider network
             provider.getNetwork().then((network) => {
-                const address = proxyManagerJson[network.chainId].address;
+                const address = workerManagerJson[network.chainId].address;
                 if (!address) {
                     throw new Error(
-                        `ProxyManager not deployed at network ${network.chainId}`
+                        `WorkerManager not deployed at network ${network.chainId}`
                     );
                 }
                 console.log(
-                    `Attaching ProxyManager to address '${address}' deployed at network '${network.chainId}'`
+                    `Attaching WorkerManager to address '${address}' deployed at network '${network.chainId}'`
                 );
-                setProxyManager(factory.attach(address));
+                setWorkerManager(
+                    WorkerManagerFactory.connect(address, provider.getSigner())
+                );
             });
         }
     }, [provider]);
 
-    const [owner, setOwner] = useState<string>('');
+    const [user, setUser] = useState<string>('');
+    const [state, setState] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     useEffect(() => {
-        if (proxyManager) {
+        if (workerManager) {
             setLoading(true);
             setError('');
-            proxyManager
-                .getUser(proxy)
-                .then((owner) => {
-                    setLoading(false);
-                    setOwner(owner);
+            workerManager
+                .getUser(address)
+                .then((user) => {
+                    setUser(user);
+                    workerManager.getState(address).then((state) => {
+                        setState(state);
+                        setLoading(false);
+                    });
                 })
                 .catch((e) => {
                     setError(e.message);
                 });
         }
-    }, [proxyManager, proxy]);
+    }, [workerManager, address]);
 
-    const claimProxy = async () => {
-        if (proxyManager) {
+    const hire = async () => {
+        if (workerManager) {
             // XXX: move this to a parameter
             const value = parseUnits('1', 'finney');
 
@@ -77,7 +80,7 @@ export const useProxyManager = (proxy: string) => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await proxyManager.claimProxy(proxy, {
+                const transaction = await workerManager.hire(address, {
                     value,
                 });
 
@@ -85,8 +88,8 @@ export const useProxyManager = (proxy: string) => {
                 await transaction.wait(1);
 
                 // query owner again
-                const owner = await proxyManager.getUser(proxy);
-                setOwner(owner);
+                const user = await workerManager.getUser(address);
+                setUser(user);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -95,21 +98,21 @@ export const useProxyManager = (proxy: string) => {
         }
     };
 
-    const releaseProxy = async () => {
-        if (proxyManager) {
+    const retire = async () => {
+        if (workerManager) {
             try {
                 setError('');
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await proxyManager.freeProxy(proxy, []);
+                const transaction = await workerManager.retire(address);
 
                 // wait for confirmation
                 await transaction.wait(1);
 
                 // query owner again
-                const owner = await proxyManager.getUser(proxy);
-                setOwner(owner);
+                const user = await workerManager.getUser(address);
+                setUser(user);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -119,33 +122,34 @@ export const useProxyManager = (proxy: string) => {
     };
 
     return {
-        proxyManager,
-        owner,
+        workerManager,
+        user,
+        state,
         loading,
         submitting,
         error,
-        claimProxy,
-        releaseProxy,
+        hire,
+        retire,
     };
 };
 
-export const useUserProxies = (proxy: string, user: string) => {
-    const { proxyManager } = useProxyManager(proxy);
-    const [proxies, setProxies] = useState<string[]>([]);
+export const useUserWorkers = (worker: string, user: string) => {
+    const { workerManager } = useWorkerManager(worker);
+    const [workers, setWorkers] = useState<string[]>([]);
 
     useEffect(() => {
-        if (proxyManager) {
+        if (workerManager) {
             Promise.all([
-                proxyManager.queryFilter(
-                    proxyManager.filters.ProxyClaim(null, user)
+                workerManager.queryFilter(
+                    workerManager.filters.JobAccepted(null, user)
                 ),
-                proxyManager.queryFilter(
-                    proxyManager.filters.ProxyRelease(null, user)
+                workerManager.queryFilter(
+                    workerManager.filters.Retired(null, user)
                 ),
-            ]).then(([claims, releases]) => {
+            ]).then(([hires, retires]) => {
                 // merge claim and release events into a single list
                 // and sort by block number
-                const events = [...claims, ...releases].sort(
+                const events = [...hires, ...retires].sort(
                     (a, b) => a.blockNumber - b.blockNumber
                 );
 
@@ -153,18 +157,18 @@ export const useUserProxies = (proxy: string, user: string) => {
                 // in history for the user
                 const proxies = events.reduce((array: string[], ev) => {
                     const args: any = ev.args;
-                    const proxy = args.proxy;
-                    if (ev.event === 'ProxyClaim') {
-                        array.push(proxy);
-                    } else if (ev.event === 'ProxyRelease') {
-                        array.splice(array.indexOf(proxy), 1);
+                    const worker = args.worker;
+                    if (ev.event === 'JobAccepted') {
+                        array.push(worker);
+                    } else if (ev.event === 'Retired') {
+                        array.splice(array.indexOf(worker), 1);
                     }
                     return array;
                 }, []);
-                setProxies(proxies);
+                setWorkers(workers);
             });
         }
-    }, [proxyManager, user]);
+    }, [workerManager, user]);
 
-    return proxies;
+    return workers;
 };

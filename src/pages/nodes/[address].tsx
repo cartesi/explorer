@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { formatEther } from '@ethersproject/units';
 import { Alert, Breadcrumb, Button, Descriptions, Spin } from 'antd';
 import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
-import { useProxyManager } from '../../services/proxyManager';
+import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
 
 export default () => {
@@ -26,16 +26,16 @@ export default () => {
     const account = useAccount(0);
 
     const {
-        owner,
+        user,
         error,
         loading,
         submitting,
-        claimProxy,
-        releaseProxy,
-    } = useProxyManager(address);
+        hire,
+        retire,
+    } = useWorkerManager(address);
 
     // make balance depend on owner, so if it changes we update the balance
-    const balance = useBalance(address, [owner]);
+    const balance = useBalance(address, [user]);
 
     return (
         <Layout>
@@ -63,30 +63,30 @@ export default () => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Owner">
                     {loading && <Spin />}
-                    {owner === NULL_ADDRESS ? <i>&lt;none&gt;</i> : owner}{' '}
-                    {owner === account && owner !== NULL_ADDRESS && (
+                    {user === NULL_ADDRESS ? <i>&lt;none&gt;</i> : user}{' '}
+                    {user === account && user !== NULL_ADDRESS && (
                         <i>(you)</i>
                     )}
                 </Descriptions.Item>
             </Descriptions>
-            {account && owner === NULL_ADDRESS && (
+            {account && user === NULL_ADDRESS && (
                 <Button
-                    onClick={claimProxy}
+                    onClick={hire}
                     type="primary"
                     style={{ marginTop: '16px' }}
                     loading={submitting}
                 >
-                    Claim node
+                    Hire node
                 </Button>
             )}
-            {account && owner === account && (
+            {account && user === account && (
                 <Button
-                    onClick={releaseProxy}
+                    onClick={retire}
                     type="primary"
                     style={{ marginTop: '16px' }}
                     loading={submitting}
                 >
-                    Release node
+                    Retire node
                 </Button>
             )}
         </Layout>
