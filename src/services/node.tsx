@@ -11,26 +11,29 @@
 
 import { useEffect, useState } from 'react';
 import { JsonRpcProvider } from '@ethersproject/providers';
+import { IChainData, getChain } from './chain';
 import { BigNumberish } from 'ethers';
 
 export interface Node {
     address: string;
-    chainId: number;
+    chain: IChainData;
     minimumFunding?: BigNumberish;
     maximumFunding?: BigNumberish;
 }
 
-export const getLocalNode = async (url: string = 'http://localhost:8545'): Promise<Node | null> => {
+export const getLocalNode = async (
+    url: string = 'http://localhost:8545'
+): Promise<Node | null> => {
     try {
         const provider = new JsonRpcProvider(url);
         const address = await provider.getSigner().getAddress();
         const { chainId } = await provider.getNetwork();
+        const chain = await getChain(chainId);
         return {
             address,
-            chainId
-        }
+            chain,
+        };
     } catch (e) {
-        console.log('XXX', e);
         return null;
     }
 };
@@ -49,9 +52,11 @@ export const useLocalNode = (url: string = 'http://localhost:8545'): Node => {
                 .getAddress()
                 .then((address) => {
                     provider.getNetwork().then(({ chainId }) => {
-                        setNode({
-                            address,
-                            chainId,
+                        getChain(chainId).then((chain) => {
+                            setNode({
+                                address,
+                                chain,
+                            });
                         });
                     });
                 });
@@ -61,15 +66,16 @@ export const useLocalNode = (url: string = 'http://localhost:8545'): Node => {
     return node;
 };
 
-export const usePaasNodes = (
-    url: string = 'https://api.paas.cartesi.io',
-    chainId: number = 30137
-): Node[] => {
+export const getPaaSNodes = async (
+    url: string = 'https://api.paas.cartesi.io'
+): Promise<Node[]> => {
     // TODO: use PaaS API to get nodes
+    const chainId = 30137;
     const addresses = [
         '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
         '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
         '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
     ];
-    return addresses.map((address) => ({ address, chainId }));
+    const chain = await getChain(chainId);
+    return addresses.map((address) => ({ address, chain }));
 };

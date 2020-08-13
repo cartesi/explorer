@@ -12,9 +12,10 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Breadcrumb, Divider, List, Typography } from 'antd';
+import { Breadcrumb, Divider, List, Typography, Table } from 'antd';
 import Layout from '../../components/Layout';
-import { Node, getLocalNode } from '../../services/node';
+import { Node, getLocalNode, getPaaSNodes } from '../../services/node';
+import { IChainData } from '../../services/chain';
 
 export interface NodesProps {
     localNode: Node;
@@ -23,13 +24,45 @@ export interface NodesProps {
 
 export default (props: NodesProps) => {
     const { localNode, nodes } = props;
-    const nodeRender = (item: Node) => (
+    
+    const addressRender = (address: string) => (
         <List.Item>
-            <Link href={`/nodes/${item.address}`}>
-                <a>{item.address}</a>
+            <Link href={`/nodes/${address}`}>
+                <a>{address}</a>
             </Link>
         </List.Item>
     );
+
+    const networkRender = (network: IChainData) =>
+        network.name == 'Unknown'
+            ? `${network.name} (${network.chainId})`
+            : network.name;
+
+    const columns = [
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+            render: addressRender,
+        },
+        {
+            title: 'Network',
+            dataIndex: 'network',
+            key: 'network',
+            render: networkRender,
+        },
+    ];
+
+    const localNodeDS = (localNode ? [localNode] : []).map((node) => ({
+        key: node.address,
+        address: node.address,
+        network: node.chain,
+    }));
+    const nodesDS = nodes.map((node) => ({
+        key: node.address,
+        address: node.address,
+        network: node.chain,
+    }));
 
     return (
         <Layout>
@@ -43,22 +76,26 @@ export default (props: NodesProps) => {
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>Nodes</Breadcrumb.Item>
             </Breadcrumb>
-            <List
-                header={
+            <Table
+                dataSource={localNodeDS}
+                pagination={false}
+                columns={columns}
+                bordered
+                title={() => (
                     <Typography.Title level={4}>Local node</Typography.Title>
-                }
-                dataSource={localNode ? [localNode] : []}
-                renderItem={nodeRender}
+                )}
             />
             <Divider />
-            <List
-                header={
+            <Table
+                columns={columns}
+                pagination={false}
+                bordered
+                title={() => (
                     <Typography.Title level={4}>
                         Cartesi PaaS nodes
                     </Typography.Title>
-                }
-                dataSource={nodes}
-                renderItem={nodeRender}
+                )}
+                dataSource={nodesDS}
             />
         </Layout>
     );
@@ -66,13 +103,8 @@ export default (props: NodesProps) => {
 
 export const getServerSideProps = async () => {
     // XXX: query PaaS API to get free nodes
-    const nodes = [
-        '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
-        '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
-        '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
-    ].map(address => ({ address, chainId: 30137 }));
+    const nodes = await getPaaSNodes();
 
-    // XXX: query local node to get its address
     // const localNode = { address: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0', chainId: 30137 };
     const localNode = await getLocalNode();
 

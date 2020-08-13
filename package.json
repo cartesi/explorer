@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "antd": "^4.5.3",
+    "antd": "^4.5.4",
+    "axios": "^0.19.2",
     "ethers": "^5.0.8",
     "next": "9.5.2",
     "react": "16.13.1",
