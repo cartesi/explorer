@@ -24,16 +24,30 @@ export const useWorkerManager = (address: string) => {
     const provider = useContext(Web3Context);
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
+    const [user, setUser] = useState<string>('');
+    const [state, setState] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [submitting, setSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (provider) {
             // query the provider network
             provider.getNetwork().then((network) => {
-                const address = workerManagerJson[network.chainId].address;
-                if (!address) {
-                    throw new Error(
+                const json = workerManagerJson[network.chainId];
+                if (!json) {
+                    setError(
                         `WorkerManager not deployed at network ${network.chainId}`
                     );
+                    return;
+                }
+                const address = json.address;
+                if (!address) {
+                    setError(
+                        `WorkerManager not deployed at network ${network.chainId}`
+                    );
+                    return;
                 }
                 console.log(
                     `Attaching WorkerManager to address '${address}' deployed at network '${network.chainId}'`
@@ -44,12 +58,6 @@ export const useWorkerManager = (address: string) => {
             });
         }
     }, [provider]);
-
-    const [user, setUser] = useState<string>('');
-    const [state, setState] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
 
     useEffect(() => {
         if (workerManager) {
