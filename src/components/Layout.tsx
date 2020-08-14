@@ -13,6 +13,7 @@ import React from 'react';
 
 import { Layout } from 'antd';
 import Sidebar from './Sidebar';
+import SelectedChain from './SelectedChain';
 import styles from './Layout.module.css';
 
 const { Content, Footer, Header } = Layout;
@@ -22,7 +23,9 @@ export default ({ children }) => {
         <Layout style={{ minHeight: '100vh' }}>
             <Sidebar />
             <Layout>
-                <Header></Header>
+                <Header>
+                    <SelectedChain />
+                </Header>
                 <Content className={styles.layoutContent}>{children}</Content>
                 <Footer>Copyright (C) 2020 Cartesi Pte. Ltd.</Footer>
             </Layout>
