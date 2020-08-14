@@ -19,7 +19,7 @@ import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
 import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
 
-export default () => {
+const Node = () => {
     const router = useRouter();
     let { address } = router.query;
     address = address as string;
@@ -45,10 +45,10 @@ export default () => {
             </Head>
             <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>
-                    <Link href="/">Home</Link>
+                    <Link href="/"><a>Home</a></Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                    <Link href="/nodes">Nodes</Link>
+                    <Link href="/nodes"><a>Nodes</a></Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>{address}</Breadcrumb.Item>
             </Breadcrumb>
@@ -92,3 +92,5 @@ export default () => {
         </Layout>
     );
 };
+
+export default Node;

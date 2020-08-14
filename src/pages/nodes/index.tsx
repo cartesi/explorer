@@ -22,9 +22,9 @@ export interface NodesProps {
     nodes: Node[];
 }
 
-export default (props: NodesProps) => {
+const Nodes = (props: NodesProps) => {
     const { localNode, nodes } = props;
-    
+
     const addressRender = (address: string) => (
         <List.Item>
             <Link href={`/nodes/${address}`}>
@@ -72,7 +72,7 @@ export default (props: NodesProps) => {
             </Head>
             <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>
-                    <Link href="/">Home</Link>
+                    <Link href="/"><a>Home</a></Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>Nodes</Breadcrumb.Item>
             </Breadcrumb>
@@ -100,6 +100,8 @@ export default (props: NodesProps) => {
         </Layout>
     );
 };
+
+export default Nodes;
 
 export const getServerSideProps = async () => {
     // XXX: query PaaS API to get free nodes
