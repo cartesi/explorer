@@ -12,6 +12,11 @@
 import { createContext } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 
-const Web3Context = createContext<Web3Provider>(undefined);
+export interface Web3Context {
+    provider: Web3Provider;
+    connected: boolean;
+    chainId: number;
+    account: string;
+}
 
-export default Web3Context;
+export default createContext<Web3Context>(undefined);

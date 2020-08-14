@@ -21,11 +21,14 @@ const workerManagerJson: AbiMap = {
 };
 
 export const useWorkerManager = (address: string) => {
-    const provider = useContext(Web3Context);
+    const { provider, chainId } = useContext(Web3Context);
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
     const [user, setUser] = useState<string>('');
-    const [state, setState] = useState<number>(0);
+    const [owned, setOwned] = useState<boolean>(false);
+    const [available, setAvailable] = useState<boolean>(false);
+    const [pending, setPending] = useState<boolean>(false);
+    const [retired, setRetired] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -33,48 +36,48 @@ export const useWorkerManager = (address: string) => {
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (provider) {
-            // query the provider network
-            provider.getNetwork().then((network) => {
-                const json = workerManagerJson[network.chainId];
-                if (!json) {
-                    setError(
-                        `WorkerManager not deployed at network ${network.chainId}`
-                    );
-                    return;
-                }
-                const address = json.address;
-                if (!address) {
-                    setError(
-                        `WorkerManager not deployed at network ${network.chainId}`
-                    );
-                    return;
-                }
-                console.log(
-                    `Attaching WorkerManager to address '${address}' deployed at network '${network.chainId}'`
-                );
-                setWorkerManager(
-                    WorkerManagerFactory.connect(address, provider.getSigner())
-                );
-            });
+            const json = workerManagerJson[chainId];
+            if (!json) {
+                setError(`WorkerManager not deployed at network ${chainId}`);
+                return;
+            }
+            const address = json.address;
+            if (!address) {
+                setError(`WorkerManager not deployed at network ${chainId}`);
+                return;
+            }
+            console.log(
+                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
+            );
+            setWorkerManager(
+                WorkerManagerFactory.connect(address, provider.getSigner())
+            );
         }
-    }, [provider]);
+    }, [provider, chainId]);
+
+    const updateState = async (
+        workerManager: WorkerManager,
+        address: string
+    ) => {
+        if (workerManager) {
+            const available = await workerManager.isAvailable(address);
+            const owned = await workerManager.isOwned(address);
+            const retired = await workerManager.isRetired(address);
+            setAvailable(available);
+            setOwned(owned);
+            setRetired(retired);
+            setPending(!available && !owned && !retired);
+            setUser(await workerManager.getUser(address));
+        }
+    };
 
     useEffect(() => {
         if (workerManager) {
             setLoading(true);
             setError('');
-            workerManager
-                .getUser(address)
-                .then((user) => {
-                    setUser(user);
-                    workerManager.getState(address).then((state) => {
-                        setState(state);
-                        setLoading(false);
-                    });
-                })
-                .catch((e) => {
-                    setError(e.message);
-                });
+            updateState(workerManager, address)
+                .then(() => setLoading(false))
+                .catch((e) => setError(e.message));
         }
     }, [workerManager, address]);
 
@@ -96,8 +99,29 @@ export const useWorkerManager = (address: string) => {
                 await transaction.wait(1);
 
                 // query owner again
-                const user = await workerManager.getUser(address);
-                setUser(user);
+                await updateState(workerManager, address);
+                setSubmitting(false);
+            } catch (e) {
+                setError(e.message);
+                setSubmitting(false);
+            }
+        }
+    };
+
+    const cancelHire = async () => {
+        if (workerManager) {
+            try {
+                setError('');
+                setSubmitting(true);
+
+                // send transaction
+                const transaction = await workerManager.cancelHire(address);
+
+                // wait for confirmation
+                await transaction.wait(1);
+
+                // query owner again
+                await updateState(workerManager, address);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -119,8 +143,7 @@ export const useWorkerManager = (address: string) => {
                 await transaction.wait(1);
 
                 // query owner again
-                const user = await workerManager.getUser(address);
-                setUser(user);
+                await updateState(workerManager, address);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -132,11 +155,15 @@ export const useWorkerManager = (address: string) => {
     return {
         workerManager,
         user,
-        state,
+        available,
+        pending,
+        owned,
+        retired,
         loading,
         submitting,
         error,
         hire,
+        cancelHire,
         retire,
     };
 };

@@ -16,7 +16,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const useBalance = (address: string, deps: any[] = []) => {
-    const provider = useContext(Web3Context);
+    const { provider } = useContext(Web3Context);
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     useEffect(() => {
         if (provider) {
@@ -27,7 +27,7 @@ export const useBalance = (address: string, deps: any[] = []) => {
 };
 
 export const useAccount = (index: number) => {
-    const provider = useContext(Web3Context);
+    const { provider } = useContext(Web3Context);
     const [account, setAccount] = useState<string>(NULL_ADDRESS);
     useEffect(() => {
         if (provider) {

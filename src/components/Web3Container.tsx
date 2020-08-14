@@ -14,14 +14,38 @@ import { Web3Provider } from '@ethersproject/providers';
 import Web3Context from './Web3Context';
 
 const Web3Container = ({ children }) => {
-    const [provider, setProvider] = useState<Web3Provider | undefined>(undefined);
+    const [provider, setProvider] = useState<Web3Provider>(undefined);
+    const [chainId, setChainId] = useState<number>(undefined);
+    const [account, setAccount] = useState<string>(undefined);
+    const [connected, setConnected] = useState<boolean>(undefined);
+
     useEffect(() => {
-        setProvider(new Web3Provider(window.ethereum));
+        window.ethereum.autoRefreshOnNetworkChange = false;
+        setConnected(window.ethereum.isConnected());
+        const provider = new Web3Provider(window.ethereum, 'any');
+        provider.getNetwork().then((network) => {
+            setChainId(network.chainId);
+            setProvider(provider);
+        });
+
+        window.ethereum.on('chainChanged', async (chainId: string) => {
+            provider.removeAllListeners();
+            const network = await provider.getNetwork();
+            setChainId(network.chainId);
+        });
+        window.ethereum.on('accountsChanged', (accounts: string[]) =>
+            setAccount(accounts[0])
+        );
+        window.ethereum.on('connect', (connectInfo: any) =>
+            setChainId(parseInt(connectInfo.chainId))
+        );
     }, []);
 
     return (
         <div>
-            <Web3Context.Provider value={provider}>
+            <Web3Context.Provider
+                value={{ provider, chainId, account, connected }}
+            >
                 {children}
             </Web3Context.Provider>
         </div>

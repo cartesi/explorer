@@ -27,10 +27,15 @@ const Node = () => {
 
     const {
         user,
+        available,
+        pending,
+        owned,
+        retired,
         error,
         loading,
         submitting,
         hire,
+        cancelHire,
         retire,
     } = useWorkerManager(address);
 
@@ -45,14 +50,25 @@ const Node = () => {
             </Head>
             <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>
-                    <Link href="/"><a>Home</a></Link>
+                    <Link href="/">
+                        <a>Home</a>
+                    </Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                    <Link href="/nodes"><a>Nodes</a></Link>
+                    <Link href="/nodes">
+                        <a>Nodes</a>
+                    </Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>{address}</Breadcrumb.Item>
             </Breadcrumb>
-            {error && <Alert key="error" message={error} type="error" />}
+            {error && (
+                <Alert
+                    key="error"
+                    message={error}
+                    type="error"
+                    style={{ marginBottom: '16px' }}
+                />
+            )}
             <Descriptions
                 bordered
                 column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
@@ -64,12 +80,11 @@ const Node = () => {
                 <Descriptions.Item label="Owner">
                     {loading && <Spin />}
                     {user === NULL_ADDRESS ? <i>&lt;none&gt;</i> : user}{' '}
-                    {user === account && user !== NULL_ADDRESS && (
-                        <i>(you)</i>
-                    )}
+                    {pending && <i>(pending)</i>}
+                    {retired && <i>(retired)</i>}
                 </Descriptions.Item>
             </Descriptions>
-            {account && user === NULL_ADDRESS && (
+            {account && available && (
                 <Button
                     onClick={hire}
                     type="primary"
@@ -79,7 +94,17 @@ const Node = () => {
                     Hire node
                 </Button>
             )}
-            {account && user === account && (
+            {account && pending && (
+                <Button
+                    onClick={cancelHire}
+                    type="primary"
+                    style={{ marginTop: '16px' }}
+                    loading={submitting}
+                >
+                    Cancel hire
+                </Button>
+            )}
+            {account && owned && (
                 <Button
                     onClick={retire}
                     type="primary"
