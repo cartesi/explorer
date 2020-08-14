@@ -12,10 +12,13 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Breadcrumb, Divider, List, Typography, Table } from 'antd';
+import { Breadcrumb, Divider, Empty, List, Table, Typography } from 'antd';
 import Layout from '../../components/Layout';
 import { Node, getLocalNode, getPaaSNodes } from '../../services/node';
 import { IChainData } from '../../services/chain';
+
+const localNodeUrl = 'http://localhost:8545';
+const paasNodeUrl = 'https://api.paas.cartesi.io';
 
 export interface NodesProps {
     localNode: Node;
@@ -34,8 +37,8 @@ const Nodes = (props: NodesProps) => {
     );
 
     const networkRender = (network: IChainData) =>
-        network.name == 'Unknown'
-            ? `${network.name} (${network.chainId})`
+        network.name == 'Private'
+            ? `${network.name} (chainId ${network.chainId})`
             : network.name;
 
     const columns = [
@@ -72,7 +75,9 @@ const Nodes = (props: NodesProps) => {
             </Head>
             <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>
-                    <Link href="/"><a>Home</a></Link>
+                    <Link href="/">
+                        <a>Home</a>
+                    </Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>Nodes</Breadcrumb.Item>
             </Breadcrumb>
@@ -81,6 +86,14 @@ const Nodes = (props: NodesProps) => {
                 pagination={false}
                 columns={columns}
                 bordered
+                locale={{
+                    emptyText: (
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description={`No local node running at ${localNodeUrl}`}
+                        />
+                    ),
+                }}
                 title={() => (
                     <Typography.Title level={4}>Local node</Typography.Title>
                 )}
@@ -95,6 +108,14 @@ const Nodes = (props: NodesProps) => {
                         Cartesi PaaS nodes
                     </Typography.Title>
                 )}
+                locale={{
+                    emptyText: (
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description={`No nodes available at ${paasNodeUrl}`}
+                        />
+                    ),
+                }}
                 dataSource={nodesDS}
             />
         </Layout>
@@ -105,10 +126,10 @@ export default Nodes;
 
 export const getServerSideProps = async () => {
     // XXX: query PaaS API to get free nodes
-    const nodes = await getPaaSNodes();
+    const nodes = await getPaaSNodes(paasNodeUrl);
 
     // const localNode = { address: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0', chainId: 30137 };
-    const localNode = await getLocalNode();
+    const localNode = await getLocalNode(localNodeUrl);
 
     return { props: { localNode, nodes } };
 };

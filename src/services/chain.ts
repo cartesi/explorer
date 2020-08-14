@@ -41,14 +41,14 @@ export async function getChain(chainId: number): Promise<IChainData> {
         return response.data;
     } catch (e) {
         return {
-            name: 'Unknown',
-            chain: 'Unknown',
-            network: 'Unknown',
+            name: 'Private',
+            chain: 'Private',
+            network: 'Private',
             rpc: [],
             faucets: [],
             nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
             infoURL: '',
-            shortName: 'unknown',
+            shortName: 'private',
             chainId: chainId,
             networkId: chainId,
         };
