@@ -11,11 +11,12 @@
 
 import { createContext } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
+import { IChainData } from '../services/chain';
 
 export interface Web3Context {
     provider: Web3Provider;
     connected: boolean;
-    chainId: number;
+    chain: IChainData;
     account: string;
 }
 

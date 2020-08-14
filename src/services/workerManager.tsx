@@ -20,8 +20,39 @@ const workerManagerJson: AbiMap = {
     31337: require('@cartesi/util/deployments/localhost_31337/WorkerManagerImpl.json'),
 };
 
-export const useWorkerManager = (address: string) => {
-    const { provider, chainId } = useContext(Web3Context);
+/*
+export const useManager = () => {
+    const { provider, chain } = useContext(Web3Context);
+    const [workerManager, setWorkerManager] = useState<WorkerManager>();
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (provider) {
+            const address = workerManagerJson[chain.chainId]?.address;
+            if (!address) {
+                setError(
+                    `WorkerManager not deployed at network '${chain.name}'`
+                );
+            }
+            console.log(
+                `Attaching WorkerManager to address '${address}' deployed at network '${chain.name}'`
+            );
+            setWorkerManager(
+                WorkerManagerFactory.connect(address, provider.getSigner())
+            );
+            setError('');
+        }
+    }, [provider, chain]);
+
+    return {
+        workerManager,
+        error,
+    };
+};
+*/
+
+export const useWorkerManager = (worker: string) => {
+    const { provider, chain } = useContext(Web3Context);
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
     const [user, setUser] = useState<string>('');
@@ -36,38 +67,35 @@ export const useWorkerManager = (address: string) => {
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (provider) {
-            const json = workerManagerJson[chainId];
-            if (!json) {
-                setError(`WorkerManager not deployed at network ${chainId}`);
-                return;
-            }
-            const address = json.address;
+            const address = workerManagerJson[chain.chainId]?.address;
             if (!address) {
-                setError(`WorkerManager not deployed at network ${chainId}`);
+                setError(
+                    `WorkerManager not deployed at network '${chain.name}'`
+                );
                 return;
             }
             console.log(
-                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
+                `Attaching WorkerManager to address '${address}' deployed at network '${chain.name}'`
             );
             setWorkerManager(
                 WorkerManagerFactory.connect(address, provider.getSigner())
             );
         }
-    }, [provider, chainId]);
+    }, [provider, chain]);
 
     const updateState = async (
         workerManager: WorkerManager,
-        address: string
+        worker: string
     ) => {
         if (workerManager) {
-            const available = await workerManager.isAvailable(address);
-            const owned = await workerManager.isOwned(address);
-            const retired = await workerManager.isRetired(address);
+            const available = await workerManager.isAvailable(worker);
+            const owned = await workerManager.isOwned(worker);
+            const retired = await workerManager.isRetired(worker);
             setAvailable(available);
             setOwned(owned);
             setRetired(retired);
             setPending(!available && !owned && !retired);
-            setUser(await workerManager.getUser(address));
+            setUser(await workerManager.getUser(worker));
         }
     };
 
@@ -75,11 +103,11 @@ export const useWorkerManager = (address: string) => {
         if (workerManager) {
             setLoading(true);
             setError('');
-            updateState(workerManager, address)
+            updateState(workerManager, worker)
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
-    }, [workerManager, address]);
+    }, [workerManager, worker]);
 
     const hire = async () => {
         if (workerManager) {
@@ -91,7 +119,7 @@ export const useWorkerManager = (address: string) => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await workerManager.hire(address, {
+                const transaction = await workerManager.hire(worker, {
                     value,
                 });
 
@@ -99,7 +127,7 @@ export const useWorkerManager = (address: string) => {
                 await transaction.wait(1);
 
                 // query owner again
-                await updateState(workerManager, address);
+                await updateState(workerManager, worker);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -115,13 +143,13 @@ export const useWorkerManager = (address: string) => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await workerManager.cancelHire(address);
+                const transaction = await workerManager.cancelHire(worker);
 
                 // wait for confirmation
                 await transaction.wait(1);
 
                 // query owner again
-                await updateState(workerManager, address);
+                await updateState(workerManager, worker);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -137,13 +165,13 @@ export const useWorkerManager = (address: string) => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await workerManager.retire(address);
+                const transaction = await workerManager.retire(worker);
 
                 // wait for confirmation
                 await transaction.wait(1);
 
                 // query owner again
-                await updateState(workerManager, address);
+                await updateState(workerManager, worker);
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);

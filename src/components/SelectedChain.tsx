@@ -9,18 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import Web3Context from '../components/Web3Context';
-import { getChain, IChainData } from '../services/chain';
 import { Space, Typography } from 'antd';
 
 const SelectedChain = () => {
-    const { chainId } = useContext(Web3Context);
-    const [chain, setChain] = useState<IChainData>(undefined);
-
-    useEffect(() => {
-        getChain(chainId).then(setChain);
-    }, [chainId]);
+    const { chain } = useContext(Web3Context);
 
     return (
         <Space style={{ float: 'right' }}>

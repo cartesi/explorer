@@ -12,10 +12,11 @@
 import React, { useEffect, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import Web3Context from './Web3Context';
+import { getChain, IChainData } from '../services/chain';
 
 const Web3Container = ({ children }) => {
     const [provider, setProvider] = useState<Web3Provider>(undefined);
-    const [chainId, setChainId] = useState<number>(undefined);
+    const [chain, setChain] = useState<IChainData>(undefined);
     const [account, setAccount] = useState<string>(undefined);
     const [connected, setConnected] = useState<boolean>(undefined);
 
@@ -27,21 +28,24 @@ const Web3Container = ({ children }) => {
             const provider = new Web3Provider(window.ethereum, 'any');
             try {
                 const network = await provider.getNetwork();
-                setChainId(network.chainId);
+                const chain = await getChain(network.chainId);
+                setChain(chain);
                 setProvider(provider);
 
                 window.ethereum.on('chainChanged', async (_chainId: string) => {
                     if (provider) {
                         provider.removeAllListeners();
                         const network = await provider.getNetwork();
-                        setChainId(network.chainId);
+                        const chain = await getChain(network.chainId);
+                        setChain(chain);
                     }
                 });
                 window.ethereum.on('accountsChanged', (accounts: string[]) =>
                     setAccount(accounts[0])
                 );
                 window.ethereum.on('connect', (connectInfo: any) =>
-                    setChainId(parseInt(connectInfo.chainId))
+                    // setChainId(parseInt(connectInfo.chainId))
+                    console.log('onConnect')
                 );
 
             } catch (e) {
@@ -56,7 +60,7 @@ const Web3Container = ({ children }) => {
     }, []);
 
     return (
-        <Web3Context.Provider value={{ provider, chainId, account, connected }}>
+        <Web3Context.Provider value={{ provider, chain, account, connected }}>
             {children}
         </Web3Context.Provider>
     );
