@@ -9,16 +9,55 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import Web3Context from './Web3Context';
 import { getChain, IChainData } from '../services/chain';
+
+import MetaMaskOnboarding from '@metamask/onboarding';
+import {Modal, Button} from 'antd';
 
 const Web3Container = ({ children }) => {
     const [provider, setProvider] = useState<Web3Provider>(undefined);
     const [chain, setChain] = useState<IChainData>(undefined);
     const [account, setAccount] = useState<string>(undefined);
     const [connected, setConnected] = useState<boolean>(undefined);
+    const onboarding = React.useRef<MetaMaskOnboarding>();
+    
+    const handleNewAccounts = (newAccounts) => {
+        setAccount(newAccounts[0]);
+    }
+
+    const connectMetaMask = () => {
+        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+            window.ethereum
+                .request({ method: 'eth_requestAccounts' })
+                .then(handleNewAccounts);
+            window.ethereum.on('accountsChanged', handleNewAccounts);
+            return () => {
+                window.ethereum.off('accountsChanged', handleNewAccounts);
+            };
+        } else {
+            onboarding.current.startOnboarding();
+        }
+    }
+
+    React.useEffect(() => {
+        if (!onboarding.current) {
+            onboarding.current = new MetaMaskOnboarding();
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+            if (account) {
+                onboarding.current.stopOnboarding();
+                connect();
+            }
+        }
+    }, [account]);
+
+    React.useEffect(() => connectMetaMask(), []);
 
     const connect = async () => {
         window.ethereum.autoRefreshOnNetworkChange = false;
@@ -40,9 +79,13 @@ const Web3Container = ({ children }) => {
                         setChain(chain);
                     }
                 });
-                window.ethereum.on('accountsChanged', (accounts: string[]) =>
-                    setAccount(accounts[0])
-                );
+                window.ethereum.on('accountsChanged', (accounts: string[]) => {
+                    if(accounts && accounts.length > 0) {
+                        setAccount(accounts[0])
+                    } else {
+                        setConnected(false);
+                    }
+                });
                 window.ethereum.on('connect', (connectInfo: any) =>
                     // setChainId(parseInt(connectInfo.chainId))
                     console.log('onConnect')
@@ -55,14 +98,20 @@ const Web3Container = ({ children }) => {
         return provider;
     };
 
-    useEffect(() => {
-        connect();
-    }, []);
-
     return (
-        <Web3Context.Provider value={{ provider, chain, account, connected }}>
-            {children}
-        </Web3Context.Provider>
+        <>
+            <Modal visible={!connected}
+                title="Connect Provider"
+                footer={null}
+            >
+                <Button onClick={connectMetaMask}>
+                    Connect MetaMask
+                </Button>
+            </Modal>
+            <Web3Context.Provider value={{ provider, chain, account, connected }}>
+                {children}
+            </Web3Context.Provider>
+        </>
     );
 };
 
