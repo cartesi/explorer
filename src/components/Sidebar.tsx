@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Layout, Menu } from 'antd';
 import Link from 'next/link';
-import { AppstoreOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, ThunderboltOutlined, WalletOutlined } from '@ant-design/icons';
 import styles from './Sidebar.module.css';
 
 const { Sider } = Layout;
@@ -37,6 +37,12 @@ const Sidebar = (props: SidebarProps) => {
             label: 'Descartes',
             href: '/descartes',
             icon: <ThunderboltOutlined />,
+        },
+        {
+            key: 'staking',
+            label: 'Staking',
+            href: '/staking',
+            icon: <WalletOutlined />,
         },
     ];
 
