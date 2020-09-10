@@ -35,8 +35,8 @@ const Staking = (props: NodesProps) => {
 
     const [error, setError] = useState<string>(null);
 
-    const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<number>(0);
-    const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<number>(0);
+    const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
+    const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
     const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<number>(0);
     const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<number>(0);
 
@@ -117,10 +117,24 @@ const Staking = (props: NodesProps) => {
 
     const doWithdraw = () => {
         startWithdraw(withdrawAmount)
-        .then(() => {
-            getInformation();
-            setWithdrawAmount(0);
-        })
+            .then(() => {
+                getInformation();
+                setWithdrawAmount(0);
+            })
+    }
+
+    const doFinalizeStakes = () => {
+        finalizeStakes()
+            .then(() => {
+                getInformation();
+            })
+    }
+
+    const doFinalizeWithdraw = () => {
+        finalizeWithdraws()
+            .then(() => {
+                getInformation();
+            })
     }
 
     return (
@@ -182,8 +196,17 @@ const Staking = (props: NodesProps) => {
                             </Col>
                         </Row>
 
-                        <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount}</Typography.Text>
-                        <Typography.Text>Next finalize time: {finalizeDepositTimestamp}</Typography.Text>
+                        <Row justify='center' align='middle'>
+                            <Col>
+                                <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount} &nbsp;</Typography.Text>
+                            </Col>
+                            <Col>
+                                {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp >= new Date() &&
+                                    <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                }
+                            </Col>
+                        </Row>
+                        {unfinalizedDepositAmount > 0 && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
                     </Space>
                 </div>
 
@@ -208,8 +231,17 @@ const Staking = (props: NodesProps) => {
                             </Col>
                         </Row>
 
-                        <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount}</Typography.Text>
-                        <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp}</Typography.Text>
+                        <Row>
+                            <Col>
+                                <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount} &nbsp;</Typography.Text>
+                            </Col>
+                            <Col>
+                                {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp >= new Date() &&
+                                    <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                }
+                            </Col>
+                        </Row>
+                        {unfinalizedWithdrawAmount > 0 && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
                     </Space>
                 </div>
 

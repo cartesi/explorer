@@ -154,7 +154,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getFinalizeDepositTimestamp(address);
-                return result.toNumber();
+                return new Date(result.toNumber() * 1000);
             } catch (e) {
                 setError(e.message);
             }
@@ -169,7 +169,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getFinalizeWithdrawTimestamp(address);
-                return result.toNumber();
+                return new Date(result.toNumber() * 1000);
             } catch (e) {
                 setError(e.message);
             }
