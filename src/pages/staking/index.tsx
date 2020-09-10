@@ -12,10 +12,12 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Breadcrumb, Typography, InputNumber, Row, Col, Button } from 'antd';
+import { Breadcrumb, Typography, Input, Row, Col, Button } from 'antd';
 import Layout from '../../components/Layout';
 import { useStaking } from '../../services/staking';
+import { useCartesiToken } from '../../services/token';
 import { getLocalNode } from '../../services/node';
+import { userInfo } from 'os';
 
 export interface NodesProps {
     localNode: Node;
@@ -26,6 +28,7 @@ const Staking = (props: NodesProps) => {
     const [balance, setBalance] = useState<number>(0);
     const [depositAmount, setDepositAmount] = useState<number>(1);
     const [withdrawAmount, setWithdrawAmount] = useState<number>(1);
+    const [allowanceBalance, setAllowanceBalance] = useState<number>(0);
 
     const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
     const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
@@ -40,6 +43,7 @@ const Staking = (props: NodesProps) => {
         setFinalizeWithdrawTimestamp(await getFinalizeWithdrawTimestamp(address));
         setUnfinalizedDepositAmount(await getUnfinalizedDepositAmount(address));
         setUnfinalizedWithdrawAmount(await getUnfinalizedWithdrawAmount(address));
+        setAllowanceBalance(await allowance(address, address));
     }, [getLocalNode]);
 
     useEffect(() => {
@@ -47,9 +51,6 @@ const Staking = (props: NodesProps) => {
     }, [getLocalNodeFunc]);
 
     const {
-        staking,
-        submitting,
-        error,
         getStakedBalance,
         depositStake,
         finalizeStakes,
@@ -61,12 +62,14 @@ const Staking = (props: NodesProps) => {
         getUnfinalizedWithdrawAmount
     } = useStaking();
 
-    const onChangeStakeAmount = value => {
-        setDepositAmount(value);
-    }
+    const {
+        allowance,
+        approve
+    } = useCartesiToken();
 
-    const onChangeWithdrawAmount = value => {
-        setWithdrawAmount(value);
+    const validate = value => {
+        if(!value) value = 1;
+        return value;
     }
 
     return (
@@ -84,17 +87,17 @@ const Staking = (props: NodesProps) => {
                 <Breadcrumb.Item>Staking</Breadcrumb.Item>
             </Breadcrumb>
 
-            <Typography.Title level={4}>Balance: {balance} CTSI</Typography.Title>
+            <Typography.Title level={4}>Staked Balance: {balance} CTSI</Typography.Title>
+            <Typography.Title level={4}>Allowance Balance: {allowanceBalance} CTSI</Typography.Title>
 
             <Typography.Title level={4}>Stake: </Typography.Title>
             <Row>
                 <Col>
-                    <InputNumber
-                        min={1}
-                        formatter={value => `${value} CTSI`}
-                        parser={value => value.replace(' CTSI', '')}
+                    <Input
                         value={depositAmount}
-                        onChange={onChangeStakeAmount}
+                        onChange={e => setDepositAmount(validate(e.target.valueAsNumber))}
+                        suffix="CTSI"
+                        type="number"
                     />
                 </Col>
                 <Col>
@@ -116,12 +119,11 @@ const Staking = (props: NodesProps) => {
             <Typography.Title level={4}>Withdraw: </Typography.Title>
             <Row>
                 <Col>
-                    <InputNumber
-                        min={1}
-                        formatter={value => `${value} CTSI`}
-                        parser={value => value.replace(' CTSI', '')}
+                    <Input
                         value={withdrawAmount}
-                        onChange={onChangeWithdrawAmount}
+                        onChange={e => setWithdrawAmount(validate(e.target.valueAsNumber))}
+                        suffix="CTSI"
+                        type="number"
                     />
                 </Col>
                 <Col>
