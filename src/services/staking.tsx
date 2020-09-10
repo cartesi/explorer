@@ -16,12 +16,13 @@ import { StakingFactory } from '../contracts/StakingFactory';
 
 type AbiMap = Record<number, any>;
 const stakingJson: AbiMap = {
-    31337: require('pos/deployments/localhost_31337/StakingImpl.json'),
+    31337: require('pos/deployments/localhost/StakingImpl.json'),
 };
 
 export const useStaking = () => {
     const { provider, chain } = useContext(Web3Context);
     const [staking, setStaking] = useState<Staking>();
+    const [address, setAddress] = useState<string>(null);
     
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -42,6 +43,8 @@ export const useStaking = () => {
             setStaking(
                 StakingFactory.connect(address, provider.getSigner())
             );
+
+            setAddress(address);
         }
     }, [provider, chain]);
 
@@ -151,7 +154,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getFinalizeDepositTimestamp(address);
-                return new Date(result.toNumber());
+                return result.toNumber();
             } catch (e) {
                 setError(e.message);
             }
@@ -166,7 +169,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getFinalizeWithdrawTimestamp(address);
-                return new Date(result.toNumber());
+                return result.toNumber();
             } catch (e) {
                 setError(e.message);
             }
@@ -207,6 +210,7 @@ export const useStaking = () => {
         staking,
         submitting,
         error,
+        address,
         getStakedBalance,
         depositStake,
         finalizeStakes,

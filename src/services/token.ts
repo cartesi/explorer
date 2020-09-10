@@ -16,12 +16,13 @@ import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 
 type AbiMap = Record<number, any>;
 const tokenJson: AbiMap = {
-    31337: require('pos/deployments/localhost_31337/CartesiToken.json'),
+    31337: require('pos/deployments/localhost/CartesiToken.json'),
 };
 
 export const useCartesiToken = () => {
     const { provider, chain } = useContext(Web3Context);
     const [cartesiToken, setCartesiToken] = useState<CartesiToken>();
+    const [address, setAddress] = useState<string>(null);
     
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -29,7 +30,7 @@ export const useCartesiToken = () => {
     // create the CartesiToken, asynchronously
     useEffect(() => {
         if (provider) {
-            const address = tokenJson[chain.chainId]?.networks[chain.chainId].address;
+            const address = tokenJson[chain.chainId]?.address;
             if (!address) {
                 setError(
                     `CartesiToken not deployed at network '${chain.name}'`
@@ -42,6 +43,8 @@ export const useCartesiToken = () => {
             setCartesiToken(
                 CartesiTokenFactory.connect(address, provider.getSigner())
             );
+
+            setAddress(address);
         }
     }, [provider, chain]);
 
@@ -54,10 +57,8 @@ export const useCartesiToken = () => {
                 setError('');
                 
                 const result = await cartesiToken.allowance(owner, spender);
-                console.log('allowance balance', result);
                 return result.toNumber();
             } catch (e) {
-                console.error(e)
                 setError(e.message);
             }
         }
@@ -87,9 +88,10 @@ export const useCartesiToken = () => {
     };
 
     return {
-        staking: cartesiToken,
+        cartesiToken,
         submitting,
         error,
+        address,
         allowance,
         approve
     };

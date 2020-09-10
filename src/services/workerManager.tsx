@@ -17,7 +17,7 @@ import { parseUnits } from '@ethersproject/units';
 
 type AbiMap = Record<number, any>;
 const workerManagerJson: AbiMap = {
-    31337: require('@cartesi/util/deployments/localhost_31337/WorkerManagerImpl.json'),
+    31337: require('@cartesi/util/deployments/localhost/WorkerManagerImpl.json'),
 };
 
 /*
