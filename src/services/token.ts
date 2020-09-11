@@ -31,7 +31,7 @@ export const useCartesiToken = () => {
     useEffect(() => {
         if (provider) {
             console.log(tokenJson[chain.chainId])
-            const address = tokenJson[chain.chainId]?.networks[chain.chainId].address;
+            const address = tokenJson[chain.chainId]?.networks[chain.chainId]?.address;
             if (!address) {
                 setError(
                     `CartesiToken not deployed at network '${chain.name}'`
