@@ -26,6 +26,7 @@ export interface NodesProps {
 const localNodeUrl = 'http://localhost:8545';
 
 const Staking = (props: NodesProps) => {
+    const [balance, setBalance] = useState<number>(0);
     const [stakedBalance, setStakedBalance] = useState<number>(0);
     const [depositAmount, setDepositAmount] = useState<number>(0);
     const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
@@ -60,6 +61,7 @@ const Staking = (props: NodesProps) => {
         address: tokenAddress,
         submitting: tokenSubmitting,
         error: tokenError,
+        balanceOf,
         allowance,
         approve
     } = useCartesiToken();
@@ -73,6 +75,7 @@ const Staking = (props: NodesProps) => {
         getUnfinalizedDepositAmount(address).then(val => setUnfinalizedDepositAmount(val));
         getUnfinalizedWithdrawAmount(address).then(val => setUnfinalizedWithdrawAmount(val));
         allowance(address, stakingAddress).then(val => setAllowanceBalance(val));
+        balanceOf(address).then(val => setBalance(val));
     };
 
     useEffect(() => {
@@ -152,97 +155,104 @@ const Staking = (props: NodesProps) => {
             </Breadcrumb>
 
             <Space direction='vertical' size='large'>
+                <Typography.Title level={4}>Balance: {balance} CTSI</Typography.Title>
+
                 <Space direction='vertical'>
-                    <Typography.Title level={4}>Staked Balance: {stakedBalance} CTSI</Typography.Title>
                     <Typography.Title level={4}>Allowance Balance: {allowanceBalance} CTSI</Typography.Title>
+
+                    <div>
+                        <Typography.Title level={4}>Set Allowance: </Typography.Title>
+                        <Row>
+                            <Col>
+                                <Input
+                                    value={approveAmount}
+                                    onChange={e => setApproveAmount(validate(e.target.valueAsNumber))}
+                                    suffix="CTSI"
+                                    type="number"
+                                />
+                            </Col>
+                            <Col>
+                                <Button onClick={doApprove}>Approve</Button>
+                            </Col>
+                        </Row>
+                    </div>
                 </Space>
 
-                <div>
-                    <Typography.Title level={4}>Set Allowance: </Typography.Title>
-                    <Row>
-                        <Col>
-                            <Input
-                                value={approveAmount}
-                                onChange={e => setApproveAmount(validate(e.target.valueAsNumber))}
-                                suffix="CTSI"
-                                type="number"
-                            />
-                        </Col>
-                        <Col>
-                            <Button onClick={doApprove}>Approve</Button>
-                        </Col>
-                    </Row>
-                </div>
+                <Space direction='vertical'>
+                    <Typography.Title level={4}>Staked Balance: {stakedBalance} CTSI</Typography.Title>
+                    
+                    <Space direction='vertical' size='large'>
+                        <div>
+                            <Typography.Title level={4}>Stake: </Typography.Title>
+                            <Space direction='vertical'>
+                                <Row>
+                                    <Col>
+                                        <Input
+                                            value={depositAmount}
+                                            onChange={e => setDepositAmount(validate(e.target.valueAsNumber))}
+                                            suffix="CTSI"
+                                            type="number"
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Button onClick={doDeposit} 
+                                            disabled={!depositAmount || depositAmount > allowanceBalance}
+                                        >
+                                            Deposit Stake
+                                        </Button>
+                                    </Col>
+                                </Row>
 
-                <div>
-                    <Typography.Title level={4}>Stake: </Typography.Title>
-                    <Space direction='vertical'>
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={depositAmount}
-                                    onChange={e => setDepositAmount(validate(e.target.valueAsNumber))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doDeposit} 
-                                    disabled={!depositAmount || depositAmount > allowanceBalance}
-                                >
-                                    Deposit Stake
-                                </Button>
-                            </Col>
-                        </Row>
+                                <Row align='middle'>
+                                    <Col>
+                                        <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount} CTSI &nbsp;</Typography.Text>
+                                    </Col>
+                                    <Col>
+                                        {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp <= new Date() &&
+                                            <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                        }
+                                    </Col>
+                                </Row>
+                                {unfinalizedDepositAmount > 0 && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
+                            </Space>
+                        </div>
 
-                        <Row align='middle'>
-                            <Col>
-                                <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount} &nbsp;</Typography.Text>
-                            </Col>
-                            <Col>
-                                {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp <= new Date() &&
-                                    <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
-                                }
-                            </Col>
-                        </Row>
-                        {unfinalizedDepositAmount > 0 && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
+                        <div>
+                            <Typography.Title level={4}>Withdraw: </Typography.Title>
+                            <Space direction='vertical'>
+                                <Row>
+                                    <Col>
+                                        <Input
+                                            value={withdrawAmount}
+                                            onChange={e => setWithdrawAmount(validate(e.target.valueAsNumber))}
+                                            suffix="CTSI"
+                                            type="number"
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Button onClick={doWithdraw}
+                                            disabled={!withdrawAmount || withdrawAmount > stakedBalance}
+                                        >
+                                            Start Withdraw
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <Row align='middle'>
+                                    <Col>
+                                        <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount} CTSI &nbsp;</Typography.Text>
+                                    </Col>
+                                    <Col>
+                                        {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp <= new Date() &&
+                                            <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
+                                        }
+                                    </Col>
+                                </Row>
+                                {unfinalizedWithdrawAmount > 0 && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
+                            </Space>
+                        </div>
                     </Space>
-                </div>
-
-                <div>
-                    <Typography.Title level={4}>Withdraw: </Typography.Title>
-                    <Space direction='vertical'>
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={withdrawAmount}
-                                    onChange={e => setWithdrawAmount(validate(e.target.valueAsNumber))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doWithdraw}
-                                    disabled={!withdrawAmount || withdrawAmount > stakedBalance}
-                                >
-                                    Start Withdraw
-                                </Button>
-                            </Col>
-                        </Row>
-
-                        <Row align='middle'>
-                            <Col>
-                                <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount} &nbsp;</Typography.Text>
-                            </Col>
-                            <Col>
-                                {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp <= new Date() &&
-                                    <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
-                                }
-                            </Col>
-                        </Row>
-                        {unfinalizedWithdrawAmount > 0 && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
-                    </Space>
-                </div>
+                </Space>
 
                 {error &&
                     <Alert

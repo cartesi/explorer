@@ -13,6 +13,7 @@ import { useContext, useState, useEffect } from 'react';
 import Web3Context from '../components/Web3Context';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
+import { formatCTSI, parseCTSI } from '../utils/token';
 
 type AbiMap = Record<number, any>;
 const stakingJson: AbiMap = {
@@ -55,7 +56,7 @@ export const useStaking = () => {
             try {
                 setError('');
                 const balance = await staking.getStakedBalance(address);
-                return balance.toNumber();
+                return formatCTSI(balance);
             } catch (e) {
                 setError(e.message);
             }
@@ -71,7 +72,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.depositStake(amount);
+                const transaction = await staking.depositStake(parseCTSI(amount));
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -113,7 +114,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.startWithdraw(amount);
+                const transaction = await staking.startWithdraw(parseCTSI(amount));
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -184,7 +185,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getUnfinalizedDepositAmount(address);
-                return result.toNumber();
+                return formatCTSI(result);
             } catch (e) {
                 setError(e.message);
             }
@@ -199,7 +200,7 @@ export const useStaking = () => {
                 setError('');
 
                 const result = await staking.getUnfinalizedWithdrawAmount(address);
-                return result.toNumber();
+                return formatCTSI(result);
             } catch (e) {
                 setError(e.message);
             }

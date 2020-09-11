@@ -13,12 +13,13 @@ import { useContext, useState, useEffect } from 'react';
 import Web3Context from '../components/Web3Context';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
+import { formatCTSI, parseCTSI } from '../utils/token';
 
 type AbiMap = Record<number, any>;
 const tokenArtifact: AbiMap = {
-    1: require('@cartesi/token/build/contracts/CartesiToken.json'),
-    4: require('@cartesi/token/build/contracts/CartesiToken.json'),
-    31337: require('@cartesi/pos/deployments/localhost/CartesiToken.json'),
+    // 1: require('@cartesi/token/build/contracts/CartesiToken.json'),
+    31337: require('@cartesi/token/build/contracts/CartesiToken.json'),
+    // 31337: require('@cartesi/pos/deployments/localhost/CartesiToken.json'),
 };
 
 export const useCartesiToken = () => {
@@ -52,13 +53,26 @@ export const useCartesiToken = () => {
         }
     }, [provider, chain]);
 
+    const balanceOf = async (address: string) => {
+        if (cartesiToken) {
+            try {
+                setError('');
+
+                const result = await cartesiToken.balanceOf(address);
+                return formatCTSI(result);
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
     const allowance = async (owner: string, spender: string) => {
         if (cartesiToken) {
             try {
                 setError('');
 
                 const result = await cartesiToken.allowance(owner, spender);
-                return result.toNumber();
+                return formatCTSI(result);
             } catch (e) {
                 setError(e.message);
             }
@@ -72,11 +86,10 @@ export const useCartesiToken = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await cartesiToken.approve(spender, amount);
+                const transaction = await cartesiToken.approve(spender, parseCTSI(amount));
 
                 // wait for confirmation
                 const receipt = await transaction.wait(1);
-                console.log(receipt);
 
                 setSubmitting(false);
             } catch (e) {
@@ -91,6 +104,7 @@ export const useCartesiToken = () => {
         submitting,
         error,
         address,
+        balanceOf,
         allowance,
         approve,
     };
