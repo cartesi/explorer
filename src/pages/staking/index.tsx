@@ -236,7 +236,7 @@ const Staking = (props: NodesProps) => {
                             </Col>
                             <Col>
                                 {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp <= new Date() &&
-                                    <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                    <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
                                 }
                             </Col>
                         </Row>
