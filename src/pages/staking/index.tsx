@@ -159,7 +159,7 @@ const Staking = (props: NodesProps) => {
                 </Space>
 
                 <div>
-                    <Typography.Title level={4}>Increase Allowance: </Typography.Title>
+                    <Typography.Title level={4}>Set Allowance: </Typography.Title>
                     <Row>
                         <Col>
                             <Input
@@ -196,12 +196,12 @@ const Staking = (props: NodesProps) => {
                             </Col>
                         </Row>
 
-                        <Row justify='center' align='middle'>
+                        <Row align='middle'>
                             <Col>
                                 <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount} &nbsp;</Typography.Text>
                             </Col>
                             <Col>
-                                {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp >= new Date() &&
+                                {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp <= new Date() &&
                                     <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
                                 }
                             </Col>
@@ -231,12 +231,12 @@ const Staking = (props: NodesProps) => {
                             </Col>
                         </Row>
 
-                        <Row>
+                        <Row align='middle'>
                             <Col>
                                 <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount} &nbsp;</Typography.Text>
                             </Col>
                             <Col>
-                                {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp >= new Date() &&
+                                {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp <= new Date() &&
                                     <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
                                 }
                             </Col>

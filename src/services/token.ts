@@ -16,7 +16,7 @@ import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 
 type AbiMap = Record<number, any>;
 const tokenJson: AbiMap = {
-    31337: require('pos/deployments/localhost/CartesiToken.json'),
+    31337: require('@cartesi/token/build/contracts/CartesiToken.json'),
 };
 
 export const useCartesiToken = () => {
@@ -30,7 +30,8 @@ export const useCartesiToken = () => {
     // create the CartesiToken, asynchronously
     useEffect(() => {
         if (provider) {
-            const address = tokenJson[chain.chainId]?.address;
+            console.log(tokenJson[chain.chainId])
+            const address = tokenJson[chain.chainId]?.networks[chain.chainId].address;
             if (!address) {
                 setError(
                     `CartesiToken not deployed at network '${chain.name}'`
