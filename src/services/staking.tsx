@@ -21,9 +21,15 @@ const stakingJson: AbiMap = {
 };
 
 export const useStaking = () => {
-    const { provider, chain } = useContext(Web3Context);
+    const { provider, chain, account } = useContext(Web3Context);
     const [staking, setStaking] = useState<Staking>();
     const [address, setAddress] = useState<string>(null);
+
+    const [stakedBalance, setStakedBalance] = useState<number>(0);
+    const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
+    const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
+    const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<number>(0);
+    const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<number>(0);
     
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -49,19 +55,27 @@ export const useStaking = () => {
         }
     }, [provider, chain]);
 
-    const getStakedBalance = async (
-        address: string
-    ) => {
+    const updateState = () => {
         if (staking) {
             try {
                 setError('');
-                const balance = await staking.getStakedBalance(address);
-                return formatCTSI(balance);
+                staking.getStakedBalance(account).then(value => setStakedBalance(formatCTSI(value)));
+
+                staking.getFinalizeDepositTimestamp(account).then(value => setFinalizeDepositTimestamp(new Date(value.toNumber() * 1000)));
+                staking.getFinalizeWithdrawTimestamp(account).then(value => setFinalizeWithdrawTimestamp(new Date(value.toNumber() * 1000)));
+                staking.getUnfinalizedDepositAmount(account).then(value => setUnfinalizedDepositAmount(formatCTSI(value)));
+                staking.getUnfinalizedWithdrawAmount(account).then(value => setUnfinalizedWithdrawAmount(formatCTSI(value)));
             } catch (e) {
                 setError(e.message);
             }
         }
     };
+
+    useEffect(() => {
+        if (staking && account) {
+            updateState();
+        }
+    }, [staking, account]);
 
     const depositStake = async (
         amount: number
@@ -76,6 +90,8 @@ export const useStaking = () => {
 
                 // wait for confirmation
                 await transaction.wait(1);
+
+                updateState();
 
                 setSubmitting(false);
             } catch (e) {
@@ -96,6 +112,8 @@ export const useStaking = () => {
 
                 // wait for confirmation
                 await transaction.wait(1);
+
+                updateState();
 
                 setSubmitting(false);
             } catch (e) {
@@ -119,6 +137,8 @@ export const useStaking = () => {
                 // wait for confirmation
                 await transaction.wait(1);
 
+                updateState();
+
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -139,70 +159,12 @@ export const useStaking = () => {
                 // wait for confirmation
                 await transaction.wait(1);
 
+                updateState();
+
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
                 setSubmitting(false);
-            }
-        }
-    };
-
-    const getFinalizeDepositTimestamp = async (
-        address: string
-    ) => {
-        if (staking) {
-            try {
-                setError('');
-
-                const result = await staking.getFinalizeDepositTimestamp(address);
-                return new Date(result.toNumber() * 1000);
-            } catch (e) {
-                setError(e.message);
-            }
-        }
-    };
-
-    const getFinalizeWithdrawTimestamp = async (
-        address: string
-    ) => {
-        if (staking) {
-            try {
-                setError('');
-
-                const result = await staking.getFinalizeWithdrawTimestamp(address);
-                return new Date(result.toNumber() * 1000);
-            } catch (e) {
-                setError(e.message);
-            }
-        }
-    };
-
-    const getUnfinalizedDepositAmount = async (
-        address: string
-    ) => {
-        if (staking) {
-            try {
-                setError('');
-
-                const result = await staking.getUnfinalizedDepositAmount(address);
-                return formatCTSI(result);
-            } catch (e) {
-                setError(e.message);
-            }
-        }
-    };
-
-    const getUnfinalizedWithdrawAmount = async (
-        address: string
-    ) => {
-        if (staking) {
-            try {
-                setError('');
-
-                const result = await staking.getUnfinalizedWithdrawAmount(address);
-                return formatCTSI(result);
-            } catch (e) {
-                setError(e.message);
             }
         }
     };
@@ -212,14 +174,14 @@ export const useStaking = () => {
         submitting,
         error,
         address,
-        getStakedBalance,
+        stakedBalance,
+        finalizeDepositTimestamp,
+        finalizeWithdrawTimestamp,
+        unfinalizedDepositAmount,
+        unfinalizedWithdrawAmount,
         depositStake,
         finalizeStakes,
         startWithdraw,
-        finalizeWithdraws,
-        getFinalizeDepositTimestamp,
-        getFinalizeWithdrawTimestamp,
-        getUnfinalizedDepositAmount,
-        getUnfinalizedWithdrawAmount
+        finalizeWithdraws
     };
 };

@@ -16,18 +16,10 @@ import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'a
 import Layout from '../../components/Layout';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { Node, getLocalNode } from '../../services/node';
 
-export interface NodesProps {
-    localNode: Node;
-    nodes: Node[];
-}
-
-const localNodeUrl = 'http://localhost:8545';
-
-const Staking = (props: NodesProps) => {
+const Staking = () => {
+    const [address, setAddress] = useState<string>(null);
     const [balance, setBalance] = useState<number>(0);
-    const [stakedBalance, setStakedBalance] = useState<number>(0);
     const [depositAmount, setDepositAmount] = useState<number>(0);
     const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
     const [approveAmount, setApproveAmount] = useState<number>(0);
@@ -35,30 +27,24 @@ const Staking = (props: NodesProps) => {
 
     const [error, setError] = useState<string>(null);
 
-    const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
-    const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
-    const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<number>(0);
-    const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<number>(0);
-
     const {
         staking,
         address: stakingAddress,
         submitting: stakingSubmitting,
         error: stakingError,
-        getStakedBalance,
+        stakedBalance,
+        finalizeDepositTimestamp,
+        finalizeWithdrawTimestamp,
+        unfinalizedDepositAmount,
+        unfinalizedWithdrawAmount,
         depositStake,
         finalizeStakes,
         startWithdraw,
-        finalizeWithdraws,
-        getFinalizeDepositTimestamp,
-        getFinalizeWithdrawTimestamp,
-        getUnfinalizedDepositAmount,
-        getUnfinalizedWithdrawAmount
+        finalizeWithdraws
     } = useStaking();
 
     const {
         cartesiToken,
-        address: tokenAddress,
         submitting: tokenSubmitting,
         error: tokenError,
         balanceOf,
@@ -66,21 +52,19 @@ const Staking = (props: NodesProps) => {
         approve
     } = useCartesiToken();
 
-    const getInformation = () => {
-        const address = props.localNode.address;
-        getStakedBalance(address).then(val => setStakedBalance(val));
-
-        getFinalizeDepositTimestamp(address).then(val => setFinalizeDepositTimestamp(val));
-        getFinalizeWithdrawTimestamp(address).then(val => setFinalizeWithdrawTimestamp(val));
-        getUnfinalizedDepositAmount(address).then(val => setUnfinalizedDepositAmount(val));
-        getUnfinalizedWithdrawAmount(address).then(val => setUnfinalizedWithdrawAmount(val));
-        allowance(address, stakingAddress).then(val => setAllowanceBalance(val));
-        balanceOf(address).then(val => setBalance(val));
+    const getInformation = (account = null) => {
+        if(account) setAddress(account);
+        else account = address;
+        
+        allowance(account, stakingAddress).then(val => setAllowanceBalance(val));
+        balanceOf(account).then(val => setBalance(val));
     };
 
     useEffect(() => {
         if(staking && cartesiToken) {
-            getInformation();
+            window.ethereum
+                .request({ method: 'eth_requestAccounts' })
+                .then(accounts => getInformation(accounts[0]));
         }
     }, [staking, cartesiToken]);
 
@@ -268,10 +252,3 @@ const Staking = (props: NodesProps) => {
 };
 
 export default Staking;
-
-export const getServerSideProps = async () => {
-    // const localNode = { address: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0', chainId: 30137 };
-    const localNode = await getLocalNode(localNodeUrl);
-
-    return { props: { localNode } };
-};
