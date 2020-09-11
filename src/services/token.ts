@@ -15,23 +15,26 @@ import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 
 type AbiMap = Record<number, any>;
-const tokenJson: AbiMap = {
-    31337: require('@cartesi/token/build/contracts/CartesiToken.json'),
+const tokenArtifact: AbiMap = {
+    1: require('@cartesi/token/build/contracts/CartesiToken.json'),
+    4: require('@cartesi/token/build/contracts/CartesiToken.json'),
+    31337: require('@cartesi/pos/deployments/localhost/CartesiToken.json'),
 };
 
 export const useCartesiToken = () => {
     const { provider, chain } = useContext(Web3Context);
     const [cartesiToken, setCartesiToken] = useState<CartesiToken>();
     const [address, setAddress] = useState<string>(null);
-    
+
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
         if (provider) {
-            console.log(tokenJson[chain.chainId])
-            const address = tokenJson[chain.chainId]?.networks[chain.chainId]?.address;
+            const address =
+                tokenArtifact[chain.chainId]?.address ||
+                tokenArtifact[chain.chainId]?.networks[chain.chainId]?.address;
             if (!address) {
                 setError(
                     `CartesiToken not deployed at network '${chain.name}'`
@@ -49,14 +52,11 @@ export const useCartesiToken = () => {
         }
     }, [provider, chain]);
 
-    const allowance = async (
-        owner: string,
-        spender: string
-    ) => {
+    const allowance = async (owner: string, spender: string) => {
         if (cartesiToken) {
             try {
                 setError('');
-                
+
                 const result = await cartesiToken.allowance(owner, spender);
                 return result.toNumber();
             } catch (e) {
@@ -65,10 +65,7 @@ export const useCartesiToken = () => {
         }
     };
 
-    const approve = async (
-        spender: string,
-        amount: number
-    ) => {
+    const approve = async (spender: string, amount: number) => {
         if (cartesiToken) {
             try {
                 setError('');
@@ -78,7 +75,8 @@ export const useCartesiToken = () => {
                 const transaction = await cartesiToken.approve(spender, amount);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                const receipt = await transaction.wait(1);
+                console.log(receipt);
 
                 setSubmitting(false);
             } catch (e) {
@@ -94,6 +92,6 @@ export const useCartesiToken = () => {
         error,
         address,
         allowance,
-        approve
+        approve,
     };
 };
