@@ -17,7 +17,6 @@ import Layout from '../../components/Layout';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { Node, getLocalNode } from '../../services/node';
-import { setegid } from 'process';
 
 export interface NodesProps {
     localNode: Node;

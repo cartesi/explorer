@@ -16,7 +16,7 @@ import { StakingFactory } from '../contracts/StakingFactory';
 
 type AbiMap = Record<number, any>;
 const stakingJson: AbiMap = {
-    31337: require('pos/deployments/localhost/StakingImpl.json'),
+    31337: require('@cartesi/pos/deployments/localhost/StakingImpl.json'),
 };
 
 export const useStaking = () => {

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json' && typechain --target=ethers-v5 --outDir src/contracts './node_modules/pos/artifacts/*.json' && typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/token/build/contracts/*.json'"
+    "postinstall": "typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/**/artifacts/*.json' && typechain --target=ethers-v5 --outDir src/contracts './node_modules/@cartesi/token/build/contracts/*.json'"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
