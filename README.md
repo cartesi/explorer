@@ -14,7 +14,10 @@ This is a [Next.js](https://nextjs.org) application which uses smart contracts d
 In order to run the application you need to:
 
 - run `solidity-util` local node with the contracts deployed
-- yarn link this project to `solidity-util` project, so it uses the same build files with contract information
+- deploy `pos-dlib` smart contracts to the local network using buidler
+- deploy `token` contracts to the local network using truffle
+- yarn link this project to `solidity-util`, `pos-dlib`, `token` projects, so it uses the same build files with contract information
+- run `yarn run postinstall` to generate the contract classes (or `yarn install` also works)
 - `yarn dev`
 - open [http://localhost:3000](http://localhost:3000)
 
