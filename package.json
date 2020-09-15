@@ -12,7 +12,7 @@
     "@ant-design/icons": "^4.2.2",
     "@cartesi/pos": "../pos-dlib",
     "@cartesi/token": "^1.0.0",
-    "@cartesi/util": "^0.3.0",
+    "@cartesi/util": "^0.4.1",
     "@metamask/onboarding": "^1.0.0",
     "antd": "^4.5.4",
     "axios": "^0.19.2",
