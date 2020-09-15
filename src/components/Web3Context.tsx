@@ -18,6 +18,7 @@ export interface Web3Context {
     connected: boolean;
     chain: IChainData;
     account: string;
+    updateProvider: (provider) => void;
 }
 
 export default createContext<Web3Context>(undefined);

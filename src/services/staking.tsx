@@ -36,7 +36,7 @@ export const useStaking = () => {
 
     // create the Staking, asynchronously
     useEffect(() => {
-        if (provider) {
+        if (provider && chain) {
             const address = stakingJson[chain.chainId]?.address;
             if (!address) {
                 setError(

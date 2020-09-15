@@ -66,7 +66,7 @@ export const useWorkerManager = (worker: string) => {
 
     // create the WorkerManager, asynchronously
     useEffect(() => {
-        if (provider) {
+        if (provider && chain) {
             const address = workerManagerJson[chain.chainId]?.address;
             if (!address) {
                 setError(

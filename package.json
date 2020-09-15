@@ -19,7 +19,9 @@
     "ethers": "^5.0.8",
     "next": "9.5.2",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "rimble-ui": "^0.14.0",
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^1.0.0",

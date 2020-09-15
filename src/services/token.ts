@@ -32,7 +32,7 @@ export const useCartesiToken = () => {
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
-        if (provider) {
+        if (provider && chain) {
             const address =
                 tokenArtifact[chain.chainId]?.address ||
                 tokenArtifact[chain.chainId]?.networks[chain.chainId]?.address;

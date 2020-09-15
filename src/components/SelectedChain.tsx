@@ -12,19 +12,40 @@
 import React, { useContext } from 'react';
 import Web3Context from '../components/Web3Context';
 import { Space, Typography } from 'antd';
+import { MetaMaskButton } from 'rimble-ui';
+import MetaMaskOnboarding from '@metamask/onboarding';
+
+import styles from './SelectedChain.module.css';
 
 const SelectedChain = () => {
-    const { chain } = useContext(Web3Context);
+    const { chain, updateProvider } = useContext(Web3Context);
+    const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
+
+    const connectMetaMask = () => {
+        if(hasMetaMask) {
+            window.ethereum.request({ method: 'eth_requestAccounts'})
+                .then(() => updateProvider(window.ethereum));
+        } else {
+            const onboarding = new MetaMaskOnboarding();
+            onboarding.startOnboarding();
+        }
+    };
 
     return (
-        <Space style={{ float: 'right' }}>
-            <b style={{ color: 'white' }}>Network: </b>
-            {chain && (
-                <Typography.Text style={{ color: 'white' }}>
-                    {chain.name}
-                </Typography.Text>
-            )}
-        </Space>
+        <div className={styles.selectedChainContainer}>
+            {chain ?
+                <Space>
+                    <b style={{ color: 'white' }}>Network: </b>
+                    <Typography.Text style={{ color: 'white' }}>
+                        {chain.name}
+                    </Typography.Text>
+                </Space>
+                :
+                <MetaMaskButton.Outline onClick={connectMetaMask}>
+                    {hasMetaMask ? 'Connect with MetaMask' : 'Install MetaMask'}
+                </MetaMaskButton.Outline>
+            }
+        </div>
     );
 };
 
