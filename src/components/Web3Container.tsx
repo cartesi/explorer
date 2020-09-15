@@ -20,6 +20,12 @@ const Web3Container = ({ children }) => {
     const [account, setAccount] = useState<string>(undefined);
     const [connected, setConnected] = useState<boolean>(undefined);
 
+    React.useEffect(() => {
+        if(window.ethereum.selectedAddress) {
+            updateProvider(window.ethereum);
+        }
+    }, []);
+    
     const updateProvider = (provider) => {
         if(provider) {
 
