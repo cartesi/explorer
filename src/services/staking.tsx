@@ -17,7 +17,14 @@ import { formatCTSI, parseCTSI } from '../utils/token';
 
 type AbiMap = Record<number, any>;
 const stakingJson: AbiMap = {
-    31337: require('@cartesi/pos/deployments/localhost/StakingImpl.json'),
+    1: require('@cartesi/pos/deployments/mainnet/StakingImpl.json'),
+    3: require('@cartesi/pos/deployments/ropsten/StakingImpl.json'),
+    4: require('@cartesi/pos/deployments/rinkeby/StakingImpl.json'),
+    5: require('@cartesi/pos/deployments/goerli/StakingImpl.json'),
+    42: require('@cartesi/pos/deployments/kovan/StakingImpl.json'),
+    80001: require('@cartesi/pos/deployments/matic_testnet/StakingImpl.json'),
+    97: require('@cartesi/pos/deployments/bsc_testnet/StakingImpl.json'),
+    31337: require('@cartesi/pos/deployments/localhost/StakingImpl.json')
 };
 
 export const useStaking = () => {

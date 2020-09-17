@@ -17,9 +17,14 @@ import { formatCTSI, parseCTSI } from '../utils/token';
 
 type AbiMap = Record<number, any>;
 const tokenArtifact: AbiMap = {
-    // 1: require('@cartesi/token/build/contracts/CartesiToken.json'),
-    31337: require('@cartesi/token/build/contracts/CartesiToken.json'),
-    // 31337: require('@cartesi/pos/deployments/localhost/CartesiToken.json'),
+    1: require('@cartesi/token/deployments/mainnet/CartesiToken.json'),
+    3: require('@cartesi/token/deployments/ropsten/CartesiToken.json'),
+    4: require('@cartesi/token/deployments/rinkeby/CartesiToken.json'),
+    5: require('@cartesi/token/deployments/goerli/CartesiToken.json'),
+    42: require('@cartesi/token/deployments/kovan/CartesiToken.json'),
+    80001: require('@cartesi/token/deployments/matic_testnet/CartesiToken.json'),
+    97: require('@cartesi/token/deployments/bsc_testnet/CartesiToken.json'),
+    31337: require('@cartesi/token/deployments/localhost/CartesiToken.json')
 };
 
 export const useCartesiToken = () => {
