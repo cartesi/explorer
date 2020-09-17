@@ -14,18 +14,7 @@ import Web3Context from '../components/Web3Context';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { formatCTSI, parseCTSI } from '../utils/token';
-
-type AbiMap = Record<number, any>;
-const stakingJson: AbiMap = {
-    1: require('@cartesi/pos/deployments/mainnet/StakingImpl.json'),
-    3: require('@cartesi/pos/deployments/ropsten/StakingImpl.json'),
-    4: require('@cartesi/pos/deployments/rinkeby/StakingImpl.json'),
-    5: require('@cartesi/pos/deployments/goerli/StakingImpl.json'),
-    42: require('@cartesi/pos/deployments/kovan/StakingImpl.json'),
-    80001: require('@cartesi/pos/deployments/matic_testnet/StakingImpl.json'),
-    97: require('@cartesi/pos/deployments/bsc_testnet/StakingImpl.json'),
-    31337: require('@cartesi/pos/deployments/localhost/StakingImpl.json')
-};
+import { networks } from '../utils/networks';
 
 export const useStaking = () => {
     const { provider, chain, account } = useContext(Web3Context);
@@ -44,7 +33,9 @@ export const useStaking = () => {
     // create the Staking, asynchronously
     useEffect(() => {
         if (provider && chain) {
-            const address = stakingJson[chain.chainId]?.address;
+            const network = networks[chain.chainId];
+            const stakingImplJson = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
+            const address = stakingImplJson?.address;
             if (!address) {
                 setError(
                     `Staking not deployed at network '${chain.name}'`

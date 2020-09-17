@@ -14,18 +14,7 @@ import Web3Context from '../components/Web3Context';
 import { WorkerManager } from '../contracts/WorkerManager';
 import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
-
-type AbiMap = Record<number, any>;
-const workerManagerJson: AbiMap = {
-    1: require('@cartesi/util/deployments/mainnet/WorkerManagerImpl.json'),
-    3: require('@cartesi/util/deployments/ropsten/WorkerManagerImpl.json'),
-    4: require('@cartesi/util/deployments/rinkeby/WorkerManagerImpl.json'),
-    5: require('@cartesi/util/deployments/goerli/WorkerManagerImpl.json'),
-    42: require('@cartesi/util/deployments/kovan/WorkerManagerImpl.json'),
-    80001: require('@cartesi/util/deployments/matic_testnet/WorkerManagerImpl.json'),
-    97: require('@cartesi/util/deployments/bsc_testnet/WorkerManagerImpl.json'),
-    31337: require('@cartesi/util/deployments/localhost/WorkerManagerImpl.json')
-};
+import { networks } from '../utils/networks';
 
 /*
 export const useManager = () => {
@@ -74,7 +63,8 @@ export const useWorkerManager = (worker: string) => {
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (provider && chain) {
-            const address = workerManagerJson[chain.chainId]?.address;
+            const network = networks[chain.chainId];
+            const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)?.address;
             if (!address) {
                 setError(
                     `WorkerManager not deployed at network '${chain.name}'`

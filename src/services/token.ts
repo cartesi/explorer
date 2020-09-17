@@ -14,18 +14,7 @@ import Web3Context from '../components/Web3Context';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 import { formatCTSI, parseCTSI } from '../utils/token';
-
-type AbiMap = Record<number, any>;
-const tokenArtifact: AbiMap = {
-    1: require('@cartesi/token/deployments/mainnet/CartesiToken.json'),
-    3: require('@cartesi/token/deployments/ropsten/CartesiToken.json'),
-    4: require('@cartesi/token/deployments/rinkeby/CartesiToken.json'),
-    5: require('@cartesi/token/deployments/goerli/CartesiToken.json'),
-    42: require('@cartesi/token/deployments/kovan/CartesiToken.json'),
-    80001: require('@cartesi/token/deployments/matic_testnet/CartesiToken.json'),
-    97: require('@cartesi/token/deployments/bsc_testnet/CartesiToken.json'),
-    31337: require('@cartesi/token/deployments/localhost/CartesiToken.json')
-};
+import { networks } from '../utils/networks';
 
 export const useCartesiToken = () => {
     const { provider, chain } = useContext(Web3Context);
@@ -38,9 +27,10 @@ export const useCartesiToken = () => {
     // create the CartesiToken, asynchronously
     useEffect(() => {
         if (provider && chain) {
-            const address =
-                tokenArtifact[chain.chainId]?.address ||
-                tokenArtifact[chain.chainId]?.networks[chain.chainId]?.address;
+            const network = networks[chain.chainId];
+            const tokenArtifact = require(`@cartesi/token/deployments/${network}/CartesiToken.json`);
+            const address = tokenArtifact?.address ||
+                tokenArtifact?.networks[chain.chainId]?.address;
             if (!address) {
                 setError(
                     `CartesiToken not deployed at network '${chain.name}'`
