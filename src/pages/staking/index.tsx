@@ -14,7 +14,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
 import Layout from '../../components/Layout';
-import { formatCTSI, parseCTSI } from '../../utils/token';
+import { formatCTSI } from '../../utils/token';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';

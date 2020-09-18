@@ -5,6 +5,6 @@ export const formatCTSI = (amount: BigNumberish): string => {
     return formatEther(amount);
 }
 
-export const parseCTSI = (amount: string): BigNumber => {
-    return parseEther(amount);
+export const parseCTSI = (amount: BigNumberish): BigNumber => {
+    return parseEther(amount.toString());
 }

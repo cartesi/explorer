@@ -15,6 +15,7 @@ import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
+import { parseCTSI } from '../utils/token';
 
 export const useCartesiToken = () => {
     const { provider, chain } = useContext(Web3Context);
@@ -77,7 +78,7 @@ export const useCartesiToken = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await cartesiToken.approve(spender, amount);
+                const transaction = await cartesiToken.approve(spender, parseCTSI(amount));
 
                 // wait for confirmation
                 const receipt = await transaction.wait(1);

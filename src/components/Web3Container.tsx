@@ -28,6 +28,8 @@ const Web3Container = ({ children }) => {
     
     const updateProvider = (provider) => {
         if(provider) {
+            provider.request({ method: 'eth_requestAccounts' })
+                .then(accounts => setAccount(accounts[0]));
 
             provider.on('chainChanged', async (_chainId: string) => {
                 const chain = await getChain(parseInt(_chainId, 16));
