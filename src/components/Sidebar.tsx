@@ -13,19 +13,28 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Layout, Menu } from 'antd';
 import Link from 'next/link';
-import { AppstoreOutlined, ThunderboltOutlined, WalletOutlined } from '@ant-design/icons';
+import {
+    AppstoreOutlined,
+    ThunderboltOutlined,
+    WalletOutlined,
+} from '@ant-design/icons';
 import styles from './Sidebar.module.css';
 
 const { Sider } = Layout;
 
-export interface SidebarProps {
-}
+export interface SidebarProps {}
 
 const Sidebar = (props: SidebarProps) => {
     const router = useRouter();
     const [collapsed, setCollapsed] = useState(false);
 
     const items = [
+        {
+            key: 'staking',
+            label: 'Staking',
+            href: '/staking',
+            icon: <WalletOutlined />,
+        },
         {
             key: 'nodes',
             label: 'Nodes',
@@ -38,19 +47,20 @@ const Sidebar = (props: SidebarProps) => {
             href: '/descartes',
             icon: <ThunderboltOutlined />,
         },
-        {
-            key: 'staking',
-            label: 'Staking',
-            href: '/staking',
-            icon: <WalletOutlined />,
-        },
     ];
 
-    // XXX: use router to figure out the active item
+    // use router to figure out the active item
+    const selectedKeys = items
+        .filter((item) => router.route.startsWith(item.href))
+        .map((item) => item.key);
+
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className={styles.logo}></div>
-            <Menu theme="dark" defaultSelectedKeys={[items[0].key]}>
+            <Menu
+                theme="dark"
+                selectedKeys={selectedKeys}
+            >
                 {items.map((item) => (
                     <Menu.Item key={item.key} icon={item.icon}>
                         <Link href={item.href}>
