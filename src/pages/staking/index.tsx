@@ -83,6 +83,9 @@ const Staking = () => {
         }
     }, [stakingSubmitting, tokenSubmitting]);
 
+    useEffect(() => {
+    }, [balance, allowanceBalance, stakedBalance, unfinalizedDepositAmount, unfinalizedWithdrawAmount]);
+
     const validate = (value: BigNumber): BigNumber => {
         if (!value || value.lt(0)) value = BigNumber.from(0);
         return value;
