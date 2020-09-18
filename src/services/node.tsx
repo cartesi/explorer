@@ -21,61 +21,46 @@ export interface Node {
     maximumFunding?: BigNumberish;
 }
 
-export const getLocalNode = async (
-    url: string = 'http://localhost:8545'
-): Promise<Node | null> => {
-    try {
-        const provider = new JsonRpcProvider(url);
-        const address = await provider.getSigner().getAddress();
-        const { chainId } = await provider.getNetwork();
-        const chain = await getChain(chainId);
-        return {
-            address,
-            chain,
-        };
-    } catch (e) {
-        return null;
-    }
-};
-
 export const useLocalNode = (url: string = 'http://localhost:8545'): Node => {
     const [node, setNode] = useState<Node>(undefined);
-    const [provider, setProvider] = useState<JsonRpcProvider>(undefined);
-    useEffect(() => {
-        setProvider(new JsonRpcProvider(url));
-    }, []);
 
     useEffect(() => {
-        if (provider) {
-            provider
-                .getSigner()
-                .getAddress()
-                .then((address) => {
-                    provider.getNetwork().then(({ chainId }) => {
-                        getChain(chainId).then((chain) => {
-                            setNode({
-                                address,
-                                chain,
-                            });
+        const provider = new JsonRpcProvider(url);
+        provider
+            .getSigner()
+            .getAddress()
+            .then((address) => {
+                provider.getNetwork().then(({ chainId }) => {
+                    getChain(chainId).then((chain) => {
+                        setNode({
+                            address,
+                            chain,
                         });
                     });
                 });
-        }
-    }, [provider]);
+            })
+            .catch((e) => setNode(undefined));
+    }, []);
 
     return node;
 };
 
-export const getPaaSNodes = async (
-    url: string = 'https://api.paas.cartesi.io'
-): Promise<Node[]> => {
-    // TODO: use PaaS API to get nodes
-    const chainId = 30137;
-    const addresses = [
-        '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
-        '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
-        '0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
-    ];
-    const chain = await getChain(chainId);
-    return addresses.map((address) => ({ address, chain }));
+export const useCartesiNodes = (chainId: number): Node[] => {
+    const [nodes, setNodes] = useState<Node[]>([]);
+
+    useEffect(() => {
+        getChain(chainId).then((chain) => {
+            const url = `https://${chain.name}.paas.cartesi.io`;
+            // TODO: use URL to fetch nodes
+            const testAddresses = [
+                //'0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
+                //'0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
+                //'0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
+            ];
+            const nodes = testAddresses.map((address) => ({ address, chain }));
+            setNodes(nodes);
+        });
+    }, [chainId]);
+
+    return nodes;
 };

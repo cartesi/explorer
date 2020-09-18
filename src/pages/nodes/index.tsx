@@ -12,27 +12,29 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { Breadcrumb, Divider, Empty, List, Table, Typography } from 'antd';
 import Layout from '../../components/Layout';
-import { Node, getLocalNode, getPaaSNodes } from '../../services/node';
+import { useLocalNode, useCartesiNodes, Node } from '../../services/node';
 import { IChainData } from '../../services/chain';
 
 const localNodeUrl = 'http://localhost:8545';
-const paasNodeUrl = 'https://api.paas.cartesi.io';
 
-export interface NodesProps {
-    localNode: Node;
-    nodes: Node[];
-}
+const Nodes = () => {
+    const { chainId } = useWeb3React<Web3Provider>();
+    const nodes = useCartesiNodes(chainId);
+    const localNode = useLocalNode(localNodeUrl);
 
-const Nodes = (props: NodesProps) => {
-    const { localNode, nodes } = props;
-
-    const addressRender = (address: string) => (
+    const addressRender = (address: string, { network }) => (
         <List.Item>
-            <Link href={`/nodes/${address}`}>
-                <a>{address}</a>
-            </Link>
+            {network.chainId == chainId ? (
+                <Link href={`/nodes/${address}`}>
+                    <a>{address}</a>
+                </Link>
+            ) : (
+                <Typography>{address}</Typography>
+            )}
         </List.Item>
     );
 
@@ -105,14 +107,14 @@ const Nodes = (props: NodesProps) => {
                 bordered
                 title={() => (
                     <Typography.Title level={4}>
-                        Cartesi PaaS nodes
+                        Nodes hosted by Cartesi
                     </Typography.Title>
                 )}
                 locale={{
                     emptyText: (
                         <Empty
                             image={Empty.PRESENTED_IMAGE_SIMPLE}
-                            description={`No nodes available at ${paasNodeUrl}`}
+                            description={`No nodes available`}
                         />
                     ),
                 }}
@@ -123,13 +125,3 @@ const Nodes = (props: NodesProps) => {
 };
 
 export default Nodes;
-
-export const getServerSideProps = async () => {
-    // XXX: query PaaS API to get free nodes
-    const nodes = await getPaaSNodes(paasNodeUrl);
-
-    // const localNode = { address: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0', chainId: 30137 };
-    const localNode = await getLocalNode(localNodeUrl);
-
-    return { props: { localNode, nodes } };
-};
