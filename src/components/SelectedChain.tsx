@@ -22,11 +22,17 @@ import { networks } from '../utils/networks';
 import styles from './SelectedChain.module.css';
 
 const SelectedChain = () => {
-    const { chainId, activate } = useWeb3React<Web3Provider>();
+    const { chainId, activate, deactivate } = useWeb3React<Web3Provider>();
     const [chain, setChain] = useState<IChainData>(undefined);
     const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
     const supportedChainIds = Object.keys(networks).map(key => parseInt(key));
     const connector = new InjectedConnector({ supportedChainIds });
+
+    React.useEffect(() => {
+        if(window.ethereum.selectedAddress) {
+            connectNetwork();
+        }
+    }, []);
 
     // get chain name
     useEffect(() => {
@@ -34,6 +40,16 @@ const SelectedChain = () => {
             getChain(chainId).then(setChain);
         }
     }, [chainId]);
+
+    const connectNetwork  = () => {
+        activate(connector);
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+            if(!accounts || accounts.length == 0) {
+                deactivate();
+                setChain(undefined);
+            }
+        });
+    }
 
     return (
         <div className={styles.selectedChainContainer}>
@@ -45,7 +61,7 @@ const SelectedChain = () => {
                     </Typography.Text>
                 </Space>
                 :
-                <MetaMaskButton.Outline onClick={() => activate(connector)}>
+                <MetaMaskButton.Outline onClick={connectNetwork}>
                     {hasMetaMask ? 'Connect with MetaMask' : 'Install MetaMask'}
                 </MetaMaskButton.Outline>
             }
