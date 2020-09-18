@@ -25,11 +25,11 @@ const SelectedChain = () => {
     const { chainId, activate, deactivate } = useWeb3React<Web3Provider>();
     const [chain, setChain] = useState<IChainData>(undefined);
     const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
-    const supportedChainIds = Object.keys(networks).map(key => parseInt(key));
+    const supportedChainIds = Object.keys(networks).map((key) => parseInt(key));
     const connector = new InjectedConnector({ supportedChainIds });
 
     React.useEffect(() => {
-        if(window.ethereum.selectedAddress) {
+        if (window?.ethereum?.selectedAddress) {
             connectNetwork();
         }
     }, []);
@@ -41,30 +41,32 @@ const SelectedChain = () => {
         }
     }, [chainId]);
 
-    const connectNetwork  = () => {
+    const connectNetwork = () => {
         activate(connector);
-        window.ethereum.on('accountsChanged', (accounts: string[]) => {
-            if(!accounts || accounts.length == 0) {
-                deactivate();
-                setChain(undefined);
-            }
-        });
-    }
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts: string[]) => {
+                if (!accounts || accounts.length == 0) {
+                    deactivate();
+                    setChain(undefined);
+                }
+            });
+        }
+    };
 
     return (
         <div className={styles.selectedChainContainer}>
-            {chain ?
+            {chain ? (
                 <Space>
                     <b style={{ color: 'white' }}>Network: </b>
                     <Typography.Text style={{ color: 'white' }}>
                         {chain.name}
                     </Typography.Text>
                 </Space>
-                :
+            ) : (
                 <MetaMaskButton.Outline onClick={connectNetwork}>
                     {hasMetaMask ? 'Connect with MetaMask' : 'Install MetaMask'}
                 </MetaMaskButton.Outline>
-            }
+            )}
         </div>
     );
 };
