@@ -39,3 +39,24 @@ export const useAccount = (index: number) => {
     }, [library, index]);
     return account;
 };
+
+export const useBlockNumber = (): number => {
+    const { chainId, library } = useWeb3React<Web3Provider>();
+    const [blockNumber, setBlockNumber] = useState<number>(0);
+    useEffect(() => {
+        if (library) {
+            let stale = false;
+            library.getBlockNumber().then(setBlockNumber);
+            const updateBlockNumber = (blockNumber: number) => {
+                setBlockNumber(blockNumber);
+            };
+            library.on('block', updateBlockNumber);
+            return () => {
+                stale = true;
+                library.removeListener('block', updateBlockNumber);
+                setBlockNumber(undefined);
+            };
+        }
+    }, [library, chainId]);
+    return blockNumber;
+};

@@ -34,20 +34,18 @@ export const useStaking = () => {
     useEffect(() => {
         if (library && chainId) {
             const network = networks[chainId];
-            const stakingImplJson = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
-            const address = stakingImplJson?.address;
-            if (!address) {
-                setError(
-                    `Staking not deployed at network '${chainId}'`
-                );
-                return;
+            try {
+                const deployment = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
+                const address = deployment?.address;
+                if (address) {
+                    console.log(`Attaching Staking to address '${address}' deployed at network '${chainId}'`);
+                    setStaking(StakingFactory.connect(address, library.getSigner()));
+                } else {
+                    setError(`Staking not deployed at network '${chainId}'`);
+                }
+            } catch (e) {
+                setError(`Staking not deployed at network '${chainId}'`);
             }
-            console.log(
-                `Attaching Staking to address '${address}' deployed at network '${chainId}'`
-            );
-            setStaking(
-                StakingFactory.connect(address, library.getSigner())
-            );
         }
     }, [library, chainId]);
 

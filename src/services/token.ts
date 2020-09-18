@@ -18,9 +18,11 @@ import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
-export const useCartesiToken = () => {
+export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const [cartesiToken, setCartesiToken] = useState<CartesiToken>();
+    const [token, setToken] = useState<CartesiToken>();
+    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
 
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -33,52 +35,37 @@ export const useCartesiToken = () => {
             const address =
                 tokenArtifact?.address ||
                 tokenArtifact?.networks[chainId]?.address;
-            if (!address) {
+            if (address) {
+                console.log(
+                    `Attaching CartesiToken to address '${address}' deployed at network '${chainId}'`
+                );
+                setToken(
+                    CartesiTokenFactory.connect(address, library.getSigner())
+                );
+            } else {
                 setError(`CartesiToken not deployed at network '${chainId}'`);
-                return;
             }
-            console.log(
-                `Attaching CartesiToken to address '${address}' deployed at network '${chainId}'`
-            );
-            setCartesiToken(
-                CartesiTokenFactory.connect(address, library.getSigner())
-            );
         }
     }, [library, chainId]);
 
-    const balanceOf = async (address: string): Promise<BigNumber> => {
-        if (cartesiToken) {
-            try {
-                setError('');
-                return cartesiToken.balanceOf(address);
-            } catch (e) {
-                setError(e.message);
+    // balances
+    useEffect(() => {
+        if (token && account) {
+            token.balanceOf(account).then(setBalance);
+            if (spender) {
+                token.allowance(account, spender).then(setAllowance);
             }
         }
-    };
-
-    const allowance = async (
-        owner: string,
-        spender: string
-    ): Promise<BigNumber> => {
-        if (cartesiToken) {
-            try {
-                setError('');
-                return cartesiToken.allowance(owner, spender);
-            } catch (e) {
-                setError(e.message);
-            }
-        }
-    };
+    }, [token, account, spender, blockNumber]);
 
     const approve = async (spender: string, amount: BigNumberish) => {
-        if (cartesiToken) {
+        if (token) {
             try {
                 setError('');
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await cartesiToken.approve(spender, amount);
+                const transaction = await token.approve(spender, amount);
 
                 // wait for confirmation
                 const receipt = await transaction.wait(1);
@@ -100,11 +87,10 @@ export const useCartesiToken = () => {
     }
 
     return {
-        cartesiToken,
-        submitting,
-        error,
-        balanceOf,
         allowance,
+        balance,
+        error,
+        submitting,
         approve,
         parseCTSI,
         formatCTSI

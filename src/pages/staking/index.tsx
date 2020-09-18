@@ -16,17 +16,19 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
 import Layout from '../../components/Layout';
+import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
-    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [depositAmount, setDepositAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
     const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
-    const [allowanceBalance, setAllowanceBalance] = useState<BigNumber>(BigNumber.from(0));
+    
+    // block number tracking
+    const blockNumber = useBlockNumber();
 
     const [error, setError] = useState<string>(null);
 
@@ -46,29 +48,14 @@ const Staking = () => {
     } = useStaking();
 
     const {
-        cartesiToken,
         submitting: tokenSubmitting,
         error: tokenError,
-        balanceOf,
+        balance,
         allowance,
         approve,
         formatCTSI,
         parseCTSI
-    } = useCartesiToken();
-
-    useEffect(() => {
-        if (cartesiToken && staking && account) {
-            cartesiToken.balanceOf(account).then(setBalance);
-            cartesiToken.allowance(account, staking.address).then(setAllowanceBalance);
-        }
-    }, [cartesiToken, staking, account]);
-
-    const getInformation = () => {
-        if (account && staking) {
-            allowance(account, staking.address).then(setAllowanceBalance);
-            balanceOf(account).then(setBalance);
-        }
-    };
+    } = useCartesiToken(account, staking?.address, blockNumber);
 
     useEffect(() => {
         if (!stakingSubmitting) {
@@ -82,9 +69,6 @@ const Staking = () => {
         }
     }, [stakingSubmitting, tokenSubmitting]);
 
-    useEffect(() => {
-    }, [balance, allowanceBalance, stakedBalance, unfinalizedDepositAmount, unfinalizedWithdrawAmount]);
-
     const validate = (value: BigNumber): BigNumber => {
         if (!value || value.lt(0)) value = BigNumber.from(0);
         return value;
@@ -93,7 +77,6 @@ const Staking = () => {
     const doApprove = () => {
         approve(staking.address, approveAmount)
             .then(() => {
-                getInformation();
                 setApproveAmount(BigNumber.from(0));
             });
     }
@@ -101,7 +84,6 @@ const Staking = () => {
     const doDeposit = () => {
         depositStake(parseCTSI(depositAmount))
             .then(() => {
-                getInformation();
                 setDepositAmount(BigNumber.from(0));
             })
     }
@@ -109,7 +91,6 @@ const Staking = () => {
     const doWithdraw = () => {
         startWithdraw(parseCTSI(withdrawAmount))
             .then(() => {
-                getInformation();
                 setWithdrawAmount(BigNumber.from(0));
             })
     }
@@ -117,14 +98,12 @@ const Staking = () => {
     const doFinalizeStakes = () => {
         finalizeStakes()
             .then(() => {
-                getInformation();
             })
     }
 
     const doFinalizeWithdraw = () => {
         finalizeWithdraws()
             .then(() => {
-                getInformation();
             })
     }
 
@@ -147,7 +126,7 @@ const Staking = () => {
                 <Typography.Title level={4}>Balance: {formatCTSI(balance)} CTSI</Typography.Title>
 
                 <Space direction='vertical'>
-                    <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowanceBalance)} CTSI</Typography.Title>
+                    <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowance)} CTSI</Typography.Title>
 
                     <div>
                         <Typography.Title level={4}>Set Allowance: </Typography.Title>
@@ -185,7 +164,7 @@ const Staking = () => {
                                     </Col>
                                     <Col>
                                         <Button onClick={doDeposit} 
-                                            disabled={!depositAmount || depositAmount.gt(allowanceBalance)}
+                                            disabled={!depositAmount || depositAmount.gt(allowance)}
                                         >
                                             Deposit Stake
                                         </Button>
