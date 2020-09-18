@@ -13,19 +13,19 @@ import { useContext, useState, useEffect } from 'react';
 import Web3Context from '../components/Web3Context';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
-import { formatCTSI, parseCTSI } from '../utils/token';
 import { networks } from '../utils/networks';
+import { BigNumber, BigNumberish } from 'ethers';
 
 export const useStaking = () => {
     const { provider, chain, account } = useContext(Web3Context);
     const [staking, setStaking] = useState<Staking>();
     const [address, setAddress] = useState<string>(null);
 
-    const [stakedBalance, setStakedBalance] = useState<number>(0);
+    const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
     const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
     const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
-    const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<number>(0);
-    const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<number>(0);
+    const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
     
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -54,15 +54,14 @@ export const useStaking = () => {
     }, [provider, chain]);
 
     const updateState = () => {
-        if (staking) {
+        if (staking && account) {
             try {
                 setError('');
-                staking.getStakedBalance(account).then(value => setStakedBalance(formatCTSI(value)));
-
+                staking.getStakedBalance(account).then(setStakedBalance);
                 staking.getFinalizeDepositTimestamp(account).then(value => setFinalizeDepositTimestamp(new Date(value.toNumber() * 1000)));
                 staking.getFinalizeWithdrawTimestamp(account).then(value => setFinalizeWithdrawTimestamp(new Date(value.toNumber() * 1000)));
-                staking.getUnfinalizedDepositAmount(account).then(value => setUnfinalizedDepositAmount(formatCTSI(value)));
-                staking.getUnfinalizedWithdrawAmount(account).then(value => setUnfinalizedWithdrawAmount(formatCTSI(value)));
+                staking.getUnfinalizedDepositAmount(account).then(setUnfinalizedDepositAmount);
+                staking.getUnfinalizedWithdrawAmount(account).then(setUnfinalizedWithdrawAmount);
             } catch (e) {
                 setError(e.message);
             }
@@ -76,7 +75,7 @@ export const useStaking = () => {
     }, [staking, account]);
 
     const depositStake = async (
-        amount: number
+        amount: BigNumberish
     ) => {
         if (staking) {
             try {
@@ -84,7 +83,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.depositStake(parseCTSI(amount));
+                const transaction = await staking.depositStake(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -122,7 +121,7 @@ export const useStaking = () => {
     };
 
     const startWithdraw = async (
-        amount: number
+        amount: BigNumberish
     ) => {
         if (staking) {
             try {
@@ -130,7 +129,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.startWithdraw(parseCTSI(amount));
+                const transaction = await staking.startWithdraw(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);

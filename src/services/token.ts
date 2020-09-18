@@ -13,8 +13,8 @@ import { useContext, useState, useEffect } from 'react';
 import Web3Context from '../components/Web3Context';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
-import { formatCTSI, parseCTSI } from '../utils/token';
 import { networks } from '../utils/networks';
+import { BigNumber, BigNumberish } from 'ethers';
 
 export const useCartesiToken = () => {
     const { provider, chain } = useContext(Web3Context);
@@ -48,40 +48,36 @@ export const useCartesiToken = () => {
         }
     }, [provider, chain]);
 
-    const balanceOf = async (address: string) => {
+    const balanceOf = async (address: string): Promise<BigNumber> => {
         if (cartesiToken) {
             try {
                 setError('');
-
-                const result = await cartesiToken.balanceOf(address);
-                return formatCTSI(result);
+                return cartesiToken.balanceOf(address);
             } catch (e) {
                 setError(e.message);
             }
         }
     };
 
-    const allowance = async (owner: string, spender: string) => {
+    const allowance = async (owner: string, spender: string): Promise<BigNumber> => {
         if (cartesiToken) {
             try {
                 setError('');
-
-                const result = await cartesiToken.allowance(owner, spender);
-                return formatCTSI(result);
+                return cartesiToken.allowance(owner, spender);
             } catch (e) {
                 setError(e.message);
             }
         }
     };
 
-    const approve = async (spender: string, amount: number) => {
+    const approve = async (spender: string, amount: BigNumberish) => {
         if (cartesiToken) {
             try {
                 setError('');
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await cartesiToken.approve(spender, parseCTSI(amount));
+                const transaction = await cartesiToken.approve(spender, amount);
 
                 // wait for confirmation
                 const receipt = await transaction.wait(1);

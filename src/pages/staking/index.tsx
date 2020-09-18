@@ -14,16 +14,18 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
 import Layout from '../../components/Layout';
+import { formatCTSI, parseCTSI } from '../../utils/token';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
+import { BigNumber } from 'ethers';
 
 const Staking = () => {
     const [address, setAddress] = useState<string>(null);
-    const [balance, setBalance] = useState<number>(0);
-    const [depositAmount, setDepositAmount] = useState<number>(0);
-    const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
-    const [approveAmount, setApproveAmount] = useState<number>(0);
-    const [allowanceBalance, setAllowanceBalance] = useState<number>(0);
+    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [depositAmount, setDepositAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [allowanceBalance, setAllowanceBalance] = useState<BigNumber>(BigNumber.from(0));
 
     const [error, setError] = useState<string>(null);
 
@@ -56,8 +58,8 @@ const Staking = () => {
         if(account) setAddress(account);
         else account = address;
         
-        allowance(account, stakingAddress).then(val => setAllowanceBalance(val));
-        balanceOf(account).then(val => setBalance(val));
+        allowance(account, stakingAddress).then(setAllowanceBalance);
+        balanceOf(account).then(setBalance);
     };
 
     useEffect(() => {
@@ -80,8 +82,8 @@ const Staking = () => {
         }
     }, [stakingSubmitting, tokenSubmitting]);
 
-    const validate = value => {
-        if(!value || value < 0) value = 0;
+    const validate = (value: BigNumber): BigNumber => {
+        if (!value || value.lt(0)) value = BigNumber.from(0);
         return value;
     }
 
@@ -89,7 +91,7 @@ const Staking = () => {
         approve(stakingAddress, approveAmount)
             .then(() => {
                 getInformation();
-                setApproveAmount(0);
+                setApproveAmount(BigNumber.from(0));
             });
     }
 
@@ -97,7 +99,7 @@ const Staking = () => {
         depositStake(depositAmount)
             .then(() => {
                 getInformation();
-                setDepositAmount(0);
+                setDepositAmount(BigNumber.from(0));
             })
     }
 
@@ -105,7 +107,7 @@ const Staking = () => {
         startWithdraw(withdrawAmount)
             .then(() => {
                 getInformation();
-                setWithdrawAmount(0);
+                setWithdrawAmount(BigNumber.from(0));
             })
     }
 
@@ -139,18 +141,18 @@ const Staking = () => {
             </Breadcrumb>
 
             <Space direction='vertical' size='large'>
-                <Typography.Title level={4}>Balance: {balance} CTSI</Typography.Title>
+                <Typography.Title level={4}>Balance: {formatCTSI(balance)} CTSI</Typography.Title>
 
                 <Space direction='vertical'>
-                    <Typography.Title level={4}>Allowance Balance: {allowanceBalance} CTSI</Typography.Title>
+                    <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowanceBalance)} CTSI</Typography.Title>
 
                     <div>
                         <Typography.Title level={4}>Set Allowance: </Typography.Title>
                         <Row>
                             <Col>
                                 <Input
-                                    value={approveAmount}
-                                    onChange={e => setApproveAmount(validate(e.target.valueAsNumber))}
+                                    value={approveAmount.toString()}
+                                    onChange={e => setApproveAmount(validate(BigNumber.from(e.target.value)))}
                                     suffix="CTSI"
                                     type="number"
                                 />
@@ -163,7 +165,7 @@ const Staking = () => {
                 </Space>
 
                 <Space direction='vertical'>
-                    <Typography.Title level={4}>Staked Balance: {stakedBalance} CTSI</Typography.Title>
+                    <Typography.Title level={4}>Staked Balance: {formatCTSI(stakedBalance)} CTSI</Typography.Title>
                     
                     <Space direction='vertical' size='large'>
                         <div>
@@ -172,15 +174,15 @@ const Staking = () => {
                                 <Row>
                                     <Col>
                                         <Input
-                                            value={depositAmount}
-                                            onChange={e => setDepositAmount(validate(e.target.valueAsNumber))}
+                                            value={depositAmount.toString()}
+                                            onChange={e => setDepositAmount(validate(BigNumber.from(e.target.value)))}
                                             suffix="CTSI"
                                             type="number"
                                         />
                                     </Col>
                                     <Col>
                                         <Button onClick={doDeposit} 
-                                            disabled={!depositAmount || depositAmount > allowanceBalance}
+                                            disabled={!depositAmount || depositAmount.gt(allowanceBalance)}
                                         >
                                             Deposit Stake
                                         </Button>
@@ -189,15 +191,15 @@ const Staking = () => {
 
                                 <Row align='middle'>
                                     <Col>
-                                        <Typography.Text>Amount to finalize deposit: {unfinalizedDepositAmount} CTSI &nbsp;</Typography.Text>
+                                        <Typography.Text>Amount to finalize deposit: {formatCTSI(unfinalizedDepositAmount)} CTSI &nbsp;</Typography.Text>
                                     </Col>
                                     <Col>
-                                        {unfinalizedDepositAmount > 0 && finalizeDepositTimestamp <= new Date() &&
+                                        {unfinalizedDepositAmount.gt(0) && finalizeDepositTimestamp <= new Date() &&
                                             <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
                                         }
                                     </Col>
                                 </Row>
-                                {unfinalizedDepositAmount > 0 && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
+                                {unfinalizedDepositAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
                             </Space>
                         </div>
 
@@ -207,15 +209,15 @@ const Staking = () => {
                                 <Row>
                                     <Col>
                                         <Input
-                                            value={withdrawAmount}
-                                            onChange={e => setWithdrawAmount(validate(e.target.valueAsNumber))}
+                                            value={withdrawAmount.toString()}
+                                            onChange={e => setWithdrawAmount(validate(BigNumber.from(e.target.value)))}
                                             suffix="CTSI"
                                             type="number"
                                         />
                                     </Col>
                                     <Col>
                                         <Button onClick={doWithdraw}
-                                            disabled={!withdrawAmount || withdrawAmount > stakedBalance}
+                                            disabled={!withdrawAmount || withdrawAmount.gt(stakedBalance)}
                                         >
                                             Start Withdraw
                                         </Button>
@@ -224,15 +226,15 @@ const Staking = () => {
 
                                 <Row align='middle'>
                                     <Col>
-                                        <Typography.Text>Amount to finalize withdraw: {unfinalizedWithdrawAmount} CTSI &nbsp;</Typography.Text>
+                                        <Typography.Text>Amount to finalize withdraw: {formatCTSI(unfinalizedWithdrawAmount)} CTSI &nbsp;</Typography.Text>
                                     </Col>
                                     <Col>
-                                        {unfinalizedWithdrawAmount > 0 && finalizeWithdrawTimestamp <= new Date() &&
+                                        {unfinalizedWithdrawAmount.gt(0) && finalizeWithdrawTimestamp <= new Date() &&
                                             <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
                                         }
                                     </Col>
                                 </Row>
-                                {unfinalizedWithdrawAmount > 0 && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
+                                {unfinalizedWithdrawAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
                             </Space>
                         </div>
                     </Space>
