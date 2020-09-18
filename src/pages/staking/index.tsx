@@ -12,6 +12,8 @@
 import React, {useEffect, useState} from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
 import Layout from '../../components/Layout';
 import { useStaking } from '../../services/staking';
@@ -19,7 +21,7 @@ import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 
 const Staking = () => {
-    const [address, setAddress] = useState<string>(null);
+    const { account } = useWeb3React<Web3Provider>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [depositAmount, setDepositAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
@@ -30,7 +32,6 @@ const Staking = () => {
 
     const {
         staking,
-        address: stakingAddress,
         submitting: stakingSubmitting,
         error: stakingError,
         stakedBalance,
@@ -55,27 +56,25 @@ const Staking = () => {
         parseCTSI
     } = useCartesiToken();
 
-    const getInformation = (account = null) => {
-        if(account) setAddress(account);
-        else account = address;
-        
-        allowance(account, stakingAddress).then(setAllowanceBalance);
-        balanceOf(account).then(setBalance);
+    useEffect(() => {
+        if (cartesiToken && staking && account) {
+            cartesiToken.balanceOf(account).then(setBalance);
+            cartesiToken.allowance(account, staking.address).then(setAllowanceBalance);
+        }
+    }, [cartesiToken, staking, account]);
+
+    const getInformation = () => {
+        if (account && staking) {
+            allowance(account, staking.address).then(setAllowanceBalance);
+            balanceOf(account).then(setBalance);
+        }
     };
 
     useEffect(() => {
-        if(staking && cartesiToken) {
-            window.ethereum
-                .request({ method: 'eth_requestAccounts' })
-                .then(accounts => getInformation(accounts[0]));
-        }
-    }, [staking, cartesiToken]);
-
-    useEffect(() => {
-        if(!stakingSubmitting) {
+        if (!stakingSubmitting) {
             setError(stakingError);
         }
-        else if(!tokenSubmitting) {
+        else if (!tokenSubmitting) {
             setError(tokenError);
         }
         else {
@@ -92,7 +91,7 @@ const Staking = () => {
     }
 
     const doApprove = () => {
-        approve(stakingAddress, parseCTSI(approveAmount))
+        approve(staking.address, approveAmount)
             .then(() => {
                 getInformation();
                 setApproveAmount(BigNumber.from(0));

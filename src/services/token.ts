@@ -9,8 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext, useState, useEffect } from 'react';
-import Web3Context from '../components/Web3Context';
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 import { networks } from '../utils/networks';
@@ -18,36 +19,32 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
 export const useCartesiToken = () => {
-    const { provider, chain } = useContext(Web3Context);
+    const { library, chainId } = useWeb3React<Web3Provider>();
     const [cartesiToken, setCartesiToken] = useState<CartesiToken>();
-    const [address, setAddress] = useState<string>(null);
 
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
-        if (provider && chain) {
-            const network = networks[chain.chainId];
+        if (library && chainId) {
+            const network = networks[chainId];
             const tokenArtifact = require(`@cartesi/token/deployments/${network}/CartesiToken.json`);
-            const address = tokenArtifact?.address ||
-                tokenArtifact?.networks[chain.chainId]?.address;
+            const address =
+                tokenArtifact?.address ||
+                tokenArtifact?.networks[chainId]?.address;
             if (!address) {
-                setError(
-                    `CartesiToken not deployed at network '${chain.name}'`
-                );
+                setError(`CartesiToken not deployed at network '${chainId}'`);
                 return;
             }
             console.log(
-                `Attaching CartesiToken to address '${address}' deployed at network '${chain.name}'`
+                `Attaching CartesiToken to address '${address}' deployed at network '${chainId}'`
             );
             setCartesiToken(
-                CartesiTokenFactory.connect(address, provider.getSigner())
+                CartesiTokenFactory.connect(address, library.getSigner())
             );
-
-            setAddress(address);
         }
-    }, [provider, chain]);
+    }, [library, chainId]);
 
     const balanceOf = async (address: string): Promise<BigNumber> => {
         if (cartesiToken) {
@@ -60,7 +57,10 @@ export const useCartesiToken = () => {
         }
     };
 
-    const allowance = async (owner: string, spender: string): Promise<BigNumber> => {
+    const allowance = async (
+        owner: string,
+        spender: string
+    ): Promise<BigNumber> => {
         if (cartesiToken) {
             try {
                 setError('');
@@ -103,7 +103,6 @@ export const useCartesiToken = () => {
         cartesiToken,
         submitting,
         error,
-        address,
         balanceOf,
         allowance,
         approve,

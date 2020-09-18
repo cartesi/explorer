@@ -9,27 +9,31 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useContext } from 'react';
-import Web3Context from '../components/Web3Context';
+import React, { useEffect, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { Space, Typography } from 'antd';
 import { MetaMaskButton } from 'rimble-ui';
 import MetaMaskOnboarding from '@metamask/onboarding';
+import { InjectedConnector } from '@web3-react/injected-connector';
+import { IChainData, getChain } from '../services/chain';
+import { networks } from '../utils/networks';
 
 import styles from './SelectedChain.module.css';
 
 const SelectedChain = () => {
-    const { chain, updateProvider } = useContext(Web3Context);
+    const { chainId, activate } = useWeb3React<Web3Provider>();
+    const [chain, setChain] = useState<IChainData>(undefined);
     const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
+    const supportedChainIds = Object.keys(networks).map(key => parseInt(key));
+    const connector = new InjectedConnector({ supportedChainIds });
 
-    const connectMetaMask = () => {
-        if(hasMetaMask) {
-            window.ethereum.request({ method: 'eth_requestAccounts'})
-                .then(() => updateProvider(window.ethereum));
-        } else {
-            const onboarding = new MetaMaskOnboarding();
-            onboarding.startOnboarding();
+    // get chain name
+    useEffect(() => {
+        if (chainId) {
+            getChain(chainId).then(setChain);
         }
-    };
+    }, [chainId]);
 
     return (
         <div className={styles.selectedChainContainer}>
@@ -41,7 +45,7 @@ const SelectedChain = () => {
                     </Typography.Text>
                 </Space>
                 :
-                <MetaMaskButton.Outline onClick={connectMetaMask}>
+                <MetaMaskButton.Outline onClick={() => activate(connector)}>
                     {hasMetaMask ? 'Connect with MetaMask' : 'Install MetaMask'}
                 </MetaMaskButton.Outline>
             }

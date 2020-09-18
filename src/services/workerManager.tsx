@@ -9,8 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext, useState, useEffect } from 'react';
-import Web3Context from '../components/Web3Context';
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { WorkerManager } from '../contracts/WorkerManager';
 import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
@@ -18,27 +19,27 @@ import { networks } from '../utils/networks';
 
 /*
 export const useManager = () => {
-    const { provider, chain } = useContext(Web3Context);
+    const { library, chainId } = useWeb3React<Web3Provider>();
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (provider) {
-            const address = workerManagerJson[chain.chainId]?.address;
+        if (library) {
+            const address = workerManagerJson[chainId]?.address;
             if (!address) {
                 setError(
-                    `WorkerManager not deployed at network '${chain.name}'`
+                    `WorkerManager not deployed at network '${chainId}'`
                 );
             }
             console.log(
-                `Attaching WorkerManager to address '${address}' deployed at network '${chain.name}'`
+                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
             );
             setWorkerManager(
-                WorkerManagerFactory.connect(address, provider.getSigner())
+                WorkerManagerFactory.connect(address, library.getSigner())
             );
             setError('');
         }
-    }, [provider, chain]);
+    }, [library, chainId]);
 
     return {
         workerManager,
@@ -48,7 +49,7 @@ export const useManager = () => {
 */
 
 export const useWorkerManager = (worker: string) => {
-    const { provider, chain } = useContext(Web3Context);
+    const { library, chainId } = useWeb3React<Web3Provider>();
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
     const [user, setUser] = useState<string>('');
@@ -62,23 +63,23 @@ export const useWorkerManager = (worker: string) => {
 
     // create the WorkerManager, asynchronously
     useEffect(() => {
-        if (provider && chain) {
-            const network = networks[chain.chainId];
+        if (library && chainId) {
+            const network = networks[chainId];
             const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)?.address;
             if (!address) {
                 setError(
-                    `WorkerManager not deployed at network '${chain.name}'`
+                    `WorkerManager not deployed at network '${chainId}'`
                 );
                 return;
             }
             console.log(
-                `Attaching WorkerManager to address '${address}' deployed at network '${chain.name}'`
+                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
             );
             setWorkerManager(
-                WorkerManagerFactory.connect(address, provider.getSigner())
+                WorkerManagerFactory.connect(address, library.getSigner())
             );
         }
-    }, [provider, chain]);
+    }, [library, chainId]);
 
     const updateState = async (
         workerManager: WorkerManager,

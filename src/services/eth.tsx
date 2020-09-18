@@ -9,32 +9,33 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext, useState, useEffect } from 'react';
-import Web3Context from '../components/Web3Context';
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
 
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const useBalance = (address: string, deps: any[] = []) => {
-    const { provider } = useContext(Web3Context);
+    const { library } = useWeb3React<Web3Provider>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     useEffect(() => {
-        if (provider) {
-            provider.getBalance(address).then(setBalance);
+        if (library) {
+            library.getBalance(address).then(setBalance);
         }
-    }, [provider, address, ...deps]);
+    }, [library, address, ...deps]);
     return balance;
 };
 
 export const useAccount = (index: number) => {
-    const { provider } = useContext(Web3Context);
+    const { library } = useWeb3React<Web3Provider>();
     const [account, setAccount] = useState<string>(NULL_ADDRESS);
     useEffect(() => {
-        if (provider) {
-            provider.listAccounts().then((accounts) => {
+        if (library) {
+            library.listAccounts().then((accounts) => {
                 setAccount(accounts.length > 0 ? accounts[index] : '');
             });
         }
-    }, [provider, index]);
+    }, [library, index]);
     return account;
 };

@@ -9,17 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext, useState, useEffect } from 'react';
-import Web3Context from '../components/Web3Context';
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 
 export const useStaking = () => {
-    const { provider, chain, account } = useContext(Web3Context);
+    const { library, chainId, account } = useWeb3React<Web3Provider>();
     const [staking, setStaking] = useState<Staking>();
-    const [address, setAddress] = useState<string>(null);
 
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
     const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
@@ -32,26 +32,24 @@ export const useStaking = () => {
 
     // create the Staking, asynchronously
     useEffect(() => {
-        if (provider && chain) {
-            const network = networks[chain.chainId];
+        if (library && chainId) {
+            const network = networks[chainId];
             const stakingImplJson = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
             const address = stakingImplJson?.address;
             if (!address) {
                 setError(
-                    `Staking not deployed at network '${chain.name}'`
+                    `Staking not deployed at network '${chainId}'`
                 );
                 return;
             }
             console.log(
-                `Attaching Staking to address '${address}' deployed at network '${chain.name}'`
+                `Attaching Staking to address '${address}' deployed at network '${chainId}'`
             );
             setStaking(
-                StakingFactory.connect(address, provider.getSigner())
+                StakingFactory.connect(address, library.getSigner())
             );
-
-            setAddress(address);
         }
-    }, [provider, chain]);
+    }, [library, chainId]);
 
     const updateState = () => {
         if (staking && account) {
@@ -170,7 +168,6 @@ export const useStaking = () => {
         staking,
         submitting,
         error,
-        address,
         stakedBalance,
         finalizeDepositTimestamp,
         finalizeWithdrawTimestamp,
