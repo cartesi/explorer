@@ -15,7 +15,6 @@ import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
-import { parseCTSI } from '../utils/token';
 
 export const useStaking = () => {
     const { provider, chain, account } = useContext(Web3Context);
@@ -56,7 +55,6 @@ export const useStaking = () => {
 
     const updateState = () => {
         if (staking && account) {
-            console.log('~~~~~~')
             try {
                 setError('');
                 staking.getStakedBalance(account).then(setStakedBalance);
@@ -85,7 +83,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.depositStake(parseCTSI(amount));
+                const transaction = await staking.depositStake(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -131,7 +129,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.startWithdraw(parseCTSI(amount));
+                const transaction = await staking.startWithdraw(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);

@@ -14,7 +14,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
 import Layout from '../../components/Layout';
-import { formatCTSI } from '../../utils/token';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
@@ -51,7 +50,9 @@ const Staking = () => {
         error: tokenError,
         balanceOf,
         allowance,
-        approve
+        approve,
+        formatCTSI,
+        parseCTSI
     } = useCartesiToken();
 
     const getInformation = (account = null) => {
@@ -88,7 +89,7 @@ const Staking = () => {
     }
 
     const doApprove = () => {
-        approve(stakingAddress, approveAmount)
+        approve(stakingAddress, parseCTSI(approveAmount))
             .then(() => {
                 getInformation();
                 setApproveAmount(BigNumber.from(0));
@@ -96,7 +97,7 @@ const Staking = () => {
     }
 
     const doDeposit = () => {
-        depositStake(depositAmount)
+        depositStake(parseCTSI(depositAmount))
             .then(() => {
                 getInformation();
                 setDepositAmount(BigNumber.from(0));
@@ -104,7 +105,7 @@ const Staking = () => {
     }
 
     const doWithdraw = () => {
-        startWithdraw(withdrawAmount)
+        startWithdraw(parseCTSI(withdrawAmount))
             .then(() => {
                 getInformation();
                 setWithdrawAmount(BigNumber.from(0));
