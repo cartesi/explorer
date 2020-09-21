@@ -21,27 +21,13 @@ import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 
-type WaitingStatus = {
-    approve?: boolean;
-    deposit?: boolean;
-    finalizeDeposit?: boolean;
-    withdraw?: boolean;
-    finalizeWithdraw?: boolean;
-}
-
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
     const [depositAmount, setDepositAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
     const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
 
-    const [waiting, setWaiting] = useState<WaitingStatus>({
-        approve: false,
-        deposit: false,
-        finalizeDeposit: false,
-        withdraw: false,
-        finalizeWithdraw: false
-    });
+    const [waiting, setWaiting] = useState<boolean>(false);
 
     // block number tracking
     const blockNumber = useBlockNumber();
@@ -91,75 +77,45 @@ const Staking = () => {
     }
 
     const doApprove = () => {
-        setWaiting({
-            ...waiting,
-            approve: true
-        });
+        setWaiting(true);
         approve(staking.address, parseCTSI(approveAmount))
             .then(() => {
                 setApproveAmount(BigNumber.from(0));
-                setWaiting({
-                    ...waiting,
-                    approve: false
-                });
+                setWaiting(false);
             });
     }
 
     const doDeposit = () => {
-        setWaiting({
-            ...waiting,
-            deposit: true
-        });
+        setWaiting(true);
         depositStake(parseCTSI(depositAmount))
             .then(() => {
                 setDepositAmount(BigNumber.from(0));
-                setWaiting({
-                    ...waiting,
-                    deposit: false
-                });
+                setWaiting(false);
             })
     }
 
     const doWithdraw = () => {
-        setWaiting({
-            ...waiting,
-            withdraw: true
-        });
+        setWaiting(true);
         startWithdraw(parseCTSI(withdrawAmount))
             .then(() => {
                 setWithdrawAmount(BigNumber.from(0));
-                setWaiting({
-                    ...waiting,
-                    withdraw: false
-                });
+                setWaiting(false);
             })
     }
 
     const doFinalizeStakes = () => {
-        setWaiting({
-            ...waiting,
-            finalizeDeposit: true
-        });
+        setWaiting(true);
         finalizeStakes()
             .then(() => {
-                setWaiting({
-                    ...waiting,
-                    finalizeDeposit: false
-                });
+                setWaiting(false);
             })
     }
 
     const doFinalizeWithdraw = () => {
-        setWaiting({
-            ...waiting,
-            finalizeWithdraw: true
-        });
+        setWaiting(true);
         finalizeWithdraws()
             .then(() => {
-                setWaiting({
-                    ...waiting,
-                    finalizeWithdraw: false
-                });
+                setWaiting(false);
             })
     }
 
@@ -178,125 +134,117 @@ const Staking = () => {
                 <Breadcrumb.Item>Staking</Breadcrumb.Item>
             </Breadcrumb>
 
-            <Space direction='vertical' size='large'>
-                <Typography.Title level={4}>Balance: {formatCTSI(balance)} CTSI</Typography.Title>
+            <Spin spinning={waiting}>
+                <Space direction='vertical' size='large'>
+                    <Typography.Title level={4}>Balance: {formatCTSI(balance)} CTSI</Typography.Title>
 
-                <Space direction='vertical'>
-                    <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowance)} CTSI</Typography.Title>
+                    <Space direction='vertical'>
+                        <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowance)} CTSI</Typography.Title>
 
-                    <div>
-                        <Typography.Title level={4}>Set Allowance: </Typography.Title>
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={approveAmount.toString()}
-                                    onChange={e => setApproveAmount(validate(BigNumber.from(e.target.value)))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Spin spinning={waiting.approve}>
-                                    <Button onClick={doApprove}>Approve</Button>
-                                </Spin>
-                            </Col>
-                        </Row>
-                    </div>
-                </Space>
-
-                <Space direction='vertical'>
-                    <Typography.Title level={4}>Staked Balance: {formatCTSI(stakedBalance)} CTSI</Typography.Title>
-                    
-                    <Space direction='vertical' size='large'>
                         <div>
-                            <Typography.Title level={4}>Stake: </Typography.Title>
-                            <Space direction='vertical'>
-                                <Row>
-                                    <Col>
-                                        <Input
-                                            value={depositAmount.toString()}
-                                            onChange={e => setDepositAmount(validate(BigNumber.from(e.target.value)))}
-                                            suffix="CTSI"
-                                            type="number"
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <Spin spinning={waiting.deposit}>
+                            <Typography.Title level={4}>Set Allowance: </Typography.Title>
+                            <Row>
+                                <Col>
+                                    <Input
+                                        value={approveAmount.toString()}
+                                        onChange={e => setApproveAmount(validate(BigNumber.from(e.target.value)))}
+                                        suffix="CTSI"
+                                        type="number"
+                                    />
+                                </Col>
+                                <Col>
+                                    <Button onClick={doApprove}>Approve</Button>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Space>
+
+                    <Space direction='vertical'>
+                        <Typography.Title level={4}>Staked Balance: {formatCTSI(stakedBalance)} CTSI</Typography.Title>
+                        
+                        <Space direction='vertical' size='large'>
+                            <div>
+                                <Typography.Title level={4}>Stake: </Typography.Title>
+                                <Space direction='vertical'>
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                value={depositAmount.toString()}
+                                                onChange={e => setDepositAmount(validate(BigNumber.from(e.target.value)))}
+                                                suffix="CTSI"
+                                                type="number"
+                                            />
+                                        </Col>
+                                        <Col>
                                             <Button onClick={doDeposit} 
                                                 disabled={!depositAmount || depositAmount.gt(allowance)}
                                             >
                                                 Deposit Stake
                                             </Button>
-                                        </Spin>
-                                    </Col>
-                                </Row>
+                                        </Col>
+                                    </Row>
 
-                                <Row align='middle'>
-                                    <Col>
-                                        <Typography.Text>Amount to finalize deposit: {formatCTSI(unfinalizedDepositAmount)} CTSI &nbsp;</Typography.Text>
-                                    </Col>
-                                    <Col>
-                                        {unfinalizedDepositAmount.gt(0) && finalizeDepositTimestamp <= new Date() &&
-                                            <Spin spinning={waiting.finalizeDeposit}>
+                                    <Row align='middle'>
+                                        <Col>
+                                            <Typography.Text>Amount to finalize deposit: {formatCTSI(unfinalizedDepositAmount)} CTSI &nbsp;</Typography.Text>
+                                        </Col>
+                                        <Col>
+                                            {unfinalizedDepositAmount.gt(0) && finalizeDepositTimestamp <= new Date() &&
                                                 <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
-                                        </Spin>
-                                        }
-                                    </Col>
-                                </Row>
-                                {unfinalizedDepositAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
-                            </Space>
-                        </div>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    {unfinalizedDepositAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeDepositTimestamp?.toLocaleString()}</Typography.Text>}
+                                </Space>
+                            </div>
 
-                        <div>
-                            <Typography.Title level={4}>Withdraw: </Typography.Title>
-                            <Space direction='vertical'>
-                                <Row>
-                                    <Col>
-                                        <Input
-                                            value={withdrawAmount.toString()}
-                                            onChange={e => setWithdrawAmount(validate(BigNumber.from(e.target.value)))}
-                                            suffix="CTSI"
-                                            type="number"
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <Spin spinning={waiting.withdraw}>
+                            <div>
+                                <Typography.Title level={4}>Withdraw: </Typography.Title>
+                                <Space direction='vertical'>
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                value={withdrawAmount.toString()}
+                                                onChange={e => setWithdrawAmount(validate(BigNumber.from(e.target.value)))}
+                                                suffix="CTSI"
+                                                type="number"
+                                            />
+                                        </Col>
+                                        <Col>
                                             <Button onClick={doWithdraw}
                                                 disabled={!withdrawAmount || withdrawAmount.gt(stakedBalance)}
                                             >
                                                 Start Withdraw
                                             </Button>
-                                        </Spin>
-                                    </Col>
-                                </Row>
+                                        </Col>
+                                    </Row>
 
-                                <Row align='middle'>
-                                    <Col>
-                                        <Typography.Text>Amount to finalize withdraw: {formatCTSI(unfinalizedWithdrawAmount)} CTSI &nbsp;</Typography.Text>
-                                    </Col>
-                                    <Col>
-                                        {unfinalizedWithdrawAmount.gt(0) && finalizeWithdrawTimestamp <= new Date() &&
-                                            <Spin spinning={waiting.finalizeWithdraw}>
-                                            <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
-                                        </Spin>
-                                        }
-                                    </Col>
-                                </Row>
-                                {unfinalizedWithdrawAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
-                            </Space>
-                        </div>
+                                    <Row align='middle'>
+                                        <Col>
+                                            <Typography.Text>Amount to finalize withdraw: {formatCTSI(unfinalizedWithdrawAmount)} CTSI &nbsp;</Typography.Text>
+                                        </Col>
+                                        <Col>
+                                            {unfinalizedWithdrawAmount.gt(0) && finalizeWithdrawTimestamp <= new Date() &&
+                                                <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    {unfinalizedWithdrawAmount.gt(0) && <Typography.Text>Next finalize time: {finalizeWithdrawTimestamp?.toLocaleString()}</Typography.Text>}
+                                </Space>
+                            </div>
+                        </Space>
                     </Space>
-                </Space>
 
-                {error &&
-                    <Alert
-                        message="Error occured!"
-                        description={error}
-                        type="error"
-                        closable
-                    />
-                }
-            </Space>
+                    {error &&
+                        <Alert
+                            message="Error occured!"
+                            description={error}
+                            type="error"
+                            closable
+                        />
+                    }
+                </Space>
+            </Spin>
         </Layout>
     );
 };
