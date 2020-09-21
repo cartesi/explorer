@@ -14,19 +14,35 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert } from 'antd';
+import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert, Spin } from 'antd';
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 
+type WaitingStatus = {
+    approve?: boolean;
+    deposit?: boolean;
+    finalizeDeposit?: boolean;
+    withdraw?: boolean;
+    finalizeWithdraw?: boolean;
+}
+
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
     const [depositAmount, setDepositAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
     const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
-    
+
+    const [waiting, setWaiting] = useState<WaitingStatus>({
+        approve: false,
+        deposit: false,
+        finalizeDeposit: false,
+        withdraw: false,
+        finalizeWithdraw: false
+    });
+
     // block number tracking
     const blockNumber = useBlockNumber();
 
@@ -75,35 +91,75 @@ const Staking = () => {
     }
 
     const doApprove = () => {
-        approve(staking.address, approveAmount)
+        setWaiting({
+            ...waiting,
+            approve: true
+        });
+        approve(staking.address, parseCTSI(approveAmount))
             .then(() => {
                 setApproveAmount(BigNumber.from(0));
+                setWaiting({
+                    ...waiting,
+                    approve: false
+                });
             });
     }
 
     const doDeposit = () => {
+        setWaiting({
+            ...waiting,
+            deposit: true
+        });
         depositStake(parseCTSI(depositAmount))
             .then(() => {
                 setDepositAmount(BigNumber.from(0));
+                setWaiting({
+                    ...waiting,
+                    deposit: false
+                });
             })
     }
 
     const doWithdraw = () => {
+        setWaiting({
+            ...waiting,
+            withdraw: true
+        });
         startWithdraw(parseCTSI(withdrawAmount))
             .then(() => {
                 setWithdrawAmount(BigNumber.from(0));
+                setWaiting({
+                    ...waiting,
+                    withdraw: false
+                });
             })
     }
 
     const doFinalizeStakes = () => {
+        setWaiting({
+            ...waiting,
+            finalizeDeposit: true
+        });
         finalizeStakes()
             .then(() => {
+                setWaiting({
+                    ...waiting,
+                    finalizeDeposit: false
+                });
             })
     }
 
     const doFinalizeWithdraw = () => {
+        setWaiting({
+            ...waiting,
+            finalizeWithdraw: true
+        });
         finalizeWithdraws()
             .then(() => {
+                setWaiting({
+                    ...waiting,
+                    finalizeWithdraw: false
+                });
             })
     }
 
@@ -140,7 +196,9 @@ const Staking = () => {
                                 />
                             </Col>
                             <Col>
-                                <Button onClick={doApprove}>Approve</Button>
+                                <Spin spinning={waiting.approve}>
+                                    <Button onClick={doApprove}>Approve</Button>
+                                </Spin>
                             </Col>
                         </Row>
                     </div>
@@ -163,11 +221,13 @@ const Staking = () => {
                                         />
                                     </Col>
                                     <Col>
-                                        <Button onClick={doDeposit} 
-                                            disabled={!depositAmount || depositAmount.gt(allowance)}
-                                        >
-                                            Deposit Stake
-                                        </Button>
+                                        <Spin spinning={waiting.deposit}>
+                                            <Button onClick={doDeposit} 
+                                                disabled={!depositAmount || depositAmount.gt(allowance)}
+                                            >
+                                                Deposit Stake
+                                            </Button>
+                                        </Spin>
                                     </Col>
                                 </Row>
 
@@ -177,7 +237,9 @@ const Staking = () => {
                                     </Col>
                                     <Col>
                                         {unfinalizedDepositAmount.gt(0) && finalizeDepositTimestamp <= new Date() &&
-                                            <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                            <Spin spinning={waiting.finalizeDeposit}>
+                                                <Button onClick={doFinalizeStakes}>Finalize Stakes</Button>
+                                        </Spin>
                                         }
                                     </Col>
                                 </Row>
@@ -198,11 +260,13 @@ const Staking = () => {
                                         />
                                     </Col>
                                     <Col>
-                                        <Button onClick={doWithdraw}
-                                            disabled={!withdrawAmount || withdrawAmount.gt(stakedBalance)}
-                                        >
-                                            Start Withdraw
-                                        </Button>
+                                        <Spin spinning={waiting.withdraw}>
+                                            <Button onClick={doWithdraw}
+                                                disabled={!withdrawAmount || withdrawAmount.gt(stakedBalance)}
+                                            >
+                                                Start Withdraw
+                                            </Button>
+                                        </Spin>
                                     </Col>
                                 </Row>
 
@@ -212,7 +276,9 @@ const Staking = () => {
                                     </Col>
                                     <Col>
                                         {unfinalizedWithdrawAmount.gt(0) && finalizeWithdrawTimestamp <= new Date() &&
+                                            <Spin spinning={waiting.finalizeWithdraw}>
                                             <Button onClick={doFinalizeWithdraw}>Finalize Withdraw</Button>
+                                        </Spin>
                                         }
                                     </Col>
                                 </Row>
