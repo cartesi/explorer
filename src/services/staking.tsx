@@ -22,10 +22,10 @@ export const useStaking = () => {
     const [staking, setStaking] = useState<Staking>();
 
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
-    const [finalizeDepositTimestamp, setFinalizeDepositTimestamp] = useState<Date>(null);
-    const [finalizeWithdrawTimestamp, setFinalizeWithdrawTimestamp] = useState<Date>(null);
-    const [unfinalizedDepositAmount, setUnfinalizedDepositAmount] = useState<BigNumber>(BigNumber.from(0));
-    const [unfinalizedWithdrawAmount, setUnfinalizedWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
+    const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
+    const [maturingBalance, setMaturingBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [releasingBalance, setReleasingBalance] = useState<BigNumber>(BigNumber.from(0));
     
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -54,10 +54,10 @@ export const useStaking = () => {
             try {
                 setError('');
                 staking.getStakedBalance(account).then(setStakedBalance);
-                staking.getFinalizeDepositTimestamp(account).then(value => setFinalizeDepositTimestamp(new Date(value.toNumber() * 1000)));
-                staking.getFinalizeWithdrawTimestamp(account).then(value => setFinalizeWithdrawTimestamp(new Date(value.toNumber() * 1000)));
-                staking.getUnfinalizedDepositAmount(account).then(setUnfinalizedDepositAmount);
-                staking.getUnfinalizedWithdrawAmount(account).then(setUnfinalizedWithdrawAmount);
+                staking.getMaturingTimestamp(account).then(value => setMaturingTimestamp(new Date(value.toNumber() * 1000)));
+                staking.getReleasingTimestamp(account).then(value => setReleasingTimestamp(new Date(value.toNumber() * 1000)));
+                staking.getMaturingBalance(account).then(setMaturingBalance);
+                staking.getReleasingBalance(account).then(setReleasingBalance);
             } catch (e) {
                 setError(e.message);
             }
@@ -70,7 +70,7 @@ export const useStaking = () => {
         }
     }, [staking, account]);
 
-    const depositStake = async (
+    const stake = async (
         amount: BigNumberish
     ) => {
         if (staking) {
@@ -79,7 +79,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.depositStake(amount);
+                const transaction = await staking.stake(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -94,29 +94,7 @@ export const useStaking = () => {
         }
     };
 
-    const finalizeStakes = async () => {
-        if (staking) {
-            try {
-                setError('');
-                setSubmitting(true);
-
-                // send transaction
-                const transaction = await staking.finalizeStakes();
-
-                // wait for confirmation
-                await transaction.wait(1);
-
-                updateState();
-
-                setSubmitting(false);
-            } catch (e) {
-                setError(e.message);
-                setSubmitting(false);
-            }
-        }
-    };
-
-    const startWithdraw = async (
+    const unstake = async (
         amount: BigNumberish
     ) => {
         if (staking) {
@@ -125,7 +103,7 @@ export const useStaking = () => {
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.startWithdraw(amount);
+                const transaction = await staking.unstake(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -140,14 +118,16 @@ export const useStaking = () => {
         }
     };
 
-    const finalizeWithdraws = async () => {
+    const withdraw = async (
+        amount: BigNumberish
+    ) => {
         if (staking) {
             try {
                 setError('');
                 setSubmitting(true);
 
                 // send transaction
-                const transaction = await staking.finalizeWithdraws();
+                const transaction = await staking.withdraw(amount);
 
                 // wait for confirmation
                 await transaction.wait(1);
@@ -167,13 +147,12 @@ export const useStaking = () => {
         submitting,
         error,
         stakedBalance,
-        finalizeDepositTimestamp,
-        finalizeWithdrawTimestamp,
-        unfinalizedDepositAmount,
-        unfinalizedWithdrawAmount,
-        depositStake,
-        finalizeStakes,
-        startWithdraw,
-        finalizeWithdraws
+        maturingTimestamp,
+        releasingTimestamp,
+        maturingBalance,
+        releasingBalance,
+        stake,
+        unstake,
+        withdraw
     };
 };
