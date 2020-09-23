@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@cartesi/pos": "^0.1.0-beta.1",
+    "@cartesi/pos": "^0.1.0-beta.2",
     "@cartesi/token": "^1.1.0",
     "@cartesi/util": "^0.4.2",
     "@metamask/onboarding": "^1.0.0",

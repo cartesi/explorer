@@ -1090,14 +1090,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cartesi/pos@^0.1.0-beta.1":
-  version "0.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.1.tgz#24d61d9425715b30935f7a69ff7c1bfed0075376"
-  integrity sha512-gcR3amYjyGupXCHkiH/ABt7ax0z57a77ZXx+aC2H7/5SzURASGJ0hquXW3mVTTybaaSmcTKnT1O74n1S0ae64g==
+"@cartesi/pos@^0.1.0-beta.2":
+  version "0.1.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.2.tgz#218a5ec4d0b2391ee71cea382f5bcab080c61f51"
+  integrity sha512-gfWsL4JCQCZybcCYx8ZppWTUizzmdE1LsbyeRe9ONFbVzGm5YVYEWHUl+q+LZwPbUIBDt29Qt4pyd6RJ8dWXJQ==
   dependencies:
     "@cartesi/token" "^1.1.0"
     "@cartesi/util" "^0.4.2"
-    "@openzeppelin/contracts" "3.1.0-solc-0.7"
+    "@openzeppelin/contracts" "3.2.1-solc-0.7"
     commander "^6.1.0"
   optionalDependencies:
     fsevents "^2.1.3"
@@ -1511,15 +1511,15 @@
   resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-9.5.3.tgz#a14fb6489d412b201b98aa44716fb8727ca4c6ae"
   integrity sha512-W3VKOqbg+4Kw+k6M/SODf+WIzwcx60nAemGV1nNPa/yrDtAS2YcJfqiswrJ3+2nJHzqefAFWn4XOfM0fy8ww2Q==
 
-"@openzeppelin/contracts@3.1.0-solc-0.7":
-  version "3.1.0-solc-0.7"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.1.0-solc-0.7.tgz#c6c937d402abaefd2d541178e4c0b1131bf06b9f"
-  integrity sha512-b3DjBHKn74XC9spvQEmn6t7dRZRN7pkeZ9IlDzkMgib09FUE3CDpKmtFCIUDYSLd8lkgSmB9Ig7Chctg8GWUiA==
-
 "@openzeppelin/contracts@3.2.0-solc-0.7":
   version "3.2.0-solc-0.7"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.0-solc-0.7.tgz#507d3a04ab65d19449b3b9659b3b8b75014afbbf"
   integrity sha512-E9cb+9o1TOecuIix9hzGz+NVIfLCUiQXkDH4lmgUdGOTQLV2o9c8M13U1naahtmjkffTBAjLNDSCy46b2jeDpA==
+
+"@openzeppelin/contracts@3.2.1-solc-0.7":
+  version "3.2.1-solc-0.7"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.1-solc-0.7.tgz#067a60918b935d4733208edb3d7e35cd1d51026b"
+  integrity sha512-VfKZE9L2HNaZVBR7l5yHbRmap3EiVw9F5iVXRRDdgfnA9vQ1yFanrs0VYmdo2VIXC+EsI9wPPYZY9Ic7/qDBdw==
 
 "@openzeppelin/contracts@^2.5.0":
   version "2.5.1"
