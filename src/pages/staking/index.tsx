@@ -14,7 +14,19 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Breadcrumb, Typography, Input, Row, Col, Button, Space, Alert, Spin } from 'antd';
+import {
+    Breadcrumb,
+    Typography,
+    Input,
+    Row,
+    Col,
+    Button,
+    Space,
+    Alert,
+    Spin,
+    Statistic,
+    Divider
+} from 'antd';
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
@@ -72,8 +84,8 @@ const Staking = () => {
         }
     }, [stakingSubmitting, tokenSubmitting]);
 
-    const validate = (value: BigNumber): BigNumber => {
-        if (!value || value.lt(0)) value = BigNumber.from(0);
+    const validate = (value: number): number => {
+        if (!value || value < 0) value = 0;
         return value;
     }
 
@@ -106,10 +118,68 @@ const Staking = () => {
 
     const doUnstake = () => {
         setWaiting(true);
-        unstake(unstakeAmount)
+        unstake(parseCTSI(unstakeAmount))
             .then(() => {
                 setWaiting(false);
             })
+    }
+
+    const splitStakeAmount = () => {
+        let fromReleasing = BigNumber.from(0), fromAllowance = BigNumber.from(0);
+        let stakeAmountCTSI = parseCTSI(stakeAmount);
+
+        if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
+            return 'You exceeded the maximum staking limit!';
+        }
+
+        if (releasingBalance.eq(0)) {
+            fromAllowance = stakeAmountCTSI;
+        } else {
+            if (releasingBalance.gt(stakeAmountCTSI)) {
+                fromReleasing = stakeAmountCTSI;
+            } else {
+                fromReleasing = releasingBalance;
+                fromAllowance = stakeAmountCTSI.sub(releasingBalance);
+            }
+        }
+
+        if (fromReleasing.eq(0)) {
+            return formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
+        }
+        if (fromAllowance.eq(0)) {
+            return formatCTSI(fromReleasing) + " CTSI from Releasing Balance";
+        }
+
+        return formatCTSI(fromReleasing) + " CTSI from Releasing Balance and " + formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
+    }
+
+    const splitUnstakeAmount = () => {
+        let fromMaturing = BigNumber.from(0), fromStaked = BigNumber.from(0);
+        let unstakeAmountCTSI = parseCTSI(unstakeAmount);
+
+        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
+            return 'You exceeded the maximum unstaking limit!';
+        }
+
+        if (maturingBalance.eq(0)) {
+            fromStaked = unstakeAmountCTSI;
+        } else {
+            if (maturingBalance.gt(unstakeAmountCTSI)) {
+                fromMaturing = unstakeAmountCTSI;
+            } else {
+                fromMaturing = maturingBalance;
+                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
+            }
+        }
+
+        if (fromMaturing.eq(0)) {
+            return formatCTSI(fromStaked) + " CTSI from Staked Balance";
+        }
+        if (fromStaked.eq(0)) {
+            return formatCTSI(fromMaturing) + " CTSI from Maturing Balance";
+        }
+
+        return formatCTSI(fromMaturing) + " CTSI from Maturing Balance and " + formatCTSI(fromStaked) + " CTSI from Staked Balance";
     }
 
     return (
@@ -129,89 +199,136 @@ const Staking = () => {
 
             <Spin spinning={waiting}>
                 <Space direction='vertical' size='large'>
-                    <Typography.Title level={4}>Balance: {formatCTSI(balance)} CTSI</Typography.Title>
-                    
-                    <Typography.Title level={4}>Allowance Balance: {formatCTSI(allowance)} CTSI</Typography.Title>
+                    <Row gutter={16}>
 
-                    <Typography.Title level={4}>Maturing Balance: {formatCTSI(maturingBalance)} CTSI</Typography.Title>
+                        <Divider orientation="left" plain>Wallet</Divider>
 
-                    <Typography.Title level={4}>Releasing Balance: {formatCTSI(releasingBalance)} CTSI</Typography.Title>
+                        <Col span={12}>
+                            <Statistic title="Balance" value={formatCTSI(balance)} />
+                        </Col>
 
-                    <Space direction='vertical'>
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={approveAmount.toString()}
-                                    onChange={e => setApproveAmount(validate(BigNumber.from(e.target.value)))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doApprove}>Approve</Button>
-                            </Col>
-                        </Row>
-            
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={stakeAmount.toString()}
-                                    onChange={e => setStakeAmount(validate(BigNumber.from(e.target.value)))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doStake} 
-                                    disabled={!stakeAmount || stakeAmount.gt(allowance)}
-                                >
-                                    Stake
-                                </Button>
-                            </Col>
-                        </Row>
+                        <Col span={12}>
+                            <Statistic title="Allowance Balance" value={formatCTSI(allowance)} />
 
-                        {maturingBalance.gt(0) && <Typography.Text>Next finalize time: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
-            
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={unstakeAmount.toString()}
-                                    onChange={e => setUnstakeAmount(validate(BigNumber.from(e.target.value)))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doUnstake} 
-                                    disabled={!unstakeAmount}
-                                >
-                                    Unstake
-                                </Button>
-                            </Col>
-                        </Row>
+                            <Row gutter={5}>
+                                <Col>
+                                    <Input
+                                        value={approveAmount.toString()}
+                                        onChange={e => setApproveAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                        suffix="CTSI"
+                                        type="number"
+                                    />
+                                </Col>
+                                <Col>
+                                    <Button onClick={doApprove}>Approve</Button>
+                                </Col>
+                            </Row>
+                        </Col>
 
-                        {maturingBalance.gt(0) && <Typography.Text>Next finalize time: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
-                        
-                        <Row>
-                            <Col>
-                                <Input
-                                    value={withdrawAmount.toString()}
-                                    onChange={e => setWithdrawAmount(validate(BigNumber.from(e.target.value)))}
-                                    suffix="CTSI"
-                                    type="number"
-                                />
-                            </Col>
-                            <Col>
-                                <Button onClick={doWithdraw}
-                                    disabled={!withdrawAmount || withdrawAmount.gt(stakedBalance)}
-                                >
-                                    Withdraw
-                                </Button>
-                            </Col>
-                        </Row>
+                        <Divider orientation="left" plain>In Progress</Divider>
 
-                        {releasingBalance.gt(0) && <Typography.Text>Next finalize time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
-                    </Space>
+                        <Col span={12}>
+                            <Statistic title="Maturing Balance" value={formatCTSI(maturingBalance)} />
+                            {maturingBalance.gt(0) && <Typography.Text>Next settlement time: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
+                        </Col>
+
+                        <Col span={12}>
+                            <Statistic title="Releasing Balance" value={formatCTSI(releasingBalance)} />
+
+                            <Row gutter={5}>
+                                <Col>
+                                    <Input
+                                        value={withdrawAmount.toString()}
+                                        onChange={e => setWithdrawAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                        suffix="CTSI"
+                                        type="number"
+                                    />
+                                </Col>
+                                <Col>
+                                    <Button onClick={doWithdraw}
+                                        disabled={!withdrawAmount || releasingTimestamp > new Date() || parseCTSI(withdrawAmount).gt(releasingBalance)}
+                                    >
+                                        Withdraw
+                                    </Button>
+                                </Col>
+                            </Row>
+                            {releasingBalance.gt(0) && <Typography.Text>Next  time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
+                        </Col>
+
+                        <Divider orientation="left" plain>Staked</Divider>
+
+                        <Col span={24}>
+                            <Statistic title="Staked Balance" value={formatCTSI(stakedBalance)} />
+                        </Col>
+
+                        <Divider orientation="left" plain>Stake & Unstake Actions</Divider>
+
+                        <Col span={24}>
+                            <Space direction='vertical'>
+                                <Row gutter={5} align='middle'>
+                                    <Col>
+                                        <Input
+                                            value={stakeAmount.toString()}
+                                            onChange={e => setStakeAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                            suffix="CTSI"
+                                            type="number"
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Button onClick={doStake}
+                                            disabled={!stakeAmount || parseCTSI(stakeAmount).gt(allowance.add(releasingBalance))}
+                                        >
+                                            Stake
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Typography.Text>
+                                            (Maximum Limit: {formatCTSI(allowance.add(releasingBalance))} CTSI)
+                                        </Typography.Text>
+                                    </Col>
+                                </Row>
+
+                                {stakeAmount.gt(0) &&
+                                    <Row>
+                                        <Typography.Text>
+                                            {splitStakeAmount()}
+                                        </Typography.Text>
+                                    </Row>
+                                }
+
+                                <Row gutter={5} align='middle'>
+                                    <Col>
+                                        <Input
+                                            value={unstakeAmount.toString()}
+                                            onChange={e => setUnstakeAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                            suffix="CTSI"
+                                            type="number"
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Button onClick={doUnstake}
+                                            disabled={!unstakeAmount || parseCTSI(unstakeAmount).gt(stakedBalance.add(maturingBalance))}
+                                        >
+                                            Unstake
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Typography.Text>
+                                            (Maximum Limit: {formatCTSI(stakedBalance.add(maturingBalance))} CTSI)
+                                        </Typography.Text>
+                                    </Col>
+                                </Row>
+                                
+                                {unstakeAmount.gt(0) &&
+                                    <Row>
+                                        <Typography.Text>
+                                            {splitUnstakeAmount()}
+                                        </Typography.Text>
+                                    </Row>
+                                }
+                            </Space>
+                        </Col>
+                    </Row>
 
                     {error &&
                         <Alert
