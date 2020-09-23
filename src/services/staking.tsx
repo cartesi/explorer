@@ -16,11 +16,13 @@ import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
+import { useBlockNumber } from './eth';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
     const [staking, setStaking] = useState<Staking>();
 
+    const blockNumber = useBlockNumber();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
@@ -49,26 +51,15 @@ export const useStaking = () => {
         }
     }, [library, chainId]);
 
-    const updateState = () => {
-        if (staking && account) {
-            try {
-                setError('');
-                staking.getStakedBalance(account).then(setStakedBalance);
-                staking.getMaturingTimestamp(account).then(value => setMaturingTimestamp(new Date(value.toNumber() * 1000)));
-                staking.getReleasingTimestamp(account).then(value => setReleasingTimestamp(new Date(value.toNumber() * 1000)));
-                staking.getMaturingBalance(account).then(setMaturingBalance);
-                staking.getReleasingBalance(account).then(setReleasingBalance);
-            } catch (e) {
-                setError(e.message);
-            }
-        }
-    };
-
     useEffect(() => {
         if (staking && account) {
-            updateState();
+            staking.getStakedBalance(account).then(setStakedBalance);
+            staking.getMaturingTimestamp(account).then(value => setMaturingTimestamp(new Date(value.toNumber() * 1000)));
+            staking.getReleasingTimestamp(account).then(value => setReleasingTimestamp(new Date(value.toNumber() * 1000)));
+            staking.getMaturingBalance(account).then(setMaturingBalance);
+            staking.getReleasingBalance(account).then(setReleasingBalance);
         }
-    }, [staking, account]);
+    }, [staking, chainId, account, blockNumber]);
 
     const stake = async (
         amount: BigNumberish
@@ -83,8 +74,6 @@ export const useStaking = () => {
 
                 // wait for confirmation
                 await transaction.wait(1);
-
-                updateState();
 
                 setSubmitting(false);
             } catch (e) {
@@ -108,8 +97,6 @@ export const useStaking = () => {
                 // wait for confirmation
                 await transaction.wait(1);
 
-                updateState();
-
                 setSubmitting(false);
             } catch (e) {
                 setError(e.message);
@@ -131,8 +118,6 @@ export const useStaking = () => {
 
                 // wait for confirmation
                 await transaction.wait(1);
-
-                updateState();
 
                 setSubmitting(false);
             } catch (e) {
