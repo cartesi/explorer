@@ -147,10 +147,10 @@ const Staking = () => {
             return formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
         }
         if (fromAllowance.eq(0)) {
-            return formatCTSI(fromReleasing) + " CTSI from Releasing Balance";
+            return formatCTSI(fromReleasing) + " CTSI from Unstaked Balance";
         }
 
-        return formatCTSI(fromReleasing) + " CTSI from Releasing Balance and " + formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
+        return formatCTSI(fromReleasing) + " CTSI from Unstaked Balance and " + formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
     }
 
     const splitUnstakeAmount = () => {
@@ -201,7 +201,7 @@ const Staking = () => {
                 <Space direction='vertical' size='large'>
                     <Row gutter={16}>
 
-                        <Divider orientation="left" plain>Wallet</Divider>
+                        <Divider orientation="left" plain></Divider>
 
                         <Col span={12}>
                             <Statistic title="Balance" value={formatCTSI(balance)} />
@@ -225,15 +225,25 @@ const Staking = () => {
                             </Row>
                         </Col>
 
-                        <Divider orientation="left" plain>In Progress</Divider>
+                        <Divider orientation="left" plain></Divider>
+
+                        {maturingBalance.gt(0) &&
+                            <>
+                                <Col span={24}>
+                                    <Statistic title="Maturing Balance" value={formatCTSI(maturingBalance)} />
+                                    {maturingBalance.gt(0) && <Typography.Text>Next settlement time: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
+                                </Col>
+
+                                <Divider orientation="left" plain></Divider>
+                            </>
+                        }
 
                         <Col span={12}>
-                            <Statistic title="Maturing Balance" value={formatCTSI(maturingBalance)} />
-                            {maturingBalance.gt(0) && <Typography.Text>Next settlement time: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
+                            <Statistic title="Staked Balance" value={formatCTSI(stakedBalance)} />
                         </Col>
 
                         <Col span={12}>
-                            <Statistic title="Releasing Balance" value={formatCTSI(releasingBalance)} />
+                            <Statistic title="Unstaked Balance" value={formatCTSI(releasingBalance)} />
 
                             <Row gutter={5}>
                                 <Col>
@@ -252,16 +262,10 @@ const Staking = () => {
                                     </Button>
                                 </Col>
                             </Row>
-                            {releasingBalance.gt(0) && <Typography.Text>Next  time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
+                            {releasingBalance.gt(0) && <Typography.Text>Next releasing time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
                         </Col>
 
-                        <Divider orientation="left" plain>Staked</Divider>
-
-                        <Col span={24}>
-                            <Statistic title="Staked Balance" value={formatCTSI(stakedBalance)} />
-                        </Col>
-
-                        <Divider orientation="left" plain>Stake & Unstake Actions</Divider>
+                        <Divider orientation="left" plain></Divider>
 
                         <Col span={24}>
                             <Space direction='vertical'>
@@ -291,7 +295,7 @@ const Staking = () => {
                                 {stakeAmount.gt(0) &&
                                     <Row>
                                         <Typography.Text>
-                                            {splitStakeAmount()}
+                                        Stake {splitStakeAmount()} (Once you stake, the next settlement time will be reset!)
                                         </Typography.Text>
                                     </Row>
                                 }
@@ -322,7 +326,7 @@ const Staking = () => {
                                 {unstakeAmount.gt(0) &&
                                     <Row>
                                         <Typography.Text>
-                                            {splitUnstakeAmount()}
+                                        Unstake {splitUnstakeAmount()} (Once you unstake, the next releasing time will be reset!)
                                         </Typography.Text>
                                     </Row>
                                 }
