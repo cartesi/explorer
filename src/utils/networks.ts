@@ -19,3 +19,14 @@ export const networks = {
     97: 'bsc_testnet',
     31337: 'localhost',
 };
+
+export const confirmations = {
+    1: 5,
+    3: 3,
+    4: 3,
+    5: 3,
+    42: 3,
+    80001: 3,
+    97: 3,
+    31337: 1
+}

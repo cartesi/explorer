@@ -262,7 +262,7 @@ const Staking = () => {
                                     </Button>
                                 </Col>
                             </Row>
-                            {releasingBalance.gt(0) && <Typography.Text>Next releasing time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
+                            {releasingBalance.gt(0) && releasingTimestamp > new Date() && <Typography.Text>Next releasing time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
                         </Col>
 
                         <Divider orientation="left" plain></Divider>
@@ -292,7 +292,7 @@ const Staking = () => {
                                     </Col>
                                 </Row>
 
-                                {stakeAmount.gt(0) &&
+                                {stakeAmount.gt(0) && maturingTimestamp > new Date() &&
                                     <Row>
                                         <Typography.Text>
                                         Stake {splitStakeAmount()} (Once you stake, the next settlement time will be reset!)

@@ -15,7 +15,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { WorkerManager } from '../contracts/WorkerManager';
 import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
-import { networks } from '../utils/networks';
+import { networks, confirmations } from '../utils/networks';
 
 /*
 export const useManager = () => {
@@ -51,6 +51,7 @@ export const useManager = () => {
 export const useWorkerManager = (worker: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
+    const [confirmation, setConfirmation] = useState<number>(1);
 
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
@@ -66,6 +67,7 @@ export const useWorkerManager = (worker: string) => {
         if (library && chainId) {
             const network = networks[chainId];
             const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)?.address;
+            setConfirmation(confirmations[chainId] ? confirmations[chainId] : 1);
             if (!address) {
                 setError(
                     `WorkerManager not deployed at network '${chainId}'`
@@ -122,7 +124,7 @@ export const useWorkerManager = (worker: string) => {
                 });
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 // query owner again
                 await updateState(workerManager, worker);
@@ -144,7 +146,7 @@ export const useWorkerManager = (worker: string) => {
                 const transaction = await workerManager.cancelHire(worker);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 // query owner again
                 await updateState(workerManager, worker);
@@ -166,7 +168,7 @@ export const useWorkerManager = (worker: string) => {
                 const transaction = await workerManager.retire(worker);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 // query owner again
                 await updateState(workerManager, worker);

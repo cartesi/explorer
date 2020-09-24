@@ -14,12 +14,14 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
-import { networks } from '../utils/networks';
+import { networks, confirmations } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
 export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
+    const [confirmation, setConfirmation] = useState<number>(1);
+
     const [token, setToken] = useState<CartesiToken>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
@@ -35,6 +37,7 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
             const address =
                 tokenArtifact?.address ||
                 tokenArtifact?.networks[chainId]?.address;
+            setConfirmation(confirmations[chainId] ? confirmations[chainId] : 1);
             if (address) {
                 console.log(
                     `Attaching CartesiToken to address '${address}' deployed at network '${chainId}'`
@@ -68,7 +71,7 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
                 const transaction = await token.approve(spender, amount);
 
                 // wait for confirmation
-                const receipt = await transaction.wait(1);
+                const receipt = await transaction.wait(confirmation);
 
                 setSubmitting(false);
             } catch (e) {

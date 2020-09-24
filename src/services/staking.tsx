@@ -14,13 +14,14 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
-import { networks } from '../utils/networks';
+import { networks, confirmations } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 import { useBlockNumber } from './eth';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
     const [staking, setStaking] = useState<Staking>();
+    const [confirmation, setConfirmation] = useState<number>(1);
 
     const blockNumber = useBlockNumber();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
@@ -36,6 +37,7 @@ export const useStaking = () => {
     useEffect(() => {
         if (library && chainId) {
             const network = networks[chainId];
+            setConfirmation(confirmations[chainId] ? confirmations[chainId] : 1);
             try {
                 const deployment = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
                 const address = deployment?.address;
@@ -73,7 +75,7 @@ export const useStaking = () => {
                 const transaction = await staking.stake(amount);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 setSubmitting(false);
             } catch (e) {
@@ -95,7 +97,7 @@ export const useStaking = () => {
                 const transaction = await staking.unstake(amount);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 setSubmitting(false);
             } catch (e) {
@@ -117,7 +119,7 @@ export const useStaking = () => {
                 const transaction = await staking.withdraw(amount);
 
                 // wait for confirmation
-                await transaction.wait(1);
+                await transaction.wait(confirmation);
 
                 setSubmitting(false);
             } catch (e) {
