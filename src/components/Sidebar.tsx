@@ -55,7 +55,7 @@ const Sidebar = (props: SidebarProps) => {
         .map((item) => item.key);
 
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint='md'>
             <div className={styles.logo}></div>
             <Menu
                 theme="dark"
