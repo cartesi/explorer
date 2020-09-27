@@ -15,13 +15,16 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { networks, confirmations } from '../utils/networks';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { useBlockNumber } from './eth';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
     const [staking, setStaking] = useState<Staking>();
     const [confirmation, setConfirmation] = useState<number>(1);
+
+    const [currentTransaction, setCurrentTransaction] = useState<ContractTransaction>(null);
+    const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);
 
     const blockNumber = useBlockNumber();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
@@ -63,6 +66,30 @@ export const useStaking = () => {
         }
     }, [staking, chainId, account, blockNumber]);
 
+    useEffect(() => {
+        if (library && currentTransaction) {
+            library.on('block', blockHandler)
+
+            // wait for confirmation
+            currentTransaction.wait(confirmation)
+                .then(receipt => {
+                    library.removeListener('block', blockHandler);
+
+                    setSubmitting(false);
+                    setCurrentTransaction(null);
+                });
+        }
+    }, [currentTransaction]);
+
+    const blockHandler = async (blknum) => {
+        if (library && currentTransaction) {
+            const receipt = await library.getTransactionReceipt(currentTransaction.hash);
+            if (receipt) {
+                setCurrentConfirmation(receipt.confirmations);
+            }
+        }
+    };
+
     const stake = async (
         amount: BigNumberish
     ) => {
@@ -70,17 +97,15 @@ export const useStaking = () => {
             try {
                 setError('');
                 setSubmitting(true);
+                setCurrentConfirmation(0);
 
                 // send transaction
                 const transaction = await staking.stake(amount);
-
-                // wait for confirmation
-                await transaction.wait(confirmation);
-
-                setSubmitting(false);
+                setCurrentTransaction(transaction);
             } catch (e) {
                 setError(e.message);
                 setSubmitting(false);
+                setCurrentTransaction(null);
             }
         }
     };
@@ -92,17 +117,15 @@ export const useStaking = () => {
             try {
                 setError('');
                 setSubmitting(true);
+                setCurrentConfirmation(0);
 
                 // send transaction
                 const transaction = await staking.unstake(amount);
-
-                // wait for confirmation
-                await transaction.wait(confirmation);
-
-                setSubmitting(false);
+                setCurrentTransaction(transaction);
             } catch (e) {
                 setError(e.message);
                 setSubmitting(false);
+                setCurrentTransaction(null);
             }
         }
     };
@@ -114,17 +137,15 @@ export const useStaking = () => {
             try {
                 setError('');
                 setSubmitting(true);
+                setCurrentConfirmation(0);
 
                 // send transaction
                 const transaction = await staking.withdraw(amount);
-
-                // wait for confirmation
-                await transaction.wait(confirmation);
-
-                setSubmitting(false);
+                setCurrentTransaction(transaction);
             } catch (e) {
                 setError(e.message);
                 setSubmitting(false);
+                setCurrentTransaction(null);
             }
         }
     };
@@ -138,6 +159,8 @@ export const useStaking = () => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
+        confirmation,
+        currentConfirmation,
         stake,
         unstake,
         withdraw

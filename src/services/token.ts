@@ -15,12 +15,15 @@ import { Web3Provider } from '@ethersproject/providers';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 import { networks, confirmations } from '../utils/networks';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
 export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
     const [confirmation, setConfirmation] = useState<number>(1);
+
+    const [currentTransaction, setCurrentTransaction] = useState<ContractTransaction>(null);
+    const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);
 
     const [token, setToken] = useState<CartesiToken>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
@@ -61,22 +64,44 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
         }
     }, [token, account, spender, blockNumber]);
 
+    useEffect(() => {
+        if (library && currentTransaction) {
+            library.on('block', blockHandler)
+
+            // wait for confirmation
+            currentTransaction.wait(confirmation)
+                .then(receipt => {
+                    library.removeListener('block', blockHandler);
+
+                    setSubmitting(false);
+                    setCurrentTransaction(null);
+                });
+        }
+    }, [currentTransaction]);
+
+    const blockHandler = async (blknum) => {
+        if (library && currentTransaction) {
+            const receipt = await library.getTransactionReceipt(currentTransaction.hash);
+            if (receipt) {
+                setCurrentConfirmation(receipt.confirmations);
+            }
+        }
+    };
+
     const approve = async (spender: string, amount: BigNumberish) => {
         if (token) {
             try {
                 setError('');
                 setSubmitting(true);
+                setCurrentConfirmation(0);
 
                 // send transaction
                 const transaction = await token.approve(spender, amount);
-
-                // wait for confirmation
-                const receipt = await transaction.wait(confirmation);
-
-                setSubmitting(false);
+                setCurrentTransaction(transaction);
             } catch (e) {
                 setError(e.message);
                 setSubmitting(false);
+                setCurrentTransaction(null);
             }
         }
     };
@@ -94,6 +119,8 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
         balance,
         error,
         submitting,
+        confirmation,
+        currentConfirmation,
         approve,
         parseCTSI,
         formatCTSI
