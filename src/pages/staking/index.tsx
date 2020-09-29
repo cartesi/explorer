@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, {useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
@@ -24,8 +24,7 @@ import {
     Space,
     Alert,
     Statistic,
-    Divider,
-    Steps
+    Divider
 } from 'antd';
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
@@ -34,7 +33,7 @@ import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
 
-const { Step } = Steps;
+import { DataContext } from '../../components/DataContext';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -44,63 +43,41 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
 
-    const [currentConfirmation, setCurentConfirmation] = useState<number>(0);
-
     const [waiting, setWaiting] = useState<boolean>(false);
+    const [error, setError] = useState<string>(null);
 
     // block number tracking
     const blockNumber = useBlockNumber();
 
-    const [error, setError] = useState<string>(null);
-
     const {
         staking,
-        submitting: stakingSubmitting,
-        error: stakingError,
         stakedBalance,
         maturingTimestamp,
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        currentConfirmation: stakingCurrentConfirmation,
         stake,
         unstake,
         withdraw
     } = useStaking();
 
     const {
-        submitting: tokenSubmitting,
-        error: tokenError,
         balance,
         allowance,
-        confirmation: confirmationLimit,
-        currentConfirmation: tokenCurrentConfirmation,
         approve,
         formatCTSI,
         parseCTSI
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    useEffect(() => {
-        setWaiting(stakingSubmitting || tokenSubmitting);
-
-        if (!stakingSubmitting) {
-            setError(stakingError);
-        }
-        else if (!tokenSubmitting) {
-            setError(tokenError);
-        }
-        else {
-            setError(null);
-        }
-    }, [stakingSubmitting, tokenSubmitting]);
+    const {
+        submitting,
+        error: txError,
+    } = useContext(DataContext);
 
     useEffect(() => {
-        if (tokenSubmitting) {
-            setCurentConfirmation(tokenCurrentConfirmation);
-        } else if (stakingSubmitting) {
-            setCurentConfirmation(stakingCurrentConfirmation);
-        }
-    }, [tokenCurrentConfirmation, stakingCurrentConfirmation]);
+        setWaiting(submitting);
+        setError(txError);
+    }, [submitting, txError]);
 
     const validate = (value: number): number => {
         if (!value || value < 0) value = 0;
@@ -212,7 +189,7 @@ const Staking = () => {
 
                 {waiting &&
                     <Row>
-                        <WaitingConfirmations current={currentConfirmation} limit={confirmationLimit} />
+                    <WaitingConfirmations />
                     </Row>
                 }
 
