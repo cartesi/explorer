@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -18,12 +18,18 @@ import { Alert, Breadcrumb, Button, Descriptions, Spin } from 'antd';
 import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
 import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
+import WaitingConfirmations from '../../components/WaitingConfirmations';
+
+import { DataContext } from '../../components/DataContext';
 
 const Node = () => {
     const router = useRouter();
     let { address } = router.query;
     address = address as string;
     const account = useAccount(0);
+    
+    const [waiting, setWaiting] = useState<boolean>(false);
+    const [error, setError] = useState<string>(null);
 
     const {
         user,
@@ -31,13 +37,21 @@ const Node = () => {
         pending,
         owned,
         retired,
-        error,
         loading,
-        submitting,
         hire,
         cancelHire,
         retire,
     } = useWorkerManager(address);
+
+    const {
+        submitting,
+        error: txError,
+    } = useContext(DataContext);
+
+    useEffect(() => {
+        setWaiting(submitting);
+        setError(txError);
+    }, [submitting, txError]);
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
@@ -69,6 +83,11 @@ const Node = () => {
                     style={{ marginBottom: '16px' }}
                 />
             )}
+
+            {waiting &&
+                <WaitingConfirmations />
+            }
+
             <Descriptions
                 bordered
                 column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
