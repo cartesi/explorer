@@ -18,12 +18,14 @@ import { networks } from '../utils/networks';
 
 import { DataContext } from '../components/DataContext';
 
-export const useWorkerAuthManager = (worker: string) => {
+export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [authManager, setAuthManager] = useState<WorkerAuthManager>();
 
     const {
+        submitting,
         setContext
     } = useContext(DataContext);
 
@@ -48,7 +50,24 @@ export const useWorkerAuthManager = (worker: string) => {
         }
     }, [library, chainId]);
 
-    const authorize = async (dapp: string) => {
+    const updateState = async (
+        authManager: WorkerAuthManager,
+        worker: string,
+        dapp: string
+    ) => {
+        if (authManager) {
+            const isAuthorized = await authManager.isAuthorized(worker, dapp);
+            setIsAuthorized(isAuthorized);
+        }
+    }
+
+    useEffect(() => {
+        if (authManager) {
+            updateState(authManager, worker, dapp);
+        }
+    }, [submitting, authManager, worker, dapp])
+
+    const authorize = async () => {
         if (authManager) {
             try {
                 // send transaction
@@ -69,5 +88,6 @@ export const useWorkerAuthManager = (worker: string) => {
 
     return {
         authorize,
+        isAuthorized
     };
 };

@@ -28,7 +28,6 @@ import {
     Select
 } from 'antd';
 import { BigNumber } from 'ethers';
-import { PlusOutlined } from '@ant-design/icons';
 
 import { DataContext } from '../../components/DataContext';
 import Layout from '../../components/Layout';
@@ -39,10 +38,13 @@ import { useLocalNode, useCartesiNodes } from '../../services/node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { useWorkerManager } from '../../services/workerManager';
+
+import { isEthAddress } from '../../utils/validator';
 
 const { Option } = Select;
 const localNodeUrl = 'http://localhost:8545';
+
+type NodeAddress = { address: string, chain: string };
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -52,7 +54,6 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
 
-    const [newNodeAddress, setNewNodeAddress] = useState<string>(null);
     const [nodeAddress, setNodeAddress] = useState<string>(null);
 
     const [waiting, setWaiting] = useState<boolean>(false);
@@ -63,7 +64,7 @@ const Staking = () => {
 
     const { chainId } = useWeb3React<Web3Provider>();
 
-    const [nodeList, setNodeList] = useState<Array<string>>([]);
+    const [nodeList, setNodeList] = useState<Array<NodeAddress>>([]);
     const nodes = useCartesiNodes(chainId);
     const localNode = useLocalNode(localNodeUrl);
 
@@ -98,7 +99,19 @@ const Staking = () => {
     }, [submitting, txError]);
 
     useEffect(() => {
-        setNodeList(nodes.concat(localNode ? [localNode] : []).map((node) => node.address));
+        let newNodeList: Array<NodeAddress> = localNode ? [{
+            address: localNode.address,
+            chain: 'localhost:8545'
+        }] : [];
+
+        newNodeList = newNodeList.concat(nodes.map((node) => {
+            return {
+                address: node.address,
+                chain: 'Cartesi'
+            };
+        }));
+
+        setNodeList(newNodeList);
     }, [nodes, localNode]);
 
     const validate = (value: number): number => {
@@ -192,15 +205,6 @@ const Staking = () => {
         return formatCTSI(fromMaturing) + " CTSI from Maturing Balance and " + formatCTSI(fromStaked) + " CTSI from Staked Balance";
     }
 
-    const addNewNodeAddress = () => {
-        setNodeList([
-            ...nodeList,
-            newNodeAddress
-        ]);
-
-        setNewNodeAddress(null);
-    }
-
     return (
         <Layout>
             <Head>
@@ -253,16 +257,16 @@ const Staking = () => {
 
                     <Divider orientation="left" plain></Divider>
 
-                    {maturingBalance.gt(0) &&
+                    {maturingBalance.gt(0) && (
                         <>
                             <Col span={24}>
                                 <Statistic title="Maturing Balance" value={formatCTSI(maturingBalance)} />
-                            {maturingBalance.gt(0) && <Typography.Text>Your balance will be matured and ready for staking at: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
+                                {maturingBalance.gt(0) && <Typography.Text>Your balance will be matured and ready for staking at: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
                             </Col>
 
                             <Divider orientation="left" plain></Divider>
                         </>
-                    }
+                    )}
 
                     <Col span={12}>
                         <Statistic title="Staked Balance" value={formatCTSI(stakedBalance)} />
@@ -373,36 +377,24 @@ const Staking = () => {
                     </Col>
                     <Col>
                         <Select
-                            style={{ minWidth: 400 }}
+                            style={{ minWidth: 560 }}
                             showSearch
+                            value={nodeAddress}
                             onChange={value => setNodeAddress(value.toString())}
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                            dropdownRender={menu => (
-                                <div>
-                                    {menu}
-                                    <Divider style={{ margin: '4px 0' }} />
-                                    <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-                                        <Input style={{ flex: 'auto' }} value={newNodeAddress} onChange={e => setNewNodeAddress(e.target.value)} />
-                                        <a
-                                            style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
-                                            onClick={addNewNodeAddress}
-                                        >
-                                            <PlusOutlined /> Add Node Address
-                                        </a>
-                                    </div>
-                                </div>
-                            )}
+                            disabled={submitting}
+                            filterOption={(input, option) => {
+                                setNodeAddress(input);
+                                return true;
+                            }}
                         >
                             {nodeList.map(item => (
-                                <Option key={item} value={item}>{item}</Option>
+                                <Option key={item.address} value={item.address}>{item.address} &lt;{item.chain}&gt;</Option>
                             ))}
                         </Select>
                     </Col>
                 </Row>
 
-                {nodeAddress && <NodeDetails address={nodeAddress} />}
+                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} />}
 
                 {error &&
                     <Alert

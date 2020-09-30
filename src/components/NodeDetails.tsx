@@ -50,8 +50,9 @@ const NodeDetails = ({ address }) => {
     } = useWorkerManager(address);
 
     const {
-        authorize
-    } = useWorkerAuthManager(address);
+        authorize,
+        isAuthorized
+    } = useWorkerAuthManager(address, posAddress);
 
     const {
         submitting,
@@ -86,7 +87,6 @@ const NodeDetails = ({ address }) => {
                     <Button
                         onClick={hire}
                         type="primary"
-                        style={{ marginTop: '16px' }}
                         loading={submitting}
                     >
                         Hire node
@@ -96,7 +96,6 @@ const NodeDetails = ({ address }) => {
                     <Button
                         onClick={cancelHire}
                         type="primary"
-                        style={{ marginTop: '16px' }}
                         loading={submitting}
                     >
                         Cancel hire
@@ -104,19 +103,20 @@ const NodeDetails = ({ address }) => {
                 )}
                 {account && owned && (
                     <>
-                        <Button
-                            onClick={() => authorize(posAddress)}
-                            type="primary"
-                            style={{ marginTop: '16px' }}
-                            loading={submitting}
-                        >
-                            Authorize
-                        </Button>
+                        {!isAuthorized && (
+                            <Button
+                                onClick={authorize}
+                                type="primary"
+                                style={{ marginRight: '10px' }}
+                                loading={submitting}
+                            >
+                                Authorize
+                            </Button>
+                        )}
 
                         <Button
                             onClick={retire}
                             type="primary"
-                            style={{ marginTop: '16px' }}
                             loading={submitting}
                         >
                             Retire node
