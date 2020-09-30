@@ -24,16 +24,25 @@ import {
     Space,
     Alert,
     Statistic,
-    Divider
+    Divider,
+    Select
 } from 'antd';
+import { BigNumber } from 'ethers';
+import { PlusOutlined } from '@ant-design/icons';
+
+import { DataContext } from '../../components/DataContext';
 import Layout from '../../components/Layout';
+import WaitingConfirmations from '../../components/WaitingConfirmations';
+import NodeDetails from '../../components/NodeDetails';
+
+import { useLocalNode, useCartesiNodes } from '../../services/node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { BigNumber } from 'ethers';
-import WaitingConfirmations from '../../components/WaitingConfirmations';
+import { useWorkerManager } from '../../services/workerManager';
 
-import { DataContext } from '../../components/DataContext';
+const { Option } = Select;
+const localNodeUrl = 'http://localhost:8545';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -43,11 +52,20 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(BigNumber.from(0));
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
 
+    const [newNodeAddress, setNewNodeAddress] = useState<string>(null);
+    const [nodeAddress, setNodeAddress] = useState<string>(null);
+
     const [waiting, setWaiting] = useState<boolean>(false);
     const [error, setError] = useState<string>(null);
 
     // block number tracking
     const blockNumber = useBlockNumber();
+
+    const { chainId } = useWeb3React<Web3Provider>();
+
+    const [nodeList, setNodeList] = useState<Array<string>>([]);
+    const nodes = useCartesiNodes(chainId);
+    const localNode = useLocalNode(localNodeUrl);
 
     const {
         staking,
@@ -78,6 +96,10 @@ const Staking = () => {
         setWaiting(submitting);
         setError(txError);
     }, [submitting, txError]);
+
+    useEffect(() => {
+        setNodeList(nodes.concat(localNode ? [localNode] : []).map((node) => node.address));
+    }, [nodes, localNode]);
 
     const validate = (value: number): number => {
         if (!value || value < 0) value = 0;
@@ -168,6 +190,15 @@ const Staking = () => {
         }
 
         return formatCTSI(fromMaturing) + " CTSI from Maturing Balance and " + formatCTSI(fromStaked) + " CTSI from Staked Balance";
+    }
+
+    const addNewNodeAddress = () => {
+        setNodeList([
+            ...nodeList,
+            newNodeAddress
+        ]);
+
+        setNewNodeAddress(null);
     }
 
     return (
@@ -324,13 +355,54 @@ const Staking = () => {
                             {unstakeAmount.gt(0) &&
                                 <Row>
                                     <Typography.Text>
-                                    Unstake {splitUnstakeAmount()} (Once you unstake, the next releasing time will be reset!)
+                                        Unstake {splitUnstakeAmount()} (Once you unstake, the next releasing time will be reset!)
                                     </Typography.Text>
                                 </Row>
                             }
                         </Space>
                     </Col>
                 </Row>
+
+                <Divider orientation="left" plain></Divider>
+
+                <Row gutter={16} align='middle'>
+                    <Col>
+                        <Typography.Text>
+                            Select Node:
+                        </Typography.Text>
+                    </Col>
+                    <Col>
+                        <Select
+                            style={{ minWidth: 400 }}
+                            showSearch
+                            onChange={value => setNodeAddress(value.toString())}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                            dropdownRender={menu => (
+                                <div>
+                                    {menu}
+                                    <Divider style={{ margin: '4px 0' }} />
+                                    <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
+                                        <Input style={{ flex: 'auto' }} value={newNodeAddress} onChange={e => setNewNodeAddress(e.target.value)} />
+                                        <a
+                                            style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
+                                            onClick={addNewNodeAddress}
+                                        >
+                                            <PlusOutlined /> Add Node Address
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        >
+                            {nodeList.map(item => (
+                                <Option key={item} value={item}>{item}</Option>
+                            ))}
+                        </Select>
+                    </Col>
+                </Row>
+
+                {nodeAddress && <NodeDetails address={nodeAddress} />}
 
                 {error &&
                     <Alert

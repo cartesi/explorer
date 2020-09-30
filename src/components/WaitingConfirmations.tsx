@@ -34,6 +34,7 @@ const WaitingConfirmations = () => {
                 // wait for confirmation
                 currentTransaction.wait(confirmation)
                     .then(receipt => {
+                        console.log('321')
                         library.removeListener('block', blockHandler);
 
                         setContext({

@@ -62,7 +62,8 @@ export const useWorkerManager = (worker: string) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const {
-        setContext
+        setContext,
+        submitting
     } = useContext(DataContext);
 
     // create the WorkerManager, asynchronously
@@ -102,13 +103,14 @@ export const useWorkerManager = (worker: string) => {
     };
 
     useEffect(() => {
+        console.log('123')
         if (workerManager) {
             setLoading(true);
             updateState(workerManager, worker)
                 .then(() => setLoading(false))
                 .catch((e) => setContext({ error: e.message }));
         }
-    }, [workerManager, worker]);
+    }, [workerManager, worker, submitting]);
 
     const hire = async () => {
         if (workerManager) {

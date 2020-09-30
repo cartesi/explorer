@@ -53,9 +53,9 @@ export const useCartesiNodes = (chainId: number): Node[] => {
             const url = `https://${chain.name}.paas.cartesi.io`;
             // TODO: use URL to fetch nodes
             const testAddresses = [
-                //'0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
-                //'0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
-                //'0x33D8888065a149349Cf65f3cd192d4A3C89ca3Ba',
+                '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
+                '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
+                '0x66CfA4E2fabEa4621Af6E5A8C9418457DfedB1B8',
             ];
             const nodes = testAddresses.map((address) => ({ address, chain }));
             setNodes(nodes);
