@@ -103,7 +103,6 @@ export const useWorkerManager = (worker: string) => {
     };
 
     useEffect(() => {
-        console.log('123')
         if (workerManager) {
             setLoading(true);
             updateState(workerManager, worker)
