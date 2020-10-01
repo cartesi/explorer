@@ -4,6 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Steps } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { useBlockNumber } from '../services/eth';
 import { confirmations } from '../utils/networks';
 import { TransactionContext } from '../components/TransactionContext';
 
@@ -15,6 +16,9 @@ const WaitingConfirmations = () => {
         setContext,
         currentTransaction
     } = useContext(TransactionContext);
+
+    const blockNumber = useBlockNumber();
+    const [countBlockNumber, setCountBlockNumber] = useState<boolean>(false);
 
     const [confirmation, setConfirmation] = useState<number>(1);
     const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);
@@ -28,17 +32,23 @@ const WaitingConfirmations = () => {
     }, [library, chainId]);
 
     useEffect(() => {
+        if (countBlockNumber) {
+            blockHandler(blockNumber);
+        }
+    }, [blockNumber]);
+
+    useEffect(() => {
         try {
             if (library && currentTransaction) {
                 if (!step) setStep(1);
 
-                library.on('block', blockHandler)
+                setCountBlockNumber(true);
                 setCurrentConfirmation(0);
 
                 // wait for confirmation
                 currentTransaction.wait(confirmation)
                     .then(receipt => {
-                        library.removeListener('block', blockHandler);
+                        setCountBlockNumber(false);
 
                         setContext({
                             currentTransaction: null,
