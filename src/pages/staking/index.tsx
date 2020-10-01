@@ -120,6 +120,7 @@ const Staking = () => {
     }
 
     const doApprove = () => {
+        setWaiting(true);
         approve(staking.address, parseCTSI(approveAmount))
             .then(() => {
                 setApproveAmount(BigNumber.from(0));
@@ -127,6 +128,7 @@ const Staking = () => {
     }
 
     const doStake = () => {
+        setWaiting(true);
         stake(parseCTSI(stakeAmount))
             .then(() => {
                 setStakeAmount(BigNumber.from(0));
@@ -134,6 +136,7 @@ const Staking = () => {
     }
 
     const doWithdraw = () => {
+        setWaiting(true);
         withdraw(parseCTSI(withdrawAmount))
             .then(() => {
                 setWithdrawAmount(BigNumber.from(0));
@@ -141,6 +144,7 @@ const Staking = () => {
     }
 
     const doUnstake = () => {
+        setWaiting(true);
         unstake(parseCTSI(unstakeAmount))
             .then(() => {
                 setUnstakeAmount(BigNumber.from(0));
@@ -394,7 +398,7 @@ const Staking = () => {
                     </Col>
                 </Row>
 
-                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} />}
+                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} setWaiting={setWaiting} />}
 
                 {error &&
                     <Alert

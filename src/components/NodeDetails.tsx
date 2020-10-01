@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { Button, Descriptions, Spin, Row, Col } from 'antd';
 
@@ -20,10 +20,9 @@ import { useBalance, useAccount, NULL_ADDRESS } from '../services/eth';
 import { useWorkerManager } from '../services/workerManager';
 import { useWorkerAuthManager } from '../services/workerAuthManager';
 
-import { TransactionContext } from './TransactionContext';
 import { networks } from '../utils/networks';
 
-const NodeDetails = ({ address }) => {
+const NodeDetails = ({ address, setWaiting }) => {
     const { chainId } = useWeb3React<Web3Provider>();
 
     const account = useAccount(0);
@@ -55,16 +54,32 @@ const NodeDetails = ({ address }) => {
         isAuthorized
     } = useWorkerAuthManager(address, posAddress);
 
-    const {
-        submitting,
-    } = useContext(TransactionContext);
-
     useEffect(() => {
         setShowAuthorize(!isAuthorized);
     }, [isAuthorized]);
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
+
+    const doHire = () => {
+        setWaiting(true);
+        hire();
+    }
+
+    const doCancelHire = () => {
+        setWaiting(true);
+        cancelHire();
+    }
+
+    const doRetire = () => {
+        setWaiting(true);
+        retire();
+    }
+
+    const doAuthorize = () => {
+        setWaiting(true);
+        authorize();
+    }
 
     return (
         <Row align='middle' gutter={16}>
@@ -90,18 +105,16 @@ const NodeDetails = ({ address }) => {
             <Col>
                 {account && available && (
                     <Button
-                        onClick={hire}
+                        onClick={doHire}
                         type="primary"
-                        loading={submitting}
                     >
                         Hire node
                     </Button>
                 )}
                 {account && pending && (
                     <Button
-                        onClick={cancelHire}
+                        onClick={doCancelHire}
                         type="primary"
-                        loading={submitting}
                     >
                         Cancel hire
                     </Button>
@@ -110,19 +123,17 @@ const NodeDetails = ({ address }) => {
                     <>
                         {showAuthorize && (
                             <Button
-                                onClick={authorize}
+                                onClick={doAuthorize}
                                 type="primary"
                                 style={{ marginRight: '10px' }}
-                                loading={submitting}
                             >
                                 Authorize
                             </Button>
                         )}
 
                         <Button
-                            onClick={retire}
+                            onClick={doRetire}
                             type="primary"
-                            loading={submitting}
                         >
                             Retire node
                     </Button>
