@@ -17,7 +17,7 @@ import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
 import { networks } from '../utils/networks';
 
-import { DataContext } from '../components/DataContext';
+import { TransactionContext } from '../components/TransactionContext';
 
 /*
 export const useManager = () => {
@@ -64,7 +64,7 @@ export const useWorkerManager = (worker: string) => {
     const {
         setContext,
         submitting
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     // create the WorkerManager, asynchronously
     useEffect(() => {

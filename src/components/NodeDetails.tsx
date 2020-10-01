@@ -20,7 +20,7 @@ import { useBalance, useAccount, NULL_ADDRESS } from '../services/eth';
 import { useWorkerManager } from '../services/workerManager';
 import { useWorkerAuthManager } from '../services/workerAuthManager';
 
-import { DataContext } from './DataContext';
+import { TransactionContext } from './TransactionContext';
 import { networks } from '../utils/networks';
 
 const NodeDetails = ({ address }) => {
@@ -28,6 +28,7 @@ const NodeDetails = ({ address }) => {
 
     const account = useAccount(0);
     const [posAddress, setPosAddress] = useState<string>(null);
+    const [showAuthorize, setShowAuthorize] = useState<boolean>(false);
 
     useEffect(() => {
         if (chainId) {
@@ -56,7 +57,11 @@ const NodeDetails = ({ address }) => {
 
     const {
         submitting,
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
+
+    useEffect(() => {
+        setShowAuthorize(!isAuthorized);
+    }, [isAuthorized]);
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
@@ -103,7 +108,7 @@ const NodeDetails = ({ address }) => {
                 )}
                 {account && owned && (
                     <>
-                        {!isAuthorized && (
+                        {showAuthorize && (
                             <Button
                                 onClick={authorize}
                                 type="primary"

@@ -18,7 +18,7 @@ import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 import { useBlockNumber } from './eth';
 
-import { DataContext } from '../components/DataContext';
+import { TransactionContext } from '../components/TransactionContext';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
@@ -33,7 +33,7 @@ export const useStaking = () => {
 
     const {
         setContext
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     // create the Staking, asynchronously
     useEffect(() => {

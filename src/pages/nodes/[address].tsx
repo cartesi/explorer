@@ -20,7 +20,7 @@ import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
 
-import { DataContext } from '../../components/DataContext';
+import { TransactionContext } from '../../components/TransactionContext';
 
 const Node = () => {
     const router = useRouter();
@@ -46,7 +46,7 @@ const Node = () => {
     const {
         submitting,
         error: txError,
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     useEffect(() => {
         setWaiting(submitting);

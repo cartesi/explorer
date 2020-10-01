@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 
-const DataContext = React.createContext({
+const TransactionContext = React.createContext({
     currentTransaction: null,
     submitting: false,
     error: null,
     setContext: (state: any) => { }
 });
 
-const DataProvider = ({ children }) => {
+const TransactionProvider = ({ children }) => {
     const [state, setState] = useState({
         currentTransaction: null,
         submitting: false,
@@ -26,10 +26,10 @@ const DataProvider = ({ children }) => {
     );
 
     return (
-        <DataContext.Provider value={getContextValue()}>
+        <TransactionContext.Provider value={getContextValue()}>
             {children}
-        </DataContext.Provider>
+        </TransactionContext.Provider>
     );
 }
 
-export { DataContext, DataProvider };
+export { TransactionContext, TransactionProvider };

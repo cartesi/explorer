@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Steps } from 'antd';
 import { confirmations } from '../utils/networks';
 
-import { DataContext } from '../components/DataContext';
+import { TransactionContext } from '../components/TransactionContext';
 
 const { Step } = Steps;
 
@@ -13,7 +13,7 @@ const WaitingConfirmations = () => {
     const {
         setContext,
         currentTransaction
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     const [confirmation, setConfirmation] = useState<number>(1);
     const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);

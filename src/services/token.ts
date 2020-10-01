@@ -18,7 +18,7 @@ import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
-import { DataContext } from '../components/DataContext';
+import { TransactionContext } from '../components/TransactionContext';
 
 export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
@@ -29,7 +29,7 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
 
     const {
         setContext
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     // create the CartesiToken, asynchronously
     useEffect(() => {

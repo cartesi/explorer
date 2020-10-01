@@ -16,7 +16,7 @@ import { WorkerAuthManager } from '../contracts/WorkerAuthManager';
 import { WorkerAuthManagerFactory } from '../contracts/WorkerAuthManagerFactory';
 import { networks } from '../utils/networks';
 
-import { DataContext } from '../components/DataContext';
+import { TransactionContext } from '../components/TransactionContext';
 
 export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
@@ -27,7 +27,7 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const {
         submitting,
         setContext
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     // create the WorkerAuthManager, asynchronously
     useEffect(() => {

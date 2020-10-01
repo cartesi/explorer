@@ -29,7 +29,7 @@ import {
 } from 'antd';
 import { BigNumber } from 'ethers';
 
-import { DataContext } from '../../components/DataContext';
+import { TransactionContext } from '../../components/TransactionContext';
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
 import NodeDetails from '../../components/NodeDetails';
@@ -91,7 +91,7 @@ const Staking = () => {
     const {
         submitting,
         error: txError,
-    } = useContext(DataContext);
+    } = useContext(TransactionContext);
 
     useEffect(() => {
         setWaiting(submitting);
