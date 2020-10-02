@@ -13,7 +13,6 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import 'antd/dist/antd.css';
 import dynamic from 'next/dynamic';
-import { TransactionProvider } from '../components/TransactionContext';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
@@ -22,9 +21,7 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 export default ({ Component, pageProps }: AppProps) => {
     return (
         <Web3Container>
-            <TransactionProvider>
-                <Component {...pageProps} />
-            </TransactionProvider>
+            <Component {...pageProps} />
         </Web3Container>
     );
 };

@@ -22,20 +22,13 @@ import { useWorkerAuthManager } from '../services/workerAuthManager';
 
 import { networks } from '../utils/networks';
 
-const NodeDetails = ({ address, setWaiting }) => {
+const NodeDetails = ({ address }) => {
     const { chainId } = useWeb3React<Web3Provider>();
 
     const account = useAccount(0);
-    const [posAddress, setPosAddress] = useState<string>(null);
-    const [showAuthorize, setShowAuthorize] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (chainId) {
-            const network = networks[chainId];
-            const posArtifact = require(`@cartesi/pos/deployments/${network}/PoS.json`);
-            setPosAddress(posArtifact?.address);
-        }
-    }, [chainId]);
+    const network = networks[chainId];
+    const posArtifact = require(`@cartesi/pos/deployments/${network}/PoS.json`);
+    const posAddress: string = posArtifact?.address as string;
 
     const {
         user,
@@ -54,32 +47,10 @@ const NodeDetails = ({ address, setWaiting }) => {
         isAuthorized
     } = useWorkerAuthManager(address, posAddress);
 
-    useEffect(() => {
-        setShowAuthorize(!isAuthorized);
-    }, [isAuthorized]);
+    const showAuthorize = !isAuthorized;
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
-
-    const doHire = () => {
-        setWaiting(true);
-        hire();
-    }
-
-    const doCancelHire = () => {
-        setWaiting(true);
-        cancelHire();
-    }
-
-    const doRetire = () => {
-        setWaiting(true);
-        retire();
-    }
-
-    const doAuthorize = () => {
-        setWaiting(true);
-        authorize();
-    }
 
     return (
         <Row align='middle' gutter={16}>
@@ -105,7 +76,7 @@ const NodeDetails = ({ address, setWaiting }) => {
             <Col>
                 {account && available && (
                     <Button
-                        onClick={doHire}
+                        onClick={hire}
                         type="primary"
                     >
                         Hire node
@@ -113,7 +84,7 @@ const NodeDetails = ({ address, setWaiting }) => {
                 )}
                 {account && pending && (
                     <Button
-                        onClick={doCancelHire}
+                        onClick={cancelHire}
                         type="primary"
                     >
                         Cancel hire
@@ -123,7 +94,7 @@ const NodeDetails = ({ address, setWaiting }) => {
                     <>
                         {showAuthorize && (
                             <Button
-                                onClick={doAuthorize}
+                                onClick={authorize}
                                 type="primary"
                                 style={{ marginRight: '10px' }}
                             >
@@ -132,7 +103,7 @@ const NodeDetails = ({ address, setWaiting }) => {
                         )}
 
                         <Button
-                            onClick={doRetire}
+                            onClick={retire}
                             type="primary"
                         >
                             Retire node

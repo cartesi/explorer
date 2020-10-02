@@ -1,4 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+// Copyright (C) 2020 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Steps } from 'antd';
@@ -6,16 +17,17 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import { useBlockNumber } from '../services/eth';
 import { confirmations } from '../utils/networks';
-import { TransactionContext } from '../components/TransactionContext';
+import { ContractTransaction } from 'ethers';
 
 const { Step } = Steps;
 
-const WaitingConfirmations = () => {
+interface WaitingConfirmationsProps {
+    transaction?: ContractTransaction;
+}
+
+const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const {
-        setContext,
-        currentTransaction
-    } = useContext(TransactionContext);
+    const currentTransaction = props.transaction;
 
     const blockNumber = useBlockNumber();
     const [countBlockNumber, setCountBlockNumber] = useState<boolean>(false);
@@ -24,18 +36,24 @@ const WaitingConfirmations = () => {
     const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);
     const [step, setStep] = useState<number>(0);
 
-    // create the Staking, asynchronously
+    // number of expected confirmations depend on chainId
     useEffect(() => {
         if (library && chainId) {
-            setConfirmation(confirmations[chainId] ? confirmations[chainId] : 1);
+            setConfirmation(
+                confirmations[chainId] ? confirmations[chainId] : 1
+            );
         }
     }, [library, chainId]);
 
     useEffect(() => {
-        if (countBlockNumber) {
-            blockHandler(blockNumber);
+        if (library && currentTransaction && countBlockNumber) {
+            library
+                .getTransactionReceipt(currentTransaction.hash)
+                .then((receipt) => {
+                    setCurrentConfirmation(receipt.confirmations);
+                });
         }
-    }, [blockNumber]);
+    }, [library, chainId, blockNumber]);
 
     useEffect(() => {
         try {
@@ -46,52 +64,34 @@ const WaitingConfirmations = () => {
                 setCurrentConfirmation(0);
 
                 // wait for confirmation
-                currentTransaction.wait(confirmation)
-                    .then(receipt => {
-                        setCountBlockNumber(false);
-
-                        setContext({
-                            currentTransaction: null,
-                            submitting: false,
-                            error: null
-                        });
-                    });
+                currentTransaction.wait(confirmation).then((receipt) => {
+                    setCountBlockNumber(false);
+                });
             } else if (!currentTransaction) {
                 setStep(0);
             }
         } catch (e) {
-            setContext({
-                currentTransaction: null,
-                error: e.message,
-                submitting: false
-            });
+            // TODO: show error in component
         }
     }, [currentTransaction]);
-
-    const blockHandler = async (blknum) => {
-        if (library && currentTransaction) {
-            const receipt = await library.getTransactionReceipt(currentTransaction.hash);
-            if (receipt) {
-                setCurrentConfirmation(receipt.confirmations);
-            }
-        }
-    };
 
     return (
         <>
             <Steps current={step}>
-                <Step title="Sending Transaction"
+                <Step
+                    title="Sending transaction"
                     icon={step === 0 ? <LoadingOutlined /> : null}
                 />
-                <Step title="Confirming Transaction"
+                <Step
+                    title="Confirming transaction"
                     subTitle={`Confirmed ${currentConfirmation}/${confirmation}`}
-                    description="Waiting for Confirmations"
+                    description="Waiting for confirmations"
                     icon={step === 1 ? <LoadingOutlined /> : null}
                 />
                 <Step title="Done" />
             </Steps>
         </>
-    )
-}
+    );
+};
 
 export default WaitingConfirmations;

@@ -9,25 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { WorkerAuthManager } from '../contracts/WorkerAuthManager';
 import { WorkerAuthManagerFactory } from '../contracts/WorkerAuthManagerFactory';
 import { networks } from '../utils/networks';
-
-import { TransactionContext } from '../components/TransactionContext';
+import { ContractTransaction } from 'ethers';
 
 export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
+    const [error, setError] = useState<string>();
+    const [transaction, setTransaction] = useState<ContractTransaction>();
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [authManager, setAuthManager] = useState<WorkerAuthManager>();
-
-    const {
-        submitting,
-        setContext
-    } = useContext(TransactionContext);
 
     // create the WorkerAuthManager, asynchronously
     useEffect(() => {
@@ -43,51 +39,35 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
                     WorkerAuthManagerFactory.connect(address, library.getSigner())
                 );
             } else {
-                setContext({
-                    error: `WorkerAuthManager not deployed at network '${chainId}'`
-                });
+                setError(`WorkerAuthManager not deployed at network '${chainId}'`);
             }
         }
     }, [library, chainId]);
 
-    const updateState = async (
-        authManager: WorkerAuthManager,
-        worker: string,
-        dapp: string
-    ) => {
-        if (authManager) {
-            const isAuthorized = await authManager.isAuthorized(worker, dapp);
-            setIsAuthorized(isAuthorized);
-        }
-    }
-
     useEffect(() => {
         if (authManager) {
-            updateState(authManager, worker, dapp);
+            authManager.isAuthorized(worker, dapp).then(setIsAuthorized);
         }
-    }, [submitting, authManager, worker, dapp])
+    }, [authManager, worker, dapp])
 
     const authorize = async () => {
         if (authManager) {
             try {
                 // send transaction
                 const transaction = await authManager.authorize(worker, dapp)
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setTransaction(undefined);
+                setError(e.message);
             }
         }
     };
 
     return {
         authorize,
-        isAuthorized
+        isAuthorized,
+        error,
+        transaction,
     };
 };

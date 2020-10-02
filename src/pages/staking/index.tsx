@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
@@ -29,7 +29,6 @@ import {
 } from 'antd';
 import { BigNumber } from 'ethers';
 
-import { TransactionContext } from '../../components/TransactionContext';
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
 import NodeDetails from '../../components/NodeDetails';
@@ -47,7 +46,7 @@ const localNodeUrl = 'http://localhost:8545';
 type NodeAddress = { address: string, chain: string };
 
 const Staking = () => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
 
     const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(BigNumber.from(0));
@@ -56,13 +55,8 @@ const Staking = () => {
 
     const [nodeAddress, setNodeAddress] = useState<string>(null);
 
-    const [waiting, setWaiting] = useState<boolean>(false);
-    const [error, setError] = useState<string>(null);
-
     // block number tracking
     const blockNumber = useBlockNumber();
-
-    const { chainId } = useWeb3React<Web3Provider>();
 
     const [nodeList, setNodeList] = useState<Array<NodeAddress>>([]);
     const nodes = useCartesiNodes(chainId);
@@ -75,6 +69,8 @@ const Staking = () => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
+        error: stakingError,
+        transaction: stakingTransaction,
         stake,
         unstake,
         withdraw
@@ -83,20 +79,16 @@ const Staking = () => {
     const {
         balance,
         allowance,
+        error: tokenError,
+        transaction: tokenTransaction,
         approve,
         formatCTSI,
         parseCTSI
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    const {
-        submitting,
-        error: txError,
-    } = useContext(TransactionContext);
-
-    useEffect(() => {
-        setWaiting(submitting);
-        setError(txError);
-    }, [submitting, txError]);
+    const error = tokenError || stakingError;
+    const ongoingTransaction = tokenTransaction || stakingTransaction;
+    const waiting = !!ongoingTransaction;
 
     useEffect(() => {
         let newNodeList: Array<NodeAddress> = localNode ? [{
@@ -120,7 +112,6 @@ const Staking = () => {
     }
 
     const doApprove = () => {
-        setWaiting(true);
         approve(staking.address, parseCTSI(approveAmount))
             .then(() => {
                 setApproveAmount(BigNumber.from(0));
@@ -128,7 +119,6 @@ const Staking = () => {
     }
 
     const doStake = () => {
-        setWaiting(true);
         stake(parseCTSI(stakeAmount))
             .then(() => {
                 setStakeAmount(BigNumber.from(0));
@@ -136,7 +126,6 @@ const Staking = () => {
     }
 
     const doWithdraw = () => {
-        setWaiting(true);
         withdraw(parseCTSI(withdrawAmount))
             .then(() => {
                 setWithdrawAmount(BigNumber.from(0));
@@ -144,7 +133,6 @@ const Staking = () => {
     }
 
     const doUnstake = () => {
-        setWaiting(true);
         unstake(parseCTSI(unstakeAmount))
             .then(() => {
                 setUnstakeAmount(BigNumber.from(0));
@@ -228,7 +216,7 @@ const Staking = () => {
 
                 {waiting &&
                     <Row>
-                    <WaitingConfirmations />
+                    <WaitingConfirmations transaction={ongoingTransaction} />
                     </Row>
                 }
 
@@ -385,7 +373,7 @@ const Staking = () => {
                             showSearch
                             value={nodeAddress}
                             onChange={value => setNodeAddress(value.toString())}
-                            disabled={submitting}
+                            disabled={waiting}
                             filterOption={(input, option) => {
                                 setNodeAddress(input);
                                 return true;
@@ -398,7 +386,7 @@ const Staking = () => {
                     </Col>
                 </Row>
 
-                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} setWaiting={setWaiting} />}
+                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} />}
 
                 {error &&
                     <Alert

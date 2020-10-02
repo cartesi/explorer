@@ -9,27 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { CartesiToken } from '../contracts/CartesiToken';
 import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
 import { networks } from '../utils/networks';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-
-import { TransactionContext } from '../components/TransactionContext';
 
 export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
+    const [error, setError] = useState<string>();
     const [token, setToken] = useState<CartesiToken>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
-
-    const {
-        setContext
-    } = useContext(TransactionContext);
+    const [transaction, setTransaction] = useState<ContractTransaction>();
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
@@ -47,9 +43,7 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
                     CartesiTokenFactory.connect(address, library.getSigner())
                 );
             } else {
-                setContext({
-                    error: `CartesiToken not deployed at network '${chainId}'`
-                });
+                setError(`CartesiToken not deployed at network '${chainId}'`);
             }
         }
     }, [library, chainId]);
@@ -69,16 +63,11 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
             try {
                 // send transaction
                 const transaction = await token.approve(spender, amount);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                // XXX: show we really clear the transaction
+                setTransaction(undefined);
             }
         }
     };
@@ -94,6 +83,8 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
     return {
         allowance,
         balance,
+        error,
+        transaction,
         approve,
         parseCTSI,
         formatCTSI

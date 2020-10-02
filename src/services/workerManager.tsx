@@ -9,51 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { WorkerManager } from '../contracts/WorkerManager';
 import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
 import { parseUnits } from '@ethersproject/units';
 import { networks } from '../utils/networks';
-
-import { TransactionContext } from '../components/TransactionContext';
-
-/*
-export const useManager = () => {
-    const { library, chainId } = useWeb3React<Web3Provider>();
-    const [workerManager, setWorkerManager] = useState<WorkerManager>();
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        if (library) {
-            const address = workerManagerJson[chainId]?.address;
-            if (!address) {
-                setError(
-                    `WorkerManager not deployed at network '${chainId}'`
-                );
-            }
-            console.log(
-                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
-            );
-            setWorkerManager(
-                WorkerManagerFactory.connect(address, library.getSigner())
-            );
-            setError(null);
-        }
-    }, [library, chainId]);
-
-    return {
-        workerManager,
-        error,
-    };
-};
-*/
+import { ContractTransaction } from 'ethers';
 
 export const useWorkerManager = (worker: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
+    const [error, setError] = useState<string>();
+    const [transaction, setTransaction] = useState<ContractTransaction>();
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
     const [available, setAvailable] = useState<boolean>(false);
@@ -61,20 +31,13 @@ export const useWorkerManager = (worker: string) => {
     const [retired, setRetired] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {
-        setContext,
-        submitting
-    } = useContext(TransactionContext);
-
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (library && chainId) {
             const network = networks[chainId];
             const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)?.address;
             if (!address) {
-                setContext({
-                    error: `WorkerManager not deployed at network '${chainId}'`
-                });
+                setError(`WorkerManager not deployed at network '${chainId}'`);
                 return;
             }
             console.log(
@@ -107,9 +70,9 @@ export const useWorkerManager = (worker: string) => {
             setLoading(true);
             updateState(workerManager, worker)
                 .then(() => setLoading(false))
-                .catch((e) => setContext({ error: e.message }));
+                .catch((e) => setError(e.message));
         }
-    }, [workerManager, worker, submitting]);
+    }, [workerManager, worker]);
 
     const hire = async () => {
         if (workerManager) {
@@ -121,16 +84,11 @@ export const useWorkerManager = (worker: string) => {
                 const transaction = await workerManager.hire(worker, {
                     value,
                 });
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                setTransaction(undefined);
             }
         }
     };
@@ -140,16 +98,11 @@ export const useWorkerManager = (worker: string) => {
             try {
                 // send transaction
                 const transaction = await workerManager.cancelHire(worker);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                setTransaction(undefined);
             }
         }
     };
@@ -159,22 +112,18 @@ export const useWorkerManager = (worker: string) => {
             try {
                 // send transaction
                 const transaction = await workerManager.retire(worker);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setTransaction(undefined);
+                setError(error);
             }
         }
     };
 
     return {
         workerManager,
+        error,
         user,
         available,
         pending,
@@ -184,6 +133,7 @@ export const useWorkerManager = (worker: string) => {
         hire,
         cancelHire,
         retire,
+        transaction,
     };
 };
 

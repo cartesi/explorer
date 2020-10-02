@@ -9,31 +9,27 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Staking } from '../contracts/Staking';
 import { StakingFactory } from '../contracts/StakingFactory';
 import { networks } from '../utils/networks';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { useBlockNumber } from './eth';
-
-import { TransactionContext } from '../components/TransactionContext';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
     const [staking, setStaking] = useState<Staking>();
 
     const blockNumber = useBlockNumber();
+    const [error, setError] = useState<string>();
+    const [transaction, setTransaction] = useState<ContractTransaction>();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
     const [maturingBalance, setMaturingBalance] = useState<BigNumber>(BigNumber.from(0));
     const [releasingBalance, setReleasingBalance] = useState<BigNumber>(BigNumber.from(0));
-
-    const {
-        setContext
-    } = useContext(TransactionContext);
 
     // create the Staking, asynchronously
     useEffect(() => {
@@ -46,14 +42,10 @@ export const useStaking = () => {
                     console.log(`Attaching Staking to address '${address}' deployed at network '${chainId}'`);
                     setStaking(StakingFactory.connect(address, library.getSigner()));
                 } else {
-                    setContext({
-                        error: `Staking not deployed at network '${chainId}'`
-                    });
+                    setError(`Staking not deployed at network '${chainId}'`);
                 }
             } catch (e) {
-                setContext({
-                    error: `Staking not deployed at network '${chainId}'`
-                });
+                setError(`Staking not deployed at network '${chainId}'`);
             }
         }
     }, [library, chainId]);
@@ -75,16 +67,11 @@ export const useStaking = () => {
             try {
                 // send transaction
                 const transaction = await staking.stake(amount);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                setTransaction(undefined);
             }
         }
     };
@@ -96,16 +83,11 @@ export const useStaking = () => {
             try {
                 // send transaction
                 const transaction = await staking.unstake(amount);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                setTransaction(undefined);
             }
         }
     };
@@ -117,22 +99,18 @@ export const useStaking = () => {
             try {
                 // send transaction
                 const transaction = await staking.withdraw(amount);
-                setContext({
-                    error: null,
-                    submitting: true,
-                    currentTransaction: transaction
-                });
+                setTransaction(transaction);
+                setError(undefined);
             } catch (e) {
-                setContext({
-                    error: e.message,
-                    submitting: false
-                });
+                setError(e.message);
+                setTransaction(undefined);
             }
         }
     };
 
     return {
         staking,
+        error,
         stakedBalance,
         maturingTimestamp,
         releasingTimestamp,
@@ -140,6 +118,7 @@ export const useStaking = () => {
         releasingBalance,
         stake,
         unstake,
-        withdraw
+        withdraw,
+        transaction
     };
 };
