@@ -21,7 +21,7 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<ContractTransaction>();
+    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [authManager, setAuthManager] = useState<WorkerAuthManager>();
 
@@ -50,11 +50,11 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
         }
     }, [authManager, worker, dapp])
 
-    const authorize = async () => {
+    const authorize = () => {
         if (authManager) {
             try {
                 // send transaction
-                const transaction = await authManager.authorize(worker, dapp)
+                const transaction = authManager.authorize(worker, dapp)
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {

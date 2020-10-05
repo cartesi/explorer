@@ -23,7 +23,7 @@ export const useWorkerManager = (worker: string) => {
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<ContractTransaction>();
+    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
     const [available, setAvailable] = useState<boolean>(false);
@@ -74,14 +74,14 @@ export const useWorkerManager = (worker: string) => {
         }
     }, [workerManager, worker]);
 
-    const hire = async () => {
+    const hire = () => {
         if (workerManager) {
             // XXX: move this to a parameter
             const value = parseUnits('1', 'finney');
 
             try {
                 // send transaction
-                const transaction = await workerManager.hire(worker, {
+                const transaction = workerManager.hire(worker, {
                     value,
                 });
                 setTransaction(transaction);
@@ -93,11 +93,11 @@ export const useWorkerManager = (worker: string) => {
         }
     };
 
-    const cancelHire = async () => {
+    const cancelHire = () => {
         if (workerManager) {
             try {
                 // send transaction
-                const transaction = await workerManager.cancelHire(worker);
+                const transaction = workerManager.cancelHire(worker);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -107,11 +107,11 @@ export const useWorkerManager = (worker: string) => {
         }
     };
 
-    const retire = async () => {
+    const retire = () => {
         if (workerManager) {
             try {
                 // send transaction
-                const transaction = await workerManager.retire(worker);
+                const transaction = workerManager.retire(worker);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {

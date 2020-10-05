@@ -24,7 +24,7 @@ export const useStaking = () => {
 
     const blockNumber = useBlockNumber();
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<ContractTransaction>();
+    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
@@ -60,13 +60,13 @@ export const useStaking = () => {
         }
     }, [staking, chainId, account, blockNumber]);
 
-    const stake = async (
+    const stake = (
         amount: BigNumberish
     ) => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = await staking.stake(amount);
+                const transaction = staking.stake(amount);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -76,13 +76,13 @@ export const useStaking = () => {
         }
     };
 
-    const unstake = async (
+    const unstake = (
         amount: BigNumberish
     ) => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = await staking.unstake(amount);
+                const transaction = staking.unstake(amount);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -92,13 +92,13 @@ export const useStaking = () => {
         }
     };
 
-    const withdraw = async (
+    const withdraw = (
         amount: BigNumberish
     ) => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = await staking.withdraw(amount);
+                const transaction = staking.withdraw(amount);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {

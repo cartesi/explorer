@@ -25,7 +25,7 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
     const [token, setToken] = useState<CartesiToken>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
-    const [transaction, setTransaction] = useState<ContractTransaction>();
+    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
@@ -58,11 +58,11 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
         }
     }, [token, account, spender, blockNumber]);
 
-    const approve = async (spender: string, amount: BigNumberish) => {
+    const approve = (spender: string, amount: BigNumberish) => {
         if (token) {
             try {
                 // send transaction
-                const transaction = await token.approve(spender, amount);
+                const transaction = token.approve(spender, amount);
                 setTransaction(transaction);
             } catch (e) {
                 setError(e.message);

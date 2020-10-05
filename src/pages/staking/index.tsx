@@ -39,6 +39,7 @@ import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 
 import { isEthAddress } from '../../utils/validator';
+import { setServers } from 'dns';
 
 const { Option } = Select;
 const localNodeUrl = 'http://localhost:8545';
@@ -111,33 +112,19 @@ const Staking = () => {
         return value;
     }
 
-    const doApprove = () => {
-        approve(staking.address, parseCTSI(approveAmount))
-            .then(() => {
+    useEffect(() => {
+        if (ongoingTransaction) {
+            ongoingTransaction.then(tx => {
                 setApproveAmount(BigNumber.from(0));
-            });
-    }
-
-    const doStake = () => {
-        stake(parseCTSI(stakeAmount))
-            .then(() => {
                 setStakeAmount(BigNumber.from(0));
-            })
-    }
-
-    const doWithdraw = () => {
-        withdraw(parseCTSI(withdrawAmount))
-            .then(() => {
                 setWithdrawAmount(BigNumber.from(0));
-            })
-    }
-
-    const doUnstake = () => {
-        unstake(parseCTSI(unstakeAmount))
-            .then(() => {
                 setUnstakeAmount(BigNumber.from(0));
             })
-    }
+                .catch(err => {
+                    // error = err.message;
+                })
+        }
+    }, [ongoingTransaction]);
 
     const splitStakeAmount = () => {
         let fromReleasing = BigNumber.from(0), fromAllowance = BigNumber.from(0);
@@ -216,7 +203,7 @@ const Staking = () => {
 
                 {waiting &&
                     <Row>
-                    <WaitingConfirmations transaction={ongoingTransaction} />
+                        <WaitingConfirmations transaction={ongoingTransaction} />
                     </Row>
                 }
 
@@ -242,7 +229,7 @@ const Staking = () => {
                                 />
                             </Col>
                             <Col>
-                                <Button onClick={doApprove} disabled={waiting}>Approve</Button>
+                                <Button onClick={() => approve(staking.address, parseCTSI(approveAmount))} disabled={waiting}>Approve</Button>
                             </Col>
                         </Row>
                     </Col>
@@ -278,7 +265,7 @@ const Staking = () => {
                                 />
                             </Col>
                             <Col>
-                                <Button onClick={doWithdraw}
+                                <Button onClick={() => withdraw(parseCTSI(withdrawAmount))}
                                     disabled={waiting || !withdrawAmount || releasingTimestamp > new Date() || parseCTSI(withdrawAmount).gt(releasingBalance)}
                                 >
                                     Withdraw
@@ -303,7 +290,7 @@ const Staking = () => {
                                     />
                                 </Col>
                                 <Col>
-                                    <Button onClick={doStake}
+                                    <Button onClick={() => stake(parseCTSI(stakeAmount))}
                                         disabled={waiting || !stakeAmount || parseCTSI(stakeAmount).gt(allowance.add(releasingBalance))}
                                     >
                                         Stake
@@ -319,7 +306,7 @@ const Staking = () => {
                             {stakeAmount.gt(0) &&
                                 <Row>
                                     <Typography.Text>
-                                    Stake {splitStakeAmount()} (Once you stake, the next settlement time will be reset!)
+                                        Stake {splitStakeAmount()} (Once you stake, the next settlement time will be reset!)
                                     </Typography.Text>
                                 </Row>
                             }
@@ -335,7 +322,7 @@ const Staking = () => {
                                     />
                                 </Col>
                                 <Col>
-                                    <Button onClick={doUnstake}
+                                    <Button onClick={() => unstake(parseCTSI(unstakeAmount))}
                                         disabled={waiting || !unstakeAmount || parseCTSI(unstakeAmount).gt(stakedBalance.add(maturingBalance))}
                                     >
                                         Unstake
@@ -347,7 +334,7 @@ const Staking = () => {
                                     </Typography.Text>
                                 </Col>
                             </Row>
-                            
+
                             {unstakeAmount.gt(0) &&
                                 <Row>
                                     <Typography.Text>

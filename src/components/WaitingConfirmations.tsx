@@ -22,12 +22,12 @@ import { ContractTransaction } from 'ethers';
 const { Step } = Steps;
 
 interface WaitingConfirmationsProps {
-    transaction?: ContractTransaction;
+    transaction?: Promise<ContractTransaction>;
 }
 
 const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const currentTransaction = props.transaction;
+    const [currentTransaction, setCurrentTransaction] = useState<ContractTransaction>(null);
 
     const blockNumber = useBlockNumber();
     const [countBlockNumber, setCountBlockNumber] = useState<boolean>(false);
@@ -35,6 +35,10 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
     const [confirmation, setConfirmation] = useState<number>(1);
     const [currentConfirmation, setCurrentConfirmation] = useState<number>(0);
     const [step, setStep] = useState<number>(0);
+
+    props.transaction.then(tx => {
+        setCurrentTransaction(tx);
+    })
 
     // number of expected confirmations depend on chainId
     useEffect(() => {
@@ -53,7 +57,7 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
                     setCurrentConfirmation(receipt.confirmations);
                 });
         }
-    }, [library, chainId, blockNumber]);
+    }, [library, chainId, blockNumber, currentTransaction]);
 
     useEffect(() => {
         try {
@@ -88,7 +92,6 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
                     description="Waiting for confirmations"
                     icon={step === 1 ? <LoadingOutlined /> : null}
                 />
-                <Step title="Done" />
             </Steps>
         </>
     );
