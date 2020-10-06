@@ -21,8 +21,16 @@ import { useWorkerManager } from '../services/workerManager';
 import { useWorkerAuthManager } from '../services/workerAuthManager';
 
 import { networks } from '../utils/networks';
+import { ContractTransaction } from 'ethers';
 
-const NodeDetails = ({ address }) => {
+interface NodeDetailsProps {
+    address: string;
+    waiting: boolean;
+    setWorkerTransaction: (currentTransaction: Promise<ContractTransaction>) => void;
+    setWorkerError: (error: string) => void;
+}
+
+const NodeDetails = (props: NodeDetailsProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
 
     const account = useAccount(0);
@@ -37,20 +45,45 @@ const NodeDetails = ({ address }) => {
         owned,
         retired,
         loading,
+        error: workerManagerError,
+        transaction: workerManagerTransaction,
+        clearStates: clearWorkerManagerStates,
+        updateState,
         hire,
         cancelHire,
         retire,
-    } = useWorkerManager(address);
+    } = useWorkerManager(props.address);
 
     const {
+        isAuthorized,
+        error: workerAuthManagerError,
+        transaction: workerAuthManagerTransaction,
+        clearStates: clearWorkerAuthManagerStates,
         authorize,
-        isAuthorized
-    } = useWorkerAuthManager(address, posAddress);
+    } = useWorkerAuthManager(props.address, posAddress);
 
     const showAuthorize = !isAuthorized;
 
     // make balance depend on owner, so if it changes we update the balance
-    const balance = useBalance(address, [user]);
+    const balance = useBalance(props.address, [user]);
+
+    useEffect(() => {
+        if (workerManagerTransaction || workerAuthManagerTransaction) {
+            props.setWorkerTransaction(workerManagerTransaction || workerAuthManagerTransaction);
+        }
+        if (workerManagerError || workerAuthManagerError) {
+            props.setWorkerError(workerManagerError || workerAuthManagerError);
+        }
+    }, [workerManagerTransaction, workerManagerError, workerAuthManagerTransaction, workerAuthManagerError]);
+
+    useEffect(() => {
+        if (props.waiting === false) {
+            clearWorkerManagerStates();
+            clearWorkerAuthManagerStates();
+
+            updateState();
+        }
+    }, [props.waiting]);
 
     return (
         <Row align='middle' gutter={16}>
@@ -60,7 +93,7 @@ const NodeDetails = ({ address }) => {
                     size='small'
                     column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
                 >
-                    <Descriptions.Item label="Address">{address}</Descriptions.Item>
+                    <Descriptions.Item label="Address">{props.address}</Descriptions.Item>
                     <Descriptions.Item label="Balance">
                         {formatEther(balance)} ETH
                     </Descriptions.Item>
@@ -78,6 +111,7 @@ const NodeDetails = ({ address }) => {
                     <Button
                         onClick={hire}
                         type="primary"
+                        disabled={props.waiting}
                     >
                         Hire node
                     </Button>
@@ -86,6 +120,7 @@ const NodeDetails = ({ address }) => {
                     <Button
                         onClick={cancelHire}
                         type="primary"
+                        disabled={props.waiting}
                     >
                         Cancel hire
                     </Button>
@@ -96,6 +131,7 @@ const NodeDetails = ({ address }) => {
                             <Button
                                 onClick={authorize}
                                 type="primary"
+                                disabled={props.waiting}
                                 style={{ marginRight: '10px' }}
                             >
                                 Authorize
@@ -105,6 +141,7 @@ const NodeDetails = ({ address }) => {
                         <Button
                             onClick={retire}
                             type="primary"
+                            disabled={props.waiting}
                         >
                             Retire node
                     </Button>

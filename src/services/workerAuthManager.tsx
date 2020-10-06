@@ -64,8 +64,14 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
         }
     };
 
+    const clearStates = () => {
+        // setError(null);
+        setTransaction(null);
+    };
+
     return {
         authorize,
+        clearStates,
         isAuthorized,
         error,
         transaction,

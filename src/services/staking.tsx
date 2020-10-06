@@ -108,17 +108,23 @@ export const useStaking = () => {
         }
     };
 
+    const clearStates = () => {
+        // setError(null);
+        setTransaction(null);
+    };
+
     return {
         staking,
         error,
+        transaction,
         stakedBalance,
         maturingTimestamp,
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
+        clearStates,
         stake,
         unstake,
         withdraw,
-        transaction
     };
 };

@@ -74,17 +74,23 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
 
     const parseCTSI = (amount: BigNumberish): BigNumber => {
         return parseUnits(amount.toString(), 18);
-    }
+    };
 
     const formatCTSI = (amount: BigNumberish): string => {
         return formatUnits(amount, 18);
-    }
+    };
+
+    const clearStates = () => {
+        // setError(null);
+        setTransaction(null);
+    };
 
     return {
         allowance,
         balance,
         error,
         transaction,
+        clearStates,
         approve,
         parseCTSI,
         formatCTSI

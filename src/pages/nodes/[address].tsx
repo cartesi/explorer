@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ const Node = () => {
     let { address } = router.query;
     address = address as string;
     const account = useAccount(0);
-    
+
     const {
         user,
         available,
@@ -38,12 +38,17 @@ const Node = () => {
         cancelHire,
         retire,
         transaction,
+        clearStates
     } = useWorkerManager(address);
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
 
     const submitting = !!transaction;
+
+    const confirmationDone = (error: string) => {
+        clearStates();
+    }
 
     return (
         <Layout>
@@ -64,17 +69,19 @@ const Node = () => {
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>{address}</Breadcrumb.Item>
             </Breadcrumb>
-            {error && (
+            {/* {error && (
                 <Alert
                     key="error"
                     message={error}
                     type="error"
                     style={{ marginBottom: '16px' }}
                 />
-            )}
+            )} */}
 
             {transaction &&
-                <WaitingConfirmations transaction={transaction} />
+                <WaitingConfirmations transaction={transaction}
+                    confirmationDone={confirmationDone}
+                    error={error} />
             }
 
             <Descriptions

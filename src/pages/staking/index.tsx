@@ -27,7 +27,7 @@ import {
     Divider,
     Select
 } from 'antd';
-import { BigNumber } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
@@ -39,7 +39,6 @@ import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 
 import { isEthAddress } from '../../utils/validator';
-import { setServers } from 'dns';
 
 const { Option } = Select;
 const localNodeUrl = 'http://localhost:8545';
@@ -55,6 +54,10 @@ const Staking = () => {
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
 
     const [nodeAddress, setNodeAddress] = useState<string>(null);
+    const [confirmationError, setConfirmationError] = useState<string>(null);
+
+    const [workerError, setWorkerError] = useState<string>();
+    const [workerTransaction, setWorkerTransaction] = useState<Promise<ContractTransaction>>();
 
     // block number tracking
     const blockNumber = useBlockNumber();
@@ -72,6 +75,7 @@ const Staking = () => {
         releasingBalance,
         error: stakingError,
         transaction: stakingTransaction,
+        clearStates: clearStakingStates,
         stake,
         unstake,
         withdraw
@@ -82,13 +86,14 @@ const Staking = () => {
         allowance,
         error: tokenError,
         transaction: tokenTransaction,
+        clearStates: clearTokenStates,
         approve,
         formatCTSI,
         parseCTSI
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    const error = tokenError || stakingError;
-    const ongoingTransaction = tokenTransaction || stakingTransaction;
+    const error = tokenError || stakingError || workerError || confirmationError;
+    const ongoingTransaction = tokenTransaction || workerTransaction || stakingTransaction;
     const waiting = !!ongoingTransaction;
 
     useEffect(() => {
@@ -110,21 +115,7 @@ const Staking = () => {
     const validate = (value: number): number => {
         if (!value || value < 0) value = 0;
         return value;
-    }
-
-    useEffect(() => {
-        if (ongoingTransaction) {
-            ongoingTransaction.then(tx => {
-                setApproveAmount(BigNumber.from(0));
-                setStakeAmount(BigNumber.from(0));
-                setWithdrawAmount(BigNumber.from(0));
-                setUnstakeAmount(BigNumber.from(0));
-            })
-                .catch(err => {
-                    // error = err.message;
-                })
-        }
-    }, [ongoingTransaction]);
+    };
 
     const splitStakeAmount = () => {
         let fromReleasing = BigNumber.from(0), fromAllowance = BigNumber.from(0);
@@ -184,6 +175,13 @@ const Staking = () => {
         return formatCTSI(fromMaturing) + " CTSI from Maturing Balance and " + formatCTSI(fromStaked) + " CTSI from Staked Balance";
     }
 
+    const confirmationDone = (error: string) => {
+        setConfirmationError(error);
+
+        clearStakingStates();
+        clearTokenStates();
+    }
+
     return (
         <Layout>
             <Head>
@@ -199,13 +197,14 @@ const Staking = () => {
                 <Breadcrumb.Item>Staking</Breadcrumb.Item>
             </Breadcrumb>
 
-            <Space direction='vertical' size='large'>
+            <Row>
+                <WaitingConfirmations transaction={ongoingTransaction}
+                    confirmationDone={confirmationDone}
+                    error={error}
+                />
+            </Row>
 
-                {waiting &&
-                    <Row>
-                        <WaitingConfirmations transaction={ongoingTransaction} />
-                    </Row>
-                }
+            <Space direction='vertical' size='large'>
 
                 <Row gutter={16}>
 
@@ -373,16 +372,22 @@ const Staking = () => {
                     </Col>
                 </Row>
 
-                {isEthAddress(nodeAddress) && <NodeDetails address={nodeAddress} />}
+                {isEthAddress(nodeAddress) &&
+                    <NodeDetails address={nodeAddress}
+                        setWorkerError={setWorkerError}
+                        setWorkerTransaction={setWorkerTransaction}
+                        waiting={waiting}
+                    />
+                }
 
-                {error &&
+                {/* {error &&
                     <Alert
                         message="Error occured!"
                         description={error}
                         type="error"
                         closable
                     />
-                }
+                } */}
             </Space>
         </Layout>
     );

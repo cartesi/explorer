@@ -49,10 +49,7 @@ export const useWorkerManager = (worker: string) => {
         }
     }, [library, chainId]);
 
-    const updateState = async (
-        workerManager: WorkerManager,
-        worker: string
-    ) => {
+    const updateState = async () => {
         if (workerManager) {
             const available = await workerManager.isAvailable(worker);
             const owned = await workerManager.isOwned(worker);
@@ -68,7 +65,7 @@ export const useWorkerManager = (worker: string) => {
     useEffect(() => {
         if (workerManager) {
             setLoading(true);
-            updateState(workerManager, worker)
+            updateState()
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
@@ -121,6 +118,11 @@ export const useWorkerManager = (worker: string) => {
         }
     };
 
+    const clearStates = () => {
+        // setError(null);
+        setTransaction(null);
+    };
+
     return {
         workerManager,
         error,
@@ -130,10 +132,12 @@ export const useWorkerManager = (worker: string) => {
         owned,
         retired,
         loading,
+        transaction,
+        updateState,
+        clearStates,
         hire,
         cancelHire,
         retire,
-        transaction,
     };
 };
 
