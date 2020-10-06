@@ -38,7 +38,7 @@ const Node = () => {
         cancelHire,
         retire,
         transaction,
-        clearStates
+        clearStates,
     } = useWorkerManager(address);
 
     // make balance depend on owner, so if it changes we update the balance
@@ -48,7 +48,7 @@ const Node = () => {
 
     const confirmationDone = (error: string) => {
         clearStates();
-    }
+    };
 
     return (
         <Layout>
@@ -78,11 +78,13 @@ const Node = () => {
                 />
             )} */}
 
-            {transaction &&
-                <WaitingConfirmations transaction={transaction}
+            {transaction && (
+                <WaitingConfirmations
+                    transaction={transaction}
                     confirmationDone={confirmationDone}
-                    error={error} />
-            }
+                    error={error}
+                />
+            )}
 
             <Descriptions
                 bordered

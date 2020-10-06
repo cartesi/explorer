@@ -26,7 +26,9 @@ import { ContractTransaction } from 'ethers';
 interface NodeDetailsProps {
     address: string;
     waiting: boolean;
-    setWorkerTransaction: (currentTransaction: Promise<ContractTransaction>) => void;
+    setWorkerTransaction: (
+        currentTransaction: Promise<ContractTransaction>
+    ) => void;
     setWorkerError: (error: string) => void;
 }
 
@@ -69,12 +71,19 @@ const NodeDetails = (props: NodeDetailsProps) => {
 
     useEffect(() => {
         if (workerManagerTransaction || workerAuthManagerTransaction) {
-            props.setWorkerTransaction(workerManagerTransaction || workerAuthManagerTransaction);
+            props.setWorkerTransaction(
+                workerManagerTransaction || workerAuthManagerTransaction
+            );
         }
         if (workerManagerError || workerAuthManagerError) {
             props.setWorkerError(workerManagerError || workerAuthManagerError);
         }
-    }, [workerManagerTransaction, workerManagerError, workerAuthManagerTransaction, workerAuthManagerError]);
+    }, [
+        workerManagerTransaction,
+        workerManagerError,
+        workerAuthManagerTransaction,
+        workerAuthManagerError,
+    ]);
 
     useEffect(() => {
         if (props.waiting === false) {
@@ -86,20 +95,26 @@ const NodeDetails = (props: NodeDetailsProps) => {
     }, [props.waiting]);
 
     return (
-        <Row align='middle' gutter={16}>
+        <Row align="middle" gutter={16}>
             <Col>
                 <Descriptions
                     bordered
-                    size='small'
+                    size="small"
                     column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
                 >
-                    <Descriptions.Item label="Address">{props.address}</Descriptions.Item>
+                    <Descriptions.Item label="Address">
+                        {props.address}
+                    </Descriptions.Item>
                     <Descriptions.Item label="Balance">
                         {formatEther(balance)} ETH
                     </Descriptions.Item>
                     <Descriptions.Item label="Owner">
                         {loading && <Spin />}
-                        {user === NULL_ADDRESS ? <i>&lt;none&gt;</i> : user}{' '}
+                        {user === NULL_ADDRESS ? (
+                            <i>&lt;none&gt;</i>
+                        ) : (
+                            user
+                        )}{' '}
                         {pending && <i>(pending)</i>}
                         {retired && <i>(retired)</i>}
                     </Descriptions.Item>
@@ -144,7 +159,7 @@ const NodeDetails = (props: NodeDetailsProps) => {
                             disabled={props.waiting}
                         >
                             Retire node
-                    </Button>
+                        </Button>
                     </>
                 )}
             </Col>

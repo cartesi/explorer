@@ -21,7 +21,9 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
+    const [transaction, setTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [authManager, setAuthManager] = useState<WorkerAuthManager>();
 
@@ -36,10 +38,15 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
                     `Attaching WorkerAuthManager to address '${address}' deployed at network '${chainId}'`
                 );
                 setAuthManager(
-                    WorkerAuthManagerFactory.connect(address, library.getSigner())
+                    WorkerAuthManagerFactory.connect(
+                        address,
+                        library.getSigner()
+                    )
                 );
             } else {
-                setError(`WorkerAuthManager not deployed at network '${chainId}'`);
+                setError(
+                    `WorkerAuthManager not deployed at network '${chainId}'`
+                );
             }
         }
     }, [library, chainId]);
@@ -48,13 +55,13 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
         if (authManager) {
             authManager.isAuthorized(worker, dapp).then(setIsAuthorized);
         }
-    }, [authManager, worker, dapp])
+    }, [authManager, worker, dapp]);
 
     const authorize = () => {
         if (authManager) {
             try {
                 // send transaction
-                const transaction = authManager.authorize(worker, dapp)
+                const transaction = authManager.authorize(worker, dapp);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {

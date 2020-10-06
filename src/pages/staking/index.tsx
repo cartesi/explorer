@@ -25,7 +25,7 @@ import {
     Alert,
     Statistic,
     Divider,
-    Select
+    Select,
 } from 'antd';
 import { BigNumber, ContractTransaction } from 'ethers';
 
@@ -43,21 +43,31 @@ import { isEthAddress } from '../../utils/validator';
 const { Option } = Select;
 const localNodeUrl = 'http://localhost:8545';
 
-type NodeAddress = { address: string, chain: string };
+type NodeAddress = { address: string; chain: string };
 
 const Staking = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
 
-    const [approveAmount, setApproveAmount] = useState<BigNumber>(BigNumber.from(0));
-    const [stakeAmount, setStakeAmount] = useState<BigNumber>(BigNumber.from(0));
-    const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(BigNumber.from(0));
-    const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(BigNumber.from(0));
+    const [approveAmount, setApproveAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [stakeAmount, setStakeAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
 
     const [nodeAddress, setNodeAddress] = useState<string>(null);
     const [confirmationError, setConfirmationError] = useState<string>(null);
 
     const [workerError, setWorkerError] = useState<string>();
-    const [workerTransaction, setWorkerTransaction] = useState<Promise<ContractTransaction>>();
+    const [workerTransaction, setWorkerTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
 
     // block number tracking
     const blockNumber = useBlockNumber();
@@ -78,7 +88,7 @@ const Staking = () => {
         clearStates: clearStakingStates,
         stake,
         unstake,
-        withdraw
+        withdraw,
     } = useStaking();
 
     const {
@@ -89,25 +99,33 @@ const Staking = () => {
         clearStates: clearTokenStates,
         approve,
         formatCTSI,
-        parseCTSI
+        parseCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    const error = tokenError || stakingError || workerError || confirmationError;
-    const ongoingTransaction = tokenTransaction || workerTransaction || stakingTransaction;
+    const error =
+        tokenError || stakingError || workerError || confirmationError;
+    const ongoingTransaction =
+        tokenTransaction || workerTransaction || stakingTransaction;
     const waiting = !!ongoingTransaction;
 
     useEffect(() => {
-        let newNodeList: Array<NodeAddress> = localNode ? [{
-            address: localNode.address,
-            chain: 'localhost:8545'
-        }] : [];
+        let newNodeList: Array<NodeAddress> = localNode
+            ? [
+                  {
+                      address: localNode.address,
+                      chain: 'localhost:8545',
+                  },
+              ]
+            : [];
 
-        newNodeList = newNodeList.concat(nodes.map((node) => {
-            return {
-                address: node.address,
-                chain: 'Cartesi'
-            };
-        }));
+        newNodeList = newNodeList.concat(
+            nodes.map((node) => {
+                return {
+                    address: node.address,
+                    chain: 'Cartesi',
+                };
+            })
+        );
 
         setNodeList(newNodeList);
     }, [nodes, localNode]);
@@ -118,7 +136,8 @@ const Staking = () => {
     };
 
     const splitStakeAmount = () => {
-        let fromReleasing = BigNumber.from(0), fromAllowance = BigNumber.from(0);
+        let fromReleasing = BigNumber.from(0),
+            fromAllowance = BigNumber.from(0);
         let stakeAmountCTSI = parseCTSI(stakeAmount);
 
         if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
@@ -137,17 +156,23 @@ const Staking = () => {
         }
 
         if (fromReleasing.eq(0)) {
-            return formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
+            return formatCTSI(fromAllowance) + ' CTSI from Allowance Balance';
         }
         if (fromAllowance.eq(0)) {
-            return formatCTSI(fromReleasing) + " CTSI from Unstaked Balance";
+            return formatCTSI(fromReleasing) + ' CTSI from Unstaked Balance';
         }
 
-        return formatCTSI(fromReleasing) + " CTSI from Unstaked Balance and " + formatCTSI(fromAllowance) + " CTSI from Allowance Balance";
-    }
+        return (
+            formatCTSI(fromReleasing) +
+            ' CTSI from Unstaked Balance and ' +
+            formatCTSI(fromAllowance) +
+            ' CTSI from Allowance Balance'
+        );
+    };
 
     const splitUnstakeAmount = () => {
-        let fromMaturing = BigNumber.from(0), fromStaked = BigNumber.from(0);
+        let fromMaturing = BigNumber.from(0),
+            fromStaked = BigNumber.from(0);
         let unstakeAmountCTSI = parseCTSI(unstakeAmount);
 
         if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
@@ -166,21 +191,26 @@ const Staking = () => {
         }
 
         if (fromMaturing.eq(0)) {
-            return formatCTSI(fromStaked) + " CTSI from Staked Balance";
+            return formatCTSI(fromStaked) + ' CTSI from Staked Balance';
         }
         if (fromStaked.eq(0)) {
-            return formatCTSI(fromMaturing) + " CTSI from Maturing Balance";
+            return formatCTSI(fromMaturing) + ' CTSI from Maturing Balance';
         }
 
-        return formatCTSI(fromMaturing) + " CTSI from Maturing Balance and " + formatCTSI(fromStaked) + " CTSI from Staked Balance";
-    }
+        return (
+            formatCTSI(fromMaturing) +
+            ' CTSI from Maturing Balance and ' +
+            formatCTSI(fromStaked) +
+            ' CTSI from Staked Balance'
+        );
+    };
 
     const confirmationDone = (error: string) => {
         setConfirmationError(error);
 
         clearStakingStates();
         clearTokenStates();
-    }
+    };
 
     return (
         <Layout>
@@ -198,37 +228,58 @@ const Staking = () => {
             </Breadcrumb>
 
             <Row>
-                <WaitingConfirmations transaction={ongoingTransaction}
+                <WaitingConfirmations
+                    transaction={ongoingTransaction}
                     confirmationDone={confirmationDone}
                     error={error}
                 />
             </Row>
 
-            <Space direction='vertical' size='large'>
-
+            <Space direction="vertical" size="large">
                 <Row gutter={16}>
-
                     <Divider orientation="left" plain></Divider>
 
                     <Col span={12}>
-                        <Statistic title="Balance" value={formatCTSI(balance)} />
+                        <Statistic
+                            title="Balance"
+                            value={formatCTSI(balance)}
+                        />
                     </Col>
 
                     <Col span={12}>
-                        <Statistic title="Allowance Balance" value={formatCTSI(allowance)} />
+                        <Statistic
+                            title="Allowance Balance"
+                            value={formatCTSI(allowance)}
+                        />
 
                         <Row gutter={5}>
                             <Col>
                                 <Input
                                     value={approveAmount.toString()}
-                                    onChange={e => setApproveAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                    onChange={(e) =>
+                                        setApproveAmount(
+                                            BigNumber.from(
+                                                validate(e.target.valueAsNumber)
+                                            )
+                                        )
+                                    }
                                     suffix="CTSI"
                                     type="number"
                                     disabled={waiting}
                                 />
                             </Col>
                             <Col>
-                                <Button onClick={() => approve(staking.address, parseCTSI(approveAmount))} disabled={waiting}>Approve</Button>
+                                <Button
+                                    onClick={() =>
+                                        approve(
+                                            staking.address,
+                                            parseCTSI(approveAmount)
+                                        )
+                                    }
+                                    disabled={waiting}
+                                >
+                                    Approve
+                                </Button>
                             </Col>
                         </Row>
                     </Col>
@@ -238,8 +289,17 @@ const Staking = () => {
                     {maturingBalance.gt(0) && (
                         <>
                             <Col span={24}>
-                                <Statistic title="Maturing Balance" value={formatCTSI(maturingBalance)} />
-                                {maturingBalance.gt(0) && <Typography.Text>Your balance will be matured and ready for staking at: {maturingTimestamp?.toLocaleString()}</Typography.Text>}
+                                <Statistic
+                                    title="Maturing Balance"
+                                    value={formatCTSI(maturingBalance)}
+                                />
+                                {maturingBalance.gt(0) && (
+                                    <Typography.Text>
+                                        Your balance will be matured and ready
+                                        for staking at:{' '}
+                                        {maturingTimestamp?.toLocaleString()}
+                                    </Typography.Text>
+                                )}
                             </Col>
 
                             <Divider orientation="left" plain></Divider>
@@ -247,138 +307,217 @@ const Staking = () => {
                     )}
 
                     <Col span={12}>
-                        <Statistic title="Staked Balance" value={formatCTSI(stakedBalance)} />
+                        <Statistic
+                            title="Staked Balance"
+                            value={formatCTSI(stakedBalance)}
+                        />
                     </Col>
 
                     <Col span={12}>
-                        <Statistic title="Unstaked Balance" value={formatCTSI(releasingBalance)} />
+                        <Statistic
+                            title="Unstaked Balance"
+                            value={formatCTSI(releasingBalance)}
+                        />
 
                         <Row gutter={5}>
                             <Col>
                                 <Input
                                     value={withdrawAmount.toString()}
-                                    onChange={e => setWithdrawAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                    onChange={(e) =>
+                                        setWithdrawAmount(
+                                            BigNumber.from(
+                                                validate(e.target.valueAsNumber)
+                                            )
+                                        )
+                                    }
                                     suffix="CTSI"
                                     type="number"
                                     disabled={waiting}
                                 />
                             </Col>
                             <Col>
-                                <Button onClick={() => withdraw(parseCTSI(withdrawAmount))}
-                                    disabled={waiting || !withdrawAmount || releasingTimestamp > new Date() || parseCTSI(withdrawAmount).gt(releasingBalance)}
+                                <Button
+                                    onClick={() =>
+                                        withdraw(parseCTSI(withdrawAmount))
+                                    }
+                                    disabled={
+                                        waiting ||
+                                        !withdrawAmount ||
+                                        releasingTimestamp > new Date() ||
+                                        parseCTSI(withdrawAmount).gt(
+                                            releasingBalance
+                                        )
+                                    }
                                 >
                                     Withdraw
                                 </Button>
                             </Col>
                         </Row>
-                        {releasingBalance.gt(0) && releasingTimestamp > new Date() && <Typography.Text>Next releasing time: {releasingTimestamp?.toLocaleString()}</Typography.Text>}
+                        {releasingBalance.gt(0) &&
+                            releasingTimestamp > new Date() && (
+                                <Typography.Text>
+                                    Next releasing time:{' '}
+                                    {releasingTimestamp?.toLocaleString()}
+                                </Typography.Text>
+                            )}
                     </Col>
 
                     <Divider orientation="left" plain></Divider>
 
                     <Col span={24}>
-                        <Space direction='vertical'>
-                            <Row gutter={5} align='middle'>
+                        <Space direction="vertical">
+                            <Row gutter={5} align="middle">
                                 <Col>
                                     <Input
                                         value={stakeAmount.toString()}
-                                        onChange={e => setStakeAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                        onChange={(e) =>
+                                            setStakeAmount(
+                                                BigNumber.from(
+                                                    validate(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                )
+                                            )
+                                        }
                                         suffix="CTSI"
                                         type="number"
                                         disabled={waiting}
                                     />
                                 </Col>
                                 <Col>
-                                    <Button onClick={() => stake(parseCTSI(stakeAmount))}
-                                        disabled={waiting || !stakeAmount || parseCTSI(stakeAmount).gt(allowance.add(releasingBalance))}
+                                    <Button
+                                        onClick={() =>
+                                            stake(parseCTSI(stakeAmount))
+                                        }
+                                        disabled={
+                                            waiting ||
+                                            !stakeAmount ||
+                                            parseCTSI(stakeAmount).gt(
+                                                allowance.add(releasingBalance)
+                                            )
+                                        }
                                     >
                                         Stake
                                     </Button>
                                 </Col>
                                 <Col>
                                     <Typography.Text>
-                                        (Maximum Limit: {formatCTSI(allowance.add(releasingBalance))} CTSI)
+                                        (Maximum Limit:{' '}
+                                        {formatCTSI(
+                                            allowance.add(releasingBalance)
+                                        )}{' '}
+                                        CTSI)
                                     </Typography.Text>
                                 </Col>
                             </Row>
 
-                            {stakeAmount.gt(0) &&
+                            {stakeAmount.gt(0) && (
                                 <Row>
                                     <Typography.Text>
-                                        Stake {splitStakeAmount()} (Once you stake, the next settlement time will be reset!)
+                                        Stake {splitStakeAmount()} (Once you
+                                        stake, the next settlement time will be
+                                        reset!)
                                     </Typography.Text>
                                 </Row>
-                            }
+                            )}
 
-                            <Row gutter={5} align='middle'>
+                            <Row gutter={5} align="middle">
                                 <Col>
                                     <Input
                                         value={unstakeAmount.toString()}
-                                        onChange={e => setUnstakeAmount(BigNumber.from(validate(e.target.valueAsNumber)))}
+                                        onChange={(e) =>
+                                            setUnstakeAmount(
+                                                BigNumber.from(
+                                                    validate(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                )
+                                            )
+                                        }
                                         suffix="CTSI"
                                         type="number"
                                         disabled={waiting}
                                     />
                                 </Col>
                                 <Col>
-                                    <Button onClick={() => unstake(parseCTSI(unstakeAmount))}
-                                        disabled={waiting || !unstakeAmount || parseCTSI(unstakeAmount).gt(stakedBalance.add(maturingBalance))}
+                                    <Button
+                                        onClick={() =>
+                                            unstake(parseCTSI(unstakeAmount))
+                                        }
+                                        disabled={
+                                            waiting ||
+                                            !unstakeAmount ||
+                                            parseCTSI(unstakeAmount).gt(
+                                                stakedBalance.add(
+                                                    maturingBalance
+                                                )
+                                            )
+                                        }
                                     >
                                         Unstake
                                     </Button>
                                 </Col>
                                 <Col>
                                     <Typography.Text>
-                                        (Maximum Limit: {formatCTSI(stakedBalance.add(maturingBalance))} CTSI)
+                                        (Maximum Limit:{' '}
+                                        {formatCTSI(
+                                            stakedBalance.add(maturingBalance)
+                                        )}{' '}
+                                        CTSI)
                                     </Typography.Text>
                                 </Col>
                             </Row>
 
-                            {unstakeAmount.gt(0) &&
+                            {unstakeAmount.gt(0) && (
                                 <Row>
                                     <Typography.Text>
-                                        Unstake {splitUnstakeAmount()} (Once you unstake, the next releasing time will be reset!)
+                                        Unstake {splitUnstakeAmount()} (Once you
+                                        unstake, the next releasing time will be
+                                        reset!)
                                     </Typography.Text>
                                 </Row>
-                            }
+                            )}
                         </Space>
                     </Col>
                 </Row>
 
                 <Divider orientation="left" plain></Divider>
 
-                <Row gutter={16} align='middle'>
+                <Row gutter={16} align="middle">
                     <Col>
-                        <Typography.Text>
-                            Select Node:
-                        </Typography.Text>
+                        <Typography.Text>Select Node:</Typography.Text>
                     </Col>
                     <Col>
                         <Select
                             style={{ minWidth: 560 }}
                             showSearch
                             value={nodeAddress}
-                            onChange={value => setNodeAddress(value.toString())}
+                            onChange={(value) =>
+                                setNodeAddress(value.toString())
+                            }
                             disabled={waiting}
                             filterOption={(input, option) => {
                                 setNodeAddress(input);
                                 return true;
                             }}
                         >
-                            {nodeList.map(item => (
-                                <Option key={item.address} value={item.address}>{item.address} &lt;{item.chain}&gt;</Option>
+                            {nodeList.map((item) => (
+                                <Option key={item.address} value={item.address}>
+                                    {item.address} &lt;{item.chain}&gt;
+                                </Option>
                             ))}
                         </Select>
                     </Col>
                 </Row>
 
-                {isEthAddress(nodeAddress) &&
-                    <NodeDetails address={nodeAddress}
+                {isEthAddress(nodeAddress) && (
+                    <NodeDetails
+                        address={nodeAddress}
                         setWorkerError={setWorkerError}
                         setWorkerTransaction={setWorkerTransaction}
                         waiting={waiting}
                     />
-                }
+                )}
 
                 {/* {error &&
                     <Alert

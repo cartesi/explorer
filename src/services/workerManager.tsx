@@ -23,7 +23,9 @@ export const useWorkerManager = (worker: string) => {
     const [workerManager, setWorkerManager] = useState<WorkerManager>();
 
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
+    const [transaction, setTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
     const [available, setAvailable] = useState<boolean>(false);
@@ -35,7 +37,8 @@ export const useWorkerManager = (worker: string) => {
     useEffect(() => {
         if (library && chainId) {
             const network = networks[chainId];
-            const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)?.address;
+            const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)
+                ?.address;
             if (!address) {
                 setError(`WorkerManager not deployed at network '${chainId}'`);
                 return;

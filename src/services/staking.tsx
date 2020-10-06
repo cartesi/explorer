@@ -24,12 +24,20 @@ export const useStaking = () => {
 
     const blockNumber = useBlockNumber();
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
-    const [stakedBalance, setStakedBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [transaction, setTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
+    const [stakedBalance, setStakedBalance] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
-    const [maturingBalance, setMaturingBalance] = useState<BigNumber>(BigNumber.from(0));
-    const [releasingBalance, setReleasingBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [maturingBalance, setMaturingBalance] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
 
     // create the Staking, asynchronously
     useEffect(() => {
@@ -39,8 +47,12 @@ export const useStaking = () => {
                 const deployment = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
                 const address = deployment?.address;
                 if (address) {
-                    console.log(`Attaching Staking to address '${address}' deployed at network '${chainId}'`);
-                    setStaking(StakingFactory.connect(address, library.getSigner()));
+                    console.log(
+                        `Attaching Staking to address '${address}' deployed at network '${chainId}'`
+                    );
+                    setStaking(
+                        StakingFactory.connect(address, library.getSigner())
+                    );
                 } else {
                     setError(`Staking not deployed at network '${chainId}'`);
                 }
@@ -53,16 +65,22 @@ export const useStaking = () => {
     useEffect(() => {
         if (staking && account) {
             staking.getStakedBalance(account).then(setStakedBalance);
-            staking.getMaturingTimestamp(account).then(value => setMaturingTimestamp(new Date(value.toNumber() * 1000)));
-            staking.getReleasingTimestamp(account).then(value => setReleasingTimestamp(new Date(value.toNumber() * 1000)));
+            staking
+                .getMaturingTimestamp(account)
+                .then((value) =>
+                    setMaturingTimestamp(new Date(value.toNumber() * 1000))
+                );
+            staking
+                .getReleasingTimestamp(account)
+                .then((value) =>
+                    setReleasingTimestamp(new Date(value.toNumber() * 1000))
+                );
             staking.getMaturingBalance(account).then(setMaturingBalance);
             staking.getReleasingBalance(account).then(setReleasingBalance);
         }
     }, [staking, chainId, account, blockNumber]);
 
-    const stake = (
-        amount: BigNumberish
-    ) => {
+    const stake = (amount: BigNumberish) => {
         if (staking) {
             try {
                 // send transaction
@@ -76,9 +94,7 @@ export const useStaking = () => {
         }
     };
 
-    const unstake = (
-        amount: BigNumberish
-    ) => {
+    const unstake = (amount: BigNumberish) => {
         if (staking) {
             try {
                 // send transaction
@@ -92,9 +108,7 @@ export const useStaking = () => {
         }
     };
 
-    const withdraw = (
-        amount: BigNumberish
-    ) => {
+    const withdraw = (amount: BigNumberish) => {
         if (staking) {
             try {
                 // send transaction

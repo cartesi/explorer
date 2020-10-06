@@ -24,8 +24,8 @@ const { Step } = Steps;
 enum ShowStoppers {
     SHOW,
     FADING_OUT,
-    HIDE
-};
+    HIDE,
+}
 
 interface WaitingConfirmationsProps {
     transaction?: Promise<ContractTransaction>;
@@ -35,7 +35,9 @@ interface WaitingConfirmationsProps {
 
 const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const [currentTransaction, setCurrentTransaction] = useState<ContractTransaction>(null);
+    const [currentTransaction, setCurrentTransaction] = useState<
+        ContractTransaction
+    >(null);
 
     const blockNumber = useBlockNumber();
     const [countBlockNumber, setCountBlockNumber] = useState<boolean>(false);
@@ -50,11 +52,14 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
     const hideMe = () => {
         setShowMe(ShowStoppers.FADING_OUT);
 
-        setTimeout(() => {
-            setShowMe(ShowStoppers.HIDE);
+        setTimeout(
+            () => {
+                setShowMe(ShowStoppers.HIDE);
 
-            props.confirmationDone(null);
-        }, error ? 5000 : 2000);
+                props.confirmationDone(null);
+            },
+            error ? 5000 : 2000
+        );
     };
 
     useEffect(() => {
@@ -63,12 +68,13 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
             setStep(0);
             setCurrentConfirmation(0);
 
-            props.transaction.then(tx => {
-                setCurrentTransaction(tx);
-            })
-                .catch(err => {
-                    setError(err.message);
+            props.transaction
+                .then((tx) => {
+                    setCurrentTransaction(tx);
                 })
+                .catch((err) => {
+                    setError(err.message);
+                });
         }
     }, [props.transaction]);
 
@@ -127,21 +133,31 @@ const WaitingConfirmations = (props: WaitingConfirmationsProps) => {
 
     return (
         <>
-            <Steps current={step} status={error ? 'error' : 'process'}
-                style={showMe === ShowStoppers.SHOW ? { margin: "40px 0 20px", opacity: 1 }
-                    : showMe === ShowStoppers.FADING_OUT ? { margin: "40px 0 20px", opacity: 0, transition: `opacity ${error ? 10 : 3}s ease-in` }
-                        : { display: "none" }}
+            <Steps
+                current={step}
+                status={error ? 'error' : 'process'}
+                style={
+                    showMe === ShowStoppers.SHOW
+                        ? { margin: '40px 0 20px', opacity: 1 }
+                        : showMe === ShowStoppers.FADING_OUT
+                        ? {
+                              margin: '40px 0 20px',
+                              opacity: 0,
+                              transition: `opacity ${error ? 10 : 3}s ease-in`,
+                          }
+                        : { display: 'none' }
+                }
             >
                 <Step
                     title="Sending transaction"
-                    icon={(step === 0 && !error) ? <LoadingOutlined /> : null}
+                    icon={step === 0 && !error ? <LoadingOutlined /> : null}
                     description={error ? error : null}
                 />
                 <Step
                     title="Confirming transaction"
                     subTitle={`Confirmed ${currentConfirmation}/${confirmation}`}
                     description="Waiting for confirmations"
-                    icon={(step === 1 && !error) ? <LoadingOutlined /> : null}
+                    icon={step === 1 && !error ? <LoadingOutlined /> : null}
                 />
             </Steps>
         </>
