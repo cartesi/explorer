@@ -9,4 +9,4 @@ export const isEthAddress = (address: string) => {
     } catch (err) {
         return false;
     }
-}
+};

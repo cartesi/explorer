@@ -6,6 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Code format check
+        run: npx prettier --check src/**/*.ts
+        
       - name: Build Image
         run: docker build . -t cartesi/console
       

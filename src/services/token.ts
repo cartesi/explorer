@@ -18,14 +18,20 @@ import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
-export const useCartesiToken = (account: string, spender: string, blockNumber: number) => {
+export const useCartesiToken = (
+    account: string,
+    spender: string,
+    blockNumber: number
+) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
     const [error, setError] = useState<string>();
     const [token, setToken] = useState<CartesiToken>();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
-    const [transaction, setTransaction] = useState<Promise<ContractTransaction>>();
+    const [transaction, setTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
 
     // create the CartesiToken, asynchronously
     useEffect(() => {
@@ -93,6 +99,6 @@ export const useCartesiToken = (account: string, spender: string, blockNumber: n
         clearStates,
         approve,
         parseCTSI,
-        formatCTSI
+        formatCTSI,
     };
 };
