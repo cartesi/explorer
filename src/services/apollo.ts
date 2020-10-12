@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { concatPagination } from '@apollo/client/utilities';
 
 import getConfig from '../../next.config';
+import { Prize } from '../graphql/prizes';
 
 let apolloClient;
 
@@ -18,7 +18,16 @@ function createApolloClient() {
             typePolicies: {
                 AllPrizesQuery: {
                     fields: {
-                        allPrizes: concatPagination(),
+                        allPrizes: {
+                            merge(
+                                existing: Array<Prize>,
+                                incoming: Array<Prize>
+                            ) {
+                                return Array.from(
+                                    new Set<Prize>([...incoming, ...existing])
+                                );
+                            },
+                        },
                     },
                 },
             },

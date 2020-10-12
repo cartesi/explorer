@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery, NetworkStatus } from '@apollo/client';
 import { Table } from 'antd';
 
@@ -27,6 +27,14 @@ const Blocks = () => {
             },
         });
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            loadMorePrizes();
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const { allPrizes } = data;
 
