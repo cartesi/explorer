@@ -16,6 +16,9 @@ import Sidebar from './Sidebar';
 import SelectedChain from './SelectedChain';
 import styles from './Layout.module.css';
 
+import { allPrizesQueryVars, ALL_PRIZES } from '../graphql/prizes';
+import { initializeApollo } from '../services/apollo';
+
 const { Content, Footer, Header } = Layout;
 
 export default ({ children }) => {
@@ -32,3 +35,19 @@ export default ({ children }) => {
         </Layout>
     );
 };
+
+export async function getStaticProps() {
+    const apolloClient = initializeApollo();
+
+    await apolloClient.query({
+        query: ALL_PRIZES,
+        variables: allPrizesQueryVars,
+    });
+
+    return {
+        props: {
+            initialApolloState: apolloClient.cache.extract(),
+        },
+        revalidate: 1,
+    };
+}

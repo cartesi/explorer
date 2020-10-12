@@ -17,6 +17,7 @@ import {
     AppstoreOutlined,
     ThunderboltOutlined,
     WalletOutlined,
+    DatabaseOutlined,
 } from '@ant-design/icons';
 import styles from './Sidebar.module.css';
 
@@ -47,6 +48,12 @@ const Sidebar = (props: SidebarProps) => {
             href: '/descartes',
             icon: <ThunderboltOutlined />,
         },
+        {
+            key: 'blocks',
+            label: 'Blocks',
+            href: '/blocks',
+            icon: <DatabaseOutlined />,
+        },
     ];
 
     // use router to figure out the active item
@@ -55,12 +62,14 @@ const Sidebar = (props: SidebarProps) => {
         .map((item) => item.key);
 
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} breakpoint='md'>
+        <Sider
+            collapsible
+            collapsed={collapsed}
+            onCollapse={setCollapsed}
+            breakpoint="md"
+        >
             <div className={styles.logo}></div>
-            <Menu
-                theme="dark"
-                selectedKeys={selectedKeys}
-            >
+            <Menu theme="dark" selectedKeys={selectedKeys}>
                 {items.map((item) => (
                     <Menu.Item key={item.key} icon={item.icon}>
                         <Link href={item.href}>

@@ -14,14 +14,21 @@ import { AppProps } from 'next/app';
 import 'antd/dist/antd.css';
 import dynamic from 'next/dynamic';
 
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from '../services/apollo';
+
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
 });
 
 export default ({ Component, pageProps }: AppProps) => {
+    const apolloClient = useApollo(pageProps.initialApolloState);
+
     return (
-        <Web3Container>
-            <Component {...pageProps} />
-        </Web3Container>
+        <ApolloProvider client={apolloClient}>
+            <Web3Container>
+                <Component {...pageProps} />
+            </Web3Container>
+        </ApolloProvider>
     );
 };
