@@ -1090,10 +1090,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cartesi/pos@^0.1.0-beta.5":
-  version "0.1.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.5.tgz#2dd7f56aa03ef3733b0299d1d60986335240c197"
-  integrity sha512-IJyLBQ1tHqYnj2kOxp1H77a5FIuodMIgOSM8T/eUhibOz5o2im/1YT3/00hUSNYJz+e5lWi+v6ml/r+dlmjLYw==
+"@cartesi/pos@^0.1.0-beta.8":
+  version "0.1.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.8.tgz#9a4c68d37e14f101449687caa31484f07577e0e9"
+  integrity sha512-Eg2xsqodF8IZxaApOpQvZQ/3LaAuV74tbkXIedSTReN2hSlmctwNbgbKh3MGKtdO2GthTdg2jYAFiR9/FFmROQ==
   dependencies:
     "@cartesi/token" "^1.1.0"
     "@cartesi/util" "^0.4.2"
