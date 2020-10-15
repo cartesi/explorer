@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
-import { useQuery, NetworkStatus } from '@apollo/client';
-import { Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { Breadcrumb, Table } from 'antd';
+import _ from 'lodash';
 
-import { ALL_PRIZES } from '../../graphql/prizes';
+import { ALL_PRIZES, Prize } from '../../graphql/prizes';
+
+import Layout from '../../components/Layout';
+import Head from 'next/head';
+import Link from 'next/link';
 
 const Blocks = () => {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
@@ -10,35 +15,60 @@ const Blocks = () => {
         {
             variables: {
                 first: 10,
-                skip: 0,
+                lastTime: 0,
             },
             notifyOnNetworkStatusChange: true,
         }
     );
 
-    const loadingMorePrizes = networkStatus === NetworkStatus.fetchMore;
+    const [allPrizes, setAllPrizes] = useState<Array<Prize>>([]);
 
-    const loadMorePrizes = () => {
-        fetchMore({
+    // TODO: Need to determine how to implement pagination with the new lotteries coming in
+    const loadMorePrizes = async (continueLoading = true) => {
+        const { data } = await fetchMore({
             variables: {
-                where: {
-                    time_gt: allPrizes[allPrizes.length - 1].time,
-                },
+                lastTime: continueLoading
+                    ? parseInt(allPrizes[allPrizes.length - 1].time)
+                    : 0,
             },
         });
+
+        data.prizes.forEach((prize) => (prize.key = prize.id));
+
+        const newPrizes = _.unionBy(data.prizes, allPrizes, 'key');
+
+        setAllPrizes(newPrizes);
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            loadMorePrizes();
-        }, 1000);
+        if (fetchMore && allPrizes.length) {
+            const interval = setInterval(() => {
+                loadMorePrizes(false);
+            }, 10000);
 
-        return () => clearInterval(interval);
-    }, []);
+            return () => clearInterval(interval);
+        }
+    }, [fetchMore, allPrizes]);
 
-    const { allPrizes } = data;
+    useEffect(() => {
+        if (!loading && !error && data) {
+            const newPrizes = data.prizes.map((prize) => {
+                return {
+                    ...prize,
+                    key: prize.id,
+                };
+            });
+
+            setAllPrizes(newPrizes);
+        }
+    }, [loading, error, data, fetchMore, networkStatus]);
 
     const columns = [
+        {
+            title: 'Time',
+            dataIndex: 'time',
+            key: 'time',
+        },
         {
             title: 'ID',
             dataIndex: 'id',
@@ -54,17 +84,25 @@ const Blocks = () => {
             dataIndex: 'prize',
             key: 'prize',
         },
-        {
-            title: 'Time',
-            dataIndex: 'time',
-            key: 'time',
-        },
     ];
 
     return (
-        <div>
-            <Table columns={columns} dataSource={allPrizes} />
-        </div>
+        <Layout>
+            <Head>
+                <title>Blocks</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>
+                    <Link href="/">
+                        <a>Home</a>
+                    </Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>Blocks</Breadcrumb.Item>
+            </Breadcrumb>
+
+            <Table columns={columns} dataSource={allPrizes} bordered />
+        </Layout>
     );
 };
 

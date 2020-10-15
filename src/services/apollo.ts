@@ -14,24 +14,7 @@ function createApolloClient() {
         link: new HttpLink({
             uri: graphUrl,
         }),
-        cache: new InMemoryCache({
-            typePolicies: {
-                AllPrizesQuery: {
-                    fields: {
-                        allPrizes: {
-                            merge(
-                                existing: Array<Prize>,
-                                incoming: Array<Prize>
-                            ) {
-                                return Array.from(
-                                    new Set<Prize>([...incoming, ...existing])
-                                );
-                            },
-                        },
-                    },
-                },
-            },
-        }),
+        cache: new InMemoryCache(),
     });
 }
 

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const ALL_PRIZES = gql`
-    query allPrizes($first: Int, $where: String) {
-        prizes(first: $first, where: $where) {
+    query allPrizes($first: Int, $lastTime: Int) {
+        prizes(first: $first, where: { time_gt: $lastTime }) {
             id
             winner
             prize
@@ -12,13 +12,13 @@ export const ALL_PRIZES = gql`
 `;
 
 export type Prize = {
-    id: String;
-    winner: String;
-    prize: Number;
-    time: Number;
+    id: string;
+    winner: string;
+    prize: string;
+    time: string;
 };
 
 export const allPrizesQueryVars = {
     first: 10,
-    where: {},
+    lastTime: 0,
 };
