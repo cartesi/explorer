@@ -22,7 +22,6 @@ import {
     Col,
     Button,
     Space,
-    Alert,
     Statistic,
     Divider,
     Select,
@@ -37,6 +36,7 @@ import { useLocalNode, useCartesiNodes } from '../../services/node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
+import { MarketInformation, getMarketInformation } from '../../services/market';
 
 import { isEthAddress } from '../../utils/validator';
 
@@ -60,6 +60,10 @@ const Staking = () => {
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
+
+    const [marketInformation, setMarketInformation] = useState<
+        MarketInformation
+    >({});
 
     const [nodeAddress, setNodeAddress] = useState<string>(null);
     const [confirmationError, setConfirmationError] = useState<string>(null);
@@ -107,6 +111,15 @@ const Staking = () => {
     const ongoingTransaction =
         tokenTransaction || workerTransaction || stakingTransaction;
     const waiting = !!ongoingTransaction;
+
+    useEffect(() => {
+        const initMarketInformation = async () => {
+            const marketInfo = await getMarketInformation();
+            setMarketInformation(marketInfo);
+        };
+
+        initMarketInformation();
+    }, []);
 
     useEffect(() => {
         let newNodeList: Array<NodeAddress> = localNode
@@ -236,6 +249,39 @@ const Staking = () => {
             </Row>
 
             <Space direction="vertical" size="large">
+                <Row gutter={16}>
+                    <Divider orientation="left" plain></Divider>
+
+                    <Col span={12}>
+                        <Statistic
+                            title="CTSI Price"
+                            value={marketInformation.price + ' USD'}
+                        />
+                    </Col>
+
+                    <Col span={12}>
+                        <Statistic
+                            title="Circ. Supply"
+                            value={
+                                marketInformation.circulatingSupply + ' CTSI'
+                            }
+                        />
+                    </Col>
+                </Row>
+
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Statistic
+                            title="CTSI Market Cap"
+                            value={marketInformation.marketCap + ' USD'}
+                        />
+                    </Col>
+
+                    <Col span={12}>
+                        <Statistic title="Annual Yield" value={0} />
+                    </Col>
+                </Row>
+
                 <Row gutter={16}>
                     <Divider orientation="left" plain></Divider>
 
