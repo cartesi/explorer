@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 import getConfig from '../../next.config';
-import { Prize } from '../graphql/prizes';
 
 let apolloClient;
 

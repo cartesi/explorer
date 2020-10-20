@@ -3,7 +3,10 @@ import { useQuery } from '@apollo/client';
 import { Breadcrumb, Table } from 'antd';
 import _ from 'lodash';
 
-import { ALL_PRIZES, Prize } from '../../graphql/prizes';
+import {
+    ALL_LOTTERY_WINNERS,
+    LotteryWinner,
+} from '../../graphql/lotteryWinners';
 
 import Layout from '../../components/Layout';
 import Head from 'next/head';
@@ -11,7 +14,7 @@ import Link from 'next/link';
 
 const Blocks = () => {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        ALL_PRIZES,
+        ALL_LOTTERY_WINNERS,
         {
             variables: {
                 first: 10,
@@ -21,7 +24,7 @@ const Blocks = () => {
         }
     );
 
-    const [allPrizes, setAllPrizes] = useState<Array<Prize>>([]);
+    const [allPrizes, setAllPrizes] = useState<Array<LotteryWinner>>([]);
 
     // TODO: Need to determine how to implement pagination with the new lotteries coming in
     const loadMorePrizes = async (continueLoading = true) => {
@@ -33,9 +36,9 @@ const Blocks = () => {
             },
         });
 
-        data.prizes.forEach((prize) => (prize.key = prize.id));
+        data.lotteryWinners.forEach((prize) => (prize.key = prize.id));
 
-        const newPrizes = _.unionBy(data.prizes, allPrizes, 'key');
+        const newPrizes = _.unionBy(data.lotteryWinners, allPrizes, 'key');
 
         setAllPrizes(newPrizes);
     };
@@ -52,10 +55,11 @@ const Blocks = () => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            const newPrizes = data.prizes.map((prize) => {
+            const newPrizes = data.lotteryWinners.map((prize) => {
                 return {
                     ...prize,
                     key: prize.id,
+                    time: new Date(prize.time).toLocaleDateString(),
                 };
             });
 
@@ -70,9 +74,9 @@ const Blocks = () => {
             key: 'time',
         },
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            title: 'Transaction Hash',
+            dataIndex: 'txHash',
+            key: 'txHash',
         },
         {
             title: 'Winner',
@@ -101,7 +105,12 @@ const Blocks = () => {
                 <Breadcrumb.Item>Blocks</Breadcrumb.Item>
             </Breadcrumb>
 
-            <Table columns={columns} dataSource={allPrizes} bordered />
+            <Table
+                columns={columns}
+                dataSource={allPrizes}
+                bordered
+                pagination={{ position: null }}
+            />
         </Layout>
     );
 };
