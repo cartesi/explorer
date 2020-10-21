@@ -1,3 +1,15 @@
+// Copyright (C) 2020 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export type MarketInformation = {
@@ -6,18 +18,36 @@ export type MarketInformation = {
     circulatingSupply?: number;
 };
 
-export async function getMarketInformation(): Promise<MarketInformation> {
+export const useMarketInformation = () => {
     const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    const [marketInformation, setMarketInformation] = useState<
+        MarketInformation
+    >({});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string>('');
 
-    const { data } = await axios.get(endpoint);
+    useEffect(() => {
+        setLoading(true);
+        setError('');
+        axios
+            .get(endpoint)
+            .then(({ data }) => {
+                setLoading(false);
+                setError('');
+                setMarketInformation({
+                    price: data.market_data.current_price.usd,
+                    marketCap: data.market_data.market_cap.usd.toLocaleString(
+                        'en'
+                    ),
+                    circulatingSupply: data.market_data.circulating_supply.toLocaleString(
+                        'en'
+                    ),
+                });
+            })
+            .catch((e) => {
+                setError(e.message);
+            });
+    }, []);
 
-    const marketInformation: MarketInformation = {
-        price: data.market_data.current_price.usd,
-        marketCap: data.market_data.market_cap.usd.toLocaleString('en'),
-        circulatingSupply: data.market_data.circulating_supply.toLocaleString(
-            'en'
-        ),
-    };
-
-    return marketInformation;
-}
+    return { marketInformation, error, loading };
+};

@@ -36,7 +36,7 @@ import { useLocalNode, useCartesiNodes } from '../../services/node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { MarketInformation, getMarketInformation } from '../../services/market';
+import { useMarketInformation } from '../../services/market';
 
 import { isEthAddress } from '../../utils/validator';
 
@@ -60,10 +60,6 @@ const Staking = () => {
     const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
-
-    const [marketInformation, setMarketInformation] = useState<
-        MarketInformation
-    >({});
 
     const [nodeAddress, setNodeAddress] = useState<string>(null);
     const [confirmationError, setConfirmationError] = useState<string>(null);
@@ -112,14 +108,7 @@ const Staking = () => {
         tokenTransaction || workerTransaction || stakingTransaction;
     const waiting = !!ongoingTransaction;
 
-    useEffect(() => {
-        const initMarketInformation = async () => {
-            const marketInfo = await getMarketInformation();
-            setMarketInformation(marketInfo);
-        };
-
-        initMarketInformation();
-    }, []);
+    const { marketInformation } = useMarketInformation();
 
     useEffect(() => {
         let newNodeList: Array<NodeAddress> = localNode
