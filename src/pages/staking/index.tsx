@@ -108,7 +108,10 @@ const Staking = () => {
         tokenTransaction || workerTransaction || stakingTransaction;
     const waiting = !!ongoingTransaction;
 
-    const { marketInformation } = useMarketInformation();
+    const {
+        marketInformation,
+        error: marketInfomationError,
+    } = useMarketInformation();
 
     useEffect(() => {
         let newNodeList: Array<NodeAddress> = localNode
@@ -238,38 +241,43 @@ const Staking = () => {
             </Row>
 
             <Space direction="vertical" size="large">
-                <Row gutter={16}>
-                    <Divider orientation="left" plain></Divider>
+                {chainId === 1 && !marketInfomationError && (
+                    <>
+                        <Row gutter={16}>
+                            <Divider orientation="left" plain></Divider>
 
-                    <Col span={12}>
-                        <Statistic
-                            title="CTSI Price"
-                            value={marketInformation.price + ' USD'}
-                        />
-                    </Col>
+                            <Col span={12}>
+                                <Statistic
+                                    title="CTSI Price"
+                                    value={marketInformation.price + ' USD'}
+                                />
+                            </Col>
 
-                    <Col span={12}>
-                        <Statistic
-                            title="Circ. Supply"
-                            value={
-                                marketInformation.circulatingSupply + ' CTSI'
-                            }
-                        />
-                    </Col>
-                </Row>
+                            <Col span={12}>
+                                <Statistic
+                                    title="Circ. Supply"
+                                    value={
+                                        marketInformation.circulatingSupply +
+                                        ' CTSI'
+                                    }
+                                />
+                            </Col>
+                        </Row>
 
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Statistic
-                            title="CTSI Market Cap"
-                            value={marketInformation.marketCap + ' USD'}
-                        />
-                    </Col>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Statistic
+                                    title="CTSI Market Cap"
+                                    value={marketInformation.marketCap + ' USD'}
+                                />
+                            </Col>
 
-                    <Col span={12}>
-                        <Statistic title="Annual Yield" value={0} />
-                    </Col>
-                </Row>
+                            <Col span={12}>
+                                <Statistic title="Annual Yield" value={0} />
+                            </Col>
+                        </Row>
+                    </>
+                )}
 
                 <Row gutter={16}>
                     <Divider orientation="left" plain></Divider>
