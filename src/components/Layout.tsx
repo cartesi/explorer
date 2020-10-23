@@ -17,9 +17,9 @@ import SelectedChain from './SelectedChain';
 import styles from './Layout.module.css';
 
 import {
-    allLotteryWinnersQueryVars,
-    ALL_LOTTERY_WINNERS,
-} from '../graphql/lotteryWinners';
+    allLotteryTicketsQueryVars,
+    ALL_LOTTERY_TICKETS,
+} from '../graphql/lottery';
 import { initializeApollo } from '../services/apollo';
 
 const { Content, Footer, Header } = Layout;
@@ -43,8 +43,8 @@ export async function getStaticProps() {
     const apolloClient = initializeApollo();
 
     await apolloClient.query({
-        query: ALL_LOTTERY_WINNERS,
-        variables: allLotteryWinnersQueryVars,
+        query: ALL_LOTTERY_TICKETS,
+        variables: allLotteryTicketsQueryVars,
     });
 
     return {

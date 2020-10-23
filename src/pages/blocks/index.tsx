@@ -3,10 +3,7 @@ import { useQuery } from '@apollo/client';
 import { Breadcrumb, Table } from 'antd';
 import _ from 'lodash';
 
-import {
-    ALL_LOTTERY_WINNERS,
-    LotteryWinner,
-} from '../../graphql/lotteryWinners';
+import { ALL_LOTTERY_TICKETS, LotteryTicket } from '../../graphql/lottery';
 
 import Layout from '../../components/Layout';
 import Head from 'next/head';
@@ -14,69 +11,64 @@ import Link from 'next/link';
 
 const Blocks = () => {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        ALL_LOTTERY_WINNERS,
+        ALL_LOTTERY_TICKETS,
         {
             variables: {
                 first: 10,
-                lastTime: 0,
+                filter: { roundCount_gt: 0 },
             },
             notifyOnNetworkStatusChange: true,
         }
     );
 
-    const [allPrizes, setAllPrizes] = useState<Array<LotteryWinner>>([]);
+    const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
 
-    // TODO: Need to determine how to implement pagination with the new lotteries coming in
-    const loadMorePrizes = async (continueLoading = true) => {
+    const loadMoreTickets = async (continueLoading = true) => {
         const { data } = await fetchMore({
             variables: {
-                lastTime: continueLoading
-                    ? parseInt(allPrizes[allPrizes.length - 1].time)
-                    : 0,
+                lastIndex: continueLoading
+                    ? {
+                          roundCount_lt: tickets[tickets.length - 1].roundCount,
+                      }
+                    : {},
             },
         });
 
-        data.lotteryWinners.forEach((prize) => (prize.key = prize.id));
+        data.lotteryTickets.forEach((ticket) => (ticket.key = ticket.id));
 
-        const newPrizes = _.unionBy(data.lotteryWinners, allPrizes, 'key');
+        const newTickets = _.unionBy(data.lotteryTickets, tickets, 'key');
 
-        setAllPrizes(newPrizes);
+        setTickets(newTickets);
     };
 
     useEffect(() => {
-        if (fetchMore && allPrizes.length) {
+        if (fetchMore && tickets.length) {
             const interval = setInterval(() => {
-                loadMorePrizes(false);
+                loadMoreTickets(false);
             }, 10000);
 
             return () => clearInterval(interval);
         }
-    }, [fetchMore, allPrizes]);
+    }, [fetchMore, tickets]);
 
     useEffect(() => {
         if (!loading && !error && data) {
-            const newPrizes = data.lotteryWinners.map((prize) => {
+            const newTickets = data.lotteryTickets.map((ticket) => {
                 return {
-                    ...prize,
-                    key: prize.id,
-                    time: new Date(prize.time).toLocaleDateString(),
+                    ...ticket,
+                    key: ticket.id,
                 };
             });
 
-            setAllPrizes(newPrizes);
+            setTickets(newTickets);
         }
     }, [loading, error, data, fetchMore, networkStatus]);
 
     const columns = [
         {
-            title: 'Time',
-            dataIndex: 'time',
-            key: 'time',
-        },
-        {
-            title: 'Transaction Hash',
-            dataIndex: 'txHash',
-            key: 'txHash',
+            title: 'No',
+            dataIndex: 'roundCount',
+            key: 'roundCount',
         },
         {
             title: 'Winner',
@@ -84,9 +76,14 @@ const Blocks = () => {
             key: 'winner',
         },
         {
-            title: 'Prize',
-            dataIndex: 'prize',
-            key: 'prize',
+            title: 'Transaction Hash',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Difficulty',
+            dataIndex: 'difficulty',
+            key: 'difficulty',
         },
     ];
 
@@ -107,9 +104,9 @@ const Blocks = () => {
 
             <Table
                 columns={columns}
-                dataSource={allPrizes}
+                dataSource={tickets}
                 bordered
-                pagination={{ position: null }}
+                pagination={false}
             />
         </Layout>
     );
