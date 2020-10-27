@@ -26,7 +26,7 @@ const Blocks = () => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
 
     const loadMoreTickets = async (continueLoading = true) => {
-        const { data } = await fetchMore({
+        const { data: any } = await fetchMore({
             variables: {
                 lastIndex: continueLoading
                     ? {
@@ -36,11 +36,13 @@ const Blocks = () => {
             },
         });
 
-        data.lotteryTickets.forEach((ticket) => (ticket.key = ticket.id));
+        if (data) {
+            data.lotteryTickets.forEach((ticket) => (ticket.key = ticket.id));
 
-        const newTickets = _.unionBy(data.lotteryTickets, tickets, 'key');
+            const newTickets = _.unionBy(data.lotteryTickets, tickets, 'key');
 
-        setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
+            setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
+        }
     };
 
     useEffect(() => {
