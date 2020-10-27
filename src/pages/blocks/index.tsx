@@ -26,7 +26,7 @@ const Blocks = () => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
 
     const loadMoreTickets = async (continueLoading = true) => {
-        const { data: any } = await fetchMore({
+        let { data: any } = await fetchMore({
             variables: {
                 lastIndex: continueLoading
                     ? {
@@ -37,9 +37,14 @@ const Blocks = () => {
         });
 
         if (data) {
-            data.lotteryTickets.forEach((ticket) => (ticket.key = ticket.id));
-
-            const newTickets = _.unionBy(data.lotteryTickets, tickets, 'key');
+            const newTickets = _.unionBy(
+                data.lotteryTickets.map((ticket) => ({
+                    ...ticket,
+                    key: ticket.id,
+                })),
+                tickets,
+                'key'
+            );
 
             setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
         }
@@ -116,12 +121,12 @@ const Blocks = () => {
                                                         Address: {winner.winner}
                                                     </p>
                                                     <p>Prize: {winner.prize}</p>
-                                                    <p>
+                                                    <div>
                                                         Time:{' '}
                                                         {new Date(
                                                             winner.time * 1000
                                                         ).toLocaleString()}
-                                                    </p>
+                                                    </div>
                                                 </Card.Grid>
                                             );
                                         })}
