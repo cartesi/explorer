@@ -1,12 +1,17 @@
 import gql from 'graphql-tag';
 
 export const ALL_LOTTERY_TICKETS = gql`
-    query allLotteryTickets($first: Int, $filter: LotteryTicket_filter) {
+    query allLotteryTickets(
+        $first: Int
+        $filter: LotteryTicket_filter
+        $orderBy: LotteryTicket_orderBy
+        $orderDirection: OrderDirection
+    ) {
         lotteryTickets(
             first: $first
             where: $filter
-            orderBy: roundCount
-            orderByDirection: desc
+            orderBy: $orderBy
+            orderDirection: $orderDirection
         ) {
             id
             winner
@@ -22,11 +27,6 @@ export const ALL_LOTTERY_TICKETS = gql`
         }
     }
 `;
-
-export type TicketFilterOptions = {
-    roundCount_lt?: number;
-    roundCount_gt?: number;
-};
 
 export type LotteryTicket = {
     id: string;
@@ -49,4 +49,6 @@ export const allLotteryTicketsQueryVars = {
     filter: {
         roundCount_gt: 0,
     },
+    orderBy: 'roundCount',
+    orderDirection: 'desc',
 };

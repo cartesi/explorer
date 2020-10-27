@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Breadcrumb, Table } from 'antd';
+import { Breadcrumb, Card, Timeline } from 'antd';
 import _ from 'lodash';
 
 import { ALL_LOTTERY_TICKETS, LotteryTicket } from '../../graphql/lottery';
@@ -16,6 +16,8 @@ const Blocks = () => {
             variables: {
                 first: 10,
                 filter: { roundCount_gt: 0 },
+                orderBy: 'roundCount',
+                orderDirection: 'desc',
             },
             notifyOnNetworkStatusChange: true,
         }
@@ -38,7 +40,7 @@ const Blocks = () => {
 
         const newTickets = _.unionBy(data.lotteryTickets, tickets, 'key');
 
-        setTickets(newTickets);
+        setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
     };
 
     useEffect(() => {
@@ -60,32 +62,9 @@ const Blocks = () => {
                 };
             });
 
-            setTickets(newTickets);
+            setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
         }
     }, [loading, error, data, fetchMore, networkStatus]);
-
-    const columns = [
-        {
-            title: 'No',
-            dataIndex: 'roundCount',
-            key: 'roundCount',
-        },
-        {
-            title: 'Winner',
-            dataIndex: 'winner',
-            key: 'winner',
-        },
-        {
-            title: 'Transaction Hash',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Difficulty',
-            dataIndex: 'difficulty',
-            key: 'difficulty',
-        },
-    ];
 
     return (
         <Layout>
@@ -102,12 +81,55 @@ const Blocks = () => {
                 <Breadcrumb.Item>Blocks</Breadcrumb.Item>
             </Breadcrumb>
 
-            <Table
-                columns={columns}
-                dataSource={tickets}
-                bordered
-                pagination={false}
-            />
+            <div style={{ marginTop: '50px' }}>
+                <Timeline
+                    pending="Waiting for the next ticket..."
+                    reverse={true}
+                >
+                    {tickets.map((ticket, i) => {
+                        return (
+                            <Timeline.Item key={ticket.id}>
+                                <Card title={'Round: ' + ticket.roundCount}>
+                                    <Card.Grid
+                                        style={{ width: '100%' }}
+                                        hoverable={false}
+                                    >
+                                        <h3>Transaction Hash:</h3> {ticket.id}
+                                    </Card.Grid>
+
+                                    <Card.Grid
+                                        style={{ width: '100%' }}
+                                        hoverable={false}
+                                    >
+                                        <h3>Winners:</h3>
+
+                                        {ticket.winners.map((winner, i) => {
+                                            return (
+                                                <Card.Grid
+                                                    style={{ width: '100%' }}
+                                                    hoverable={false}
+                                                    key={i}
+                                                >
+                                                    <p>
+                                                        Address: {winner.winner}
+                                                    </p>
+                                                    <p>Prize: {winner.prize}</p>
+                                                    <p>
+                                                        Time:{' '}
+                                                        {new Date(
+                                                            winner.time * 1000
+                                                        ).toLocaleString()}
+                                                    </p>
+                                                </Card.Grid>
+                                            );
+                                        })}
+                                    </Card.Grid>
+                                </Card>
+                            </Timeline.Item>
+                        );
+                    })}
+                </Timeline>
+            </div>
         </Layout>
     );
 };
