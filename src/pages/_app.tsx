@@ -21,7 +21,7 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
 });
 
-export default ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps) => {
     const apolloClient = useApollo(pageProps.initialApolloState);
 
     return (
@@ -32,3 +32,5 @@ export default ({ Component, pageProps }: AppProps) => {
         </ApolloProvider>
     );
 };
+
+export default App;

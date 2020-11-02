@@ -24,7 +24,7 @@ import { initializeApollo } from '../services/apollo';
 
 const { Content, Footer, Header } = Layout;
 
-export default ({ children }) => {
+const LayoutComponent = ({ children }) => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sidebar />
@@ -38,6 +38,8 @@ export default ({ children }) => {
         </Layout>
     );
 };
+
+export default LayoutComponent;
 
 export async function getStaticProps() {
     const apolloClient = initializeApollo();
