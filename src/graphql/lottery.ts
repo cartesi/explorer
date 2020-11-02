@@ -14,41 +14,41 @@ export const ALL_LOTTERY_TICKETS = gql`
             orderDirection: $orderDirection
         ) {
             id
+            round
             winner
-            roundCount
-            difficulty
+            worker
 
-            winners {
-                id
-                winner
-                prize
-                time
-            }
+            difficulty
+            time
+
+            user
+            userPrize
+            beneficiary
+            beneficiaryPrize
         }
     }
 `;
 
 export type LotteryTicket = {
     id: string;
+    round: number;
     winner: string;
-    roundCount: number;
+    worker: string;
+
     difficulty: number;
-
-    winners: Array<LotteryWinner>;
-};
-
-export type LotteryWinner = {
-    id: string;
-    winner: string;
-    prize: number;
     time: number;
+
+    user: string;
+    userPrize: number;
+    beneficiary: string;
+    beneficiaryPrize: string;
 };
 
 export const allLotteryTicketsQueryVars = {
     first: 10,
     filter: {
-        roundCount_gt: 0,
+        round_gt: 0,
     },
-    orderBy: 'roundCount',
+    orderBy: 'round',
     orderDirection: 'desc',
 };

@@ -15,8 +15,8 @@ const Blocks = () => {
         {
             variables: {
                 first: 10,
-                filter: { roundCount_gt: 0 },
-                orderBy: 'roundCount',
+                filter: { round_gt: 0 },
+                orderBy: 'round',
                 orderDirection: 'desc',
             },
             notifyOnNetworkStatusChange: true,
@@ -30,7 +30,7 @@ const Blocks = () => {
             variables: {
                 lastIndex: continueLoading
                     ? {
-                          roundCount_lt: tickets[tickets.length - 1].roundCount,
+                          round_lt: tickets[tickets.length - 1].round,
                       }
                     : {},
             },
@@ -46,7 +46,7 @@ const Blocks = () => {
                 'key'
             );
 
-            setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
+            setTickets(newTickets.sort((a, b) => a.round - b.round));
         }
     };
 
@@ -69,7 +69,7 @@ const Blocks = () => {
                 };
             });
 
-            setTickets(newTickets.sort((a, b) => a.roundCount - b.roundCount));
+            setTickets(newTickets.sort((a, b) => a.round - b.round));
         }
     }, [loading, error, data, fetchMore, networkStatus]);
 
@@ -95,41 +95,58 @@ const Blocks = () => {
                 >
                     {tickets.map((ticket, i) => {
                         return (
-                            <Timeline.Item key={ticket.id}>
-                                <Card title={'Round: ' + ticket.roundCount}>
+                            <Timeline.Item
+                                key={ticket.id}
+                                label={new Date(
+                                    ticket.time * 1000
+                                ).toLocaleString()}
+                            >
+                                <Card title={'Round: ' + ticket.round}>
                                     <Card.Grid
                                         style={{ width: '100%' }}
                                         hoverable={false}
                                     >
                                         <h3>Transaction Hash:</h3> {ticket.id}
+                                        <h3>Worker:</h3> {ticket.worker}
                                     </Card.Grid>
 
                                     <Card.Grid
                                         style={{ width: '100%' }}
                                         hoverable={false}
                                     >
-                                        <h3>Winners:</h3>
+                                        <h3>Winner:</h3>
 
-                                        {ticket.winners.map((winner, i) => {
-                                            return (
+                                        <Card.Grid
+                                            style={{ width: '100%' }}
+                                            hoverable={false}
+                                            key={i}
+                                        >
+                                            <p>Address: {ticket.user}</p>
+                                            <p>Prize: {ticket.userPrize}</p>
+                                        </Card.Grid>
+
+                                        {ticket.beneficiary && (
+                                            <>
+                                                <h3>Beneficiary:</h3>
+
                                                 <Card.Grid
                                                     style={{ width: '100%' }}
                                                     hoverable={false}
                                                     key={i}
                                                 >
                                                     <p>
-                                                        Address: {winner.winner}
+                                                        Address:{' '}
+                                                        {ticket.beneficiary}
                                                     </p>
-                                                    <p>Prize: {winner.prize}</p>
-                                                    <div>
-                                                        Time:{' '}
-                                                        {new Date(
-                                                            winner.time * 1000
-                                                        ).toLocaleString()}
-                                                    </div>
+                                                    <p>
+                                                        Prize:{' '}
+                                                        {
+                                                            ticket.beneficiaryPrize
+                                                        }
+                                                    </p>
                                                 </Card.Grid>
-                                            );
-                                        })}
+                                            </>
+                                        )}
                                     </Card.Grid>
                                 </Card>
                             </Timeline.Item>
