@@ -12,15 +12,14 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Staking } from '../contracts/Staking';
-import { StakingFactory } from '../contracts/StakingFactory';
+import { StakingImpl, StakingImplFactory } from '@cartesi/pos';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { useBlockNumber } from './eth';
 
 export const useStaking = () => {
     const { library, chainId, account } = useWeb3React<Web3Provider>();
-    const [staking, setStaking] = useState<Staking>();
+    const [staking, setStaking] = useState<StakingImpl>();
 
     const blockNumber = useBlockNumber();
     const [error, setError] = useState<string>();
@@ -51,7 +50,7 @@ export const useStaking = () => {
                         `Attaching Staking to address '${address}' deployed at network '${chainId}'`
                     );
                     setStaking(
-                        StakingFactory.connect(address, library.getSigner())
+                        StakingImplFactory.connect(address, library.getSigner())
                     );
                 } else {
                     setError(`Staking not deployed at network '${chainId}'`);

@@ -12,15 +12,15 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { WorkerManager } from '../contracts/WorkerManager';
-import { WorkerManagerFactory } from '../contracts/WorkerManagerFactory';
+import { WorkerManagerImpl } from '@cartesi/util';
+import { WorkerManagerImplFactory } from '@cartesi/util';
 import { parseUnits } from '@ethersproject/units';
 import { networks } from '../utils/networks';
 import { ContractTransaction } from 'ethers';
 
 export const useWorkerManager = (worker: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const [workerManager, setWorkerManager] = useState<WorkerManager>();
+    const [workerManager, setWorkerManager] = useState<WorkerManagerImpl>();
 
     const [error, setError] = useState<string>();
     const [transaction, setTransaction] = useState<
@@ -47,7 +47,7 @@ export const useWorkerManager = (worker: string) => {
                 `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
             );
             setWorkerManager(
-                WorkerManagerFactory.connect(address, library.getSigner())
+                WorkerManagerImplFactory.connect(address, library.getSigner())
             );
         }
     }, [library, chainId]);

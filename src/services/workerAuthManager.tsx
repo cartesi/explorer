@@ -12,8 +12,8 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { WorkerAuthManager } from '../contracts/WorkerAuthManager';
-import { WorkerAuthManagerFactory } from '../contracts/WorkerAuthManagerFactory';
+import { WorkerAuthManagerImpl } from '@cartesi/util';
+import { WorkerAuthManagerImplFactory } from '@cartesi/util';
 import { networks } from '../utils/networks';
 import { ContractTransaction } from 'ethers';
 
@@ -25,7 +25,7 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
         Promise<ContractTransaction>
     >();
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-    const [authManager, setAuthManager] = useState<WorkerAuthManager>();
+    const [authManager, setAuthManager] = useState<WorkerAuthManagerImpl>();
 
     // create the WorkerAuthManager, asynchronously
     useEffect(() => {
@@ -38,7 +38,7 @@ export const useWorkerAuthManager = (worker: string, dapp: string) => {
                     `Attaching WorkerAuthManager to address '${address}' deployed at network '${chainId}'`
                 );
                 setAuthManager(
-                    WorkerAuthManagerFactory.connect(
+                    WorkerAuthManagerImplFactory.connect(
                         address,
                         library.getSigner()
                     )

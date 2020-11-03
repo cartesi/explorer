@@ -12,8 +12,8 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { CartesiToken } from '../contracts/CartesiToken';
-import { CartesiTokenFactory } from '../contracts/CartesiTokenFactory';
+import { CartesiToken } from '@cartesi/token';
+import { CartesiTokenFactory } from '@cartesi/token';
 import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
