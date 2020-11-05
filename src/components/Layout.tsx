@@ -12,9 +12,9 @@
 import React from 'react';
 
 import { Layout } from 'antd';
-import Sidebar from './Sidebar';
+import NavBar from './NavBar';
 import SelectedChain from './SelectedChain';
-import styles from './Layout.module.css';
+import styles from './Layout.module.scss';
 
 import {
     allLotteryTicketsQueryVars,
@@ -27,7 +27,7 @@ const { Content, Footer, Header } = Layout;
 const LayoutComponent = ({ children }) => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sidebar />
+            <NavBar />
             <Layout>
                 <Header>
                     <SelectedChain />

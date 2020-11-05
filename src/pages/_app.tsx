@@ -11,11 +11,13 @@
 
 import React from 'react';
 import { AppProps } from 'next/app';
-import 'antd/dist/antd.css';
 import dynamic from 'next/dynamic';
 
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../services/apollo';
+
+import 'antd/dist/antd.css';
+import '../styles/styles.scss';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,

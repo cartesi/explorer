@@ -1,0 +1,43 @@
+@import '../styles/variables.scss';
+
+.header {
+    height: 100px;
+    background-color: $primary-color;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 50px;
+    width: 150px;
+    background-image: url('/images/logo-white.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbarItem {
+    color: $text-color;
+    min-width: 80px;
+    margin: 0 20px;
+
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: 0.25px;
+    text-align: left;
+
+    &:hover {
+        color: $information-color;
+    }
+}

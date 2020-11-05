@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@cartesi/pos": "^0.1.0-beta.10",
     "@apollo/client": "^3.2.2",
+    "@cartesi/pos": "^0.1.0-beta.10",
     "@cartesi/token": "^1.2.1",
     "@cartesi/util": "^0.6.1",
     "@metamask/onboarding": "^1.0.0",
@@ -25,6 +25,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "rimble-ui": "^0.14.0",
+    "sass": "^1.29.0",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {

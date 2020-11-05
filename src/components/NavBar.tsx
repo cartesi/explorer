@@ -13,46 +13,35 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Layout, Menu } from 'antd';
 import Link from 'next/link';
-import {
-    AppstoreOutlined,
-    ThunderboltOutlined,
-    WalletOutlined,
-    DatabaseOutlined,
-} from '@ant-design/icons';
-import styles from './Sidebar.module.css';
+import styles from './NavBar.module.scss';
 
-const { Sider } = Layout;
+const { Header } = Layout;
 
-export interface SidebarProps {}
+export interface NavBarProps {}
 
-const Sidebar = (props: SidebarProps) => {
+const NavBar = (props: NavBarProps) => {
     const router = useRouter();
-    const [collapsed, setCollapsed] = useState(false);
 
     const items = [
         {
             key: 'staking',
             label: 'Staking',
             href: '/staking',
-            icon: <WalletOutlined />,
         },
         {
             key: 'nodes',
             label: 'Nodes',
             href: '/nodes',
-            icon: <AppstoreOutlined />,
         },
         {
             key: 'descartes',
             label: 'Descartes',
             href: '/descartes',
-            icon: <ThunderboltOutlined />,
         },
         {
             key: 'blocks',
             label: 'Blocks',
             href: '/blocks',
-            icon: <DatabaseOutlined />,
         },
     ];
 
@@ -62,24 +51,26 @@ const Sidebar = (props: SidebarProps) => {
         .map((item) => item.key);
 
     return (
-        <Sider
-            collapsible
-            collapsed={collapsed}
-            onCollapse={setCollapsed}
-            breakpoint="md"
-        >
-            <div className={styles.logo}></div>
-            <Menu theme="dark" selectedKeys={selectedKeys}>
+        <Header className={styles.header}>
+            <Link href="/">
+                <div className={styles.logo}></div>
+            </Link>
+            <Menu
+                theme="dark"
+                mode="horizontal"
+                selectedKeys={selectedKeys}
+                className={styles.navbar}
+                style={{ background: 'transparent' }}
+            >
                 {items.map((item) => (
-                    <Menu.Item key={item.key} icon={item.icon}>
-                        <Link href={item.href}>
-                            <a>{item.label}</a>
-                        </Link>
-                    </Menu.Item>
+                    <Link href={item.href} key={item.key}>
+                        <a className={styles.navbarItem}>{item.label}</a>
+                    </Link>
                 ))}
             </Menu>
-        </Sider>
+            <div style={{ width: '200px' }} />
+        </Header>
     );
 };
 
-export default Sidebar;
+export default NavBar;

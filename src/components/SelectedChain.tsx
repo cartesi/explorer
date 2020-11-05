@@ -19,7 +19,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { IChainData, getChain } from '../services/chain';
 import { networks } from '../utils/networks';
 
-import styles from './SelectedChain.module.css';
+import styles from './SelectedChain.module.scss';
 
 const SelectedChain = () => {
     const { chainId, activate, deactivate } = useWeb3React<Web3Provider>();
