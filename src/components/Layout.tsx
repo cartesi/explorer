@@ -13,7 +13,6 @@ import React from 'react';
 
 import { Layout } from 'antd';
 import NavBar from './NavBar';
-import SelectedChain from './SelectedChain';
 import styles from './Layout.module.scss';
 
 import {
@@ -22,16 +21,13 @@ import {
 } from '../graphql/lottery';
 import { initializeApollo } from '../services/apollo';
 
-const { Content, Footer, Header } = Layout;
+const { Content, Footer } = Layout;
 
 const LayoutComponent = ({ children }) => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <NavBar />
             <Layout>
-                <Header>
-                    <SelectedChain />
-                </Header>
                 <Content className={styles.layoutContent}>{children}</Content>
                 <Footer>Copyright (C) 2020 Cartesi Pte. Ltd.</Footer>
             </Layout>
