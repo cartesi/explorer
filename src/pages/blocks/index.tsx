@@ -3,7 +3,8 @@ import { useQuery } from '@apollo/client';
 import { Breadcrumb, Card, Timeline } from 'antd';
 import _ from 'lodash';
 
-import { ALL_LOTTERY_TICKETS, LotteryTicket } from '../../graphql/lottery';
+import { ALL_LOTTERY_TICKETS } from '../../graphql/lottery';
+import { LotteryTicket } from '../../graphql/models';
 
 import Layout from '../../components/Layout';
 import Head from 'next/head';

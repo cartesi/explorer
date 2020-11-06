@@ -16,33 +16,22 @@ export const ALL_LOTTERY_TICKETS = gql`
             id
             round
             winner
-            worker
+            worker {
+                id
+            }
 
             difficulty
             time
 
-            user
+            user {
+                id
+            }
             userPrize
             beneficiary
             beneficiaryPrize
         }
     }
 `;
-
-export type LotteryTicket = {
-    id: string;
-    round: number;
-    winner: string;
-    worker: string;
-
-    difficulty: number;
-    time: number;
-
-    user: string;
-    userPrize: number;
-    beneficiary: string;
-    beneficiaryPrize: string;
-};
 
 export const allLotteryTicketsQueryVars = {
     first: 10,

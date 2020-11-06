@@ -18,9 +18,12 @@ import {
 } from '../graphql/lottery';
 import { initializeApollo } from '../services/apollo';
 
-const LayoutComponent = ({ children }) => {
+const LayoutComponent = ({ children, className = '' }) => {
     return (
-        <div className="layout container-fluid" style={{ minHeight: '100vh' }}>
+        <div
+            className={`layout container-fluid ${className}`}
+            style={{ minHeight: '100vh' }}
+        >
             <NavBar />
             <div>
                 <div className="layout-content">{children}</div>
