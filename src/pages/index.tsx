@@ -33,14 +33,14 @@ const Home = () => {
             <Row className={styles.headerSection}>
                 {!marketInfomationError && (
                     <>
-                        <Col span={4}>
+                        <Col xs={24} md={8} lg={4}>
                             <div className="caption white-text">CTSI Price</div>
                             <div className="info-text-sm dark-white-text">
                                 {`$${marketInformation.price} USD`}
                             </div>
                         </Col>
 
-                        <Col span={4}>
+                        <Col xs={24} md={8} lg={4}>
                             <div className="caption white-text">
                                 CTSI Market Cap
                             </div>
@@ -49,7 +49,7 @@ const Home = () => {
                             </div>
                         </Col>
 
-                        <Col span={4}>
+                        <Col xs={24} md={8} lg={4}>
                             <div className="caption white-text">
                                 Circ. Supply
                             </div>
@@ -58,8 +58,8 @@ const Home = () => {
                             </div>
                         </Col>
 
-                        <Col span={6}>
-                            <div className="sub-title-1 white-text">
+                        <Col xs={24} md={12} lg={6}>
+                            <div className="sub-title-2 white-text">
                                 <img src="/images/wallet.png" />
                                 &nbsp; Wallet Balance
                             </div>
@@ -69,8 +69,8 @@ const Home = () => {
                             </div>
                         </Col>
 
-                        <Col span={6}>
-                            <div className="sub-title-1 white-text">
+                        <Col xs={24} md={12} lg={6}>
+                            <div className="sub-title-2 white-text">
                                 <img src="/images/staked.png" />
                                 &nbsp; Staked Balance
                             </div>
@@ -82,6 +82,35 @@ const Home = () => {
                     </>
                 )}
             </Row>
+
+            <div className={styles.dashboardSection}>
+                <Row className={styles.dashboardContent}>
+                    <Col span={6} className={styles.dashboardItem}>
+                        <div className="sub-title-1"># Active Nodes</div>
+                        <div className="info-text-bg">22,000</div>
+                    </Col>
+                    <Col span={6} className={styles.dashboardItem}>
+                        <div className="sub-title-1"># Active Stakers</div>
+                        <div className="info-text-bg">100,000</div>
+                    </Col>
+                    <Col span={6} className={styles.dashboardItem}>
+                        <div className="sub-title-1">Annual Yield</div>
+                        <div className="info-text-bg">8.3%</div>
+                    </Col>
+                    <Col span={6} className={styles.dashboardItem}>
+                        <div className="sub-title-1">Participation Rate</div>
+                        <div className="info-text-bg">23.2%</div>
+                    </Col>
+                </Row>
+            </div>
+
+            <div className={styles.lotterySection}>
+                <h5>|&ensp;Lottery</h5>
+            </div>
+
+            <div className={styles.noetherSection}>
+                <h5>|&ensp;Noether Node Runners</h5>
+            </div>
         </Layout>
     );
 };
