@@ -1,0 +1,22 @@
+@import './variables.scss';
+
+.layout {
+    padding: 0;
+    background: white;
+
+    &-content {
+        padding: 0 6vw;
+    }
+
+    &-footer {
+        background-color: $bright-black-color;
+        color: white;
+        padding: 0 6vw;
+        min-height: 50px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+}

@@ -9,13 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { Layout, Menu } from 'antd';
 import Link from 'next/link';
-import styles from './NavBar.module.scss';
-
-const { Header } = Layout;
 
 export interface NavBarProps {}
 
@@ -51,25 +47,19 @@ const NavBar = (props: NavBarProps) => {
         .map((item) => item.key);
 
     return (
-        <Header className={styles.header}>
+        <nav className="navbar">
             <Link href="/">
-                <div className={styles.logo}></div>
+                <a className="navbar-brand logo"></a>
             </Link>
-            <Menu
-                theme="dark"
-                mode="horizontal"
-                selectedKeys={selectedKeys}
-                className={styles.navbar}
-                style={{ background: 'transparent' }}
-            >
+            <div className="navbar-menu">
                 {items.map((item) => (
                     <Link href={item.href} key={item.key}>
-                        <a className={styles.navbarItem}>{item.label}</a>
+                        <a className="navbar-menu-item">{item.label}</a>
                     </Link>
                 ))}
-            </Menu>
-            <div style={{ width: '200px' }} />
-        </Header>
+            </div>
+            <div className="navbar-space" />
+        </nav>
     );
 };
 

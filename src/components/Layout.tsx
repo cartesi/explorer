@@ -10,10 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-
-import { Layout } from 'antd';
 import NavBar from './NavBar';
-import styles from './Layout.module.scss';
 
 import {
     allLotteryTicketsQueryVars,
@@ -21,17 +18,17 @@ import {
 } from '../graphql/lottery';
 import { initializeApollo } from '../services/apollo';
 
-const { Content, Footer } = Layout;
-
 const LayoutComponent = ({ children }) => {
     return (
-        <Layout style={{ minHeight: '100vh' }}>
+        <div className="layout container-fluid" style={{ minHeight: '100vh' }}>
             <NavBar />
-            <Layout>
-                <Content className={styles.layoutContent}>{children}</Content>
-                <Footer>Copyright (C) 2020 Cartesi Pte. Ltd.</Footer>
-            </Layout>
-        </Layout>
+            <div>
+                <div className="layout-content">{children}</div>
+                <div className="layout-footer">
+                    Copyright (C) 2020 Cartesi Pte. Ltd.
+                </div>
+            </div>
+        </div>
     );
 };
 

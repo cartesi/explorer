@@ -9,13 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Row, Col } from 'antd';
 import Head from 'next/head';
 import React from 'react';
 import Layout from '../components/Layout';
 import { useMarketInformation } from '../services/market';
-
-import styles from './index.module.scss';
 
 const Home = () => {
     const {
@@ -30,35 +27,35 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <Row className={styles.headerSection}>
+            <div className="header-section row">
                 {!marketInfomationError && (
                     <>
-                        <Col xs={24} md={8} lg={4}>
+                        <div className="col col-12 col-md-4 col-lg-2">
                             <div className="caption white-text">CTSI Price</div>
                             <div className="info-text-sm dark-white-text">
                                 {`$${marketInformation.price} USD`}
                             </div>
-                        </Col>
+                        </div>
 
-                        <Col xs={24} md={8} lg={4}>
+                        <div className="col col-12 col-md-4 col-lg-2">
                             <div className="caption white-text">
                                 CTSI Market Cap
                             </div>
                             <div className="info-text-sm dark-white-text">
                                 {`$${marketInformation.marketCap} USD`}
                             </div>
-                        </Col>
+                        </div>
 
-                        <Col xs={24} md={8} lg={4}>
+                        <div className="col col-12 col-md-4 col-lg-2">
                             <div className="caption white-text">
                                 Circ. Supply
                             </div>
                             <div className="info-text-sm dark-white-text">
                                 {`${marketInformation.circulatingSupply} CTSI`}
                             </div>
-                        </Col>
+                        </div>
 
-                        <Col xs={24} md={12} lg={6}>
+                        <div className="col col-12 col-md-6 col-lg-3">
                             <div className="sub-title-2 white-text">
                                 <img src="/images/wallet.png" />
                                 &nbsp; Wallet Balance
@@ -67,9 +64,9 @@ const Home = () => {
                                 {`1,000,000.12 `}
                                 <span className="caption">CTSI</span>
                             </div>
-                        </Col>
+                        </div>
 
-                        <Col xs={24} md={12} lg={6}>
+                        <div className="col col-12 col-md-6 col-lg-3">
                             <div className="sub-title-2 white-text">
                                 <img src="/images/staked.png" />
                                 &nbsp; Staked Balance
@@ -78,37 +75,37 @@ const Home = () => {
                                 {`994,000 `}
                                 <span className="caption">CTSI</span>
                             </div>
-                        </Col>
+                        </div>
                     </>
                 )}
-            </Row>
-
-            <div className={styles.dashboardSection}>
-                <Row className={styles.dashboardContent}>
-                    <Col span={6} className={styles.dashboardItem}>
-                        <div className="sub-title-1"># Active Nodes</div>
-                        <div className="info-text-bg">22,000</div>
-                    </Col>
-                    <Col span={6} className={styles.dashboardItem}>
-                        <div className="sub-title-1"># Active Stakers</div>
-                        <div className="info-text-bg">100,000</div>
-                    </Col>
-                    <Col span={6} className={styles.dashboardItem}>
-                        <div className="sub-title-1">Annual Yield</div>
-                        <div className="info-text-bg">8.3%</div>
-                    </Col>
-                    <Col span={6} className={styles.dashboardItem}>
-                        <div className="sub-title-1">Participation Rate</div>
-                        <div className="info-text-bg">23.2%</div>
-                    </Col>
-                </Row>
             </div>
 
-            <div className={styles.lotterySection}>
+            <div className="dashboard-section">
+                <div className="dashboard-section-content row">
+                    <div className="col-3 dashboard-section-content-item">
+                        <div className="sub-title-1"># Active Nodes</div>
+                        <div className="info-text-bg">22,000</div>
+                    </div>
+                    <div className="col-3 dashboard-section-content-item">
+                        <div className="sub-title-1"># Active Stakers</div>
+                        <div className="info-text-bg">100,000</div>
+                    </div>
+                    <div className="col-3 dashboard-section-content-item">
+                        <div className="sub-title-1">Annual Yield</div>
+                        <div className="info-text-bg">8.3%</div>
+                    </div>
+                    <div className="col-3 dashboard-section-content-item">
+                        <div className="sub-title-1">Participation Rate</div>
+                        <div className="info-text-bg">23.2%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="lottery-section">
                 <h5>|&ensp;Lottery</h5>
             </div>
 
-            <div className={styles.noetherSection}>
+            <div className="noether-section">
                 <h5>|&ensp;Noether Node Runners</h5>
             </div>
         </Layout>
