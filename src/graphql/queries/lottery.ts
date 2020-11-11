@@ -1,28 +1,34 @@
 import gql from 'graphql-tag';
 
-export const ALL_WORKERS = gql`
-    query allWorkers(
+export const ALL_LOTTERY_TICKETS = gql`
+    query allLotteryTickets(
         $first: Int
         $filter: LotteryTicket_filter
         $orderBy: LotteryTicket_orderBy
         $orderDirection: OrderDirection
     ) {
-        workers(
+        lotteryTickets(
             first: $first
             where: $filter
             orderBy: $orderBy
             orderDirection: $orderDirection
         ) {
             id
-            owner {
+            round
+            winner
+            worker {
                 id
-                stakedBalance
             }
 
-            timestamp
-            status
-            totalTickets
-            totalReward
+            difficulty
+            time
+
+            user {
+                id
+            }
+            userPrize
+            beneficiary
+            beneficiaryPrize
         }
     }
 `;
@@ -30,8 +36,8 @@ export const ALL_WORKERS = gql`
 export const allLotteryTicketsQueryVars = {
     first: 10,
     filter: {
-        round_gt: 0,
+        timestamp_gt: 0,
     },
-    orderBy: 'round',
+    orderBy: 'timestamp',
     orderDirection: 'desc',
 };

@@ -83,7 +83,7 @@ export const useCartesiToken = (
     };
 
     const formatCTSI = (amount: BigNumberish): string => {
-        return formatUnits(amount, 18);
+        return parseFloat(formatUnits(amount, 18)).toLocaleString();
     };
 
     const clearStates = () => {

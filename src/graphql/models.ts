@@ -22,7 +22,7 @@ export type LotteryTicket = {
     worker: Worker;
 
     difficulty: number;
-    time: number;
+    timestamp: number;
 
     user: Staker;
     userPrize: number;

@@ -9,85 +9,34 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { useQuery } from '@apollo/client';
-import _ from 'lodash';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 import Layout from '../components/Layout';
-import { ALL_LOTTERY_TICKETS } from '../graphql/lottery';
-import { LotteryTicket } from '../graphql/models';
+
+import useTickets from '../graphql/hooks/useTickets';
+import useWorkers from '../graphql/hooks/useWorkers';
 
 import { useMarketInformation } from '../services/market';
+import { useCartesiToken } from '../services/token';
+import { useBlockNumber } from '../services/eth';
+import { useStaking } from '../services/staking';
 
 const Home = () => {
     const {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
+    const { account } = useWeb3React<Web3Provider>();
 
-    const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        ALL_LOTTERY_TICKETS,
-        {
-            variables: {
-                first: 10,
-                filter: { round_gt: 0 },
-                orderBy: 'round',
-                orderDirection: 'desc',
-            },
-            notifyOnNetworkStatusChange: true,
-        }
-    );
+    const blockNumber = useBlockNumber();
+    const { balance, formatCTSI } = useCartesiToken(account, null, blockNumber);
+    const { stakedBalance } = useStaking();
 
-    const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
-
-    const loadMoreTickets = async (continueLoading = true) => {
-        let { data: any } = await fetchMore({
-            variables: {
-                lastIndex: continueLoading
-                    ? {
-                          round_lt: tickets[tickets.length - 1].round,
-                      }
-                    : {},
-            },
-        });
-
-        if (data) {
-            const newTickets = _.unionBy(
-                data.lotteryTickets.map((ticket) => ({
-                    ...ticket,
-                    key: ticket.id,
-                })),
-                tickets,
-                'key'
-            );
-
-            setTickets(newTickets.sort((a, b) => a.round - b.round));
-        }
-    };
-
-    useEffect(() => {
-        if (fetchMore && tickets.length) {
-            const interval = setInterval(() => {
-                loadMoreTickets(false);
-            }, 10000);
-
-            return () => clearInterval(interval);
-        }
-    }, [fetchMore, tickets]);
-
-    useEffect(() => {
-        if (!loading && !error && data) {
-            const newTickets = data.lotteryTickets.map((ticket) => {
-                return {
-                    ...ticket,
-                    key: ticket.id,
-                };
-            });
-
-            setTickets(newTickets.sort((a, b) => a.round - b.round));
-        }
-    }, [loading, error, data, fetchMore, networkStatus]);
+    const { workers, refreshWorkers } = useWorkers();
+    const { tickets, refreshTickets } = useTickets();
 
     return (
         <Layout className="landing">
@@ -102,8 +51,8 @@ const Home = () => {
                         <div className="col col-12 col-md-4 col-lg-2">
                             <div className="caption white-text">CTSI Price</div>
                             <div className="info-text-sm dark-white-text">
-                                {`$${marketInformation.price}`}
-                                <span className="caption">&nbsp;&nbsp;USD</span>
+                                {`$${marketInformation.price}  `}
+                                <span className="caption">USD</span>
                             </div>
                         </div>
 
@@ -112,8 +61,8 @@ const Home = () => {
                                 CTSI Market Cap
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {`$${marketInformation.marketCap}`}
-                                <span className="caption"> USD</span>
+                                {`$${marketInformation.marketCap}  `}
+                                <span className="caption">USD</span>
                             </div>
                         </div>
 
@@ -122,8 +71,8 @@ const Home = () => {
                                 Circ. Supply
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {marketInformation.circulatingSupply}
-                                <span className="caption"> CTSI</span>
+                                {`${marketInformation.circulatingSupply}  `}
+                                <span className="caption">CTSI</span>
                             </div>
                         </div>
 
@@ -133,7 +82,7 @@ const Home = () => {
                                 &nbsp; Wallet Balance
                             </div>
                             <div className="info-text-md dark-white-text">
-                                {`1,000,000.12 `}
+                                {`${account ? formatCTSI(balance) : 'N/A'}  `}
                                 <span className="caption">CTSI</span>
                             </div>
                         </div>
@@ -144,8 +93,10 @@ const Home = () => {
                                 &nbsp; Staked Balance
                             </div>
                             <div className="info-text-md dark-white-text">
-                                {`994,000 `}
-                                <span className="caption">CTSI</span>
+                                {`${
+                                    account ? formatCTSI(stakedBalance) : 'N/A'
+                                }`}
+                                <span className="caption"> CTSI</span>
                             </div>
                         </div>
                     </>

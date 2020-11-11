@@ -12,10 +12,6 @@
 import React from 'react';
 import NavBar from './NavBar';
 
-import {
-    allLotteryTicketsQueryVars,
-    ALL_LOTTERY_TICKETS,
-} from '../graphql/lottery';
 import { initializeApollo } from '../services/apollo';
 
 const LayoutComponent = ({ children, className = '' }) => {
@@ -39,11 +35,6 @@ export default LayoutComponent;
 
 export async function getStaticProps() {
     const apolloClient = initializeApollo();
-
-    await apolloClient.query({
-        query: ALL_LOTTERY_TICKETS,
-        variables: allLotteryTicketsQueryVars,
-    });
 
     return {
         props: {
