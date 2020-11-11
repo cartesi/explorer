@@ -19,8 +19,6 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { IChainData, getChain } from '../services/chain';
 import { networks } from '../utils/networks';
 
-import styles from './SelectedChain.module.scss';
-
 const SelectedChain = () => {
     const { chainId, activate, deactivate } = useWeb3React<Web3Provider>();
     const [chain, setChain] = useState<IChainData>(undefined);
@@ -54,18 +52,22 @@ const SelectedChain = () => {
     };
 
     return (
-        <div className={styles.selectedChainContainer}>
+        <div className="selected-chain">
             {chain ? (
                 <Space>
-                    <b style={{ color: 'white' }}>Network: </b>
                     <Typography.Text style={{ color: 'white' }}>
                         {chain.name}
                     </Typography.Text>
                 </Space>
             ) : (
-                <MetaMaskButton.Outline onClick={connectNetwork}>
-                    {hasMetaMask ? 'Connect with MetaMask' : 'Install MetaMask'}
-                </MetaMaskButton.Outline>
+                <button
+                    type="button"
+                    className="btn btn-primary button-text"
+                    onClick={connectNetwork}
+                >
+                    <img src="/images/metamask.png" />
+                    {hasMetaMask ? 'Connect To Wallet' : 'Install MetaMask'}
+                </button>
             )}
         </div>
     );

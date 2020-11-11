@@ -3,14 +3,16 @@ export type Staker = {
     stakedBalance: number;
     maturingBalance: number;
     maturation: number;
+    totalTickets: number;
 };
 
 export type Worker = {
     id: string;
     owner: Staker;
-    dapp: string;
-    time: number;
+    timestamp: number;
     status: string;
+    totalTickets: number;
+    totalReward: number;
 };
 
 export type LotteryTicket = {

@@ -12,6 +12,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import SelectedChain from './SelectedChain';
 
 export interface NavBarProps {}
 
@@ -58,7 +59,9 @@ const NavBar = (props: NavBarProps) => {
                     </Link>
                 ))}
             </div>
-            <div className="navbar-space" />
+            <div className="navbar-network">
+                <SelectedChain />
+            </div>
         </nav>
     );
 };

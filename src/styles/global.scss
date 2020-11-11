@@ -1,6 +1,5 @@
 @import './variables.scss';
-@import url('https://fonts.googleapis.com/css?family=Rubik');
-@import url('https://fonts.googleapis.com/css?family=DM%20Mono');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
 
 body {
     font-family: Rubik;
@@ -45,7 +44,7 @@ h5 {
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: 32px;
+    line-height: 42px;
     letter-spacing: 0px;
 }
 
@@ -68,7 +67,7 @@ h6 {
 .sub-title-2 {
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 42px;
     letter-spacing: 0.25px;
 }
@@ -93,7 +92,7 @@ h6 {
     font-size: 12px;
     font-style: normal;
     font-weight: 300;
-    line-height: 42px;
+    line-height: 16.59px;
     letter-spacing: 0.25px;
 }
 
@@ -106,24 +105,24 @@ h6 {
 }
 
 .button-text {
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.3px;
+    line-height: 42px;
+    letter-spacing: 0.25px;
 }
 
 .info-text-sm {
-    font-family: 'DM Mono';
+    font-family: 'Rubik';
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 21px;
+    line-height: 32px;
     letter-spacing: 0px;
 }
 
 .info-text-md {
-    font-family: 'DM Mono';
+    font-family: 'Rubik';
     font-size: 32px;
     font-style: normal;
     font-weight: 400;

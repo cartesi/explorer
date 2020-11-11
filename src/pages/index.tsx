@@ -102,7 +102,8 @@ const Home = () => {
                         <div className="col col-12 col-md-4 col-lg-2">
                             <div className="caption white-text">CTSI Price</div>
                             <div className="info-text-sm dark-white-text">
-                                {`$${marketInformation.price} USD`}
+                                {`$${marketInformation.price}`}
+                                <span className="caption">&nbsp;&nbsp;USD</span>
                             </div>
                         </div>
 
@@ -111,7 +112,8 @@ const Home = () => {
                                 CTSI Market Cap
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {`$${marketInformation.marketCap} USD`}
+                                {`$${marketInformation.marketCap}`}
+                                <span className="caption"> USD</span>
                             </div>
                         </div>
 
@@ -120,7 +122,8 @@ const Home = () => {
                                 Circ. Supply
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {`${marketInformation.circulatingSupply} CTSI`}
+                                {marketInformation.circulatingSupply}
+                                <span className="caption"> CTSI</span>
                             </div>
                         </div>
 
@@ -172,21 +175,27 @@ const Home = () => {
 
             <div className="landing-lottery">
                 <h5>|&ensp;Lottery</h5>
-                {tickets.map((ticket) => {
-                    return (
-                        <div className="landing-lottery-ticket">
-                            <div className="body-text-2">
-                                Ticket #{ticket.round}
+
+                <div className="landing-lottery-tickets">
+                    <button type="button" className="btn btn-link">
+                        <img src="/images/refresh.svg" />
+                    </button>
+                    {tickets.map((ticket) => {
+                        return (
+                            <div className="landing-lottery-ticket">
+                                <div className="body-text-2">
+                                    Ticket #{ticket.round}
+                                </div>
+                                <div className="body-text-2">
+                                    Claimer {ticket.user.id}
+                                </div>
+                                <div className="body-text-2">
+                                    Node {ticket.worker.id}
+                                </div>
                             </div>
-                            <div className="body-text-2">
-                                Claimer {ticket.user.id}
-                            </div>
-                            <div className="body-text-2">
-                                Node {ticket.worker.id}
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
 
             <div className="landing-noether">

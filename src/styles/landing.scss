@@ -5,7 +5,7 @@
         margin: 0 -6vw;
         padding: 10px 6vw;
         background-color: $primary-color;
-        align-items: center;
+        align-items: flex-end;
 
         div {
             margin-top: 5px;
@@ -22,13 +22,13 @@
             $dark-white-color
         );
 
-        margin: 0 -6vw;
-        padding: 50px 6vw;
-        height: 300px;
+        margin: 0 -6vw 2vw;
+        padding: 2vw 6vw;
+        height: 19vw;
 
         &-content {
             background-color: white;
-            height: 200px;
+            height: 15vw;
             filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
             margin-right: 0;
             margin-left: 0;
@@ -58,6 +58,12 @@
     }
 
     &-lottery {
+        &-tickets {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
     }
 
     &-noether {

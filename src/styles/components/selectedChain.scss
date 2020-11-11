@@ -1,0 +1,22 @@
+@import '../variables.scss';
+
+.selected-chain {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+
+    button {
+        background-color: $information-color;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        padding: 3px 30px 3px 15px;
+
+        img {
+            margin: 0 10px 0 10px;
+        }
+    }
+}
