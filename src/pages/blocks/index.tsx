@@ -99,7 +99,7 @@ const Blocks = () => {
                             <Timeline.Item
                                 key={ticket.id}
                                 label={new Date(
-                                    ticket.time * 1000
+                                    ticket.timestamp * 1000
                                 ).toLocaleString()}
                             >
                                 <Card title={'Round: ' + ticket.round}>
