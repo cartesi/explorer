@@ -71,7 +71,7 @@ const Home = () => {
     const themes = [
         'frogideas',
         'sugarsweets',
-        'headwave',
+        'heatwave',
         'daisygarden',
         'seascape',
         'summerwarmth',
@@ -81,7 +81,7 @@ const Home = () => {
     ];
 
     const tinyGraphUrl = (ticket) => {
-        return `http://tinygraphs.com/labs/isogrids/hexa/${
+        return `https://www.tinygraphs.com/labs/isogrids/hexa/${
             ticket.round
         }?theme=${
             themes[ticket.round % themes.length]
