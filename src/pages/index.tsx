@@ -77,7 +77,7 @@ const Home = () => {
 
     const tinyGraphUrl = (ticket) => {
         return `http://tinygraphs.com/labs/isogrids/hexa/${
-            ticket.user.id + ticket.worker.id + ticket.round
+            ticket.round
         }?theme=${
             themes[ticket.round % themes.length]
         }&numcolors=4&size=220&fmt=svg`;
