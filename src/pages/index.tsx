@@ -38,6 +38,46 @@ const Home = () => {
     const { workers, refreshWorkers } = useWorkers();
     const { tickets, refreshTickets } = useTickets();
 
+    const tinyString = (str: string) => {
+        str = str.slice(2);
+        if (str.length > 8) {
+            return str.slice(0, 4) + '...' + str.slice(-4);
+        }
+        return str;
+    };
+
+    const timeAgo = (timestamp: number) => {
+        const ticketTime = new Date(timestamp * 1000);
+        const currentTime = new Date();
+        const offset = (currentTime.getTime() - ticketTime.getTime()) / 1000;
+
+        // const h = offset > 3600 ? `${Math.floor(offset / 3600)}:` : '';
+        const m = offset > 60 ? `${Math.floor(offset / 60)}` : '';
+        const s = offset < 300 ? `:${Math.floor(offset % 60)}` : '';
+
+        return m + s + ' minutes ago';
+    };
+
+    const themes = [
+        'frogideas',
+        'sugarsweets',
+        'headwave',
+        'daisygarden',
+        'seascape',
+        'summerwarmth',
+        'bythepool',
+        'duskfalling',
+        'berrypie',
+    ];
+
+    const tinyGraphUrl = (ticket) => {
+        return `http://tinygraphs.com/labs/isogrids/hexa/${
+            ticket.user.id + ticket.worker.id + ticket.round
+        }?theme=${
+            themes[ticket.round % themes.length]
+        }&numcolors=4&size=220&fmt=svg`;
+    };
+
     return (
         <Layout className="landing">
             <Head>
@@ -128,20 +168,47 @@ const Home = () => {
                 <h5>|&ensp;Lottery</h5>
 
                 <div className="landing-lottery-tickets">
-                    <button type="button" className="btn btn-link">
+                    <button
+                        type="button"
+                        className="btn btn-link"
+                        onClick={() => refreshTickets()}
+                    >
                         <img src="/images/refresh.svg" />
                     </button>
-                    {tickets.map((ticket) => {
+                    {tickets.slice(0, 4).map((ticket) => {
                         return (
                             <div className="landing-lottery-ticket">
-                                <div className="body-text-2">
-                                    Ticket #{ticket.round}
+                                <div className="landing-lottery-ticket-time sub-title-4">
+                                    <img src="/images/clock.png" />
+                                    {' ' + timeAgo(ticket.timestamp)}
                                 </div>
-                                <div className="body-text-2">
-                                    Claimer {ticket.user.id}
-                                </div>
-                                <div className="body-text-2">
-                                    Node {ticket.worker.id}
+                                <div className="landing-lottery-ticket-content">
+                                    <div className="landing-lottery-ticket-content-header body-text-2">
+                                        Ticket #{ticket.round}
+                                    </div>
+                                    <div className="landing-lottery-ticket-content-content">
+                                        <div className="landing-lottery-ticket-content-content-text">
+                                            <div className="body-text-2">
+                                                Claimer
+                                                <div className="sub-title-3">
+                                                    {tinyString(ticket.user.id)}
+                                                </div>
+                                            </div>
+                                            <div className="body-text-2">
+                                                Node
+                                                <div>
+                                                    {tinyString(
+                                                        ticket.worker.id
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <img
+                                            className="landing-lottery-ticket-content-content-image"
+                                            src={tinyGraphUrl(ticket)}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -150,7 +217,61 @@ const Home = () => {
             </div>
 
             <div className="landing-noether">
-                <h5>|&ensp;Noether Node Runners</h5>
+                <div className="landing-noether-title">
+                    <h5>|&ensp;Noether Node Runners</h5>
+
+                    <div className="input-group">
+                        <span>
+                            <i className="fas fa-search"></i>
+                        </span>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search"
+                        />
+                    </div>
+                </div>
+
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th className="table-header-text">Node</th>
+                            <th className="table-header-text">
+                                #Tickets Claimed
+                            </th>
+                            <th className="table-header-text">Total Staked</th>
+                            <th className="table-header-text">Total Rewards</th>
+                            <th className="table-header-text">
+                                Total Uptime Days
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {workers.map((worker) => {
+                            const now = new Date();
+                            const workerTime = new Date();
+                            const uptimeDays = Math.ceil(
+                                (now.getTime() - worker.timestamp * 1000) /
+                                    1000 /
+                                    60 /
+                                    24
+                            );
+                            return (
+                                <tr key={worker.id} className="body-text-2">
+                                    <td>{tinyString(worker.id)}</td>
+                                    <td>{worker.totalTickets}</td>
+                                    <td>
+                                        {formatCTSI(worker.owner.stakedBalance)}{' '}
+                                        CTSI
+                                    </td>
+                                    <td>{formatCTSI(worker.totalReward)}</td>
+                                    <td>{uptimeDays}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </Layout>
     );

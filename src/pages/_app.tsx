@@ -18,6 +18,7 @@ import { useApollo } from '../services/apollo';
 
 import 'antd/dist/antd.css';
 import '../styles/styles.scss';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,

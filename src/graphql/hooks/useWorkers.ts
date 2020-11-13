@@ -11,7 +11,7 @@ const useWorkers = () => {
     const { loading, error, data, fetchMore } = useQuery(ALL_WORKERS, {
         variables: {
             first: 10,
-            filter: { timestamp_gt: 0 },
+            where: { timestamp_gt: 0 },
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },

@@ -13,6 +13,7 @@
     "@cartesi/pos": "^0.1.0-beta.10",
     "@cartesi/token": "^1.2.1",
     "@cartesi/util": "^0.6.1",
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "@metamask/onboarding": "^1.0.0",
     "@web3-react/core": "^6.1.1",
     "@web3-react/injected-connector": "^6.0.7",

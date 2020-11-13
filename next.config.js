@@ -1,12 +1,12 @@
 const config = () => {
     if (process.env.NODE_ENV === 'development') {
         return {
-            graphUrl: 'http://localhost:8000/subgraphs/name/cartesi/cartesi-subgraph',
+            graphUrl: 'http://localhost:8000/subgraphs/name/cartesi/cartesi',
         };
     }
 
     return {
-        graphUrl: 'https://api.thegraph.com/index-node/graphql',
+        graphUrl: 'https://thegraph.com/explorer/subgraph/cartesi/cartesi',
     };
 };
 

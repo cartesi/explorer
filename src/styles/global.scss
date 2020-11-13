@@ -1,5 +1,5 @@
 @import './variables.scss';
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
 
 body {
     font-family: Rubik;
@@ -72,6 +72,30 @@ h6 {
     letter-spacing: 0.25px;
 }
 
+.sub-title-3 {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21.33px;
+    letter-spacing: 0.25px;
+}
+
+.sub-title-4 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.25px;
+}
+
+.table-header-text {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+}
+
 .body-text-1 {
     font-size: 16px;
     font-style: normal;
@@ -113,7 +137,6 @@ h6 {
 }
 
 .info-text-sm {
-    font-family: 'Rubik';
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -122,7 +145,6 @@ h6 {
 }
 
 .info-text-md {
-    font-family: 'Rubik';
     font-size: 32px;
     font-style: normal;
     font-weight: 400;

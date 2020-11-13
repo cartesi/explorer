@@ -11,7 +11,7 @@ const useTickets = () => {
     const { loading, error, data, fetchMore } = useQuery(ALL_LOTTERY_TICKETS, {
         variables: {
             first: 10,
-            filter: { timestamp_gt: 0 },
+            where: { timestamp_gt: 0 },
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },
@@ -39,7 +39,7 @@ const useTickets = () => {
                 'key'
             );
 
-            setTickets(newTickets.sort((a, b) => a.timestamp - b.timestamp));
+            setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
         }
     };
 
@@ -62,7 +62,7 @@ const useTickets = () => {
                 };
             });
 
-            setTickets(newTickets.sort((a, b) => a.timestamp - b.timestamp));
+            setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
         }
     }, [loading, error, data]);
 

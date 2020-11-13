@@ -21,7 +21,7 @@ export const ALL_LOTTERY_TICKETS = gql`
             }
 
             difficulty
-            time
+            timestamp
 
             user {
                 id

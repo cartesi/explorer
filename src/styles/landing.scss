@@ -62,10 +62,137 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
+
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 10px 0 4vw;
+        }
+
+        &-ticket {
+            width: 18.75vw;
+            min-width: 18.75vw;
+            margin: 8px 0 8px 8px;
+
+            &-time {
+                text-align: center;
+            }
+
+            &-content {
+                border: 0.5px solid #d8d8d8;
+                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+                border-radius: 2px;
+                background-color: #ffffff;
+
+                margin: 8px 0;
+
+                &-header {
+                    height: 40px;
+                    min-height: 40px;
+                    background-color: rgba(0, 0, 0, 0.87);
+                    border-radius: 2px 0 0 0;
+                    color: #ffffff;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                &-content {
+                    padding: 21px 15px 21px 21px;
+                    height: 12.5vw;
+
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    &-text {
+                        height: 100%;
+                        min-height: 100%;
+
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        justify-content: space-around;
+                    }
+
+                    &-image {
+                        height: 6.875vw;
+                        width: 6.875vw;
+                    }
+                }
+            }
         }
     }
 
     &-noether {
+        &-title {
+            margin: 15px 0;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            .input-group {
+                width: 23.5vw;
+                max-width: 23.5vw;
+
+                span {
+                    position: absolute;
+                    margin-left: 10px;
+                    height: 35px;
+                    display: flex;
+                    align-items: center;
+                    z-index: 10;
+                }
+
+                input {
+                    border-radius: 0;
+                    padding-left: 35px;
+                }
+            }
+        }
+
+        table {
+            border: 0.5px solid #d8d8d8;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+            border-radius: 2px;
+            background-color: #ffffff;
+
+            thead tr {
+                background: #000000;
+                color: #ffffff;
+
+                th {
+                    vertical-align: middle;
+
+                    &:first-child {
+                        padding-left: 4.5vw;
+                    }
+
+                    &:last-child {
+                        padding-right: 4.5vw;
+                    }
+                }
+            }
+
+            tr {
+                height: 52px;
+
+                td {
+                    vertical-align: middle;
+
+                    &:first-child {
+                        padding-left: 4.5vw;
+                    }
+
+                    &:last-child {
+                        padding-right: 4.5vw;
+                    }
+                }
+            }
+        }
     }
 }
