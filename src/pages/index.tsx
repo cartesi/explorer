@@ -49,9 +49,8 @@ const Home = () => {
             : 1;
 
     const tinyString = (str: string) => {
-        str = str.slice(2);
-        if (str.length > 8) {
-            return str.slice(0, 4) + '...' + str.slice(-4);
+        if (str.length > 10) {
+            return str.slice(0, 6) + '...' + str.slice(-4);
         }
         return str;
     };
