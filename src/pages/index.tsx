@@ -39,9 +39,14 @@ const Home = () => {
     const { workers, refreshWorkers } = useWorkers();
     const { tickets, refreshTickets } = useTickets();
     const { summary, refreshSummary } = useSummary();
-    const totalWorkerPages = summary ? Math.ceil(summary.totalWorkers / 10) : 0;
 
     const [workerPage, setWorkerPage] = useState(1);
+    const [workerSearch, setWorkerSearch] = useState('');
+
+    const totalWorkerPages =
+        summary && workerSearch == ''
+            ? Math.ceil(summary.totalWorkers / 10)
+            : 1;
 
     const tinyString = (str: string) => {
         str = str.slice(2);
@@ -206,13 +211,13 @@ const Home = () => {
                                         <div className="landing-lottery-ticket-content-content-text">
                                             <div className="body-text-2">
                                                 Claimer
-                                                <div className="sub-title-3">
+                                                <div className="sub-title-3 mt-1">
                                                     {tinyString(ticket.user.id)}
                                                 </div>
                                             </div>
-                                            <div className="body-text-2">
+                                            <div className="body-text-2 mt-4">
                                                 Node
-                                                <div>
+                                                <div className="mt-1">
                                                     {tinyString(
                                                         ticket.worker.id
                                                     )}
@@ -244,6 +249,12 @@ const Home = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search"
+                            value={workerSearch}
+                            onChange={(e) => (
+                                setWorkerSearch(e.target.value),
+                                setWorkerPage(1),
+                                refreshWorkers(-2, e.target.value)
+                            )}
                         />
                     </div>
                 </div>
@@ -266,7 +277,6 @@ const Home = () => {
                     <tbody>
                         {workers.map((worker) => {
                             const now = new Date();
-                            const workerTime = new Date();
                             const uptimeDays = Math.ceil(
                                 (now.getTime() - worker.timestamp * 1000) /
                                     1000 /
@@ -294,7 +304,8 @@ const Home = () => {
                         type="button"
                         disabled={workerPage <= 1}
                         onClick={() => (
-                            setWorkerPage(workerPage - 1), refreshWorkers(-1)
+                            setWorkerPage(workerPage - 1),
+                            refreshWorkers(-1, workerSearch)
                         )}
                     >
                         <i className="fas fa-chevron-left"></i>
@@ -305,7 +316,8 @@ const Home = () => {
                         type="button"
                         disabled={workerPage >= totalWorkerPages}
                         onClick={() => (
-                            setWorkerPage(workerPage + 1), refreshWorkers(1)
+                            setWorkerPage(workerPage + 1),
+                            refreshWorkers(1, workerSearch)
                         )}
                     >
                         <i className="fas fa-chevron-right"></i>

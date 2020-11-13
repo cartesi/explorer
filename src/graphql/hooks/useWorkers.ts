@@ -7,6 +7,7 @@ import { Worker } from '../models';
 
 const useWorkers = () => {
     const [workers, setWorkers] = useState<Array<Worker>>([]);
+
     const [lastTimestamp, setLastTimestamp] = useState(0);
     const [firstTimestamp, setFirstTimestamp] = useState(0);
 
@@ -22,16 +23,31 @@ const useWorkers = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshWorkers = async (pageOffset: number = 0) => {
-        setWhere(
-            pageOffset === 1
+    const refreshWorkers = async (
+        pageOffset: number = 0,
+        newId: string = null
+    ) => {
+        let newWhere: any =
+            pageOffset === -2
+                ? {
+                      timestamp_gt: 0,
+                  }
+                : pageOffset === 1
                 ? {
                       timestamp_lt: lastTimestamp,
                   }
                 : {
                       timestamp_gt: firstTimestamp,
-                  }
-        );
+                  };
+
+        if (newId && newId != '') {
+            newWhere = {
+                ...newWhere,
+                id: newId,
+            };
+        }
+
+        setWhere(newWhere);
     };
 
     useEffect(() => {
