@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { Breadcrumb, Card, Timeline } from 'antd';
 import _ from 'lodash';
 
-import { ALL_LOTTERY_TICKETS } from '../../graphql/queries/lottery';
+import { LOTTERY_TICKETS } from '../../graphql/queries/lottery';
 import { LotteryTicket } from '../../graphql/models';
 
 import Layout from '../../components/Layout';
@@ -12,11 +12,11 @@ import Link from 'next/link';
 
 const Blocks = () => {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        ALL_LOTTERY_TICKETS,
+        LOTTERY_TICKETS,
         {
             variables: {
                 first: 10,
-                filter: { round_gt: 0 },
+                where: { round_gt: 0 },
                 orderBy: 'round',
                 orderDirection: 'desc',
             },
