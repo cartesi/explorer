@@ -1,15 +1,15 @@
 import gql from 'graphql-tag';
 
-export const ALL_LOTTERY_TICKETS = gql`
-    query allLotteryTickets(
+export const LOTTERY_TICKETS = gql`
+    query lotteryTickets(
         $first: Int
-        $filter: LotteryTicket_filter
+        $where: LotteryTicket_filter
         $orderBy: LotteryTicket_orderBy
         $orderDirection: OrderDirection
     ) {
         lotteryTickets(
             first: $first
-            where: $filter
+            where: $where
             orderBy: $orderBy
             orderDirection: $orderDirection
         ) {
@@ -33,9 +33,9 @@ export const ALL_LOTTERY_TICKETS = gql`
     }
 `;
 
-export const allLotteryTicketsQueryVars = {
+export const lotteryTicketsQueryVars = {
     first: 10,
-    filter: {
+    where: {
         timestamp_gt: 0,
     },
     orderBy: 'timestamp',

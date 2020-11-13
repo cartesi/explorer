@@ -194,5 +194,15 @@
                 }
             }
         }
+
+        &-pagination {
+            width: 100%;
+            text-align: center;
+            margin: 0 0 20px;
+
+            i {
+                font-size: 12px;
+            }
+        }
     }
 }

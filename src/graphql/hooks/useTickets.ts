@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { ALL_LOTTERY_TICKETS } from '../queries/lottery';
+import { LOTTERY_TICKETS } from '../queries/lottery';
 import { LotteryTicket } from '../models';
 
 const useTickets = () => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
 
-    const { loading, error, data, fetchMore } = useQuery(ALL_LOTTERY_TICKETS, {
+    const { loading, error, data, fetchMore } = useQuery(LOTTERY_TICKETS, {
         variables: {
             first: 10,
             where: { timestamp_gt: 0 },
@@ -21,7 +21,7 @@ const useTickets = () => {
     const refreshTickets = async (continueLoading = true) => {
         let { data }: any = await fetchMore({
             variables: {
-                lastIndex: continueLoading
+                where: continueLoading
                     ? {
                           timestamp_lt: tickets[tickets.length - 1].timestamp,
                       }

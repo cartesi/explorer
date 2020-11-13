@@ -1,3 +1,11 @@
+export type Summary = {
+    id: string;
+    totalStakers: number;
+    totalWorkers: number;
+    totalStaked: number;
+    totalTickets: number;
+};
+
 export type Staker = {
     id: string;
     stakedBalance: number;

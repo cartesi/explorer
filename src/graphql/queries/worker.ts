@@ -1,15 +1,15 @@
 import gql from 'graphql-tag';
 
-export const ALL_WORKERS = gql`
-    query allWorkers(
+export const WORKERS = gql`
+    query workers(
         $first: Int
-        $filter: Worker_filter
+        $where: Worker_filter
         $orderBy: Worker_orderBy
         $orderDirection: OrderDirection
     ) {
         workers(
             first: $first
-            where: $filter
+            where: $where
             orderBy: $orderBy
             orderDirection: $orderDirection
         ) {
@@ -27,9 +27,9 @@ export const ALL_WORKERS = gql`
     }
 `;
 
-export const allWorkersQueryVars = {
+export const workersQueryVars = {
     first: 10,
-    filter: {
+    where: {
         timestamp_gt: 0,
     },
     orderBy: 'timestamp',

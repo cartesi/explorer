@@ -2,56 +2,37 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { ALL_WORKERS } from '../queries/worker';
+import { WORKERS } from '../queries/worker';
 import { Worker } from '../models';
 
 const useWorkers = () => {
     const [workers, setWorkers] = useState<Array<Worker>>([]);
+    const [lastTimestamp, setLastTimestamp] = useState(0);
+    const [firstTimestamp, setFirstTimestamp] = useState(0);
 
-    const { loading, error, data, fetchMore } = useQuery(ALL_WORKERS, {
+    const [where, setWhere] = useState<any>({ timestamp_gt: 0 });
+
+    const { loading, error, data, fetchMore } = useQuery(WORKERS, {
         variables: {
             first: 10,
-            where: { timestamp_gt: 0 },
+            where,
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshWorkers = async (continueLoading = true) => {
-        let { data }: any = await fetchMore({
-            variables: {
-                lastIndex: continueLoading
-                    ? {
-                          timestamp_lt: workers[workers.length - 1].timestamp,
-                      }
-                    : {},
-            },
-        });
-
-        if (data) {
-            const newWorkers = _.unionBy(
-                data.workers.map((worker) => ({
-                    ...worker,
-                    key: worker.id,
-                })),
-                workers,
-                'key'
-            );
-
-            setWorkers(newWorkers.sort((a, b) => a.timestamp - b.timestamp));
-        }
+    const refreshWorkers = async (pageOffset: number = 0) => {
+        setWhere(
+            pageOffset === 1
+                ? {
+                      timestamp_lt: lastTimestamp,
+                  }
+                : {
+                      timestamp_gt: firstTimestamp,
+                  }
+        );
     };
-
-    useEffect(() => {
-        if (fetchMore && workers.length) {
-            const interval = setInterval(() => {
-                refreshWorkers(false);
-            }, 600000);
-
-            return () => clearInterval(interval);
-        }
-    }, [fetchMore, workers]);
 
     useEffect(() => {
         if (!loading && !error && data) {
@@ -62,9 +43,16 @@ const useWorkers = () => {
                 };
             });
 
-            setWorkers(newWorkers.sort((a, b) => a.timestamp - b.timestamp));
+            setWorkers(newWorkers.sort((a, b) => b.timestamp - a.timestamp));
         }
     }, [loading, error, data]);
+
+    useEffect(() => {
+        if (workers.length > 1) {
+            setFirstTimestamp(workers[0].timestamp);
+            setLastTimestamp(workers[workers.length - 1].timestamp);
+        }
+    }, [workers]);
 
     return {
         workers,

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -18,6 +18,7 @@ import Layout from '../components/Layout';
 
 import useTickets from '../graphql/hooks/useTickets';
 import useWorkers from '../graphql/hooks/useWorkers';
+import useSummary from '../graphql/hooks/useSummary';
 
 import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
@@ -37,6 +38,10 @@ const Home = () => {
 
     const { workers, refreshWorkers } = useWorkers();
     const { tickets, refreshTickets } = useTickets();
+    const { summary, refreshSummary } = useSummary();
+    const totalWorkerPages = summary ? Math.ceil(summary.totalWorkers / 10) : 0;
+
+    const [workerPage, setWorkerPage] = useState(1);
 
     const tinyString = (str: string) => {
         str = str.slice(2);
@@ -147,11 +152,19 @@ const Home = () => {
                 <div className="landing-dashboard-content row">
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Nodes</div>
-                        <div className="info-text-bg">22,000</div>
+                        <div className="info-text-bg">
+                            {summary
+                                ? summary.totalWorkers.toLocaleString()
+                                : 0}
+                        </div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Stakers</div>
-                        <div className="info-text-bg">100,000</div>
+                        <div className="info-text-bg">
+                            {summary
+                                ? summary.totalStakers.toLocaleString()
+                                : 0}
+                        </div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1">Annual Yield</div>
@@ -177,7 +190,10 @@ const Home = () => {
                     </button>
                     {tickets.slice(0, 4).map((ticket) => {
                         return (
-                            <div className="landing-lottery-ticket">
+                            <div
+                                className="landing-lottery-ticket"
+                                key={ticket.id}
+                            >
                                 <div className="landing-lottery-ticket-time sub-title-4">
                                     <img src="/images/clock.png" />
                                     {' ' + timeAgo(ticket.timestamp)}
@@ -272,6 +288,29 @@ const Home = () => {
                         })}
                     </tbody>
                 </table>
+                <div className="landing-noether-pagination body-text-2">
+                    <button
+                        className="btn"
+                        type="button"
+                        disabled={workerPage <= 1}
+                        onClick={() => (
+                            setWorkerPage(workerPage - 1), refreshWorkers(-1)
+                        )}
+                    >
+                        <i className="fas fa-chevron-left"></i>
+                    </button>
+                    Page {workerPage} of {totalWorkerPages}
+                    <button
+                        className="btn"
+                        type="button"
+                        disabled={workerPage >= totalWorkerPages}
+                        onClick={() => (
+                            setWorkerPage(workerPage + 1), refreshWorkers(1)
+                        )}
+                    >
+                        <i className="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
         </Layout>
     );
