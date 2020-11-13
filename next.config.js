@@ -6,7 +6,7 @@ const config = () => {
     }
 
     return {
-        graphUrl: 'https://thegraph.com/explorer/subgraph/cartesi/cartesi',
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/cartesi/cartesi',
     };
 };
 

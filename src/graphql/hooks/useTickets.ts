@@ -47,7 +47,7 @@ const useTickets = () => {
         if (fetchMore && tickets.length) {
             const interval = setInterval(() => {
                 refreshTickets(false);
-            }, 10000);
+            }, 60000);
 
             return () => clearInterval(interval);
         }

@@ -47,7 +47,7 @@ const useWorkers = () => {
         if (fetchMore && workers.length) {
             const interval = setInterval(() => {
                 refreshWorkers(false);
-            }, 10000);
+            }, 600000);
 
             return () => clearInterval(interval);
         }
