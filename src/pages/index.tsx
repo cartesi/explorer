@@ -26,6 +26,7 @@ import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 import TicketCard from '../components/TicketCard';
 import { tinyString } from '../utils/stringUtils';
+import { BigNumber } from 'ethers';
 
 const Home = () => {
     const {
@@ -45,12 +46,43 @@ const Home = () => {
     const [workerPage, setWorkerPage] = useState(1);
     const [workerSearch, setWorkerSearch] = useState('');
     const [ticketClips, setTicketClips] = useState([]);
+    const [participationRate, setParticipationRate] = useState(0);
+
+    const desiredDrawTimeInterval = 1000000; // ! Would be good to get this value from lottery contract
 
     useEffect(() => {
         if (tickets && tickets.length > 0) {
             setTicketClips(tickets.slice(0, 4));
+
+            if (marketInformation) {
+                // * 600000000: 10 minutes in microseconds
+                console.log(
+                    parseFloat(
+                        formatCTSI(
+                            BigNumber.from(tickets[0].difficulty)
+                                .mul(BigNumber.from(desiredDrawTimeInterval))
+                                .div(BigNumber.from(600000000))
+                        )
+                    )
+                );
+
+                const newPR = parseFloat(
+                    formatCTSI(
+                        BigNumber.from(tickets[0].difficulty)
+                            .mul(BigNumber.from(desiredDrawTimeInterval))
+                            .div(BigNumber.from(600000000))
+                            .div(
+                                BigNumber.from(
+                                    marketInformation.circulatingSupply
+                                )
+                            )
+                    )
+                );
+
+                setParticipationRate(newPR * 100);
+            }
         }
-    }, [tickets]);
+    }, [tickets, marketInformation]);
 
     const totalWorkerPages =
         summary && workerSearch == ''
@@ -80,7 +112,13 @@ const Home = () => {
                                 CTSI Market Cap
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {`$${marketInformation.marketCap}  `}
+                                {`$${
+                                    marketInformation.marketCap
+                                        ? marketInformation.marketCap.toLocaleString(
+                                              'en'
+                                          )
+                                        : ''
+                                }  `}
                                 <span className="caption">USD</span>
                             </div>
                         </div>
@@ -90,7 +128,13 @@ const Home = () => {
                                 Circ. Supply
                             </div>
                             <div className="info-text-sm dark-white-text">
-                                {`${marketInformation.circulatingSupply}  `}
+                                {`${
+                                    marketInformation.circulatingSupply
+                                        ? marketInformation.circulatingSupply.toLocaleString(
+                                              'en'
+                                          )
+                                        : ''
+                                }  `}
                                 <span className="caption">CTSI</span>
                             </div>
                         </div>
@@ -146,7 +190,7 @@ const Home = () => {
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1">Participation Rate</div>
-                        <div className="info-text-bg">23.2%</div>
+                        <div className="info-text-bg">{participationRate}%</div>
                     </div>
                 </div>
             </div>

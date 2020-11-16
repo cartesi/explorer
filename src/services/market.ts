@@ -36,12 +36,8 @@ export const useMarketInformation = () => {
                 setError('');
                 setMarketInformation({
                     price: data.market_data.current_price.usd.toFixed(2),
-                    marketCap: data.market_data.market_cap.usd.toLocaleString(
-                        'en'
-                    ),
-                    circulatingSupply: data.market_data.circulating_supply.toLocaleString(
-                        'en'
-                    ),
+                    marketCap: data.market_data.market_cap.usd,
+                    circulatingSupply: data.market_data.circulating_supply,
                 });
             })
             .catch((e) => {
