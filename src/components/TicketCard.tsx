@@ -54,7 +54,7 @@ const TicketCard = (props: TicketCardProps) => {
     };
 
     return (
-        <div className="landing-lottery-ticket" key={ticket.id}>
+        <div className="landing-lottery-ticket">
             <div className="landing-lottery-ticket-time sub-title-4">
                 <img src="/images/clock.png" />
                 {' ' + timestamp}

@@ -30,14 +30,10 @@ const useTickets = () => {
         });
 
         if (data) {
-            const newTickets = _.unionBy(
-                data.lotteryTickets.map((ticket) => ({
-                    ...ticket,
-                    key: ticket.id,
-                })),
-                tickets,
-                'key'
-            );
+            const newTickets = data.lotteryTickets.map((ticket) => ({
+                ...ticket,
+                key: ticket.id,
+            }));
 
             setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
         }
@@ -47,7 +43,7 @@ const useTickets = () => {
         if (fetchMore && tickets.length) {
             const interval = setInterval(() => {
                 refreshTickets(false);
-            }, 60000);
+            }, 300000);
 
             return () => clearInterval(interval);
         }

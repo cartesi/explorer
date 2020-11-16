@@ -44,6 +44,13 @@ const Home = () => {
 
     const [workerPage, setWorkerPage] = useState(1);
     const [workerSearch, setWorkerSearch] = useState('');
+    const [ticketClips, setTicketClips] = useState([]);
+
+    useEffect(() => {
+        if (tickets && tickets.length > 0) {
+            setTicketClips(tickets.slice(0, 4));
+        }
+    }, [tickets]);
 
     const totalWorkerPages =
         summary && workerSearch == ''
@@ -155,8 +162,8 @@ const Home = () => {
                     >
                         <img src="/images/refresh.svg" />
                     </button>
-                    {tickets.slice(0, 4).map((ticket) => (
-                        <TicketCard ticket={ticket} />
+                    {ticketClips.map((ticket) => (
+                        <TicketCard ticket={ticket} key={ticket.id} />
                     ))}
                 </div>
             </div>
