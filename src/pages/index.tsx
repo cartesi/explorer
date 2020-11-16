@@ -52,23 +52,22 @@ const Home = () => {
 
     useEffect(() => {
         if (tickets && tickets.length > 0) {
-            setTicketClips(tickets.slice(0, 4));
+            const newTicketClips = tickets.slice(0, 4);
+            setTicketClips(newTicketClips);
 
             if (marketInformation) {
+                let difficulty = BigNumber.from(0);
+                for (let i = 0; i < newTicketClips.length; i++) {
+                    difficulty = difficulty.add(
+                        BigNumber.from(newTicketClips[i].difficulty)
+                    );
+                }
+                difficulty = difficulty.div(newTicketClips.length);
                 // * 600000000: 10 minutes in microseconds
-                console.log(
-                    parseFloat(
-                        formatCTSI(
-                            BigNumber.from(tickets[0].difficulty)
-                                .mul(BigNumber.from(desiredDrawTimeInterval))
-                                .div(BigNumber.from(600000000))
-                        )
-                    )
-                );
 
                 const newPR = parseFloat(
                     formatCTSI(
-                        BigNumber.from(tickets[0].difficulty)
+                        difficulty
                             .mul(BigNumber.from(desiredDrawTimeInterval))
                             .div(BigNumber.from(600000000))
                             .div(
