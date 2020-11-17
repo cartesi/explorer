@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LotteryTicket } from '../graphql/models';
 import { tinyString } from '../utils/stringUtils';
+import { tinyGraphUrl } from '../utils/tinygraph';
 
 interface TicketCardProps {
     ticket: LotteryTicket;
@@ -31,26 +32,6 @@ const TicketCard = (props: TicketCardProps) => {
         const s = offset < 300 ? `:${Math.floor(offset % 60)}` : '';
 
         return m + s + ' minutes ago';
-    };
-
-    const themes = [
-        'frogideas',
-        'sugarsweets',
-        'heatwave',
-        'daisygarden',
-        'seascape',
-        'summerwarmth',
-        'bythepool',
-        'duskfalling',
-        'berrypie',
-    ];
-
-    const tinyGraphUrl = (ticket) => {
-        return `https://www.tinygraphs.com/labs/isogrids/hexa/${
-            ticket.round
-        }?theme=${
-            themes[ticket.round % themes.length]
-        }&numcolors=4&size=220&fmt=svg`;
     };
 
     return (

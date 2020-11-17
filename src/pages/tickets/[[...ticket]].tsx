@@ -7,12 +7,15 @@ import Layout from '../../components/Layout';
 import useTickets from '../../graphql/hooks/useTickets';
 import { tinyString } from '../../utils/stringUtils';
 import useTicket from '../../graphql/hooks/useTicket';
+import { useCartesiToken } from '../../services/token';
+import { tinyGraphUrl } from '../../utils/tinygraph';
 
 const Ticket = () => {
     const router = useRouter();
     let { ticket: ticketId } = router.query;
     ticketId = ticketId as string;
 
+    const { formatCTSI } = useCartesiToken(null, null, null);
     const { tickets, refreshTickets } = useTickets();
     const { ticket } = useTicket(ticketId);
 
@@ -26,7 +29,43 @@ const Ticket = () => {
             <div className="tickets-header"></div>
 
             <div className="tickets-content">
-                {ticket && <div className="tickets-content-ticket row"></div>}
+                {ticket && (
+                    <div className="tickets-content-ticket row">
+                        <div className="col-9 row">
+                            <div className="sub-title-4 col-4">Date</div>
+                            <div className="body-text-2 col-8">
+                                {new Date(
+                                    ticket.timestamp * 1000
+                                ).toUTCString()}
+                            </div>
+
+                            <div className="sub-title-4 col-4">
+                                Claimer Address
+                            </div>
+                            <div className="body-text-2 col-8">
+                                {ticket.user.id}
+                            </div>
+
+                            <div className="sub-title-4 col-4">
+                                Node Address
+                            </div>
+                            <div className="body-text-2 col-8">
+                                {ticket.worker.id}
+                            </div>
+
+                            <div className="sub-title-4 col-4">Reward</div>
+                            <div className="body-text-2 col-8">
+                                {ticket.userPrize}
+                            </div>
+                        </div>
+                        <div className="col-3">
+                            <img
+                                className="landing-lottery-ticket-content-content-image"
+                                src={tinyGraphUrl(ticket)}
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <div className="tickets-content-ticket-list">
                     <table className="table table-hover">
@@ -65,7 +104,7 @@ const Ticket = () => {
                                         </td>
                                         <td>{tinyString(ticket.user.id)}</td>
                                         <td>{tinyString(ticket.worker.id)}</td>
-                                        <td>{ticket.userPrize}</td>
+                                        <td>{formatCTSI(ticket.userPrize)}</td>
                                     </tr>
                                 );
                             })}
