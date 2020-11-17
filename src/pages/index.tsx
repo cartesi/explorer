@@ -238,7 +238,11 @@ const Home = () => {
                         <img src="/images/refresh.svg" />
                     </button>
                     {tickets.slice(0, 4).map((ticket) => (
-                        <TicketCard ticket={ticket} key={ticket.id} />
+                        <Link href={'/tickets/' + ticket.id}>
+                            <a className="landing-link">
+                                <TicketCard ticket={ticket} key={ticket.id} />
+                            </a>
+                        </Link>
                     ))}
                 </div>
             </div>

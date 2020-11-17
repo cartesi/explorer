@@ -9,11 +9,12 @@ import { tinyString } from '../../utils/stringUtils';
 import useTicket from '../../graphql/hooks/useTicket';
 import { useCartesiToken } from '../../services/token';
 import { tinyGraphUrl } from '../../utils/tinygraph';
+import Link from 'next/link';
 
 const Ticket = () => {
     const router = useRouter();
     let { ticket: ticketId } = router.query;
-    ticketId = ticketId as string;
+    ticketId = ticketId[0] as string;
 
     const { formatCTSI } = useCartesiToken(null, null, null);
     const { tickets, refreshTickets } = useTickets();
@@ -55,14 +56,17 @@ const Ticket = () => {
 
                             <div className="sub-title-4 col-4">Reward</div>
                             <div className="body-text-2 col-8">
-                                {ticket.userPrize}
+                                {formatCTSI(ticket.userPrize)}
                             </div>
                         </div>
-                        <div className="col-3">
+                        <div className="col-3 d-flex flex-column align-items-center">
                             <img
                                 className="landing-lottery-ticket-content-content-image"
                                 src={tinyGraphUrl(ticket)}
                             />
+                            <div className="body-text-2 pt-1">
+                                {tinyString(ticketId)}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -96,7 +100,13 @@ const Ticket = () => {
                                 );
                                 return (
                                     <tr key={ticket.id} className="body-text-2">
-                                        <td>{ticket.round}</td>
+                                        <td>
+                                            <Link
+                                                href={'/tickets/' + ticket.id}
+                                            >
+                                                {ticket.round}
+                                            </Link>
+                                        </td>
                                         <td>
                                             {new Date(
                                                 ticket.timestamp * 1000

@@ -14,11 +14,7 @@
     }
 
     &-link {
-        text-decoration: none;
-
         &:hover {
-            text-decoration: none;
-
             .landing-sub-title {
                 border-left-width: 3px;
                 transition: border-left-width 0.1s;
