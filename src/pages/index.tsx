@@ -26,7 +26,7 @@ import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 import TicketCard from '../components/TicketCard';
 import { tinyString } from '../utils/stringUtils';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants, FixedNumber } from 'ethers';
 
 const Home = () => {
     const {
@@ -46,42 +46,42 @@ const Home = () => {
     const [workerPage, setWorkerPage] = useState(1);
     const [workerSearch, setWorkerSearch] = useState('');
     const [ticketClips, setTicketClips] = useState([]);
-    const [participationRate, setParticipationRate] = useState(0);
 
-    const desiredDrawTimeInterval = 1000000; // ! Would be good to get this value from lottery contract
+    let participationRateLabel = '-';
+    if (tickets && tickets.length > 0 && marketInformation?.circulatingSupply) {
+        // take average difficulty of all tickets in array
+        const difficulty = tickets
+            .map((t) => t.difficulty)
+            .reduce((sum, d) => sum.add(d), constants.Zero)
+            .div(tickets.length);
 
-    useEffect(() => {
-        if (tickets && tickets.length > 0) {
-            const newTicketClips = tickets.slice(0, 4);
-            setTicketClips(newTicketClips);
+        // XXX: Would be good to get this value from lottery contract
+        const desiredDrawTimeInterval = 1000000;
 
-            if (marketInformation) {
-                let difficulty = BigNumber.from(0);
-                for (let i = 0; i < newTicketClips.length; i++) {
-                    difficulty = difficulty.add(
-                        BigNumber.from(newTicketClips[i].difficulty)
-                    );
-                }
-                difficulty = difficulty.div(newTicketClips.length);
-                // * 600000000: 10 minutes in microseconds
+        // calculate estimated active stake from difficulty
+        const activeStake = difficulty
+            .mul(BigNumber.from(desiredDrawTimeInterval))
+            .div(BigNumber.from(600000000)) // * 600000000: 10 minutes in microseconds
+            .div(constants.WeiPerEther); // 1e18
 
-                const newPR = parseFloat(
-                    formatCTSI(
-                        difficulty
-                            .mul(BigNumber.from(desiredDrawTimeInterval))
-                            .div(BigNumber.from(600000000))
-                            .div(
-                                BigNumber.from(
-                                    marketInformation.circulatingSupply
-                                )
-                            )
-                    )
-                );
+        // convert circulation supply to FixedNumber
+        const circulationSupply = FixedNumber.from(
+            marketInformation.circulatingSupply
+        );
 
-                setParticipationRate(newPR * 100);
-            }
-        }
-    }, [tickets, marketInformation]);
+        // participation rate is a percentage of circulation supply
+        // must use FixedNumber because BigNumber is only for integer
+        const participationRate = FixedNumber.fromValue(activeStake).divUnsafe(
+            circulationSupply
+        );
+
+        // build label
+        participationRateLabel =
+            participationRate
+                .mulUnsafe(FixedNumber.from(100))
+                .round(1)
+                .toString() + ' %';
+    }
 
     const totalWorkerPages =
         summary && workerSearch == ''
@@ -189,7 +189,9 @@ const Home = () => {
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1">Participation Rate</div>
-                        <div className="info-text-bg">{participationRate}%</div>
+                        <div className="info-text-bg">
+                            {participationRateLabel}
+                        </div>
                     </div>
                 </div>
             </div>

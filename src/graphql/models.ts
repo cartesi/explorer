@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers';
+
 export type Summary = {
     id: string;
     totalStakers: number;
@@ -29,7 +31,7 @@ export type LotteryTicket = {
     winner: string;
     worker: Worker;
 
-    difficulty: number;
+    difficulty: BigNumber;
     timestamp: number;
 
     user: Staker;
