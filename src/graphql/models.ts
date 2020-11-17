@@ -4,14 +4,14 @@ export type Summary = {
     id: string;
     totalStakers: number;
     totalWorkers: number;
-    totalStaked: number;
+    totalStaked: BigNumber;
     totalTickets: number;
 };
 
 export type Staker = {
     id: string;
-    stakedBalance: number;
-    maturingBalance: number;
+    stakedBalance: BigNumber;
+    maturingBalance: BigNumber;
     maturation: number;
     totalTickets: number;
 };
@@ -22,7 +22,7 @@ export type Worker = {
     timestamp: number;
     status: string;
     totalTickets: number;
-    totalReward: number;
+    totalReward: BigNumber;
 };
 
 export type LotteryTicket = {
@@ -35,7 +35,7 @@ export type LotteryTicket = {
     timestamp: number;
 
     user: Staker;
-    userPrize: number;
+    userPrize: BigNumber;
     beneficiary: string;
-    beneficiaryPrize: string;
+    beneficiaryPrize: BigNumber;
 };

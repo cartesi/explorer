@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -87,8 +87,12 @@ const Home = () => {
 
         // calculate average prize
         const prize = tickets
-            .map((t) => BigNumber.from(t.userPrize))
-            .reduce((sum, p) => sum.add(p), constants.Zero)
+            .map((ticket) =>
+                constants.Zero.add(ticket.userPrize).add(
+                    ticket.beneficiaryPrize
+                )
+            )
+            .reduce((sum, prize) => sum.add(prize), constants.Zero)
             .div(tickets.length);
 
         // total prize paid in one year
