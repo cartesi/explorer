@@ -45,7 +45,6 @@ const Home = () => {
 
     const [workerPage, setWorkerPage] = useState(1);
     const [workerSearch, setWorkerSearch] = useState('');
-    const [ticketClips, setTicketClips] = useState([]);
 
     let participationRateLabel = '-';
     if (tickets && tickets.length > 0 && marketInformation?.circulatingSupply) {
@@ -207,7 +206,7 @@ const Home = () => {
                     >
                         <img src="/images/refresh.svg" />
                     </button>
-                    {ticketClips.map((ticket) => (
+                    {tickets.slice(0, 4).map((ticket) => (
                         <TicketCard ticket={ticket} key={ticket.id} />
                     ))}
                 </div>
