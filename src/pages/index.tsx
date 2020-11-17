@@ -87,7 +87,7 @@ const Home = () => {
 
         // calculate average prize
         const prize = tickets
-            .map((t) => BigNumber.from(t.userPrize + t.beneficiaryPrize))
+            .map((t) => BigNumber.from(t.userPrize))
             .reduce((sum, p) => sum.add(p), constants.Zero)
             .div(tickets.length);
 
