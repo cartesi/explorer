@@ -44,7 +44,7 @@ h5 {
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: 42px;
+    line-height: 32px;
     letter-spacing: 0px;
 }
 
@@ -86,14 +86,6 @@ h6 {
     font-size: 14px;
     line-height: 17px;
     letter-spacing: 0.25px;
-}
-
-.table-header-text {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.15px;
 }
 
 .body-text-1 {
@@ -180,4 +172,52 @@ h6 {
 input:focus,
 button:focus {
     outline: none;
+}
+
+// Table
+
+table {
+    border: 0.5px solid #d8d8d8;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+    background-color: #ffffff;
+
+    thead tr {
+        background: #000000;
+        color: #ffffff;
+
+        th {
+            vertical-align: middle;
+
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 20px;
+            letter-spacing: 0.15px;
+
+            &:first-child {
+                padding-left: 4.5vw;
+            }
+
+            &:last-child {
+                padding-right: 4.5vw;
+            }
+        }
+    }
+
+    tr {
+        height: 52px;
+
+        td {
+            vertical-align: middle;
+
+            &:first-child {
+                padding-left: 4.5vw;
+            }
+
+            &:last-child {
+                padding-right: 4.5vw;
+            }
+        }
+    }
 }

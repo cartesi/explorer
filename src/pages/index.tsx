@@ -27,6 +27,7 @@ import { useStaking } from '../services/staking';
 import TicketCard from '../components/TicketCard';
 import { tinyString } from '../utils/stringUtils';
 import { BigNumber, constants, FixedNumber } from 'ethers';
+import Link from 'next/link';
 
 const Home = () => {
     const {
@@ -41,7 +42,7 @@ const Home = () => {
 
     const { workers, refreshWorkers } = useWorkers();
     const { tickets, refreshTickets } = useTickets();
-    const { summary, refreshSummary } = useSummary();
+    const { summary } = useSummary();
 
     const [workerPage, setWorkerPage] = useState(1);
     const [workerSearch, setWorkerSearch] = useState('');
@@ -222,7 +223,11 @@ const Home = () => {
             </div>
 
             <div className="landing-lottery">
-                <h5>|&ensp;Lottery</h5>
+                <Link href="/tickets">
+                    <a className="landing-link">
+                        <h5 className="landing-sub-title">Lottery</h5>
+                    </a>
+                </Link>
 
                 <div className="landing-lottery-tickets">
                     <button
@@ -240,7 +245,7 @@ const Home = () => {
 
             <div className="landing-noether">
                 <div className="landing-noether-title">
-                    <h5>|&ensp;Noether Node Runners</h5>
+                    <h5 className="landing-sub-title">Noether Node Runners</h5>
 
                     <div className="input-group">
                         <span>
