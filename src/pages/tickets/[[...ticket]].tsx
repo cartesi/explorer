@@ -14,7 +14,7 @@ import Link from 'next/link';
 const Ticket = () => {
     const router = useRouter();
     let { ticket: ticketId } = router.query;
-    ticketId = ticketId[0] as string;
+    ticketId = ticketId && ticketId.length > 0 ? (ticketId[0] as string) : null;
 
     const { formatCTSI } = useCartesiToken(null, null, null);
     const { tickets, refreshTickets } = useTickets();
