@@ -238,7 +238,7 @@ const Home = () => {
                         <img src="/images/refresh.svg" />
                     </button>
                     {tickets.slice(0, 4).map((ticket) => (
-                        <Link href={'/tickets/' + ticket.id}>
+                        <Link href={'/tickets/' + ticket.id} key={ticket.id}>
                             <a className="landing-link">
                                 <TicketCard ticket={ticket} key={ticket.id} />
                             </a>
@@ -251,7 +251,7 @@ const Home = () => {
                 <div className="landing-noether-title">
                     <h5 className="landing-sub-title">Noether Node Runners</h5>
 
-                    <div className="input-group">
+                    <div className="input-with-icon input-group">
                         <span>
                             <i className="fas fa-search"></i>
                         </span>

@@ -48,7 +48,7 @@ const NavBar = (props: NavBarProps) => {
         .map((item) => item.key);
 
     return (
-        <nav className="navbar">
+        <nav className="navbar fixed-top">
             <Link href="/">
                 <a className="navbar-brand logo"></a>
             </Link>

@@ -11,21 +11,17 @@ const useTickets = () => {
     const { loading, error, data, fetchMore } = useQuery(LOTTERY_TICKETS, {
         variables: {
             first: 10,
-            where: { timestamp_gt: 0 },
+            where: {},
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshTickets = async (continueLoading = true) => {
+    const refreshTickets = async (filter) => {
         let { data }: any = await fetchMore({
             variables: {
-                where: continueLoading
-                    ? {
-                          timestamp_lt: tickets[tickets.length - 1].timestamp,
-                      }
-                    : {},
+                where: filter ? filter : {},
             },
         });
 

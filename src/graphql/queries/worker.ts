@@ -29,9 +29,7 @@ export const WORKERS = gql`
 
 export const workersQueryVars = {
     first: 10,
-    where: {
-        timestamp_gt: 0,
-    },
+    where: {},
     orderBy: 'timestamp',
     orderDirection: 'desc',
 };

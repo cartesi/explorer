@@ -35,9 +35,7 @@ export const LOTTERY_TICKETS = gql`
 
 export const lotteryTicketsQueryVars = {
     first: 10,
-    where: {
-        timestamp_gt: 0,
-    },
+    where: {},
     orderBy: 'timestamp',
     orderDirection: 'desc',
 };

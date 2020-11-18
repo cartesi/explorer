@@ -113,11 +113,11 @@ h6 {
 }
 
 .overline {
-    font-size: 12px;
+    font-size: 32px;
     font-style: normal;
-    font-weight: 400;
-    line-height: 32px;
-    letter-spacing: 1px;
+    font-weight: 700;
+    line-height: 42px;
+    letter-spacing: 0.25px;
 }
 
 .button-text {
@@ -294,4 +294,25 @@ table,
     border: 0;
     background: url('/images/thumb.png');
     cursor: pointer;
+}
+
+// Text input with icon
+
+.input-with-icon.input-group {
+    width: 23.5vw;
+    max-width: 23.5vw;
+
+    span {
+        position: absolute;
+        margin-left: 10px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        z-index: 10;
+    }
+
+    input {
+        border-radius: 0;
+        padding-left: 35px;
+    }
 }

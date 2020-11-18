@@ -11,7 +11,7 @@ const useWorkers = () => {
     const [lastTimestamp, setLastTimestamp] = useState(0);
     const [firstTimestamp, setFirstTimestamp] = useState(0);
 
-    const [where, setWhere] = useState<any>({ timestamp_gt: 0 });
+    const [where, setWhere] = useState<any>({});
 
     const { loading, error, data, fetchMore } = useQuery(WORKERS, {
         variables: {

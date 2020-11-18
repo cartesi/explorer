@@ -149,25 +149,6 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-
-            .input-group {
-                width: 23.5vw;
-                max-width: 23.5vw;
-
-                span {
-                    position: absolute;
-                    margin-left: 10px;
-                    height: 35px;
-                    display: flex;
-                    align-items: center;
-                    z-index: 10;
-                }
-
-                input {
-                    border-radius: 0;
-                    padding-left: 35px;
-                }
-            }
         }
 
         &-pagination {
