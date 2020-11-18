@@ -12,34 +12,20 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Breadcrumb, Result } from 'antd';
 import Layout from '../../components/Layout';
 
-export interface NodesProps {
-    localNode: Node;
-    nodes: Node[];
+interface Props {
 }
 
-const Descartes = (props: NodesProps) => {
-    const { localNode, nodes } = props;
-
+const Calculator = (props: Props) => {
     return (
         <Layout>
             <Head>
-                <title>Descartes</title>
+                <title>Staking Calculator</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>
-                    <Link href="/">
-                        <a>Home</a>
-                    </Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>Descartes</Breadcrumb.Item>
-            </Breadcrumb>
-            <Result status="warning" title="Under construction" />
         </Layout>
     );
 };
 
-export default Descartes;
+export default Calculator;

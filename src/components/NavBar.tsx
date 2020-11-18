@@ -31,14 +31,14 @@ const NavBar = (props: NavBarProps) => {
             href: '/nodes',
         },
         {
-            key: 'descartes',
-            label: 'Descartes',
-            href: '/descartes',
-        },
-        {
             key: 'blocks',
             label: 'Blocks',
             href: '/blocks',
+        },
+        {
+            key: 'calculator',
+            label: 'Calculator',
+            href: '/calculator',
         },
     ];
 
