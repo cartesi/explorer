@@ -1,5 +1,5 @@
 {
-  "name": "descartes-console",
+  "name": "@cartesi/explorer",
   "version": "0.1.0",
   "private": true,
   "scripts": {

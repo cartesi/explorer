@@ -1,6 +1,6 @@
-# Descartes Console
+# Cartesi Explorer
 
-This web application shows several informations about a Descartes Node:
+This web application shows several informations about Cartesi Proof of Stake:
 
 - node public address
 - node balance
