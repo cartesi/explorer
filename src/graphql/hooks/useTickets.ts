@@ -7,38 +7,36 @@ import { LotteryTicket } from '../models';
 
 const useTickets = () => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
+    const [filter, setFilter] = useState({});
 
     const { loading, error, data, fetchMore } = useQuery(LOTTERY_TICKETS, {
         variables: {
             first: 10,
-            where: {},
+            where: filter,
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshTickets = async (filter) => {
-        let { data }: any = await fetchMore({
-            variables: {
-                where: filter ? filter : {},
-            },
-        });
+    const refreshTickets = async (newFilter = null) => {
+        setFilter(newFilter ? newFilter : {});
+    };
 
-        if (data) {
-            const newTickets = data.lotteryTickets.map((ticket) => ({
-                ...ticket,
-                key: ticket.id,
-            }));
+    const updateTickets = (rawTickets: Array<LotteryTicket>) => {
+        let newTickets = rawTickets.map((ticket) => ({
+            ...ticket,
+            key: ticket.id,
+        }));
+        newTickets = _.unionBy(tickets, newTickets, 'key');
 
-            setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
-        }
+        setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
     };
 
     useEffect(() => {
         if (fetchMore && tickets.length) {
             const interval = setInterval(() => {
-                refreshTickets(false);
+                refreshTickets();
             }, 300000);
 
             return () => clearInterval(interval);
@@ -47,19 +45,14 @@ const useTickets = () => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            const newTickets = data.lotteryTickets.map((ticket) => {
-                return {
-                    ...ticket,
-                    key: ticket.id,
-                };
-            });
-
-            setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
+            updateTickets(data.lotteryTickets);
         }
     }, [loading, error, data]);
 
     return {
         tickets,
+        loading,
+        error,
         refreshTickets,
     };
 };

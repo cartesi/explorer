@@ -26,7 +26,6 @@
     "next": "9.5.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "rimble-ui": "^0.14.0",
     "sass": "^1.29.0",
     "styled-components": "^5.2.0"
   },

@@ -13,7 +13,6 @@ import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Space, Typography } from 'antd';
-import { MetaMaskButton } from 'rimble-ui';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { IChainData, getChain } from '../services/chain';
