@@ -7,7 +7,8 @@ import { LotteryTicket } from '../models';
 
 const useTickets = () => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
-    const [filter, setFilter] = useState({});
+    const [filter, setFilter] = useState<any>({});
+    const [reset, setReset] = useState(false);
 
     const { loading, error, data, fetchMore } = useQuery(LOTTERY_TICKETS, {
         variables: {
@@ -19,8 +20,9 @@ const useTickets = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshTickets = async (newFilter = null) => {
+    const refreshTickets = async (newFilter = null, reset = false) => {
         setFilter(newFilter ? newFilter : {});
+        setReset(reset);
     };
 
     const updateTickets = (rawTickets: Array<LotteryTicket>) => {
@@ -28,7 +30,9 @@ const useTickets = () => {
             ...ticket,
             key: ticket.id,
         }));
-        newTickets = _.unionBy(tickets, newTickets, 'key');
+        if (!reset) {
+            newTickets = _.unionBy(tickets, newTickets, 'key');
+        }
 
         setTickets(newTickets.sort((a, b) => b.timestamp - a.timestamp));
     };
@@ -53,6 +57,7 @@ const useTickets = () => {
         tickets,
         loading,
         error,
+        filter,
         refreshTickets,
     };
 };
