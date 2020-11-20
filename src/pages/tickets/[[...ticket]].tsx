@@ -6,27 +6,30 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import useTickets from '../../graphql/hooks/useTickets';
 import { tinyString } from '../../utils/stringUtils';
-import useTicket from '../../graphql/hooks/useTicket';
 import { useCartesiToken } from '../../services/token';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
 const Ticket = () => {
     const router = useRouter();
     let { ticket: ticketId } = router.query;
-    ticketId = ticketId && ticketId.length > 0 ? (ticketId[0] as string) : null;
 
     const { formatCTSI } = useCartesiToken(null, null, null);
     const { tickets, refreshTickets, loading, filter } = useTickets();
-    const { ticket } = useTicket(ticketId);
 
-    const [searchKey, setSearchKey] = useState('');
+    const [searchKey, setSearchKey] = useState(
+        ticketId && ticketId.length > 0 ? (ticketId[0] as string) : ''
+    );
 
     const doSearch = () => {
         refreshTickets(
             searchKey != ''
-                ? {
-                      round: searchKey,
-                  }
+                ? searchKey.startsWith('0x')
+                    ? {
+                          id: searchKey,
+                      }
+                    : {
+                          round: searchKey,
+                      }
                 : {},
             true
         );
@@ -50,6 +53,13 @@ const Ticket = () => {
         if (e.key === 'Enter') {
             doSearch();
         }
+    };
+
+    const filterTicket = (ticket) => {
+        if (!filter.round && !filter.id) return true;
+        if (filter.round) return filter.round == ticket.round;
+        if (filter.id) return filter.id == ticket.id;
+        return false;
     };
 
     return (
@@ -89,69 +99,62 @@ const Ticket = () => {
 
             <div className="tickets-content">
                 <div className="tickets-content-ticket-list">
-                    {tickets
-                        .filter(
-                            (ticket) =>
-                                !filter.round ||
-                                filter.round == '' ||
-                                ticket.round == filter.round
-                        )
-                        .map((ticket) => {
-                            return (
-                                <div
-                                    className="tickets-content-ticket row"
-                                    key={ticket.id}
-                                >
-                                    <div className="col-9 row">
-                                        <div className="sub-title-4 col-4">
-                                            Ticket #
-                                        </div>
-                                        <div className="body-text-2 col-8">
-                                            {ticket.round}
-                                        </div>
-
-                                        <div className="sub-title-4 col-4">
-                                            Date
-                                        </div>
-                                        <div className="body-text-2 col-8">
-                                            {new Date(
-                                                ticket.timestamp * 1000
-                                            ).toUTCString()}
-                                        </div>
-
-                                        <div className="sub-title-4 col-4">
-                                            Claimer Address
-                                        </div>
-                                        <div className="body-text-2 col-8">
-                                            {ticket.user.id}
-                                        </div>
-
-                                        <div className="sub-title-4 col-4">
-                                            Node Address
-                                        </div>
-                                        <div className="body-text-2 col-8">
-                                            {ticket.worker.id}
-                                        </div>
-
-                                        <div className="sub-title-4 col-4">
-                                            Reward
-                                        </div>
-                                        <div className="body-text-2 col-8">
-                                            {formatCTSI(ticket.userPrize)}
-                                        </div>
+                    {tickets.filter(filterTicket).map((ticket) => {
+                        return (
+                            <div
+                                className="tickets-content-ticket row"
+                                key={ticket.id}
+                            >
+                                <div className="col-9 row">
+                                    <div className="sub-title-4 col-4">
+                                        Ticket #
                                     </div>
-                                    <div className="col-3 d-flex flex-column align-items-center">
-                                        <img
-                                            className="tickets-content-ticket-image"
-                                            src={tinyGraphUrl(ticket)}
-                                        />
-                                        <div className="body-text-2 pt-1">
-                                            {tinyString(ticket.id)}
-                                        </div>
+                                    <div className="body-text-2 col-8">
+                                        {ticket.round}
+                                    </div>
+
+                                    <div className="sub-title-4 col-4">
+                                        Date
+                                    </div>
+                                    <div className="body-text-2 col-8">
+                                        {new Date(
+                                            ticket.timestamp * 1000
+                                        ).toUTCString()}
+                                    </div>
+
+                                    <div className="sub-title-4 col-4">
+                                        Claimer Address
+                                    </div>
+                                    <div className="body-text-2 col-8">
+                                        {ticket.user.id}
+                                    </div>
+
+                                    <div className="sub-title-4 col-4">
+                                        Node Address
+                                    </div>
+                                    <div className="body-text-2 col-8">
+                                        {ticket.worker.id}
+                                    </div>
+
+                                    <div className="sub-title-4 col-4">
+                                        Reward
+                                    </div>
+                                    <div className="body-text-2 col-8">
+                                        {formatCTSI(ticket.userPrize)}
                                     </div>
                                 </div>
-                            );
-                        })}
+                                <div className="col-3 d-flex flex-column align-items-center">
+                                    <img
+                                        className="tickets-content-ticket-image"
+                                        src={tinyGraphUrl(ticket)}
+                                    />
+                                    <div className="body-text-2 pt-1">
+                                        {tinyString(ticket.id)}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 <div className="text-center">
