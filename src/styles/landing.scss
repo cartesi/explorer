@@ -73,7 +73,7 @@
     }
 
     &-lottery {
-        &-tickets {
+        &-blocks {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -84,7 +84,7 @@
             margin: 10px 0 4vw;
         }
 
-        &-ticket {
+        &-block {
             width: 18.75vw;
             min-width: 18.75vw;
             margin: 8px 0 8px 8px;

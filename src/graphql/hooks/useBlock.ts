@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { LotteryTicket } from '../models';
-import { LOTTERY_TICKET } from '../queries/ticket';
+import { BLOCK } from '../queries/block';
 
-const useTicket = (id: string) => {
-    const [ticket, setTicket] = useState<LotteryTicket>();
+const useBlock = (id: string) => {
+    const [block, setBlock] = useState<LotteryTicket>();
 
-    const { loading, error, data } = useQuery(LOTTERY_TICKET, {
+    const { loading, error, data } = useQuery(BLOCK, {
         variables: {
             id,
         },
@@ -17,13 +17,13 @@ const useTicket = (id: string) => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            setTicket(data.lotteryTicket);
+            setBlock(data.lotteryTicket);
         }
     }, [loading, error, data]);
 
     return {
-        ticket,
+        block,
     };
 };
 
-export default useTicket;
+export default useBlock;

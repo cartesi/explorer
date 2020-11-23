@@ -16,7 +16,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import Layout from '../components/Layout';
 
-import useTickets from '../graphql/hooks/useTickets';
+import useBlocks from '../graphql/hooks/useBlocks';
 import useWorkers from '../graphql/hooks/useWorkers';
 import useSummary from '../graphql/hooks/useSummary';
 
@@ -24,7 +24,7 @@ import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
-import TicketCard from '../components/TicketCard';
+import BlockCard from '../components/BlockCard';
 import { tinyString } from '../utils/stringUtils';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ const Home = () => {
     const { stakedBalance } = useStaking();
 
     const { workers, refreshWorkers } = useWorkers();
-    const { tickets, refreshTickets } = useTickets();
+    const { blocks, loadNewBlocks } = useBlocks();
     const { summary } = useSummary();
 
     const [workerPage, setWorkerPage] = useState(1);
@@ -49,12 +49,12 @@ const Home = () => {
 
     let participationRateLabel = '-';
     let aprLabel = '-';
-    if (tickets && tickets.length > 0 && marketInformation?.circulatingSupply) {
-        // take average difficulty of all tickets in array
-        const difficulty = tickets
+    if (blocks && blocks.length > 0 && marketInformation?.circulatingSupply) {
+        // take average difficulty of all blocks in array
+        const difficulty = blocks
             .map((t) => t.difficulty)
             .reduce((sum, d) => sum.add(d), constants.Zero)
-            .div(tickets.length);
+            .div(blocks.length);
 
         // 10 minutes in seconds
         // XXX: Would be good to get this value from lottery contract
@@ -87,14 +87,12 @@ const Home = () => {
             .mul(365); // year
 
         // calculate average prize
-        const prize = tickets
-            .map((ticket) =>
-                constants.Zero.add(ticket.userPrize).add(
-                    ticket.beneficiaryPrize
-                )
+        const prize = blocks
+            .map((block) =>
+                constants.Zero.add(block.userPrize).add(block.beneficiaryPrize)
             )
             .reduce((sum, prize) => sum.add(prize), constants.Zero)
-            .div(tickets.length);
+            .div(blocks.length);
 
         // total prize paid in one year
         const yearPrize = yearSeconds.div(desiredDrawTimeInterval).mul(prize);
@@ -210,7 +208,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
-                        <div className="sub-title-1">Annual Yield</div>
+                        <div className="sub-title-1">Annual Rewards</div>
                         <div className="info-text-bg">{aprLabel}</div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
@@ -223,24 +221,24 @@ const Home = () => {
             </div>
 
             <div className="landing-lottery">
-                <Link href="/tickets">
+                <Link href="/blocks">
                     <a className="landing-link">
-                        <h5 className="landing-sub-title">Lottery</h5>
+                        <h5 className="landing-sub-title">Blocks</h5>
                     </a>
                 </Link>
 
-                <div className="landing-lottery-tickets">
+                <div className="landing-lottery-blocks">
                     <button
                         type="button"
                         className="btn btn-link"
-                        onClick={() => refreshTickets()}
+                        onClick={() => loadNewBlocks()}
                     >
                         <img src="/images/refresh.svg" />
                     </button>
-                    {tickets.slice(0, 4).map((ticket) => (
-                        <Link href={'/tickets/' + ticket.id} key={ticket.id}>
+                    {blocks.slice(0, 4).map((block) => (
+                        <Link href={'/blocks/' + block.id} key={block.id}>
                             <a className="landing-link">
-                                <TicketCard ticket={ticket} key={ticket.id} />
+                                <BlockCard block={block} key={block.id} />
                             </a>
                         </Link>
                     ))}
@@ -274,7 +272,7 @@ const Home = () => {
                         <tr>
                             <th className="table-header-text">Node</th>
                             <th className="table-header-text">
-                                #Tickets Claimed
+                                #Blocks Produced
                             </th>
                             <th className="table-header-text">Total Staked</th>
                             <th className="table-header-text">Total Rewards</th>

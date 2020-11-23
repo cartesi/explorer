@@ -4,25 +4,25 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import Layout from '../../components/Layout';
-import useTickets from '../../graphql/hooks/useTickets';
+import useBlocks from '../../graphql/hooks/useBlocks';
 import { tinyString } from '../../utils/stringUtils';
 import { useCartesiToken } from '../../services/token';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
-const Ticket = () => {
+const Block = () => {
     const router = useRouter();
-    let { ticket: ticketId } = router.query;
-    ticketId = ticketId && ticketId.length > 0 ? (ticketId[0] as string) : '';
+    let { block: blockId } = router.query;
+    blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const { formatCTSI } = useCartesiToken(null, null, null);
-    const { tickets, refreshTickets, loading, filter } = useTickets(
-        ticketId == '' ? {} : { id: ticketId }
+    const { blocks, refreshBlocks, loading, filter } = useBlocks(
+        blockId == '' ? {} : { id: blockId }
     );
 
-    const [searchKey, setSearchKey] = useState(ticketId);
+    const [searchKey, setSearchKey] = useState(blockId);
 
     const doSearch = () => {
-        refreshTickets(
+        refreshBlocks(
             searchKey != ''
                 ? searchKey.startsWith('0x')
                     ? {
@@ -38,7 +38,7 @@ const Ticket = () => {
 
     const loadMore = () => {
         let filter: any = {
-            timestamp_lt: tickets[tickets.length - 1].timestamp,
+            timestamp_lt: blocks[blocks.length - 1].timestamp,
         };
 
         if (searchKey != '') {
@@ -47,7 +47,7 @@ const Ticket = () => {
                 id: searchKey,
             };
         }
-        refreshTickets(filter);
+        refreshBlocks(filter);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -56,22 +56,22 @@ const Ticket = () => {
         }
     };
 
-    const filterTicket = (ticket) => {
+    const filterBlock = (block) => {
         if (!filter.round && !filter.id) return true;
-        if (filter.round) return filter.round == ticket.round;
-        if (filter.id) return filter.id == ticket.id;
+        if (filter.round) return filter.round == block.round;
+        if (filter.id) return filter.id == block.id;
         return false;
     };
 
     return (
-        <Layout className="tickets">
+        <Layout className="blocks">
             <Head>
-                <title>Cartesi - Lottery</title>
+                <title>Cartesi - Blocks</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="tickets-header d-flex justify-content-between align-items-center py-3">
-                <div className="overline text-white">Lottery</div>
+            <div className="blocks-header d-flex justify-content-between align-items-center py-3">
+                <div className="overline text-white">Blocks</div>
 
                 <div className="d-flex flex-row align-items-center justify-content-start">
                     <div className="input-with-icon input-group">
@@ -98,20 +98,20 @@ const Ticket = () => {
                 </div>
             </div>
 
-            <div className="tickets-content">
-                <div className="tickets-content-ticket-list">
-                    {tickets.filter(filterTicket).map((ticket) => {
+            <div className="blocks-content">
+                <div className="blocks-content-block-list">
+                    {blocks.filter(filterBlock).map((block) => {
                         return (
                             <div
-                                className="tickets-content-ticket row"
-                                key={ticket.id}
+                                className="blocks-content-block row"
+                                key={block.id}
                             >
                                 <div className="col-9 row">
                                     <div className="sub-title-4 col-4">
-                                        Ticket #
+                                        Block #
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {ticket.round}
+                                        {block.round}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
@@ -119,7 +119,7 @@ const Ticket = () => {
                                     </div>
                                     <div className="body-text-2 col-8">
                                         {new Date(
-                                            ticket.timestamp * 1000
+                                            block.timestamp * 1000
                                         ).toUTCString()}
                                     </div>
 
@@ -127,30 +127,30 @@ const Ticket = () => {
                                         Claimer Address
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {ticket.user.id}
+                                        {block.user.id}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
                                         Node Address
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {ticket.worker.id}
+                                        {block.worker.id}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
                                         Reward
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {formatCTSI(ticket.userPrize)}
+                                        {formatCTSI(block.userPrize)}
                                     </div>
                                 </div>
                                 <div className="col-3 d-flex flex-column align-items-center">
                                     <img
-                                        className="tickets-content-ticket-image"
-                                        src={tinyGraphUrl(ticket)}
+                                        className="blocks-content-block-image"
+                                        src={tinyGraphUrl(block)}
                                     />
                                     <div className="body-text-2 pt-1">
-                                        {tinyString(ticket.id)}
+                                        {tinyString(block.id)}
                                     </div>
                                 </div>
                             </div>
@@ -182,4 +182,4 @@ const Ticket = () => {
     );
 };
 
-export default Ticket;
+export default Block;

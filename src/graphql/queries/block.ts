@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const LOTTERY_TICKET = gql`
+export const BLOCK = gql`
     query lotteryTicket($id: String) {
         lotteryTicket(id: $id) {
             id
@@ -23,6 +23,6 @@ export const LOTTERY_TICKET = gql`
     }
 `;
 
-export const lotteryTicketQueryVars = {
+export const blockQueryVars = {
     id: '0',
 };

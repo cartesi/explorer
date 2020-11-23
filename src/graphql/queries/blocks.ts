@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const LOTTERY_TICKETS = gql`
+export const BLOCKS = gql`
     query lotteryTickets(
         $first: Int
         $where: LotteryTicket_filter
@@ -33,7 +33,7 @@ export const LOTTERY_TICKETS = gql`
     }
 `;
 
-export const lotteryTicketsQueryVars = {
+export const blocksQueryVars = {
     first: 10,
     where: {},
     orderBy: 'timestamp',
