@@ -5,9 +5,9 @@ import { useQuery } from '@apollo/client';
 import { LOTTERY_TICKETS } from '../queries/lottery';
 import { LotteryTicket } from '../models';
 
-const useTickets = () => {
+const useTickets = (initFilter = {}) => {
     const [tickets, setTickets] = useState<Array<LotteryTicket>>([]);
-    const [filter, setFilter] = useState<any>({});
+    const [filter, setFilter] = useState<any>(initFilter);
     const [reset, setReset] = useState(false);
 
     const { loading, error, data, fetchMore } = useQuery(LOTTERY_TICKETS, {
@@ -40,7 +40,10 @@ const useTickets = () => {
     useEffect(() => {
         if (fetchMore && tickets.length) {
             const interval = setInterval(() => {
-                refreshTickets();
+                refreshTickets({
+                    ...filter,
+                    timestamp_lt: Math.ceil(new Date().getTime() / 1000), // Get last 10 tickets from now
+                });
             }, 300000);
 
             return () => clearInterval(interval);

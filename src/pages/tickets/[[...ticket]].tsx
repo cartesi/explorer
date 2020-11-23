@@ -12,13 +12,14 @@ import { tinyGraphUrl } from '../../utils/tinygraph';
 const Ticket = () => {
     const router = useRouter();
     let { ticket: ticketId } = router.query;
+    ticketId = ticketId && ticketId.length > 0 ? (ticketId[0] as string) : '';
 
     const { formatCTSI } = useCartesiToken(null, null, null);
-    const { tickets, refreshTickets, loading, filter } = useTickets();
-
-    const [searchKey, setSearchKey] = useState(
-        ticketId && ticketId.length > 0 ? (ticketId[0] as string) : ''
+    const { tickets, refreshTickets, loading, filter } = useTickets(
+        ticketId == '' ? {} : { id: ticketId }
     );
+
+    const [searchKey, setSearchKey] = useState(ticketId);
 
     const doSearch = () => {
         refreshTickets(
@@ -172,7 +173,7 @@ const Ticket = () => {
                                     aria-hidden="true"
                                 ></span>
                             )}
-                            Load More
+                            Load Previous Blocks
                         </div>
                     </button>
                 </div>
