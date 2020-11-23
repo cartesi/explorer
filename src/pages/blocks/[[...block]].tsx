@@ -37,17 +37,10 @@ const Block = () => {
     };
 
     const loadMore = () => {
-        let filter: any = {
+        refreshBlocks({
+            ...filter,
             timestamp_lt: blocks[blocks.length - 1].timestamp,
-        };
-
-        if (searchKey != '') {
-            filter = {
-                ...filter,
-                id: searchKey,
-            };
-        }
-        refreshBlocks(filter);
+        });
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -57,6 +50,7 @@ const Block = () => {
     };
 
     const filterBlock = (block) => {
+        console.log(filter, block);
         if (!filter.round && !filter.id) return true;
         if (filter.round) return filter.round == block.round;
         if (filter.id) return filter.id == block.id;
