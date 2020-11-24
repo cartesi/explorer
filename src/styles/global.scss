@@ -249,10 +249,13 @@ table {
     height: 16px;
     border-radius: 2px;
     background: #ffffff;
-    border: 1px solid #000000;
     opacity: 0.9;
     -webkit-transition: 0.2s;
     transition: opacity 0.2s;
+
+    -webkit-box-shadow: inset 0px 0px 0px 1px #000;
+    -moz-box-shadow: inset 0px 0px 0px 1px #000;
+    box-shadow: inset 0px 0px 0px 1px #000;
 }
 
 .slider:hover {
@@ -262,11 +265,14 @@ table {
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    margin-top: 5px;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 40px;
+    margin: 8px 0 0;
     border: 0;
-    background: url('/images/thumb.png');
+
+    background-image: url('/images/thumb.png');
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
 }
 

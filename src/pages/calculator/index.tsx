@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 // import ReactBootstrapSlider from 'react-bootstrap-slider';
@@ -36,10 +36,10 @@ const Calculator = (props: Props) => {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
-    const { formatCTSI } = useCartesiToken(null, null, null);
+    const { formatCTSI, parseCTSI } = useCartesiToken();
 
     // total staked simulation
-    const [totalStaked, setTotalStaked] = useState<BigNumber>(constants.Zero);
+    const [totalStaked, setTotalStaked] = useState<number>(-1);
 
     // get latest ticket
     const { tickets } = useTickets();
@@ -59,13 +59,24 @@ const Calculator = (props: Props) => {
     const difficulty = BigNumber.from(latestTicket.difficulty);
     const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract
     const activeStake = difficulty.div(desiredDrawTimeInterval);
+    const blackBarPosition =
+        (parseFloat(formatUnits(activeStake, 18)) /
+            marketInformation.circulatingSupply) *
+        100;
+
+    if (totalStaked < 0) {
+        setTotalStaked(parseInt(formatUnits(activeStake, 18)));
+    }
+
     const circulatingSupply = BigNumber.from(
         marketInformation.circulatingSupply
     ).mul(constants.WeiPerEther);
 
     // user stake share
     const stakePercentage = FixedNumber.fromValue(stake).divUnsafe(
-        FixedNumber.fromValue(activeStake.add(stake))
+        FixedNumber.fromValue(
+            constants.One.mul(totalStaked).mul(constants.WeiPerEther).add(stake)
+        )
     );
 
     // investment period in seconds
@@ -73,31 +84,27 @@ const Calculator = (props: Props) => {
 
     // number of ticket drawn in that period
     const totalTickets = periodSeconds.div(desiredDrawTimeInterval);
-    console.log('totalTickets', totalTickets.toString());
 
     // number of ticket claimed by the user (statistically)
     const ticketsClaimed = stakePercentage.mulUnsafe(
         FixedNumber.fromValue(totalTickets)
     );
-    console.log('ticketsClaimed', ticketsClaimed.toString());
 
     // total reward
     const reward = latestPrize.mul(ticketsClaimed.floor().toUnsafeFloat());
-    console.log('reward', reward.toString());
 
     // APR
     const yearSeconds = constants.One.mul(365).mul(24).mul(60).mul(60);
     const yearTickets = yearSeconds.div(desiredDrawTimeInterval);
-    console.log('yearTickets', yearTickets.toString());
+
     const yearClaimed = stakePercentage.mulUnsafe(
         FixedNumber.fromValue(yearTickets)
     );
-    console.log('yearClaimed', yearClaimed.toString());
+
     const yearReward = latestPrize.mul(yearClaimed.floor().toUnsafeFloat());
     const apr = FixedNumber.fromValue(yearReward).divUnsafe(
         FixedNumber.fromValue(stake)
     );
-    console.log('apr', apr.toString());
 
     return (
         <Layout className="calculator">
@@ -117,7 +124,7 @@ const Calculator = (props: Props) => {
                             id="stake"
                             value={formatUnits(stake, 18)}
                             onChange={(event) =>
-                                setStake(parseUnits(event.target.value, 18))
+                                setStake(parseCTSI(event.target.value))
                             }
                         />
                         <span className="input-group-addon addon-inline input-source-observer small-text">
@@ -149,7 +156,7 @@ const Calculator = (props: Props) => {
                     <span className="small-text">CTSI</span>
                 </div>
                 <div className="body-text-1">
-                    Estimated Total Staked: {formatCTSI(activeStake)}{' '}
+                    Estimated Total Staked: {totalStaked.toLocaleString()}{' '}
                     <span className="small-text">CTSI</span>
                 </div>
                 <div className="calculator-slider">
@@ -158,10 +165,7 @@ const Calculator = (props: Props) => {
                     <div className="calculator-slider-labels">
                         <span className="small-text">0</span>
                         <span className="small-text">
-                            {(
-                                marketInformation.circulatingSupply / 2
-                            ).toLocaleString()}{' '}
-                            CTSI
+                            {totalStaked.toLocaleString()} CTSI
                         </span>
                         <span className="small-text">
                             {marketInformation.circulatingSupply.toLocaleString()}{' '}
@@ -172,8 +176,18 @@ const Calculator = (props: Props) => {
                         type="range"
                         min="0"
                         max={marketInformation.circulatingSupply}
-                        value={marketInformation.circulatingSupply / 2}
+                        value={totalStaked}
+                        onChange={(e) => setTotalStaked(e.target.valueAsNumber)}
                         className="slider"
+                        style={{
+                            background: `linear-gradient(
+                                to right,
+                                #000,
+                                #000 ${blackBarPosition}%,
+                                #fff ${blackBarPosition}%,
+                                #fff
+                            )`,
+                        }}
                     />
                 </div>
 

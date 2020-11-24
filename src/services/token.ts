@@ -19,9 +19,9 @@ import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
 export const useCartesiToken = (
-    account: string,
-    spender: string,
-    blockNumber: number
+    account: string = null,
+    spender: string = null,
+    blockNumber: number = 0
 ) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
 
