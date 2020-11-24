@@ -122,9 +122,15 @@ const Calculator = (props: Props) => {
                             type="number"
                             className="addon-inline form-control"
                             id="stake"
-                            value={formatUnits(stake, 18)}
+                            value={parseInt(formatUnits(stake, 18))}
                             onChange={(event) =>
-                                setStake(parseCTSI(event.target.value))
+                                setStake(
+                                    parseCTSI(
+                                        event.target.value
+                                            ? event.target.value
+                                            : 1
+                                    )
+                                )
                             }
                         />
                         <span className="input-group-addon addon-inline input-source-observer small-text">
@@ -143,7 +149,11 @@ const Calculator = (props: Props) => {
                             id="period"
                             value={period}
                             onChange={(event) =>
-                                setPeriod(parseInt(event.target.value))
+                                setPeriod(
+                                    event.target.value
+                                        ? parseInt(event.target.value)
+                                        : 0
+                                )
                             }
                         />
                         <span className="input-group-addon addon-inline input-source-observer small-text">
