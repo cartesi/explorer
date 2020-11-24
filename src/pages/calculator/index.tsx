@@ -12,12 +12,13 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+// import ReactBootstrapSlider from 'react-bootstrap-slider';
 import Layout from '../../components/Layout';
 import { useMarketInformation } from '../../services/market';
 import useTickets from '../../graphql/hooks/useTickets';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { useCartesiToken } from '../../services/token';
 
 interface Props {}
 
@@ -35,6 +36,7 @@ const Calculator = (props: Props) => {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
+    const { formatCTSI } = useCartesiToken(null, null, null);
 
     // total staked simulation
     const [totalStaked, setTotalStaked] = useState<BigNumber>(constants.Zero);
@@ -98,56 +100,109 @@ const Calculator = (props: Props) => {
     console.log('apr', apr.toString());
 
     return (
-        <Layout>
+        <Layout className="calculator">
             <Head>
                 <title>Staking Calculator</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <form>
+            <form className="calculator-form">
                 <div className="form-group">
-                    <label>Amount to stake</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="stake"
-                        value={formatUnits(stake, 18)}
-                        onChange={(event) =>
-                            setStake(parseUnits(event.target.value, 18))
-                        }
-                    />
+                    <label className="body-text-2 text-secondary">
+                        Amount to stake
+                    </label>
+                    <div className="input-group">
+                        <input
+                            type="number"
+                            className="addon-inline form-control"
+                            id="stake"
+                            value={formatUnits(stake, 18)}
+                            onChange={(event) =>
+                                setStake(parseUnits(event.target.value, 18))
+                            }
+                        />
+                        <span className="input-group-addon addon-inline input-source-observer small-text">
+                            CTSI
+                        </span>
+                    </div>
                 </div>
                 <div className="form-group">
-                    <label>Staking period</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="period"
-                        value={period}
-                        onChange={(event) =>
-                            setPeriod(parseInt(event.target.value))
-                        }
-                    />
+                    <label className="body-text-2 text-secondary">
+                        Staking period
+                    </label>
+                    <div className="input-group">
+                        <input
+                            type="number"
+                            className="addon-inline form-control"
+                            id="period"
+                            value={period}
+                            onChange={(event) =>
+                                setPeriod(parseInt(event.target.value))
+                            }
+                        />
+                        <span className="input-group-addon addon-inline input-source-observer small-text">
+                            Days
+                        </span>
+                    </div>
                 </div>
-                <p>Current Ticket Prize: {formatUnits(latestPrize, 18)} CTSI</p>
-                <p>
-                    Estimated Total Staked: {formatUnits(activeStake, 18)} CTSI
-                </p>
-                <p>
-                    <ReactBootstrapSlider
-                        min={0}
+                <div className="body-text-1">
+                    Current Block Reward: {formatCTSI(latestPrize)}{' '}
+                    <span className="small-text">CTSI</span>
+                </div>
+                <div className="body-text-1">
+                    Estimated Total Staked: {formatCTSI(activeStake)}{' '}
+                    <span className="small-text">CTSI</span>
+                </div>
+                <div className="calculator-slider">
+                    <h5 className="calculator-sub-title">Total Staked</h5>
+
+                    <div className="calculator-slider-labels">
+                        <span className="small-text">0</span>
+                        <span className="small-text">
+                            {(
+                                marketInformation.circulatingSupply / 2
+                            ).toLocaleString()}{' '}
+                            CTSI
+                        </span>
+                        <span className="small-text">
+                            {marketInformation.circulatingSupply.toLocaleString()}{' '}
+                            CTSI
+                        </span>
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
                         max={marketInformation.circulatingSupply}
                         value={marketInformation.circulatingSupply / 2}
+                        className="slider"
                     />
-                </p>
-                <p>
-                    Accumulated Reward:
-                    {formatUnits(BigNumber.from(reward), 18)} CTSI
-                </p>
-                <p>
-                    APR:{' '}
-                    {apr.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
-                        '%'}
-                </p>
+                </div>
+
+                <div className="calculator-result">
+                    <h5 className="calculator-sub-title">Results</h5>
+
+                    <div className="calculator-result-rewards">
+                        <div className="calculator-result-reward mr-4">
+                            <span className="body-text-2 mb-1">
+                                Absolute Reward
+                            </span>
+                            <span className="info-text-md">
+                                {formatCTSI(BigNumber.from(reward))}{' '}
+                                <span className="small-text">CTSI</span>
+                            </span>
+                        </div>
+                        <div className="calculator-result-reward">
+                            <span className="body-text-2 mb-1">
+                                Estimated Annual Reward
+                            </span>
+                            <span className="info-text-md">
+                                {apr
+                                    .mulUnsafe(FixedNumber.from(100))
+                                    .round(1)
+                                    .toString() + '%'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </form>
         </Layout>
     );

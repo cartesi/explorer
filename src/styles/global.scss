@@ -152,6 +152,25 @@ h6 {
     letter-spacing: 0.25px;
 }
 
+.small-text {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: right;
+}
+
+input.form-control {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    text-align: left;
+    color: #000;
+}
+
 // Color configuration
 .black-text {
     color: black;
@@ -220,4 +239,42 @@ table {
             }
         }
     }
+}
+
+// Slider
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 16px;
+    border-radius: 2px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    opacity: 0.9;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: 5px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: url('/images/thumb.png');
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    margin-top: 5px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: url('/images/thumb.png');
+    cursor: pointer;
 }

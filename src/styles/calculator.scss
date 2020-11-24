@@ -1,0 +1,80 @@
+.calculator {
+    &-sub-title {
+        padding-left: 12px;
+        border-left-width: 1px;
+        border-left: 1px solid #000000;
+    }
+
+    &-slider {
+        &-labels {
+            width: 100%;
+            margin: 30px 0 10px;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .slider {
+            background: linear-gradient(
+                to right,
+                $bright-black-color,
+                $bright-black-color 70%,
+                $dark-white-color 70%,
+                $dark-white-color
+            );
+        }
+    }
+
+    &-form {
+        margin: 6vw;
+
+        & > * {
+            margin: 40px 0;
+        }
+
+        .input-group-addon.addon-inline {
+            background: #fff;
+            color: #999;
+            border: 1px solid #000;
+            border-left: none;
+            border-radius: 3px;
+            padding: 0 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group .form-control.addon-inline {
+            border: 1px solid #000;
+            border-right: none;
+
+            height: 56px;
+            padding-left: 50px;
+        }
+    }
+
+    &-result-rewards {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+
+        margin-top: 30px;
+    }
+
+    &-result-reward {
+        height: 11vw;
+        width: 25vw;
+        background: #000000;
+        border-radius: 2px;
+        color: #ffffff;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
