@@ -278,8 +278,8 @@ const Home = () => {
                         {nodes.map((node) => {
                             const now = new Date();
                             const uptimeDays = Math.ceil(
-                                (now.getTime() - node.timestamp * 1000) /
-                                    1000 /
+                                (now.getTime() / 1000 - node.timestamp) /
+                                    60 /
                                     60 /
                                     24
                             );
