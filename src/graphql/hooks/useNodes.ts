@@ -64,7 +64,7 @@ const useNodes = () => {
     }, [loading, error, data]);
 
     useEffect(() => {
-        if (nodes.length > 1) {
+        if (nodes.length > 0) {
             setFirstTimestamp(nodes[0].timestamp);
             setLastTimestamp(nodes[nodes.length - 1].timestamp);
         }
