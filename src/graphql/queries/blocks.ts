@@ -1,34 +1,36 @@
 import gql from 'graphql-tag';
 
 export const BLOCKS = gql`
-    query lotteryTickets(
+    query blocks(
         $first: Int
-        $where: LotteryTicket_filter
-        $orderBy: LotteryTicket_orderBy
+        $where: Block_filter
+        $orderBy: Block_orderBy
         $orderDirection: OrderDirection
     ) {
-        lotteryTickets(
+        blocks(
             first: $first
             where: $where
             orderBy: $orderBy
             orderDirection: $orderDirection
         ) {
             id
-            round
-            winner
-            worker {
-                id
-            }
 
-            difficulty
+            number
             timestamp
+            reward
+            difficulty
 
-            user {
+            chain {
                 id
             }
-            userPrize
-            beneficiary
-            beneficiaryPrize
+
+            producer {
+                id
+            }
+
+            node {
+                id
+            }
         }
     }
 `;

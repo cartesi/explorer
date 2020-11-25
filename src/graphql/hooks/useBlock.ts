@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { LotteryTicket } from '../models';
+import { Block } from '../models';
 import { BLOCK } from '../queries/block';
 
 const useBlock = (id: string) => {
-    const [block, setBlock] = useState<LotteryTicket>();
+    const [block, setBlock] = useState<Block>();
 
     const { loading, error, data } = useQuery(BLOCK, {
         variables: {
@@ -17,7 +17,7 @@ const useBlock = (id: string) => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            setBlock(data.lotteryTicket);
+            setBlock(data.block);
         }
     }, [loading, error, data]);
 

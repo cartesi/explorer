@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
-import { LotteryTicket } from '../models';
+import { Block } from '../models';
 
 const useBlocks = (initFilter = {}) => {
-    const [blocks, setBlocks] = useState<Array<LotteryTicket>>([]);
+    const [blocks, setBlocks] = useState<Array<Block>>([]);
     const [filter, setFilter] = useState<any>(initFilter);
     const [reset, setReset] = useState(false);
 
@@ -25,7 +25,7 @@ const useBlocks = (initFilter = {}) => {
         setReset(reset);
     };
 
-    const updateBlocks = (rawBlocks: Array<LotteryTicket>) => {
+    const updateBlocks = (rawBlocks: Array<Block>) => {
         let newBlocks = rawBlocks.map((block) => ({
             ...block,
             key: block.id,
@@ -40,7 +40,7 @@ const useBlocks = (initFilter = {}) => {
     const loadNewBlocks = () => {
         refreshBlocks({
             ...filter,
-            timestamp_lt: Math.ceil(new Date().getTime() / 1000), // Get last 10 tickets from now
+            timestamp_lt: Math.ceil(new Date().getTime() / 1000), // Get last 10 blocks from now
         });
     };
 
@@ -56,7 +56,7 @@ const useBlocks = (initFilter = {}) => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            updateBlocks(data.lotteryTickets);
+            updateBlocks(data.blocks);
         }
     }, [loading, error, data]);
 

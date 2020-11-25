@@ -105,7 +105,7 @@ const Block = () => {
                                         Block #
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {block.round}
+                                        {block.number}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
@@ -121,21 +121,21 @@ const Block = () => {
                                         Claimer Address
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {block.user.id}
+                                        {block.producer.id}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
                                         Node Address
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {block.worker.id}
+                                        {block.node.id}
                                     </div>
 
                                     <div className="sub-title-4 col-4">
                                         Reward
                                     </div>
                                     <div className="body-text-2 col-8">
-                                        {formatCTSI(block.userPrize)}
+                                        {formatCTSI(block.reward)}
                                     </div>
                                 </div>
                                 <div className="col-3 d-flex flex-column align-items-center">

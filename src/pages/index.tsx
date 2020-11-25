@@ -17,7 +17,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import Layout from '../components/Layout';
 
 import useBlocks from '../graphql/hooks/useBlocks';
-import useWorkers from '../graphql/hooks/useWorkers';
+import useNodes from '../graphql/hooks/useNodes';
 import useSummary from '../graphql/hooks/useSummary';
 
 import { useMarketInformation } from '../services/market';
@@ -40,12 +40,12 @@ const Home = () => {
     const { balance, formatCTSI } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking();
 
-    const { workers, refreshWorkers } = useWorkers();
+    const { nodes, refreshNodes } = useNodes();
     const { blocks, loadNewBlocks } = useBlocks();
     const { summary } = useSummary();
 
-    const [workerPage, setWorkerPage] = useState(1);
-    const [workerSearch, setWorkerSearch] = useState('');
+    const [nodePage, setNodePage] = useState(1);
+    const [nodeSearch, setNodeSearch] = useState('');
 
     let participationRateLabel = '-';
     let aprLabel = '-';
@@ -88,9 +88,7 @@ const Home = () => {
 
         // calculate average prize
         const prize = blocks
-            .map((block) =>
-                constants.Zero.add(block.userPrize).add(block.beneficiaryPrize)
-            )
+            .map((block) => constants.Zero.add(block.reward))
             .reduce((sum, prize) => sum.add(prize), constants.Zero)
             .div(blocks.length);
 
@@ -107,10 +105,8 @@ const Home = () => {
             '%';
     }
 
-    const totalWorkerPages =
-        summary && workerSearch == ''
-            ? Math.ceil(summary.totalWorkers / 10)
-            : 1;
+    const totalNodePages =
+        summary && nodeSearch == '' ? Math.ceil(summary.totalNodes / 10) : 1;
 
     return (
         <Layout className="landing">
@@ -194,17 +190,13 @@ const Home = () => {
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Nodes</div>
                         <div className="info-text-bg">
-                            {summary
-                                ? summary.totalWorkers.toLocaleString()
-                                : 0}
+                            {summary ? summary.totalNodes.toLocaleString() : 0}
                         </div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Stakers</div>
                         <div className="info-text-bg">
-                            {summary
-                                ? summary.totalStakers.toLocaleString()
-                                : 0}
+                            {summary ? summary.totalUsers.toLocaleString() : 0}
                         </div>
                     </div>
                     <div className="col-3 landing-dashboard-content-item">
@@ -257,11 +249,11 @@ const Home = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search"
-                            value={workerSearch}
+                            value={nodeSearch}
                             onChange={(e) => (
-                                setWorkerSearch(e.target.value),
-                                setWorkerPage(1),
-                                refreshWorkers(-2, e.target.value)
+                                setNodeSearch(e.target.value),
+                                setNodePage(1),
+                                refreshNodes(-2, e.target.value)
                             )}
                         />
                     </div>
@@ -283,23 +275,23 @@ const Home = () => {
                     </thead>
 
                     <tbody>
-                        {workers.map((worker) => {
+                        {nodes.map((node) => {
                             const now = new Date();
                             const uptimeDays = Math.ceil(
-                                (now.getTime() - worker.timestamp * 1000) /
+                                (now.getTime() - node.timestamp * 1000) /
                                     1000 /
                                     60 /
                                     24
                             );
                             return (
-                                <tr key={worker.id} className="body-text-2">
-                                    <td>{tinyString(worker.id)}</td>
-                                    <td>{worker.totalTickets}</td>
+                                <tr key={node.id} className="body-text-2">
+                                    <td>{tinyString(node.id)}</td>
+                                    <td>{node.totalBlocks}</td>
                                     <td>
-                                        {formatCTSI(worker.owner.stakedBalance)}{' '}
+                                        {formatCTSI(node.owner.stakedBalance)}{' '}
                                         CTSI
                                     </td>
-                                    <td>{formatCTSI(worker.totalReward)}</td>
+                                    <td>{formatCTSI(node.totalReward)}</td>
                                     <td>{uptimeDays}</td>
                                 </tr>
                             );
@@ -310,22 +302,22 @@ const Home = () => {
                     <button
                         className="btn"
                         type="button"
-                        disabled={workerPage <= 1}
+                        disabled={nodePage <= 1}
                         onClick={() => (
-                            setWorkerPage(workerPage - 1),
-                            refreshWorkers(-1, workerSearch)
+                            setNodePage(nodePage - 1),
+                            refreshNodes(-1, nodeSearch)
                         )}
                     >
                         <i className="fas fa-chevron-left"></i>
                     </button>
-                    Page {workerPage} of {totalWorkerPages}
+                    Page {nodePage} of {totalNodePages}
                     <button
                         className="btn"
                         type="button"
-                        disabled={workerPage >= totalWorkerPages}
+                        disabled={nodePage >= totalNodePages}
                         onClick={() => (
-                            setWorkerPage(workerPage + 1),
-                            refreshWorkers(1, workerSearch)
+                            setNodePage(nodePage + 1),
+                            refreshNodes(1, nodeSearch)
                         )}
                     >
                         <i className="fas fa-chevron-right"></i>

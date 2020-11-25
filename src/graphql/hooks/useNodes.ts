@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { WORKERS } from '../queries/worker';
-import { Worker } from '../models';
+import { NODES } from '../queries/node';
+import { Node } from '../models';
 
-const useWorkers = () => {
-    const [workers, setWorkers] = useState<Array<Worker>>([]);
+const useNodes = () => {
+    const [nodes, setNodes] = useState<Array<Node>>([]);
 
     const [lastTimestamp, setLastTimestamp] = useState(0);
     const [firstTimestamp, setFirstTimestamp] = useState(0);
 
     const [where, setWhere] = useState<any>({});
 
-    const { loading, error, data, fetchMore } = useQuery(WORKERS, {
+    const { loading, error, data, fetchMore } = useQuery(NODES, {
         variables: {
             first: 10,
             where,
@@ -23,7 +23,7 @@ const useWorkers = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshWorkers = async (
+    const refreshNodes = async (
         pageOffset: number = 0,
         newId: string = null
     ) => {
@@ -52,28 +52,28 @@ const useWorkers = () => {
 
     useEffect(() => {
         if (!loading && !error && data) {
-            const newWorkers = data.workers.map((worker) => {
+            const newNodes = data.nodes.map((node) => {
                 return {
-                    ...worker,
-                    key: worker.id,
+                    ...node,
+                    key: node.id,
                 };
             });
 
-            setWorkers(newWorkers.sort((a, b) => b.timestamp - a.timestamp));
+            setNodes(newNodes.sort((a, b) => b.timestamp - a.timestamp));
         }
     }, [loading, error, data]);
 
     useEffect(() => {
-        if (workers.length > 1) {
-            setFirstTimestamp(workers[0].timestamp);
-            setLastTimestamp(workers[workers.length - 1].timestamp);
+        if (nodes.length > 1) {
+            setFirstTimestamp(nodes[0].timestamp);
+            setLastTimestamp(nodes[nodes.length - 1].timestamp);
         }
-    }, [workers]);
+    }, [nodes]);
 
     return {
-        workers,
-        refreshWorkers,
+        nodes,
+        refreshNodes,
     };
 };
 
-export default useWorkers;
+export default useNodes;

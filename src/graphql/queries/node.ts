@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
-export const WORKERS = gql`
-    query workers(
+export const NODES = gql`
+    query nodes(
         $first: Int
-        $where: Worker_filter
-        $orderBy: Worker_orderBy
+        $where: Node_filter
+        $orderBy: Node_orderBy
         $orderDirection: OrderDirection
     ) {
-        workers(
+        nodes(
             first: $first
             where: $where
             orderBy: $orderBy
@@ -18,16 +18,15 @@ export const WORKERS = gql`
                 id
                 stakedBalance
             }
-
             timestamp
             status
-            totalTickets
+            totalBlocks
             totalReward
         }
     }
 `;
 
-export const workersQueryVars = {
+export const nodesQueryVars = {
     first: 10,
     where: {},
     orderBy: 'timestamp',

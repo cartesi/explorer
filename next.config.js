@@ -6,7 +6,7 @@ const config = () => {
     // }
 
     return {
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/cartesi/cartesi',
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
     };
 };
 

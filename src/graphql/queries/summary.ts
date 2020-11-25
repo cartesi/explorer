@@ -4,10 +4,12 @@ export const SUMMARY = gql`
     query summary($id: ID) {
         summary(id: $id) {
             id
-            totalStakers
-            totalWorkers
+            totalUsers
+            totalNodes
             totalStaked
-            totalTickets
+            totalBlocks
+            totalReward
+            totalChains
         }
     }
 `;

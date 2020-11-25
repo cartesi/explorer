@@ -2,40 +2,45 @@ import { BigNumber } from 'ethers';
 
 export type Summary = {
     id: string;
-    totalStakers: number;
-    totalWorkers: number;
+    totalUsers: number;
+    totalNodes: number;
     totalStaked: BigNumber;
-    totalTickets: number;
+    totalBlocks: number;
+    totalReward: BigNumber;
+    totalChains: number;
 };
 
-export type Staker = {
+export type User = {
     id: string;
     stakedBalance: BigNumber;
-    maturingBalance: BigNumber;
-    maturation: number;
-    totalTickets: number;
-};
-
-export type Worker = {
-    id: string;
-    owner: Staker;
-    timestamp: number;
-    status: string;
-    totalTickets: number;
+    totalBlocks: number;
     totalReward: BigNumber;
 };
 
-export type LotteryTicket = {
+export type Node = {
     id: string;
-    round: number;
-    winner: string;
-    worker: Worker;
-
-    difficulty: BigNumber;
+    owner: User;
     timestamp: number;
+    status: string;
+    totalBlocks: number;
+    totalReward: BigNumber;
+};
 
-    user: Staker;
-    userPrize: BigNumber;
-    beneficiary: string;
-    beneficiaryPrize: BigNumber;
+export type Chain = {
+    id: string;
+    totalBlocks: number;
+    totalReward: BigNumber;
+    start: BigNumber;
+    targetInterval: number;
+};
+
+export type Block = {
+    id: string;
+    chain: Chain;
+    number: number;
+    timestamp: number;
+    producer: User;
+    node: Node;
+    reward: BigNumber;
+    difficulty: BigNumber;
 };

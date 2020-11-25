@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { LotteryTicket } from '../graphql/models';
+import { Block } from '../graphql/models';
 import { tinyString } from '../utils/stringUtils';
 import { tinyGraphUrl } from '../utils/tinygraph';
 
 interface BlockCardProps {
-    block: LotteryTicket;
+    block: Block;
 }
 
 const BlockCard = (props: BlockCardProps) => {
@@ -42,20 +42,20 @@ const BlockCard = (props: BlockCardProps) => {
             </div>
             <div className="landing-lottery-block-content">
                 <div className="landing-lottery-block-content-header body-text-2">
-                    Ticket #{block.round}
+                    Block #{block.number}
                 </div>
                 <div className="landing-lottery-block-content-content">
                     <div className="landing-lottery-block-content-content-text">
                         <div className="body-text-2">
                             Claimer
                             <div className="sub-title-3 mt-1">
-                                {tinyString(block.user.id)}
+                                {tinyString(block.producer.id)}
                             </div>
                         </div>
                         <div className="body-text-2 mt-4">
                             Node
                             <div className="mt-1">
-                                {tinyString(block.worker.id)}
+                                {tinyString(block.node.id)}
                             </div>
                         </div>
                     </div>

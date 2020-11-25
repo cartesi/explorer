@@ -52,9 +52,7 @@ const Calculator = (props: Props) => {
     }
 
     const latestBlock = blocks[0];
-    const latestPrize = constants.Zero.add(latestBlock.userPrize).add(
-        latestBlock.beneficiaryPrize
-    );
+    const latestPrize = constants.Zero.add(latestBlock.reward);
 
     const difficulty = BigNumber.from(latestBlock.difficulty);
     const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract

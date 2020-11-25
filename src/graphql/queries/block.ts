@@ -1,24 +1,26 @@
 import gql from 'graphql-tag';
 
 export const BLOCK = gql`
-    query lotteryTicket($id: String) {
-        lotteryTicket(id: $id) {
+    query block($id: String) {
+        block(id: $id) {
             id
-            round
-            winner
-            worker {
-                id
-            }
 
-            difficulty
+            number
             timestamp
+            reward
+            difficulty
 
-            user {
+            chain {
                 id
             }
-            userPrize
-            beneficiary
-            beneficiaryPrize
+
+            producer {
+                id
+            }
+
+            node {
+                id
+            }
         }
     }
 `;
