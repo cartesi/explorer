@@ -15,7 +15,7 @@ import Link from 'next/link';
 // import ReactBootstrapSlider from 'react-bootstrap-slider';
 import Layout from '../../components/Layout';
 import { useMarketInformation } from '../../services/market';
-import useTickets from '../../graphql/hooks/useTickets';
+import useBlocks from '../../graphql/hooks/useBlocks';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { useCartesiToken } from '../../services/token';
@@ -41,22 +41,22 @@ const Calculator = (props: Props) => {
     // total staked simulation
     const [totalStaked, setTotalStaked] = useState<number>(-1);
 
-    // get latest ticket
-    const { tickets } = useTickets();
+    // get latest block
+    const { blocks } = useBlocks();
 
     // bail out if not loaded
     const loaded =
-        marketInformation.circulatingSupply && tickets && tickets.length > 0;
+        marketInformation.circulatingSupply && blocks && blocks.length > 0;
     if (!loaded) {
         return <div />;
     }
 
-    const latestTicket = tickets[0];
-    const latestPrize = constants.Zero.add(latestTicket.userPrize).add(
-        latestTicket.beneficiaryPrize
+    const latestBlock = blocks[0];
+    const latestPrize = constants.Zero.add(latestBlock.userPrize).add(
+        latestBlock.beneficiaryPrize
     );
 
-    const difficulty = BigNumber.from(latestTicket.difficulty);
+    const difficulty = BigNumber.from(latestBlock.difficulty);
     const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract
     const activeStake = difficulty.div(desiredDrawTimeInterval);
     const blackBarPosition =
@@ -82,23 +82,23 @@ const Calculator = (props: Props) => {
     // investment period in seconds
     const periodSeconds = BigNumber.from(period).mul(24).mul(60).mul(60);
 
-    // number of ticket drawn in that period
-    const totalTickets = periodSeconds.div(desiredDrawTimeInterval);
+    // number of block drawn in that period
+    const totalBlocks = periodSeconds.div(desiredDrawTimeInterval);
 
-    // number of ticket claimed by the user (statistically)
-    const ticketsClaimed = stakePercentage.mulUnsafe(
-        FixedNumber.fromValue(totalTickets)
+    // number of block claimed by the user (statistically)
+    const blocksClaimed = stakePercentage.mulUnsafe(
+        FixedNumber.fromValue(totalBlocks)
     );
 
     // total reward
-    const reward = latestPrize.mul(ticketsClaimed.floor().toUnsafeFloat());
+    const reward = latestPrize.mul(blocksClaimed.floor().toUnsafeFloat());
 
     // APR
     const yearSeconds = constants.One.mul(365).mul(24).mul(60).mul(60);
-    const yearTickets = yearSeconds.div(desiredDrawTimeInterval);
+    const yearBlocks = yearSeconds.div(desiredDrawTimeInterval);
 
     const yearClaimed = stakePercentage.mulUnsafe(
-        FixedNumber.fromValue(yearTickets)
+        FixedNumber.fromValue(yearBlocks)
     );
 
     const yearReward = latestPrize.mul(yearClaimed.floor().toUnsafeFloat());
