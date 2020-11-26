@@ -2,7 +2,7 @@
     &-sub-title {
         padding-left: 12px;
         border-left-width: 1px;
-        border-left: 1px solid #000000;
+        border-left: 1px solid black;
     }
 
     &-slider {
@@ -73,9 +73,9 @@
     &-result-reward {
         height: 11vw;
         width: 25vw;
-        background: #000000;
+        background: black;
         border-radius: 2px;
-        color: #ffffff;
+        color: white;
 
         display: flex;
         flex-direction: column;

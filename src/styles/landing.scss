@@ -13,7 +13,7 @@
     &-sub-title {
         padding-left: 12px;
         border-left-width: 1px;
-        border-left: 1px solid #000000;
+        border-left: 1px solid black;
     }
 
     &-dashboard {
@@ -85,7 +85,7 @@
                 border: 0.5px solid #d8d8d8;
                 box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
                 border-radius: 2px;
-                background-color: #ffffff;
+                background-color: white;
 
                 margin: 8px 0;
 
@@ -94,7 +94,7 @@
                     min-height: 40px;
                     background-color: rgba(0, 0, 0, 0.87);
                     border-radius: 2px 0 0 0;
-                    color: #ffffff;
+                    color: white;
 
                     display: flex;
                     align-items: center;

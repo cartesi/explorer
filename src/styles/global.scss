@@ -162,6 +162,10 @@ h6 {
     color: $dark-white-color;
 }
 
+.danger-text {
+    color: $error-color;
+}
+
 textarea:hover,
 input:hover,
 textarea:active,
@@ -200,11 +204,11 @@ table,
     border: 0.5px solid #d8d8d8;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
-    background-color: #ffffff;
+    background-color: white;
 
     thead tr {
-        background: #000000;
-        color: #ffffff;
+        background: black;
+        color: white;
 
         th {
             vertical-align: middle;

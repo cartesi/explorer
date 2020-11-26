@@ -10,13 +10,50 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { tinyString } from '../../utils/stringUtils';
+import { BigNumber } from 'ethers';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
 
     const blockNumber = useBlockNumber();
-    const { balance, formatCTSI } = useCartesiToken(account, null, blockNumber);
-    const { stakedBalance } = useStaking();
+    const {
+        staking,
+        stakedBalance,
+        maturingTimestamp,
+        releasingTimestamp,
+        maturingBalance,
+        releasingBalance,
+        error: stakingError,
+        transaction: stakingTransaction,
+        clearStates: clearStakingStates,
+        stake,
+        unstake,
+        withdraw,
+    } = useStaking();
+
+    const {
+        balance,
+        allowance,
+        error: tokenError,
+        transaction: tokenTransaction,
+        clearStates: clearTokenStates,
+        approve,
+        formatCTSI,
+        parseCTSI,
+    } = useCartesiToken(account, staking?.address, blockNumber);
+
+    const [approveAmount, setApproveAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [stakeAmount, setStakeAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
 
     const [nodeAddress, setNodeAddress] = useState('');
     const [initialFunds, setInitialFunds] = useState(0);
@@ -25,8 +62,9 @@ const Staking = () => {
     const [newFunds, setNewFunds] = useState(0);
 
     const [showNodeDetails, setShowNodeDetails] = useState(false);
+    const [stakeTab, setStakeTab] = useState(true);
 
-    const isNewNode = nodeAddress === '' || nodeAddress !== nodeAddressInput;
+    const isNewNode = nodeAddress === '';
 
     const doHire = () => {
         setNodeAddress(nodeAddressInput);
@@ -44,6 +82,71 @@ const Staking = () => {
         setNodeAddressInput('');
         setShowNodeDetails(!showNodeDetails);
     };
+
+    const doStake = () => {};
+
+    const doUnstake = () => {};
+
+    const validate = (value: string): number => {
+        if (!value) return 0;
+        value = value.split('.')[0];
+        return parseInt(value);
+    };
+
+    const splitStakeAmount = () => {
+        let fromReleasing = BigNumber.from(0),
+            fromAllowance = BigNumber.from(0);
+        let stakeAmountCTSI = parseCTSI(stakeAmount);
+
+        if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
+            return null;
+        }
+
+        if (releasingBalance.eq(0)) {
+            fromAllowance = stakeAmountCTSI;
+        } else {
+            if (releasingBalance.gt(stakeAmountCTSI)) {
+                fromReleasing = stakeAmountCTSI;
+            } else {
+                fromReleasing = releasingBalance;
+                fromAllowance = stakeAmountCTSI.sub(releasingBalance);
+            }
+        }
+
+        return {
+            releasing: fromReleasing,
+            wallet: fromAllowance,
+        };
+    };
+
+    const splitUnstakeAmount = () => {
+        let fromMaturing = BigNumber.from(0),
+            fromStaked = BigNumber.from(0);
+        let unstakeAmountCTSI = parseCTSI(unstakeAmount);
+
+        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
+            return null;
+        }
+
+        if (maturingBalance.eq(0)) {
+            fromStaked = unstakeAmountCTSI;
+        } else {
+            if (maturingBalance.gt(unstakeAmountCTSI)) {
+                fromMaturing = unstakeAmountCTSI;
+            } else {
+                fromMaturing = maturingBalance;
+                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
+            }
+        }
+
+        return {
+            maturing: fromMaturing,
+            staked: fromStaked,
+        };
+    };
+
+    const stakeSplit = splitStakeAmount();
+    const unstakeSplit = splitUnstakeAmount();
 
     return (
         <Layout className="staking">
@@ -248,6 +351,287 @@ const Staking = () => {
                         </div>
                     </div>
                 )}
+            </div>
+
+            <div className="d-flex flex-row staking-total-balances mb-5">
+                <div className="staking-total-balances-item">
+                    <label className="body-text-1">Total Rewards</label>
+                    <img src="/images/question.png" />
+                    <span className="info-text-md">
+                        100 <span className="small-text">CTSI</span>
+                    </span>
+                </div>
+
+                <div className="staking-total-balances-item border-left">
+                    <label className="body-text-1">Total Balance</label>
+                    <img src="/images/question.png" />
+                    <span className="info-text-md">
+                        100 <span className="small-text">CTSI</span>
+                    </span>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col col-7 pr-3 staking-balances">
+                    <div className="staking-balances-item">
+                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
+                            <div className="d-flex flex-column align-items-start">
+                                <div className="mb-1">
+                                    <img src="/images/balance.png" />
+                                    <span className="body-text-1 ml-3">
+                                        Maturing
+                                    </span>
+                                </div>
+                                <div className="staking-balances-item-timer">
+                                    <span className="small-text">
+                                        24:00:00 (24:00:00)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="info-text-md">
+                                {formatCTSI(maturingBalance)}{' '}
+                                <span className="small-text">CTSI</span>
+                            </span>
+                        </div>
+
+                        <div className="px-5 py-3 d-flex flex-row align-items-center justify-content-between gray-background">
+                            <div className="d-flex flex-column align-items-start">
+                                <div className="mb-1">
+                                    <img src="/images/balance.png" />
+                                    <span className="body-text-1 ml-3">
+                                        Staked
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="info-text-md">
+                                {formatCTSI(stakedBalance)}{' '}
+                                <span className="small-text">CTSI</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="staking-balances-item mt-5">
+                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
+                            <div className="d-flex flex-column align-items-start">
+                                <div className="mb-1">
+                                    <img src="/images/balance.png" />
+                                    <span className="body-text-1 ml-3">
+                                        Releasing
+                                    </span>
+                                </div>
+                                <div className="staking-balances-item-timer">
+                                    <span className="small-text">
+                                        12:59:06 (24:00:00)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="info-text-md">
+                                {formatCTSI(releasingBalance)}{' '}
+                                <span className="small-text">CTSI</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col col-5 pl-3 staking-ops">
+                    <div className="d-flex flex-row">
+                        <div
+                            className={`staking-ops-tab body-text-1 
+                                ${stakeTab ? 'active' : ''}`}
+                            onClick={() => setStakeTab(!stakeTab)}
+                        >
+                            Stake
+                        </div>
+                        <div
+                            className={`staking-ops-tab body-text-1 
+                                ${!stakeTab ? 'active' : ''}`}
+                            onClick={() => setStakeTab(!stakeTab)}
+                        >
+                            Unstake
+                        </div>
+                    </div>
+
+                    <div className="staking-ops-content">
+                        {stakeTab && (
+                            <>
+                                <div className="body-text-1">
+                                    Allowance <img src="/images/pen.png" />
+                                </div>
+                                <span className="info-text-md">
+                                    {formatCTSI(allowance)}{' '}
+                                    <span className="small-text">CTSI</span>
+                                </span>
+
+                                <div className="form-group mt-3">
+                                    <label className="body-text-2 text-secondary">
+                                        Amount to stake
+                                    </label>
+                                    <div className="input-group">
+                                        <input
+                                            type="number"
+                                            className={`addon-inline form-control ${
+                                                stakeSplit ? '' : 'error'
+                                            }`}
+                                            id="stakeAmount"
+                                            value={stakeAmount.toString()}
+                                            onChange={(e) =>
+                                                setStakeAmount(
+                                                    BigNumber.from(
+                                                        validate(e.target.value)
+                                                    )
+                                                )
+                                            }
+                                        />
+                                        <span
+                                            className={`input-group-addon addon-inline input-source-observer small-text ${
+                                                stakeSplit ? '' : 'error'
+                                            }`}
+                                        >
+                                            CTSI
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
+                                    {stakeSplit ? (
+                                        <>
+                                            {stakeSplit.releasing.gt(0) && (
+                                                <div className="d-flex flex-row align-items-center justify-content-between">
+                                                    <span>
+                                                        {formatCTSI(
+                                                            stakeSplit.releasing
+                                                        )}{' '}
+                                                        <span className="small-text">
+                                                            CTSI
+                                                        </span>
+                                                    </span>
+                                                    <span>
+                                                        From "releasing"
+                                                    </span>
+                                                </div>
+                                            )}
+                                            {stakeSplit.wallet.gt(0) && (
+                                                <div className="d-flex flex-row align-items-center justify-content-between">
+                                                    <span>
+                                                        {formatCTSI(
+                                                            stakeSplit.wallet
+                                                        )}{' '}
+                                                        <span className="small-text">
+                                                            CTSI
+                                                        </span>
+                                                    </span>
+                                                    <span>From "wallet"</span>
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <div>
+                                            Maximum staking limit exceeded!
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-dark py-2 button-text flex-fill"
+                                    onClick={doStake}
+                                >
+                                    Stake
+                                </button>
+
+                                <div className="small-text text-center mt-4 danger-text">
+                                    The maturing status will restart counting.
+                                </div>
+                            </>
+                        )}
+
+                        {!stakeTab && (
+                            <>
+                                <div className="form-group">
+                                    <label className="body-text-2 text-secondary">
+                                        Amount to unstake
+                                    </label>
+                                    <div className="input-group">
+                                        <input
+                                            type="number"
+                                            className={`addon-inline form-control ${
+                                                unstakeSplit ? '' : 'error'
+                                            }`}
+                                            id="unstakeAmount"
+                                            value={unstakeAmount.toString()}
+                                            onChange={(e) =>
+                                                setUnstakeAmount(
+                                                    BigNumber.from(
+                                                        validate(e.target.value)
+                                                    )
+                                                )
+                                            }
+                                        />
+                                        <span
+                                            className={`input-group-addon addon-inline input-source-observer small-text ${
+                                                unstakeSplit ? '' : 'error'
+                                            }`}
+                                        >
+                                            CTSI
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
+                                    {unstakeSplit ? (
+                                        <>
+                                            {unstakeSplit.maturing.gt(0) && (
+                                                <div className="d-flex flex-row align-items-center justify-content-between">
+                                                    <span>
+                                                        {formatCTSI(
+                                                            unstakeSplit.maturing
+                                                        )}{' '}
+                                                        <span className="small-text">
+                                                            CTSI
+                                                        </span>
+                                                    </span>
+                                                    <span>From "maturing"</span>
+                                                </div>
+                                            )}
+                                            {unstakeSplit.staked.gt(0) && (
+                                                <div className="d-flex flex-row align-items-center justify-content-between">
+                                                    <span>
+                                                        {formatCTSI(
+                                                            unstakeSplit.staked
+                                                        )}{' '}
+                                                        <span className="small-text">
+                                                            CTSI
+                                                        </span>
+                                                    </span>
+                                                    <span>From "staked"</span>
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <div>
+                                            Maximum unstaking limit exceeded!
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-dark py-2 button-text flex-fill"
+                                    onClick={doUnstake}
+                                >
+                                    Unstake
+                                </button>
+
+                                <div className="small-text text-center mt-4 danger-text">
+                                    The releasing status will restart counting.
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         </Layout>
     );
