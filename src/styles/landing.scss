@@ -1,18 +1,6 @@
 @import '../styles/variables.scss';
 
 .landing {
-    &-header {
-        margin: 0 -6vw;
-        padding: 10px 6vw;
-        background-color: $primary-color;
-        align-items: flex-end;
-
-        div {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-    }
-
     &-link {
         &:hover {
             .landing-sub-title {
@@ -38,8 +26,8 @@
         );
 
         margin: 0 -6vw 2vw;
-        padding: 15px 6vw;
-        height: 225px;
+        padding: 10px 6vw;
+        height: 215px;
 
         &-content {
             background-color: white;

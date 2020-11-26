@@ -115,7 +115,7 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="landing-header row">
+            <div className="page-header row">
                 {!marketInfomationError && (
                     <>
                         <div className="col col-12 col-md-4 col-lg-2">

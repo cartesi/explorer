@@ -1,21 +1,7 @@
 @import './variables.scss';
 
 .blocks {
-    &-header {
-        margin: 0;
-        padding: 10px 6vw;
-        background-color: $primary-color;
-
-        position: fixed;
-        left: 0;
-        right: 0;
-        z-index: 1;
-
-        backdrop-filter: blur(6px);
-    }
-
     &-content {
-        margin: 100px 0 0;
         &-block {
             margin: 20px 0;
             padding: 30px;

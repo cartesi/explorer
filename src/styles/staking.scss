@@ -1,0 +1,95 @@
+@import '../styles/variables.scss';
+
+.staking {
+    &-hire {
+        background: linear-gradient(
+            to bottom,
+            $bright-black-color,
+            $bright-black-color 70px,
+            $dark-white-color 70px,
+            $dark-white-color
+        );
+
+        margin: 0 -6vw 2vw;
+        padding: 25px 6vw;
+
+        &-content {
+            background-color: white;
+            height: 90px;
+            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+            margin-right: 0;
+            margin-left: 0;
+            padding: 25px 60px;
+
+            position: relative;
+            z-index: 1;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            &-address {
+                cursor: pointer;
+
+                &.active {
+                    color: black;
+                }
+
+                &.inactive {
+                    color: $disabled-color;
+                }
+            }
+
+            &-balance {
+                color: $information-color;
+                cursor: pointer;
+            }
+        }
+
+        &-node {
+            background-color: white;
+            padding: 25px;
+            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+            margin: 1px 0;
+
+            &-content {
+                width: 520px;
+            }
+
+            &-buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+    }
+
+    .input-group-addon.addon-inline {
+        background: #fff;
+        color: #999;
+        border: 1px solid #000;
+        border-left: none;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        padding: 0 35px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    input.form-control {
+        border: 1px solid #000;
+
+        height: 56px;
+        padding-left: 50px;
+        padding-right: 50px;
+
+        &.addon-inline {
+            border-right: none;
+            padding-right: 0;
+        }
+    }
+}

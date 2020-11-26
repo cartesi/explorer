@@ -110,6 +110,13 @@ const Calculator = (props: Props) => {
                 <title>Staking Calculator</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
+            <div className="page-header row">
+                <div className="col col-12 info-text-md text-white">
+                    Staking Calculator
+                </div>
+            </div>
+
             <form className="calculator-form">
                 <div className="form-group">
                     <label className="body-text-2 text-secondary">
@@ -136,6 +143,7 @@ const Calculator = (props: Props) => {
                         </span>
                     </div>
                 </div>
+
                 <div className="form-group">
                     <label className="body-text-2 text-secondary">
                         Staking period
@@ -159,14 +167,17 @@ const Calculator = (props: Props) => {
                         </span>
                     </div>
                 </div>
+
                 <div className="body-text-1">
                     Current Block Reward: {formatCTSI(latestPrize)}{' '}
                     <span className="small-text">CTSI</span>
                 </div>
+
                 <div className="body-text-1">
                     Estimated Total Staked: {totalStaked.toLocaleString()}{' '}
                     <span className="small-text">CTSI</span>
                 </div>
+
                 <div className="calculator-slider">
                     <h5 className="calculator-sub-title">Total Staked</h5>
 

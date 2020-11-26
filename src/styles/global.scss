@@ -112,14 +112,6 @@ h6 {
     letter-spacing: 0.25px;
 }
 
-.overline {
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 42px;
-    letter-spacing: 0.25px;
-}
-
 .button-text {
     font-size: 16px;
     font-style: normal;
@@ -139,7 +131,7 @@ h6 {
 .info-text-md {
     font-size: 32px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 42px;
     letter-spacing: 0.25px;
 }
@@ -162,14 +154,6 @@ h6 {
 }
 
 // Color configuration
-.black-text {
-    color: black;
-}
-
-.bright-black-text {
-    color: $bright-black-color;
-}
-
 .white-text {
     color: white;
 }
@@ -203,6 +187,10 @@ a {
         text-decoration: none;
         color: $primary-color;
     }
+}
+
+button.btn {
+    border-radius: 2px;
 }
 
 // Table
@@ -335,4 +323,16 @@ table,
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: $secondary-color;
+}
+
+.page-header {
+    margin: 0 -6vw;
+    padding: 10px 6vw 30px;
+    background-color: $primary-color;
+    align-items: flex-end;
+
+    div {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 }

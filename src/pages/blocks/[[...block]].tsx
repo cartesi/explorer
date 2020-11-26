@@ -64,8 +64,8 @@ const Block = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="blocks-header d-flex justify-content-between align-items-center py-3">
-                <div className="overline text-white">Blocks</div>
+            <div className="page-header d-flex justify-content-between align-items-center pb-4">
+                <div className="info-text-md text-white">Blocks</div>
 
                 <div className="d-flex flex-row align-items-center justify-content-start">
                     <div className="input-with-icon input-group">
@@ -92,7 +92,7 @@ const Block = () => {
                 </div>
             </div>
 
-            <div className="blocks-content">
+            <div className="blocks-content mt-5">
                 <div className="blocks-content-block-list">
                     {blocks.filter(filterBlock).map((block) => {
                         return (
