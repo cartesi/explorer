@@ -36,7 +36,7 @@ export const useMarketInformation = () => {
                 setLoading(false);
                 setError('');
                 setMarketInformation({
-                    price: data.market_data.current_price.usd.toFixed(2),
+                    price: data.market_data.current_price.usd.toFixed(4),
                     marketCap: data.market_data.market_cap.usd,
                     circulatingSupply: data.market_data.circulating_supply,
                 });
