@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { SUMMARY } from '../queries/summary';
-import { Summary } from '../models';
+import { Summary, SummaryData, SummaryVars } from '../models';
 
 const useSummary = () => {
     const [summary, setSummary] = useState<Summary>();
 
-    const { loading, error, data, fetchMore } = useQuery(SUMMARY, {
+    const { loading, error, data, fetchMore } = useQuery<
+        SummaryData,
+        SummaryVars
+    >(SUMMARY, {
         variables: {
-            id: 1,
+            id: "1",
         },
         notifyOnNetworkStatusChange: true,
     });

@@ -4,11 +4,19 @@ export type Summary = {
     id: string;
     totalUsers: number;
     totalNodes: number;
-    totalStaked: BigNumber;
+    totalStaked: string;
     totalBlocks: number;
-    totalReward: BigNumber;
+    totalReward: string;
     totalChains: number;
 };
+
+export interface SummaryData {
+    summary: Summary;
+}
+
+export interface SummaryVars {
+    id: string;
+}
 
 export type User = {
     id: string;
@@ -23,14 +31,25 @@ export type Node = {
     timestamp: number;
     status: string;
     totalBlocks: number;
-    totalReward: BigNumber;
+    totalReward: string;
 };
+
+export interface NodesData {
+    nodes: Node[];
+}
+
+export interface NodesVars {
+    first: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
+}
 
 export type Chain = {
     id: string;
     totalBlocks: number;
-    totalReward: BigNumber;
-    start: BigNumber;
+    totalReward: string;
+    start: string;
     targetInterval: number;
 };
 
@@ -41,6 +60,25 @@ export type Block = {
     timestamp: number;
     producer: User;
     node: Node;
-    reward: BigNumber;
-    difficulty: BigNumber;
+    reward: string;
+    difficulty: string;
 };
+
+export interface BlocksData {
+    blocks: Block[];
+}
+
+export interface BlocksVars {
+    first: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
+}
+
+export interface BlockData {
+    block: Block;
+}
+
+export interface BlockVars {
+    id: string;
+}

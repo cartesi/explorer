@@ -52,7 +52,7 @@ const Calculator = (props: Props) => {
     }
 
     const latestBlock = blocks[0];
-    const latestPrize = constants.Zero.add(latestBlock.reward);
+    const latestPrize = BigNumber.from(latestBlock.reward);
 
     const difficulty = BigNumber.from(latestBlock.difficulty);
     const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract
@@ -219,7 +219,7 @@ const Calculator = (props: Props) => {
                                 Absolute Reward
                             </span>
                             <span className="info-text-md">
-                                {formatCTSI(BigNumber.from(reward))}{' '}
+                                {formatCTSI(reward)}{' '}
                                 <span className="small-text">CTSI</span>
                             </span>
                         </div>

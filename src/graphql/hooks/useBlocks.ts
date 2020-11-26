@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
-import { Block } from '../models';
+import { Block, BlocksData, BlocksVars } from '../models';
 
 const useBlocks = (initFilter = {}) => {
     const [blocks, setBlocks] = useState<Array<Block>>([]);
     const [filter, setFilter] = useState<any>(initFilter);
     const [reset, setReset] = useState(false);
 
-    const { loading, error, data, fetchMore } = useQuery(BLOCKS, {
+    const { loading, error, data, fetchMore } = useQuery<
+        BlocksData,
+        BlocksVars
+    >(BLOCKS, {
         variables: {
             first: 10,
             where: filter,

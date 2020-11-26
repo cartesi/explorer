@@ -52,7 +52,7 @@ const Home = () => {
     if (blocks && blocks.length > 0 && marketInformation?.circulatingSupply) {
         // take average difficulty of all blocks in array
         const difficulty = blocks
-            .map((t) => t.difficulty)
+            .map((t) => BigNumber.from(t.difficulty))
             .reduce((sum, d) => sum.add(d), constants.Zero)
             .div(blocks.length);
 
@@ -88,7 +88,7 @@ const Home = () => {
 
         // calculate average prize
         const prize = blocks
-            .map((block) => constants.Zero.add(block.reward))
+            .map((block) => BigNumber.from(block.reward))
             .reduce((sum, prize) => sum.add(prize), constants.Zero)
             .div(blocks.length);
 

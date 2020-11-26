@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/node';
-import { Node } from '../models';
+import { Node, NodesData, NodesVars } from '../models';
 
 const useNodes = () => {
     const [nodes, setNodes] = useState<Array<Node>>([]);
@@ -13,15 +13,18 @@ const useNodes = () => {
 
     const [where, setWhere] = useState<any>({});
 
-    const { loading, error, data, fetchMore } = useQuery(NODES, {
-        variables: {
-            first: 10,
-            where,
-            orderBy: 'timestamp',
-            orderDirection: 'desc',
-        },
-        notifyOnNetworkStatusChange: true,
-    });
+    const { loading, error, data, fetchMore } = useQuery<NodesData, NodesVars>(
+        NODES,
+        {
+            variables: {
+                first: 10,
+                where,
+                orderBy: 'timestamp',
+                orderDirection: 'desc',
+            },
+            notifyOnNetworkStatusChange: true,
+        }
+    );
 
     const refreshNodes = async (
         pageOffset: number = 0,
