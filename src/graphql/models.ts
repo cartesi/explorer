@@ -20,9 +20,9 @@ export interface SummaryVars {
 
 export type User = {
     id: string;
-    stakedBalance: BigNumber;
+    stakedBalance: string;
     totalBlocks: number;
-    totalReward: BigNumber;
+    totalReward: string;
 };
 
 export type Node = {
