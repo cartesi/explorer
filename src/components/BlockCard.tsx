@@ -42,7 +42,7 @@ const BlockCard = (props: BlockCardProps) => {
             </div>
             <div className="landing-lottery-block-content">
                 <div className="landing-lottery-block-content-header body-text-2">
-                    Block #{block.number}
+                    Block {block.chain.id}-{block.number}
                 </div>
                 <div className="landing-lottery-block-content-content">
                     <div className="landing-lottery-block-content-content-text">
