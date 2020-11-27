@@ -5,21 +5,21 @@
         background: linear-gradient(
             to bottom,
             $bright-black-color,
-            $bright-black-color 70px,
-            $dark-white-color 70px,
+            $bright-black-color 50%,
+            $dark-white-color 50%,
             $dark-white-color
         );
 
-        margin: 0 -6vw 2vw;
-        padding: 25px 6vw;
+        margin: 0 -6vw;
+        padding: 0px 6vw;
 
         &-content {
             background-color: white;
-            height: 90px;
+            min-height: 90px;
             filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
             margin-right: 0;
             margin-left: 0;
-            padding: 25px 60px;
+            padding: 25px 5vw;
 
             position: relative;
             z-index: 1;
@@ -31,6 +31,10 @@
 
             &-address {
                 cursor: pointer;
+
+                @media (max-width: $sm-max) {
+                    font-size: 24px;
+                }
 
                 &.active {
                     color: black;
@@ -53,6 +57,10 @@
             filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
             margin: 1px 0;
 
+            @media (max-width: $sm-max) {
+                word-break: break-all;
+            }
+
             &-content {
                 width: 520px;
             }
@@ -62,11 +70,25 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
+
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+
+                @media (max-width: $xs-max) {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
             }
         }
     }
 
     &-total-balances {
+        flex-direction: row;
+
+        @media (max-width: $sm-max) {
+            flex-direction: column;
+        }
+
         &-item {
             display: flex;
             flex-direction: row;
@@ -79,6 +101,21 @@
 
             img {
                 margin: 6px 12px 0 6px;
+            }
+
+            @media (max-width: $sm-max) {
+                padding: 0;
+
+                label {
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+            }
+
+            @media (min-width: tablet-min) {
+                &:not(:first-child) {
+                    border-left: 1px solid $secondary-color;
+                }
             }
         }
     }
@@ -130,7 +167,7 @@
             background: white;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 2px;
-            padding: 35px 55px;
+            padding: 35px 4.5vw;
 
             display: flex;
             flex-direction: column;

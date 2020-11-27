@@ -52,7 +52,7 @@
                 height: 6.875vw;
                 width: 6.875vw;
 
-                @media (max-width: 991px) {
+                @media (max-width: $md-max) {
                     height: 100%;
                     width: auto;
                 }

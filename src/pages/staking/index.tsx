@@ -213,7 +213,7 @@ const Staking = () => {
                     Staking
                 </div>
 
-                <div className="col col-12 col-md-6 col-lg-3">
+                <div className="col col-12 col-sm-6 col-lg-3">
                     <div className="sub-title-2 white-text">
                         <img src="/images/wallet.png" />
                         &nbsp; Wallet Balance
@@ -224,7 +224,7 @@ const Staking = () => {
                     </div>
                 </div>
 
-                <div className="col col-12 col-md-6 col-lg-3">
+                <div className="col col-12 col-sm-6 col-lg-3">
                     <div className="sub-title-2 white-text">
                         <img src="/images/staked.png" />
                         &nbsp; Staked Balance
@@ -238,9 +238,11 @@ const Staking = () => {
 
             <div className="staking-hire">
                 <div className="staking-hire-content row">
-                    <span className="body-text-1 mr-2">Node</span>
+                    <span className="col-12 col-sm-auto body-text-1 mx-2">
+                        Node
+                    </span>
                     <span
-                        className={`info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
+                        className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
                             nodeAddress !== '' ? 'active' : 'inactive'
                         }`}
                         onClick={() => setShowNodeDetails(!showNodeDetails)}
@@ -250,163 +252,157 @@ const Staking = () => {
                             : 'Click to hire node'}
                     </span>
                     {nodeAddress !== '' && (
-                        <span className="staking-hire-content-balance">
+                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-balance">
                             {initialFunds}{' '}
                             <span className="small-text">ETH</span>
                         </span>
                     )}
                 </div>
-
-                {showNodeDetails && (
-                    <div className="staking-hire-node d-flex align-items-center justify-content-center">
-                        <div className="staking-hire-node-content">
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Node Address
-                                </label>
-                                {!isNewNode ? (
-                                    <div className="sub-title-1">
-                                        {nodeAddressInput}
-                                    </div>
-                                ) : (
-                                    <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="nodeAddress"
-                                            value={nodeAddressInput}
-                                            onChange={(event) =>
-                                                setNodeAddressInput(
-                                                    event.target.value
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Initial Funds
-                                </label>
-                                {!isNewNode ? (
-                                    <div className="sub-title-1">
-                                        {initialFunds}{' '}
-                                        <span className="small-text text-secondary">
-                                            ETH
-                                        </span>
-                                    </div>
-                                ) : (
-                                    <div className="input-group">
-                                        <input
-                                            type="number"
-                                            className="addon-inline form-control"
-                                            id="initialFunds"
-                                            value={initialFunds}
-                                            onChange={(event) =>
-                                                setInitialFunds(
-                                                    event.target.value
-                                                        ? event.target
-                                                              .valueAsNumber
-                                                        : 0
-                                                )
-                                            }
-                                        />
-                                        <span className="input-group-addon addon-inline input-source-observer small-text">
-                                            ETH
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-
-                            {!isNewNode && (
-                                <div className="form-group">
-                                    <label className="body-text-2 text-secondary">
-                                        Add Funds
-                                    </label>
-                                    <div className="input-group">
-                                        <input
-                                            type="number"
-                                            className="addon-inline form-control"
-                                            id="newFunds"
-                                            value={newFunds}
-                                            onChange={(event) =>
-                                                setNewFunds(
-                                                    event.target.value
-                                                        ? event.target
-                                                              .valueAsNumber
-                                                        : 0
-                                                )
-                                            }
-                                        />
-                                        <span className="input-group-addon addon-inline input-source-observer small-text">
-                                            ETH
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="staking-hire-node-buttons">
-                                {isNewNode ? (
-                                    <>
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-dark py-0 px-3 button-text flex-fill mr-2"
-                                            onClick={() =>
-                                                setShowNodeDetails(
-                                                    !showNodeDetails
-                                                )
-                                            }
-                                        >
-                                            Cancel
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary py-0 px-3 button-text flex-fill ml-2"
-                                            onClick={doHire}
-                                        >
-                                            Hire Node
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <button
-                                            type="button"
-                                            className="btn btn-link px-0 py-0 mr-2 button-text flex-fill text-left"
-                                            onClick={doRetire}
-                                        >
-                                            Retire
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-dark py-0 px-3 button-text flex-fill mr-2"
-                                            onClick={() =>
-                                                setShowNodeDetails(
-                                                    !showNodeDetails
-                                                )
-                                            }
-                                        >
-                                            Cancel
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary py-0 px-3 button-text flex-fill ml-2"
-                                            onClick={doAddFunds}
-                                        >
-                                            Add Funds
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
 
-            <div className="d-flex flex-row staking-total-balances mb-5">
+            {showNodeDetails && (
+                <div className="staking-hire-node d-flex align-items-center justify-content-center">
+                    <div className="staking-hire-node-content">
+                        <div className="form-group">
+                            <label className="body-text-2 text-secondary">
+                                Node Address
+                            </label>
+                            {!isNewNode ? (
+                                <div className="sub-title-1">
+                                    {nodeAddressInput}
+                                </div>
+                            ) : (
+                                <div className="input-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="nodeAddress"
+                                        value={nodeAddressInput}
+                                        onChange={(event) =>
+                                            setNodeAddressInput(
+                                                event.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="form-group">
+                            <label className="body-text-2 text-secondary">
+                                Initial Funds
+                            </label>
+                            {!isNewNode ? (
+                                <div className="sub-title-1">
+                                    {initialFunds}{' '}
+                                    <span className="small-text text-secondary">
+                                        ETH
+                                    </span>
+                                </div>
+                            ) : (
+                                <div className="input-group">
+                                    <input
+                                        type="number"
+                                        className="addon-inline form-control"
+                                        id="initialFunds"
+                                        value={initialFunds}
+                                        onChange={(event) =>
+                                            setInitialFunds(
+                                                event.target.value
+                                                    ? event.target.valueAsNumber
+                                                    : 0
+                                            )
+                                        }
+                                    />
+                                    <span className="input-group-addon addon-inline input-source-observer small-text">
+                                        ETH
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        {!isNewNode && (
+                            <div className="form-group">
+                                <label className="body-text-2 text-secondary">
+                                    Add Funds
+                                </label>
+                                <div className="input-group">
+                                    <input
+                                        type="number"
+                                        className="addon-inline form-control"
+                                        id="newFunds"
+                                        value={newFunds}
+                                        onChange={(event) =>
+                                            setNewFunds(
+                                                event.target.value
+                                                    ? event.target.valueAsNumber
+                                                    : 0
+                                            )
+                                        }
+                                    />
+                                    <span className="input-group-addon addon-inline input-source-observer small-text">
+                                        ETH
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="staking-hire-node-buttons">
+                            {isNewNode ? (
+                                <>
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() =>
+                                            setShowNodeDetails(!showNodeDetails)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                        onClick={doHire}
+                                    >
+                                        Hire Node
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button
+                                        type="button"
+                                        className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
+                                        onClick={doRetire}
+                                    >
+                                        Retire
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() =>
+                                            setShowNodeDetails(!showNodeDetails)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                        onClick={doAddFunds}
+                                    >
+                                        Add Funds
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Rewards</label>
                     <img src="/images/question.png" />
@@ -415,7 +411,7 @@ const Staking = () => {
                     </span>
                 </div>
 
-                <div className="staking-total-balances-item border-left">
+                <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Balance</label>
                     <img src="/images/question.png" />
                     <span className="info-text-md">
@@ -426,7 +422,7 @@ const Staking = () => {
             </div>
 
             <div className="row">
-                <div className="col col-7 pr-3 staking-balances">
+                <div className="col col-12 col-md-7 pr-3 staking-balances my-3">
                     <div className="staking-balances-item">
                         <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
                             <div className="d-flex flex-column align-items-start">
@@ -511,7 +507,7 @@ const Staking = () => {
                     </div>
                 </div>
 
-                <div className="col col-5 pl-3 staking-ops">
+                <div className="col col-12 col-md-5 pl-3 staking-ops my-3">
                     <div className="d-flex flex-row">
                         <div
                             className={`staking-ops-tab body-text-1 

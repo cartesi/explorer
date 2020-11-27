@@ -52,7 +52,7 @@
                     border-left: 1px solid $secondary-color;
                 }
 
-                @media (min-width: 768px) and (max-width: 991px) {
+                @media (min-width: $md-min) and (max-width: $md-max) {
                     &:nth-child(odd) {
                         border-left: none;
                     }
@@ -61,7 +61,7 @@
                     }
                 }
 
-                @media (max-width: 767px) {
+                @media (max-width: $sm-max) {
                     &:not(:first-child) {
                         border-left: none;
                         border-top: 1px solid $secondary-color;
@@ -82,7 +82,7 @@
             overflow-x: auto;
             margin: 10px 0 4vw;
 
-            @media (max-width: 991px) {
+            @media (max-width: $md-max) {
                 flex-direction: column;
                 align-items: stretch;
             }
