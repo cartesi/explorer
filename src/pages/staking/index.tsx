@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 
 import { useWeb3React } from '@web3-react/core';
@@ -45,6 +45,7 @@ const Staking = () => {
     const [approveAmount, setApproveAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
+    const [editAllowance, setEditAllowance] = useState<boolean>(false);
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
@@ -64,7 +65,39 @@ const Staking = () => {
     const [showNodeDetails, setShowNodeDetails] = useState(false);
     const [stakeTab, setStakeTab] = useState(true);
 
+    const [maturingCountdown, setMaturingCountdown] = useState(0);
+    const [releasingCountdown, setReleasingCountdown] = useState(0);
+
     const isNewNode = nodeAddress === '';
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (maturingBalance.gt(0) && maturingTimestamp > new Date()) {
+                setMaturingCountdown(
+                    maturingTimestamp.getTime() - new Date().getTime()
+                );
+            }
+            if (releasingBalance.gt(0) && releasingTimestamp > new Date()) {
+                setReleasingCountdown(
+                    releasingTimestamp.getTime() - new Date().getTime()
+                );
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [maturingTimestamp, releasingTimestamp]);
+
+    const displayTime = (milliseconds: number): string => {
+        const hours = Math.floor(milliseconds / 1000 / 60 / 60);
+        const minutes = Math.floor(milliseconds / 1000 / 60) % 60;
+        const seconds = Math.floor(milliseconds / 1000) % 60;
+
+        return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${(
+            '0' + seconds
+        ).slice(-2)}`;
+    };
 
     const doHire = () => {
         setNodeAddress(nodeAddressInput);
@@ -83,9 +116,25 @@ const Staking = () => {
         setShowNodeDetails(!showNodeDetails);
     };
 
-    const doStake = () => {};
+    const doApprove = () => {
+        setEditAllowance(false);
+        approve(staking.address, parseCTSI(approveAmount));
+        setApproveAmount(BigNumber.from(0));
+    };
 
-    const doUnstake = () => {};
+    const doStake = () => {
+        stake(parseCTSI(stakeAmount));
+        setStakeAmount(BigNumber.from(0));
+    };
+
+    const doUnstake = () => {
+        unstake(parseCTSI(unstakeAmount));
+        setUnstakeAmount(BigNumber.from(0));
+    };
+
+    const doWithdraw = () => {
+        withdraw(parseCTSI(releasingBalance));
+    };
 
     const validate = (value: string): number => {
         if (!value) return 0;
@@ -147,6 +196,10 @@ const Staking = () => {
 
     const stakeSplit = splitStakeAmount();
     const unstakeSplit = splitUnstakeAmount();
+    const totalBalance = balance
+        .add(stakedBalance)
+        .add(maturingBalance)
+        .add(releasingBalance);
 
     return (
         <Layout className="staking">
@@ -366,7 +419,8 @@ const Staking = () => {
                     <label className="body-text-1">Total Balance</label>
                     <img src="/images/question.png" />
                     <span className="info-text-md">
-                        100 <span className="small-text">CTSI</span>
+                        {formatCTSI(totalBalance)}{' '}
+                        <span className="small-text">CTSI</span>
                     </span>
                 </div>
             </div>
@@ -382,11 +436,14 @@ const Staking = () => {
                                         Maturing
                                     </span>
                                 </div>
-                                <div className="staking-balances-item-timer">
-                                    <span className="small-text">
-                                        24:00:00 (24:00:00)
-                                    </span>
-                                </div>
+                                {maturingBalance.gt(0) &&
+                                    maturingCountdown > 0 && (
+                                        <div className="staking-balances-item-timer">
+                                            <span className="small-text">
+                                                {displayTime(maturingCountdown)}
+                                            </span>
+                                        </div>
+                                    )}
                             </div>
 
                             <span className="info-text-md">
@@ -412,20 +469,38 @@ const Staking = () => {
                         </div>
                     </div>
 
-                    <div className="staking-balances-item mt-5">
+                    <div className="staking-balances-item mt-4">
                         <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
                             <div className="d-flex flex-column align-items-start">
                                 <div className="mb-1">
                                     <img src="/images/balance.png" />
                                     <span className="body-text-1 ml-3">
-                                        Releasing
+                                        {releasingBalance.gt(0) &&
+                                        releasingCountdown === 0
+                                            ? 'Released'
+                                            : 'Releasing'}
                                     </span>
                                 </div>
-                                <div className="staking-balances-item-timer">
-                                    <span className="small-text">
-                                        12:59:06 (24:00:00)
-                                    </span>
-                                </div>
+                                {releasingBalance.gt(0) &&
+                                    releasingCountdown > 0 && (
+                                        <div className="staking-balances-item-timer">
+                                            <span className="small-text">
+                                                {displayTime(
+                                                    releasingCountdown
+                                                )}
+                                            </span>
+                                        </div>
+                                    )}
+                                {releasingBalance.gt(0) &&
+                                    releasingCountdown === 0 && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-dark py-0 px-4 button-text mt-2"
+                                            onClick={doWithdraw}
+                                        >
+                                            Withdraw
+                                        </button>
+                                    )}
                             </div>
 
                             <span className="info-text-md">
@@ -441,14 +516,14 @@ const Staking = () => {
                         <div
                             className={`staking-ops-tab body-text-1 
                                 ${stakeTab ? 'active' : ''}`}
-                            onClick={() => setStakeTab(!stakeTab)}
+                            onClick={() => setStakeTab(true)}
                         >
                             Stake
                         </div>
                         <div
                             className={`staking-ops-tab body-text-1 
                                 ${!stakeTab ? 'active' : ''}`}
-                            onClick={() => setStakeTab(!stakeTab)}
+                            onClick={() => setStakeTab(false)}
                         >
                             Unstake
                         </div>
@@ -458,12 +533,67 @@ const Staking = () => {
                         {stakeTab && (
                             <>
                                 <div className="body-text-1">
-                                    Allowance <img src="/images/pen.png" />
+                                    Allowance{' '}
+                                    {!editAllowance && (
+                                        <a
+                                            onClick={() =>
+                                                setEditAllowance(true)
+                                            }
+                                        >
+                                            <img src="/images/pen.png" />
+                                        </a>
+                                    )}
                                 </div>
-                                <span className="info-text-md">
-                                    {formatCTSI(allowance)}{' '}
-                                    <span className="small-text">CTSI</span>
-                                </span>
+
+                                {editAllowance ? (
+                                    <div className="d-flex flex-column mt-2">
+                                        <div className="input-group">
+                                            <input
+                                                type="number"
+                                                className="addon-inline form-control"
+                                                id="approveAmount"
+                                                value={approveAmount.toString()}
+                                                onChange={(e) =>
+                                                    setApproveAmount(
+                                                        BigNumber.from(
+                                                            validate(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    )
+                                                }
+                                            />
+                                            <span className="input-group-addon addon-inline input-source-observer small-text">
+                                                CTSI
+                                            </span>
+                                        </div>
+
+                                        <div className="d-flex flex-row align-items-center justify-content-between my-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-outline-dark py-2 button-text flex-fill mr-2"
+                                                onClick={() =>
+                                                    setEditAllowance(false)
+                                                }
+                                            >
+                                                Cancel
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="btn btn-dark py-2 button-text flex-fill"
+                                                onClick={doApprove}
+                                            >
+                                                Approve
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <span className="info-text-md">
+                                        {formatCTSI(allowance)}{' '}
+                                        <span className="small-text">CTSI</span>
+                                    </span>
+                                )}
 
                                 <div className="form-group mt-3">
                                     <label className="body-text-2 text-secondary">
@@ -477,6 +607,7 @@ const Staking = () => {
                                             }`}
                                             id="stakeAmount"
                                             value={stakeAmount.toString()}
+                                            disabled={editAllowance}
                                             onChange={(e) =>
                                                 setStakeAmount(
                                                     BigNumber.from(

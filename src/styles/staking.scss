@@ -138,9 +138,12 @@
             justify-content: flex-start;
 
             button {
-                background: $gray-button-color;
-                color: white;
                 border-radius: 2px;
+
+                .btn-dark {
+                    background: $gray-button-color;
+                    color: white;
+                }
 
                 &:hover {
                     filter: opacity(90%);

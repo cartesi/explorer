@@ -16,9 +16,13 @@ const BlockCard = (props: BlockCardProps) => {
         if (block) {
             setTimestamp(timeAgo(block.timestamp));
 
-            setInterval(() => {
+            const interval = setInterval(() => {
                 setTimestamp(timeAgo(block.timestamp));
             }, 1000);
+
+            return () => {
+                clearInterval(interval);
+            };
         }
     }, [block]);
 

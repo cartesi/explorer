@@ -92,7 +92,7 @@ export const useCartesiToken = (
     };
 
     return {
-        allowance: parseCTSI(BigNumber.from(1000)),
+        allowance,
         balance,
         error,
         transaction,
