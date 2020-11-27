@@ -473,7 +473,7 @@ const Staking = () => {
                         <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
                             <div className="d-flex flex-column align-items-start">
                                 <div className="mb-1">
-                                    <img src="/images/balance.png" />
+                                    <img src="/images/releasing.png" />
                                     <span className="body-text-1 ml-3">
                                         {releasingBalance.gt(0) &&
                                         releasingCountdown === 0

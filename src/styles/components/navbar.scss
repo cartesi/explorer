@@ -1,7 +1,7 @@
 @import './variables.scss';
 
 .navbar {
-    height: 100px;
+    min-height: 100px;
     background-color: $primary-color;
     padding: 0 6vw;
     backdrop-filter: blur(6px);
@@ -45,7 +45,12 @@
         }
     }
 
-    &-space {
-        width: 150px;
+    &-hamburger {
+        width: 30px;
+        height: 20px;
+    }
+
+    &-selected-chain {
+        margin: 20px;
     }
 }

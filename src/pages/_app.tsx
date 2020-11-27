@@ -20,6 +20,12 @@ import 'antd/dist/antd.css';
 import '../styles/styles.scss';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+if (typeof window !== 'undefined') {
+    require('jquery');
+    require('popper.js');
+    require('bootstrap');
+}
+
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
 });

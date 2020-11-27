@@ -187,23 +187,23 @@ const Home = () => {
 
             <div className="landing-dashboard">
                 <div className="landing-dashboard-content row">
-                    <div className="col-3 landing-dashboard-content-item">
+                    <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Nodes</div>
                         <div className="info-text-bg">
                             {summary ? summary.totalNodes.toLocaleString() : 0}
                         </div>
                     </div>
-                    <div className="col-3 landing-dashboard-content-item">
+                    <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                         <div className="sub-title-1"># Active Stakers</div>
                         <div className="info-text-bg">
                             {summary ? summary.totalUsers.toLocaleString() : 0}
                         </div>
                     </div>
-                    <div className="col-3 landing-dashboard-content-item">
+                    <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                         <div className="sub-title-1">Annual Rewards</div>
                         <div className="info-text-bg">{aprLabel}</div>
                     </div>
-                    <div className="col-3 landing-dashboard-content-item">
+                    <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                         <div className="sub-title-1">Participation Rate</div>
                         <div className="info-text-bg">
                             {participationRateLabel}
@@ -229,7 +229,7 @@ const Home = () => {
                     </button>
                     {blocks.slice(0, 4).map((block) => (
                         <Link href={'/blocks/' + block.id} key={block.id}>
-                            <a className="landing-link">
+                            <a className="landing-link flex-fill">
                                 <BlockCard block={block} key={block.id} />
                             </a>
                         </Link>
@@ -259,45 +259,53 @@ const Home = () => {
                     </div>
                 </div>
 
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th className="table-header-text">Node</th>
-                            <th className="table-header-text">
-                                #Blocks Produced
-                            </th>
-                            <th className="table-header-text">Total Staked</th>
-                            <th className="table-header-text">Total Rewards</th>
-                            <th className="table-header-text">
-                                Total Uptime Days
-                            </th>
-                        </tr>
-                    </thead>
+                <div className="table-responsive mb-2">
+                    <table className="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th className="table-header-text">Node</th>
+                                <th className="table-header-text">
+                                    #Blocks Produced
+                                </th>
+                                <th className="table-header-text">
+                                    Total Staked
+                                </th>
+                                <th className="table-header-text">
+                                    Total Rewards
+                                </th>
+                                <th className="table-header-text">
+                                    Total Uptime Days
+                                </th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {nodes.map((node) => {
-                            const now = new Date();
-                            const uptimeDays = Math.ceil(
-                                (now.getTime() / 1000 - node.timestamp) /
-                                    60 /
-                                    60 /
-                                    24
-                            );
-                            return (
-                                <tr key={node.id} className="body-text-2">
-                                    <td>{tinyString(node.id)}</td>
-                                    <td>{node.totalBlocks}</td>
-                                    <td>
-                                        {formatCTSI(node.owner.stakedBalance)}{' '}
-                                        CTSI
-                                    </td>
-                                    <td>{formatCTSI(node.totalReward)}</td>
-                                    <td>{uptimeDays}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                        <tbody>
+                            {nodes.map((node) => {
+                                const now = new Date();
+                                const uptimeDays = Math.ceil(
+                                    (now.getTime() / 1000 - node.timestamp) /
+                                        60 /
+                                        60 /
+                                        24
+                                );
+                                return (
+                                    <tr key={node.id} className="body-text-2">
+                                        <td>{tinyString(node.id)}</td>
+                                        <td>{node.totalBlocks}</td>
+                                        <td>
+                                            {formatCTSI(
+                                                node.owner.stakedBalance
+                                            )}{' '}
+                                            CTSI
+                                        </td>
+                                        <td>{formatCTSI(node.totalReward)}</td>
+                                        <td>{uptimeDays}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
                 <div className="landing-noether-pagination body-text-2">
                     <button
                         className="btn"

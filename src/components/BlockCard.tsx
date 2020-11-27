@@ -39,17 +39,17 @@ const BlockCard = (props: BlockCardProps) => {
     };
 
     return (
-        <div className="landing-lottery-block">
-            <div className="landing-lottery-block-time sub-title-4">
-                <img src="/images/clock.png" />
-                {' ' + timestamp}
+        <div className="block-card">
+            <div className="block-card-time sub-title-4">
+                <img src="/images/clock.png" className="mr-1" />
+                {timestamp}
             </div>
-            <div className="landing-lottery-block-content">
-                <div className="landing-lottery-block-content-header body-text-2">
+            <div className="block-card-content">
+                <div className="block-card-content-header body-text-2">
                     Block {block.chain.id}-{block.number}
                 </div>
-                <div className="landing-lottery-block-content-content">
-                    <div className="landing-lottery-block-content-content-text">
+                <div className="block-card-content-content">
+                    <div className="block-card-content-content-text">
                         <div className="body-text-2">
                             Claimer
                             <div className="sub-title-3 mt-1">
@@ -65,7 +65,7 @@ const BlockCard = (props: BlockCardProps) => {
                     </div>
 
                     <img
-                        className="landing-lottery-block-content-content-image"
+                        className="block-card-content-content-image"
                         src={tinyGraphUrl(block)}
                     />
                 </div>

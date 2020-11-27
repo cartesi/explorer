@@ -26,11 +26,6 @@ const NavBar = (props: NavBarProps) => {
             href: '/staking',
         },
         {
-            key: 'nodes',
-            label: 'Nodes',
-            href: '/nodes',
-        },
-        {
             key: 'blocks',
             label: 'Blocks',
             href: '/blocks',
@@ -48,19 +43,38 @@ const NavBar = (props: NavBarProps) => {
         .map((item) => item.key);
 
     return (
-        <nav className="navbar fixed-top">
+        <nav className="navbar fixed-top navbar-expand-lg">
             <Link href="/">
-                <a className="navbar-brand logo"></a>
+                <a className="navbar-brand logo my-3"></a>
             </Link>
-            <div className="navbar-menu">
-                {items.map((item) => (
-                    <Link href={item.href} key={item.key}>
-                        <a className="navbar-menu-item">{item.label}</a>
-                    </Link>
-                ))}
-            </div>
-            <div className="navbar-network">
-                <SelectedChain />
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#explorerNavbar"
+                aria-controls="explorerNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <img className="navbar-hamburger" src="/images/navbar.png" />
+            </button>
+            <div
+                className="navbar-collapse collapse justify-content-center"
+                id="explorerNavbar"
+            >
+                <ul className="navbar-menu navbar-nav">
+                    {items.map((item) => (
+                        <li className="nav-item" key={item.key}>
+                            <Link href={item.href}>
+                                <a className="navbar-menu-item">{item.label}</a>
+                            </Link>
+                        </li>
+                    ))}
+
+                    <li className="nav-item navbar-selected-chain">
+                        <SelectedChain />
+                    </li>
+                </ul>
             </div>
         </nav>
     );
