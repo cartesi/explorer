@@ -29,7 +29,7 @@ const Block = () => {
                           id: searchKey,
                       }
                     : {
-                          round: searchKey,
+                          number: parseInt(searchKey),
                       }
                 : {},
             true
@@ -50,9 +50,8 @@ const Block = () => {
     };
 
     const filterBlock = (block) => {
-        console.log(filter, block);
-        if (!filter.round && !filter.id) return true;
-        if (filter.round) return filter.round == block.round;
+        if (!filter.number && !filter.id) return true;
+        if (filter.number) return filter.number == block.number;
         if (filter.id) return filter.id == block.id;
         return false;
     };
@@ -64,7 +63,7 @@ const Block = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="page-header d-flex justify-content-between align-items-center pb-4">
+            <div className="page-header pb-4">
                 <div className="info-text-md text-white">Blocks</div>
 
                 <div className="d-flex flex-row align-items-center justify-content-start">
@@ -100,45 +99,47 @@ const Block = () => {
                                 className="blocks-content-block row"
                                 key={block.id}
                             >
-                                <div className="col-9 row">
-                                    <div className="sub-title-4 col-4">
-                                        Block
-                                    </div>
-                                    <div className="body-text-2 col-8">
-                                        {block.chain.id}-{block.number}
-                                    </div>
+                                <div className="col-12 col-md-9">
+                                    <div className="row">
+                                        <div className="sub-title-4 col-4 my-1">
+                                            Block
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {block.chain.id}-{block.number}
+                                        </div>
 
-                                    <div className="sub-title-4 col-4">
-                                        Date
-                                    </div>
-                                    <div className="body-text-2 col-8">
-                                        {new Date(
-                                            block.timestamp * 1000
-                                        ).toUTCString()}
-                                    </div>
+                                        <div className="sub-title-4 col-4 my-1">
+                                            Date
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {new Date(
+                                                block.timestamp * 1000
+                                            ).toUTCString()}
+                                        </div>
 
-                                    <div className="sub-title-4 col-4">
-                                        Claimer Address
-                                    </div>
-                                    <div className="body-text-2 col-8">
-                                        {block.producer.id}
-                                    </div>
+                                        <div className="sub-title-4 col-4 my-1">
+                                            Claimer Address
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {block.producer.id}
+                                        </div>
 
-                                    <div className="sub-title-4 col-4">
-                                        Node Address
-                                    </div>
-                                    <div className="body-text-2 col-8">
-                                        {block.node.id}
-                                    </div>
+                                        <div className="sub-title-4 col-4 my-1">
+                                            Node Address
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {block.node.id}
+                                        </div>
 
-                                    <div className="sub-title-4 col-4">
-                                        Reward
-                                    </div>
-                                    <div className="body-text-2 col-8">
-                                        {formatCTSI(block.reward)}
+                                        <div className="sub-title-4 col-4 my-1">
+                                            Reward
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {formatCTSI(block.reward)}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-3 d-flex flex-column align-items-center">
+                                <div className="col-12 col-md-3 d-flex flex-column align-items-center justify-content-center pt-2">
                                     <img
                                         className="blocks-content-block-image"
                                         src={tinyGraphUrl(block)}

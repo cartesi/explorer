@@ -289,8 +289,7 @@ table,
 // Text input with icon
 
 .input-with-icon.input-group {
-    width: 23.5vw;
-    max-width: 23.5vw;
+    min-width: 23.5vw;
 
     span {
         position: absolute;
