@@ -667,6 +667,7 @@ const Staking = () => {
 
                                 <button
                                     type="button"
+                                    disabled={editAllowance}
                                     className="btn btn-dark py-2 button-text flex-fill"
                                     onClick={doStake}
                                 >
