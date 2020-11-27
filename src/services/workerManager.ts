@@ -12,15 +12,22 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { WorkerManagerImpl } from '@cartesi/util';
-import { WorkerManagerImplFactory } from '@cartesi/util';
+import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
+import { WorkerManagerAuthManagerImplFactory } from '@cartesi/util';
 import { parseUnits } from '@ethersproject/units';
 import { networks } from '../utils/networks';
 import { ContractTransaction } from 'ethers';
 
 export const useWorkerManager = (worker: string) => {
     const { library, chainId } = useWeb3React<Web3Provider>();
-    const [workerManager, setWorkerManager] = useState<WorkerManagerImpl>();
+    const [
+        workerManager,
+        setWorkerManager,
+    ] = useState<WorkerManagerAuthManagerImpl>();
+
+    const network = networks[chainId];
+    const pos = require(`@cartesi/pos/deployments/${network}/PoS.json`)
+        ?.address;
 
     const [error, setError] = useState<string>();
     const [transaction, setTransaction] = useState<
@@ -32,11 +39,11 @@ export const useWorkerManager = (worker: string) => {
     const [pending, setPending] = useState<boolean>(false);
     const [retired, setRetired] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
     // create the WorkerManager, asynchronously
     useEffect(() => {
         if (library && chainId) {
-            const network = networks[chainId];
             const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)
                 ?.address;
             if (!address) {
@@ -47,7 +54,10 @@ export const useWorkerManager = (worker: string) => {
                 `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
             );
             setWorkerManager(
-                WorkerManagerImplFactory.connect(address, library.getSigner())
+                WorkerManagerAuthManagerImplFactory.connect(
+                    address,
+                    library.getSigner()
+                )
             );
         }
     }, [library, chainId]);
@@ -62,6 +72,7 @@ export const useWorkerManager = (worker: string) => {
             setRetired(retired);
             setPending(!available && !owned && !retired);
             setUser(await workerManager.getUser(worker));
+            setIsAuthorized(await workerManager.isAuthorized(worker, pos));
         }
     };
 
@@ -81,9 +92,14 @@ export const useWorkerManager = (worker: string) => {
 
             try {
                 // send transaction
-                const transaction = workerManager.hire(worker, {
-                    value,
-                });
+                const network = networks[chainId];
+                const transaction = workerManager.hireAndAuthorize(
+                    worker,
+                    pos,
+                    {
+                        value,
+                    }
+                );
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -134,6 +150,7 @@ export const useWorkerManager = (worker: string) => {
         pending,
         owned,
         retired,
+        isAuthorized,
         loading,
         transaction,
         updateState,

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { Button, Descriptions, Spin, Row, Col } from 'antd';
 
@@ -18,7 +18,6 @@ import { Web3Provider } from '@ethersproject/providers';
 
 import { useBalance, useAccount, NULL_ADDRESS } from '../services/eth';
 import { useWorkerManager } from '../services/workerManager';
-import { useWorkerAuthManager } from '../services/workerAuthManager';
 
 import { networks } from '../utils/networks';
 import { ContractTransaction } from 'ethers';
@@ -47,6 +46,7 @@ const NodeDetails = (props: NodeDetailsProps) => {
         owned,
         retired,
         loading,
+        isAuthorized,
         error: workerManagerError,
         transaction: workerManagerTransaction,
         clearStates: clearWorkerManagerStates,
@@ -56,40 +56,26 @@ const NodeDetails = (props: NodeDetailsProps) => {
         retire,
     } = useWorkerManager(props.address);
 
-    const {
-        isAuthorized,
-        error: workerAuthManagerError,
-        transaction: workerAuthManagerTransaction,
-        clearStates: clearWorkerAuthManagerStates,
-        authorize,
-    } = useWorkerAuthManager(props.address, posAddress);
-
-    const showAuthorize = !isAuthorized;
-
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(props.address, [user]);
 
     useEffect(() => {
-        if (workerManagerTransaction || workerAuthManagerTransaction) {
+        if (workerManagerTransaction) {
             props.setWorkerTransaction(
-                workerManagerTransaction || workerAuthManagerTransaction
+                workerManagerTransaction
             );
         }
-        if (workerManagerError || workerAuthManagerError) {
-            props.setWorkerError(workerManagerError || workerAuthManagerError);
+        if (workerManagerError) {
+            props.setWorkerError(workerManagerError);
         }
     }, [
         workerManagerTransaction,
         workerManagerError,
-        workerAuthManagerTransaction,
-        workerAuthManagerError,
     ]);
 
     useEffect(() => {
         if (props.waiting === false) {
             clearWorkerManagerStates();
-            clearWorkerAuthManagerStates();
-
             updateState();
         }
     }, [props.waiting]);
@@ -142,17 +128,6 @@ const NodeDetails = (props: NodeDetailsProps) => {
                 )}
                 {account && owned && (
                     <>
-                        {showAuthorize && (
-                            <Button
-                                onClick={authorize}
-                                type="primary"
-                                disabled={props.waiting}
-                                style={{ marginRight: '10px' }}
-                            >
-                                Authorize
-                            </Button>
-                        )}
-
                         <Button
                             onClick={retire}
                             type="primary"
