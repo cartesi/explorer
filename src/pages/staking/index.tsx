@@ -133,7 +133,7 @@ const Staking = () => {
     };
 
     const doWithdraw = () => {
-        withdraw(parseCTSI(releasingBalance));
+        withdraw(releasingBalance);
     };
 
     const validate = (value: string): number => {
