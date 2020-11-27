@@ -213,26 +213,31 @@ const Calculator = (props: Props) => {
                 <div className="calculator-result">
                     <h5 className="calculator-sub-title">Results</h5>
 
-                    <div className="calculator-result-rewards">
-                        <div className="calculator-result-reward mr-4">
-                            <span className="body-text-2 mb-1">
-                                Absolute Reward
-                            </span>
-                            <span className="info-text-md">
-                                {formatCTSI(reward)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                    <div className="calculator-result-rewards row">
+                        <div className="col col-12 col-sm-6">
+                            <div className="calculator-result-reward">
+                                <span className="body-text-2 mb-1">
+                                    Absolute Reward
+                                </span>
+                                <span className="info-text-md">
+                                    {formatCTSI(reward)}{' '}
+                                    <span className="small-text">CTSI</span>
+                                </span>
+                            </div>
                         </div>
-                        <div className="calculator-result-reward">
-                            <span className="body-text-2 mb-1">
-                                Estimated Annual Reward
-                            </span>
-                            <span className="info-text-md">
-                                {apr
-                                    .mulUnsafe(FixedNumber.from(100))
-                                    .round(1)
-                                    .toString() + '%'}
-                            </span>
+
+                        <div className="col col-12 col-sm-6">
+                            <div className="calculator-result-reward">
+                                <span className="body-text-2 mb-1">
+                                    Estimated Annual Reward
+                                </span>
+                                <span className="info-text-md">
+                                    {apr
+                                        .mulUnsafe(FixedNumber.from(100))
+                                        .round(1)
+                                        .toString() + '%'}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

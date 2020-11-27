@@ -32,7 +32,7 @@
 
     &-form {
         margin: 6vw auto;
-        width: 50vw;
+        max-width: 700px;
 
         & > * {
             margin: 40px 0;
@@ -62,17 +62,12 @@
     }
 
     &-result-rewards {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-
-        margin-top: 30px;
+        margin-top: 10px;
     }
 
     &-result-reward {
-        height: 11vw;
-        width: 25vw;
+        margin: 20px 0;
+        height: 142px;
         background: black;
         border-radius: 2px;
         color: white;
