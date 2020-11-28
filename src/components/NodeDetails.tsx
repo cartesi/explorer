@@ -48,7 +48,6 @@ const NodeDetails = (props: NodeDetailsProps) => {
         loading,
         authorized,
         error: workerManagerError,
-        transaction: workerManagerTransaction,
         hire,
         cancelHire,
         retire,
@@ -56,15 +55,6 @@ const NodeDetails = (props: NodeDetailsProps) => {
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(props.address, [user]);
-
-    useEffect(() => {
-        if (workerManagerTransaction) {
-            props.setWorkerTransaction(workerManagerTransaction);
-        }
-        if (workerManagerError) {
-            props.setWorkerError(workerManagerError);
-        }
-    }, [workerManagerTransaction, workerManagerError]);
 
     return (
         <Row align="middle" gutter={16}>

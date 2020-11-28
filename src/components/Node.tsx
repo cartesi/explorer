@@ -17,6 +17,7 @@ import { BigNumber, constants } from 'ethers';
 import { useWorkerManager } from '../services/workerManager';
 import { tinyString } from '../utils/stringUtils';
 import { confirmations } from '../utils/networks';
+import { isAddress } from 'ethers/lib/utils';
 
 interface NodeProps {}
 
@@ -25,23 +26,18 @@ const Node = (props: NodeProps) => {
     const [address, setAddress] = useState('');
     const node = useWorkerManager(address);
     const [showDetails, setShowDetails] = useState(false);
-    const [addressInput, setAddressInput] = useState('');
-    const [deposit, setDeposit] = useState<BigNumber>(constants.One);
+    const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
     const [hiring, setHiring] = useState(false);
     const [transfering, setTransfering] = useState(false);
 
-    const isNew = address === '';
-    const notMine = node.user && node.user != account;
+    const none = address === '';
+    const notMine =
+        node.user && node.user != constants.AddressZero && node.user != account;
     const mine = node.user && node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
 
-    const doHire = () => {
-        setAddress(addressInput);
-        setShowDetails(!showDetails);
-    };
-
-    const doAddFunds = () => {
+    const addFunds = () => {
         if (library && chainId && address) {
             setTransfering(true);
             const signer = library.getSigner();
@@ -57,8 +53,6 @@ const Node = (props: NodeProps) => {
     };
 
     const doRetire = () => {
-        setAddress('');
-        setAddressInput('');
         setShowDetails(!showDetails);
     };
 
@@ -73,6 +67,7 @@ const Node = (props: NodeProps) => {
                         className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
                             address !== '' ? 'active' : 'inactive'
                         }`}
+                        onClick={() => setShowDetails(!showDetails)}
                     >
                         {address ? tinyString(address) : 'Click to hire node'}
                     </span>
@@ -100,35 +95,39 @@ const Node = (props: NodeProps) => {
                             <label className="body-text-2 text-secondary">
                                 Node Address
                             </label>
-                            {!isNew ? (
-                                <div className="sub-title-1">{address}</div>
-                            ) : (
-                                <div className="input-group">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="nodeAddress"
-                                        value={addressInput}
-                                        onChange={(event) =>
-                                            setAddressInput(event.target.value)
-                                        }
-                                    />
-                                </div>
-                            )}
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="address"
+                                    value={address}
+                                    onChange={(event) =>
+                                        isAddress(event.target.value) &&
+                                        setAddress(event.target.value)
+                                    }
+                                />
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label className="body-text-2 text-secondary">
-                                Balance
-                            </label>
-                            {!isNew && node.balance ? (
+                        {node && node.balance && (
+                            <div className="form-group">
+                                <label className="body-text-2 text-secondary">
+                                    Balance
+                                </label>
                                 <div className="sub-title-1">
                                     {formatEther(node.balance)}{' '}
                                     <span className="small-text text-secondary">
                                         ETH
                                     </span>
                                 </div>
-                            ) : (
+                            </div>
+                        )}
+
+                        {node && node.available && (
+                            <div className="form-group">
+                                <label className="body-text-2 text-secondary">
+                                    Deposit
+                                </label>
                                 <div className="input-group">
                                     <input
                                         type="number"
@@ -145,15 +144,21 @@ const Node = (props: NodeProps) => {
                                         ETH
                                     </span>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
 
-                        <div className="form-group">
-                            <label className="body-text-2 text-secondary">
-                                Owner
-                            </label>
-                            <div className="sub-title-1">{node.user}</div>
-                        </div>
+                        {node &&
+                            node.user &&
+                            node.user != constants.AddressZero && (
+                                <div className="form-group">
+                                    <label className="body-text-2 text-secondary">
+                                        Owner
+                                    </label>
+                                    <div className="sub-title-1">
+                                        {node.user}
+                                    </div>
+                                </div>
+                            )}
 
                         {mine && (
                             <div className="form-group">
@@ -180,65 +185,68 @@ const Node = (props: NodeProps) => {
                             </div>
                         )}
 
-                        <div className="staking-hire-node-buttons">
-                            {isNew ? (
-                                <>
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() =>
-                                            setShowDetails(!showDetails)
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
+                        {node && node.available && (
+                            <div className="staking-hire-node-buttons">
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                    onClick={() => setShowDetails(!showDetails)}
+                                >
+                                    Cancel
+                                </button>
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                        onClick={doHire}
-                                    >
-                                        Hire Node
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <button
-                                        type="button"
-                                        className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
-                                        onClick={doRetire}
-                                    >
-                                        Retire
-                                    </button>
+                                <button
+                                    type="button"
+                                    disabled={node.hiring}
+                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                    onClick={() => node.hire(deposit)}
+                                >
+                                    {node.hiring && (
+                                        <span
+                                            className="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+                                    )}
+                                    Hire Node
+                                </button>
+                            </div>
+                        )}
+                        {ready && (
+                            <div className="staking-hire-node-buttons">
+                                <button
+                                    type="button"
+                                    className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
+                                    onClick={doRetire}
+                                >
+                                    Retire
+                                </button>
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() =>
-                                            setShowDetails(!showDetails)
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                    onClick={() => setShowDetails(!showDetails)}
+                                >
+                                    Cancel
+                                </button>
 
-                                    <button
-                                        type="button"
-                                        disabled={transfering}
-                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                        onClick={doAddFunds}
-                                    >
-                                        {transfering && (
-                                            <span
-                                                className="spinner-border spinner-border-sm"
-                                                role="status"
-                                                aria-hidden="true"
-                                            ></span>
-                                        )}
-                                        Add Funds
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                                <button
+                                    type="button"
+                                    disabled={transfering}
+                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                    onClick={addFunds}
+                                >
+                                    {transfering && (
+                                        <span
+                                            className="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+                                    )}
+                                    Add Funds
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
