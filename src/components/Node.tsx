@@ -50,13 +50,11 @@ const Node = (props: NodeProps) => {
         }
     };
 
-    const doRetire = () => {
-        setShowDetails(!showDetails);
-    };
-
     let status = '';
     if (node.available) {
         status = 'Available';
+    } else if (node.owned && node.authorized && node.user == account) {
+        status = 'Ready';
     } else if (node.owned && node.authorized) {
         status = `Owned by ${node.user}`;
     } else if (node.owned && !node.authorized) {
@@ -256,7 +254,7 @@ const Node = (props: NodeProps) => {
                                 <button
                                     type="button"
                                     className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
-                                    onClick={doRetire}
+                                    onClick={() => node.retire()}
                                 >
                                     Retire
                                 </button>

@@ -60,7 +60,7 @@ export const useWorkerManager = (address: string) => {
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
-    }, [workerManager, address]);
+    }, [workerManager, address, block]);
 
     const hire = (value: BigNumberish) => {
         if (workerManager) {
@@ -116,13 +116,25 @@ export const useWorkerManager = (address: string) => {
 
     const retire = () => {
         if (workerManager) {
-            try {
-                // send transaction
-                const transaction = workerManager.retire(address);
-                setError(undefined);
-            } catch (e) {
-                setError(error);
-            }
+            // send transaction
+            workerManager
+                .retire(address)
+                .then((tx) => {
+                    tx.wait(confirmations[chainId])
+                        .then((receipt) => {
+                            setHiring(false);
+                            setError(undefined);
+                            updateState();
+                        })
+                        .catch((e) => {
+                            setHiring(false);
+                            setError(e.message);
+                        });
+                })
+                .catch((e) => {
+                    setHiring(false);
+                    setError(e.message);
+                });
         }
     };
 
