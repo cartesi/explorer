@@ -92,13 +92,25 @@ export const useWorkerManager = (address: string) => {
 
     const cancelHire = () => {
         if (workerManager) {
-            try {
-                // send transaction
-                const transaction = workerManager.cancelHire(address);
-                setError(undefined);
-            } catch (e) {
-                setError(e.message);
-            }
+            // send transaction
+            workerManager
+                .cancelHire(address)
+                .then((tx) => {
+                    tx.wait(confirmations[chainId])
+                        .then((receipt) => {
+                            setHiring(false);
+                            setError(undefined);
+                            updateState();
+                        })
+                        .catch((e) => {
+                            setHiring(false);
+                            setError(e.message);
+                        });
+                })
+                .catch((e) => {
+                    setHiring(false);
+                    setError(e.message);
+                });
         }
     };
 

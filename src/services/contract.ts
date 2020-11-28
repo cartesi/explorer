@@ -34,6 +34,8 @@ import token_rinkeby from '@cartesi/token/export/abi/rinkeby.json';
 import token_goerli from '@cartesi/token/export/abi/goerli.json';
 import token_kovan from '@cartesi/token/export/abi/kovan.json';
 
+import localhost from './localhost.json';
+
 interface ContractAbi {
     address: string;
     abi: any[];
@@ -57,18 +59,21 @@ const posAbis: ChainMap = {
     4: pos_rinkeby,
     5: pos_goerli,
     42: pos_kovan,
+    31337: localhost,
 };
 
 const utilAbis: ChainMap = {
     4: util_rinkeby,
     5: util_goerli,
     42: util_kovan,
+    31337: localhost,
 };
 
 const tokenAbis: ChainMap = {
     4: token_rinkeby,
     5: token_goerli,
     42: token_kovan,
+    31337: localhost,
 };
 
 const getAddress = (chainId: number, map: ChainMap, name: string): string => {

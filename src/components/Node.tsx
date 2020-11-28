@@ -28,10 +28,8 @@ const Node = (props: NodeProps) => {
     const [showDetails, setShowDetails] = useState(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
-    const [hiring, setHiring] = useState(false);
     const [transfering, setTransfering] = useState(false);
 
-    const none = address === '';
     const notMine =
         node.user && node.user != constants.AddressZero && node.user != account;
     const mine = node.user && node.user == account;
@@ -55,6 +53,19 @@ const Node = (props: NodeProps) => {
     const doRetire = () => {
         setShowDetails(!showDetails);
     };
+
+    let status = '';
+    if (node.available) {
+        status = 'Available';
+    } else if (node.owned && node.authorized) {
+        status = `Owned by ${node.user}`;
+    } else if (node.owned && !node.authorized) {
+        status = `Owned by ${node.user}, pending authorization`;
+    } else if (node.pending) {
+        status = `Hired by ${node.user}, pending confirmation`;
+    } else if (node.retired) {
+        status = 'Retired';
+    }
 
     return (
         <>
@@ -160,7 +171,14 @@ const Node = (props: NodeProps) => {
                                 </div>
                             )}
 
-                        {mine && (
+                        <div className="form-group">
+                            <label className="body-text-2 text-secondary">
+                                Status
+                            </label>
+                            <div className="sub-title-1">{status}</div>
+                        </div>
+
+                        {ready && (
                             <div className="form-group">
                                 <label className="body-text-2 text-secondary">
                                     Add Funds
@@ -212,6 +230,27 @@ const Node = (props: NodeProps) => {
                                 </button>
                             </div>
                         )}
+
+                        {mine && node.pending && (
+                            <div className="staking-hire-node-buttons">
+                                <button
+                                    type="button"
+                                    disabled={node.hiring}
+                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                    onClick={() => node.cancelHire()}
+                                >
+                                    {node.hiring && (
+                                        <span
+                                            className="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+                                    )}
+                                    Cancel Hire
+                                </button>
+                            </div>
+                        )}
+
                         {ready && (
                             <div className="staking-hire-node-buttons">
                                 <button
