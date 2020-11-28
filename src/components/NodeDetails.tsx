@@ -15,8 +15,9 @@ import { Button, Descriptions, Spin, Row, Col } from 'antd';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import { AddressZero } from '@ethersproject/constants';
 
-import { useBalance, useAccount, NULL_ADDRESS } from '../services/eth';
+import { useBalance, useAccount } from '../services/eth';
 import { useWorkerManager } from '../services/workerManager';
 
 import { networks } from '../utils/networks';
@@ -96,7 +97,7 @@ const NodeDetails = (props: NodeDetailsProps) => {
                     </Descriptions.Item>
                     <Descriptions.Item label="Owner">
                         {loading && <Spin />}
-                        {user === NULL_ADDRESS ? (
+                        {user === AddressZero ? (
                             <i>&lt;none&gt;</i>
                         ) : (
                             user

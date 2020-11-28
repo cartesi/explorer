@@ -12,14 +12,13 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { StakingImpl, StakingImplFactory } from '@cartesi/pos';
-import { networks } from '../utils/networks';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { useBlockNumber } from './eth';
+import { useStakingContract } from './contract';
 
 export const useStaking = () => {
-    const { library, chainId, account } = useWeb3React<Web3Provider>();
-    const [staking, setStaking] = useState<StakingImpl>();
+    const { account } = useWeb3React<Web3Provider>();
+    const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
     const [error, setError] = useState<string>();
@@ -38,29 +37,6 @@ export const useStaking = () => {
         BigNumber.from(0)
     );
 
-    // create the Staking, asynchronously
-    useEffect(() => {
-        if (library && chainId) {
-            const network = networks[chainId];
-            try {
-                const deployment = require(`@cartesi/pos/deployments/${network}/StakingImpl.json`);
-                const address = deployment?.address;
-                if (address) {
-                    console.log(
-                        `Attaching Staking to address '${address}' deployed at network '${chainId}'`
-                    );
-                    setStaking(
-                        StakingImplFactory.connect(address, library.getSigner())
-                    );
-                } else {
-                    setError(`Staking not deployed at network '${chainId}'`);
-                }
-            } catch (e) {
-                setError(`Staking not deployed at network '${chainId}'`);
-            }
-        }
-    }, [library, chainId]);
-
     useEffect(() => {
         if (staking && account) {
             staking.getStakedBalance(account).then(setStakedBalance);
@@ -77,7 +53,7 @@ export const useStaking = () => {
             staking.getMaturingBalance(account).then(setMaturingBalance);
             staking.getReleasingBalance(account).then(setReleasingBalance);
         }
-    }, [staking, chainId, account, blockNumber]);
+    }, [staking, account, blockNumber]);
 
     const stake = (amount: BigNumberish) => {
         if (staking) {

@@ -10,24 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
-import { WorkerManagerAuthManagerImplFactory } from '@cartesi/util';
 import { parseUnits } from '@ethersproject/units';
-import { networks } from '../utils/networks';
+import { usePoSContract, useWorkerManagerContract } from './contract';
 import { ContractTransaction } from 'ethers';
 
 export const useWorkerManager = (worker: string) => {
-    const { library, chainId } = useWeb3React<Web3Provider>();
-    const [
-        workerManager,
-        setWorkerManager,
-    ] = useState<WorkerManagerAuthManagerImpl>();
-
-    const network = networks[chainId];
-    const pos = require(`@cartesi/pos/deployments/${network}/PoS.json`)
-        ?.address;
+    const workerManager = useWorkerManagerContract();
+    const pos = usePoSContract();
 
     const [error, setError] = useState<string>();
     const [transaction, setTransaction] = useState<
@@ -41,27 +30,6 @@ export const useWorkerManager = (worker: string) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
-    // create the WorkerManager, asynchronously
-    useEffect(() => {
-        if (library && chainId) {
-            const address = require(`@cartesi/util/deployments/${network}/WorkerManagerImpl.json`)
-                ?.address;
-            if (!address) {
-                setError(`WorkerManager not deployed at network '${chainId}'`);
-                return;
-            }
-            console.log(
-                `Attaching WorkerManager to address '${address}' deployed at network '${chainId}'`
-            );
-            setWorkerManager(
-                WorkerManagerAuthManagerImplFactory.connect(
-                    address,
-                    library.getSigner()
-                )
-            );
-        }
-    }, [library, chainId]);
-
     const updateState = async () => {
         if (workerManager) {
             const available = await workerManager.isAvailable(worker);
@@ -72,7 +40,9 @@ export const useWorkerManager = (worker: string) => {
             setRetired(retired);
             setPending(!available && !owned && !retired);
             setUser(await workerManager.getUser(worker));
-            setIsAuthorized(await workerManager.isAuthorized(worker, pos));
+            setIsAuthorized(
+                await workerManager.isAuthorized(worker, pos.address)
+            );
         }
     };
 
@@ -92,10 +62,9 @@ export const useWorkerManager = (worker: string) => {
 
             try {
                 // send transaction
-                const network = networks[chainId];
                 const transaction = workerManager.hireAndAuthorize(
                     worker,
-                    pos,
+                    pos.address,
                     {
                         value,
                     }
@@ -159,44 +128,4 @@ export const useWorkerManager = (worker: string) => {
         cancelHire,
         retire,
     };
-};
-
-export const useUserWorkers = (worker: string, user: string) => {
-    const { workerManager } = useWorkerManager(worker);
-    const [workers, setWorkers] = useState<string[]>([]);
-
-    useEffect(() => {
-        if (workerManager) {
-            Promise.all([
-                workerManager.queryFilter(
-                    workerManager.filters.JobAccepted(null, user)
-                ),
-                workerManager.queryFilter(
-                    workerManager.filters.Retired(null, user)
-                ),
-            ]).then(([hires, retires]) => {
-                // merge claim and release events into a single list
-                // and sort by block number
-                const events = [...hires, ...retires].sort(
-                    (a, b) => a.blockNumber - b.blockNumber
-                );
-
-                // build final list of proxies considering every claim and release event
-                // in history for the user
-                const proxies = events.reduce((array: string[], ev) => {
-                    const args: any = ev.args;
-                    const worker = args.worker;
-                    if (ev.event === 'JobAccepted') {
-                        array.push(worker);
-                    } else if (ev.event === 'Retired') {
-                        array.splice(array.indexOf(worker), 1);
-                    }
-                    return array;
-                }, []);
-                setWorkers(workers);
-            });
-        }
-    }, [workerManager, user]);
-
-    return workers;
 };

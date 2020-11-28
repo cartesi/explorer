@@ -10,11 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { CartesiToken } from '@cartesi/token';
-import { CartesiTokenFactory } from '@cartesi/token';
-import { networks } from '../utils/networks';
+import { useCartesiTokenContract } from '../services/contract';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
@@ -23,36 +19,13 @@ export const useCartesiToken = (
     spender: string = null,
     blockNumber: number = 0
 ) => {
-    const { library, chainId } = useWeb3React<Web3Provider>();
-
     const [error, setError] = useState<string>();
-    const [token, setToken] = useState<CartesiToken>();
+    const token = useCartesiTokenContract();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
     const [transaction, setTransaction] = useState<
         Promise<ContractTransaction>
     >();
-
-    // create the CartesiToken, asynchronously
-    useEffect(() => {
-        if (library && chainId) {
-            const network = networks[chainId];
-            const tokenArtifact = require(`@cartesi/token/deployments/${network}/CartesiToken.json`);
-            const address =
-                tokenArtifact?.address ||
-                tokenArtifact?.networks[chainId]?.address;
-            if (address) {
-                console.log(
-                    `Attaching CartesiToken to address '${address}' deployed at network '${chainId}'`
-                );
-                setToken(
-                    CartesiTokenFactory.connect(address, library.getSigner())
-                );
-            } else {
-                setError(`CartesiToken not deployed at network '${chainId}'`);
-            }
-        }
-    }, [library, chainId]);
 
     // balances
     useEffect(() => {

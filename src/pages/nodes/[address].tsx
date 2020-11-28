@@ -14,8 +14,9 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { formatEther } from '@ethersproject/units';
-import { Alert, Breadcrumb, Button, Descriptions, Spin } from 'antd';
-import { useBalance, useAccount, NULL_ADDRESS } from '../../services/eth';
+import { AddressZero } from '@ethersproject/constants';
+import { Breadcrumb, Button, Descriptions, Spin } from 'antd';
+import { useBalance, useAccount } from '../../services/eth';
 import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
@@ -96,7 +97,7 @@ const Node = () => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Owner">
                     {loading && <Spin />}
-                    {user === NULL_ADDRESS ? <i>&lt;none&gt;</i> : user}{' '}
+                    {user === AddressZero ? <i>&lt;none&gt;</i> : user}{' '}
                     {pending && <i>(pending)</i>}
                     {retired && <i>(retired)</i>}
                 </Descriptions.Item>

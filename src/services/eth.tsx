@@ -13,8 +13,7 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
-
-export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
+import { AddressZero } from '@ethersproject/constants';
 
 export const useBalance = (address: string, deps: any[] = []) => {
     const { library } = useWeb3React<Web3Provider>();
@@ -29,7 +28,7 @@ export const useBalance = (address: string, deps: any[] = []) => {
 
 export const useAccount = (index: number) => {
     const { library } = useWeb3React<Web3Provider>();
-    const [account, setAccount] = useState<string>(NULL_ADDRESS);
+    const [account, setAccount] = useState<string>(AddressZero);
     useEffect(() => {
         if (library) {
             library.listAccounts().then((accounts) => {
