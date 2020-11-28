@@ -49,6 +49,10 @@
                 color: $information-color;
                 cursor: pointer;
             }
+            
+            &-error {
+                color: $error-color;
+            }
         }
 
         &-node {

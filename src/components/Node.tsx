@@ -10,26 +10,31 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useState } from 'react';
-import { formatEther } from '@ethersproject/units';
-import { AddressZero } from '@ethersproject/constants';
-import { useBalance } from '../services/eth';
-import { useWorkerManagerContract } from '../services/contract';
+import { formatEther, parseEther } from '@ethersproject/units';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, constants } from 'ethers';
+import { useWorkerManager } from '../services/workerManager';
 import { tinyString } from '../utils/stringUtils';
+import { confirmations } from '../utils/networks';
 
 interface NodeProps {}
 
 const Node = (props: NodeProps) => {
-    const workerManager = useWorkerManagerContract();
+    const { library, account, chainId } = useWeb3React<Web3Provider>();
     const [address, setAddress] = useState('');
-    const [user, setUser] = useState('');
+    const node = useWorkerManager(address);
     const [showDetails, setShowDetails] = useState(false);
-    const [initialFunds, setInitialFunds] = useState(0);
     const [addressInput, setAddressInput] = useState('');
-    const [newFunds, setNewFunds] = useState(0);
+    const [deposit, setDeposit] = useState<BigNumber>(constants.One);
+    const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
+    const [hiring, setHiring] = useState(false);
+    const [transfering, setTransfering] = useState(false);
 
-    // make balance depend on owner, so if it changes we update the balance
-    // const balance = useBalance(address, [user]);
     const isNew = address === '';
+    const notMine = node.user && node.user != account;
+    const mine = node.user && node.user == account;
+    const ready = node.user == account && node.owned && node.authorized;
 
     const doHire = () => {
         setAddress(addressInput);
@@ -37,12 +42,21 @@ const Node = (props: NodeProps) => {
     };
 
     const doAddFunds = () => {
-        setInitialFunds(initialFunds + newFunds);
-        setShowDetails(!showDetails);
+        if (library && chainId && address) {
+            setTransfering(true);
+            const signer = library.getSigner();
+            signer
+                .sendTransaction({ to: address, value: transfer })
+                .then((tx) => {
+                    tx.wait(confirmations[chainId]).then((receipt) => {
+                        setTransfer(constants.Zero);
+                        setTransfering(false);
+                    });
+                });
+        }
     };
 
     const doRetire = () => {
-        setInitialFunds(0);
         setAddress('');
         setAddressInput('');
         setShowDetails(!showDetails);
@@ -59,14 +73,21 @@ const Node = (props: NodeProps) => {
                         className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
                             address !== '' ? 'active' : 'inactive'
                         }`}
-                        onClick={() => setShowDetails(!showDetails)}
                     >
                         {address ? tinyString(address) : 'Click to hire node'}
                     </span>
-                    {address !== '' && (
-                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-balance">
-                            {initialFunds}{' '}
+                    {mine && node.balance && (
+                        <span
+                            className="col-12 col-sm-auto mx-2 staking-hire-content-balance"
+                            onClick={() => setShowDetails(!showDetails)}
+                        >
+                            {formatEther(node.balance)}{' '}
                             <span className="small-text">ETH</span>
+                        </span>
+                    )}
+                    {notMine && (
+                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-error">
+                            node owned by other account
                         </span>
                     )}
                 </div>
@@ -80,9 +101,7 @@ const Node = (props: NodeProps) => {
                                 Node Address
                             </label>
                             {!isNew ? (
-                                <div className="sub-title-1">
-                                    {addressInput}
-                                </div>
+                                <div className="sub-title-1">{address}</div>
                             ) : (
                                 <div className="input-group">
                                     <input
@@ -100,11 +119,11 @@ const Node = (props: NodeProps) => {
 
                         <div className="form-group">
                             <label className="body-text-2 text-secondary">
-                                Initial Funds
+                                Balance
                             </label>
-                            {!isNew ? (
+                            {!isNew && node.balance ? (
                                 <div className="sub-title-1">
-                                    {initialFunds}{' '}
+                                    {formatEther(node.balance)}{' '}
                                     <span className="small-text text-secondary">
                                         ETH
                                     </span>
@@ -114,13 +133,11 @@ const Node = (props: NodeProps) => {
                                     <input
                                         type="number"
                                         className="addon-inline form-control"
-                                        id="initialFunds"
-                                        value={initialFunds}
+                                        id="deposit"
+                                        value={formatEther(deposit)}
                                         onChange={(event) =>
-                                            setInitialFunds(
-                                                event.target.value
-                                                    ? event.target.valueAsNumber
-                                                    : 0
+                                            setDeposit(
+                                                parseEther(event.target.value)
                                             )
                                         }
                                     />
@@ -131,7 +148,14 @@ const Node = (props: NodeProps) => {
                             )}
                         </div>
 
-                        {!isNew && (
+                        <div className="form-group">
+                            <label className="body-text-2 text-secondary">
+                                Owner
+                            </label>
+                            <div className="sub-title-1">{node.user}</div>
+                        </div>
+
+                        {mine && (
                             <div className="form-group">
                                 <label className="body-text-2 text-secondary">
                                     Add Funds
@@ -140,13 +164,12 @@ const Node = (props: NodeProps) => {
                                     <input
                                         type="number"
                                         className="addon-inline form-control"
-                                        id="newFunds"
-                                        value={newFunds}
+                                        id="transfer"
+                                        disabled={transfering}
+                                        value={formatEther(transfer)}
                                         onChange={(event) =>
-                                            setNewFunds(
-                                                event.target.value
-                                                    ? event.target.valueAsNumber
-                                                    : 0
+                                            setTransfer(
+                                                parseEther(event.target.value)
                                             )
                                         }
                                     />
@@ -200,9 +223,17 @@ const Node = (props: NodeProps) => {
 
                                     <button
                                         type="button"
+                                        disabled={transfering}
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                         onClick={doAddFunds}
                                     >
+                                        {transfering && (
+                                            <span
+                                                className="spinner-border spinner-border-sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></span>
+                                        )}
                                         Add Funds
                                     </button>
                                 </>

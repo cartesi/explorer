@@ -10,14 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect } from 'react';
-import { formatEther } from '@ethersproject/units';
+import { formatEther, parseEther } from '@ethersproject/units';
 import { Button, Descriptions, Spin, Row, Col } from 'antd';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { AddressZero } from '@ethersproject/constants';
 
-import { useBalance, useAccount } from '../services/eth';
+import { useBalance } from '../services/eth';
 import { useWorkerManager } from '../services/workerManager';
 
 import { networks } from '../utils/networks';
@@ -33,9 +33,8 @@ interface NodeDetailsProps {
 }
 
 const NodeDetails = (props: NodeDetailsProps) => {
-    const { chainId } = useWeb3React<Web3Provider>();
+    const { chainId, account } = useWeb3React<Web3Provider>();
 
-    const account = useAccount(0);
     const network = networks[chainId];
     const posArtifact = require(`@cartesi/pos/deployments/${network}/PoS.json`);
     const posAddress: string = posArtifact?.address as string;
@@ -47,11 +46,9 @@ const NodeDetails = (props: NodeDetailsProps) => {
         owned,
         retired,
         loading,
-        isAuthorized,
+        authorized,
         error: workerManagerError,
         transaction: workerManagerTransaction,
-        clearStates: clearWorkerManagerStates,
-        updateState,
         hire,
         cancelHire,
         retire,
@@ -62,24 +59,12 @@ const NodeDetails = (props: NodeDetailsProps) => {
 
     useEffect(() => {
         if (workerManagerTransaction) {
-            props.setWorkerTransaction(
-                workerManagerTransaction
-            );
+            props.setWorkerTransaction(workerManagerTransaction);
         }
         if (workerManagerError) {
             props.setWorkerError(workerManagerError);
         }
-    }, [
-        workerManagerTransaction,
-        workerManagerError,
-    ]);
-
-    useEffect(() => {
-        if (props.waiting === false) {
-            clearWorkerManagerStates();
-            updateState();
-        }
-    }, [props.waiting]);
+    }, [workerManagerTransaction, workerManagerError]);
 
     return (
         <Row align="middle" gutter={16}>
@@ -97,11 +82,7 @@ const NodeDetails = (props: NodeDetailsProps) => {
                     </Descriptions.Item>
                     <Descriptions.Item label="Owner">
                         {loading && <Spin />}
-                        {user === AddressZero ? (
-                            <i>&lt;none&gt;</i>
-                        ) : (
-                            user
-                        )}{' '}
+                        {user === AddressZero ? <i>&lt;none&gt;</i> : user}{' '}
                         {pending && <i>(pending)</i>}
                         {retired && <i>(retired)</i>}
                     </Descriptions.Item>
@@ -111,7 +92,7 @@ const NodeDetails = (props: NodeDetailsProps) => {
             <Col>
                 {account && available && (
                     <Button
-                        onClick={hire}
+                        onClick={() => hire(parseEther('1'))}
                         type="primary"
                         disabled={props.waiting}
                     >

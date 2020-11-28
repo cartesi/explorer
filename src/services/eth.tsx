@@ -13,30 +13,16 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
-import { AddressZero } from '@ethersproject/constants';
 
-export const useBalance = (address: string, deps: any[] = []) => {
+export const useBalance = (address: string, deps: any[] = []): BigNumber => {
     const { library } = useWeb3React<Web3Provider>();
-    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
+    const [balance, setBalance] = useState<BigNumber>(undefined);
     useEffect(() => {
-        if (library) {
+        if (library && address) {
             library.getBalance(address).then(setBalance);
         }
     }, [library, address, ...deps]);
     return balance;
-};
-
-export const useAccount = (index: number) => {
-    const { library } = useWeb3React<Web3Provider>();
-    const [account, setAccount] = useState<string>(AddressZero);
-    useEffect(() => {
-        if (library) {
-            library.listAccounts().then((accounts) => {
-                setAccount(accounts.length > 0 ? accounts[index] : '');
-            });
-        }
-    }, [library, index]);
-    return account;
 };
 
 export const useBlockNumber = (): number => {

@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { parseUnits } from '@ethersproject/units';
+import { useBalance, useBlockNumber } from './eth';
 import { usePoSContract, useWorkerManagerContract } from './contract';
-import { ContractTransaction } from 'ethers';
+import { BigNumberish, ContractTransaction } from 'ethers';
 
-export const useWorkerManager = (worker: string) => {
+export const useWorkerManager = (address: string) => {
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
 
@@ -27,21 +27,26 @@ export const useWorkerManager = (worker: string) => {
     const [available, setAvailable] = useState<boolean>(false);
     const [pending, setPending] = useState<boolean>(false);
     const [retired, setRetired] = useState<boolean>(false);
+    const [authorized, setAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+
+    // make balance depend on owner, so if it changes we update the balance
+    // also update on every block
+    const block = useBlockNumber();
+    const balance = useBalance(address, [user, block]);
 
     const updateState = async () => {
         if (workerManager) {
-            const available = await workerManager.isAvailable(worker);
-            const owned = await workerManager.isOwned(worker);
-            const retired = await workerManager.isRetired(worker);
+            const available = await workerManager.isAvailable(address);
+            const owned = await workerManager.isOwned(address);
+            const retired = await workerManager.isRetired(address);
             setAvailable(available);
             setOwned(owned);
             setRetired(retired);
             setPending(!available && !owned && !retired);
-            setUser(await workerManager.getUser(worker));
-            setIsAuthorized(
-                await workerManager.isAuthorized(worker, pos.address)
+            setUser(await workerManager.getUser(address));
+            setAuthorized(
+                await workerManager.isAuthorized(address, pos.address)
             );
         }
     };
@@ -53,17 +58,14 @@ export const useWorkerManager = (worker: string) => {
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
-    }, [workerManager, worker]);
+    }, [workerManager, address]);
 
-    const hire = () => {
+    const hire = (value: BigNumberish) => {
         if (workerManager) {
-            // XXX: move this to a parameter
-            const value = parseUnits('1', 'finney');
-
             try {
                 // send transaction
                 const transaction = workerManager.hireAndAuthorize(
-                    worker,
+                    address,
                     pos.address,
                     {
                         value,
@@ -82,7 +84,7 @@ export const useWorkerManager = (worker: string) => {
         if (workerManager) {
             try {
                 // send transaction
-                const transaction = workerManager.cancelHire(worker);
+                const transaction = workerManager.cancelHire(address);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -96,7 +98,7 @@ export const useWorkerManager = (worker: string) => {
         if (workerManager) {
             try {
                 // send transaction
-                const transaction = workerManager.retire(worker);
+                const transaction = workerManager.retire(address);
                 setTransaction(transaction);
                 setError(undefined);
             } catch (e) {
@@ -106,24 +108,18 @@ export const useWorkerManager = (worker: string) => {
         }
     };
 
-    const clearStates = () => {
-        // setError(null);
-        setTransaction(null);
-    };
-
     return {
         workerManager,
+        balance,
         error,
         user,
         available,
         pending,
         owned,
         retired,
-        isAuthorized,
+        authorized,
         loading,
         transaction,
-        updateState,
-        clearStates,
         hire,
         cancelHire,
         retire,

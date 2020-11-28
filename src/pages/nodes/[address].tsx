@@ -16,16 +16,17 @@ import Link from 'next/link';
 import { formatEther } from '@ethersproject/units';
 import { AddressZero } from '@ethersproject/constants';
 import { Breadcrumb, Button, Descriptions, Spin } from 'antd';
-import { useBalance, useAccount } from '../../services/eth';
+import { useBalance } from '../../services/eth';
 import { useWorkerManager } from '../../services/workerManager';
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
+import { useWeb3React } from '@web3-react/core';
 
 const Node = () => {
     const router = useRouter();
     let { address } = router.query;
     address = address as string;
-    const account = useAccount(0);
+    const { account } = useWeb3React();
 
     const {
         user,
@@ -39,17 +40,11 @@ const Node = () => {
         cancelHire,
         retire,
         transaction,
-        clearStates,
     } = useWorkerManager(address);
 
     // make balance depend on owner, so if it changes we update the balance
     const balance = useBalance(address, [user]);
-
     const submitting = !!transaction;
-
-    const confirmationDone = (error: string) => {
-        clearStates();
-    };
 
     return (
         <Layout>
