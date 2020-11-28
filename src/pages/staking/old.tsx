@@ -26,7 +26,7 @@ import {
     Divider,
     Select,
 } from 'antd';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction, ethers } from 'ethers';
 
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
@@ -37,8 +37,6 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { useMarketInformation } from '../../services/market';
-
-import { isEthAddress } from '../../utils/validator';
 
 const { Option } = Select;
 const localNodeUrl = 'http://localhost:8545';
@@ -553,7 +551,7 @@ const Staking = () => {
                     </Col>
                 </Row>
 
-                {isEthAddress(nodeAddress) && (
+                {ethers.utils.isAddress(nodeAddress) && (
                     <NodeDetails
                         address={nodeAddress}
                         setWorkerError={setWorkerError}
