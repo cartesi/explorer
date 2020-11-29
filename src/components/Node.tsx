@@ -14,7 +14,7 @@ import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
-import { useWorkerManager } from '../services/workerManager';
+import { useNode } from '../services/node';
 import { tinyString } from '../utils/stringUtils';
 import { confirmations } from '../utils/networks';
 import { isAddress } from 'ethers/lib/utils';
@@ -24,7 +24,7 @@ interface NodeProps {}
 const Node = (props: NodeProps) => {
     const { library, account, chainId } = useWeb3React<Web3Provider>();
     const [address, setAddress] = useState('');
-    const node = useWorkerManager(address);
+    const node = useNode(address);
     const [showDetails, setShowDetails] = useState(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);

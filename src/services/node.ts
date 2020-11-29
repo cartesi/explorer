@@ -9,58 +9,149 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useEffect, useState } from 'react';
-import { JsonRpcProvider } from '@ethersproject/providers';
-import { IChainData, getChain } from './chain';
+import { useState, useEffect } from 'react';
+import { useBalance, useBlockNumber } from './eth';
+import { usePoSContract, useWorkerManagerContract } from './contract';
 import { BigNumberish } from 'ethers';
+import { confirmations } from '../utils/networks';
+import { useWeb3React } from '@web3-react/core';
 
-export interface Node {
-    address: string;
-    chain: IChainData;
-    minimumFunding?: BigNumberish;
-    maximumFunding?: BigNumberish;
-}
+export const useNode = (address: string) => {
+    const { chainId } = useWeb3React();
+    const workerManager = useWorkerManagerContract();
+    const pos = usePoSContract();
 
-export const useLocalNode = (url: string = 'http://localhost:8545'): Node => {
-    const [node, setNode] = useState<Node>(undefined);
+    const [error, setError] = useState<string>();
+    const [user, setUser] = useState<string>('');
+    const [owned, setOwned] = useState<boolean>(false);
+    const [available, setAvailable] = useState<boolean>(false);
+    const [pending, setPending] = useState<boolean>(false);
+    const [retired, setRetired] = useState<boolean>(false);
+    const [authorized, setAuthorized] = useState<boolean>(false);
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [hiring, setHiring] = useState<boolean>(false);
+
+    // make balance depend on owner, so if it changes we update the balance
+    // also update on every block
+    const block = useBlockNumber();
+    const balance = useBalance(address, [user, block]);
+
+    const updateState = async () => {
+        if (workerManager) {
+            const available = await workerManager.isAvailable(address);
+            const owned = await workerManager.isOwned(address);
+            const retired = await workerManager.isRetired(address);
+            setAvailable(available);
+            setOwned(owned);
+            setRetired(retired);
+            setPending(!available && !owned && !retired);
+            setUser(await workerManager.getUser(address));
+            setAuthorized(
+                await workerManager.isAuthorized(address, pos.address)
+            );
+        }
+    };
 
     useEffect(() => {
-        const provider = new JsonRpcProvider(url);
-        provider
-            .getSigner()
-            .getAddress()
-            .then((address) => {
-                provider.getNetwork().then(({ chainId }) => {
-                    getChain(chainId).then((chain) => {
-                        setNode({
-                            address,
-                            chain,
+        if (workerManager) {
+            setLoading(true);
+            updateState()
+                .then(() => setLoading(false))
+                .catch((e) => setError(e.message));
+        }
+    }, [workerManager, address, block]);
+
+    const hire = (value: BigNumberish) => {
+        if (workerManager) {
+            // send transaction
+            setHiring(true);
+            setError(undefined);
+            workerManager
+                .hireAndAuthorize(address, pos.address, {
+                    value,
+                })
+                .then((tx) => {
+                    tx.wait(confirmations[chainId])
+                        .then((receipt) => {
+                            setHiring(false);
+                            setError(undefined);
+                            updateState();
+                        })
+                        .catch((e) => {
+                            setHiring(false);
+                            setError(e.message);
                         });
-                    });
+                })
+                .catch((e) => {
+                    setHiring(false);
+                    setError(e.message);
                 });
-            })
-            .catch((e) => setNode(undefined));
-    }, []);
+        }
+    };
 
-    return node;
-};
+    const cancelHire = () => {
+        if (workerManager) {
+            // send transaction
+            workerManager
+                .cancelHire(address)
+                .then((tx) => {
+                    tx.wait(confirmations[chainId])
+                        .then((receipt) => {
+                            setHiring(false);
+                            setError(undefined);
+                            updateState();
+                        })
+                        .catch((e) => {
+                            setHiring(false);
+                            setError(e.message);
+                        });
+                })
+                .catch((e) => {
+                    setHiring(false);
+                    setError(e.message);
+                });
+        }
+    };
 
-export const useCartesiNodes = (chainId: number): Node[] => {
-    const [nodes, setNodes] = useState<Node[]>([]);
+    const retire = () => {
+        if (workerManager) {
+            // send transaction
+            workerManager
+                .retire(address)
+                .then((tx) => {
+                    tx.wait(confirmations[chainId])
+                        .then((receipt) => {
+                            setHiring(false);
+                            setError(undefined);
+                            updateState();
+                        })
+                        .catch((e) => {
+                            setHiring(false);
+                            setError(e.message);
+                        });
+                })
+                .catch((e) => {
+                    setHiring(false);
+                    setError(e.message);
+                });
+        }
+    };
 
-    useEffect(() => {
-        getChain(chainId).then((chain) => {
-            const url = `https://${chain.name}.paas.cartesi.io`;
-            // TODO: use URL to fetch nodes
-            const testAddresses = [
-                '0xD9C0550FC812bf53F6952d48FB2039DEed6f941D',
-                '0x5B0132541eB13e2Df4F0816E4a47ccF3ac516AE5',
-                '0x66CfA4E2fabEa4621Af6E5A8C9418457DfedB1B8',
-            ];
-            const nodes = testAddresses.map((address) => ({ address, chain }));
-            setNodes(nodes);
-        });
-    }, [chainId]);
-
-    return nodes;
+    return {
+        workerManager,
+        balance,
+        error,
+        user,
+        available,
+        pending,
+        owned,
+        retired,
+        authorized,
+        loading,
+        hiring,
+        hire,
+        cancelHire,
+        retire,
+    };
 };

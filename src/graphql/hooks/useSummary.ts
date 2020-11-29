@@ -13,7 +13,7 @@ const useSummary = () => {
         SummaryVars
     >(SUMMARY, {
         variables: {
-            id: "1",
+            id: '1',
         },
         notifyOnNetworkStatusChange: true,
     });

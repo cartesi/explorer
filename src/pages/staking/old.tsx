@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
@@ -24,22 +24,16 @@ import {
     Space,
     Statistic,
     Divider,
-    Select,
 } from 'antd';
 import { BigNumber, ContractTransaction, ethers } from 'ethers';
 
 import Layout from '../../components/Layout';
 import WaitingConfirmations from '../../components/WaitingConfirmations';
-import NodeDetails from '../../components/NodeDetails';
 
-import { useLocalNode, useCartesiNodes } from '../../services/node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { useMarketInformation } from '../../services/market';
-
-const { Option } = Select;
-const localNodeUrl = 'http://localhost:8545';
 
 type NodeAddress = { address: string; chain: string };
 
@@ -69,10 +63,6 @@ const Staking = () => {
 
     // block number tracking
     const blockNumber = useBlockNumber();
-
-    const [nodeList, setNodeList] = useState<Array<NodeAddress>>([]);
-    const nodes = useCartesiNodes(chainId);
-    const localNode = useLocalNode(localNodeUrl);
 
     const {
         staking,
@@ -110,28 +100,6 @@ const Staking = () => {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
-
-    useEffect(() => {
-        let newNodeList: Array<NodeAddress> = localNode
-            ? [
-                  {
-                      address: localNode.address,
-                      chain: 'localhost:8545',
-                  },
-              ]
-            : [];
-
-        newNodeList = newNodeList.concat(
-            nodes.map((node) => {
-                return {
-                    address: node.address,
-                    chain: 'Cartesi',
-                };
-            })
-        );
-
-        setNodeList(newNodeList);
-    }, [nodes, localNode]);
 
     const validate = (value: number): number => {
         if (!value || value < 0) value = 0;
@@ -523,42 +491,6 @@ const Staking = () => {
                 </Row>
 
                 <Divider orientation="left" plain></Divider>
-
-                <Row gutter={16} align="middle">
-                    <Col>
-                        <Typography.Text>Select Node:</Typography.Text>
-                    </Col>
-                    <Col>
-                        <Select
-                            style={{ minWidth: 560 }}
-                            showSearch
-                            value={nodeAddress}
-                            onChange={(value) =>
-                                setNodeAddress(value.toString())
-                            }
-                            disabled={waiting}
-                            filterOption={(input, option) => {
-                                setNodeAddress(input);
-                                return true;
-                            }}
-                        >
-                            {nodeList.map((item) => (
-                                <Option key={item.address} value={item.address}>
-                                    {item.address} &lt;{item.chain}&gt;
-                                </Option>
-                            ))}
-                        </Select>
-                    </Col>
-                </Row>
-
-                {ethers.utils.isAddress(nodeAddress) && (
-                    <NodeDetails
-                        address={nodeAddress}
-                        setWorkerError={setWorkerError}
-                        setWorkerTransaction={setWorkerTransaction}
-                        waiting={waiting}
-                    />
-                )}
 
                 {/* {error &&
                     <Alert
