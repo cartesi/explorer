@@ -29,7 +29,7 @@ const Node = (props: NodeProps) => {
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
     const [transfering, setTransfering] = useState(false);
 
-    const notMine = !node.available && node.user != account;
+    const notMine = node.address && !node.available && node.user != account;
     const mine = node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
 
@@ -127,12 +127,14 @@ const Node = (props: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="deposit"
-                                        value={formatEther(deposit)}
-                                        onChange={(event) =>
-                                            setDeposit(
-                                                parseEther(event.target.value)
-                                            )
-                                        }
+                                        defaultValue={formatEther(deposit)}
+                                        onBlur={(e) => {
+                                            const value = parseEther(
+                                                e.target.value
+                                            );
+                                            setDeposit(value);
+                                            e.target.value = formatEther(value);
+                                        }}
                                     />
                                     <span className="input-group-addon addon-inline input-source-observer small-text">
                                         ETH
@@ -174,12 +176,14 @@ const Node = (props: NodeProps) => {
                                         className="addon-inline form-control"
                                         id="transfer"
                                         disabled={transfering}
-                                        value={formatEther(transfer)}
-                                        onChange={(event) =>
-                                            setTransfer(
-                                                parseEther(event.target.value)
-                                            )
-                                        }
+                                        defaultValue={formatEther(transfer)}
+                                        onBlur={(e) => {
+                                            const value = parseEther(
+                                                e.target.value
+                                            );
+                                            setTransfer(value);
+                                            e.target.value = formatEther(value);
+                                        }}
                                     />
                                     <span className="input-group-addon addon-inline input-source-observer small-text">
                                         ETH
