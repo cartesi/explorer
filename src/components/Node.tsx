@@ -17,7 +17,6 @@ import { BigNumber, constants } from 'ethers';
 import { useNode } from '../services/node';
 import { tinyString } from '../utils/stringUtils';
 import { confirmations } from '../utils/networks';
-import { isAddress } from 'ethers/lib/utils';
 
 interface NodeProps {}
 
@@ -30,9 +29,8 @@ const Node = (props: NodeProps) => {
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
     const [transfering, setTransfering] = useState(false);
 
-    const notMine =
-        node.user && node.user != constants.AddressZero && node.user != account;
-    const mine = node.user && node.user == account;
+    const notMine = !node.available && node.user != account;
+    const mine = node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
 
     const addFunds = () => {
@@ -49,6 +47,8 @@ const Node = (props: NodeProps) => {
                 });
         }
     };
+
+    const debug = chainId == 313371;
 
     let status = '';
     if (node.available) {
@@ -80,18 +80,15 @@ const Node = (props: NodeProps) => {
                     >
                         {address ? tinyString(address) : 'Click to hire node'}
                     </span>
-                    {mine && node.balance && (
-                        <span
-                            className="col-12 col-sm-auto mx-2 staking-hire-content-balance"
-                            onClick={() => setShowDetails(!showDetails)}
-                        >
-                            {formatEther(node.balance)}{' '}
-                            <span className="small-text">ETH</span>
-                        </span>
-                    )}
                     {notMine && (
                         <span className="col-12 col-sm-auto mx-2 staking-hire-content-error">
                             node owned by other account
+                        </span>
+                    )}
+                    {node.balance && (
+                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-balance">
+                            {formatEther(node.balance)}{' '}
+                            <span className="small-text">ETH</span>
                         </span>
                     )}
                 </div>
@@ -107,32 +104,20 @@ const Node = (props: NodeProps) => {
                             <div className="input-group">
                                 <input
                                     type="text"
-                                    className="form-control"
+                                    className="form-control :invalid"
                                     id="address"
                                     value={address}
                                     onChange={(event) =>
-                                        isAddress(event.target.value) &&
                                         setAddress(event.target.value)
                                     }
                                 />
                             </div>
+                            <div className="invalid-feedback">
+                                Invalid address.
+                            </div>
                         </div>
 
-                        {node && node.balance && (
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Balance
-                                </label>
-                                <div className="sub-title-1">
-                                    {formatEther(node.balance)}{' '}
-                                    <span className="small-text text-secondary">
-                                        ETH
-                                    </span>
-                                </div>
-                            </div>
-                        )}
-
-                        {node && node.available && (
+                        {node.address && node.available && (
                             <div className="form-group">
                                 <label className="body-text-2 text-secondary">
                                     Deposit
@@ -156,8 +141,8 @@ const Node = (props: NodeProps) => {
                             </div>
                         )}
 
-                        {node &&
-                            node.user &&
+                        {node.address &&
+                            debug &&
                             node.user != constants.AddressZero && (
                                 <div className="form-group">
                                     <label className="body-text-2 text-secondary">
@@ -169,12 +154,14 @@ const Node = (props: NodeProps) => {
                                 </div>
                             )}
 
-                        <div className="form-group">
-                            <label className="body-text-2 text-secondary">
-                                Status
-                            </label>
-                            <div className="sub-title-1">{status}</div>
-                        </div>
+                        {node.address && debug && (
+                            <div className="form-group">
+                                <label className="body-text-2 text-secondary">
+                                    Status
+                                </label>
+                                <div className="sub-title-1">{status}</div>
+                            </div>
+                        )}
 
                         {ready && (
                             <div className="form-group">
@@ -201,7 +188,7 @@ const Node = (props: NodeProps) => {
                             </div>
                         )}
 
-                        {node && node.available && (
+                        {node.address && node.available && (
                             <div className="staking-hire-node-buttons">
                                 <button
                                     type="button"

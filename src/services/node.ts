@@ -10,11 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
+import { BigNumberish } from 'ethers';
+import { isAddress } from '@ethersproject/address';
+import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
 import { usePoSContract, useWorkerManagerContract } from './contract';
-import { BigNumberish } from 'ethers';
 import { confirmations } from '../utils/networks';
-import { useWeb3React } from '@web3-react/core';
 
 export const useNode = (address: string) => {
     const { chainId } = useWeb3React();
@@ -37,30 +38,41 @@ export const useNode = (address: string) => {
     const block = useBlockNumber();
     const balance = useBalance(address, [user, block]);
 
-    const updateState = async () => {
-        if (workerManager) {
+    const updateState = async (address: string) => {
+        try {
+            const user = await workerManager.getUser(address);
             const available = await workerManager.isAvailable(address);
+            const pending = await workerManager.isPending(address);
             const owned = await workerManager.isOwned(address);
             const retired = await workerManager.isRetired(address);
+            const authorized = await workerManager.isAuthorized(
+                address,
+                pos.address
+            );
+            setUser(user);
             setAvailable(available);
+            setPending(pending);
             setOwned(owned);
             setRetired(retired);
-            setPending(!available && !owned && !retired);
-            setUser(await workerManager.getUser(address));
-            setAuthorized(
-                await workerManager.isAuthorized(address, pos.address)
-            );
+            setAuthorized(authorized);
+        } catch (e) {
+            setUser('');
+            setAvailable(false);
+            setPending(false);
+            setOwned(false);
+            setRetired(false);
+            setAuthorized(false);
         }
     };
 
     useEffect(() => {
         if (workerManager) {
             setLoading(true);
-            updateState()
+            updateState(address)
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
-    }, [workerManager, address, block]);
+    }, [workerManager, address, block, hiring]);
 
     const hire = (value: BigNumberish) => {
         if (workerManager) {
@@ -76,7 +88,6 @@ export const useNode = (address: string) => {
                         .then((receipt) => {
                             setHiring(false);
                             setError(undefined);
-                            updateState();
                         })
                         .catch((e) => {
                             setHiring(false);
@@ -100,7 +111,6 @@ export const useNode = (address: string) => {
                         .then((receipt) => {
                             setHiring(false);
                             setError(undefined);
-                            updateState();
                         })
                         .catch((e) => {
                             setHiring(false);
@@ -124,7 +134,6 @@ export const useNode = (address: string) => {
                         .then((receipt) => {
                             setHiring(false);
                             setError(undefined);
-                            updateState();
                         })
                         .catch((e) => {
                             setHiring(false);
@@ -139,7 +148,7 @@ export const useNode = (address: string) => {
     };
 
     return {
-        workerManager,
+        address: isAddress(address) ? address : undefined,
         balance,
         error,
         user,

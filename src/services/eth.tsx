@@ -13,13 +13,18 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
+import { isAddress } from '@ethersproject/address';
 
 export const useBalance = (address: string, deps: any[] = []): BigNumber => {
     const { library } = useWeb3React<Web3Provider>();
     const [balance, setBalance] = useState<BigNumber>(undefined);
     useEffect(() => {
-        if (library && address) {
-            library.getBalance(address).then(setBalance);
+        if (library) {
+            if (isAddress(address)) {
+                library.getBalance(address).then(setBalance);
+            } else {
+                setBalance(undefined);
+            }
         }
     }, [library, address, ...deps]);
     return balance;
