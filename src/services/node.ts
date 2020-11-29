@@ -18,7 +18,7 @@ import { usePoSContract, useWorkerManagerContract } from './contract';
 import { confirmations } from '../utils/networks';
 
 export const useNode = (address: string) => {
-    const { chainId } = useWeb3React();
+    const { library, chainId } = useWeb3React();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
 
@@ -32,6 +32,7 @@ export const useNode = (address: string) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [hiring, setHiring] = useState<boolean>(false);
+    const [transfering, setTransfering] = useState(false);
 
     // make balance depend on owner, so if it changes we update the balance
     // also update on every block
@@ -147,6 +148,18 @@ export const useNode = (address: string) => {
         }
     };
 
+    const transfer = (value: BigNumberish) => {
+        if (library && chainId && address) {
+            setTransfering(true);
+            const signer = library.getSigner();
+            signer.sendTransaction({ to: address, value }).then((tx) => {
+                tx.wait(confirmations[chainId]).then((receipt) => {
+                    setTransfering(false);
+                });
+            });
+        }
+    };
+
     return {
         address: isAddress(address) ? address : undefined,
         balance,
@@ -159,8 +172,10 @@ export const useNode = (address: string) => {
         authorized,
         loading,
         hiring,
+        transfering,
         hire,
         cancelHire,
         retire,
+        transfer,
     };
 };

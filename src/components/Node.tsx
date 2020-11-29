@@ -16,7 +16,6 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import { useNode } from '../services/node';
 import { tinyString } from '../utils/stringUtils';
-import { confirmations } from '../utils/networks';
 
 interface NodeProps {}
 
@@ -27,26 +26,10 @@ const Node = (props: NodeProps) => {
     const [showDetails, setShowDetails] = useState(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
-    const [transfering, setTransfering] = useState(false);
 
     const notMine = node.address && !node.available && node.user != account;
     const mine = node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
-
-    const addFunds = () => {
-        if (library && chainId && address) {
-            setTransfering(true);
-            const signer = library.getSigner();
-            signer
-                .sendTransaction({ to: address, value: transfer })
-                .then((tx) => {
-                    tx.wait(confirmations[chainId]).then((receipt) => {
-                        setTransfer(constants.Zero);
-                        setTransfering(false);
-                    });
-                });
-        }
-    };
 
     const debug = chainId == 313371;
 
@@ -175,7 +158,7 @@ const Node = (props: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="transfer"
-                                        disabled={transfering}
+                                        disabled={node.transfering}
                                         defaultValue={formatEther(transfer)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -260,11 +243,11 @@ const Node = (props: NodeProps) => {
 
                                 <button
                                     type="button"
-                                    disabled={transfering}
+                                    disabled={node.transfering}
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                    onClick={addFunds}
+                                    onClick={() => node.transfer(transfer)}
                                 >
-                                    {transfering && (
+                                    {node.transfering && (
                                         <span
                                             className="spinner-border spinner-border-sm"
                                             role="status"
