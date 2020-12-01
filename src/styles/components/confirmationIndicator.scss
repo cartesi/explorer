@@ -1,0 +1,18 @@
+@import '../variables.scss';
+
+.confirmation-indicator {
+    margin: 0 0 0 20px;
+    color: $primary-color;
+    background-color: $dark-white-color;
+    padding: 0 15px;
+    font-size: large;
+    font-weight: 500;
+    border-radius: 5px;
+
+    &-text {
+        margin: 0 10px 0 0;
+        @media (max-width: $md-max) {
+            display: none;
+        }
+    }
+}

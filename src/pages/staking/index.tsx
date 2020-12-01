@@ -23,6 +23,7 @@ import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
+import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -66,13 +67,14 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
-    const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
-        BigNumber.from(0)
-    );
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
     const [maturingCountdown, setMaturingCountdown] = useState<number>(0);
     const [releasingCountdown, setReleasingCountdown] = useState<number>(0);
+
+    const ongoingTransaction = tokenTransaction || stakingTransaction;
+    const error = tokenError || stakingError;
+    const waiting = !!ongoingTransaction;
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -101,6 +103,11 @@ const Staking = () => {
         return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${(
             '0' + seconds
         ).slice(-2)}`;
+    };
+
+    const showEditAllowance = () => {
+        setEditAllowance(true);
+        setApproveAmount(BigNumber.from(formatCTSI(allowance)));
     };
 
     const doApprove = () => {
@@ -181,6 +188,11 @@ const Staking = () => {
         };
     };
 
+    const confirmationDone = () => {
+        clearStakingStates();
+        clearTokenStates();
+    };
+
     const stakeSplit = splitStakeAmount();
     const unstakeSplit = splitUnstakeAmount();
     const totalBalance = balance
@@ -196,8 +208,13 @@ const Staking = () => {
             </Head>
 
             <div className="page-header row align-items-center py-3">
-                <div className="col col-12 col-lg-6 info-text-md text-white">
+                <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Staking
+                    <ConfirmationIndicator
+                        transaction={ongoingTransaction}
+                        confirmationDone={confirmationDone}
+                        error={error}
+                    />
                 </div>
 
                 <div className="col col-12 col-sm-6 col-lg-3">
@@ -318,6 +335,7 @@ const Staking = () => {
                                         <button
                                             type="button"
                                             className="btn btn-dark py-0 px-4 button-text mt-2"
+                                            disabled={waiting}
                                             onClick={doWithdraw}
                                         >
                                             Withdraw
@@ -357,11 +375,7 @@ const Staking = () => {
                                 <div className="body-text-1">
                                     Allowance{' '}
                                     {!editAllowance && (
-                                        <a
-                                            onClick={() =>
-                                                setEditAllowance(true)
-                                            }
-                                        >
+                                        <a onClick={showEditAllowance}>
                                             <img src="/images/pen.png" />
                                         </a>
                                     )}
@@ -375,6 +389,7 @@ const Staking = () => {
                                                 className="addon-inline form-control"
                                                 id="approveAmount"
                                                 value={approveAmount.toString()}
+                                                disabled={waiting}
                                                 onChange={(e) =>
                                                     setApproveAmount(
                                                         BigNumber.from(
@@ -404,6 +419,7 @@ const Staking = () => {
                                             <button
                                                 type="button"
                                                 className="btn btn-dark py-2 button-text flex-fill"
+                                                disabled={waiting}
                                                 onClick={doApprove}
                                             >
                                                 Approve
@@ -429,7 +445,7 @@ const Staking = () => {
                                             }`}
                                             id="stakeAmount"
                                             value={stakeAmount.toString()}
-                                            disabled={editAllowance}
+                                            disabled={editAllowance || waiting}
                                             onChange={(e) =>
                                                 setStakeAmount(
                                                     BigNumber.from(
@@ -489,7 +505,7 @@ const Staking = () => {
 
                                 <button
                                     type="button"
-                                    disabled={editAllowance}
+                                    disabled={editAllowance || waiting}
                                     className="btn btn-dark py-2 button-text flex-fill"
                                     onClick={doStake}
                                 >
@@ -516,6 +532,7 @@ const Staking = () => {
                                             }`}
                                             id="unstakeAmount"
                                             value={unstakeAmount.toString()}
+                                            disabled={waiting}
                                             onChange={(e) =>
                                                 setUnstakeAmount(
                                                     BigNumber.from(
@@ -574,6 +591,7 @@ const Staking = () => {
                                 <button
                                     type="button"
                                     className="btn btn-dark py-2 button-text flex-fill"
+                                    disabled={waiting}
                                     onClick={doUnstake}
                                 >
                                     Unstake
