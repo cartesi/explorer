@@ -12,6 +12,17 @@ interface IBlocksFilter {
     timestamp_gt?: number;
 }
 
+const auditFilter = (filter: IBlocksFilter): IBlocksFilter => {
+    if (filter.id) {
+        return {
+            ...filter,
+            id: filter.id.toLowerCase(),
+        };
+    }
+
+    return filter;
+};
+
 const useBlocks = (initFilter = {}) => {
     const [blocks, setBlocks] = useState<Array<Block>>([]);
     const [filter, setFilter] = useState<IBlocksFilter>(initFilter);
@@ -23,7 +34,7 @@ const useBlocks = (initFilter = {}) => {
     >(BLOCKS, {
         variables: {
             first: 10,
-            where: filter,
+            where: auditFilter(filter),
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },

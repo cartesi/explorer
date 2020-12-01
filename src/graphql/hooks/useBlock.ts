@@ -10,7 +10,7 @@ const useBlock = (id: string) => {
 
     const { loading, error, data } = useQuery<BlockData, BlockVars>(BLOCK, {
         variables: {
-            id,
+            id: id.toLowerCase(),
         },
         notifyOnNetworkStatusChange: true,
     });
