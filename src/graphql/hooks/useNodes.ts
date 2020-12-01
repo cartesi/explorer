@@ -6,6 +6,7 @@ import { NODES } from '../queries/node';
 import { Node, NodesData, NodesVars } from '../models';
 
 interface INodeFilter {
+    id?: string;
     timestamp_gt?: number;
     timestamp_lt?: number;
 }
@@ -35,7 +36,7 @@ const useNodes = () => {
         pageOffset: number = 0,
         newId: string = null
     ) => {
-        let newWhere: any =
+        let newWhere: INodeFilter =
             pageOffset === -2
                 ? {
                       timestamp_gt: 0,
@@ -51,7 +52,7 @@ const useNodes = () => {
         if (newId && newId != '') {
             newWhere = {
                 ...newWhere,
-                id: newId,
+                id: newId.toLowerCase(),
             };
         }
 

@@ -10,7 +10,7 @@ const useUser = (id: string) => {
 
     const { loading, error, data } = useQuery<UserData, UserVars>(USER, {
         variables: {
-            id: id.toLowerCase(),
+            id: id?.toLowerCase(),
         },
         notifyOnNetworkStatusChange: true,
     });
