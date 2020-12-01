@@ -5,13 +5,18 @@ import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/node';
 import { Node, NodesData, NodesVars } from '../models';
 
+interface INodeFilter {
+    timestamp_gt?: number;
+    timestamp_lt?: number;
+}
+
 const useNodes = () => {
     const [nodes, setNodes] = useState<Array<Node>>([]);
 
-    const [lastTimestamp, setLastTimestamp] = useState(0);
-    const [firstTimestamp, setFirstTimestamp] = useState(0);
+    const [lastTimestamp, setLastTimestamp] = useState<number>(0);
+    const [firstTimestamp, setFirstTimestamp] = useState<number>(0);
 
-    const [where, setWhere] = useState<any>({});
+    const [where, setWhere] = useState<INodeFilter>({});
 
     const { loading, error, data, fetchMore } = useQuery<NodesData, NodesVars>(
         NODES,

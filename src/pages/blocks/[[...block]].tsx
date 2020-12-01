@@ -8,8 +8,9 @@ import useBlocks from '../../graphql/hooks/useBlocks';
 import { tinyString } from '../../utils/stringUtils';
 import { useCartesiToken } from '../../services/token';
 import { tinyGraphUrl } from '../../utils/tinygraph';
+import { Block } from '../../graphql/models';
 
-const Block = () => {
+const Blocks = () => {
     const router = useRouter();
     let { block: blockId } = router.query;
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
@@ -19,7 +20,7 @@ const Block = () => {
         blockId == '' ? {} : { id: blockId }
     );
 
-    const [searchKey, setSearchKey] = useState(blockId);
+    const [searchKey, setSearchKey] = useState<string>(blockId);
 
     const doSearch = () => {
         refreshBlocks(
@@ -49,7 +50,7 @@ const Block = () => {
         }
     };
 
-    const filterBlock = (block) => {
+    const filterBlock = (block: Block) => {
         if (!filter.number && !filter.id) return true;
         if (filter.number) return filter.number == block.number;
         if (filter.id) return filter.id == block.id;
@@ -177,4 +178,4 @@ const Block = () => {
     );
 };
 
-export default Block;
+export default Blocks;

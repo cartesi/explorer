@@ -24,7 +24,7 @@ export const useMarketInformation = () => {
         marketInformation,
         setMarketInformation,
     ] = useState<MarketInformation>({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     useEffect(() => {

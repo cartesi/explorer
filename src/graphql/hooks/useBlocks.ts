@@ -5,10 +5,17 @@ import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
 
+interface IBlocksFilter {
+    id?: string;
+    number?: number;
+    timestamp_lt?: number;
+    timestamp_gt?: number;
+}
+
 const useBlocks = (initFilter = {}) => {
     const [blocks, setBlocks] = useState<Array<Block>>([]);
-    const [filter, setFilter] = useState<any>(initFilter);
-    const [reset, setReset] = useState(false);
+    const [filter, setFilter] = useState<IBlocksFilter>(initFilter);
+    const [reset, setReset] = useState<boolean>(false);
 
     const { loading, error, data, fetchMore } = useQuery<
         BlocksData,
@@ -23,7 +30,10 @@ const useBlocks = (initFilter = {}) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const refreshBlocks = async (newFilter = null, reset = false) => {
+    const refreshBlocks = async (
+        newFilter: IBlocksFilter = null,
+        reset: boolean = false
+    ) => {
         setFilter(newFilter ? newFilter : {});
         setReset(reset);
     };

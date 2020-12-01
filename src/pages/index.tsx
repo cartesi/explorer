@@ -44,8 +44,8 @@ const Home = () => {
     const { blocks, loadNewBlocks } = useBlocks();
     const { summary } = useSummary();
 
-    const [nodePage, setNodePage] = useState(1);
-    const [nodeSearch, setNodeSearch] = useState('');
+    const [nodePage, setNodePage] = useState<number>(1);
+    const [nodeSearch, setNodeSearch] = useState<string>('');
 
     let participationRateLabel = '-';
     let aprLabel = '-';

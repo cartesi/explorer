@@ -23,7 +23,7 @@ export const themes = [
     'berrypie',
 ];
 
-export const tinyGraphUrl = (block: Block) => {
+export const tinyGraphUrl = (block: Block): string => {
     return `https://www.tinygraphs.com/labs/isogrids/hexa/${block.id}?theme=${
         themes[block.number % themes.length]
     }&numcolors=4&size=220&fmt=svg`;

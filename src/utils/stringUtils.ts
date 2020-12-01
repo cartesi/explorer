@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export const tinyString = (str: string) => {
+export const tinyString = (str: string): string => {
     if (str.length > 9) {
         return str.slice(0, 5) + '...' + str.slice(-4);
     }

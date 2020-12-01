@@ -70,9 +70,9 @@ const Staking = () => {
         BigNumber.from(0)
     );
 
-    const [stakeTab, setStakeTab] = useState(true);
-    const [maturingCountdown, setMaturingCountdown] = useState(0);
-    const [releasingCountdown, setReleasingCountdown] = useState(0);
+    const [stakeTab, setStakeTab] = useState<boolean>(true);
+    const [maturingCountdown, setMaturingCountdown] = useState<number>(0);
+    const [releasingCountdown, setReleasingCountdown] = useState<number>(0);
 
     useEffect(() => {
         const interval = setInterval(() => {

@@ -32,7 +32,7 @@ export const useNode = (address: string) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [hiring, setHiring] = useState<boolean>(false);
-    const [transfering, setTransfering] = useState(false);
+    const [transfering, setTransfering] = useState<boolean>(false);
 
     // make balance depend on owner, so if it changes we update the balance
     // also update on every block

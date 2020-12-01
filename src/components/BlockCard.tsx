@@ -10,7 +10,7 @@ interface BlockCardProps {
 const BlockCard = (props: BlockCardProps) => {
     const { block } = props;
 
-    const [timestamp, setTimestamp] = useState('');
+    const [timestamp, setTimestamp] = useState<string>('');
 
     useEffect(() => {
         if (block) {
