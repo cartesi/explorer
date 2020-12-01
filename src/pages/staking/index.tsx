@@ -230,7 +230,9 @@ const Staking = () => {
                     <label className="body-text-1">Total Rewards</label>
                     <img src="/images/question.png" />
                     <span className="info-text-md">
-                        {user ? user.totalReward : 0}{' '}
+                        {user
+                            ? formatCTSI(BigNumber.from(user.totalReward))
+                            : 0}{' '}
                         <span className="small-text">CTSI</span>
                     </span>
                 </div>
