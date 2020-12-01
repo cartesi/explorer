@@ -41,7 +41,7 @@ const Home = () => {
     const { stakedBalance } = useStaking();
 
     const { nodes, refreshNodes } = useNodes();
-    const { blocks, loadNewBlocks } = useBlocks();
+    const { blocks } = useBlocks();
     const { summary } = useSummary();
 
     const [nodePage, setNodePage] = useState<number>(1);
@@ -220,13 +220,6 @@ const Home = () => {
                 </Link>
 
                 <div className="landing-lottery-blocks">
-                    <button
-                        type="button"
-                        className="btn btn-link"
-                        onClick={() => loadNewBlocks()}
-                    >
-                        <img src="/images/refresh.svg" />
-                    </button>
                     {blocks.slice(0, 4).map((block) => (
                         <Link href={'/blocks/' + block.id} key={block.id}>
                             <a className="landing-link flex-fill">
