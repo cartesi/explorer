@@ -22,6 +22,7 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
+import useUser from '../../graphql/hooks/useUser';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -52,6 +53,8 @@ const Staking = () => {
         formatCTSI,
         parseCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
+
+    const { user } = useUser(account);
 
     const [approveAmount, setApproveAmount] = useState<BigNumber>(
         BigNumber.from(0)
@@ -227,7 +230,8 @@ const Staking = () => {
                     <label className="body-text-1">Total Rewards</label>
                     <img src="/images/question.png" />
                     <span className="info-text-md">
-                        100 <span className="small-text">CTSI</span>
+                        {user ? user.totalReward : 0}{' '}
+                        <span className="small-text">CTSI</span>
                     </span>
                 </div>
 

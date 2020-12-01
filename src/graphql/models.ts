@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers';
-
 export type Summary = {
     id: string;
     totalUsers: number;
@@ -80,5 +78,13 @@ export interface BlockData {
 }
 
 export interface BlockVars {
+    id: string;
+}
+
+export interface UserData {
+    user: User;
+}
+
+export interface UserVars {
     id: string;
 }
