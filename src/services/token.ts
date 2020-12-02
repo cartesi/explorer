@@ -68,7 +68,7 @@ export const useCartesiToken = (
     };
 
     const clearStates = () => {
-        // setError(null);
+        setError(null);
         setTransaction(null);
     };
 

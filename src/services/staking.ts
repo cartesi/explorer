@@ -98,7 +98,7 @@ export const useStaking = () => {
     };
 
     const clearStates = () => {
-        // setError(null);
+        setError(null);
         setTransaction(null);
     };
 
