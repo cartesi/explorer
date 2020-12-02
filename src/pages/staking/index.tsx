@@ -70,25 +70,36 @@ const Staking = () => {
     );
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
-    const [maturingCountdown, setMaturingCountdown] = useState<number>(0);
-    const [releasingCountdown, setReleasingCountdown] = useState<number>(0);
+    const [maturingCountdown, setMaturingCountdown] = useState<number>();
+    const [releasingCountdown, setReleasingCountdown] = useState<number>();
 
     const ongoingTransaction = tokenTransaction || stakingTransaction;
     const error = tokenError || stakingError;
     const waiting = !!ongoingTransaction;
 
+    const updateTimers = () => {
+        if (maturingBalance.gt(0)) {
+            setMaturingCountdown(
+                maturingTimestamp > new Date()
+                    ? maturingTimestamp.getTime() - new Date().getTime()
+                    : 0
+            );
+        }
+
+        if (releasingBalance.gt(0)) {
+            setReleasingCountdown(
+                releasingTimestamp > new Date()
+                    ? releasingTimestamp.getTime() - new Date().getTime()
+                    : 0
+            );
+        }
+    };
+
     useEffect(() => {
+        updateTimers();
+
         const interval = setInterval(() => {
-            if (maturingBalance.gt(0) && maturingTimestamp > new Date()) {
-                setMaturingCountdown(
-                    maturingTimestamp.getTime() - new Date().getTime()
-                );
-            }
-            if (releasingBalance.gt(0) && releasingTimestamp > new Date()) {
-                setReleasingCountdown(
-                    releasingTimestamp.getTime() - new Date().getTime()
-                );
-            }
+            updateTimers();
         }, 1000);
 
         return () => {
