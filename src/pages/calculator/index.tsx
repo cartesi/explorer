@@ -17,7 +17,6 @@ import Layout from '../../components/Layout';
 import { useMarketInformation } from '../../services/market';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BigNumber, constants, FixedNumber } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { useCartesiToken } from '../../services/token';
 
 interface Props {}
@@ -36,7 +35,7 @@ const Calculator = (props: Props) => {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
-    const { formatCTSI, parseCTSI } = useCartesiToken();
+    const { formatCTSI, parseCTSI, toCTSI } = useCartesiToken();
 
     // total staked simulation
     const [totalStaked, setTotalStaked] = useState<number>(-1);
@@ -58,12 +57,10 @@ const Calculator = (props: Props) => {
     const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract
     const activeStake = difficulty.div(desiredDrawTimeInterval);
     const blackBarPosition =
-        (parseFloat(formatUnits(activeStake, 18)) /
-            marketInformation.circulatingSupply) *
-        100;
+        (toCTSI(activeStake) / marketInformation.circulatingSupply) * 100;
 
     if (totalStaked < 0) {
-        setTotalStaked(parseInt(formatUnits(activeStake, 18)));
+        setTotalStaked(toCTSI(activeStake));
     }
 
     const circulatingSupply = BigNumber.from(
@@ -127,7 +124,7 @@ const Calculator = (props: Props) => {
                             type="number"
                             className="addon-inline form-control"
                             id="stake"
-                            value={parseInt(formatUnits(stake, 18))}
+                            value={toCTSI(stake)}
                             onChange={(event) =>
                                 setStake(
                                     parseCTSI(

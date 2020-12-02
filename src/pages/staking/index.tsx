@@ -53,6 +53,7 @@ const Staking = () => {
         approve,
         formatCTSI,
         parseCTSI,
+        toBigCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
     const { user } = useUser(account);
@@ -107,7 +108,7 @@ const Staking = () => {
 
     const showEditAllowance = () => {
         setEditAllowance(true);
-        setApproveAmount(BigNumber.from(formatCTSI(allowance)));
+        setApproveAmount(toBigCTSI(allowance));
     };
 
     const doApprove = () => {
