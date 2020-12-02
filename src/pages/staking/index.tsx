@@ -112,19 +112,28 @@ const Staking = () => {
     };
 
     const doApprove = () => {
-        setEditAllowance(false);
-        approve(staking.address, parseCTSI(approveAmount));
-        setApproveAmount(BigNumber.from(0));
+        if (approveAmount.gt(0)) {
+            setEditAllowance(false);
+
+            if (!approveAmount.eq(toBigCTSI(allowance))) {
+                approve(staking.address, parseCTSI(approveAmount));
+                setApproveAmount(BigNumber.from(0));
+            }
+        }
     };
 
     const doStake = () => {
-        stake(parseCTSI(stakeAmount));
-        setStakeAmount(BigNumber.from(0));
+        if (stakeAmount.gt(0)) {
+            stake(parseCTSI(stakeAmount));
+            setStakeAmount(BigNumber.from(0));
+        }
     };
 
     const doUnstake = () => {
-        unstake(parseCTSI(unstakeAmount));
-        setUnstakeAmount(BigNumber.from(0));
+        if (unstakeAmount.gt(0)) {
+            unstake(parseCTSI(unstakeAmount));
+            setUnstakeAmount(BigNumber.from(0));
+        }
     };
 
     const doWithdraw = () => {
