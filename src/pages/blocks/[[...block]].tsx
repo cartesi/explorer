@@ -16,45 +16,58 @@ const Blocks = () => {
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const { formatCTSI } = useCartesiToken(null, null, null);
-    const { blocks, refreshBlocks, loading, filter } = useBlocks(
+    const { blocks, refreshBlocks, loading } = useBlocks(
         blockId == '' ? {} : { id: blockId }
     );
 
     const [searchKey, setSearchKey] = useState<string>(blockId);
 
     const doSearch = () => {
-        refreshBlocks(
-            searchKey != ''
-                ? searchKey.startsWith('0x')
-                    ? {
-                          id: searchKey,
-                      }
-                    : {
-                          number: parseInt(searchKey),
-                      }
-                : {},
-            true
-        );
+        if (searchKey != '') {
+            if (searchKey.startsWith('0x')) {
+                refreshBlocks(
+                    [
+                        {
+                            id: searchKey,
+                        },
+                        {
+                            producer: searchKey,
+                        },
+                        {
+                            node: searchKey,
+                        },
+                    ],
+                    true
+                );
+            } else {
+                refreshBlocks(
+                    [
+                        {
+                            number: parseInt(searchKey),
+                        },
+                    ],
+                    true
+                );
+            }
+        } else {
+            refreshBlocks(null, true);
+        }
     };
 
     const loadMore = () => {
-        refreshBlocks({
-            ...filter,
-            timestamp_lt: blocks[blocks.length - 1].timestamp,
-        });
+        if (blocks.length > 0) {
+            refreshBlocks([
+                {
+                    timestamp_lt: blocks[blocks.length - 1].timestamp,
+                },
+            ]);
+        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             doSearch();
         }
-    };
-
-    const filterBlock = (block: Block) => {
-        if (!filter.number && !filter.id) return true;
-        if (filter.number) return filter.number == block.number;
-        if (filter.id) return filter.id == block.id;
-        return false;
     };
 
     return (
@@ -94,7 +107,7 @@ const Blocks = () => {
 
             <div className="blocks-content mt-5">
                 <div className="blocks-content-block-list">
-                    {blocks.filter(filterBlock).map((block) => {
+                    {blocks.map((block) => {
                         return (
                             <div
                                 className="blocks-content-block row"
@@ -162,14 +175,15 @@ const Blocks = () => {
                         disabled={loading}
                     >
                         <div className="d-flex flex-row align-items-center justify-content-between">
-                            {loading && (
+                            {loading ? (
                                 <span
-                                    className="spinner-border spinner-border-sm mr-2"
+                                    className="spinner-border spinner-border-sm my-1"
                                     role="status"
                                     aria-hidden="true"
                                 ></span>
+                            ) : (
+                                <i className="fas fa-ellipsis-h my-1"></i>
                             )}
-                            Load Previous Blocks
                         </div>
                     </button>
                 </div>

@@ -222,6 +222,7 @@ const Staking = () => {
         .add(releasingBalance);
 
     if (typeof window !== 'undefined') {
+        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
         const $ = require('jquery');
         $('[data-toggle="tooltip"]').tooltip();
     }

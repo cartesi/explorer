@@ -3,9 +3,9 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 import getConfig from '../../next.config';
 
-let apolloClient;
+export let apolloClient: ApolloClient<any>;
 
-function createApolloClient() {
+const createApolloClient = (): ApolloClient<any> => {
     const { graphUrl } = getConfig();
 
     return new ApolloClient({
@@ -15,9 +15,9 @@ function createApolloClient() {
         }),
         cache: new InMemoryCache(),
     });
-}
+};
 
-export function initializeApollo(initialState = null) {
+export const initializeApollo = (initialState = null): ApolloClient<any> => {
     const _apolloClient = apolloClient ?? createApolloClient();
 
     if (initialState) {
@@ -30,9 +30,9 @@ export function initializeApollo(initialState = null) {
     if (!apolloClient) apolloClient = _apolloClient;
 
     return _apolloClient;
-}
+};
 
-export function useApollo(initialState) {
+export const useApollo = (initialState): ApolloClient<any> => {
     const store = useMemo(() => initializeApollo(initialState), [initialState]);
     return store;
-}
+};
