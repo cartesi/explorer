@@ -214,7 +214,7 @@ const Calculator = (props: Props) => {
                         <div className="col col-12 col-sm-6">
                             <div className="calculator-result-reward">
                                 <span className="body-text-2 mb-1">
-                                    Absolute Reward
+                                    Estimated Period Reward
                                 </span>
                                 <span className="info-text-md">
                                     {formatCTSI(reward)}{' '}

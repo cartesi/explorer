@@ -221,6 +221,11 @@ const Staking = () => {
         .add(maturingBalance)
         .add(releasingBalance);
 
+    if (typeof window !== 'undefined') {
+        const $ = require('jquery');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
     return (
         <Layout className="staking">
             <Head>
@@ -266,7 +271,11 @@ const Staking = () => {
             <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Rewards</label>
-                    <img src="/images/question.png" />
+                    <img
+                        data-toggle="tooltip"
+                        title="Total of CTSI rewards related to all blocks produced by this node"
+                        src="/images/question.png"
+                    />
                     <span className="info-text-md">
                         {user
                             ? formatCTSI(BigNumber.from(user.totalReward))
@@ -277,7 +286,11 @@ const Staking = () => {
 
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Balance</label>
-                    <img src="/images/question.png" />
+                    <img
+                        data-toggle="tooltip"
+                        title="This is the sum of all maturing, staked, released/releasing balances"
+                        src="/images/question.png"
+                    />
                     <span className="info-text-md">
                         {formatCTSI(totalBalance)}{' '}
                         <span className="small-text">CTSI</span>
