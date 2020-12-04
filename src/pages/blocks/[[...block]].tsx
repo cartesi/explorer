@@ -132,14 +132,14 @@ const Blocks = () => {
                                         </div>
 
                                         <div className="sub-title-4 col-4 my-1">
-                                            Producer Address
+                                            Producer
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
                                             {block.producer.id}
                                         </div>
 
                                         <div className="sub-title-4 col-4 my-1">
-                                            Node Address
+                                            Node
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
                                             {block.node.id}
@@ -149,7 +149,7 @@ const Blocks = () => {
                                             Reward
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
-                                            {formatCTSI(block.reward)}
+                                            {formatCTSI(block.reward)} CTSI
                                         </div>
                                     </div>
                                 </div>

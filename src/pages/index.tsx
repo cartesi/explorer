@@ -291,7 +291,9 @@ const Home = () => {
                                             )}{' '}
                                             CTSI
                                         </td>
-                                        <td>{formatCTSI(node.totalReward)}</td>
+                                        <td>
+                                            {formatCTSI(node.totalReward)} CTSI
+                                        </td>
                                         <td>{uptimeDays}</td>
                                     </tr>
                                 );
