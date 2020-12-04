@@ -132,7 +132,7 @@ const Blocks = () => {
                                         </div>
 
                                         <div className="sub-title-4 col-4 my-1">
-                                            Claimer Address
+                                            Producer Address
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
                                             {block.producer.id}

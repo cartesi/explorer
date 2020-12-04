@@ -232,7 +232,7 @@ const Home = () => {
 
             <div className="landing-noether">
                 <div className="landing-noether-title">
-                    <h5 className="landing-sub-title">Noether Node Runners</h5>
+                    <h5 className="landing-sub-title">Noether Nodes</h5>
 
                     <div className="input-with-icon input-group">
                         <span>

@@ -51,7 +51,7 @@ const BlockCard = (props: BlockCardProps) => {
                 <div className="block-card-content-content">
                     <div className="block-card-content-content-text">
                         <div className="body-text-2">
-                            Claimer
+                            Producer
                             <div className="sub-title-3 mt-1">
                                 {tinyString(block.producer.id)}
                             </div>
