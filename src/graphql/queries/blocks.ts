@@ -22,6 +22,7 @@ export const BLOCKS = gql`
 
             chain {
                 id
+                targetInterval
             }
 
             producer {

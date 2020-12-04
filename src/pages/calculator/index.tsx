@@ -41,7 +41,7 @@ const Calculator = (props: Props) => {
     const [totalStaked, setTotalStaked] = useState<number>(-1);
 
     // get latest block
-    const { blocks } = useBlocks();
+    const { blocks, getEstimatedRewardRate } = useBlocks();
 
     // bail out if not loaded
     const loaded =
@@ -50,56 +50,18 @@ const Calculator = (props: Props) => {
         return <div />;
     }
 
-    const latestBlock = blocks[0];
-    const latestPrize = BigNumber.from(latestBlock.reward);
+    const { reward, apr, activeStake } = getEstimatedRewardRate(
+        stake,
+        totalStaked,
+        period
+    );
 
-    const difficulty = BigNumber.from(latestBlock.difficulty);
-    const desiredDrawTimeInterval = BigNumber.from(600); // XXX: Would be good to get this value from lottery contract
-    const activeStake = difficulty.div(desiredDrawTimeInterval);
     const blackBarPosition =
         (toCTSI(activeStake) / marketInformation.circulatingSupply) * 100;
 
     if (totalStaked < 0) {
         setTotalStaked(toCTSI(activeStake));
     }
-
-    const circulatingSupply = BigNumber.from(
-        marketInformation.circulatingSupply
-    ).mul(constants.WeiPerEther);
-
-    // user stake share
-    const stakePercentage = FixedNumber.fromValue(stake).divUnsafe(
-        FixedNumber.fromValue(
-            constants.One.mul(totalStaked).mul(constants.WeiPerEther).add(stake)
-        )
-    );
-
-    // investment period in seconds
-    const periodSeconds = BigNumber.from(period).mul(24).mul(60).mul(60);
-
-    // number of block drawn in that period
-    const totalBlocks = periodSeconds.div(desiredDrawTimeInterval);
-
-    // number of block claimed by the user (statistically)
-    const blocksClaimed = stakePercentage.mulUnsafe(
-        FixedNumber.fromValue(totalBlocks)
-    );
-
-    // total reward
-    const reward = latestPrize.mul(blocksClaimed.floor().toUnsafeFloat());
-
-    // APR
-    const yearSeconds = constants.One.mul(365).mul(24).mul(60).mul(60);
-    const yearBlocks = yearSeconds.div(desiredDrawTimeInterval);
-
-    const yearClaimed = stakePercentage.mulUnsafe(
-        FixedNumber.fromValue(yearBlocks)
-    );
-
-    const yearReward = latestPrize.mul(yearClaimed.floor().toUnsafeFloat());
-    const apr = FixedNumber.fromValue(yearReward).divUnsafe(
-        FixedNumber.fromValue(stake)
-    );
 
     return (
         <Layout className="calculator">
@@ -166,7 +128,7 @@ const Calculator = (props: Props) => {
                 </div>
 
                 <div className="body-text-1">
-                    Current Block Reward: {formatCTSI(latestPrize)}{' '}
+                    Current Block Reward: {formatCTSI(blocks[0].reward)}{' '}
                     <span className="small-text">CTSI</span>
                 </div>
 

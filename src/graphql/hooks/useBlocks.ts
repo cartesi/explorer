@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { apolloClient } from '../../services/apollo';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
+import { BigNumber, constants, FixedNumber } from 'ethers';
 
 interface IBlocksFilter {
     id?: string;
@@ -105,6 +106,199 @@ const useBlocks = (initFilter = {}) => {
         return () => clearInterval(interval);
     }, []);
 
+    const getRewardRate = (rawCirculatingSupply: number) => {
+        let participationRate = FixedNumber.from(0);
+        let yearReturn = FixedNumber.from(0);
+
+        if (blocks && blocks.length > 0 && rawCirculatingSupply) {
+            const blocksPerChain = _.groupBy(blocks, 'chain.id');
+
+            const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
+                const blocks: Array<Block> = blocksPerChain[chainId];
+
+                // take average difficulty of all blocks in array
+                const difficulty = blocks
+                    .map((t) => BigNumber.from(t.difficulty))
+                    .reduce((sum, d) => sum.add(d), constants.Zero)
+                    .div(blocks.length);
+
+                // 10 minutes in seconds
+                // XXX: Would be good to get this value from lottery contract
+                const desiredDrawTimeInterval = blocks[0].chain.targetInterval;
+
+                // calculate estimated active stake from difficulty
+                const activeStake = difficulty.div(desiredDrawTimeInterval);
+
+                // convert circulation supply to BigNumber and multiple by 1e18
+                const circulationSupply = BigNumber.from(
+                    rawCirculatingSupply
+                ).mul(constants.WeiPerEther);
+
+                // participation rate is a percentage of circulation supply
+                // must use FixedNumber because BigNumber is only for integer
+                const participationRate = FixedNumber.fromValue(
+                    activeStake
+                ).divUnsafe(FixedNumber.fromValue(circulationSupply));
+
+                const yearSeconds = constants.One.mul(60) // minute
+                    .mul(60) // hour
+                    .mul(24) // day
+                    .mul(365); // year
+
+                // calculate average prize
+                const prize = blocks
+                    .map((block) => BigNumber.from(block.reward))
+                    .reduce((sum, prize) => sum.add(prize), constants.Zero)
+                    .div(blocks.length);
+
+                // total prize paid in one year
+                const yearPrize = yearSeconds
+                    .div(desiredDrawTimeInterval)
+                    .mul(prize);
+
+                // calculate year return
+                const yearReturn = FixedNumber.fromValue(yearPrize).divUnsafe(
+                    FixedNumber.fromValue(activeStake)
+                );
+
+                return {
+                    participationRate,
+                    yearReturn,
+                };
+            });
+
+            participationRate = ratesPerChain
+                .reduce(
+                    (prev, cur) => prev.addUnsafe(cur.participationRate),
+                    FixedNumber.from(0)
+                )
+                .divUnsafe(FixedNumber.from(ratesPerChain.length));
+            yearReturn = ratesPerChain.reduce(
+                (prev, cur) => prev.addUnsafe(cur.yearReturn),
+                FixedNumber.from(0)
+            );
+        }
+
+        return {
+            participationRate,
+            yearReturn,
+        };
+    };
+
+    const getEstimatedRewardRate = (
+        stake: BigNumber,
+        totalStaked: number,
+        period: number
+    ) => {
+        let reward = constants.Zero;
+        let apr = FixedNumber.from(0);
+        let activeStake = constants.Zero;
+
+        if (blocks && blocks.length > 0) {
+            const blocksPerChain = _.groupBy(blocks, 'chain.id');
+
+            const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
+                const blocks: Array<Block> = blocksPerChain[chainId];
+                const avgPrize = blocks
+                    .reduce(
+                        (prev, cur) => prev.add(BigNumber.from(cur.reward)),
+                        constants.Zero
+                    )
+                    .div(BigNumber.from(blocks.length));
+
+                // take average difficulty of all blocks in array
+                const difficulty = blocks
+                    .map((t) => BigNumber.from(t.difficulty))
+                    .reduce((sum, d) => sum.add(d), constants.Zero)
+                    .div(blocks.length);
+
+                // 10 minutes in seconds
+                // XXX: Would be good to get this value from lottery contract
+                const desiredDrawTimeInterval = blocks[0].chain.targetInterval;
+
+                const activeStake = difficulty.div(desiredDrawTimeInterval);
+
+                // if (totalStaked < 0) {
+                //     setTotalStaked(toCTSI(activeStake));
+                // }
+
+                // user stake share
+                const stakePercentage = FixedNumber.fromValue(stake).divUnsafe(
+                    FixedNumber.fromValue(
+                        constants.One.mul(totalStaked)
+                            .mul(constants.WeiPerEther)
+                            .add(stake)
+                    )
+                );
+
+                // investment period in seconds
+                const periodSeconds = BigNumber.from(period)
+                    .mul(24)
+                    .mul(60)
+                    .mul(60);
+
+                // number of block drawn in that period
+                const totalBlocks = periodSeconds.div(desiredDrawTimeInterval);
+
+                // number of block claimed by the user (statistically)
+                const blocksClaimed = stakePercentage.mulUnsafe(
+                    FixedNumber.fromValue(totalBlocks)
+                );
+
+                // total reward
+                const reward = avgPrize.mul(
+                    blocksClaimed.floor().toUnsafeFloat()
+                );
+
+                // APR
+                const yearSeconds = constants.One.mul(365)
+                    .mul(24)
+                    .mul(60)
+                    .mul(60);
+                const yearBlocks = yearSeconds.div(desiredDrawTimeInterval);
+
+                const yearClaimed = stakePercentage.mulUnsafe(
+                    FixedNumber.fromValue(yearBlocks)
+                );
+
+                const yearReward = avgPrize.mul(
+                    yearClaimed.floor().toUnsafeFloat()
+                );
+                const apr = FixedNumber.fromValue(yearReward).divUnsafe(
+                    FixedNumber.fromValue(stake)
+                );
+
+                return {
+                    reward,
+                    apr,
+                    activeStake,
+                };
+            });
+
+            reward = ratesPerChain.reduce(
+                (prev, cur) => prev.add(cur.reward),
+                constants.Zero
+            );
+            apr = ratesPerChain.reduce(
+                (prev, cur) => prev.addUnsafe(cur.apr),
+                FixedNumber.from(0)
+            );
+
+            activeStake = ratesPerChain
+                .reduce(
+                    (prev, cur) => prev.add(cur.activeStake),
+                    constants.Zero
+                )
+                .div(ratesPerChain.length);
+        }
+
+        return {
+            reward,
+            apr,
+            activeStake,
+        };
+    };
+
     return {
         blocks,
         loading,
@@ -112,6 +306,8 @@ const useBlocks = (initFilter = {}) => {
         filters,
         refreshBlocks,
         loadNewBlocks,
+        getRewardRate,
+        getEstimatedRewardRate,
     };
 };
 

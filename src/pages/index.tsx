@@ -41,7 +41,7 @@ const Home = () => {
     const { stakedBalance } = useStaking();
 
     const { nodes, refreshNodes } = useNodes();
-    const { blocks } = useBlocks();
+    const { blocks, getRewardRate } = useBlocks();
     const { summary } = useSummary();
 
     const [nodePage, setNodePage] = useState<number>(1);
@@ -50,28 +50,8 @@ const Home = () => {
     let participationRateLabel = '-';
     let aprLabel = '-';
     if (blocks && blocks.length > 0 && marketInformation?.circulatingSupply) {
-        // take average difficulty of all blocks in array
-        const difficulty = blocks
-            .map((t) => BigNumber.from(t.difficulty))
-            .reduce((sum, d) => sum.add(d), constants.Zero)
-            .div(blocks.length);
-
-        // 10 minutes in seconds
-        // XXX: Would be good to get this value from lottery contract
-        const desiredDrawTimeInterval = BigNumber.from(600);
-
-        // calculate estimated active stake from difficulty
-        const activeStake = difficulty.div(desiredDrawTimeInterval);
-
-        // convert circulation supply to BigNumber and multiple by 1e18
-        const circulationSupply = BigNumber.from(
+        const { participationRate, yearReturn } = getRewardRate(
             marketInformation.circulatingSupply
-        ).mul(constants.WeiPerEther);
-
-        // participation rate is a percentage of circulation supply
-        // must use FixedNumber because BigNumber is only for integer
-        const participationRate = FixedNumber.fromValue(activeStake).divUnsafe(
-            FixedNumber.fromValue(circulationSupply)
         );
 
         // build label
@@ -80,25 +60,6 @@ const Home = () => {
                 .mulUnsafe(FixedNumber.from(100))
                 .round(1)
                 .toString() + ' %';
-
-        const yearSeconds = constants.One.mul(60) // minute
-            .mul(60) // hour
-            .mul(24) // day
-            .mul(365); // year
-
-        // calculate average prize
-        const prize = blocks
-            .map((block) => BigNumber.from(block.reward))
-            .reduce((sum, prize) => sum.add(prize), constants.Zero)
-            .div(blocks.length);
-
-        // total prize paid in one year
-        const yearPrize = yearSeconds.div(desiredDrawTimeInterval).mul(prize);
-
-        // calculate year return
-        const yearReturn = FixedNumber.fromValue(yearPrize).divUnsafe(
-            FixedNumber.fromValue(activeStake)
-        );
 
         aprLabel =
             yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
