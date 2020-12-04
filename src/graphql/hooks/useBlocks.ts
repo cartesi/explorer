@@ -34,13 +34,10 @@ const useBlocks = (initFilter = {}) => {
     const updateBlocks = (rawBlocks: Array<Block>, reset: boolean = false) => {
         if (!rawBlocks) return;
 
-        let newBlocks = rawBlocks.map((block) => ({
-            ...block,
-            key: block.id,
-        }));
+        let newBlocks = rawBlocks;
 
         if (!reset) {
-            newBlocks = _.unionBy(blocks, newBlocks, 'key');
+            newBlocks = _.unionBy(blocks, newBlocks, 'id');
         }
 
         setBlocks(newBlocks.sort((a, b) => b.timestamp - a.timestamp));
