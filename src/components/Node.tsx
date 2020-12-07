@@ -9,13 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import { useNode } from '../services/node';
 import { tinyString } from '../utils/stringUtils';
+import useNodes from '../graphql/hooks/useNodes';
 
 interface NodeProps {}
 
@@ -27,6 +28,8 @@ const Node = (props: NodeProps) => {
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
 
+    const { nodes } = useNodes({ where: { owner: account } });
+
     const notMine = node.address && !node.available && node.user != account;
     const mine = node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
@@ -34,6 +37,13 @@ const Node = (props: NodeProps) => {
     const debug = chainId == 313371;
 
     let status = '';
+
+    useEffect(() => {
+        if (nodes && nodes.length > 0) {
+            setAddress(nodes[0].id);
+        }
+    }, [nodes]);
+
     if (node.available) {
         status = 'Available';
     } else if (node.owned && node.authorized && node.user == account) {

@@ -207,7 +207,10 @@ const Home = () => {
                             onChange={(e) => (
                                 setNodeSearch(e.target.value),
                                 setNodePage(1),
-                                refreshNodes(-2, e.target.value)
+                                refreshNodes({
+                                    timestamp_gt: 0,
+                                    id: e.target.value,
+                                })
                             )}
                         />
                     </div>
@@ -269,7 +272,13 @@ const Home = () => {
                         disabled={nodePage <= 1}
                         onClick={() => (
                             setNodePage(nodePage - 1),
-                            refreshNodes(-1, nodeSearch)
+                            refreshNodes({
+                                timestamp_gt:
+                                    nodes && nodes.length > 0
+                                        ? nodes[0].timestamp
+                                        : 0,
+                                id: nodeSearch,
+                            })
                         )}
                     >
                         <i className="fas fa-chevron-left"></i>
@@ -281,7 +290,13 @@ const Home = () => {
                         disabled={nodePage >= totalNodePages}
                         onClick={() => (
                             setNodePage(nodePage + 1),
-                            refreshNodes(1, nodeSearch)
+                            refreshNodes({
+                                timestamp_lt:
+                                    nodes && nodes.length > 0
+                                        ? nodes[nodes.length - 1].timestamp
+                                        : 0,
+                                id: nodeSearch,
+                            })
                         )}
                     >
                         <i className="fas fa-chevron-right"></i>

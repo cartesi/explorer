@@ -12,8 +12,6 @@
 import React from 'react';
 import NavBar from './NavBar';
 
-import { initializeApollo } from '../services/apollo';
-
 const LayoutComponent = ({ children, className = '' }) => {
     return (
         <div
@@ -32,14 +30,3 @@ const LayoutComponent = ({ children, className = '' }) => {
 };
 
 export default LayoutComponent;
-
-export async function getStaticProps() {
-    const apolloClient = initializeApollo();
-
-    return {
-        props: {
-            initialApolloState: apolloClient.cache.extract(),
-        },
-        revalidate: 1,
-    };
-}

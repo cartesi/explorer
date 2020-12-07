@@ -20,7 +20,8 @@ import {
     WorkerManagerAuthManagerImpl,
 } from '@cartesi/util';
 import { StakingImplFactory, StakingImpl, PoSFactory, PoS } from '@cartesi/pos';
-import { CartesiTokenFactory, CartesiToken } from '@cartesi/token';
+import { CartesiToken } from '@cartesi/token';
+import { CartesiToken__factory } from '@cartesi/token/dist/src/types/factories/CartesiToken__factory';
 
 import pos_rinkeby from '@cartesi/pos/abi/rinkeby.json';
 import pos_goerli from '@cartesi/pos/abi/goerli.json';
@@ -143,7 +144,11 @@ export const useWorkerManagerContract = (): WorkerManagerAuthManagerImpl => {
 };
 
 export const useCartesiTokenContract = (): CartesiToken => {
-    return useContract(CartesiTokenFactory.connect, tokenAbis, 'CartesiToken');
+    return useContract(
+        CartesiToken__factory.connect,
+        tokenAbis,
+        'CartesiToken'
+    );
 };
 
 export const usePoSContract = (): PoS => {
