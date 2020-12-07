@@ -20,8 +20,7 @@ import {
     WorkerManagerAuthManagerImpl,
 } from '@cartesi/util';
 import { StakingImplFactory, StakingImpl, PoSFactory, PoS } from '@cartesi/pos';
-import { CartesiToken } from '@cartesi/token';
-import { CartesiToken__factory } from '@cartesi/token/dist/src/types/factories/CartesiToken__factory';
+import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
 import pos_rinkeby from '@cartesi/pos/abi/rinkeby.json';
 import pos_goerli from '@cartesi/pos/abi/goerli.json';
