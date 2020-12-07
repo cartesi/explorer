@@ -16,7 +16,6 @@ import dynamic from 'next/dynamic';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../services/apollo';
 
-import 'antd/dist/antd.css';
 import '../styles/styles.scss';
 import '@fortawesome/fontawesome-free/css/all.css';
 

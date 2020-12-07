@@ -16,15 +16,20 @@ import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
 
 import {
-    WorkerManagerAuthManagerImplFactory,
+    WorkerManagerAuthManagerImpl__factory,
     WorkerManagerAuthManagerImpl,
 } from '@cartesi/util';
-import { StakingImplFactory, StakingImpl, PoSFactory, PoS } from '@cartesi/pos';
+import {
+    StakingImpl__factory,
+    StakingImpl,
+    PoS__factory,
+    PoS,
+} from '@cartesi/pos';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import pos_rinkeby from '@cartesi/pos/abi/rinkeby.json';
-import pos_goerli from '@cartesi/pos/abi/goerli.json';
-import pos_kovan from '@cartesi/pos/abi/kovan.json';
+import pos_rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
+import pos_goerli from '@cartesi/pos/export/abi/goerli.json';
+import pos_kovan from '@cartesi/pos/export/abi/kovan.json';
 
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
 import util_goerli from '@cartesi/util/export/abi/goerli.json';
@@ -131,12 +136,12 @@ function useContract<C>(
 }
 
 export const useStakingContract = (): StakingImpl => {
-    return useContract(StakingImplFactory.connect, posAbis, 'StakingImpl');
+    return useContract(StakingImpl__factory.connect, posAbis, 'StakingImpl');
 };
 
 export const useWorkerManagerContract = (): WorkerManagerAuthManagerImpl => {
     return useContract(
-        WorkerManagerAuthManagerImplFactory.connect,
+        WorkerManagerAuthManagerImpl__factory.connect,
         utilAbis,
         'WorkerManagerAuthManagerImpl'
     );
@@ -151,5 +156,5 @@ export const useCartesiTokenContract = (): CartesiToken => {
 };
 
 export const usePoSContract = (): PoS => {
-    return useContract(PoSFactory.connect, posAbis, 'PoS');
+    return useContract(PoS__factory.connect, posAbis, 'PoS');
 };

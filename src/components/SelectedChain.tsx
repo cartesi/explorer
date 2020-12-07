@@ -12,7 +12,6 @@
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Space, Typography } from 'antd';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { IChainData, getChain } from '../services/chain';
@@ -53,11 +52,9 @@ const SelectedChain = () => {
     return (
         <div className="selected-chain">
             {chain ? (
-                <Space>
-                    <Typography.Text style={{ color: 'white' }}>
-                        {chain.name}
-                    </Typography.Text>
-                </Space>
+                <div>
+                    <span style={{ color: 'white' }}>{chain.name}</span>
+                </div>
             ) : (
                 <button
                     type="button"
