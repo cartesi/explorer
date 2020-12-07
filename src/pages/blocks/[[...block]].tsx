@@ -146,6 +146,13 @@ const Blocks = () => {
                                         </div>
 
                                         <div className="sub-title-4 col-4 my-1">
+                                            Hash
+                                        </div>
+                                        <div className="body-text-2 col-8 my-1">
+                                            {block.id}
+                                        </div>
+
+                                        <div className="sub-title-4 col-4 my-1">
                                             Reward
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
@@ -158,9 +165,6 @@ const Blocks = () => {
                                         className="blocks-content-block-image"
                                         src={tinyGraphUrl(block)}
                                     />
-                                    <div className="body-text-2 pt-1">
-                                        {tinyString(block.id)}
-                                    </div>
                                 </div>
                             </div>
                         );

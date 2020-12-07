@@ -16,6 +16,7 @@ export const BLOCK = gql`
 
             producer {
                 id
+                totalBlocks
             }
 
             node {
