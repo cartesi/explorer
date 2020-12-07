@@ -23,6 +23,7 @@ import { tinyGraphUrl } from '../../utils/tinygraph';
 import { formatCTSI } from '../../utils/token';
 import { Block, BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
+import BlocksChart from '../../components/BlocksChart';
 
 interface BlockItemProps {
     block: Block;
@@ -204,6 +205,8 @@ const Blocks = () => {
                 </div>
             </div>
 
+            <BlocksChart result={all} />
+            
             {!searchKey && <BlockList result={all} />}
             <BlockList
                 result={byProducer}
