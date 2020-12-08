@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import _ from 'lodash';
+import _, { filter } from 'lodash';
 import { apolloClient } from '../../services/apollo';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
@@ -93,15 +93,13 @@ const useBlocks = (initFilter = {}) => {
             .catch((error) => {
                 console.error(error);
             });
-    }, [filters]);
 
-    useEffect(() => {
         const interval = setInterval(() => {
             loadNewBlocks();
         }, 300000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [filters]);
 
     const getRewardRate = (rawCirculatingSupply: number) => {
         let participationRate = FixedNumber.from(0);
