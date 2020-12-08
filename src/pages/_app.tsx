@@ -13,7 +13,7 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 
-// import ApolloContainer from '../components/ApolloContainer';
+import ApolloContainer from '../components/ApolloContainer';
 
 import '../styles/styles.scss';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -25,10 +25,6 @@ if (typeof window !== 'undefined') {
 }
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
-    ssr: false,
-});
-
-const ApolloContainer = dynamic(() => import('../components/ApolloContainer'), {
     ssr: false,
 });
 
