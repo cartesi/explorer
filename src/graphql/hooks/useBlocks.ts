@@ -1,10 +1,21 @@
-import React, { useEffect, useState } from 'react';
+// Copyright (C) 2020 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import { useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { BigNumber, constants, FixedNumber } from 'ethers';
 
 import _, { filter } from 'lodash';
-import { apolloClient } from '../../services/apollo';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
-import { BigNumber, constants, FixedNumber } from 'ethers';
 
 interface IBlocksFilter {
     id?: string;
@@ -16,90 +27,23 @@ interface IBlocksFilter {
 }
 
 const useBlocks = (initFilter = {}) => {
-    const [blocks, setBlocks] = useState<Array<Block>>([]);
     const [filters, setFilters] = useState<Array<IBlocksFilter>>([initFilter]);
-    const [reset, setReset] = useState<boolean>(false);
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const refreshBlocks = async (
-        newFilters: Array<IBlocksFilter> = null,
-        reset: boolean = false
-    ) => {
-        setFilters(newFilters ? newFilters : [{}]);
-        setReset(reset);
+    const variables = {
+        first: 10,
+        where: null,
+        orderBy: 'timestamp',
+        orderDirection: 'desc',
     };
 
-    const updateBlocks = (rawBlocks: Array<Block>, reset: boolean = false) => {
-        if (!rawBlocks) return;
+    const { loading, error, data } = useQuery<BlocksData, BlocksVars>(BLOCKS, {
+        variables,
+        pollInterval: 30000
+    });
+    const blocks = data?.blocks || [];
+    // setLoading(results.map((r) => r.loading).reduce((l, t) => l && t, false));
 
-        let newBlocks = rawBlocks;
-
-        if (!reset) {
-            newBlocks = _.unionBy(blocks, newBlocks, 'id');
-        }
-
-        setBlocks(newBlocks.sort((a, b) => b.timestamp - a.timestamp));
-    };
-
-    const loadNewBlocks = () => {
-        refreshBlocks(
-            filters.map((filter) => ({
-                ...filter,
-                timestamp_lt: Math.ceil(new Date().getTime() / 1000), // Get last 10 blocks from now
-            }))
-        );
-    };
-
-    useEffect(() => {
-        setLoading(true);
-        setError(null);
-
-        const variables = {
-            first: 10,
-            where: null,
-            orderBy: 'timestamp',
-            orderDirection: 'desc',
-        };
-
-        const queryResults = filters.map((filter) => {
-            return apolloClient.query<BlocksData, BlocksVars>({
-                query: BLOCKS,
-                variables: {
-                    ...variables,
-                    where: filter,
-                },
-            });
-        });
-
-        Promise.all(queryResults)
-            .then((results) => {
-                let blocks = [];
-                for (let i = 0; i < results.length; i++) {
-                    blocks = _.unionBy(
-                        blocks,
-                        results[i].data ? results[i].data.blocks : [],
-                        'id'
-                    );
-                }
-                updateBlocks(blocks, reset);
-
-                setLoading(false);
-                setError(
-                    results.reduce((prev, cur) => prev || cur.error, null)
-                );
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-        const interval = setInterval(() => {
-            loadNewBlocks();
-        }, 300000);
-
-        return () => clearInterval(interval);
-    }, [filters]);
+    // setError(results.map((r) => r.error).find((e) => e));
 
     const getRewardRate = (rawCirculatingSupply: number) => {
         let participationRate = FixedNumber.from(0);
@@ -296,8 +240,6 @@ const useBlocks = (initFilter = {}) => {
         loading,
         error,
         filters,
-        refreshBlocks,
-        loadNewBlocks,
         getRewardRate,
         getEstimatedRewardRate,
     };

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 const uris = {
@@ -19,9 +19,13 @@ const uris = {
 };
 
 export const initializeApollo = (chainId: number): ApolloClient<any> => {
-    const uri = uris[chainId];
+    const uri =
+        uris[chainId] ||
+        'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli';
+    const ssrMode = typeof window === 'undefined';
+    console.log('initializeApollo', chainId, uri, ssrMode);
     return new ApolloClient({
-        ssrMode: typeof window === 'undefined',
+        ssrMode,
         link: new HttpLink({
             uri,
         }),
@@ -30,6 +34,11 @@ export const initializeApollo = (chainId: number): ApolloClient<any> => {
 };
 
 export const useApollo = (chainId: number): ApolloClient<any> => {
-    const store = useMemo(() => initializeApollo(chainId), [chainId]);
-    return store;
+    const [client, setClient] = useState<ApolloClient<any>>(initializeApollo(5));
+
+    useEffect(() => {
+        setClient(initializeApollo(chainId));
+    }, [chainId]);
+
+    return client;
 };
