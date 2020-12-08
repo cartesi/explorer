@@ -39,7 +39,9 @@ const Node = (props: NodeProps) => {
     let status = '';
 
     useEffect(() => {
-        refreshNodes({ owner: account });
+        if (account) {
+            refreshNodes({ owner: account.toLowerCase() });
+        }
     }, [account]);
 
     useEffect(() => {
