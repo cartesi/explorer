@@ -125,7 +125,9 @@ const Home = () => {
                                 &nbsp; Wallet Balance
                             </div>
                             <div className="info-text-md dark-white-text">
-                                {`${account ? formatCTSI(balance) : 'N/A'}  `}
+                                {`${
+                                    account ? formatCTSI(balance, 2) : 'N/A'
+                                }  `}
                                 <span className="caption">CTSI</span>
                             </div>
                         </div>
@@ -137,7 +139,9 @@ const Home = () => {
                             </div>
                             <div className="info-text-md dark-white-text">
                                 {`${
-                                    account ? formatCTSI(stakedBalance) : 'N/A'
+                                    account
+                                        ? formatCTSI(stakedBalance, 2)
+                                        : 'N/A'
                                 }`}
                                 <span className="caption"> CTSI</span>
                             </div>
@@ -251,12 +255,14 @@ const Home = () => {
                                         <td>{node.totalBlocks}</td>
                                         <td>
                                             {formatCTSI(
-                                                node.owner.stakedBalance
+                                                node.owner.stakedBalance,
+                                                2
                                             )}{' '}
                                             CTSI
                                         </td>
                                         <td>
-                                            {formatCTSI(node.totalReward)} CTSI
+                                            {formatCTSI(node.totalReward, 2)}{' '}
+                                            CTSI
                                         </td>
                                         <td>{uptimeDays}</td>
                                     </tr>

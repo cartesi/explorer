@@ -5,17 +5,15 @@ import { useRouter } from 'next/router';
 
 import Layout from '../../components/Layout';
 import useBlocks from '../../graphql/hooks/useBlocks';
-import { tinyString } from '../../utils/stringUtils';
 import { useCartesiToken } from '../../services/token';
 import { tinyGraphUrl } from '../../utils/tinygraph';
-import { Block } from '../../graphql/models';
 
 const Blocks = () => {
     const router = useRouter();
     let { block: blockId } = router.query;
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
-    const { formatCTSI } = useCartesiToken(null, null, null);
+    const { formatCTSI } = useCartesiToken();
     const { blocks, refreshBlocks, loading } = useBlocks(
         blockId == '' ? {} : { id: blockId }
     );
@@ -156,7 +154,7 @@ const Blocks = () => {
                                             Reward
                                         </div>
                                         <div className="body-text-2 col-8 my-1">
-                                            {formatCTSI(block.reward)} CTSI
+                                            {formatCTSI(block.reward, 18)} CTSI
                                         </div>
                                     </div>
                                 </div>

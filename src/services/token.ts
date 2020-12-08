@@ -11,7 +11,12 @@
 
 import { useState, useEffect } from 'react';
 import { useCartesiTokenContract } from '../services/contract';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import {
+    BigNumber,
+    BigNumberish,
+    constants,
+    ContractTransaction,
+} from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
 export const useCartesiToken = (
@@ -63,8 +68,18 @@ export const useCartesiToken = (
         return BigNumber.from(toCTSI(amount));
     };
 
-    const formatCTSI = (amount: BigNumberish): string => {
-        return toCTSI(amount).toLocaleString();
+    const formatCTSI = (
+        amount: BigNumberish,
+        decimals: number = 18
+    ): string => {
+        amount = BigNumber.from(amount);
+
+        // floor value to number of decimals to display
+        const m = constants.One.mul(10).pow(18 - decimals);
+        amount = amount.sub(amount.mod(m));
+
+        // convert to string
+        return formatUnits(amount, 18);
     };
 
     const clearStates = () => {

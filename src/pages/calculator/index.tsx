@@ -128,7 +128,7 @@ const Calculator = (props: Props) => {
                 </div>
 
                 <div className="body-text-1">
-                    Current Block Reward: {formatCTSI(blocks[0].reward)}{' '}
+                    Current Block Reward: {formatCTSI(blocks[0].reward, 2)}{' '}
                     <span className="small-text">CTSI</span>
                 </div>
 
@@ -179,7 +179,7 @@ const Calculator = (props: Props) => {
                                     Estimated Period Reward
                                 </span>
                                 <span className="info-text-md">
-                                    {formatCTSI(reward)}{' '}
+                                    {formatCTSI(reward, 2)}{' '}
                                     <span className="small-text">CTSI</span>
                                 </span>
                             </div>
