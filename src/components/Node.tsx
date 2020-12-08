@@ -28,7 +28,7 @@ const Node = (props: NodeProps) => {
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
 
-    const { nodes } = useNodes({ where: { owner: account } });
+    const { nodes, refreshNodes } = useNodes();
 
     const notMine = node.address && !node.available && node.user != account;
     const mine = node.user == account;
@@ -37,6 +37,10 @@ const Node = (props: NodeProps) => {
     const debug = chainId == 313371;
 
     let status = '';
+
+    useEffect(() => {
+        refreshNodes({ owner: account });
+    }, [account]);
 
     useEffect(() => {
         if (nodes && nodes.length > 0) {

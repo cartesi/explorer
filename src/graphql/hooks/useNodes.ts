@@ -9,9 +9,7 @@ interface INodeFilter {
     id?: string;
     timestamp_gt?: number;
     timestamp_lt?: number;
-    where?: {
-        owner?: string;
-    };
+    owner?: string;
 }
 
 const useNodes = (initFilter: INodeFilter = {}) => {
