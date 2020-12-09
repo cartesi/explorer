@@ -27,14 +27,17 @@ import {
 } from '@cartesi/pos';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
+import pos_mainnet from '@cartesi/pos/export/abi/mainnet.json';
 import pos_rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
 import pos_goerli from '@cartesi/pos/export/abi/goerli.json';
 import pos_kovan from '@cartesi/pos/export/abi/kovan.json';
 
+import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
 import util_goerli from '@cartesi/util/export/abi/goerli.json';
 import util_kovan from '@cartesi/util/export/abi/kovan.json';
 
+import token_mainnet from '@cartesi/token/export/abi/mainnet.json';
 import token_rinkeby from '@cartesi/token/export/abi/rinkeby.json';
 import token_goerli from '@cartesi/token/export/abi/goerli.json';
 import token_kovan from '@cartesi/token/export/abi/kovan.json';
@@ -61,6 +64,7 @@ interface ChainMap {
 }
 
 const posAbis: ChainMap = {
+    1: pos_mainnet,
     4: pos_rinkeby,
     5: pos_goerli,
     42: pos_kovan,
@@ -68,6 +72,7 @@ const posAbis: ChainMap = {
 };
 
 const utilAbis: ChainMap = {
+    1: util_mainnet,
     4: util_rinkeby,
     5: util_goerli,
     42: util_kovan,
@@ -75,6 +80,7 @@ const utilAbis: ChainMap = {
 };
 
 const tokenAbis: ChainMap = {
+    1: token_mainnet,
     4: token_rinkeby,
     5: token_goerli,
     42: token_kovan,
@@ -84,7 +90,7 @@ const tokenAbis: ChainMap = {
 const getAddress = (chainId: number, map: ChainMap, name: string): string => {
     const chain = map[chainId];
     if (!chain) {
-        console.log(`Unsupported chain '${chainId}'`);
+        console.log(`Unsupported chain '${chainId}' for contract ${name}`);
         return;
     }
 

@@ -1096,22 +1096,29 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@cartesi/pos@^0.1.0-beta.20":
-  version "0.1.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.20.tgz#bbb554df62104d6e5f2a5166ca177b4bbe27ad86"
-  integrity sha512-1OYHUry4oXKpHiziMHVjXYiFxLpzZES1u0gZe6tu3xbdDHQHjVceaN5P77cbgJ48HBhJPwWfdYKyK9Xt/pem1Q==
+"@cartesi/pos@^0.1.0-beta.21":
+  version "0.1.0-beta.21"
+  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-0.1.0-beta.21.tgz#f9b5c55b25543123d65ee30c3a5ff33c87899568"
+  integrity sha512-+D8dTPCIGltelB5hlU1iHA7IcdZfef6vno6e2u4wkqdTSObPGcdjX49YC2dnHQjXYF44R+c0LoEpNYQu3R5adw==
   dependencies:
-    "@cartesi/token" "^1.2.3"
+    "@cartesi/token" "^1.2.4"
     "@cartesi/util" "^1.0.0"
     "@openzeppelin/contracts" "3.2.1-solc-0.7"
     commander "^6.1.0"
   optionalDependencies:
     fsevents "^2.1.3"
 
-"@cartesi/token@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@cartesi/token/-/token-1.2.3.tgz#95d08070838f489b570a86e7d1d8ebe4f0eb0055"
-  integrity sha512-HHKGb+4bWq4/xpbEZPbqHQBpVO++GN+KNUZecPtdQPVVfxMWybiCDCGYagR1b3QubCFPKyeceRmFBZLMdTt6dQ==
+"@cartesi/token@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@cartesi/token/-/token-1.2.4.tgz#4d3b6db17d22a3c0defe6c83395410f2f683e7a2"
+  integrity sha512-QgkMwty/iVntYsIRIs1fTbTXyXIaKw41qbHJ4R27eXiMCUr6CMfAoRN8H2sWB+WoRxIMAViIiE8pew4zH//yHQ==
+  dependencies:
+    "@openzeppelin/contracts" "^2.5.0"
+
+"@cartesi/token@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@cartesi/token/-/token-1.2.5.tgz#6e8ee27fc00569e6ff384ef04fe194f6a0c57074"
+  integrity sha512-jLrrWHXcNV1nCBHvnMHzBpItBM1c6DtxRcs7MSYyHbu+wj2dx9AAO6ppfyWY+LSJqiwuV1M1SMmiwbvnHrLl2A==
   dependencies:
     "@openzeppelin/contracts" "^2.5.0"
 
