@@ -25,6 +25,7 @@ const useNodes = (initFilter: INodeFilter = {}) => {
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
+        pollInterval: 60 * 60 * 1000, // Refresh every 1 hour
     });
 
     const refreshNodes = async (newFilter: INodeFilter) => {

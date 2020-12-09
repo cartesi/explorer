@@ -14,7 +14,7 @@ const Blocks = () => {
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const { formatCTSI } = useCartesiToken();
-    const { blocks, refreshBlocks, loading } = useBlocks(
+    const { blocks, updateFilter, loading } = useBlocks(
         blockId == '' ? {} : { id: blockId }
     );
 
@@ -22,43 +22,17 @@ const Blocks = () => {
 
     const doSearch = () => {
         if (searchKey != '') {
-            if (searchKey.startsWith('0x')) {
-                refreshBlocks(
-                    [
-                        {
-                            id: searchKey,
-                        },
-                        {
-                            producer: searchKey,
-                        },
-                        {
-                            node: searchKey,
-                        },
-                    ],
-                    true
-                );
-            } else {
-                refreshBlocks(
-                    [
-                        {
-                            number: parseInt(searchKey),
-                        },
-                    ],
-                    true
-                );
-            }
+            updateFilter({}, searchKey);
         } else {
-            refreshBlocks(null, true);
+            updateFilter({}, '');
         }
     };
 
     const loadMore = () => {
         if (blocks.length > 0) {
-            refreshBlocks([
-                {
-                    timestamp_lt: blocks[blocks.length - 1].timestamp,
-                },
-            ]);
+            updateFilter({
+                timestamp_lt: blocks[blocks.length - 1].timestamp,
+            });
         }
     };
 

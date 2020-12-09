@@ -26,7 +26,7 @@ import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 import BlockCard from '../components/BlockCard';
 import { tinyString } from '../utils/stringUtils';
-import { BigNumber, constants, FixedNumber } from 'ethers';
+import { FixedNumber } from 'ethers';
 import Link from 'next/link';
 
 const Home = () => {
@@ -42,7 +42,7 @@ const Home = () => {
 
     const { nodes, refreshNodes } = useNodes();
     const { blocks, getRewardRate } = useBlocks();
-    const { summary } = useSummary();
+    const summary = useSummary();
 
     const [nodePage, setNodePage] = useState<number>(1);
     const [nodeSearch, setNodeSearch] = useState<string>('');

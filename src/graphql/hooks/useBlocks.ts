@@ -27,7 +27,8 @@ interface IBlocksFilter {
 }
 
 const useBlocks = (initFilter = {}) => {
-    const [filters, setFilters] = useState<Array<IBlocksFilter>>([initFilter]);
+    const [filter, setFilter] = useState<IBlocksFilter>(initFilter);
+    const [searchKey, setSearchKey] = useState<string>('');
 
     const variables = {
         first: 10,
@@ -36,14 +37,56 @@ const useBlocks = (initFilter = {}) => {
         orderDirection: 'desc',
     };
 
-    const { loading, error, data } = useQuery<BlocksData, BlocksVars>(BLOCKS, {
-        variables,
-        pollInterval: 30000
-    });
-    const blocks = data?.blocks || [];
-    // setLoading(results.map((r) => r.loading).reduce((l, t) => l && t, false));
+    const genFilter = (key: string) => {
+        return searchKey
+            ? {
+                  ...filter,
+                  [key]: searchKey.toLowerCase(),
+              }
+            : filter;
+    };
 
-    // setError(results.map((r) => r.error).find((e) => e));
+    const {
+        loading: producerLoading,
+        error: producerError,
+        data: producerData,
+        fetchMore: producerFetchMore,
+    } = useQuery<BlocksData, BlocksVars>(BLOCKS, {
+        variables: {
+            ...variables,
+            where: genFilter('producer'),
+        },
+        pollInterval: 30000,
+    });
+
+    const {
+        loading: nodeLoading,
+        error: nodeError,
+        data: nodeData,
+        fetchMore: nodeFetchMore,
+    } = useQuery<BlocksData, BlocksVars>(BLOCKS, {
+        variables: {
+            ...variables,
+            where: genFilter('node'),
+        },
+        pollInterval: 30000,
+    });
+
+    const blocks = _.unionBy(
+        producerData?.blocks || [],
+        nodeData?.blocks || [],
+        'id'
+    );
+    const loading = producerLoading || nodeLoading;
+    const error = producerError || nodeError;
+
+    const updateFilter = (
+        newFilter: IBlocksFilter,
+        newSearchKey: string = null
+    ) => {
+        setFilter(newFilter);
+        setSearchKey(newSearchKey);
+    };
 
     const getRewardRate = (rawCirculatingSupply: number) => {
         let participationRate = FixedNumber.from(0);
@@ -239,7 +282,7 @@ const useBlocks = (initFilter = {}) => {
         blocks,
         loading,
         error,
-        filters,
+        updateFilter,
         getRewardRate,
         getEstimatedRewardRate,
     };
