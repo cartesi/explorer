@@ -24,6 +24,6 @@ export const themes = [
 ];
 
 export const tinyGraphUrl = (block: Block): string => {
-    const themeId = block.producer.totalBlocks % themes.length;
+    const themeId = parseInt(block.chain.id) % themes.length;
     return `https://www.tinygraphs.com/labs/isogrids/hexa/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
 };
