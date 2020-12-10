@@ -49,6 +49,19 @@ const useBlocks = (initFilter = {}) => {
     };
 
     const {
+        loading: idLoading,
+        error: idError,
+        data: idData,
+        fetchMore: idFetchMore,
+    } = useQuery<BlocksData, BlocksVars>(BLOCKS, {
+        variables: {
+            ...variables,
+            where: genFilter('id'),
+        },
+        pollInterval: 30000,
+    });
+
+    const {
         loading: producerLoading,
         error: producerError,
         data: producerData,
@@ -75,24 +88,25 @@ const useBlocks = (initFilter = {}) => {
     });
 
     const [loading, setLoading] = useState<boolean>(false);
-    const error = producerError || nodeError;
+    const error = idError || producerError || nodeError;
 
     useEffect(() => {
-        setLoading(producerLoading || nodeLoading);
-    }, [producerLoading, nodeLoading]);
+        setLoading(idLoading || producerLoading || nodeLoading);
+    }, [idLoading, producerLoading, nodeLoading]);
 
     useEffect(() => {
         if (producerData || nodeData) {
             setBlocks(
                 _.unionBy(
                     blocks,
+                    idData?.blocks || [],
                     producerData?.blocks || [],
                     nodeData?.blocks || [],
                     'id'
                 )
             );
         }
-    }, [producerData, nodeData]);
+    }, [idData, producerData, nodeData]);
 
     const loadMoreBlocks = async (): Promise<void> => {
         setLoading(true);
@@ -119,10 +133,20 @@ const useBlocks = (initFilter = {}) => {
             },
         });
 
+        const { data: idData } = await idFetchMore<BlocksData, BlocksVars, any>(
+            {
+                variables: {
+                    skip: blocks.length,
+                    first: 10,
+                },
+            }
+        );
+
         setLoading(false);
 
         const newBlocks = _.unionBy(
             blocks,
+            idData?.blocks || [],
             producerData?.blocks || [],
             nodeData?.blocks || [],
             'id'
