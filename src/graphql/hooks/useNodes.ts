@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { NODES } from '../queries/node';
-import { Node, NodesData, NodesVars } from '../models';
+import { NODES } from '../queries/nodes';
+import { NodesData, NodesVars } from '../models';
 
 interface INodeFilter {
     id?: string;
@@ -12,15 +12,21 @@ interface INodeFilter {
     owner?: string;
 }
 
-const useNodes = (initFilter: INodeFilter = {}) => {
-    const [nodes, setNodes] = useState<Array<Node>>([]);
+const nodesPerPage = 10;
 
-    const [where, setWhere] = useState<INodeFilter>(initFilter);
+const useNodes = () => {
+    const [searchKey, setSearchKey] = useState<string>('');
+    const [pageNumber, setPageNumber] = useState<number>(0);
 
     const { loading, error, data } = useQuery<NodesData, NodesVars>(NODES, {
         variables: {
-            first: 10,
-            where,
+            first: nodesPerPage,
+            where: searchKey
+                ? {
+                      id: searchKey,
+                  }
+                : {},
+            skip: pageNumber * nodesPerPage,
             orderBy: 'timestamp',
             orderDirection: 'desc',
         },
@@ -28,33 +34,24 @@ const useNodes = (initFilter: INodeFilter = {}) => {
         pollInterval: 60 * 60 * 1000, // Refresh every 1 hour
     });
 
-    const refreshNodes = async (newFilter: INodeFilter) => {
-        if (newFilter.id) {
-            newFilter = {
-                ...newFilter,
-                id: newFilter.id.toLowerCase(),
-            };
-        }
-
-        setWhere(newFilter);
+    const updateSearchKey = (newSearchKey: string) => {
+        setSearchKey(newSearchKey);
+        setPageNumber(0);
     };
 
-    useEffect(() => {
-        if (!loading && !error && data) {
-            const newNodes = data.nodes.map((node) => {
-                return {
-                    ...node,
-                    key: node.id,
-                };
-            });
-
-            setNodes(newNodes.sort((a, b) => b.timestamp - a.timestamp));
-        }
-    }, [loading, error, data]);
+    const loadNodes = (newPageNumber: number) => {
+        setPageNumber(newPageNumber);
+    };
 
     return {
-        nodes,
-        refreshNodes,
+        nodes: data?.nodes,
+        nodesPerPage,
+        pageNumber,
+        searchKey,
+        loading,
+        error,
+        loadNodes,
+        updateSearchKey,
     };
 };
 

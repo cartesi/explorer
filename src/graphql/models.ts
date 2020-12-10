@@ -38,6 +38,7 @@ export interface NodesData {
 
 export interface NodesVars {
     first: number;
+    skip: number;
     where: any;
     orderBy: string;
     orderDirection: string;
@@ -68,6 +69,7 @@ export interface BlocksData {
 
 export interface BlocksVars {
     first: number;
+    skip: number;
     where: any;
     orderBy: string;
     orderDirection: string;

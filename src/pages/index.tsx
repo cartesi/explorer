@@ -40,12 +40,17 @@ const Home = () => {
     const { balance, formatCTSI } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking();
 
-    const { nodes, refreshNodes } = useNodes();
+    const {
+        nodes,
+        nodesPerPage,
+        pageNumber,
+        searchKey,
+        loading,
+        loadNodes,
+        updateSearchKey,
+    } = useNodes();
     const { blocks, getRewardRate } = useBlocks();
     const summary = useSummary();
-
-    const [nodePage, setNodePage] = useState<number>(1);
-    const [nodeSearch, setNodeSearch] = useState<string>('');
 
     let participationRateLabel = '-';
     let aprLabel = '-';
@@ -67,7 +72,9 @@ const Home = () => {
     }
 
     const totalNodePages =
-        summary && nodeSearch == '' ? Math.ceil(summary.totalNodes / 10) : 1;
+        summary && searchKey == ''
+            ? Math.ceil(summary.totalNodes / nodesPerPage)
+            : 1;
 
     return (
         <Layout className="landing">
@@ -207,15 +214,8 @@ const Home = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search"
-                            value={nodeSearch}
-                            onChange={(e) => (
-                                setNodeSearch(e.target.value),
-                                setNodePage(1),
-                                refreshNodes({
-                                    timestamp_gt: 0,
-                                    id: e.target.value,
-                                })
-                            )}
+                            value={searchKey}
+                            onChange={(e) => updateSearchKey(e.target.value)}
                         />
                     </div>
                 </div>
@@ -241,33 +241,52 @@ const Home = () => {
                         </thead>
 
                         <tbody>
-                            {nodes.map((node) => {
-                                const now = new Date();
-                                const uptimeDays = Math.ceil(
-                                    (now.getTime() / 1000 - node.timestamp) /
-                                        60 /
-                                        60 /
-                                        24
-                                );
-                                return (
-                                    <tr key={node.id} className="body-text-2">
-                                        <td>{tinyString(node.id)}</td>
-                                        <td>{node.totalBlocks}</td>
-                                        <td>
-                                            {formatCTSI(
-                                                node.owner.stakedBalance,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {formatCTSI(node.totalReward, 2)}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>{uptimeDays}</td>
-                                    </tr>
-                                );
-                            })}
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={5} className="text-center">
+                                        <span
+                                            className="spinner-border spinner-border-sm my-1"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+                                    </td>
+                                </tr>
+                            ) : (
+                                nodes.map((node) => {
+                                    const now = new Date();
+                                    const uptimeDays = Math.ceil(
+                                        (now.getTime() / 1000 -
+                                            node.timestamp) /
+                                            60 /
+                                            60 /
+                                            24
+                                    );
+                                    return (
+                                        <tr
+                                            key={node.id}
+                                            className="body-text-2"
+                                        >
+                                            <td>{tinyString(node.id)}</td>
+                                            <td>{node.totalBlocks}</td>
+                                            <td>
+                                                {formatCTSI(
+                                                    node.owner.stakedBalance,
+                                                    2
+                                                )}{' '}
+                                                CTSI
+                                            </td>
+                                            <td>
+                                                {formatCTSI(
+                                                    node.totalReward,
+                                                    2
+                                                )}{' '}
+                                                CTSI
+                                            </td>
+                                            <td>{uptimeDays}</td>
+                                        </tr>
+                                    );
+                                })
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -275,35 +294,17 @@ const Home = () => {
                     <button
                         className="btn"
                         type="button"
-                        disabled={nodePage <= 1}
-                        onClick={() => (
-                            setNodePage(nodePage - 1),
-                            refreshNodes({
-                                timestamp_gt:
-                                    nodes && nodes.length > 0
-                                        ? nodes[0].timestamp
-                                        : 0,
-                                id: nodeSearch,
-                            })
-                        )}
+                        disabled={pageNumber <= 0}
+                        onClick={() => loadNodes(pageNumber - 1)}
                     >
                         <i className="fas fa-chevron-left"></i>
                     </button>
-                    Page {nodePage} of {totalNodePages}
+                    Page {pageNumber + 1} of {totalNodePages}
                     <button
                         className="btn"
                         type="button"
-                        disabled={nodePage >= totalNodePages}
-                        onClick={() => (
-                            setNodePage(nodePage + 1),
-                            refreshNodes({
-                                timestamp_lt:
-                                    nodes && nodes.length > 0
-                                        ? nodes[nodes.length - 1].timestamp
-                                        : 0,
-                                id: nodeSearch,
-                            })
-                        )}
+                        disabled={pageNumber + 1 >= totalNodePages}
+                        onClick={() => loadNodes(pageNumber + 1)}
                     >
                         <i className="fas fa-chevron-right"></i>
                     </button>
