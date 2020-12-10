@@ -3,12 +3,14 @@ import gql from 'graphql-tag';
 export const BLOCKS = gql`
     query blocks(
         $first: Int
+        $skip: Int
         $where: Block_filter
         $orderBy: Block_orderBy
         $orderDirection: OrderDirection
     ) {
         blocks(
             first: $first
+            skip: $skip
             where: $where
             orderBy: $orderBy
             orderDirection: $orderDirection

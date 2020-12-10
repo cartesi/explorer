@@ -14,7 +14,7 @@ const Blocks = () => {
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const { formatCTSI } = useCartesiToken();
-    const { blocks, updateFilter, loading } = useBlocks(
+    const { blocks, updateFilter, loading, loadMoreBlocks } = useBlocks(
         blockId == '' ? {} : { id: blockId }
     );
 
@@ -28,11 +28,9 @@ const Blocks = () => {
         }
     };
 
-    const loadMore = () => {
+    const loadMore = async () => {
         if (blocks.length > 0) {
-            updateFilter({
-                timestamp_lt: blocks[blocks.length - 1].timestamp,
-            });
+            await loadMoreBlocks();
         }
     };
 

@@ -9,11 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 
-import _, { filter } from 'lodash';
+import _ from 'lodash';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
 
@@ -29,6 +29,8 @@ interface IBlocksFilter {
 const useBlocks = (initFilter = {}) => {
     const [filter, setFilter] = useState<IBlocksFilter>(initFilter);
     const [searchKey, setSearchKey] = useState<string>('');
+
+    const [blocks, setBlocks] = useState<Array<Block>>([]);
 
     const variables = {
         first: 10,
@@ -72,18 +74,71 @@ const useBlocks = (initFilter = {}) => {
         pollInterval: 30000,
     });
 
-    const blocks = _.unionBy(
-        producerData?.blocks || [],
-        nodeData?.blocks || [],
-        'id'
-    );
-    const loading = producerLoading || nodeLoading;
+    const [loading, setLoading] = useState<boolean>(false);
     const error = producerError || nodeError;
+
+    useEffect(() => {
+        setLoading(producerLoading || nodeLoading);
+    }, [producerLoading, nodeLoading]);
+
+    useEffect(() => {
+        if (producerData || nodeData) {
+            setBlocks(
+                _.unionBy(
+                    blocks,
+                    producerData?.blocks || [],
+                    nodeData?.blocks || [],
+                    'id'
+                )
+            );
+        }
+    }, [producerData, nodeData]);
+
+    const loadMoreBlocks = async (): Promise<void> => {
+        setLoading(true);
+
+        const { data: producerData } = await producerFetchMore<
+            BlocksData,
+            BlocksVars,
+            any
+        >({
+            variables: {
+                skip: blocks.length,
+                first: 10,
+            },
+        });
+
+        const { data: nodeData } = await nodeFetchMore<
+            BlocksData,
+            BlocksVars,
+            any
+        >({
+            variables: {
+                skip: blocks.length,
+                first: 10,
+            },
+        });
+
+        setLoading(false);
+
+        const newBlocks = _.unionBy(
+            blocks,
+            producerData?.blocks || [],
+            nodeData?.blocks || [],
+            'id'
+        );
+
+        setBlocks(newBlocks);
+    };
 
     const updateFilter = (
         newFilter: IBlocksFilter,
         newSearchKey: string = null
     ) => {
+        if (searchKey !== newSearchKey) {
+            setBlocks([]);
+        }
+
         setFilter(newFilter);
         setSearchKey(newSearchKey);
     };
@@ -283,6 +338,7 @@ const useBlocks = (initFilter = {}) => {
         loading,
         error,
         updateFilter,
+        loadMoreBlocks,
         getRewardRate,
         getEstimatedRewardRate,
     };
