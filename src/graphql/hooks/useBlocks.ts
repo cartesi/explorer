@@ -34,6 +34,7 @@ const useBlocks = (initFilter = {}) => {
 
     const variables = {
         first: 10,
+        skip: 0,
         where: null,
         orderBy: 'timestamp',
         orderDirection: 'desc',
