@@ -9,15 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-// import ReactBootstrapSlider from 'react-bootstrap-slider';
 import Layout from '../../components/Layout';
 import { useMarketInformation } from '../../services/market';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { useCartesiToken } from '../../services/token';
+import { getEstimatedRewardRate } from '../../utils/reward';
 
 interface Props {}
 
@@ -41,7 +40,8 @@ const Calculator = (props: Props) => {
     const [totalStaked, setTotalStaked] = useState<number>(-1);
 
     // get latest block
-    const { blocks, getEstimatedRewardRate } = useBlocks();
+    const { data } = useBlocks();
+    const blocks = data?.blocks || [];
 
     // bail out if not loaded
     const loaded =
@@ -51,6 +51,7 @@ const Calculator = (props: Props) => {
     }
 
     const { reward, apr, activeStake } = getEstimatedRewardRate(
+        blocks,
         stake,
         totalStaked,
         period

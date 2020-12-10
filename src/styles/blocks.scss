@@ -25,6 +25,10 @@
 
             border-left: 20px solid $primary-color;
 
+            .highlight {
+                background-color: lightyellow;
+            }
+
             &-image {
                 height: 118px;
                 width: 118px;
