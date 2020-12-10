@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { InjectedConnector } from '@web3-react/injected-connector';
@@ -18,11 +18,16 @@ import { IChainData, getChain } from '../services/chain';
 import { networks } from '../utils/networks';
 
 const SelectedChain = () => {
-    const { chainId, activate, deactivate } = useWeb3React<Web3Provider>();
+    const {
+        chainId,
+        activate,
+        deactivate,
+        error,
+        active,
+    } = useWeb3React<Web3Provider>();
+    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
     const [chain, setChain] = useState<IChainData>(undefined);
     const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
-    const supportedChainIds = Object.keys(networks).map((key) => parseInt(key));
-    const connector = new InjectedConnector({ supportedChainIds });
 
     React.useEffect(() => {
         if (window?.ethereum?.selectedAddress) {
@@ -34,10 +39,16 @@ const SelectedChain = () => {
     useEffect(() => {
         if (chainId) {
             getChain(chainId).then(setChain);
+        } else if (error) {
+            setChain(undefined);
         }
-    }, [chainId]);
+    }, [chainId, error]);
 
     const connectNetwork = () => {
+        const supportedChainIds = Object.keys(networks).map((key) =>
+            parseInt(key)
+        );
+        const connector = new InjectedConnector({ supportedChainIds });
         activate(connector);
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -51,11 +62,18 @@ const SelectedChain = () => {
 
     return (
         <div className="selected-chain">
-            {chain ? (
+            {chain && (
                 <div>
                     <span style={{ color: 'white' }}>{chain.name}</span>
                 </div>
-            ) : (
+            )}
+            {isUnsupportedChainIdError && (
+                <button type="button" className="btn btn-danger button-text">
+                    <img src="/images/metamask.png" />
+                    Unsupported Network
+                </button>
+            )}
+            {!active && !isUnsupportedChainIdError && (
                 <button
                     type="button"
                     className="btn btn-primary button-text"

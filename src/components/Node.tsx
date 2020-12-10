@@ -21,7 +21,7 @@ import useNodes from '../graphql/hooks/useNodes';
 interface NodeProps {}
 
 const Node = (props: NodeProps) => {
-    const { library, account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
     const [address, setAddress] = useState<string>('');
     const node = useNode(address);
     const [showDetails, setShowDetails] = useState<boolean>(false);

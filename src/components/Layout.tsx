@@ -10,9 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import NavBar from './NavBar';
 
 const LayoutComponent = ({ children, className = '' }) => {
+    const { error } = useWeb3React();
+    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
+
     return (
         <div
             className={`layout container-fluid ${className}`}
@@ -20,7 +24,9 @@ const LayoutComponent = ({ children, className = '' }) => {
         >
             <NavBar />
             <div>
-                <div className="layout-content">{children}</div>
+                {!isUnsupportedChainIdError && (
+                    <div className="layout-content">{children}</div>
+                )}
                 <div className="layout-footer">
                     Copyright (C) 2020 Cartesi Pte. Ltd.
                 </div>

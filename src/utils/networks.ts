@@ -11,22 +11,12 @@
 
 export const networks = {
     1: 'mainnet',
-    3: 'ropsten',
-    4: 'rinkeby',
     5: 'goerli',
-    42: 'kovan',
-    80001: 'matic_testnet',
-    97: 'bsc_testnet',
     31337: 'localhost',
 };
 
 export const confirmations = {
     1: 3,
-    3: 2,
-    4: 2,
     5: 1,
-    42: 2,
-    80001: 2,
-    97: 2,
     31337: 1,
 };

@@ -122,7 +122,8 @@ function useContract<C>(
     // use an effect because it's async
     useEffect(() => {
         if (!library || !chainId) {
-            // library or chainId not set yet, just return
+            // library or chainId not set, reset to undefined
+            setContract(undefined);
             return;
         }
 
@@ -135,6 +136,8 @@ function useContract<C>(
         if (address) {
             // call the factory connector
             setContract(connector(address, signer));
+        } else {
+            setContract(undefined);
         }
     }, [library, chainId]);
 

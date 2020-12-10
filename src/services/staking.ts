@@ -12,7 +12,12 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import {
+    BigNumber,
+    BigNumberish,
+    constants,
+    ContractTransaction,
+} from 'ethers';
 import { useBlockNumber } from './eth';
 import { useStakingContract } from './contract';
 
@@ -26,15 +31,15 @@ export const useStaking = () => {
         Promise<ContractTransaction>
     >();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
-        BigNumber.from(0)
+        constants.Zero
     );
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
     const [maturingBalance, setMaturingBalance] = useState<BigNumber>(
-        BigNumber.from(0)
+        constants.Zero
     );
     const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
-        BigNumber.from(0)
+        constants.Zero
     );
 
     useEffect(() => {
