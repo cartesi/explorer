@@ -16,6 +16,7 @@ import { BigNumber, constants, FixedNumber } from 'ethers';
 import _ from 'lodash';
 import { BLOCKS } from '../queries/blocks';
 import { Block, BlocksData, BlocksVars } from '../models';
+import { useWeb3React } from '@web3-react/core';
 
 interface IBlocksFilter {
     id?: string;
@@ -27,6 +28,8 @@ interface IBlocksFilter {
 }
 
 const useBlocks = (initFilter = {}) => {
+    const { chainId } = useWeb3React();
+
     const [filter, setFilter] = useState<IBlocksFilter>(initFilter);
     const [searchKey, setSearchKey] = useState<string>('');
 
@@ -90,6 +93,10 @@ const useBlocks = (initFilter = {}) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const error = idError || producerError || nodeError;
+
+    useEffect(() => {
+        setBlocks([]);
+    }, [chainId]);
 
     useEffect(() => {
         setLoading(idLoading || producerLoading || nodeLoading);
