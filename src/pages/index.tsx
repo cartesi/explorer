@@ -44,10 +44,10 @@ const Home = () => {
         nodes,
         nodesPerPage,
         pageNumber,
-        searchKey,
+        filter,
         loading,
         loadNodes,
-        updateSearchKey,
+        updateFilter,
     } = useNodes();
     const { blocks, getRewardRate } = useBlocks();
     const summary = useSummary();
@@ -72,7 +72,7 @@ const Home = () => {
     }
 
     const totalNodePages =
-        summary && searchKey == ''
+        summary && filter.id === ''
             ? Math.ceil(summary.totalNodes / nodesPerPage)
             : 1;
 
@@ -214,8 +214,14 @@ const Home = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search"
-                            value={searchKey}
-                            onChange={(e) => updateSearchKey(e.target.value)}
+                            value={filter.id}
+                            onChange={(e) =>
+                                updateFilter(
+                                    e.target.value !== ''
+                                        ? { id: e.target.value }
+                                        : {}
+                                )
+                            }
                         />
                     </div>
                 </div>

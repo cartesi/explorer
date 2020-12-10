@@ -28,7 +28,7 @@ const Node = (props: NodeProps) => {
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
 
-    const { nodes, refreshNodes } = useNodes();
+    const { nodes, updateFilter } = useNodes();
 
     const notMine = node.address && !node.available && node.user != account;
     const mine = node.user == account;
@@ -40,7 +40,7 @@ const Node = (props: NodeProps) => {
 
     useEffect(() => {
         if (account) {
-            refreshNodes({ owner: account.toLowerCase() });
+            updateFilter({ owner: account.toLowerCase() });
         }
     }, [account]);
 

@@ -15,17 +15,13 @@ interface INodeFilter {
 const nodesPerPage = 10;
 
 const useNodes = () => {
-    const [searchKey, setSearchKey] = useState<string>('');
+    const [filter, setFilter] = useState<INodeFilter>({});
     const [pageNumber, setPageNumber] = useState<number>(0);
 
     const { loading, error, data } = useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: nodesPerPage,
-            where: searchKey
-                ? {
-                      id: searchKey,
-                  }
-                : {},
+            where: filter,
             skip: pageNumber * nodesPerPage,
             orderBy: 'timestamp',
             orderDirection: 'desc',
@@ -34,8 +30,8 @@ const useNodes = () => {
         pollInterval: 60 * 60 * 1000, // Refresh every 1 hour
     });
 
-    const updateSearchKey = (newSearchKey: string) => {
-        setSearchKey(newSearchKey);
+    const updateFilter = (newFilter: INodeFilter) => {
+        setFilter(newFilter);
         setPageNumber(0);
     };
 
@@ -47,11 +43,11 @@ const useNodes = () => {
         nodes: data?.nodes,
         nodesPerPage,
         pageNumber,
-        searchKey,
+        filter,
         loading,
         error,
         loadNodes,
-        updateSearchKey,
+        updateFilter,
     };
 };
 
