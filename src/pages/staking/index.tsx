@@ -21,9 +21,11 @@ import Node from '../../components/Node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { BigNumber } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
+import { useNode } from '../../services/node';
+import { NoEthereumProviderError } from '@web3-react/injected-connector';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -68,14 +70,18 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
+    const [address, setAddress] = useState<string>('');
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
 
-    const ongoingTransaction = tokenTransaction || stakingTransaction;
+    const node = useNode(address);
+
+    const transaction =
+        tokenTransaction || stakingTransaction || node.transaction;
     const error = tokenError || stakingError;
-    const waiting = !!ongoingTransaction;
+    const waiting = !!transaction;
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -212,6 +218,7 @@ const Staking = () => {
     const confirmationDone = () => {
         clearStakingStates();
         clearTokenStates();
+        node.updateState(address);
     };
 
     const stakeSplit = splitStakeAmount();
@@ -238,7 +245,7 @@ const Staking = () => {
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Staking
                     <ConfirmationIndicator
-                        transaction={ongoingTransaction}
+                        transaction={transaction}
                         confirmationDone={confirmationDone}
                         error={error}
                     />
@@ -267,7 +274,7 @@ const Staking = () => {
                 </div>
             </div>
 
-            <Node />
+            <Node address={address} setAddress={setAddress} node={node} />
 
             <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">

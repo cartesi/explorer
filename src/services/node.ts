@@ -10,12 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { BigNumberish } from 'ethers';
+import { BigNumberish, ContractTransaction } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
 import { usePoSContract, useWorkerManagerContract } from './contract';
-import { confirmations } from '../utils/networks';
 
 export const useNode = (address: string) => {
     const { library, chainId } = useWeb3React();
@@ -31,8 +30,10 @@ export const useNode = (address: string) => {
     const [authorized, setAuthorized] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [hiring, setHiring] = useState<boolean>(false);
-    const [transfering, setTransfering] = useState<boolean>(false);
+
+    const [transaction, setTransaction] = useState<
+        Promise<ContractTransaction>
+    >();
 
     // make balance depend on owner, so if it changes we update the balance
     // also update on every block
@@ -64,6 +65,9 @@ export const useNode = (address: string) => {
             setRetired(false);
             setAuthorized(false);
         }
+
+        setTransaction(undefined);
+        setError(undefined);
     };
 
     useEffect(() => {
@@ -73,90 +77,54 @@ export const useNode = (address: string) => {
                 .then(() => setLoading(false))
                 .catch((e) => setError(e.message));
         }
-    }, [workerManager, address, block, hiring]);
+    }, [workerManager, address, block]);
 
     const hire = (value: BigNumberish) => {
         if (workerManager) {
-            // send transaction
-            setHiring(true);
-            setError(undefined);
-            workerManager
-                .hireAndAuthorize(address, pos.address, {
-                    value,
-                })
-                .then((tx) => {
-                    tx.wait(confirmations[chainId])
-                        .then((receipt) => {
-                            setHiring(false);
-                            setError(undefined);
-                        })
-                        .catch((e) => {
-                            setHiring(false);
-                            setError(e.message);
-                        });
-                })
-                .catch((e) => {
-                    setHiring(false);
-                    setError(e.message);
-                });
+            try {
+                setTransaction(
+                    workerManager.hireAndAuthorize(address, pos.address, {
+                        value,
+                    })
+                );
+            } catch (e) {
+                setTransaction(undefined);
+                setError(e.message);
+            }
         }
     };
 
     const cancelHire = () => {
         if (workerManager) {
-            // send transaction
-            workerManager
-                .cancelHire(address)
-                .then((tx) => {
-                    tx.wait(confirmations[chainId])
-                        .then((receipt) => {
-                            setHiring(false);
-                            setError(undefined);
-                        })
-                        .catch((e) => {
-                            setHiring(false);
-                            setError(e.message);
-                        });
-                })
-                .catch((e) => {
-                    setHiring(false);
-                    setError(e.message);
-                });
+            try {
+                setTransaction(workerManager.cancelHire(address));
+            } catch (e) {
+                setTransaction(undefined);
+                setError(e.message);
+            }
         }
     };
 
     const retire = () => {
         if (workerManager) {
-            // send transaction
-            workerManager
-                .retire(address)
-                .then((tx) => {
-                    tx.wait(confirmations[chainId])
-                        .then((receipt) => {
-                            setHiring(false);
-                            setError(undefined);
-                        })
-                        .catch((e) => {
-                            setHiring(false);
-                            setError(e.message);
-                        });
-                })
-                .catch((e) => {
-                    setHiring(false);
-                    setError(e.message);
-                });
+            try {
+                setTransaction(workerManager.retire(address));
+            } catch (e) {
+                setTransaction(undefined);
+                setError(e.message);
+            }
         }
     };
 
     const transfer = (value: BigNumberish) => {
         if (library && chainId && address) {
-            setTransfering(true);
-            const signer = library.getSigner();
-            signer.sendTransaction({ to: address, value }).then((tx) => {
-                tx.wait(confirmations[chainId]).then((receipt) => {
-                    setTransfering(false);
-                });
-            });
+            try {
+                const signer = library.getSigner();
+                setTransaction(signer.sendTransaction({ to: address, value }));
+            } catch (e) {
+                setTransaction(undefined);
+                setError(e.message);
+            }
         }
     };
 
@@ -171,11 +139,11 @@ export const useNode = (address: string) => {
         retired,
         authorized,
         loading,
-        hiring,
-        transfering,
+        transaction,
         hire,
         cancelHire,
         retire,
         transfer,
+        updateState,
     };
 };

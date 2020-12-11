@@ -14,16 +14,17 @@ import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
-import { useNode } from '../services/node';
 import { tinyString } from '../utils/stringUtils';
 import useNodes from '../graphql/hooks/useNodes';
 
-interface NodeProps {}
+interface NodeProps {
+    address: string;
+    setAddress: (newAddress: string) => void;
+    node: any;
+}
 
-const Node = (props: NodeProps) => {
+const Node = ({ address, setAddress, node }: NodeProps) => {
     const { account, chainId } = useWeb3React<Web3Provider>();
-    const [address, setAddress] = useState<string>('');
-    const node = useNode(address);
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
@@ -105,6 +106,7 @@ const Node = (props: NodeProps) => {
                                     type="text"
                                     className="form-control :invalid"
                                     id="address"
+                                    disabled={!!node.transaction}
                                     value={address}
                                     onChange={(event) =>
                                         setAddress(event.target.value)
@@ -126,6 +128,7 @@ const Node = (props: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="deposit"
+                                        disabled={!!node.transaction}
                                         defaultValue={formatEther(deposit)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -174,7 +177,7 @@ const Node = (props: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="transfer"
-                                        disabled={node.transfering}
+                                        disabled={!!node.transaction}
                                         defaultValue={formatEther(transfer)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -197,23 +200,17 @@ const Node = (props: NodeProps) => {
                                     type="button"
                                     className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => setShowDetails(!showDetails)}
+                                    disabled={!!node.transaction}
                                 >
                                     Cancel
                                 </button>
 
                                 <button
                                     type="button"
-                                    disabled={node.hiring}
+                                    disabled={!!node.transaction}
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => node.hire(deposit)}
                                 >
-                                    {node.hiring && (
-                                        <span
-                                            className="spinner-border spinner-border-sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
-                                    )}
                                     Hire Node
                                 </button>
                             </div>
@@ -223,17 +220,10 @@ const Node = (props: NodeProps) => {
                             <div className="staking-hire-node-buttons">
                                 <button
                                     type="button"
-                                    disabled={node.hiring}
+                                    disabled={!!node.transaction}
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => node.cancelHire()}
                                 >
-                                    {node.hiring && (
-                                        <span
-                                            className="spinner-border spinner-border-sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
-                                    )}
                                     Cancel Hire
                                 </button>
                             </div>
@@ -243,6 +233,7 @@ const Node = (props: NodeProps) => {
                             <div className="staking-hire-node-buttons">
                                 <button
                                     type="button"
+                                    disabled={!!node.transaction}
                                     className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
                                     onClick={() => node.retire()}
                                 >
@@ -251,6 +242,7 @@ const Node = (props: NodeProps) => {
 
                                 <button
                                     type="button"
+                                    disabled={!!node.transaction}
                                     className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => setShowDetails(!showDetails)}
                                 >
@@ -259,17 +251,10 @@ const Node = (props: NodeProps) => {
 
                                 <button
                                     type="button"
-                                    disabled={node.transfering}
+                                    disabled={!!node.transaction}
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => node.transfer(transfer)}
                                 >
-                                    {node.transfering && (
-                                        <span
-                                            className="spinner-border spinner-border-sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
-                                    )}
                                     Add Funds
                                 </button>
                             </div>
