@@ -94,31 +94,37 @@ interface BlockListProps {
     filterValue?: string;
 }
 const BlockList = (props: BlockListProps) => {
-    const blocks = props.result.data?.blocks || [];
-    const loading = props.result.loading;
-    const fetchMore = props.result.fetchMore;
+    const { result, filterField, filterValue } = props;
+    const { data, loading, fetchMore } = result;
+    const blocks = data?.blocks || [];
 
+    // handler for the "load more" button
     const loadMore = () => {
         if (blocks.length > 0 && fetchMore) {
+            // get oldest block, always last one because of sort order
             const oldest = blocks[blocks.length - 1];
-            fetchMore({
-                variables: {
-                    where: { timestamp_lt: oldest.timestamp },
-                },
-            });
+
+            // copy original variables object
+            const variables = { ...result.variables };
+
+            // add timestamp "lower then", value
+            variables.where.timestamp_lt = oldest.timestamp;
+
+            // fetch more, will end up in the same collection (because of cache)
+            fetchMore({ variables });
         }
     };
 
-    // if this is a filtered list and there are no block, just don't render anything
-    if (props.filterField && blocks.length == 0) {
+    // if this is a filtered list and there are no blocks, just don't render anything
+    if (filterField && blocks.length == 0) {
         return <div />;
     }
 
     return (
         <div className="blocks-content mt-5">
-            {props.filterField && (
+            {filterField && (
                 <span className="badge rounded-pill bg-secondary">
-                    {props.filterField}: {props.filterValue}
+                    {filterField}: {filterValue}
                 </span>
             )}
             <div className="blocks-content-block-list">
@@ -127,7 +133,7 @@ const BlockList = (props: BlockListProps) => {
                         <BlockItem
                             key={block.id}
                             block={block}
-                            highlight={props.filterField}
+                            highlight={filterField}
                         />
                     );
                 })}
@@ -159,13 +165,20 @@ const BlockList = (props: BlockListProps) => {
 
 const Blocks = () => {
     const router = useRouter();
+
     let { block: blockId } = router.query;
     // TODO: use blockId
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
+
     const [searchKey, setSearchKey] = useState<string>(blockId);
 
+    // list of all blocks, unfiltered
     const all = useBlocks();
+
+    // list of blocks filtered by producer
     const byProducer = useProducerBlocks(searchKey);
+
+    // list of blocks filtered by node
     const byNode = useNodeBlocks(searchKey);
 
     return (

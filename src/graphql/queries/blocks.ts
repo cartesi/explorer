@@ -40,8 +40,3 @@ export const BLOCKS = gql`
         }
     }
 `;
-
-export const blocksQueryVars = {
-    first: 10,
-    where: {},
-};

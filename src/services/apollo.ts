@@ -33,13 +33,17 @@ const createApollo = (chainId: number): ApolloClient<any> => {
                 Query: {
                     fields: {
                         blocks: {
-                            keyArgs: (args, context) => {
-                                delete args.where?.timestamp_lt;
-                                const key = JSON.stringify(args);
-                                console.log(key);
-                                return key;
+                            // this functions receives the field query args and must return the cache key
+                            keyArgs: (args) => {
+                                // we need to remove the piece of information which is only for pagination
+                                const clean = { ...args };
+                                clean.where.timestamp_lt = undefined;
+
+                                // key is just a serialization of the clean args
+                                return JSON.stringify(clean);
                             },
                             merge(existing = [], incoming) {
+                                // just concatenate the data
                                 return [...existing, ...incoming];
                             },
                         },
