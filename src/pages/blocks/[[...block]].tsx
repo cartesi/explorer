@@ -90,31 +90,45 @@ const BlockItem = (props: BlockItemProps) => {
 
 interface BlockListProps {
     result: QueryResult<BlocksData, BlocksVars>;
-    highlight?: 'node' | 'producer' | 'id';
-    filterName?: string;
-    filter?: string;
+    filterField?: 'node' | 'producer' | 'id';
+    filterValue?: string;
 }
 const BlockList = (props: BlockListProps) => {
     const blocks = props.result.data?.blocks || [];
     const loading = props.result.loading;
     const fetchMore = props.result.fetchMore;
 
+    const loadMore = () => {
+        if (blocks.length > 0 && fetchMore) {
+            const oldest = blocks[blocks.length - 1];
+            fetchMore({
+                variables: {
+                    where: { timestamp_lt: oldest.timestamp },
+                },
+            });
+        }
+    };
+
     // if this is a filtered list and there are no block, just don't render anything
-    if (props.filterName && blocks.length == 0) {
+    if (props.filterField && blocks.length == 0) {
         return <div />;
     }
 
     return (
         <div className="blocks-content mt-5">
-            {props.filterName && (
+            {props.filterField && (
                 <span className="badge rounded-pill bg-secondary">
-                    {props.filterName}: {props.filter}
+                    {props.filterField}: {props.filterValue}
                 </span>
             )}
             <div className="blocks-content-block-list">
                 {blocks.map((block) => {
                     return (
-                        <BlockItem block={block} highlight={props.highlight} />
+                        <BlockItem
+                            key={block.id}
+                            block={block}
+                            highlight={props.filterField}
+                        />
                     );
                 })}
             </div>
@@ -123,7 +137,7 @@ const BlockList = (props: BlockListProps) => {
                 <button
                     type="button"
                     className="btn btn-dark"
-                    onClick={() => fetchMore({})}
+                    onClick={loadMore}
                     disabled={loading}
                 >
                     <div className="d-flex flex-row align-items-center justify-content-between">
@@ -183,15 +197,13 @@ const Blocks = () => {
             {!searchKey && <BlockList result={all} />}
             <BlockList
                 result={byProducer}
-                highlight="producer"
-                filterName="producer"
-                filter={searchKey}
+                filterField="producer"
+                filterValue={searchKey}
             />
             <BlockList
                 result={byNode}
-                highlight="node"
-                filterName="node"
-                filter={searchKey}
+                filterField="node"
+                filterValue={searchKey}
             />
         </Layout>
     );

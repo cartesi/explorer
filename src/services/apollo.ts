@@ -28,7 +28,25 @@ const createApollo = (chainId: number): ApolloClient<any> => {
         link: new HttpLink({
             uri,
         }),
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+            typePolicies: {
+                Query: {
+                    fields: {
+                        blocks: {
+                            keyArgs: (args, context) => {
+                                delete args.where?.timestamp_lt;
+                                const key = JSON.stringify(args);
+                                console.log(key);
+                                return key;
+                            },
+                            merge(existing = [], incoming) {
+                                return [...existing, ...incoming];
+                            },
+                        },
+                    },
+                },
+            },
+        }),
     });
 };
 

@@ -13,18 +13,13 @@ import gql from 'graphql-tag';
 
 export const BLOCKS = gql`
     query blocks(
-        $first: Int
-        $skip: Int
         $where: Block_filter
-        $orderBy: Block_orderBy
-        $orderDirection: OrderDirection
     ) {
         blocks(
-            first: $first
-            skip: $skip
+            first: 10
             where: $where
-            orderBy: $orderBy
-            orderDirection: $orderDirection
+            orderBy: timestamp
+            orderDirection: desc
         ) {
             id
             number
@@ -49,6 +44,4 @@ export const BLOCKS = gql`
 export const blocksQueryVars = {
     first: 10,
     where: {},
-    orderBy: 'timestamp',
-    orderDirection: 'desc',
 };
