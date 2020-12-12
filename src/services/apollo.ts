@@ -18,6 +18,28 @@ const uris = {
     31337: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
 };
 
+const mergeUniqueSort = (fieldName: string) => {
+    return (existing: any[] = [], incoming: any[], { readField }) => {
+        // concatenate the data
+        const array = [...existing, ...incoming];
+
+        // remove duplicates
+        const unique = array.reduce<any[]>((unique: any[], item: any) => {
+            const exists = unique.findIndex(
+                (block) => block.__ref == item.__ref
+            );
+            return exists >= 0 ? unique : [...unique, item];
+        }, []);
+
+        // sort by fieldName
+        return unique.sort((a, b) => {
+            const fa: number = readField(fieldName, a);
+            const fb: number = readField(fieldName, b);
+            return fb - fa;
+        });
+    };
+};
+
 const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
         uris[chainId] ||
@@ -42,10 +64,7 @@ const createApollo = (chainId: number): ApolloClient<any> => {
                                 // key is just a serialization of the clean args
                                 return JSON.stringify(clean);
                             },
-                            merge(existing = [], incoming) {
-                                // just concatenate the data
-                                return [...existing, ...incoming];
-                            },
+                            merge: mergeUniqueSort('timestamp'),
                         },
                     },
                 },
