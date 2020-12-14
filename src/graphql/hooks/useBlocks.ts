@@ -23,6 +23,7 @@ const useBlocks = () => {
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
         pollInterval: 30000,
+        notifyOnNetworkStatusChange: true,
     });
 };
 
@@ -36,6 +37,7 @@ export const useProducerBlocks = (producer: string) => {
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
         pollInterval: 30000,
+        notifyOnNetworkStatusChange: true,
     });
 };
 
@@ -49,6 +51,7 @@ export const useNodeBlocks = (node: string) => {
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
         pollInterval: 30000,
+        notifyOnNetworkStatusChange: true,
     });
 };
 
