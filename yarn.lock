@@ -53,10 +53,10 @@
   dependencies:
     cross-fetch "^3.0.6"
 
-"@apollo/client@^3.2.2":
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.4.tgz#fded078222fcd9272d6e3501c7d1d76adb61da79"
-  integrity sha512-PnbkSa2gcFD6Qakn2eJCJ1RMYdCzEIlRlaHZGnUNbH+7AKOYwjDVtSVCC03nDtWeS9yWiJ15A8xGMreMKAboQQ==
+"@apollo/client@^3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.6.tgz#f359646308167f38d5bc498dfc2344c888400093"
+  integrity sha512-XSm/STyNS8aHdDigLLACKNMHwI0qaQmEHWHtTP+jHe/E1wZRnn66VZMMgwKLy2V4uHISHfmiZ4KpUKDPeJAKqg==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@types/zen-observable" "^0.8.0"
@@ -3382,7 +3382,7 @@ graphql-tag@^2.11.0:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.11.0.tgz#1deb53a01c46a7eb401d6cb59dec86fa1cccbffd"
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
 
-graphql@^15.3.0:
+graphql@^15.4.0:
   version "15.4.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.4.0.tgz#e459dea1150da5a106486ba7276518b5295a4347"
   integrity sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA==

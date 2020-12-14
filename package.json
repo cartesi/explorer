@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.2",
+    "@apollo/client": "^3.3.6",
     "@cartesi/pos": "^0.1.0-beta.21",
     "@cartesi/token": "^1.2.5",
     "@cartesi/util": "^1.0.0",
@@ -19,7 +19,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.3",
     "ethers": "^5.0.14",
-    "graphql": "^15.3.0",
+    "graphql": "^15.4.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "next": "9.5.3",
