@@ -209,7 +209,7 @@ const Nodes = (props: NodesProps) => {
         updateFilter,
     } = useNodes();
     const totalNodePages =
-        summary && filter.id === ''
+        summary && (!filter.id || filter.id === '')
             ? Math.ceil(summary.totalNodes / nodesPerPage)
             : 1;
 
