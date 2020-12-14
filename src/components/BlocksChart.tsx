@@ -71,7 +71,7 @@ const BlocksChart = (props: BlocksChartProps) => {
     };
 
     return (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={300} className="mt-5">
             <ScatterChart>
                 <CartesianGrid stroke="#ccc" />
                 <XAxis

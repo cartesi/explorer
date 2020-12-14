@@ -206,7 +206,7 @@ const Blocks = () => {
             </div>
 
             <BlocksChart result={all} />
-            
+
             {!searchKey && <BlockList result={all} />}
             <BlockList
                 result={byProducer}
