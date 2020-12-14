@@ -10,8 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Line, LineChart, LineSeries } from 'reaviz';
 import bigInt from 'big-integer';
+import _ from 'lodash';
+import {
+    CartesianGrid,
+    LineChart,
+    Line,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
 import { BlocksData, BlocksVars } from '../graphql/models';
 import { QueryResult } from '@apollo/client';
 
@@ -21,29 +29,35 @@ export interface BlocksChartProps {
 
 const BlocksChart = (props: BlocksChartProps) => {
     const blocks = props.result.data?.blocks || [];
-    const data = blocks.map((block) => ({
-        key: new Date(block.timestamp * 1000),
-        id: block.id,
-        data: bigInt(block.difficulty),
-    }));
 
-    // TODO: make one serie for each chain
-    const chartData = [
-        {
-            key: 'Difficulty',
-            data: data,
-        },
-    ];
+    // group blocks per chain
+    const blocksPerChain = _.groupBy(blocks, (block) => block.chain.id);
+
+    // create one Line per chain
+    const chains = Object.keys(blocksPerChain).map((chainId) => {
+        const blocks = blocksPerChain[chainId];
+        const data = blocks.map((block) => ({
+            id: block.id,
+            date: new Date(block.timestamp * 1000),
+            difficulty: bigInt(block.difficulty),
+        }));
+        return (
+            <Line
+                name={`Chain ${chainId} Difficulty`}
+                type="linear"
+                data={data}
+                dataKey="difficulty"
+            />
+        );
+    });
 
     return (
-        <LineChart
-            width={550}
-            height={300}
-            series={
-                <LineSeries type="grouped" line={<Line strokeWidth={2} />} />
-            }
-            data={chartData}
-        />
+        <LineChart width={550} height={300}>
+            {chains}
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="date" />
+            <YAxis />
+        </LineChart>
     );
 };
 
