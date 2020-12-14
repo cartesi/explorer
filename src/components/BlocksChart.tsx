@@ -12,11 +12,14 @@
 import React from 'react';
 import bigInt from 'big-integer';
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 import {
     CartesianGrid,
-    LineChart,
-    Line,
+    Legend,
+    ResponsiveContainer,
     Tooltip,
+    Scatter,
+    ScatterChart,
     XAxis,
     YAxis,
 } from 'recharts';
@@ -35,29 +38,59 @@ const BlocksChart = (props: BlocksChartProps) => {
 
     // create one Line per chain
     const chains = Object.keys(blocksPerChain).map((chainId) => {
+        // get chain blocks
         const blocks = blocksPerChain[chainId];
+
+        // get important data for chart
         const data = blocks.map((block) => ({
             id: block.id,
-            date: new Date(block.timestamp * 1000),
+            timestamp: block.timestamp,
             difficulty: bigInt(block.difficulty),
         }));
+
+        // TODO: how to generate random color
+        const color = '#8884d8';
+
+        // create scatter plot
         return (
-            <Line
+            <Scatter
+                key={chainId}
                 name={`Chain ${chainId} Difficulty`}
-                type="linear"
                 data={data}
-                dataKey="difficulty"
+                line={{ stroke: color }}
+                lineJointType="stepBefore"
+                lineType="joint"
+                fill={color}
             />
         );
     });
 
+    const timestampFormat = (timestamp: number): string => {
+        const date = DateTime.fromMillis(timestamp * 1000);
+        return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
+    };
+
     return (
-        <LineChart width={550} height={300}>
-            {chains}
-            <CartesianGrid stroke="#ccc" />
-            <XAxis dataKey="date" />
-            <YAxis />
-        </LineChart>
+        <ResponsiveContainer width="100%" height={300}>
+            <ScatterChart>
+                <CartesianGrid stroke="#ccc" />
+                <XAxis
+                    dataKey="timestamp"
+                    domain={['auto', 'auto']}
+                    tickFormatter={timestampFormat}
+                    name="Time"
+                    type="number"
+                />
+                <YAxis
+                    dataKey="difficulty"
+                    name="Difficulty"
+                    domain={['auto', 'auto']}
+                    type="number"
+                />
+                <Legend />
+                {chains}
+            </ScatterChart>
+        </ResponsiveContainer>
     );
 };
 
