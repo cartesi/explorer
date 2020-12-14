@@ -12,12 +12,11 @@
 import gql from 'graphql-tag';
 
 export const BLOCKS = gql`
-    query blocks(
-        $where: Block_filter
-    ) {
+    query blocks($where: Block_filter, $skip: Int) {
         blocks(
             first: 10
             where: $where
+            skip: $skip
             orderBy: timestamp
             orderDirection: desc
         ) {

@@ -31,6 +31,8 @@ const mergeUniqueSort = (fieldName: string) => {
             return exists >= 0 ? unique : [...unique, item];
         }, []);
 
+        console.log(unique, fieldName, existing, incoming);
+
         // sort by fieldName
         return unique.sort((a, b) => {
             const fa: number = readField(fieldName, a);
@@ -56,14 +58,14 @@ const createApollo = (chainId: number): ApolloClient<any> => {
                     fields: {
                         blocks: {
                             // this functions receives the field query args and must return the cache key
-                            keyArgs: (args) => {
-                                // we need to remove the piece of information which is only for pagination
-                                const clean = { ...args };
-                                clean.where.timestamp_lt = undefined;
+                            // keyArgs: (args) => {
+                            //     // we need to remove the piece of information which is only for pagination
+                            //     const clean = { ...args };
 
-                                // key is just a serialization of the clean args
-                                return JSON.stringify(clean);
-                            },
+                            //     // key is just a serialization of the clean args
+                            //     return JSON.stringify(clean);
+                            // },
+                            keyArgs: ['where', 'skip'],
                             merge: mergeUniqueSort('timestamp'),
                         },
                     },

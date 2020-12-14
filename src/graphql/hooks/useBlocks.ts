@@ -17,6 +17,7 @@ import { BlocksData, BlocksVars } from '../models';
 const useBlocks = () => {
     const variables = {
         where: {},
+        skip: 0,
     };
 
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {

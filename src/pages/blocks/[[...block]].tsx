@@ -101,17 +101,21 @@ const BlockList = (props: BlockListProps) => {
     // handler for the "load more" button
     const loadMore = () => {
         if (blocks.length > 0 && fetchMore) {
-            // get oldest block, always last one because of sort order
-            const oldest = blocks[blocks.length - 1];
+            // // get oldest block, always last one because of sort order
+            // const oldest = blocks[blocks.length - 1];
 
-            // copy original variables object
-            const variables = { ...result.variables };
+            // // copy original variables object
+            // const variables = { ...result.variables };
 
-            // add timestamp "lower then", value
-            variables.where.timestamp_lt = oldest.timestamp;
+            // // add timestamp "lower then", value
+            // variables.where.timestamp_lt = oldest.timestamp;
 
             // fetch more, will end up in the same collection (because of cache)
-            fetchMore({ variables });
+            fetchMore({
+                variables: {
+                    skip: blocks.length,
+                },
+            });
         }
     };
 
