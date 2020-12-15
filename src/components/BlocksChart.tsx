@@ -30,6 +30,19 @@ export interface BlocksChartProps {
     result: QueryResult<BlocksData, BlocksVars>;
 }
 
+const colors = [
+    '#5dd54b',
+    '#e84586',
+    '#fa4c03',
+    '#b0bf18',
+    '#007179',
+    '#f6e340',
+    '#5087f3',
+    '#8d4ada',
+    '#f70005',
+    '#000000',
+];
+
 const BlocksChart = (props: BlocksChartProps) => {
     const blocks = props.result.data?.blocks || [];
 
@@ -48,8 +61,9 @@ const BlocksChart = (props: BlocksChartProps) => {
             difficulty: bigInt(block.difficulty),
         }));
 
-        // TODO: how to generate random color
-        const color = '#8884d8';
+        // follow tinygraphs color pattern
+        const id = parseInt(chainId);
+        const color = id >= 0 && id < colors.length ? colors[id] : colors[0];
 
         // create scatter plot
         return (
