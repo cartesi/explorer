@@ -8,7 +8,7 @@ const useSummary = (): Summary => {
             id: '1',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 30000,
+        pollInterval: 600000,
     });
 
     return data?.summary;

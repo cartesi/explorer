@@ -41,9 +41,7 @@ const mergeUniqueSort = (fieldName: string) => {
 };
 
 const createApollo = (chainId: number): ApolloClient<any> => {
-    const uri =
-        uris[chainId] ||
-        'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli';
+    const uri = uris[chainId];
     const ssrMode = typeof window === 'undefined';
     return new ApolloClient({
         ssrMode,

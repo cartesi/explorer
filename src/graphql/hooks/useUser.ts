@@ -13,6 +13,7 @@ const useUser = (id: string) => {
             id: id?.toLowerCase(),
         },
         notifyOnNetworkStatusChange: true,
+        pollInterval: 600000,
     });
 
     useEffect(() => {
