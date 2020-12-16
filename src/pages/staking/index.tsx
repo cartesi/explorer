@@ -24,7 +24,6 @@ import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
-import { useNode } from '../../services/node';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -67,18 +66,18 @@ const Staking = () => {
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
-    const [address, setAddress] = useState<string>('');
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
 
-    const node = useNode(address);
+    const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
+    const [nodeError, setNodeError] = useState<string>();
 
-    const waiting = stakingWaiting || tokenWaiting || node.waiting;
-    console.log(stakingWaiting, tokenWaiting, node.waiting);
+    const waiting = stakingWaiting || tokenWaiting || nodeWaiting;
 
-    const error = tokenError || stakingError;
+    const error = tokenError || stakingError || nodeError;
+    console.log(tokenError, stakingError, nodeError);
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -261,7 +260,7 @@ const Staking = () => {
                 </div>
             </div>
 
-            <Node address={address} setAddress={setAddress} node={node} />
+            <Node setWaiting={setNodeWaiting} setError={setNodeError} />
 
             <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">

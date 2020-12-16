@@ -39,7 +39,7 @@ const ConfirmationIndicator = (props: ConfirmationIndicatorProps) => {
         if (props.loading) {
             setShowMe(ShowStoppers.SHOW);
         } else {
-            setShowMe(ShowStoppers.HIDE);
+            hideMe();
         }
     }, [props.loading]);
 

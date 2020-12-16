@@ -17,6 +17,7 @@ export const useTransaction = () => {
     useEffect(() => {
         if (transaction) {
             setWaiting(true);
+            setError(null);
 
             transaction
                 .then((tx) => {

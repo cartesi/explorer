@@ -63,9 +63,6 @@ export const useNode = (address: string) => {
             setRetired(false);
             setAuthorized(false);
         }
-
-        setTransaction(undefined);
-        setError(undefined);
     };
 
     useEffect(() => {
