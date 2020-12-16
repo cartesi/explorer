@@ -27,7 +27,7 @@ const useNodes = () => {
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 600000, // Refresh every 1 hour
+        pollInterval: 600000, // Every 10 minutes
     });
 
     const updateFilter = (newFilter: INodeFilter) => {
