@@ -255,7 +255,7 @@ const Nodes = (props: NodesProps) => {
                     </thead>
 
                     <tbody>
-                        {loading ? (
+                        {loading || !nodes ? (
                             <tr>
                                 <td colSpan={5} className="text-center">
                                     <span
