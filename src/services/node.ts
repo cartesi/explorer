@@ -10,18 +10,18 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { BigNumberish, ContractTransaction } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
 import { usePoSContract, useWorkerManagerContract } from './contract';
+import { useTransaction } from './transaction';
 
 export const useNode = (address: string) => {
     const { library, chainId } = useWeb3React();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
 
-    const [error, setError] = useState<string>();
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
     const [available, setAvailable] = useState<boolean>(false);
@@ -31,9 +31,7 @@ export const useNode = (address: string) => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [transaction, setTransaction] = useState<
-        Promise<ContractTransaction>
-    >();
+    const { waiting, error, setError, setTransaction } = useTransaction();
 
     // make balance depend on owner, so if it changes we update the balance
     // also update on every block
@@ -88,7 +86,6 @@ export const useNode = (address: string) => {
                     })
                 );
             } catch (e) {
-                setTransaction(undefined);
                 setError(e.message);
             }
         }
@@ -99,7 +96,6 @@ export const useNode = (address: string) => {
             try {
                 setTransaction(workerManager.cancelHire(address));
             } catch (e) {
-                setTransaction(undefined);
                 setError(e.message);
             }
         }
@@ -110,7 +106,6 @@ export const useNode = (address: string) => {
             try {
                 setTransaction(workerManager.retire(address));
             } catch (e) {
-                setTransaction(undefined);
                 setError(e.message);
             }
         }
@@ -122,7 +117,6 @@ export const useNode = (address: string) => {
                 const signer = library.getSigner();
                 setTransaction(signer.sendTransaction({ to: address, value }));
             } catch (e) {
-                setTransaction(undefined);
                 setError(e.message);
             }
         }
@@ -138,12 +132,11 @@ export const useNode = (address: string) => {
         owned,
         retired,
         authorized,
+        waiting,
         loading,
-        transaction,
         hire,
         cancelHire,
         retire,
         transfer,
-        updateState,
     };
 };

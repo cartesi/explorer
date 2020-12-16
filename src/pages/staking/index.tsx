@@ -21,11 +21,10 @@ import Node from '../../components/Node';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { BigNumber } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 import { useNode } from '../../services/node';
-import { NoEthereumProviderError } from '@web3-react/injected-connector';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -39,8 +38,7 @@ const Staking = () => {
         maturingBalance,
         releasingBalance,
         error: stakingError,
-        transaction: stakingTransaction,
-        clearStates: clearStakingStates,
+        waiting: stakingWaiting,
         stake,
         unstake,
         withdraw,
@@ -50,8 +48,7 @@ const Staking = () => {
         balance,
         allowance,
         error: tokenError,
-        transaction: tokenTransaction,
-        clearStates: clearTokenStates,
+        waiting: tokenWaiting,
         approve,
         formatCTSI,
         parseCTSI,
@@ -78,10 +75,10 @@ const Staking = () => {
 
     const node = useNode(address);
 
-    const transaction =
-        tokenTransaction || stakingTransaction || node.transaction;
+    const waiting = stakingWaiting || tokenWaiting || node.waiting;
+    console.log(stakingWaiting, tokenWaiting, node.waiting);
+
     const error = tokenError || stakingError;
-    const waiting = !!transaction;
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -215,12 +212,6 @@ const Staking = () => {
         };
     };
 
-    const confirmationDone = () => {
-        clearStakingStates();
-        clearTokenStates();
-        node.updateState(address);
-    };
-
     const stakeSplit = splitStakeAmount();
     const unstakeSplit = splitUnstakeAmount();
     const totalBalance = balance
@@ -244,11 +235,7 @@ const Staking = () => {
             <div className="page-header row align-items-center py-3">
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Staking
-                    <ConfirmationIndicator
-                        transaction={transaction}
-                        confirmationDone={confirmationDone}
-                        error={error}
-                    />
+                    <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
 
                 <div className="col col-12 col-sm-6 col-lg-3">

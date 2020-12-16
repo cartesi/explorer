@@ -10,11 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-
-import { confirmations } from '../utils/networks';
-import { ContractTransaction } from 'ethers';
 
 enum ShowStoppers {
     SHOW,
@@ -23,19 +18,11 @@ enum ShowStoppers {
 }
 
 interface ConfirmationIndicatorProps {
-    transaction?: Promise<ContractTransaction>;
-    confirmationDone?: (error: string) => void;
+    loading: boolean;
     error?: string;
 }
 
 const ConfirmationIndicator = (props: ConfirmationIndicatorProps) => {
-    const { library, chainId } = useWeb3React<Web3Provider>();
-    const [
-        currentTransaction,
-        setCurrentTransaction,
-    ] = useState<ContractTransaction>(null);
-
-    const [confirmation, setConfirmation] = useState<number>(1);
     const [showMe, setShowMe] = useState<ShowStoppers>(ShowStoppers.HIDE);
 
     const [error, setError] = useState<string>();
@@ -45,24 +32,16 @@ const ConfirmationIndicator = (props: ConfirmationIndicatorProps) => {
 
         setTimeout(() => {
             setShowMe(ShowStoppers.HIDE);
-
-            props.confirmationDone(null);
         }, 2000);
     };
 
     useEffect(() => {
-        if (props.transaction) {
+        if (props.loading) {
             setShowMe(ShowStoppers.SHOW);
-
-            props.transaction
-                .then((tx) => {
-                    setCurrentTransaction(tx);
-                })
-                .catch((err) => {
-                    setError(err.message);
-                });
+        } else {
+            setShowMe(ShowStoppers.HIDE);
         }
-    }, [props.transaction]);
+    }, [props.loading]);
 
     useEffect(() => {
         setError(props.error);
@@ -71,29 +50,6 @@ const ConfirmationIndicator = (props: ConfirmationIndicatorProps) => {
     useEffect(() => {
         if (error) hideMe();
     }, [error]);
-
-    // number of expected confirmations depend on chainId
-    useEffect(() => {
-        if (library && chainId) {
-            setConfirmation(
-                confirmations[chainId] ? confirmations[chainId] : 1
-            );
-        }
-    }, [library, chainId]);
-
-    useEffect(() => {
-        try {
-            if (library && currentTransaction) {
-                // wait for confirmation
-                currentTransaction.wait(confirmation).then((receipt) => {
-                    hideMe();
-                });
-            }
-        } catch (e) {
-            // TODO: show error in component
-            setError(e.message);
-        }
-    }, [currentTransaction]);
 
     return (
         <>

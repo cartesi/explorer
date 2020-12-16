@@ -11,26 +11,20 @@
 
 import { useState, useEffect } from 'react';
 import { useCartesiTokenContract } from '../services/contract';
-import {
-    BigNumber,
-    BigNumberish,
-    constants,
-    ContractTransaction,
-} from 'ethers';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
+import { useTransaction } from './transaction';
 
 export const useCartesiToken = (
     account: string = null,
     spender: string = null,
     blockNumber: number = 0
 ) => {
-    const [error, setError] = useState<string>();
     const token = useCartesiTokenContract();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
-    const [transaction, setTransaction] = useState<
-        Promise<ContractTransaction>
-    >();
+
+    const { waiting, error, setError, setTransaction } = useTransaction();
 
     // balances
     useEffect(() => {
@@ -46,12 +40,9 @@ export const useCartesiToken = (
         if (token) {
             try {
                 // send transaction
-                const transaction = token.approve(spender, amount);
-                setTransaction(transaction);
+                setTransaction(token.approve(spender, amount));
             } catch (e) {
                 setError(e.message);
-                // XXX: show we really clear the transaction
-                setTransaction(undefined);
             }
         }
     };
@@ -82,17 +73,11 @@ export const useCartesiToken = (
         return formatUnits(amount, 18);
     };
 
-    const clearStates = () => {
-        setError(null);
-        setTransaction(null);
-    };
-
     return {
         allowance,
         balance,
         error,
-        transaction,
-        clearStates,
+        waiting,
         approve,
         parseCTSI,
         formatCTSI,

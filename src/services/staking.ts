@@ -12,24 +12,18 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import {
-    BigNumber,
-    BigNumberish,
-    constants,
-    ContractTransaction,
-} from 'ethers';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { useBlockNumber } from './eth';
 import { useStakingContract } from './contract';
+import { useTransaction } from './transaction';
 
 export const useStaking = () => {
     const { account } = useWeb3React<Web3Provider>();
     const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
-    const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<
-        Promise<ContractTransaction>
-    >();
+    const { waiting, error, setError, setTransaction } = useTransaction();
+
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
         constants.Zero
     );
@@ -64,12 +58,9 @@ export const useStaking = () => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = staking.stake(amount);
-                setTransaction(transaction);
-                setError(undefined);
+                setTransaction(staking.stake(amount));
             } catch (e) {
                 setError(e.message);
-                setTransaction(undefined);
             }
         }
     };
@@ -78,12 +69,9 @@ export const useStaking = () => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = staking.unstake(amount);
-                setTransaction(transaction);
-                setError(undefined);
+                setTransaction(staking.unstake(amount));
             } catch (e) {
                 setError(e.message);
-                setTransaction(undefined);
             }
         }
     };
@@ -92,31 +80,22 @@ export const useStaking = () => {
         if (staking) {
             try {
                 // send transaction
-                const transaction = staking.withdraw(amount);
-                setTransaction(transaction);
-                setError(undefined);
+                setTransaction(staking.withdraw(amount));
             } catch (e) {
                 setError(e.message);
-                setTransaction(undefined);
             }
         }
-    };
-
-    const clearStates = () => {
-        setError(null);
-        setTransaction(null);
     };
 
     return {
         staking,
         error,
-        transaction,
+        waiting,
         stakedBalance,
         maturingTimestamp,
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        clearStates,
         stake,
         unstake,
         withdraw,
