@@ -6,6 +6,13 @@
 
     &-content {
         padding: 100px 6vw;
+
+        &-issue {
+            background: $error-color;
+            margin: 0 -6vw;
+            padding: 10px 6vw;
+            color: white;
+        }
     }
 
     &-footer {

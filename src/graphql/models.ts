@@ -75,6 +75,17 @@ export type Block = {
     difficulty: string;
 };
 
+export type _Block_ = {
+    hash: string;
+    number: number;
+};
+
+export type _Meta_ = {
+    block: _Block_;
+    deployment: string;
+    hasIndexingErrors: boolean;
+};
+
 export interface BlocksData {
     blocks: Block[];
 }
@@ -97,4 +108,8 @@ export interface UserData {
 
 export interface UserVars {
     id: string;
+}
+
+export interface MetaData {
+    _meta: _Meta_;
 }

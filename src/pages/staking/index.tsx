@@ -59,7 +59,7 @@ const Staking = () => {
         toBigCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    const { user } = useUser(account);
+    const user = useUser(account);
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 

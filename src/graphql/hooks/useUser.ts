@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
-import { User, UserData, UserVars } from '../models';
+import { UserData, UserVars } from '../models';
 import { USER } from '../queries/user';
 
 const useUser = (id: string) => {
-    const [user, setUser] = useState<User>();
-
-    const { loading, error, data } = useQuery<UserData, UserVars>(USER, {
+    const { data } = useQuery<UserData, UserVars>(USER, {
         variables: {
             id: id?.toLowerCase(),
         },
@@ -16,15 +12,7 @@ const useUser = (id: string) => {
         pollInterval: 60000,
     });
 
-    useEffect(() => {
-        if (!loading && !error && data) {
-            setUser(data.user);
-        }
-    }, [loading, error, data]);
-
-    return {
-        user,
-    };
+    return data?.user;
 };
 
 export default useUser;

@@ -13,10 +13,22 @@ import React from 'react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import NavBar from './NavBar';
 import Footer from './Footer';
+import { useBlockNumber } from '../services/eth';
+import useMeta from '../graphql/hooks/useMeta';
+
+const threshold = 25;
 
 const LayoutComponent = ({ children, className = '' }) => {
     const { error } = useWeb3React();
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
+
+    const blockNumber = useBlockNumber();
+    const meta = useMeta();
+
+    const hasSyncIssue =
+        meta &&
+        meta.block.number > 0 &&
+        Math.abs(meta.block.number - blockNumber) > threshold;
 
     return (
         <div
@@ -26,7 +38,16 @@ const LayoutComponent = ({ children, className = '' }) => {
             <NavBar />
             <div>
                 {!isUnsupportedChainIdError && (
-                    <div className="layout-content">{children}</div>
+                    <div className="layout-content">
+                        {hasSyncIssue && (
+                            <div className="layout-content-issue">
+                                <i className="fas fa-exclamation-triangle"></i>{' '}
+                                There's currently a synchronization issue with
+                                the graph-node. Blocks may be appearing slowly.
+                            </div>
+                        )}
+                        {children}
+                    </div>
                 )}
             </div>
             <Footer />

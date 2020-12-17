@@ -50,6 +50,9 @@ const createApollo = (chainId: number): ApolloClient<any> => {
             uri,
         }),
         cache: new InMemoryCache({
+            //* https://spectrum.chat/apollo/apollo-client/exception-while-querying-introspection-query-with-apollo-client~81ca7b8f-6b00-4a25-9c97-1fea07f7d63a
+            addTypename: false,
+
             typePolicies: {
                 Query: {
                     fields: {
