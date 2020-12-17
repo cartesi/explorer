@@ -77,7 +77,6 @@ const Staking = () => {
     const waiting = stakingWaiting || tokenWaiting || nodeWaiting;
 
     const error = tokenError || stakingError || nodeError;
-    console.log(tokenError, stakingError, nodeError);
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
