@@ -84,6 +84,8 @@ const BlocksChart = (props: BlocksChartProps) => {
     };
 
     const difficultyFormat = (difficulty: number): string => {
+        if (!difficulty) return difficulty.toString();
+
         const digits = difficulty.toString().split('.');
         difficulty /= Math.pow(10.0, digits[0].length - 1);
         return difficulty.toString() + `e+${20 + digits[0].length - 1}`;
