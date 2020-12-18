@@ -183,7 +183,7 @@ const Blocks = (props: BlocksProps) => {
 
             <div className="landing-blocks-list">
                 {blocks.slice(0, 4).map((block) => (
-                    <Link href={'/blocks/' + block.id} key={block.id}>
+                    <Link href={'/blocks/'} key={block.id}>
                         <a className="landing-link flex-fill">
                             <BlockCard block={block} key={block.id} />
                         </a>

@@ -11,7 +11,7 @@
 
 import React from 'react';
 import bigInt from 'big-integer';
-import _ from 'lodash';
+import _, { toLength } from 'lodash';
 import { DateTime } from 'luxon';
 import {
     CartesianGrid,
@@ -58,9 +58,8 @@ const BlocksChart = (props: BlocksChartProps) => {
         const data = blocks.map((block) => ({
             id: block.id,
             timestamp: block.timestamp,
-            difficulty: bigInt(block.difficulty),
+            difficulty: parseFloat(block.difficulty.slice(0, -20)),
         }));
-
         // follow tinygraphs color pattern
         const id = parseInt(chainId);
         const color = id >= 0 && id < colors.length ? colors[id] : colors[0];
@@ -69,7 +68,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         return (
             <Scatter
                 key={chainId}
-                name={`Chain ${chainId} Difficulty`}
+                name={`Chain ${chainId}`}
                 data={data}
                 line={{ stroke: color }}
                 lineJointType="stepBefore"
@@ -84,9 +83,26 @@ const BlocksChart = (props: BlocksChartProps) => {
         return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
     };
 
+    const difficultyFormat = (difficulty: number): string => {
+        const digits = difficulty.toString().split('.');
+        difficulty /= Math.pow(10.0, digits[0].length - 1);
+        return difficulty.toString() + `e+${20 + digits[0].length - 1}`;
+    };
+
+    const tooltipFormatter = (value, name, props) => {
+        if (name === 'Difficulty') {
+            return difficultyFormat(value);
+        } else if (name === 'Time') {
+            return DateTime.fromMillis(value * 1000)
+                .toUTC()
+                .toLocaleString(DateTime.DATETIME_FULL);
+        }
+        return value;
+    };
+
     return (
-        <ResponsiveContainer width="100%" height={300} className="mt-5">
-            <ScatterChart>
+        <ResponsiveContainer width="100%" height={300}>
+            <ScatterChart margin={{ left: 30 }}>
                 <CartesianGrid stroke="#ccc" />
                 <XAxis
                     dataKey="timestamp"
@@ -98,11 +114,13 @@ const BlocksChart = (props: BlocksChartProps) => {
                 <YAxis
                     dataKey="difficulty"
                     name="Difficulty"
+                    tickFormatter={difficultyFormat}
                     domain={['auto', 'auto']}
                     type="number"
                 />
                 <Legend />
                 {chains}
+                <Tooltip formatter={tooltipFormatter} />
             </ScatterChart>
         </ResponsiveContainer>
     );

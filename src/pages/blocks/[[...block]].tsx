@@ -205,6 +205,7 @@ const Blocks = () => {
                 </div>
             </div>
 
+            <h5 className="mt-4 mb-2">Difficulties per Chain</h5>
             <BlocksChart result={all} />
 
             {!searchKey && <BlockList result={all} />}
