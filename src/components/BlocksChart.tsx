@@ -11,7 +11,7 @@
 
 import React from 'react';
 import bigInt from 'big-integer';
-import _, { toLength } from 'lodash';
+import _ from 'lodash';
 import { DateTime } from 'luxon';
 import {
     CartesianGrid,
@@ -58,7 +58,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         const data = blocks.map((block) => ({
             id: block.id,
             timestamp: block.timestamp,
-            difficulty: parseFloat(block.difficulty.slice(0, -20)),
+            difficulty: bigInt(block.difficulty),
         }));
         // follow tinygraphs color pattern
         const id = parseInt(chainId);
@@ -83,12 +83,8 @@ const BlocksChart = (props: BlocksChartProps) => {
         return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
     };
 
-    const difficultyFormat = (difficulty: number): string => {
-        if (!difficulty) return difficulty.toString();
-
-        const digits = difficulty.toString().split('.');
-        difficulty /= Math.pow(10.0, digits[0].length - 1);
-        return difficulty.toString() + `e+${20 + digits[0].length - 1}`;
+    const difficultyFormat = (difficulty: bigInt.BigInteger): string => {
+        return difficulty.toString();
     };
 
     const tooltipFormatter = (value, name, props) => {
