@@ -36,7 +36,7 @@ export async function getAllChains(): Promise<IChainData[]> {
 export async function getChain(chainId: number): Promise<IChainData> {
     try {
         const response = await axios.get(
-            `https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/${chainId}.json`
+            `https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/eip155-${chainId}.json`
         );
         return response.data;
     } catch (e) {
