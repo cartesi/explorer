@@ -18,17 +18,30 @@ import useMeta from '../graphql/hooks/useMeta';
 
 const threshold = 25;
 
-const LayoutComponent = ({ children, className = '' }) => {
-    const { error } = useWeb3React();
-    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-
+const SyncStatus = () => {
     const blockNumber = useBlockNumber();
     const meta = useMeta();
 
-    const hasSyncIssue =
+    const issues =
         meta &&
-        meta.block.number > 0 &&
-        Math.abs(meta.block.number - blockNumber) > threshold;
+        blockNumber > 0 &&
+        (meta.hasIndexingErrors ||
+            Math.abs(meta.block.number - blockNumber) > threshold);
+
+    return issues ? (
+        <div className="layout-content-issue">
+            <i className="fas fa-exclamation-triangle"></i>Synchronization issue
+            between backend data and blockchain data. Blocks may be appearing
+            slowly.
+        </div>
+    ) : (
+        <div />
+    );
+};
+
+const LayoutComponent = ({ children, className = '' }) => {
+    const { error } = useWeb3React();
+    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
     return (
         <div
@@ -39,13 +52,7 @@ const LayoutComponent = ({ children, className = '' }) => {
             <div>
                 {!isUnsupportedChainIdError && (
                     <div className="layout-content">
-                        {hasSyncIssue && (
-                            <div className="layout-content-issue">
-                                <i className="fas fa-exclamation-triangle"></i>{' '}
-                                There's currently a synchronization issue with
-                                the graph-node. Blocks may be appearing slowly.
-                            </div>
-                        )}
+                        <SyncStatus />
                         {children}
                     </div>
                 )}
