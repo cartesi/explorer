@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
-    "@cartesi/pos": "^0.1.0-beta.21",
+    "@cartesi/pos": "^0.1.0-beta.23",
     "@cartesi/token": "^1.2.5",
     "@cartesi/util": "^1.0.0",
     "@fortawesome/fontawesome-free": "^5.15.1",
