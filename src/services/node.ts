@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
@@ -74,6 +74,16 @@ export const useNode = (address: string) => {
         }
     }, [workerManager, address, block]);
 
+    const authorize = () => {
+        if (workerManager) {
+            try {
+                setTransaction(workerManager.authorize(address, pos.address));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
     const hire = (value: BigNumberish) => {
         if (workerManager) {
             try {
@@ -132,6 +142,7 @@ export const useNode = (address: string) => {
         waiting,
         loading,
         hire,
+        authorize,
         cancelHire,
         retire,
         transfer,

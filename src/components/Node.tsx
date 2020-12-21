@@ -266,6 +266,15 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                 </button>
                             </div>
                         )}
+
+                        <button
+                            type="button"
+                            disabled={node.waiting || node.loading}
+                            className="btn btn-primary py-0 px-3 button-text flex-fill my-2"
+                            onClick={node.authorize}
+                        >
+                            Reauthorize for new contract
+                        </button>
                     </div>
                 </div>
             )}
