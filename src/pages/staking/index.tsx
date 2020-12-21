@@ -212,8 +212,7 @@ const Staking = () => {
 
     const stakeSplit = splitStakeAmount();
     const unstakeSplit = splitUnstakeAmount();
-    const totalBalance = balance
-        .add(stakedBalance)
+    const totalBalance = stakedBalance
         .add(maturingBalance)
         .add(releasingBalance);
 
