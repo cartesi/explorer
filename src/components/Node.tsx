@@ -274,7 +274,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                 className="btn btn-primary py-0 px-3 button-text flex-fill my-2"
                                 onClick={node.authorize}
                             >
-                                Reauthorize for new contract
+                                Authorize
                             </button>
                         )}
                     </div>
