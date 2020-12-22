@@ -33,7 +33,11 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const node = useNode(address);
     const { nodes, updateFilter } = useNodes();
 
-    const notMine = node.address && !node.available && node.user != account;
+    const notMine =
+        !node.loading &&
+        node.address &&
+        !node.available &&
+        node.user != account;
     const mine = node.user == account;
     const ready = node.user == account && node.owned && node.authorized;
 
