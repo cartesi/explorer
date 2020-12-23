@@ -277,7 +277,7 @@ const Staking = () => {
                 </div>
 
                 <div className="staking-total-balances-item">
-                    <label className="body-text-1">Total Balance</label>
+                    <label className="body-text-1">In-contract Balance</label>
                     <img
                         data-toggle="tooltip"
                         title="This is the sum of all maturing, staked, released/releasing balances"

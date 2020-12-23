@@ -21,6 +21,11 @@ const NavBar = (props: NavBarProps) => {
 
     const items = [
         {
+            key: 'home',
+            label: 'Home',
+            href: '/',
+        },
+        {
             key: 'staking',
             label: 'Staking',
             href: '/staking',
