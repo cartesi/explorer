@@ -31,6 +31,7 @@ import { formatCTSI } from '../utils/token';
 import { FixedNumber } from 'ethers';
 import Link from 'next/link';
 import { Block, Summary } from '../graphql/models';
+import EtherscanLink from '../components/EtherscanLink';
 
 interface HeaderProps {
     market: MarketInformation;
@@ -277,13 +278,12 @@ const Nodes = (props: NodesProps) => {
                                 return (
                                     <tr key={node.id} className="body-text-2">
                                         <td>
-                                            <a
-                                                href={`https://etherscan.io/address/${node.id}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <EtherscanLink
+                                                type="address"
+                                                id={node.id}
                                             >
                                                 {tinyString(node.id)}
-                                            </a>
+                                            </EtherscanLink>
                                         </td>
                                         <td>{node.totalBlocks}</td>
                                         <td>

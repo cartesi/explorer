@@ -24,6 +24,7 @@ import { formatCTSI } from '../../utils/token';
 import { Block, BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
 import BlocksChart from '../../components/BlocksChart';
+import EtherscanLink from '../../components/EtherscanLink';
 
 interface BlockItemProps {
     block: Block;
@@ -49,38 +50,35 @@ const BlockItem = (props: BlockItemProps) => {
                     </div>
 
                     <div className="sub-title-4 col-4 my-1">Producer</div>
-                    <a
+                    <EtherscanLink
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'producer'
                         )}`}
-                        href={`https://etherscan.io/address/${block.producer.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        type="address"
+                        id={block.producer.id}
                     >
                         {block.producer.id}
-                    </a>
+                    </EtherscanLink>
 
                     <div className="sub-title-4 col-4 my-1">Node</div>
-                    <a
+                    <EtherscanLink
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'node'
                         )}`}
-                        href={`https://etherscan.io/address/${block.node.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        type="address"
+                        id={block.node.id}
                     >
                         {block.node.id}
-                    </a>
+                    </EtherscanLink>
 
                     <div className="sub-title-4 col-4 my-1">Hash</div>
-                    <a
+                    <EtherscanLink
                         className={`body-text-2 col-8 my-1 ${highlight('id')}`}
-                        href={`https://etherscan.io/tx/${block.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        type="tx"
+                        id={block.id}
                     >
                         {block.id}
-                    </a>
+                    </EtherscanLink>
 
                     <div className="sub-title-4 col-4 my-1">Reward</div>
                     <div className="body-text-2 col-8 my-1">

@@ -20,3 +20,9 @@ export const confirmations = {
     5: 1,
     31337: 1,
 };
+
+export const etherscanLinks = {
+    1: 'https://etherscan.io',
+    5: 'https://goerli.etherscan.io',
+    31337: null,
+};
