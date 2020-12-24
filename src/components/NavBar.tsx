@@ -64,7 +64,7 @@ const NavBar = (props: NavBarProps) => {
                 <img className="navbar-hamburger" src="/images/navbar.png" />
             </button>
             <div
-                className="navbar-collapse collapse justify-content-center"
+                className="navbar-collapse collapse justify-content-end"
                 id="explorerNavbar"
             >
                 <ul className="navbar-menu navbar-nav">
