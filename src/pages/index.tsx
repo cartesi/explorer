@@ -276,7 +276,15 @@ const Nodes = (props: NodesProps) => {
                                 );
                                 return (
                                     <tr key={node.id} className="body-text-2">
-                                        <td>{tinyString(node.id)}</td>
+                                        <td>
+                                            <a
+                                                href={`https://etherscan.io/address/${node.id}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {tinyString(node.id)}
+                                            </a>
+                                        </td>
                                         <td>{node.totalBlocks}</td>
                                         <td>
                                             {formatCTSI(

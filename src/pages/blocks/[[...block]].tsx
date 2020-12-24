@@ -49,29 +49,38 @@ const BlockItem = (props: BlockItemProps) => {
                     </div>
 
                     <div className="sub-title-4 col-4 my-1">Producer</div>
-                    <div
+                    <a
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'producer'
                         )}`}
+                        href={`https://etherscan.io/address/${block.producer.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         {block.producer.id}
-                    </div>
+                    </a>
 
                     <div className="sub-title-4 col-4 my-1">Node</div>
-                    <div
+                    <a
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'node'
                         )}`}
+                        href={`https://etherscan.io/address/${block.node.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         {block.node.id}
-                    </div>
+                    </a>
 
                     <div className="sub-title-4 col-4 my-1">Hash</div>
-                    <div
+                    <a
                         className={`body-text-2 col-8 my-1 ${highlight('id')}`}
+                        href={`https://etherscan.io/tx/${block.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         {block.id}
-                    </div>
+                    </a>
 
                     <div className="sub-title-4 col-4 my-1">Reward</div>
                     <div className="body-text-2 col-8 my-1">
