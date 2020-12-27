@@ -25,6 +25,7 @@ import { BigNumber } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 import labels from '../../utils/labels';
+import { formatCTSI } from '../../utils/token';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -50,7 +51,6 @@ const Staking = () => {
         error: tokenError,
         waiting: tokenWaiting,
         approve,
-        formatCTSI,
         parseCTSI,
         toBigCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);

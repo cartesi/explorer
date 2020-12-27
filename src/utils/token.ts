@@ -23,5 +23,5 @@ export const formatCTSI = (
     amount = amount.sub(amount.mod(m));
 
     // convert to string
-    return formatUnits(amount, 18);
+    return parseFloat(formatUnits(amount, 18)).toLocaleString();
 };

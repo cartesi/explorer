@@ -59,20 +59,6 @@ export const useCartesiToken = (
         return BigNumber.from(toCTSI(amount));
     };
 
-    const formatCTSI = (
-        amount: BigNumberish,
-        decimals: number = 18
-    ): string => {
-        amount = BigNumber.from(amount);
-
-        // floor value to number of decimals to display
-        const m = constants.One.mul(10).pow(18 - decimals);
-        amount = amount.sub(amount.mod(m));
-
-        // convert to string
-        return formatUnits(amount, 18);
-    };
-
     return {
         allowance,
         balance,
@@ -80,7 +66,6 @@ export const useCartesiToken = (
         waiting,
         approve,
         parseCTSI,
-        formatCTSI,
         toCTSI,
         toBigCTSI,
     };

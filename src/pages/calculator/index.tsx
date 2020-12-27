@@ -18,6 +18,7 @@ import { BigNumber, constants, FixedNumber } from 'ethers';
 import { useCartesiToken } from '../../services/token';
 import { getEstimatedRewardRate } from '../../utils/reward';
 import labels from '../../utils/labels';
+import { formatCTSI } from '../../utils/token';
 
 interface Props {}
 
@@ -35,7 +36,7 @@ const Calculator = (props: Props) => {
         marketInformation,
         error: marketInfomationError,
     } = useMarketInformation();
-    const { formatCTSI, parseCTSI, toCTSI } = useCartesiToken();
+    const { parseCTSI, toCTSI } = useCartesiToken();
 
     // total staked simulation
     const [totalStaked, setTotalStaked] = useState<number>(-1);
