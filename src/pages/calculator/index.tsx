@@ -17,6 +17,7 @@ import useBlocks from '../../graphql/hooks/useBlocks';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { useCartesiToken } from '../../services/token';
 import { getEstimatedRewardRate } from '../../utils/reward';
+import labels from '../../utils/labels';
 
 interface Props {}
 
@@ -66,6 +67,12 @@ const Calculator = (props: Props) => {
     }
 
     const currentReward = blocks[0].reward;
+
+    if (typeof window !== 'undefined') {
+        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
+        const $ = require('jquery');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
 
     return (
         <Layout className="calculator">
@@ -195,7 +202,14 @@ const Calculator = (props: Props) => {
                             <div className="col col-12 col-sm-6">
                                 <div className="calculator-result-reward">
                                     <span className="body-text-2 mb-1">
-                                        Projected Annual Earnings
+                                        Projected Annual Earnings{' '}
+                                        <img
+                                            data-toggle="tooltip"
+                                            title={
+                                                labels.projectedAnnualEarnings
+                                            }
+                                            src="/images/question.png"
+                                        />
                                     </span>
                                     <span className="info-text-md">
                                         {apr

@@ -32,6 +32,7 @@ import { FixedNumber } from 'ethers';
 import Link from 'next/link';
 import { Block, Summary } from '../graphql/models';
 import EtherscanLink from '../components/EtherscanLink';
+import labels from '../utils/labels';
 
 interface HeaderProps {
     market: MarketInformation;
@@ -145,6 +146,12 @@ const Stats = (props: StatsProps) => {
                       .toString() + '%';
     }
 
+    if (typeof window !== 'undefined') {
+        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
+        const $ = require('jquery');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
     return (
         <div className="landing-dashboard">
             <div className="landing-dashboard-content row">
@@ -161,11 +168,25 @@ const Stats = (props: StatsProps) => {
                     </div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">Projected Annual Earnings</div>
+                    <div className="sub-title-1">
+                        Projected Annual Earnings{' '}
+                        <img
+                            data-toggle="tooltip"
+                            title={labels.projectedAnnualEarnings}
+                            src="/images/question.png"
+                        />
+                    </div>
                     <div className="info-text-bg">{aprLabel}</div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">Participation Rate</div>
+                    <div className="sub-title-1">
+                        Participation Rate{' '}
+                        <img
+                            data-toggle="tooltip"
+                            title={labels.participationRate}
+                            src="/images/question.png"
+                        />
+                    </div>
                     <div className="info-text-bg">{participationRateLabel}</div>
                 </div>
             </div>

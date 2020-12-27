@@ -24,6 +24,7 @@ import { useCartesiToken } from '../../services/token';
 import { BigNumber } from 'ethers';
 import useUser from '../../graphql/hooks/useUser';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
+import labels from '../../utils/labels';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -265,7 +266,7 @@ const Staking = () => {
                     <label className="body-text-1">Total Rewards</label>
                     <img
                         data-toggle="tooltip"
-                        title="Total of CTSI rewards related to all blocks produced by this node"
+                        title={labels.totalRewards}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
@@ -280,7 +281,7 @@ const Staking = () => {
                     <label className="body-text-1">In-contract Balance</label>
                     <img
                         data-toggle="tooltip"
-                        title="This is the sum of all maturing, staked, released/releasing balances"
+                        title={labels.inContractBalance}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">

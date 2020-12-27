@@ -87,4 +87,8 @@
         text-align: left;
         color: #000;
     }
+
+    img[data-toggle='tooltip'] {
+        filter: invert(1);
+    }
 }
