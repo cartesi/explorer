@@ -65,6 +65,8 @@ const Calculator = (props: Props) => {
         setTotalStaked(toCTSI(activeStake));
     }
 
+    const currentReward = blocks[0].reward;
+
     return (
         <Layout className="calculator">
             <Head>
@@ -131,7 +133,7 @@ const Calculator = (props: Props) => {
                     </div>
 
                     <div className="body-text-1">
-                        Current Block Reward: {formatCTSI(blocks[0].reward, 2)}{' '}
+                        Current Block Reward: {formatCTSI(currentReward, 2)}{' '}
                         <span className="small-text">CTSI</span>
                     </div>
 
@@ -181,26 +183,18 @@ const Calculator = (props: Props) => {
                             <div className="col col-12 col-sm-6">
                                 <div className="calculator-result-reward">
                                     <span className="body-text-2 mb-1">
-                                        Estimated Period Reward
+                                        Projected Period Reward
                                     </span>
-                                    <span className="info-text-md">
-                                        {formatCTSI(reward, 2)}{' '}
-                                        <span className="small-text">CTSI</span>
-                                    </span>
+                                    <span className="info-text-md">-</span>
                                 </div>
                             </div>
 
                             <div className="col col-12 col-sm-6">
                                 <div className="calculator-result-reward">
                                     <span className="body-text-2 mb-1">
-                                        Estimated Annual Reward
+                                        Projected Annual Earnings
                                     </span>
-                                    <span className="info-text-md">
-                                        {apr
-                                            .mulUnsafe(FixedNumber.from(100))
-                                            .round(1)
-                                            .toString() + '%'}
-                                    </span>
+                                    <span className="info-text-md">-</span>
                                 </div>
                             </div>
                         </div>

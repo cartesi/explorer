@@ -136,9 +136,9 @@ const Stats = (props: StatsProps) => {
                 .round(1)
                 .toString() + ' %';
 
-        aprLabel =
+        /*aprLabel =
             yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
-            '%';
+            '%';*/
     }
 
     return (
@@ -157,7 +157,7 @@ const Stats = (props: StatsProps) => {
                     </div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">Annual Rewards</div>
+                    <div className="sub-title-1">Projected Annual Earnings</div>
                     <div className="info-text-bg">{aprLabel}</div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
