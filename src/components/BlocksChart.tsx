@@ -117,6 +117,7 @@ const BlocksChart = (props: BlocksChartProps) => {
                     tickFormatter={timestampFormat}
                     name="Time"
                     type="number"
+                    tick={{ width: 100 }}
                 />
                 <YAxis
                     dataKey="difficulty"
@@ -125,7 +126,11 @@ const BlocksChart = (props: BlocksChartProps) => {
                     domain={['auto', 'auto']}
                     type="number"
                 />
-                <Legend />
+                <Legend
+                    wrapperStyle={{
+                        paddingTop: 15,
+                    }}
+                />
                 {chains}
                 <Tooltip formatter={tooltipFormatter} />
             </ScatterChart>
