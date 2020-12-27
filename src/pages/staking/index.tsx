@@ -362,7 +362,7 @@ const Staking = () => {
                                         <button
                                             type="button"
                                             className="btn btn-dark py-0 px-4 button-text mt-2"
-                                            disabled={waiting}
+                                            disabled={!account || waiting}
                                             onClick={doWithdraw}
                                         >
                                             Withdraw
@@ -416,7 +416,7 @@ const Staking = () => {
                                                 className="addon-inline form-control"
                                                 id="approveAmount"
                                                 value={approveAmount.toString()}
-                                                disabled={waiting}
+                                                disabled={!account || waiting}
                                                 onChange={(e) =>
                                                     setApproveAmount(
                                                         BigNumber.from(
@@ -446,7 +446,7 @@ const Staking = () => {
                                             <button
                                                 type="button"
                                                 className="btn btn-dark py-2 button-text flex-fill"
-                                                disabled={waiting}
+                                                disabled={!account || waiting}
                                                 onClick={doApprove}
                                             >
                                                 Approve
@@ -472,7 +472,11 @@ const Staking = () => {
                                             }`}
                                             id="stakeAmount"
                                             value={stakeAmount.toString()}
-                                            disabled={editAllowance || waiting}
+                                            disabled={
+                                                editAllowance ||
+                                                !account ||
+                                                waiting
+                                            }
                                             onChange={(e) =>
                                                 setStakeAmount(
                                                     BigNumber.from(
@@ -532,7 +536,9 @@ const Staking = () => {
 
                                 <button
                                     type="button"
-                                    disabled={editAllowance || waiting}
+                                    disabled={
+                                        editAllowance || !account || waiting
+                                    }
                                     className="btn btn-dark py-2 button-text flex-fill"
                                     onClick={doStake}
                                 >
@@ -559,7 +565,7 @@ const Staking = () => {
                                             }`}
                                             id="unstakeAmount"
                                             value={unstakeAmount.toString()}
-                                            disabled={waiting}
+                                            disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setUnstakeAmount(
                                                     BigNumber.from(
@@ -618,7 +624,7 @@ const Staking = () => {
                                 <button
                                     type="button"
                                     className="btn btn-dark py-2 button-text flex-fill"
-                                    disabled={waiting}
+                                    disabled={!account || waiting}
                                     onClick={doUnstake}
                                 >
                                     Unstake

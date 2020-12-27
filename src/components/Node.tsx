@@ -87,9 +87,15 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
                             address !== '' ? 'active' : 'inactive'
                         }`}
-                        onClick={() => setShowDetails(!showDetails)}
+                        onClick={() =>
+                            setShowDetails(!!account && !showDetails)
+                        }
                     >
-                        {address ? tinyString(address) : 'Click to hire node'}
+                        {address
+                            ? tinyString(address)
+                            : account
+                            ? 'Click to hire node'
+                            : 'Connect to wallet first'}
                     </span>
                     {notMine && (
                         <span className="col-12 col-sm-auto mx-2 staking-hire-content-error">
