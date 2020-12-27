@@ -185,7 +185,10 @@ const Calculator = (props: Props) => {
                                     <span className="body-text-2 mb-1">
                                         Projected Period Reward
                                     </span>
-                                    <span className="info-text-md">-</span>
+                                    <span className="info-text-md">
+                                        {formatCTSI(reward, 2)}{' '}
+                                        <span className="small-text">CTSI</span>
+                                    </span>
                                 </div>
                             </div>
 
@@ -194,7 +197,12 @@ const Calculator = (props: Props) => {
                                     <span className="body-text-2 mb-1">
                                         Projected Annual Earnings
                                     </span>
-                                    <span className="info-text-md">-</span>
+                                    <span className="info-text-md">
+                                        {apr
+                                            .mulUnsafe(FixedNumber.from(100))
+                                            .round(1)
+                                            .toString() + '%'}
+                                    </span>
                                 </div>
                             </div>
                         </div>

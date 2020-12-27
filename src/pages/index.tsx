@@ -136,9 +136,9 @@ const Stats = (props: StatsProps) => {
                 .round(1)
                 .toString() + ' %';
 
-        /*aprLabel =
+        aprLabel =
             yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
-            '%';*/
+            '%';
     }
 
     return (
