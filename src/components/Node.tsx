@@ -52,7 +52,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     }, [account]);
 
     useEffect(() => {
-        if (nodes && nodes.length > 0) {
+        if (nodes && nodes.length > 0 && nodes[0].owner.id == account) {
             setAddress(nodes[0].id);
         }
     }, [nodes]);
