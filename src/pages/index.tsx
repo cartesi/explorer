@@ -137,8 +137,12 @@ const Stats = (props: StatsProps) => {
                 .toString() + ' %';
 
         aprLabel =
-            yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
-            '%';
+            yearReturn > FixedNumber.from(3)
+                ? '> 300%'
+                : yearReturn
+                      .mulUnsafe(FixedNumber.from(100))
+                      .round(1)
+                      .toString() + '%';
     }
 
     return (
