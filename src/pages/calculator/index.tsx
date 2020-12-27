@@ -219,6 +219,13 @@ const Calculator = (props: Props) => {
                                     </span>
                                 </div>
                             </div>
+
+                            <div className="col col-12">
+                                <div className="calculator-result-info body-text-2">
+                                    <i className="fas fa-info-circle"></i>{' '}
+                                    {labels.estimatedValuesInfo}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

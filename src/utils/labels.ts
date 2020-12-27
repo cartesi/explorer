@@ -1,4 +1,6 @@
 const labels = {
+    estimatedValuesInfo:
+        'Estimated values can be highly variable, depending directly on the current amount of actively staked CTSI.',
     inContractBalance:
         'This is the sum of all maturing, staked, released/releasing balances',
     participationRate:

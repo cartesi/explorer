@@ -61,21 +61,28 @@
         }
     }
 
-    &-result-rewards {
-        margin-top: 10px;
-    }
+    &-result {
+        &-rewards {
+            margin-top: 10px;
+        }
 
-    &-result-reward {
-        margin: 20px 0;
-        height: 142px;
-        background: black;
-        border-radius: 2px;
-        color: white;
+        &-reward {
+            margin: 20px 0;
+            height: 142px;
+            background: black;
+            border-radius: 2px;
+            color: white;
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &-info {
+            padding: 10px;
+            border: 1px solid black;
+        }
     }
 
     input.form-control {
