@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';

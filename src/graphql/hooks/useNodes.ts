@@ -1,54 +1,47 @@
-import React, { useEffect, useState } from 'react';
+// Copyright (C) 2020 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/nodes';
 import { NodesData, NodesVars } from '../models';
 
-interface INodeFilter {
-    id?: string;
-    timestamp_gt?: number;
-    timestamp_lt?: number;
-    owner?: string;
-}
+export const NODES_PER_PAGE = 10;
 
-const nodesPerPage = 10;
-
-const useNodes = () => {
-    const [filter, setFilter] = useState<INodeFilter>({});
-    const [pageNumber, setPageNumber] = useState<number>(0);
-
-    const { loading, error, data } = useQuery<NodesData, NodesVars>(NODES, {
+const useNodes = (pageNumber: number, sort: string = 'timestamp') => {
+    const filter = {};
+    return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
-            first: nodesPerPage,
+            first: NODES_PER_PAGE,
             where: filter,
-            skip: pageNumber * nodesPerPage,
-            orderBy: 'timestamp',
+            skip: pageNumber * NODES_PER_PAGE,
+            orderBy: sort,
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 600000, // Every 10 minutes
     });
+};
 
-    const updateFilter = (newFilter: INodeFilter) => {
-        setFilter(newFilter);
-        setPageNumber(0);
-    };
-
-    const loadNodes = (newPageNumber: number) => {
-        setPageNumber(newPageNumber);
-    };
-
-    return {
-        nodes: data?.nodes,
-        nodesPerPage,
-        pageNumber,
-        filter,
-        loading,
-        error,
-        loadNodes,
-        updateFilter,
-    };
+export const useUserNodes = (owner: string) => {
+    owner = owner ? owner.toLowerCase() : owner;
+    return useQuery<NodesData, NodesVars>(NODES, {
+        variables: {
+            first: NODES_PER_PAGE,
+            where: { owner },
+            skip: 0,
+            orderBy: 'timestamp',
+            orderDirection: 'desc',
+        },
+    });
 };
 
 export default useNodes;

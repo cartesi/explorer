@@ -15,7 +15,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import { tinyString } from '../utils/stringUtils';
-import useNodes from '../graphql/hooks/useNodes';
+import { useUserNodes } from '../graphql/hooks/useNodes';
 import { useNode } from '../services/node';
 
 interface NodeProps {
@@ -31,7 +31,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
     const [address, setAddress] = useState<string>('');
     const node = useNode(address);
-    const { nodes, updateFilter } = useNodes();
+    const userNodes  = useUserNodes(address);
 
     const notMine =
         !node.loading &&
@@ -46,16 +46,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     let status = '';
 
     useEffect(() => {
-        if (account) {
-            updateFilter({ owner: account.toLowerCase() });
+        if (userNodes?.data?.nodes?.length > 0) {
+            setAddress(userNodes.data.nodes[0].id);
         }
-    }, [account]);
-
-    useEffect(() => {
-        if (nodes && nodes.length > 0 && nodes[0].owner.id == account) {
-            setAddress(nodes[0].id);
-        }
-    }, [nodes]);
+    }, [address]);
 
     useEffect(() => {
         if (setWaiting) setWaiting(node.waiting);

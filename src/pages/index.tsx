@@ -17,7 +17,6 @@ import { Web3Provider } from '@ethersproject/providers';
 import Layout from '../components/Layout';
 
 import useBlocks from '../graphql/hooks/useBlocks';
-import useNodes from '../graphql/hooks/useNodes';
 import useSummary from '../graphql/hooks/useSummary';
 
 import { MarketInformation, useMarketInformation } from '../services/market';
@@ -25,13 +24,12 @@ import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 import BlockCard from '../components/BlockCard';
-import { tinyString } from '../utils/stringUtils';
+import Nodes from '../components/Nodes';
 import { getRewardRate } from '../utils/reward';
 import { formatCTSI } from '../utils/token';
 import { FixedNumber } from 'ethers';
 import Link from 'next/link';
 import { Block, Summary } from '../graphql/models';
-import EtherscanLink from '../components/EtherscanLink';
 import labels from '../utils/labels';
 
 interface HeaderProps {
@@ -215,139 +213,6 @@ const Blocks = (props: BlocksProps) => {
                         </a>
                     </Link>
                 ))}
-            </div>
-        </div>
-    );
-};
-
-interface NodesProps {
-    summary: Summary;
-}
-const Nodes = (props: NodesProps) => {
-    const { summary } = props;
-    const {
-        nodes,
-        nodesPerPage,
-        pageNumber,
-        filter,
-        loading,
-        loadNodes,
-        updateFilter,
-    } = useNodes();
-    const totalNodePages =
-        summary && (!filter.id || filter.id === '')
-            ? Math.ceil(summary.totalNodes / nodesPerPage)
-            : 1;
-
-    return (
-        <div className="landing-noether">
-            <div className="landing-noether-title">
-                <h5 className="landing-sub-title">Noether Nodes</h5>
-
-                <div className="input-with-icon input-group">
-                    <span>
-                        <i className="fas fa-search"></i>
-                    </span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search"
-                        value={filter.id}
-                        onChange={(e) =>
-                            updateFilter(
-                                e.target.value !== ''
-                                    ? { id: e.target.value }
-                                    : {}
-                            )
-                        }
-                    />
-                </div>
-            </div>
-
-            <div className="table-responsive mb-2">
-                <table className="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th className="table-header-text">Node</th>
-                            <th className="table-header-text">
-                                #Blocks Produced
-                            </th>
-                            <th className="table-header-text">Total Staked</th>
-                            <th className="table-header-text">Total Rewards</th>
-                            <th className="table-header-text">
-                                Total Uptime Days
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {loading || !nodes ? (
-                            <tr>
-                                <td colSpan={5} className="text-center">
-                                    <span
-                                        className="spinner-border spinner-border-sm my-1"
-                                        role="status"
-                                        aria-hidden="true"
-                                    ></span>
-                                </td>
-                            </tr>
-                        ) : (
-                            nodes.map((node) => {
-                                const now = new Date();
-                                const uptimeDays = Math.ceil(
-                                    (now.getTime() / 1000 - node.timestamp) /
-                                        60 /
-                                        60 /
-                                        24
-                                );
-                                return (
-                                    <tr key={node.id} className="body-text-2">
-                                        <td>
-                                            <EtherscanLink
-                                                type="address"
-                                                id={node.id}
-                                            >
-                                                {tinyString(node.id)}
-                                            </EtherscanLink>
-                                        </td>
-                                        <td>{node.totalBlocks}</td>
-                                        <td>
-                                            {formatCTSI(
-                                                node.owner.stakedBalance,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {formatCTSI(node.totalReward, 2)}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>{uptimeDays}</td>
-                                    </tr>
-                                );
-                            })
-                        )}
-                    </tbody>
-                </table>
-            </div>
-            <div className="landing-noether-pagination body-text-2">
-                <button
-                    className="btn"
-                    type="button"
-                    disabled={pageNumber <= 0}
-                    onClick={() => loadNodes(pageNumber - 1)}
-                >
-                    <i className="fas fa-chevron-left"></i>
-                </button>
-                Page {pageNumber + 1} of {totalNodePages}
-                <button
-                    className="btn"
-                    type="button"
-                    disabled={pageNumber + 1 >= totalNodePages}
-                    onClick={() => loadNodes(pageNumber + 1)}
-                >
-                    <i className="fas fa-chevron-right"></i>
-                </button>
             </div>
         </div>
     );
