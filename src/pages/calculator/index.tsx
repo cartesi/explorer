@@ -146,7 +146,8 @@ const Calculator = (props: Props) => {
                     </div>
 
                     <div className="body-text-1">
-                        Estimated Total Staked: {totalStaked.toLocaleString()}{' '}
+                        Estimated Total Staked:{' '}
+                        {toCTSI(activeStake).toLocaleString()}{' '}
                         <span className="small-text">CTSI</span>
                     </div>
 
