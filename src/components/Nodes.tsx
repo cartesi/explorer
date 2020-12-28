@@ -23,11 +23,11 @@ interface NodesProps {
 type Sort = 'timestamp' | 'totalReward' | 'totalBlocks';
 
 const Nodes = (props: NodesProps) => {
-    const [id, setId] = useState<string>('');
+    const [id, setId] = useState<string>(undefined);
     const [sort, setSort] = useState<Sort>('timestamp');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { summary } = props;
-    const { data, loading } = useNodes(pageNumber, sort);
+    const { data, loading } = useNodes(pageNumber, id, sort);
     const totalNodePages = summary
         ? Math.ceil(summary.totalNodes / NODES_PER_PAGE)
         : 1;
@@ -46,7 +46,10 @@ const Nodes = (props: NodesProps) => {
                         className="form-control"
                         placeholder="Search"
                         value={id}
-                        onChange={(e) => setId(e.target.value)}
+                        onChange={(e) => {
+                            setId(e.target.value);
+                            setPageNumber(0);
+                        }}
                     />
                 </div>
             </div>
@@ -128,25 +131,27 @@ const Nodes = (props: NodesProps) => {
                     </tbody>
                 </table>
             </div>
-            <div className="landing-noether-pagination body-text-2">
-                <button
-                    className="btn"
-                    type="button"
-                    disabled={pageNumber <= 0}
-                    onClick={() => setPageNumber(pageNumber - 1)}
-                >
-                    <i className="fas fa-chevron-left"></i>
-                </button>
-                Page {pageNumber + 1} of {totalNodePages}
-                <button
-                    className="btn"
-                    type="button"
-                    disabled={pageNumber + 1 >= totalNodePages}
-                    onClick={() => setPageNumber(pageNumber + 1)}
-                >
-                    <i className="fas fa-chevron-right"></i>
-                </button>
-            </div>
+            {!id && (
+                <div className="landing-noether-pagination body-text-2">
+                    <button
+                        className="btn"
+                        type="button"
+                        disabled={pageNumber <= 0}
+                        onClick={() => setPageNumber(pageNumber - 1)}
+                    >
+                        <i className="fas fa-chevron-left"></i>
+                    </button>
+                    Page {pageNumber + 1} of {totalNodePages}
+                    <button
+                        className="btn"
+                        type="button"
+                        disabled={pageNumber + 1 >= totalNodePages}
+                        onClick={() => setPageNumber(pageNumber + 1)}
+                    >
+                        <i className="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

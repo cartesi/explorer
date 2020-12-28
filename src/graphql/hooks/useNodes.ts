@@ -16,8 +16,12 @@ import { NodesData, NodesVars } from '../models';
 
 export const NODES_PER_PAGE = 10;
 
-const useNodes = (pageNumber: number, sort: string = 'timestamp') => {
-    const filter = {};
+const useNodes = (
+    pageNumber: number,
+    id: string = undefined,
+    sort: string = 'timestamp'
+) => {
+    const filter = id ? { id } : {};
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: NODES_PER_PAGE,
