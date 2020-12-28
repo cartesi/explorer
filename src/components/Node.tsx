@@ -29,9 +29,18 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
 
+    // get nodes hired by user from backend (if any)
+    const userNodes = useUserNodes(account);
+    const existingNode =
+        userNodes.data?.nodes?.length > 0 && userNodes.data.nodes[0].id;
+
+    // use a state variable for the typed node address
     const [address, setAddress] = useState<string>('');
-    const node = useNode(address);
-    const userNodes  = useUserNodes(address);
+
+    // priority is the typed address (at state variable)
+    const activeAddress = address || existingNode;
+
+    const node = useNode(activeAddress);
 
     const notMine =
         !node.loading &&
@@ -49,7 +58,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
         if (userNodes?.data?.nodes?.length > 0) {
             setAddress(userNodes.data.nodes[0].id);
         }
-    }, [address]);
+    }, [account]);
 
     useEffect(() => {
         if (setWaiting) setWaiting(node.waiting);
@@ -79,14 +88,14 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                     </span>
                     <span
                         className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
-                            address !== '' ? 'active' : 'inactive'
+                            activeAddress !== '' ? 'active' : 'inactive'
                         }`}
                         onClick={() =>
                             setShowDetails(!!account && !showDetails)
                         }
                     >
-                        {address
-                            ? tinyString(address)
+                        {activeAddress
+                            ? tinyString(activeAddress)
                             : account
                             ? 'Click to hire node'
                             : 'Connect to wallet first'}
@@ -118,7 +127,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                     className="form-control :invalid"
                                     id="address"
                                     disabled={node.waiting || node.loading}
-                                    value={address}
+                                    value={activeAddress}
                                     onChange={(event) =>
                                         setAddress(event.target.value)
                                     }
