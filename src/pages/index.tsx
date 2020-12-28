@@ -138,7 +138,7 @@ const Stats = (props: StatsProps) => {
                 .toString() + ' %';
 
         aprLabel =
-            yearReturn > FixedNumber.from(3)
+            parseFloat(yearReturn._value) > 3
                 ? '> 300%'
                 : yearReturn
                       .mulUnsafe(FixedNumber.from(100))
