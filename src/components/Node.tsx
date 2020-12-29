@@ -38,7 +38,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const [address, setAddress] = useState<string>('');
 
     // priority is the typed address (at state variable)
-    const activeAddress = address || existingNode;
+    const activeAddress = address || existingNode || '';
 
     const node = useNode(activeAddress);
 
