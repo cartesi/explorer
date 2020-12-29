@@ -163,9 +163,11 @@ export const getEstimatedRewardRate = (
             const yearReward = avgPrize.mul(
                 yearClaimed.floor().toUnsafeFloat()
             );
-            const apr = FixedNumber.fromValue(yearReward).divUnsafe(
-                FixedNumber.fromValue(stake)
-            );
+            const apr = stake.eq(0)
+                ? FixedNumber.from(0)
+                : FixedNumber.fromValue(yearReward).divUnsafe(
+                      FixedNumber.fromValue(stake)
+                  );
 
             return {
                 reward,
