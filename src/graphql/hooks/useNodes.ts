@@ -21,7 +21,7 @@ const useNodes = (
     id: string = undefined,
     sort: string = 'timestamp'
 ) => {
-    const filter = id ? { id } : {};
+    const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: NODES_PER_PAGE,
