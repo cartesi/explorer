@@ -11,25 +11,28 @@
 
 import React from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+
+import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import ReactTooltip from 'react-tooltip';
 
 import Layout from '../components/Layout';
+import BlockCard from '../components/BlockCard';
+import Nodes from '../components/Nodes';
 
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
+import { Block, Summary } from '../graphql/models';
 
 import { MarketInformation, useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
-import BlockCard from '../components/BlockCard';
-import Nodes from '../components/Nodes';
+
 import { getRewardRate } from '../utils/reward';
 import { formatCTSI } from '../utils/token';
-import { FixedNumber } from 'ethers';
-import Link from 'next/link';
-import { Block, Summary } from '../graphql/models';
 import labels from '../utils/labels';
 
 interface HeaderProps {
@@ -144,12 +147,6 @@ const Stats = (props: StatsProps) => {
                       .toString() + '%';
     }
 
-    if (typeof window !== 'undefined') {
-        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
-        const $ = require('jquery');
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
     return (
         <div className="landing-dashboard">
             <div className="landing-dashboard-content row">
@@ -169,8 +166,7 @@ const Stats = (props: StatsProps) => {
                     <div className="sub-title-1">
                         Projected Annual Earnings{' '}
                         <img
-                            data-toggle="tooltip"
-                            title={labels.projectedAnnualEarnings}
+                            data-tip={labels.projectedAnnualEarnings}
                             src="/images/question.png"
                         />
                     </div>
@@ -180,14 +176,14 @@ const Stats = (props: StatsProps) => {
                     <div className="sub-title-1">
                         Participation Rate{' '}
                         <img
-                            data-toggle="tooltip"
-                            title={labels.participationRate}
+                            data-tip={labels.participationRate}
                             src="/images/question.png"
                         />
                     </div>
                     <div className="info-text-bg">{participationRateLabel}</div>
                 </div>
             </div>
+            <ReactTooltip />
         </div>
     );
 };

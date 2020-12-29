@@ -11,11 +11,17 @@
 
 import React, { useState } from 'react';
 import Head from 'next/head';
-import Layout from '../../components/Layout';
-import { useMarketInformation } from '../../services/market';
-import useBlocks from '../../graphql/hooks/useBlocks';
+
 import { BigNumber, constants, FixedNumber } from 'ethers';
+import ReactTooltip from 'react-tooltip';
+
+import Layout from '../../components/Layout';
+
+import { useMarketInformation } from '../../services/market';
 import { useCartesiToken } from '../../services/token';
+
+import useBlocks from '../../graphql/hooks/useBlocks';
+
 import { getEstimatedRewardRate } from '../../utils/reward';
 import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
@@ -68,12 +74,6 @@ const Calculator = (props: Props) => {
     }
 
     const currentReward = blocks[0].reward;
-
-    if (typeof window !== 'undefined') {
-        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
-        const $ = require('jquery');
-        $('[data-toggle="tooltip"]').tooltip();
-    }
 
     return (
         <Layout className="calculator">
@@ -206,8 +206,7 @@ const Calculator = (props: Props) => {
                                     <span className="body-text-2 mb-1">
                                         Projected Annual Earnings{' '}
                                         <img
-                                            data-toggle="tooltip"
-                                            title={
+                                            data-tip={
                                                 labels.projectedAnnualEarnings
                                             }
                                             src="/images/question.png"
@@ -230,6 +229,7 @@ const Calculator = (props: Props) => {
                             </div>
                         </div>
                     </div>
+                    <ReactTooltip />
                 </form>
             ) : (
                 <div />

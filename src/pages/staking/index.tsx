@@ -14,16 +14,19 @@ import Head from 'next/head';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import { BigNumber } from 'ethers';
+import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
 import Node from '../../components/Node';
+import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-import { BigNumber } from 'ethers';
+
 import useUser from '../../graphql/hooks/useUser';
-import ConfirmationIndicator from '../../components/ConfirmationIndicator';
+
 import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
 
@@ -217,12 +220,6 @@ const Staking = () => {
         .add(maturingBalance)
         .add(releasingBalance);
 
-    if (typeof window !== 'undefined') {
-        // ! Need to rethink if it's better to use this jquery stuff or separate component for tooltip such as react-tooltip
-        const $ = require('jquery');
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
     return (
         <Layout className="staking">
             <Head>
@@ -265,8 +262,7 @@ const Staking = () => {
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Rewards</label>
                     <img
-                        data-toggle="tooltip"
-                        title={labels.totalRewards}
+                        data-tip={labels.totalRewards}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
@@ -280,8 +276,7 @@ const Staking = () => {
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">In-contract Balance</label>
                     <img
-                        data-toggle="tooltip"
-                        title={labels.inContractBalance}
+                        data-tip={labels.inContractBalance}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
@@ -638,6 +633,7 @@ const Staking = () => {
                     </div>
                 </div>
             </div>
+            <ReactTooltip />
         </Layout>
     );
 };

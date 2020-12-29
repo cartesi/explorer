@@ -28,6 +28,7 @@
     "popper.js": "^1.16.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-tooltip": "^4.2.11",
     "recharts": "^1.8.5",
     "sass": "^1.29.0",
     "styled-components": "^5.2.0"
