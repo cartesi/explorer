@@ -17,11 +17,11 @@ const EtherscanLink = ({
     children,
 }: EtherscanLinkProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
-    if (etherscanLinks[chainId]) {
+    if (!chainId || etherscanLinks[chainId]) {
         return (
             <a
                 className={`etherscan-link ${className}`}
-                href={`${etherscanLinks[chainId]}/${type}/${id}`}
+                href={`${etherscanLinks[chainId || 1]}/${type}/${id}`}
                 target="_blank"
                 rel="noopener noreferrer"
             >
