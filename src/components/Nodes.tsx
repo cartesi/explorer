@@ -63,20 +63,29 @@ const Nodes = (props: NodesProps) => {
                                 className="table-header-text"
                                 onClick={() => setSort('totalBlocks')}
                             >
-                                #Blocks Produced
+                                #Blocks Produced{' '}
+                                {sort == 'totalBlocks' && (
+                                    <i className="fas fa-arrow-down"></i>
+                                )}
                             </th>
                             <th className="table-header-text">Total Staked</th>
                             <th
                                 className="table-header-text"
                                 onClick={() => setSort('totalReward')}
                             >
-                                Total Rewards
+                                Total Rewards{' '}
+                                {sort == 'totalReward' && (
+                                    <i className="fas fa-arrow-down"></i>
+                                )}
                             </th>
                             <th
                                 className="table-header-text"
                                 onClick={() => setSort('timestamp')}
                             >
-                                Total Uptime Days
+                                Total Uptime Days{' '}
+                                {sort == 'timestamp' && (
+                                    <i className="fas fa-arrow-down"></i>
+                                )}
                             </th>
                         </tr>
                     </thead>
