@@ -60,7 +60,7 @@ const Nodes = (props: NodesProps) => {
                         <tr>
                             <th className="table-header-text">Node</th>
                             <th
-                                className="table-header-text"
+                                className="table-header-text pointer"
                                 onClick={() => setSort('totalBlocks')}
                             >
                                 #Blocks Produced{' '}
@@ -70,7 +70,7 @@ const Nodes = (props: NodesProps) => {
                             </th>
                             <th className="table-header-text">Total Staked</th>
                             <th
-                                className="table-header-text"
+                                className="table-header-text pointer"
                                 onClick={() => setSort('totalReward')}
                             >
                                 Total Rewards{' '}
@@ -79,7 +79,7 @@ const Nodes = (props: NodesProps) => {
                                 )}
                             </th>
                             <th
-                                className="table-header-text"
+                                className="table-header-text pointer"
                                 onClick={() => setSort('timestamp')}
                             >
                                 Total Uptime Days{' '}
