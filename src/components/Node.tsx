@@ -97,7 +97,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         {activeAddress
                             ? tinyString(activeAddress)
                             : account
-                            ? 'Click to hire node'
+                            ? 'Click to enter your node address'
                             : 'Connect to wallet first'}
                     </span>
                     {notMine && (
