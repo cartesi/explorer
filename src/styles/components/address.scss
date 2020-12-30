@@ -1,0 +1,15 @@
+.address {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &-link {
+        color: #fff;
+        cursor: pointer;
+
+        &:hover {
+            color: #fff8;
+        }
+    }
+}

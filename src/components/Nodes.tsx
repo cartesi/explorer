@@ -13,7 +13,7 @@ import { useState } from 'react';
 import useNodes, { NODES_PER_PAGE } from '../graphql/hooks/useNodes';
 import { Summary } from '../graphql/models';
 import { tinyString } from '../utils/stringUtils';
-import EtherscanLink from '../components/EtherscanLink';
+import Address from './Address';
 import { formatCTSI } from '../utils/token';
 
 interface NodesProps {
@@ -113,12 +113,12 @@ const Nodes = (props: NodesProps) => {
                                 return (
                                     <tr key={node.id} className="body-text-2">
                                         <td>
-                                            <EtherscanLink
+                                            <Address
                                                 type="address"
                                                 id={node.id}
                                             >
                                                 {tinyString(node.id)}
-                                            </EtherscanLink>
+                                            </Address>
                                         </td>
                                         <td>{node.totalBlocks}</td>
                                         <td>

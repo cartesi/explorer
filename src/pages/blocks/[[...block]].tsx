@@ -24,7 +24,7 @@ import { formatCTSI } from '../../utils/token';
 import { Block, BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
 import BlocksChart from '../../components/BlocksChart';
-import EtherscanLink from '../../components/EtherscanLink';
+import Address from '../../components/Address';
 
 interface BlockItemProps {
     block: Block;
@@ -50,7 +50,7 @@ const BlockItem = (props: BlockItemProps) => {
                     </div>
 
                     <div className="sub-title-4 col-4 my-1">Producer</div>
-                    <EtherscanLink
+                    <Address
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'producer'
                         )}`}
@@ -58,10 +58,10 @@ const BlockItem = (props: BlockItemProps) => {
                         id={block.producer.id}
                     >
                         {block.producer.id}
-                    </EtherscanLink>
+                    </Address>
 
                     <div className="sub-title-4 col-4 my-1">Node</div>
-                    <EtherscanLink
+                    <Address
                         className={`body-text-2 col-8 my-1 ${highlight(
                             'node'
                         )}`}
@@ -69,16 +69,16 @@ const BlockItem = (props: BlockItemProps) => {
                         id={block.node.id}
                     >
                         {block.node.id}
-                    </EtherscanLink>
+                    </Address>
 
                     <div className="sub-title-4 col-4 my-1">Hash</div>
-                    <EtherscanLink
+                    <Address
                         className={`body-text-2 col-8 my-1 ${highlight('id')}`}
                         type="tx"
                         id={block.id}
                     >
                         {block.id}
-                    </EtherscanLink>
+                    </Address>
 
                     <div className="sub-title-4 col-4 my-1">Reward</div>
                     <div className="body-text-2 col-8 my-1">
