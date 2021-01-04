@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 
 export const formatCTSI = (
@@ -26,6 +26,6 @@ export const formatCTSI = (
     return parseFloat(formatUnits(amount, 18)).toLocaleString();
 };
 
-export const toCTSI = (amount: BigNumberish): number => {
-    return parseFloat(formatUnits(amount, 18));
+export const toCTSI = (amount: BigNumberish): FixedNumber => {
+    return FixedNumber.from(formatUnits(amount, 18));
 };

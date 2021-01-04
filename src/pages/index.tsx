@@ -128,12 +128,16 @@ const Stats = (props: StatsProps) => {
     if (blocks && blocks.length > 0 && market?.circulatingSupply && summary) {
         const { yearReturn } = getRewardRate(blocks, market.circulatingSupply);
 
-        const participationRate =
-            (toCTSI(summary.totalStaked) / market.circulatingSupply) * 100;
+        const participationRate = toCTSI(summary.totalStaked).divUnsafe(
+            FixedNumber.from(market.circulatingSupply)
+        );
 
         // build label
         participationRateLabel =
-            (+participationRate.toFixed(1)).toLocaleString() + ' %';
+            participationRate
+                .mulUnsafe(FixedNumber.from(100))
+                .round(1)
+                .toString() + '%';
 
         aprLabel =
             yearReturn.toUnsafeFloat() > 3
