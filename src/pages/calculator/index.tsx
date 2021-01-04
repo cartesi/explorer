@@ -21,6 +21,7 @@ import { useMarketInformation } from '../../services/market';
 import { useCartesiToken } from '../../services/token';
 
 import useBlocks from '../../graphql/hooks/useBlocks';
+import useSummary from '../../graphql/hooks/useSummary';
 
 import { getEstimatedRewardRate } from '../../utils/reward';
 import labels from '../../utils/labels';
@@ -33,6 +34,8 @@ const Calculator = (props: Props) => {
     const [stake, setStake] = useState<BigNumber>(
         constants.One.mul(100000).mul(constants.WeiPerEther)
     );
+
+    const summary = useSummary();
 
     // investment period
     const [period, setPeriod] = useState<number>(100);
@@ -146,7 +149,12 @@ const Calculator = (props: Props) => {
                     </div>
 
                     <div className="body-text-1">
-                        Estimated Total Staked:{' '}
+                        Total Staked: {formatCTSI(summary.totalStaked)}{' '}
+                        <span className="small-text">CTSI</span>
+                    </div>
+
+                    <div className="body-text-1">
+                        Effective Total Stake:{' '}
                         {toCTSI(activeStake).toLocaleString()}{' '}
                         <span className="small-text">CTSI</span>
                     </div>
