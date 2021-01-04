@@ -12,6 +12,7 @@
 import React from 'react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import NavBar from './NavBar';
+import Footer from './Footer';
 
 const LayoutComponent = ({ children, className = '' }) => {
     const { error } = useWeb3React();
@@ -27,10 +28,8 @@ const LayoutComponent = ({ children, className = '' }) => {
                 {!isUnsupportedChainIdError && (
                     <div className="layout-content">{children}</div>
                 )}
-                <div className="layout-footer">
-                    Copyright (C) 2020 Cartesi Pte. Ltd.
-                </div>
             </div>
+            <Footer />
         </div>
     );
 };

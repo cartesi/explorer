@@ -18,5 +18,9 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: center;
+
+        .address-link > i {
+            color: white;
+        }
     }
 }

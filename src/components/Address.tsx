@@ -56,7 +56,7 @@ const Address = ({ id, type, className, children }: AddressProps) => {
                         onClick={copyToClipboard}
                         data-tip="Copy to Clipboard"
                     >
-                        <i className="fas fa-copy"></i>
+                        <i className="far fa-copy"></i>
                     </span>
                 </span>
                 <ReactTooltip />
