@@ -47,16 +47,19 @@ const Address = ({ id, type, className, children }: AddressProps) => {
                         className="address-link ml-3"
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-tip="View on Etherscan"
                     >
                         <i className="fas fa-external-link-alt"></i>
                     </a>
                     <span
                         className="address-link ml-1"
                         onClick={copyToClipboard}
+                        data-tip="Copy to Clipboard"
                     >
                         <i className="fas fa-copy"></i>
                     </span>
                 </span>
+                <ReactTooltip />
             </>
         );
     }
