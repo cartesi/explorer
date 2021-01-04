@@ -20,7 +20,7 @@ import ReactTooltip from 'react-tooltip';
 
 import Layout from '../components/Layout';
 import BlockCard from '../components/BlockCard';
-import Nodes from '../components/Nodes';
+import Users from '../components/Users';
 
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
@@ -234,7 +234,7 @@ const Home = () => {
                 market={marketInformation}
             />
             <Blocks blocks={blocks} />
-            <Nodes summary={summary} />
+            <Users summary={summary} />
         </Layout>
     );
 };

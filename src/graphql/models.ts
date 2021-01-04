@@ -23,6 +23,18 @@ export type User = {
     totalReward: string;
 };
 
+export interface UsersData {
+    users: User[];
+}
+
+export interface UsersVars {
+    first: number;
+    skip: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
+}
+
 export type Node = {
     id: string;
     owner: User;
