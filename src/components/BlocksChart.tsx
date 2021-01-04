@@ -86,11 +86,11 @@ const BlocksChart = (props: BlocksChartProps) => {
     const difficultyFormat = (difficulty: bigInt.BigInteger): string => {
         const nDifficulty = parseFloat(difficulty.toString());
 
-        if (nDifficulty > 1e9) {
+        if (nDifficulty >= 1e9) {
             return (nDifficulty / 1e9).toString() + 'G';
-        } else if (nDifficulty > 1e6) {
+        } else if (nDifficulty >= 1e6) {
             return (nDifficulty / 1e6).toString() + 'M';
-        } else if (nDifficulty > 1e3) {
+        } else if (nDifficulty >= 1e3) {
             return (nDifficulty / 1e3).toString() + 'K';
         }
         return nDifficulty.toString();

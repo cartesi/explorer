@@ -13,7 +13,7 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { FixedNumber } from 'ethers';
+import { BigNumber, constants, FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import ReactTooltip from 'react-tooltip';
@@ -148,6 +148,45 @@ const Stats = (props: StatsProps) => {
                       .toString() + '%';
     }
 
+    const totalStaked = BigNumber.from(
+        summary && summary.totalStaked ? summary.totalStaked : 0
+    );
+    let totalStakedLabel = '0';
+
+    if (
+        totalStaked.gte(
+            BigNumber.from(1e9).mul(BigNumber.from(constants.WeiPerEther))
+        )
+    ) {
+        totalStakedLabel =
+            toCTSI(totalStaked)
+                .divUnsafe(FixedNumber.from(1e9))
+                .round(2)
+                .toString() + 'G';
+    } else if (
+        totalStaked.gte(
+            BigNumber.from(1e6).mul(BigNumber.from(constants.WeiPerEther))
+        )
+    ) {
+        totalStakedLabel =
+            toCTSI(totalStaked)
+                .divUnsafe(FixedNumber.from(1e6))
+                .round(2)
+                .toString() + 'M';
+    } else if (
+        totalStaked.gte(
+            BigNumber.from(1e3).mul(BigNumber.from(constants.WeiPerEther))
+        )
+    ) {
+        totalStakedLabel =
+            toCTSI(totalStaked)
+                .divUnsafe(FixedNumber.from(1e3))
+                .round(2)
+                .toString() + 'K';
+    } else {
+        totalStakedLabel = totalStaked.toString();
+    }
+
     return (
         <div className="landing-dashboard">
             <div className="landing-dashboard-content row">
@@ -159,9 +198,7 @@ const Stats = (props: StatsProps) => {
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                     <div className="sub-title-1">Total Staked (CTSI)</div>
-                    <div className="info-text-bg">
-                        {summary ? formatCTSI(summary.totalStaked) : 0}
-                    </div>
+                    <div className="info-text-bg">{totalStakedLabel}</div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
                     <div className="sub-title-1">
