@@ -26,51 +26,37 @@ interface AddressProps {
 
 const Address = ({ id, type, className, children }: AddressProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
+
+    const copyToClipboard = () => {
+        var dummy = document.createElement('textarea');
+        document.body.appendChild(dummy);
+        dummy.value = id;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+    };
+
     if (!chainId || etherscanLinks[chainId]) {
         return (
             <>
-                <span
-                    className={className}
-                    data-html={true}
-                    data-offset="{ 'top': -15 }"
-                    data-tip={`
-                        <div class="body-text-2">
-                            <div>${id}</div>
-                            <div class="address mt-1">
-                                <a href="${
-                                    etherscanLinks[chainId || 1]
-                                }/${type}/${id}}"
-                                    class="address-link"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    View on Etherscan
-                                </a>
-                                <span class="address-link pl-3"
-                                    onclick="(function() {
-                                        var dummy = document.createElement('textarea');
-                                        document.body.appendChild(dummy);
-                                        dummy.value = '${id}';
-                                        dummy.select();
-                                        document.execCommand('copy');
-                                        document.body.removeChild(dummy);
-                                    })()"
-                                >
-                                    Copy to Clipboard
-                                </span>
-                            </div>
-                        </div>
-                    `}
-                >
+                <span className={className}>
                     {children}
+
+                    <a
+                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}}`}
+                        className="address-link ml-3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <i className="fas fa-external-link-alt"></i>
+                    </a>
+                    <span
+                        className="address-link ml-1"
+                        onClick={copyToClipboard}
+                    >
+                        <i className="fas fa-copy"></i>
+                    </span>
                 </span>
-                <ReactTooltip
-                    clickable={true}
-                    delayShow={0}
-                    delayHide={0}
-                    delayUpdate={0}
-                    arrowColor="#0000"
-                />
             </>
         );
     }
