@@ -27,5 +27,5 @@ export const formatCTSI = (
 };
 
 export const toCTSI = (amount: BigNumberish): number => {
-    return parseInt(formatUnits(amount, 18));
+    return parseFloat(formatUnits(amount, 18));
 };
