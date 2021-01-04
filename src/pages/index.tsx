@@ -32,7 +32,7 @@ import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 
 import { getRewardRate } from '../utils/reward';
-import { formatCTSI } from '../utils/token';
+import { formatCTSI, toCTSI } from '../utils/token';
 import labels from '../utils/labels';
 
 interface HeaderProps {
@@ -125,18 +125,15 @@ const Stats = (props: StatsProps) => {
 
     let participationRateLabel = '-';
     let aprLabel = '-';
-    if (blocks && blocks.length > 0 && market?.circulatingSupply) {
-        const { participationRate, yearReturn } = getRewardRate(
-            blocks,
-            market.circulatingSupply
-        );
+    if (blocks && blocks.length > 0 && market?.circulatingSupply && summary) {
+        const { yearReturn } = getRewardRate(blocks, market.circulatingSupply);
+
+        const participationRate =
+            (toCTSI(summary.totalStaked) / market.circulatingSupply) * 100;
 
         // build label
         participationRateLabel =
-            participationRate
-                .mulUnsafe(FixedNumber.from(100))
-                .round(1)
-                .toString() + ' %';
+            (+participationRate.toFixed(1)).toLocaleString() + ' %';
 
         aprLabel =
             yearReturn.toUnsafeFloat() > 3
@@ -157,9 +154,9 @@ const Stats = (props: StatsProps) => {
                     </div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1"># Active Stakers</div>
+                    <div className="sub-title-1">Total Staked (CTSI)</div>
                     <div className="info-text-bg">
-                        {summary ? summary.totalUsers.toLocaleString() : 0}
+                        {summary ? formatCTSI(summary.totalStaked) : 0}
                     </div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">

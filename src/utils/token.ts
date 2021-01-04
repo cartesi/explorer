@@ -25,3 +25,7 @@ export const formatCTSI = (
     // convert to string
     return parseFloat(formatUnits(amount, 18)).toLocaleString();
 };
+
+export const toCTSI = (amount: BigNumberish): number => {
+    return parseInt(formatUnits(amount, 18));
+};
