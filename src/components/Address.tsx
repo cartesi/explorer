@@ -39,7 +39,7 @@ const Address = ({ id, type, className, children }: AddressProps) => {
     if (!chainId || etherscanLinks[chainId]) {
         return (
             <>
-                <span className={className}>
+                <span className={`${className} address`}>
                     {children}
 
                     <a

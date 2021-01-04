@@ -19,8 +19,12 @@
         align-items: flex-start;
         justify-content: center;
 
-        .address-link > i {
-            color: white;
+        .address {
+            word-break: break-all;
+
+            &-link i {
+                color: white;
+            }
         }
     }
 }

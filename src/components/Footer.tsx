@@ -27,30 +27,46 @@ const Footer = () => {
     return (
         <div className="layout-footer pt-3">
             Copyright (C) 2020 Cartesi Pte. Ltd.
-            <div className="my-3">
-                CTSI Token:
-                <Address className="ml-2" type="address" id={token.address}>
-                    {token.address}
-                </Address>
-                <br />
-                PoS:
-                <Address className="ml-2" type="address" id={pos.address}>
-                    {pos.address}
-                </Address>
-                <br />
-                Staking:
-                <Address className="ml-2" type="address" id={staking.address}>
-                    {staking.address}
-                </Address>
-                <br />
-                Worker Manager:
-                <Address
-                    className="ml-2"
-                    type="address"
-                    id={workerManager.address}
-                >
-                    {workerManager.address}
-                </Address>
+            <div className="my-3 layout-footer__contracts">
+                <div className="d-flex flex-column align-start my-1">
+                    CTSI Token:
+                    <Address
+                        className="ml-2"
+                        type="address"
+                        id={token?.address}
+                    >
+                        {token?.address}
+                    </Address>
+                </div>
+
+                <div className="d-flex flex-column align-start my-1">
+                    PoS:
+                    <Address className="ml-2" type="address" id={pos?.address}>
+                        {pos?.address}
+                    </Address>
+                </div>
+
+                <div className="d-flex flex-column align-start my-1">
+                    Staking:
+                    <Address
+                        className="ml-2"
+                        type="address"
+                        id={staking?.address}
+                    >
+                        {staking?.address}
+                    </Address>
+                </div>
+
+                <div className="d-flex flex-column align-start my-1">
+                    Worker Manager:
+                    <Address
+                        className="ml-2"
+                        type="address"
+                        id={workerManager?.address}
+                    >
+                        {workerManager?.address}
+                    </Address>
+                </div>
             </div>
         </div>
     );
