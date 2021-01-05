@@ -43,7 +43,7 @@ const Address = ({ id, type, className, children }: AddressProps) => {
                     {children}
 
                     <a
-                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}}`}
+                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}`}
                         className="address-link ml-3"
                         target="_blank"
                         rel="noopener noreferrer"
