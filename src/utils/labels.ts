@@ -1,4 +1,5 @@
 const labels = {
+    effectiveTotalStake: `The effective total stake is calculated from the current network difficulty. This number differs from the total staked because of producers running dysfunctional nodes or nodes that are (intermittently or permanently) offline.`,
     estimatedValuesInfo:
         'Estimated values can be highly variable, depending directly on the current amount of actively staked CTSI.',
     inContractBalance:

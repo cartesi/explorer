@@ -149,14 +149,19 @@ const Calculator = (props: Props) => {
                     </div>
 
                     <div className="body-text-1">
-                        Total Staked: {formatCTSI(summary.totalStaked)}{' '}
+                        Total Staked:{' '}
+                        {formatCTSI(summary ? summary.totalStaked : 0)}{' '}
                         <span className="small-text">CTSI</span>
                     </div>
 
                     <div className="body-text-1">
                         Effective Total Stake:{' '}
                         {toCTSI(activeStake).toLocaleString()}{' '}
-                        <span className="small-text">CTSI</span>
+                        <span className="small-text">CTSI </span>
+                        <img
+                            data-tip={labels.effectiveTotalStake}
+                            src="/images/question.png"
+                        />
                     </div>
 
                     <div className="calculator-slider">

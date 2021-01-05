@@ -77,6 +77,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
+            img[data-tip] {
+                filter: invert(1);
+            }
         }
 
         &-info {
@@ -93,9 +97,5 @@
         letter-spacing: 0.15px;
         text-align: left;
         color: #000;
-    }
-
-    img[data-tip] {
-        filter: invert(1);
     }
 }
