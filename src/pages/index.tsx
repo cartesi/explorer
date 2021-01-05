@@ -140,12 +140,8 @@ const Stats = (props: StatsProps) => {
                 .toString() + '%';
 
         aprLabel =
-            yearReturn.toUnsafeFloat() > 3
-                ? '> 300%'
-                : yearReturn
-                      .mulUnsafe(FixedNumber.from(100))
-                      .round(1)
-                      .toString() + '%';
+            yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
+            '%';
     }
 
     const totalStaked = BigNumber.from(
@@ -197,7 +193,13 @@ const Stats = (props: StatsProps) => {
                     </div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">Total Staked (CTSI)</div>
+                    <div className="sub-title-1">
+                        Total Staked (CTSI){' '}
+                        <img
+                            data-tip={labels.totalStaked}
+                            src="/images/question.png"
+                        />
+                    </div>
                     <div className="info-text-bg">{totalStakedLabel}</div>
                 </div>
                 <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
