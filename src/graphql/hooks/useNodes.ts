@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/nodes';
 import { NodesData, NodesVars } from '../models';
+import { constants } from 'ethers';
 
 export const NODES_PER_PAGE = 10;
 
@@ -36,7 +37,12 @@ const useNodes = (
 };
 
 export const useUserNodes = (owner: string) => {
-    owner = owner ? owner.toLowerCase() : owner;
+    // if no owner, user address zero, so no nodes are returned
+    owner = owner || constants.AddressZero;
+
+    // convert to lowercase because backend is all lowercase
+    owner = owner.toLowerCase();
+    
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: NODES_PER_PAGE,
