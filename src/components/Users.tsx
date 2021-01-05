@@ -13,7 +13,7 @@ import { useState } from 'react';
 import useUsers, { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import { Summary } from '../graphql/models';
 import { tinyString } from '../utils/stringUtils';
-import EtherscanLink from '../components/EtherscanLink';
+import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
 
 interface UsersProps {
@@ -105,12 +105,12 @@ const Users = (props: UsersProps) => {
                                 return (
                                     <tr key={user.id} className="body-text-2">
                                         <td>
-                                            <EtherscanLink
+                                            <Address
                                                 type="address"
                                                 id={user.id}
                                             >
                                                 {tinyString(user.id)}
-                                            </EtherscanLink>
+                                            </Address>
                                         </td>
                                         <td>{user.totalBlocks}</td>
                                         <td>
