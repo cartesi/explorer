@@ -63,10 +63,6 @@ const Staking = () => {
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
-    const [approveAmount, setApproveAmount] = useState<BigNumber>(
-        BigNumber.from(0)
-    );
-    const [editAllowance, setEditAllowance] = useState<boolean>(false);
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
@@ -131,24 +127,18 @@ const Staking = () => {
         ).slice(-2)}`;
     };
 
-    const showEditAllowance = () => {
-        setEditAllowance(true);
-        setApproveAmount(toBigCTSI(allowance));
-    };
-
     const doApprove = () => {
-        if (approveAmount.gt(0)) {
-            setEditAllowance(false);
-
-            if (!approveAmount.eq(toBigCTSI(allowance))) {
-                approve(staking.address, parseCTSI(approveAmount));
-                setApproveAmount(BigNumber.from(0));
+        if (stakeAmount.gt(0)) {
+            if (!stakeAmount.eq(toBigCTSI(allowance))) {
+                approve(staking.address, parseCTSI(stakeAmount));
             }
         }
     };
 
-    const doStake = () => {
-        if (stakeAmount.gt(0)) {
+    const doApproveOrStake = () => {
+        if (!stakeSplit) {
+            doApprove();
+        } else if (stakeAmount.gt(0)) {
             stake(parseCTSI(stakeAmount));
             setStakeAmount(BigNumber.from(0));
         }
@@ -424,66 +414,12 @@ const Staking = () => {
                     <div className="staking-ops-content">
                         {stakeTab && (
                             <>
-                                <div className="body-text-1">
-                                    Allowance{' '}
-                                    {!editAllowance && (
-                                        <a onClick={showEditAllowance}>
-                                            <img src="/images/pen.png" />
-                                        </a>
-                                    )}
-                                </div>
+                                <div className="body-text-1">Allowance</div>
 
-                                {editAllowance ? (
-                                    <div className="d-flex flex-column mt-2">
-                                        <div className="input-group">
-                                            <input
-                                                type="number"
-                                                className="addon-inline form-control"
-                                                id="approveAmount"
-                                                value={approveAmount.toString()}
-                                                disabled={!account || waiting}
-                                                onChange={(e) =>
-                                                    setApproveAmount(
-                                                        BigNumber.from(
-                                                            validate(
-                                                                e.target.value
-                                                            )
-                                                        )
-                                                    )
-                                                }
-                                            />
-                                            <span className="input-group-addon addon-inline input-source-observer small-text">
-                                                CTSI
-                                            </span>
-                                        </div>
-
-                                        <div className="d-flex flex-row align-items-center justify-content-between my-3">
-                                            <button
-                                                type="button"
-                                                className="btn btn-outline-dark py-2 button-text flex-fill mr-2"
-                                                onClick={() =>
-                                                    setEditAllowance(false)
-                                                }
-                                            >
-                                                Cancel
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                className="btn btn-dark py-2 button-text flex-fill"
-                                                disabled={!account || waiting}
-                                                onClick={doApprove}
-                                            >
-                                                Approve
-                                            </button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <span className="info-text-md">
-                                        {formatCTSI(allowance)}{' '}
-                                        <span className="small-text">CTSI</span>
-                                    </span>
-                                )}
+                                <span className="info-text-md">
+                                    {formatCTSI(allowance)}{' '}
+                                    <span className="small-text">CTSI</span>
+                                </span>
 
                                 <div className="form-group mt-3">
                                     <label className="body-text-2 text-secondary">
@@ -492,16 +428,10 @@ const Staking = () => {
                                     <div className="input-group">
                                         <input
                                             type="number"
-                                            className={`addon-inline form-control ${
-                                                stakeSplit ? '' : 'error'
-                                            }`}
+                                            className="addon-inline form-control"
                                             id="stakeAmount"
                                             value={stakeAmount.toString()}
-                                            disabled={
-                                                editAllowance ||
-                                                !account ||
-                                                waiting
-                                            }
+                                            disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setStakeAmount(
                                                     BigNumber.from(
@@ -510,11 +440,7 @@ const Staking = () => {
                                                 )
                                             }
                                         />
-                                        <span
-                                            className={`input-group-addon addon-inline input-source-observer small-text ${
-                                                stakeSplit ? '' : 'error'
-                                            }`}
-                                        >
+                                        <span className="input-group-addon addon-inline input-source-observer small-text">
                                             CTSI
                                         </span>
                                     </div>
@@ -555,19 +481,19 @@ const Staking = () => {
                                     ) : (
                                         <div>
                                             Maximum staking limit exceeded!
+                                            Please approve more allowance to
+                                            stake.
                                         </div>
                                     )}
                                 </div>
 
                                 <button
                                     type="button"
-                                    disabled={
-                                        editAllowance || !account || waiting
-                                    }
+                                    disabled={!account || waiting}
                                     className="btn btn-dark py-2 button-text flex-fill"
-                                    onClick={doStake}
+                                    onClick={doApproveOrStake}
                                 >
-                                    Stake
+                                    {stakeSplit ? 'Stake' : 'Approve'}
                                 </button>
 
                                 <div className="small-text text-center mt-4 danger-text">
