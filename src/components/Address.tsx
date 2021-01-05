@@ -22,9 +22,16 @@ interface AddressProps {
     type: string;
     className?: string;
     children: React.ReactNode;
+    rawLink?: boolean;
 }
 
-const Address = ({ id, type, className, children }: AddressProps) => {
+const Address = ({
+    id,
+    type,
+    className,
+    children,
+    rawLink = false,
+}: AddressProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
 
     const copyToClipboard = () => {
@@ -37,6 +44,21 @@ const Address = ({ id, type, className, children }: AddressProps) => {
     };
 
     if (!chainId || etherscanLinks[chainId]) {
+        if (rawLink) {
+            return (
+                <span className={`${className} address`}>
+                    <a
+                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}`}
+                        className="address-link ml-3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {children}
+                    </a>
+                </span>
+            );
+        }
+
         return (
             <>
                 <span className={`${className} address`}>

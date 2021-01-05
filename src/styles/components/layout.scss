@@ -22,8 +22,12 @@
         .address {
             word-break: break-all;
 
-            &-link i {
+            &-link {
                 color: white;
+
+                &:hover {
+                    color: #fffa;
+                }
             }
         }
     }
