@@ -14,7 +14,7 @@ import Head from 'next/head';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
@@ -28,8 +28,8 @@ import { useCartesiToken } from '../../services/token';
 import useUser from '../../graphql/hooks/useUser';
 
 import labels from '../../utils/labels';
-import { formatCTSI } from '../../utils/token';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
+import { formatCTSI, isInfinite } from '../../utils/token';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -66,6 +66,7 @@ const Staking = () => {
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
+    const [infiniteApprovel, setInfiniteApprovel] = useState<boolean>(false);
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
@@ -129,7 +130,9 @@ const Staking = () => {
 
     const doApprove = () => {
         if (stakeAmount.gt(0)) {
-            if (!stakeAmount.eq(toBigCTSI(allowance))) {
+            if (infiniteApprovel) {
+                approve(staking.address, constants.MaxUint256);
+            } else if (!stakeAmount.eq(toBigCTSI(allowance))) {
                 approve(staking.address, parseCTSI(stakeAmount));
             }
         }
@@ -155,10 +158,10 @@ const Staking = () => {
         withdraw(releasingBalance);
     };
 
-    const validate = (value: string): number => {
-        if (!value) return 0;
+    const validate = (value: string): string => {
+        if (!value) return '0';
         value = value.split('.')[0];
-        return parseInt(value);
+        return value;
     };
 
     const acceptDisclaimer = () => {
@@ -428,7 +431,11 @@ const Staking = () => {
                                     <div className="input-group">
                                         <input
                                             type="number"
-                                            className="addon-inline form-control"
+                                            className={`addon-inline form-control ${
+                                                isInfinite(stakeAmount)
+                                                    ? 'error'
+                                                    : ''
+                                            }`}
                                             id="stakeAmount"
                                             value={stakeAmount.toString()}
                                             disabled={!account || waiting}
@@ -440,7 +447,13 @@ const Staking = () => {
                                                 )
                                             }
                                         />
-                                        <span className="input-group-addon addon-inline input-source-observer small-text">
+                                        <span
+                                            className={`input-group-addon addon-inline input-source-observer small-text ${
+                                                isInfinite(stakeAmount)
+                                                    ? 'error'
+                                                    : ''
+                                            }`}
+                                        >
                                             CTSI
                                         </span>
                                     </div>
@@ -489,16 +502,37 @@ const Staking = () => {
 
                                 <button
                                     type="button"
-                                    disabled={!account || waiting}
+                                    disabled={
+                                        isInfinite(stakeAmount) ||
+                                        !account ||
+                                        waiting
+                                    }
                                     className="btn btn-dark py-2 button-text flex-fill"
                                     onClick={doApproveOrStake}
                                 >
                                     {stakeSplit ? 'Stake' : 'Approve'}
                                 </button>
 
-                                <div className="small-text text-center mt-4 danger-text">
-                                    The maturing status will restart counting.
-                                </div>
+                                {stakeSplit ? (
+                                    <div className="small-text text-center mt-4 danger-text">
+                                        The maturing status will restart
+                                        counting.
+                                    </div>
+                                ) : (
+                                    <div className="text-center mt-3">
+                                        <input
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            checked={infiniteApprovel}
+                                            onChange={(e) =>
+                                                setInfiniteApprovel(
+                                                    e.target.checked
+                                                )
+                                            }
+                                        />
+                                        Infinite Approval
+                                    </div>
+                                )}
                             </>
                         )}
 

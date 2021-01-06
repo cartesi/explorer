@@ -23,9 +23,15 @@ export const formatCTSI = (
     amount = amount.sub(amount.mod(m));
 
     // convert to string
-    return parseFloat(formatUnits(amount, 18)).toLocaleString();
+    const ctsiValue = parseFloat(formatUnits(amount, 18));
+    if (isInfinite(ctsiValue)) return 'Infinite';
+    return ctsiValue.toLocaleString();
 };
 
 export const toCTSI = (amount: BigNumberish): FixedNumber => {
     return FixedNumber.from(formatUnits(amount, 18));
+};
+
+export const isInfinite = (amount: BigNumberish): boolean => {
+    return amount > 1e9;
 };
