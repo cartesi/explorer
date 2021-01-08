@@ -66,7 +66,7 @@ const Staking = () => {
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
-    const [infiniteApprovel, setInfiniteApprovel] = useState<boolean>(false);
+    const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
     const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
         BigNumber.from(0)
     );
@@ -130,7 +130,7 @@ const Staking = () => {
 
     const doApprove = () => {
         if (stakeAmount.gt(0)) {
-            if (infiniteApprovel) {
+            if (infiniteApproval) {
                 approve(staking.address, constants.MaxUint256);
             } else if (!stakeAmount.eq(toBigCTSI(allowance))) {
                 approve(staking.address, parseCTSI(stakeAmount));
@@ -523,9 +523,9 @@ const Staking = () => {
                                         <input
                                             type="checkbox"
                                             className="form-check-input"
-                                            checked={infiniteApprovel}
+                                            checked={infiniteApproval}
                                             onChange={(e) =>
-                                                setInfiniteApprovel(
+                                                setInfiniteApproval(
                                                     e.target.checked
                                                 )
                                             }
