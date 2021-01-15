@@ -26,6 +26,7 @@ import useSummary from '../../graphql/hooks/useSummary';
 import { getEstimatedRewardRate } from '../../utils/reward';
 import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
+import StakingDisclaimer from '../../components/StakingDisclaimer';
 
 interface Props {}
 
@@ -235,10 +236,7 @@ const Calculator = (props: Props) => {
                             </div>
 
                             <div className="col col-12">
-                                <div className="calculator-result-info body-text-2">
-                                    <i className="fas fa-info-circle"></i>{' '}
-                                    {labels.estimatedValuesInfo}
-                                </div>
+                                <StakingDisclaimer />
                             </div>
                         </div>
                     </div>
