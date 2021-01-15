@@ -27,7 +27,7 @@ const Footer = () => {
     return (
         <div className="layout-footer">
             <div className="layout-footer__content flex-column flex-lg-row py-4">
-                <div className="my-1 d-flex flex-column align-start">
+                <div className="my-1 d-flex flex-column align-start mb-4 mb-lg-0">
                     <b className="mb-3">Resources</b>
                     <div>
                         <a
