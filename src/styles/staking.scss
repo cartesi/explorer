@@ -49,7 +49,7 @@
                 color: $information-color;
                 cursor: pointer;
             }
-            
+
             &-error {
                 color: $error-color;
             }
@@ -226,6 +226,30 @@
         &.addon-inline {
             border-right: none;
             padding-right: 0;
+        }
+    }
+
+    &-disclaimer-container {
+        position: fixed;
+        top: 100px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 3;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background-color: rgba(255, 255, 255, 0.87);
+        backdrop-filter: blur(6px);
+        padding: 0 20vw;
+        overflow-y: auto;
+
+        @media (max-width: $xs-max) {
+            display: unset;
+            padding: 10px 5vw;
         }
     }
 }

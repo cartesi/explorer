@@ -29,6 +29,7 @@ import useUser from '../../graphql/hooks/useUser';
 
 import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
+import StakingDisclaimer from '../../components/StakingDisclaimer';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -59,6 +60,8 @@ const Staking = () => {
     } = useCartesiToken(account, staking?.address, blockNumber);
 
     const { user } = useUser(account);
+
+    const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
     const [approveAmount, setApproveAmount] = useState<BigNumber>(
         BigNumber.from(0)
@@ -99,6 +102,12 @@ const Staking = () => {
             );
         }
     };
+
+    useEffect(() => {
+        const readDisclaimer = localStorage.getItem('readDisclaimer');
+        if (!readDisclaimer || readDisclaimer == 'false')
+            setReadDisclaimer(false);
+    }, []);
 
     useEffect(() => {
         updateTimers();
@@ -160,6 +169,11 @@ const Staking = () => {
         if (!value) return 0;
         value = value.split('.')[0];
         return parseInt(value);
+    };
+
+    const acceptDisclaimer = () => {
+        setReadDisclaimer(true);
+        localStorage.setItem('readDisclaimer', 'true');
     };
 
     const splitStakeAmount = () => {
@@ -226,6 +240,22 @@ const Staking = () => {
                 <title>Cartesi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
+            {!readDisclaimer && (
+                <div className="staking-disclaimer-container">
+                    <StakingDisclaimer />
+
+                    <div className="w-100 d-flex flex-row align-center justify-content-end mt-2">
+                        <button
+                            type="button"
+                            className="btn btn-dark button-text"
+                            onClick={acceptDisclaimer}
+                        >
+                            Accept and continue
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="page-header row align-items-center py-3">
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
