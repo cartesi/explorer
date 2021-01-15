@@ -25,44 +25,70 @@ const Footer = () => {
     const workerManager = useWorkerManagerContract();
 
     return (
-        <div className="layout-footer pt-3">
-            Copyright (C) 2020 Cartesi Pte. Ltd.
-            <div className="my-3 layout-footer__contracts">
-                <div className="d-flex flex-row align-start my-1">
-                    CTSI Token:
-                    <Address type="address" id={token?.address} rawLink={true}>
-                        {token?.address}
-                    </Address>
+        <div className="layout-footer">
+            <div className="layout-footer__content flex-column flex-lg-row py-4">
+                <div className="my-1 d-flex flex-column align-start">
+                    <b className="mb-3">Resources</b>
+                    <div>
+                        <a
+                            href="https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Audit Report
+                        </a>
+                    </div>
                 </div>
 
-                <div className="d-flex flex-row align-start my-1">
-                    PoS:
-                    <Address type="address" id={pos?.address} rawLink={true}>
-                        {pos?.address}
-                    </Address>
-                </div>
+                <div className="my-1 d-flex flex-column align-start">
+                    <b className="mb-3">Contract Addresses</b>
+                    <div className="d-flex flex-column flex-md-row align-start my-1">
+                        CTSI Token:
+                        <Address
+                            type="address"
+                            id={token?.address}
+                            rawLink={true}
+                        >
+                            {token?.address}
+                        </Address>
+                    </div>
 
-                <div className="d-flex flex-row align-start my-1">
-                    Staking:
-                    <Address
-                        type="address"
-                        id={staking?.address}
-                        rawLink={true}
-                    >
-                        {staking?.address}
-                    </Address>
-                </div>
+                    <div className="d-flex flex-column flex-md-row align-start my-1">
+                        PoS:
+                        <Address
+                            type="address"
+                            id={pos?.address}
+                            rawLink={true}
+                        >
+                            {pos?.address}
+                        </Address>
+                    </div>
 
-                <div className="d-flex flex-row align-start my-1">
-                    Worker Manager:
-                    <Address
-                        type="address"
-                        id={workerManager?.address}
-                        rawLink={true}
-                    >
-                        {workerManager?.address}
-                    </Address>
+                    <div className="d-flex flex-column flex-md-row align-start my-1">
+                        Staking:
+                        <Address
+                            type="address"
+                            id={staking?.address}
+                            rawLink={true}
+                        >
+                            {staking?.address}
+                        </Address>
+                    </div>
+
+                    <div className="d-flex flex-column flex-md-row align-start my-1">
+                        Worker Manager:
+                        <Address
+                            type="address"
+                            id={workerManager?.address}
+                            rawLink={true}
+                        >
+                            {workerManager?.address}
+                        </Address>
+                    </div>
                 </div>
+            </div>
+            <div className="text-center w-100 py-4 border-top">
+                Copyright (C) 2020 Cartesi Pte. Ltd.
             </div>
         </div>
     );
