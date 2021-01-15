@@ -10,7 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useMemo } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import {
+    ApolloClient,
+    HttpLink,
+    InMemoryCache,
+    ApolloLink,
+    Operation,
+    NextLink,
+    concat,
+} from '@apollo/client';
 
 const uris = {
     1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos',
@@ -44,15 +52,46 @@ const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
         uris[chainId] || 'https://api.thegraph.com/subgraphs/name/cartesi/pos';
     const ssrMode = typeof window === 'undefined';
+
+    const cleanTypeName = new ApolloLink(
+        (operation: Operation, forward: NextLink) => {
+            if (operation.operationName === '_meta') {
+                if (operation.variables) {
+                    const omitTypename = (key, value) =>
+                        key === '__typename' ? undefined : value;
+                    operation.variables = JSON.parse(
+                        JSON.stringify(operation.variables),
+                        omitTypename
+                    );
+                }
+
+                const context = operation.getContext();
+                operation.setContext({
+                    ...context,
+                    cache: {
+                        ...context.cache,
+                        addTypename: false,
+                        config: {
+                            ...context.cache.config,
+                            addTypename: false,
+                        },
+                    },
+                });
+            }
+
+            return forward(operation);
+        }
+    );
+
     return new ApolloClient({
         ssrMode,
-        link: new HttpLink({
-            uri,
-        }),
+        link: concat(
+            cleanTypeName,
+            new HttpLink({
+                uri,
+            })
+        ),
         cache: new InMemoryCache({
-            //* https://spectrum.chat/apollo/apollo-client/exception-while-querying-introspection-query-with-apollo-client~81ca7b8f-6b00-4a25-9c97-1fea07f7d63a
-            addTypename: false,
-
             typePolicies: {
                 Query: {
                     fields: {
