@@ -30,9 +30,9 @@ const SyncStatus = () => {
 
     return issues ? (
         <div className="layout-content-issue">
-            <i className="fas fa-exclamation-triangle"></i>Synchronization issue
-            between backend data and blockchain data. Blocks may be appearing
-            slowly.
+            <i className="fas fa-exclamation-triangle"></i> Synchronization
+            issue between backend data and blockchain data. Blocks may be
+            appearing slowly.
         </div>
     ) : (
         <div />
