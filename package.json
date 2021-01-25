@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "big-integer": "^1.6.48",
     "bootstrap": "^4.5.3",
+    "cors": "^2.8.5",
     "ethers": "^5.0.14",
     "graphql": "^15.4.0",
     "jquery": "^3.5.1",
