@@ -40,7 +40,7 @@ const mergeUniqueSort = (fieldName: string) => {
     };
 };
 
-const createApollo = (chainId: number): ApolloClient<any> => {
+export const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
         uris[chainId] || 'https://api.thegraph.com/subgraphs/name/cartesi/pos';
     const ssrMode = typeof window === 'undefined';
