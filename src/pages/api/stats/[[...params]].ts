@@ -3,25 +3,30 @@ import Cors from 'cors';
 import axios from 'axios';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 
-import runMiddleware from '../../utils/runMiddleware';
-import { getRewardRate } from '../../utils/reward';
-import { toCTSI } from '../../utils/token';
+import runMiddleware from '../../../utils/runMiddleware';
+import { getRewardRate } from '../../../utils/reward';
+import { toCTSI } from '../../../utils/token';
 
-import { createApollo } from '../../services/apollo';
+import { createApollo } from '../../../services/apollo';
 
-import { BLOCKS } from '../../graphql/queries/blocks';
-import { SUMMARY } from '../../graphql/queries/summary';
+import { BLOCKS } from '../../../graphql/queries/blocks';
+import { SUMMARY } from '../../../graphql/queries/summary';
 
-import { BlocksData, SummaryData } from '../../graphql/models';
+import { BlocksData, SummaryData } from '../../../graphql/models';
 
 const cors = Cors({
     methods: ['GET', 'HEAD'],
 });
 
-const client = createApollo(1);
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await runMiddleware(req, res, cors);
+
+    const {
+        query: { params },
+    } = req;
+    const chainId = (params && params.length > 0 && parseInt(params[0])) || 1;
+
+    const client = createApollo(chainId);
 
     const {
         data: { summary },
@@ -40,19 +45,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
     const marketData = await axios.get(endpoint);
-    const market = {
-        price: marketData.data.market_data.current_price.usd.toFixed(4),
-        marketCap: marketData.data.market_data.market_cap.usd,
-        circulatingSupply: marketData.data.market_data.circulating_supply,
-    };
+    const circulatingSupply = marketData.data.market_data.circulating_supply;
 
     let projectedAnnualEarnings = 0,
         participationRate = 0;
-    if (blocks && blocks.length > 0 && market?.circulatingSupply && summary) {
-        const { yearReturn } = getRewardRate(blocks, market.circulatingSupply);
+    if (blocks && blocks.length > 0 && circulatingSupply && summary) {
+        const { yearReturn } = getRewardRate(blocks, circulatingSupply);
 
         participationRate = toCTSI(summary.totalStaked)
-            .divUnsafe(FixedNumber.from(market.circulatingSupply))
+            .divUnsafe(FixedNumber.from(circulatingSupply))
             .mulUnsafe(FixedNumber.from(100))
             .toUnsafeFloat();
 
