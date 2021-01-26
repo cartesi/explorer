@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 
 import runMiddleware from '../../../utils/runMiddleware';
-import { getRewardRate } from '../../../utils/reward';
+import { getEstimatedRewardRate, getRewardRate } from '../../../utils/reward';
 import { toCTSI } from '../../../utils/token';
 
 import { createApollo } from '../../../services/apollo';
@@ -62,22 +62,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .toUnsafeFloat();
     }
 
-    const difficulty = blocks
-        .map((t) => BigNumber.from(t.difficulty))
-        .reduce((sum, d) => sum.add(d), constants.Zero)
-        .div(blocks.length);
-
-    const targetInterval = blocks[0].chain.targetInterval;
-
-    const effectiveTotalStaked = toCTSI(
-        difficulty.div(targetInterval)
-    ).toUnsafeFloat();
+    const { difficulty, activeStake } = getEstimatedRewardRate(
+        blocks,
+        constants.One,
+        0,
+        0
+    );
 
     res.json({
+        price: marketData.data.market_data.current_price.usd.toFixed(4),
+        circulatingSupply,
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
-        effectiveTotalStaked,
+        effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
         difficulty: difficulty.toString(),
-        activeNodes: summary.totalNodes,
+        hiredNodes: summary.totalNodes,
         currentBlockReward: toCTSI(blocks[0].reward).toUnsafeFloat(),
         projectedAnnualEarnings,
         participationRate,
