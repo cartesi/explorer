@@ -13,6 +13,7 @@ import { BLOCKS } from '../../../graphql/queries/blocks';
 import { SUMMARY } from '../../../graphql/queries/summary';
 
 import { BlocksData, SummaryData } from '../../../graphql/models';
+import { networks } from '../../../utils/networks';
 
 const cors = Cors({
     methods: ['GET', 'HEAD'],
@@ -22,9 +23,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await runMiddleware(req, res, cors);
 
     const {
-        query: { params },
+        query: { chain },
     } = req;
-    const chainId = (params && params.length > 0 && parseInt(params[0])) || 1;
+
+    const chainId =
+        parseInt(
+            Object.keys(networks).find(
+                (key) => networks[key] == (chain as string).toLowerCase()
+            )
+        ) || 1;
 
     const client = createApollo(chainId);
 
