@@ -69,21 +69,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .toUnsafeFloat();
     }
 
-    const { difficulty, activeStake } = getEstimatedRewardRate(
-        blocks,
-        constants.One,
-        0,
-        0
-    );
+    const { activeStake } = getEstimatedRewardRate(blocks, constants.One, 0, 0);
 
     res.json({
-        price: marketData.data.market_data.current_price.usd.toFixed(4),
+        price: +marketData.data.market_data.current_price.usd.toFixed(4),
         circulatingSupply,
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
         effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
-        difficulty: difficulty.toString(),
         hiredNodes: summary.totalNodes,
-        currentBlockReward: toCTSI(blocks[0].reward).toUnsafeFloat(),
         projectedAnnualEarnings,
         participationRate,
     });

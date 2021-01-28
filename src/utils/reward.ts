@@ -103,7 +103,6 @@ export const getEstimatedRewardRate = (
     let reward = constants.Zero;
     let apr = FixedNumber.from(0);
     let activeStake = constants.Zero;
-    let difficulty = constants.Zero;
 
     if (blocks && blocks.length > 0) {
         const blocksPerChain = _.groupBy(blocks, 'chain.id');
@@ -174,7 +173,6 @@ export const getEstimatedRewardRate = (
                 reward,
                 apr,
                 activeStake,
-                difficulty,
             };
         });
 
@@ -194,17 +192,11 @@ export const getEstimatedRewardRate = (
         activeStake = ratesPerChain
             .reduce((prev, cur) => prev.add(cur.activeStake), constants.Zero)
             .div(ratesPerChain.length);
-
-        // Average difficulty
-        difficulty = ratesPerChain
-            .reduce((prev, cur) => prev.add(cur.difficulty), constants.Zero)
-            .div(ratesPerChain.length);
     }
 
     return {
         reward,
         apr,
         activeStake,
-        difficulty,
     };
 };
