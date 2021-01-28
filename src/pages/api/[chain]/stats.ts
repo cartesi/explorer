@@ -70,6 +70,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { activeStake } = getEstimatedRewardRate(blocks, constants.One, 0, 0);
+    const blockReward =
+        blocks && blocks.length > 0
+            ? blocks
+                  .reduce(
+                      (prev, cur) => prev.addUnsafe(toCTSI(cur.reward)),
+                      FixedNumber.from(0)
+                  )
+                  .divUnsafe(FixedNumber.from(blocks.length))
+                  .toUnsafeFloat()
+            : 0;
 
     res.json({
         price: +marketData.data.market_data.current_price.usd.toFixed(4),
@@ -77,6 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
         effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
         hiredNodes: summary.totalNodes,
+        blockReward,
         projectedAnnualEarnings,
         participationRate,
     });
