@@ -505,12 +505,27 @@ const Staking = () => {
                                     disabled={
                                         isInfinite(stakeAmount) ||
                                         !account ||
-                                        waiting
+                                        waiting ||
+                                        !!stakeSplit
                                     }
                                     className="btn btn-dark py-2 button-text flex-fill"
                                     onClick={doApproveOrStake}
                                 >
-                                    {stakeSplit ? 'Stake' : 'Approve'}
+                                    Approve
+                                </button>
+
+                                <button
+                                    type="button"
+                                    disabled={
+                                        isInfinite(stakeAmount) ||
+                                        !account ||
+                                        waiting ||
+                                        !stakeSplit
+                                    }
+                                    className="btn btn-dark py-2 mt-2 button-text flex-fill"
+                                    onClick={doApproveOrStake}
+                                >
+                                    Stake
                                 </button>
 
                                 {stakeSplit ? (
