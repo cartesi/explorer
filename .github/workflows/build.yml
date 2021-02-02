@@ -8,18 +8,3 @@ jobs:
 
       - name: Code format check
         run: npx prettier --check src/**/*.ts
-        
-      - name: Build Image
-        run: docker build . -t cartesi/console
-      
-      - name: Login to Docker Hub
-        run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push to Docker Hub
-        run: |
-          docker tag cartesi/console cartesi/console:${GITHUB_REF:11}
-          docker push cartesi/console:${GITHUB_REF:11}
-        if: startsWith(github.ref, 'refs/tags/v')
