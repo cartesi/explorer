@@ -68,6 +68,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         return (
             <Scatter
                 key={chainId}
+                className=""
                 name={`Chain ${chainId}`}
                 data={data}
                 line={{ stroke: color }}
