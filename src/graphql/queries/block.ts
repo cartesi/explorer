@@ -11,7 +11,11 @@ export const BLOCK = gql`
             difficulty
 
             chain {
-                id
+                number
+
+                protocol {
+                    version
+                }
             }
 
             producer {

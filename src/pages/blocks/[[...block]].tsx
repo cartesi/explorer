@@ -39,9 +39,14 @@ const BlockItem = (props: BlockItemProps) => {
         <div className="blocks-content-block row" key={block.id}>
             <div className="col-12 col-md-9">
                 <div className="row">
+                    <div className="sub-title-4 col-4 my-1">Protocol</div>
+                    <div className="body-text-2 col-8 my-1">
+                        {block.chain.protocol.version}
+                    </div>
+
                     <div className="sub-title-4 col-4 my-1">Block</div>
                     <div className="body-text-2 col-8 my-1">
-                        {block.chain.id}-{block.number}
+                        {block.chain.number}-{block.number}
                     </div>
 
                     <div className="sub-title-4 col-4 my-1">Date</div>

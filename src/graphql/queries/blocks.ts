@@ -26,8 +26,12 @@ export const BLOCKS = gql`
             reward
             difficulty
             chain {
-                id
+                number
                 targetInterval
+
+                protocol {
+                    version
+                }
             }
             producer {
                 id

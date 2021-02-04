@@ -57,8 +57,18 @@ export interface NodesVars {
     orderDirection: string;
 }
 
+export type Protocol = {
+    id: string;
+    version: number;
+    address: string;
+    timestamp: number;
+    totalChains: number;
+};
+
 export type Chain = {
     id: string;
+    protocol: Protocol;
+    number: number;
     totalBlocks: number;
     totalReward: string;
     start: string;

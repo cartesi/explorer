@@ -47,7 +47,7 @@ const BlocksChart = (props: BlocksChartProps) => {
     const blocks = props.result.data?.blocks || [];
 
     // group blocks per chain
-    const blocksPerChain = _.groupBy(blocks, (block) => block.chain.id);
+    const blocksPerChain = _.groupBy(blocks, (block) => block.chain.number);
 
     // create one Line per chain
     const chains = Object.keys(blocksPerChain).map((chainId) => {

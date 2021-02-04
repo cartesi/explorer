@@ -89,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                       timestamp: blocks[0].timestamp,
                       reward: toCTSI(blocks[0].reward).toUnsafeFloat(),
                       difficulty: blocks[0].difficulty,
-                      chainId: blocks[0].chain.id,
+                      chainNumber: blocks[0].chain.number,
                   }
                 : null,
     });

@@ -46,7 +46,8 @@ const BlockCard = (props: BlockCardProps) => {
             </div>
             <div className="block-card-content">
                 <div className="block-card-content-header body-text-2">
-                    Block {block.chain.id}-{block.number}
+                    Block {block.chain.protocol.version}-{block.chain.number}-
+                    {block.number}
                 </div>
                 <div className="block-card-content-content">
                     <div className="block-card-content-content-text">

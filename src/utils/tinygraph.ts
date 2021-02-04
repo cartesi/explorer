@@ -24,6 +24,6 @@ export const themes = [
 ];
 
 export const tinyGraphUrl = (block: Block): string => {
-    const themeId = parseInt(block.chain.id) % themes.length;
+    const themeId = block.chain.number % themes.length;
     return `https://tinygraphs.cartesi.io/labs/isogrids/hexa/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
 };
