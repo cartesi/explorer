@@ -49,9 +49,7 @@ const NavBar = (props: NavBarProps) => {
 
     return (
         <nav className="navbar fixed-top navbar-expand-lg">
-            <Link href="/">
-                <a className="navbar-brand logo my-3"></a>
-            </Link>
+            <a className="navbar-brand logo my-3" href="https://cartesi.io"></a>
             <button
                 className="navbar-toggler"
                 type="button"

@@ -29,13 +29,31 @@ const Footer = () => {
             <div className="layout-footer__content flex-column flex-lg-row py-4">
                 <div className="my-1 d-flex flex-column align-start mb-4 mb-lg-0">
                     <b className="mb-3">Resources</b>
-                    <div>
+                    <div className="my-1">
                         <a
                             href="https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             Audit Report
+                        </a>
+                    </div>
+                    <div className="my-1">
+                        <a
+                            href="https://cartesi.io/en/mine/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            CTSI Reserve Mining
+                        </a>
+                    </div>
+                    <div className="my-1">
+                        <a
+                            href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            How to Run a Node
                         </a>
                     </div>
                 </div>
