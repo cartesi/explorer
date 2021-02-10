@@ -23,7 +23,16 @@ export const themes = [
     'berrypie',
 ];
 
+export const shapes = [
+    'squares', // Squares
+    'isogrids', // Isogrids
+    'spaceinvaders', // Space invaders
+    'labs/isogrids/hexa', // Hexa isogrids
+    'labs/isogrids/hexa16', // Hexa rotation 1/6
+];
+
 export const tinyGraphUrl = (block: Block): string => {
     const themeId = block.chain.number % themes.length;
-    return `https://tinygraphs.cartesi.io/labs/isogrids/hexa/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
+    const shapeId = (block.chain.protocol.version - 1) % shapes.length;
+    return `https://tinygraphs.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
 };
