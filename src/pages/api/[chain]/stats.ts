@@ -75,6 +75,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         price: +marketData.data.market_data.current_price.usd.toFixed(4),
         circulatingSupply,
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
+        totalUsers: summary.totalUsers,
         effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
         hiredNodes: summary.totalNodes,
         projectedAnnualEarnings,
