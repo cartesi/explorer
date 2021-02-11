@@ -24,10 +24,10 @@ export const themes = [
 ];
 
 export const shapes = [
+    'labs/isogrids/hexa', // Hexa isogrids
     'squares', // Squares
     'isogrids', // Isogrids
     'spaceinvaders', // Space invaders
-    'labs/isogrids/hexa', // Hexa isogrids
     'labs/isogrids/hexa16', // Hexa rotation 1/6
 ];
 
