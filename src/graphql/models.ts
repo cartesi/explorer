@@ -1,6 +1,7 @@
 export type Summary = {
     id: string;
     totalUsers: number;
+    totalStakers: number;
     totalNodes: number;
     totalStaked: string;
     totalBlocks: number;

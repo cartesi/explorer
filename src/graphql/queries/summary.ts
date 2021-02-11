@@ -5,6 +5,7 @@ export const SUMMARY = gql`
         summary(id: $id) {
             id
             totalUsers
+            totalStakers
             totalNodes
             totalStaked
             totalBlocks

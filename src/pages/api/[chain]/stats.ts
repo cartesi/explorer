@@ -76,6 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         circulatingSupply,
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
         totalUsers: summary.totalUsers,
+        totalStakers: summary.totalStakers,
         effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
         hiredNodes: summary.totalNodes,
         projectedAnnualEarnings,
