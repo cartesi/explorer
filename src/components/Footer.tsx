@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import {
     useCartesiTokenContract,
@@ -19,10 +20,14 @@ import {
 import Address from './Address';
 
 const Footer = () => {
+    const { chainId } = useWeb3React();
+
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
+
+    console.log('1111', chainId);
 
     return (
         <div className="layout-footer">
@@ -58,52 +63,54 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="my-1 d-flex flex-column align-start">
-                    <b className="mb-3">Contract Addresses</b>
-                    <div className="d-flex flex-column flex-md-row align-start my-1">
-                        CTSI Token:
-                        <Address
-                            type="address"
-                            id={token?.address}
-                            rawLink={true}
-                        >
-                            {token?.address}
-                        </Address>
-                    </div>
+                {chainId && (
+                    <div className="my-1 d-flex flex-column align-start">
+                        <b className="mb-3">Contract Addresses</b>
+                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                            CTSI Token:
+                            <Address
+                                type="address"
+                                id={token?.address}
+                                rawLink={true}
+                            >
+                                {token?.address}
+                            </Address>
+                        </div>
 
-                    <div className="d-flex flex-column flex-md-row align-start my-1">
-                        PoS:
-                        <Address
-                            type="address"
-                            id={pos?.address}
-                            rawLink={true}
-                        >
-                            {pos?.address}
-                        </Address>
-                    </div>
+                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                            PoS:
+                            <Address
+                                type="address"
+                                id={pos?.address}
+                                rawLink={true}
+                            >
+                                {pos?.address}
+                            </Address>
+                        </div>
 
-                    <div className="d-flex flex-column flex-md-row align-start my-1">
-                        Staking:
-                        <Address
-                            type="address"
-                            id={staking?.address}
-                            rawLink={true}
-                        >
-                            {staking?.address}
-                        </Address>
-                    </div>
+                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                            Staking:
+                            <Address
+                                type="address"
+                                id={staking?.address}
+                                rawLink={true}
+                            >
+                                {staking?.address}
+                            </Address>
+                        </div>
 
-                    <div className="d-flex flex-column flex-md-row align-start my-1">
-                        Worker Manager:
-                        <Address
-                            type="address"
-                            id={workerManager?.address}
-                            rawLink={true}
-                        >
-                            {workerManager?.address}
-                        </Address>
+                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                            Worker Manager:
+                            <Address
+                                type="address"
+                                id={workerManager?.address}
+                                rawLink={true}
+                            >
+                                {workerManager?.address}
+                            </Address>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
             <div className="text-center w-100 py-4 border-top">
                 Copyright (C) 2020 Cartesi Pte. Ltd.
