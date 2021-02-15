@@ -14,7 +14,7 @@ import { BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
-import { usePoSContract, useWorkerManagerContract } from './contract';
+import { usePoSContract, useWorkerManagerContract } from './contracts';
 import { useTransaction } from './transaction';
 
 export const useNode = (address: string) => {

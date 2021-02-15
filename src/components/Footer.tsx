@@ -15,7 +15,7 @@ import {
     usePoSContract,
     useStakingContract,
     useWorkerManagerContract,
-} from '../services/contract';
+} from '../services/contracts';
 import Address from './Address';
 
 const Footer = () => {

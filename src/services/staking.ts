@@ -14,7 +14,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { useBlockNumber } from './eth';
-import { useStakingContract } from './contract';
+import { useStakingContract } from './contracts';
 import { useTransaction } from './transaction';
 
 export const useStaking = () => {

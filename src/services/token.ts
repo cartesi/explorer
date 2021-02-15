@@ -10,8 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useCartesiTokenContract } from '../services/contract';
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { useCartesiTokenContract } from '../services/contracts';
+import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useTransaction } from './transaction';
 

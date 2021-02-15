@@ -19,18 +19,10 @@ import {
     WorkerManagerAuthManagerImpl__factory,
     WorkerManagerAuthManagerImpl,
 } from '@cartesi/util';
-import {
-    StakingImpl__factory,
-    StakingImpl,
-    PoS__factory,
-    PoS,
-} from '@cartesi/pos';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import pos_mainnet from '@cartesi/pos/export/abi/mainnet.json';
-import pos_rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
-import pos_goerli from '@cartesi/pos/export/abi/goerli.json';
-import pos_kovan from '@cartesi/pos/export/abi/kovan.json';
+import { StakingImpl, PoS } from '@cartesi/pos';
+import { StakingImpl as StakingImpl1, PoS as PoS1 } from '@cartesi/pos-1.0';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
@@ -44,32 +36,27 @@ import token_kovan from '@cartesi/token/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 
-interface ContractAbi {
+import * as pos from './pos';
+import * as pos1 from './pos-1.0';
+
+export interface ContractAbi {
     address: string;
     abi: any[];
 }
 
-interface ContractMap {
+export interface ContractMap {
     [name: string]: ContractAbi;
 }
 
-interface ChainAbi {
+export interface ChainAbi {
     name: string;
     chainId: string;
     contracts: ContractMap;
 }
 
-interface ChainMap {
+export interface ChainMap {
     [chainId: number]: ChainAbi;
 }
-
-const posAbis: ChainMap = {
-    1: pos_mainnet,
-    4: pos_rinkeby,
-    5: pos_goerli,
-    42: pos_kovan,
-    31337: localhost,
-};
 
 const utilAbis: ChainMap = {
     1: util_mainnet,
@@ -87,7 +74,11 @@ const tokenAbis: ChainMap = {
     31337: localhost,
 };
 
-const getAddress = (chainId: number, map: ChainMap, name: string): string => {
+export const getAddress = (
+    chainId: number,
+    map: ChainMap,
+    name: string
+): string => {
     const chain = map[chainId];
     if (!chain) {
         console.log(`Unsupported chain '${chainId}' for contract ${name}`);
@@ -144,10 +135,6 @@ function useContract<C>(
     return contract;
 }
 
-export const useStakingContract = (): StakingImpl => {
-    return useContract(StakingImpl__factory.connect, posAbis, 'StakingImpl');
-};
-
 export const useWorkerManagerContract = (): WorkerManagerAuthManagerImpl => {
     return useContract(
         WorkerManagerAuthManagerImpl__factory.connect,
@@ -164,6 +151,40 @@ export const useCartesiTokenContract = (): CartesiToken => {
     );
 };
 
-export const usePoSContract = (): PoS => {
-    return useContract(PoS__factory.connect, posAbis, 'PoS');
+function useContractPerNetwork<C, C1>(
+    creator: (chainId: number, signer: Signer) => C,
+    creator1: (chainId: number, signer: Signer) => C1
+): C | C1 {
+    const { library, chainId } = useWeb3React<Web3Provider>();
+
+    // contract is a state variable, because it's async
+    const [contract, setContract] = useState<C | C1>();
+
+    // use an effect because it's async
+    useEffect(() => {
+        if (!library || !chainId) {
+            // library or chainId not set, reset to undefined
+            setContract(undefined);
+            return;
+        }
+
+        // use provider signer
+        const signer = library.getSigner();
+
+        if (chainId == 5) {
+            setContract(creator(chainId, signer));
+        } else {
+            setContract(creator1(chainId, signer));
+        }
+    }, [library, chainId]);
+
+    return contract;
+}
+
+export const useStakingContract = (): StakingImpl | StakingImpl1 => {
+    return useContractPerNetwork(pos.createStaking, pos1.createStaking);
+};
+
+export const usePoSContract = (): PoS | PoS1 => {
+    return useContractPerNetwork(pos.createPoS, pos1.createPoS);
 };
