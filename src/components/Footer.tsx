@@ -27,8 +27,6 @@ const Footer = () => {
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
 
-    console.log('1111', chainId);
-
     return (
         <div className="layout-footer">
             <div className="layout-footer__content flex-column flex-lg-row py-4">
