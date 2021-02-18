@@ -280,7 +280,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                             </div>
                         )}
 
-                        {node.owned && !node.authorized && (
+                        {node.owned && !node.authorized && mine && (
                             <button
                                 type="button"
                                 disabled={node.waiting || node.loading}
