@@ -13,9 +13,12 @@ import _ from 'lodash';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { Block } from '../graphql/models';
 
+const BLOCK_INTERVAL = 15;
+
 export const getRewardRate = (
     blocks: Block[],
-    rawCirculatingSupply: number
+    rawCirculatingSupply: number,
+    networkId: number = 1
 ) => {
     let participationRate = FixedNumber.from(0);
     let yearReturn = FixedNumber.from(0);
@@ -37,7 +40,10 @@ export const getRewardRate = (
                 .reduce((sum, d) => sum.add(d), constants.Zero)
                 .div(blocks.length);
 
-            const targetInterval = blocks[0].chain.targetInterval;
+            const targetInterval =
+                networkId == 5
+                    ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
+                    : blocks[0].chain.targetInterval;
 
             // calculate estimated active stake from difficulty
             const activeStake = difficulty.div(targetInterval);
@@ -98,7 +104,8 @@ export const getEstimatedRewardRate = (
     blocks: Block[],
     stake: BigNumber,
     totalStaked: number,
-    period: number
+    period: number,
+    networkId: number = 1
 ) => {
     let reward = constants.Zero;
     let apr = FixedNumber.from(0);
@@ -122,7 +129,10 @@ export const getEstimatedRewardRate = (
                 .reduce((sum, d) => sum.add(d), constants.Zero)
                 .div(blocks.length);
 
-            const targetInterval = blocks[0].chain.targetInterval;
+            const targetInterval =
+                networkId == 5
+                    ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
+                    : blocks[0].chain.targetInterval;
 
             const activeStake = difficulty.div(targetInterval);
 
