@@ -57,11 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let projectedAnnualEarnings = 0,
         participationRate = 0;
     if (blocks && blocks.length > 0 && circulatingSupply && summary) {
-        const { yearReturn } = getRewardRate(
-            blocks,
-            circulatingSupply,
-            chainId
-        );
+        const { yearReturn } = getRewardRate(blocks, circulatingSupply);
 
         participationRate = toCTSI(summary.totalStaked)
             .divUnsafe(FixedNumber.from(circulatingSupply))
@@ -73,13 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .toUnsafeFloat();
     }
 
-    const { activeStake } = getEstimatedRewardRate(
-        blocks,
-        constants.One,
-        0,
-        0,
-        chainId
-    );
+    const { activeStake } = getEstimatedRewardRate(blocks, constants.One, 0, 0);
 
     res.json({
         price: +marketData.data.market_data.current_price.usd.toFixed(4),

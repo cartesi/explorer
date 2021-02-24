@@ -122,16 +122,11 @@ interface StatsProps {
 }
 const Stats = (props: StatsProps) => {
     const { blocks, market, summary } = props;
-    const { chainId } = useWeb3React<Web3Provider>();
 
     let participationRateLabel = '-';
     let aprLabel = '-';
     if (blocks && blocks.length > 0 && market?.circulatingSupply && summary) {
-        const { yearReturn } = getRewardRate(
-            blocks,
-            market.circulatingSupply,
-            chainId
-        );
+        const { yearReturn } = getRewardRate(blocks, market.circulatingSupply);
 
         const participationRate = toCTSI(summary.totalStaked).divUnsafe(
             FixedNumber.from(market.circulatingSupply)

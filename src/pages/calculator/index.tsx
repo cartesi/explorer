@@ -13,8 +13,6 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 
 import { BigNumber, constants, FixedNumber } from 'ethers';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
@@ -33,8 +31,6 @@ import StakingDisclaimer from '../../components/StakingDisclaimer';
 interface Props {}
 
 const Calculator = (props: Props) => {
-    const { chainId } = useWeb3React<Web3Provider>();
-
     // user statke
     const [stake, setStake] = useState<BigNumber>(
         constants.One.mul(100000).mul(constants.WeiPerEther)
@@ -70,8 +66,7 @@ const Calculator = (props: Props) => {
         blocks,
         stake,
         totalStaked,
-        period,
-        chainId
+        period
     );
 
     const blackBarPosition = loaded

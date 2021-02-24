@@ -17,8 +17,7 @@ const BLOCK_INTERVAL = 15;
 
 export const getRewardRate = (
     blocks: Block[],
-    rawCirculatingSupply: number,
-    networkId: number = 1
+    rawCirculatingSupply: number
 ) => {
     let participationRate = FixedNumber.from(0);
     let yearReturn = FixedNumber.from(0);
@@ -41,7 +40,7 @@ export const getRewardRate = (
                 .div(blocks.length);
 
             const targetInterval =
-                networkId == 5
+                blocks[0].chain.protocol.version == 2
                     ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
                     : blocks[0].chain.targetInterval;
 
@@ -104,8 +103,7 @@ export const getEstimatedRewardRate = (
     blocks: Block[],
     stake: BigNumber,
     totalStaked: number,
-    period: number,
-    networkId: number = 1
+    period: number
 ) => {
     let reward = constants.Zero;
     let apr = FixedNumber.from(0);
@@ -130,7 +128,7 @@ export const getEstimatedRewardRate = (
                 .div(blocks.length);
 
             const targetInterval =
-                networkId == 5
+                blocks[0].chain.protocol.version == 2
                     ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
                     : blocks[0].chain.targetInterval;
 
