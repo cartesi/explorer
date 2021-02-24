@@ -13,7 +13,7 @@ import _ from 'lodash';
 import { BigNumber, constants, FixedNumber } from 'ethers';
 import { Block } from '../graphql/models';
 
-const BLOCK_INTERVAL = 15;
+const BLOCK_INTERVAL = 13;
 
 export const getRewardRate = (
     blocks: Block[],
@@ -23,7 +23,10 @@ export const getRewardRate = (
     let yearReturn = FixedNumber.from(0);
 
     if (blocks && blocks.length > 0 && rawCirculatingSupply) {
-        const blocksPerChain = _.groupBy(blocks, 'chain.id');
+        const blocksPerChain = _.groupBy(
+            blocks,
+            (block) => `${block.chain.protocol.version}-${block.chain.number}`
+        );
 
         const yearSeconds = constants.One.mul(60) // minute
             .mul(60) // hour
@@ -32,6 +35,8 @@ export const getRewardRate = (
 
         const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
             const blocks: Array<Block> = blocksPerChain[chainId];
+            const protocol = blocks[0].chain.protocol.version;
+            const targetInterval = blocks[0].chain.targetInterval;
 
             // take average difficulty of all blocks in array
             const difficulty = blocks
@@ -39,13 +44,17 @@ export const getRewardRate = (
                 .reduce((sum, d) => sum.add(d), constants.Zero)
                 .div(blocks.length);
 
-            const targetInterval =
-                blocks[0].chain.protocol.version == 2
-                    ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
-                    : blocks[0].chain.targetInterval;
+            // protocol 1 interval is in seconds, 2 is in blocks
+            const targetIntervalSeconds =
+                protocol == 1
+                    ? targetInterval
+                    : targetInterval * BLOCK_INTERVAL;
 
-            // calculate estimated active stake from difficulty
-            const activeStake = difficulty.div(targetInterval);
+            // formula depends on protocol version
+            const activeStake =
+                protocol == 1
+                    ? difficulty.div(targetInterval)
+                    : difficulty.div(targetInterval).mul(10 ** 6);
 
             // convert circulation supply to BigNumber and multiple by 1e18
             const circulationSupply = BigNumber.from(rawCirculatingSupply).mul(
@@ -65,7 +74,9 @@ export const getRewardRate = (
                 .div(blocks.length);
 
             // total prize paid in one year
-            const yearPrize = yearSeconds.div(targetInterval).mul(reward);
+            const yearPrize = yearSeconds
+                .div(targetIntervalSeconds)
+                .mul(reward);
 
             // calculate year return
             const yearReturn = FixedNumber.fromValue(yearPrize).divUnsafe(
@@ -110,10 +121,16 @@ export const getEstimatedRewardRate = (
     let activeStake = constants.Zero;
 
     if (blocks && blocks.length > 0) {
-        const blocksPerChain = _.groupBy(blocks, 'chain.id');
+        const blocksPerChain = _.groupBy(
+            blocks,
+            (block) => `${block.chain.protocol.version}-${block.chain.number}`
+        );
 
         const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
             const blocks: Array<Block> = blocksPerChain[chainId];
+            const protocol = blocks[0].chain.protocol.version;
+            const targetInterval = blocks[0].chain.targetInterval;
+
             const avgPrize = blocks
                 .reduce(
                     (prev, cur) => prev.add(BigNumber.from(cur.reward)),
@@ -127,12 +144,17 @@ export const getEstimatedRewardRate = (
                 .reduce((sum, d) => sum.add(d), constants.Zero)
                 .div(blocks.length);
 
-            const targetInterval =
-                blocks[0].chain.protocol.version == 2
-                    ? blocks[0].chain.targetInterval * BLOCK_INTERVAL
-                    : blocks[0].chain.targetInterval;
+            // protocol 1 interval is in seconds, 2 is in blocks
+            const targetIntervalSeconds =
+                protocol == 1
+                    ? targetInterval
+                    : targetInterval * BLOCK_INTERVAL;
 
-            const activeStake = difficulty.div(targetInterval);
+            // formula depends on protocol version
+            const activeStake =
+                protocol == 1
+                    ? difficulty.div(targetInterval)
+                    : difficulty.div(targetInterval).mul(10 ** 6);
 
             // user stake share
             const stakePercentage = FixedNumber.fromValue(stake).divUnsafe(
@@ -150,7 +172,7 @@ export const getEstimatedRewardRate = (
                 .mul(60);
 
             // number of block drawn in that period
-            const totalBlocks = periodSeconds.div(targetInterval);
+            const totalBlocks = periodSeconds.div(targetIntervalSeconds);
 
             // number of block claimed by the user (statistically)
             const blocksClaimed = stakePercentage.mulUnsafe(
@@ -162,7 +184,7 @@ export const getEstimatedRewardRate = (
 
             // APR
             const yearSeconds = constants.One.mul(365).mul(24).mul(60).mul(60);
-            const yearBlocks = yearSeconds.div(targetInterval);
+            const yearBlocks = yearSeconds.div(targetIntervalSeconds);
 
             const yearClaimed = stakePercentage.mulUnsafe(
                 FixedNumber.fromValue(yearBlocks)
