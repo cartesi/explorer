@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import bigInt from 'big-integer';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import {
@@ -52,25 +51,49 @@ const BlocksChart = (props: BlocksChartProps) => {
         (block) => `${block.chain.protocol.version}-${block.chain.number}`
     );
 
+    // unique list of protocols
+    const protocols = blocks
+        .map((b) => b.chain.protocol.version)
+        .filter((value, index, array) => array.indexOf(value) === index);
+
+    // create one y-axis for each protocol
+    const yAxes = protocols.map((protocol) => (
+        <YAxis
+            yAxisId={protocol}
+            key={protocol}
+            dataKey="difficulty"
+            name="Difficulty"
+            tickFormatter={(v: number) => v.toExponential(1)}
+            domain={['auto', 'auto']}
+            orientation={protocol == 1 ? 'left' : 'right'}
+            width={80}
+            type="number"
+        />
+    ));
+
     // create one Line per chain
     const chains = Object.keys(blocksPerChain).map((chainId) => {
         // get chain blocks
         const blocks = blocksPerChain[chainId];
+        const chain = blocks[0].chain;
+        const protocol = chain.protocol;
 
         // get important data for chart
         const data = blocks.map((block) => ({
             id: block.id,
             timestamp: block.timestamp,
-            difficulty: bigInt(block.difficulty).divide(1e18),
+            difficulty: parseFloat(block.difficulty),
         }));
+
         // follow tinygraphs color pattern
-        const id = parseInt(chainId);
+        const id = chain.number;
         const color = id >= 0 && id < colors.length ? colors[id] : colors[0];
 
         // create scatter plot
         return (
             <Scatter
                 key={chainId}
+                yAxisId={protocol.version}
                 className=""
                 name={`Chain ${chainId}`}
                 data={data}
@@ -87,22 +110,9 @@ const BlocksChart = (props: BlocksChartProps) => {
         return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
     };
 
-    const difficultyFormat = (difficulty: bigInt.BigInteger): string => {
-        const nDifficulty = parseFloat(difficulty.toString());
-
-        if (nDifficulty >= 1e9) {
-            return (nDifficulty / 1e9).toString() + 'G';
-        } else if (nDifficulty >= 1e6) {
-            return (nDifficulty / 1e6).toString() + 'M';
-        } else if (nDifficulty >= 1e3) {
-            return (nDifficulty / 1e3).toString() + 'K';
-        }
-        return nDifficulty.toString();
-    };
-
     const tooltipFormatter = (value, name, props) => {
         if (name === 'Difficulty') {
-            return difficultyFormat(value);
+            return value;
         } else if (name === 'Time') {
             return DateTime.fromMillis(value * 1000)
                 .toUTC()
@@ -121,15 +131,10 @@ const BlocksChart = (props: BlocksChartProps) => {
                     tickFormatter={timestampFormat}
                     name="Time"
                     type="number"
+                    scale="time"
                     tick={{ width: 100 }}
                 />
-                <YAxis
-                    dataKey="difficulty"
-                    name="Difficulty"
-                    tickFormatter={difficultyFormat}
-                    domain={['auto', 'auto']}
-                    type="number"
-                />
+                {yAxes}
                 <Legend
                     wrapperStyle={{
                         paddingTop: 15,
