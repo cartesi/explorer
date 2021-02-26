@@ -336,7 +336,7 @@ const Staking = () => {
                             </span>
                         </div>
 
-                        <div className="px-5 py-3 d-flex flex-row align-items-center justify-content-between gray-background">
+                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between gray-background">
                             <div className="d-flex flex-column align-items-start">
                                 <div className="mb-1">
                                     <img src="/images/balance.png" />
