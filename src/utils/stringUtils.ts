@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const tinyString = (str: string): string => {
-    if (str.length > 9) {
+    if (str && str.length > 9) {
         return str.slice(0, 5) + '...' + str.slice(-4);
     }
     return str;

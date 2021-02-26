@@ -17,6 +17,8 @@ import {
     useStakingContract,
     useWorkerManagerContract,
 } from '../services/contracts';
+import { tinyString } from '../utils/stringUtils';
+import useWindowDimensions from '../utils/windowDimentions';
 import Address from './Address';
 
 const Footer = () => {
@@ -26,6 +28,16 @@ const Footer = () => {
     const token = useCartesiTokenContract();
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
+
+    // This wouldn't be necessary in real production
+    const { width } = useWindowDimensions();
+
+    const formatAddress = (address: string) => {
+        if (width < 576) {
+            return tinyString(address);
+        }
+        return address;
+    };
 
     return (
         <div className="layout-footer">
@@ -64,47 +76,47 @@ const Footer = () => {
                 {chainId && (
                     <div className="my-1 d-flex flex-column align-start">
                         <b className="mb-3">Contract Addresses</b>
-                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                        <div className="d-flex flex-row align-start my-1">
                             CTSI Token:
                             <Address
                                 type="address"
                                 id={token?.address}
                                 rawLink={true}
                             >
-                                {token?.address}
+                                {formatAddress(token?.address)}
                             </Address>
                         </div>
 
-                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                        <div className="d-flex flex-row align-start my-1">
                             PoS:
                             <Address
                                 type="address"
                                 id={pos?.address}
                                 rawLink={true}
                             >
-                                {pos?.address}
+                                {formatAddress(pos?.address)}
                             </Address>
                         </div>
 
-                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                        <div className="d-flex flex-row align-start my-1">
                             Staking:
                             <Address
                                 type="address"
                                 id={staking?.address}
                                 rawLink={true}
                             >
-                                {staking?.address}
+                                {formatAddress(staking?.address)}
                             </Address>
                         </div>
 
-                        <div className="d-flex flex-column flex-md-row align-start my-1">
+                        <div className="d-flex flex-row align-start my-1">
                             Worker Manager:
                             <Address
                                 type="address"
                                 id={workerManager?.address}
                                 rawLink={true}
                             >
-                                {workerManager?.address}
+                                {formatAddress(workerManager?.address)}
                             </Address>
                         </div>
                     </div>

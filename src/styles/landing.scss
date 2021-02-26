@@ -1,4 +1,4 @@
-@import '../styles/variables.scss';
+@import './variables.scss';
 
 .landing {
     &-link {
@@ -35,6 +35,10 @@
             margin-right: 0;
             margin-left: 0;
             padding: 40px 2.5vw;
+
+            @media (max-width: $md-max) {
+                padding: 2.5vw;
+            }
 
             &-item {
                 display: flex;
@@ -80,9 +84,8 @@
             align-items: center;
             justify-content: space-between;
 
-            max-width: 100%;
             overflow-x: auto;
-            margin: 10px 0 4vw;
+            margin: 10px -4px 4vw;
 
             @media (max-width: $md-max) {
                 flex-direction: column;

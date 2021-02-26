@@ -61,24 +61,29 @@ const Address = ({
 
         return (
             <>
-                <span className={`${className} address`}>
+                <span
+                    className={`${className} address d-flex flex-column flex-md-row`}
+                >
                     {children}
-
-                    <a
-                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}`}
-                        className="address-link ml-3"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-tip="View on Etherscan"
-                    >
-                        <i className="fas fa-external-link-alt"></i>
-                    </a>
-                    <span
-                        className="address-link ml-1"
-                        onClick={copyToClipboard}
-                        data-tip="Copy to Clipboard"
-                    >
-                        <i className="far fa-copy"></i>
+                    <span className="address-actions">
+                        <a
+                            href={`${
+                                etherscanLinks[chainId || 1]
+                            }/${type}/${id}`}
+                            className="address-link ml-3"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-tip="View on Etherscan"
+                        >
+                            <i className="fas fa-external-link-alt"></i>
+                        </a>
+                        <span
+                            className="address-link ml-1"
+                            onClick={copyToClipboard}
+                            data-tip="Copy to Clipboard"
+                        >
+                            <i className="far fa-copy"></i>
+                        </span>
                     </span>
                 </span>
                 <ReactTooltip />
