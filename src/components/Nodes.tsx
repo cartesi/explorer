@@ -116,9 +116,7 @@ const Nodes = (props: NodesProps) => {
                                             <Address
                                                 type="address"
                                                 id={node.id}
-                                            >
-                                                {tinyString(node.id)}
-                                            </Address>
+                                            />
                                         </td>
                                         <td>{node.totalBlocks}</td>
                                         <td>

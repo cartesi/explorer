@@ -16,22 +16,17 @@ import { useWeb3React } from '@web3-react/core';
 import ReactTooltip from 'react-tooltip';
 
 import { etherscanLinks } from '../utils/networks';
+import useWindowDimensions from '../utils/windowDimentions';
+import { tinyString } from '../utils/stringUtils';
 
 interface AddressProps {
     id: string;
     type: string;
     className?: string;
-    children: React.ReactNode;
     rawLink?: boolean;
 }
 
-const Address = ({
-    id,
-    type,
-    className,
-    children,
-    rawLink = false,
-}: AddressProps) => {
+const Address = ({ id, type, className, rawLink = false }: AddressProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
 
     const copyToClipboard = () => {
@@ -41,6 +36,16 @@ const Address = ({
         dummy.select();
         document.execCommand('copy');
         document.body.removeChild(dummy);
+    };
+
+    // This wouldn't be necessary in real production
+    const { width } = useWindowDimensions();
+
+    const formatAddress = (address: string) => {
+        if (width < 576) {
+            return tinyString(address);
+        }
+        return address;
     };
 
     if (!chainId || etherscanLinks[chainId]) {
@@ -53,7 +58,7 @@ const Address = ({
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {children}
+                        {formatAddress(id)}
                     </a>
                 </span>
             );
@@ -61,10 +66,8 @@ const Address = ({
 
         return (
             <>
-                <span
-                    className={`${className} address d-flex flex-column flex-md-row`}
-                >
-                    {children}
+                <span className={`${className} address d-flex flex-row`}>
+                    {formatAddress(id)}
                     <span className="address-actions">
                         <a
                             href={`${
@@ -91,6 +94,6 @@ const Address = ({
         );
     }
 
-    return <span className={className}>{children}</span>;
+    return <span className={className}>{formatAddress(id)}</span>;
 };
 export default Address;

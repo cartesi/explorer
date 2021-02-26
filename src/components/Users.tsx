@@ -107,10 +107,8 @@ const Users = (props: UsersProps) => {
                                         <td>
                                             <Address
                                                 type="address"
-                                                id={user.id}
-                                            >
-                                                {tinyString(user.id)}
-                                            </Address>
+                                                id={tinyString(user.id)}
+                                            />
                                         </td>
                                         <td>{user.totalBlocks}</td>
                                         <td>

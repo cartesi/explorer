@@ -17,8 +17,6 @@ import {
     useStakingContract,
     useWorkerManagerContract,
 } from '../services/contracts';
-import { tinyString } from '../utils/stringUtils';
-import useWindowDimensions from '../utils/windowDimentions';
 import Address from './Address';
 
 const Footer = () => {
@@ -28,16 +26,6 @@ const Footer = () => {
     const token = useCartesiTokenContract();
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
-
-    // This wouldn't be necessary in real production
-    const { width } = useWindowDimensions();
-
-    const formatAddress = (address: string) => {
-        if (width < 576) {
-            return tinyString(address);
-        }
-        return address;
-    };
 
     return (
         <div className="layout-footer">
@@ -82,9 +70,7 @@ const Footer = () => {
                                 type="address"
                                 id={token?.address}
                                 rawLink={true}
-                            >
-                                {formatAddress(token?.address)}
-                            </Address>
+                            />
                         </div>
 
                         <div className="d-flex flex-row align-start my-1">
@@ -93,9 +79,7 @@ const Footer = () => {
                                 type="address"
                                 id={pos?.address}
                                 rawLink={true}
-                            >
-                                {formatAddress(pos?.address)}
-                            </Address>
+                            />
                         </div>
 
                         <div className="d-flex flex-row align-start my-1">
@@ -104,9 +88,7 @@ const Footer = () => {
                                 type="address"
                                 id={staking?.address}
                                 rawLink={true}
-                            >
-                                {formatAddress(staking?.address)}
-                            </Address>
+                            />
                         </div>
 
                         <div className="d-flex flex-row align-start my-1">
@@ -115,9 +97,7 @@ const Footer = () => {
                                 type="address"
                                 id={workerManager?.address}
                                 rawLink={true}
-                            >
-                                {formatAddress(workerManager?.address)}
-                            </Address>
+                            />
                         </div>
                     </div>
                 )}

@@ -11,9 +11,6 @@
     }
 
     &-actions {
-        @media (max-width: $sm-max) {
-            text-align: right;
-            margin-top: 2px;
-        }
+        min-width: 50px;
     }
 }
