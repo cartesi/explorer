@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 const uris = {
-    1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-staging',
+    1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos',
     5: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
     31337: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
 };
@@ -42,8 +42,7 @@ const mergeUniqueSort = (fieldName: string) => {
 
 export const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
-        uris[chainId] ||
-        'https://api.thegraph.com/subgraphs/name/cartesi/pos-staging';
+        uris[chainId] || 'https://api.thegraph.com/subgraphs/name/cartesi/pos';
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({
