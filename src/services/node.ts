@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -14,13 +14,18 @@ import { BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
-import { usePoSContract, useWorkerManagerContract } from './contracts';
+import {
+    usePoSContract,
+    usePoS1Contract,
+    useWorkerManagerContract,
+} from './contracts';
 import { useTransaction } from './transaction';
 
 export const useNode = (address: string) => {
     const { library, chainId } = useWeb3React();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
+    const pos1 = usePoS1Contract();
 
     const [user, setUser] = useState<string>('');
     const [owned, setOwned] = useState<boolean>(false);
@@ -28,6 +33,7 @@ export const useNode = (address: string) => {
     const [pending, setPending] = useState<boolean>(false);
     const [retired, setRetired] = useState<boolean>(false);
     const [authorized, setAuthorized] = useState<boolean>(false);
+    const [authorized1, setAuthorized1] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -49,12 +55,17 @@ export const useNode = (address: string) => {
                 address,
                 pos.address
             );
+            const authorized1 = await workerManager.isAuthorized(
+                address,
+                pos1.address
+            );
             setUser(user);
             setAvailable(available);
             setPending(pending);
             setOwned(owned);
             setRetired(retired);
             setAuthorized(authorized);
+            setAuthorized1(authorized1);
         } catch (e) {
             setUser('');
             setAvailable(false);
@@ -62,6 +73,7 @@ export const useNode = (address: string) => {
             setOwned(false);
             setRetired(false);
             setAuthorized(false);
+            setAuthorized1(false);
         }
     };
 
@@ -139,6 +151,7 @@ export const useNode = (address: string) => {
         owned,
         retired,
         authorized,
+        authorized1,
         waiting,
         loading,
         hire,

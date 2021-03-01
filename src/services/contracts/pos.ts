@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,40 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Signer } from 'ethers';
+import { StakingImpl__factory, PoS__factory, PoS, Staking } from '@cartesi/pos';
 
-import {
-    StakingImpl__factory,
-    StakingImpl,
-    PoS__factory,
-    PoS,
-} from '@cartesi/pos';
-
-import pos_mainnet from '@cartesi/pos/export/abi/mainnet.json';
-import pos_rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
-import pos_goerli from '@cartesi/pos/export/abi/goerli.json';
-import pos_kovan from '@cartesi/pos/export/abi/kovan.json';
+import mainnet from '@cartesi/pos/export/abi/mainnet.json';
+import rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
+import goerli from '@cartesi/pos/export/abi/goerli.json';
+import kovan from '@cartesi/pos/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 
-import { ChainMap, getAddress } from '.';
+import { ChainMap, useContract } from '.';
 
-const posAbis: ChainMap = {
-    1: pos_mainnet,
-    4: pos_rinkeby,
-    5: pos_goerli,
-    42: pos_kovan,
+const abis: ChainMap = {
+    1: mainnet,
+    4: rinkeby,
+    5: goerli,
+    42: kovan,
     31337: localhost,
 };
 
-export const createStaking = (chainId: number, signer: Signer): StakingImpl => {
-    const address = getAddress(chainId, posAbis, 'StakingImpl');
-    if (!address) return undefined;
-    return StakingImpl__factory.connect(address, signer);
+export const useStakingContract = (): Staking => {
+    return useContract(StakingImpl__factory.connect, abis, 'StakingImpl');
 };
 
-export const createPoS = (chainId: number, signer: Signer): PoS => {
-    const address = getAddress(chainId, posAbis, 'PoS');
-    if (!address) return undefined;
-    return PoS__factory.connect(address, signer);
+export const usePoSContract = (): PoS => {
+    return useContract(PoS__factory.connect, abis, 'PoS');
 };

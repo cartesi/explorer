@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -21,8 +21,8 @@ import {
 } from '@cartesi/util';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import { StakingImpl, PoS } from '@cartesi/pos';
-import { StakingImpl as StakingImpl1, PoS as PoS1 } from '@cartesi/pos-1.0';
+import { PoS, Staking } from '@cartesi/pos';
+import { PoS as PoS1 } from '@cartesi/pos-1.0';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
@@ -100,7 +100,7 @@ export const getAddress = (
     return address;
 };
 
-function useContract<C>(
+export function useContract<C>(
     connector: (address: string, signerOrProvider: Signer | Provider) => C,
     abis: ChainMap,
     name: string
@@ -151,40 +151,14 @@ export const useCartesiTokenContract = (): CartesiToken => {
     );
 };
 
-function useContractPerNetwork<C, C1>(
-    creator: (chainId: number, signer: Signer) => C,
-    creator1: (chainId: number, signer: Signer) => C1
-): C | C1 {
-    const { library, chainId } = useWeb3React<Web3Provider>();
-
-    // contract is a state variable, because it's async
-    const [contract, setContract] = useState<C | C1>();
-
-    // use an effect because it's async
-    useEffect(() => {
-        if (!library || !chainId) {
-            // library or chainId not set, reset to undefined
-            setContract(undefined);
-            return;
-        }
-
-        // use provider signer
-        const signer = library.getSigner();
-
-        if (chainId == 5) {
-            setContract(creator(chainId, signer));
-        } else {
-            setContract(creator1(chainId, signer));
-        }
-    }, [library, chainId]);
-
-    return contract;
-}
-
-export const useStakingContract = (): StakingImpl | StakingImpl1 => {
-    return useContractPerNetwork(pos.createStaking, pos1.createStaking);
+export const useStakingContract = (): Staking => {
+    return pos.useStakingContract();
 };
 
-export const usePoSContract = (): PoS | PoS1 => {
-    return useContractPerNetwork(pos.createPoS, pos1.createPoS);
+export const usePoSContract = (): PoS => {
+    return pos.usePoSContract();
+};
+
+export const usePoS1Contract = (): PoS1 => {
+    return pos1.usePoSContract();
 };
