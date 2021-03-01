@@ -28,6 +28,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
+    const [readDisclaimer, setReadDisclaimer] = useState<boolean>(false);
 
     // get nodes hired by user from backend (if any)
     const userNodes = useUserNodes(account);
@@ -215,24 +216,49 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         )}
 
                         {node.address && node.available && (
-                            <div className="staking-hire-node-buttons">
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                    onClick={() => setShowDetails(!showDetails)}
-                                    disabled={node.waiting || node.loading}
-                                >
-                                    Cancel
-                                </button>
+                            <div>
+                                <div className="mb-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={readDisclaimer}
+                                        onChange={(e) =>
+                                            setReadDisclaimer(e.target.checked)
+                                        }
+                                    />
+                                    {'  '}
+                                    Due to a protocol upgrade your node will
+                                    only be eligible to produce blocks starting
+                                    2021-03-15.
+                                </div>
+                                <div className="staking-hire-node-buttons">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() =>
+                                            setShowDetails(!showDetails)
+                                        }
+                                        disabled={
+                                            node.waiting ||
+                                            node.loading ||
+                                            !readDisclaimer
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
 
-                                <button
-                                    type="button"
-                                    disabled={node.waiting || node.loading}
-                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                    onClick={() => node.hire(deposit)}
-                                >
-                                    Hire Node
-                                </button>
+                                    <button
+                                        type="button"
+                                        disabled={
+                                            node.waiting ||
+                                            node.loading ||
+                                            !readDisclaimer
+                                        }
+                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() => node.hire(deposit)}
+                                    >
+                                        Hire Node
+                                    </button>
+                                </div>
                             </div>
                         )}
 
