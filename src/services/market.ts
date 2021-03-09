@@ -38,7 +38,9 @@ export const useMarketInformation = () => {
                 setMarketInformation({
                     price: data.market_data.current_price.usd.toFixed(4),
                     marketCap: data.market_data.market_cap.usd,
-                    circulatingSupply: data.market_data.circulating_supply,
+                    circulatingSupply: Math.round(
+                        data.market_data.circulating_supply
+                    ),
                 });
             })
             .catch((e) => {
