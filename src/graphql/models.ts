@@ -1,11 +1,13 @@
 export type Summary = {
     id: string;
     totalUsers: number;
+    totalPools: number;
     totalStakers: number;
     totalNodes: number;
     totalStaked: string;
     totalBlocks: number;
     totalReward: string;
+    totalProtocols: number;
     totalChains: number;
 };
 
@@ -35,6 +37,38 @@ export interface UsersVars {
     orderBy: string;
     orderDirection: string;
 }
+
+export type StakingPool = {
+    id: string;
+    user: User;
+    commission: number;
+};
+
+export interface StakingPoolsData {
+    pools: StakingPool[];
+}
+
+export interface StakingPoolsVars {
+    first: number;
+    skip: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
+}
+
+export type PoolUser = {
+    id: string;
+};
+
+export type PoolBalance = {
+    id: string;
+    pool: StakingPool;
+    user: PoolUser;
+    stakedBalance: number;
+    totalStaked: number;
+    totalUnstaked: number;
+    totalWithdraw: number;
+};
 
 export type Node = {
     id: string;
@@ -84,6 +118,8 @@ export type Block = {
     node: Node;
     reward: string;
     difficulty: string;
+    gasPrice: number;
+    gasLimit: number;
 };
 
 export type _Block_ = {
