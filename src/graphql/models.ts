@@ -42,6 +42,8 @@ export type StakingPool = {
     id: string;
     user: User;
     commission: number;
+    totalUsers: number;
+    timestamp: number;
 };
 
 export interface StakingPoolsData {

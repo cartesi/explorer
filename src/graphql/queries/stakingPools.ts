@@ -16,9 +16,16 @@ export const STAKINGPOOLS = gql`
             orderDirection: $orderDirection
         ) {
             id
-            stakedBalance
-            totalBlocks
-            totalReward
+            commission
+            totalUsers
+            timestamp
+
+            user {
+                id
+                stakedBalance
+                totalBlocks
+                totalReward
+            }
         }
     }
 `;
@@ -26,6 +33,6 @@ export const STAKINGPOOLS = gql`
 export const stakingPoolsQueryVars = {
     first: 10,
     where: {},
-    orderBy: 'stakedBalance',
+    orderBy: 'totalUsers',
     orderDirection: 'desc',
 };

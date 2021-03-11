@@ -19,7 +19,7 @@ export const POOLS_PER_PAGE = 10;
 const useStakingPools = (
     pageNumber: number,
     id: string = undefined,
-    sort: string = 'timestamp'
+    sort: string = 'totalUsers'
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<StakingPoolsData, StakingPoolsVars>(STAKINGPOOLS, {
