@@ -52,7 +52,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
     const marketData = await axios.get(endpoint);
-    const circulatingSupply = marketData.data.market_data.circulating_supply;
+    const circulatingSupply = Math.round(
+        marketData.data.market_data.circulating_supply
+    );
 
     let projectedAnnualEarnings = 0,
         participationRate = 0;
