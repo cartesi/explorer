@@ -31,6 +31,11 @@ const NavBar = (props: NavBarProps) => {
             href: '/staking',
         },
         {
+            key: 'pools',
+            label: 'Pools',
+            href: '/pools',
+        },
+        {
             key: 'blocks',
             label: 'Blocks',
             href: '/blocks',
