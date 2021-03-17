@@ -59,6 +59,15 @@ const Footer = () => {
                             How to Run a Node
                         </a>
                     </div>
+                    <div className="my-1">
+                        <a
+                            href="https://github.com/cartesi/noether/wiki/FAQ"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            FAQ
+                        </a>
+                    </div>
                 </div>
 
                 {chainId && (
