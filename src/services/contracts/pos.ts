@@ -9,7 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { StakingImpl__factory, PoS__factory, PoS, Staking } from '@cartesi/pos';
+import {
+    StakingImpl__factory,
+    PoS__factory,
+    StakingPool__factory,
+    PoS,
+    Staking,
+    StakingPool,
+} from '@cartesi/pos';
 
 import mainnet from '@cartesi/pos/export/abi/mainnet.json';
 import rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
@@ -18,7 +25,7 @@ import kovan from '@cartesi/pos/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 
-import { ChainMap, useContract } from '.';
+import { ChainMap, useContract, useContractFromAddress } from '.';
 
 const abis: ChainMap = {
     1: mainnet,
@@ -34,4 +41,8 @@ export const useStakingContract = (): Staking => {
 
 export const usePoSContract = (): PoS => {
     return useContract(PoS__factory.connect, abis, 'PoS');
+};
+
+export const useStakingPoolContract = (address: string): StakingPool => {
+    return useContractFromAddress(StakingPool__factory.connect, address);
 };

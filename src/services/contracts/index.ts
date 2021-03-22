@@ -21,7 +21,7 @@ import {
 } from '@cartesi/util';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import { PoS, Staking } from '@cartesi/pos';
+import { PoS, Staking, StakingPool } from '@cartesi/pos';
 import { PoS as PoS1 } from '@cartesi/pos-1.0';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
@@ -135,6 +135,33 @@ export function useContract<C>(
     return contract;
 }
 
+export function useContractFromAddress<C>(
+    connector: (address: string, signerOrProvider: Signer | Provider) => C,
+    address: string
+): C {
+    const { library, chainId } = useWeb3React<Web3Provider>();
+
+    // contract is a state variable, because it's async
+    const [contract, setContract] = useState<C>();
+
+    // use an effect because it's async
+    useEffect(() => {
+        if (!library || !chainId) {
+            // library or chainId not set, reset to undefined
+            setContract(undefined);
+            return;
+        }
+
+        // use provider signer
+        const signer = library.getSigner();
+
+        // call the factory connector
+        setContract(connector(address, signer));
+    }, [library, chainId]);
+
+    return contract;
+}
+
 export const useWorkerManagerContract = (): WorkerManagerAuthManagerImpl => {
     return useContract(
         WorkerManagerAuthManagerImpl__factory.connect,
@@ -153,6 +180,10 @@ export const useCartesiTokenContract = (): CartesiToken => {
 
 export const useStakingContract = (): Staking => {
     return pos.useStakingContract();
+};
+
+export const useStakingPoolContract = (address: string): StakingPool => {
+    return pos.useStakingPoolContract(address);
 };
 
 export const usePoSContract = (): PoS => {
