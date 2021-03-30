@@ -98,7 +98,7 @@ const BlocksChart = (props: BlocksChartProps) => {
                 name={`Chain ${chainId}`}
                 data={data}
                 line={{ stroke: color }}
-                lineJointType="stepBefore"
+                lineJointType="stepAfter"
                 lineType="joint"
                 fill={color}
             />
