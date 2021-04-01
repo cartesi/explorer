@@ -29,6 +29,10 @@ const Pools = (props: Props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
+            <div className="page-header pb-4">
+                <div className="info-text-md text-white">Staking Pools</div>
+            </div>
+
             <PoolsTable summary={summary} />
         </Layout>
     );

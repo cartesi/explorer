@@ -30,6 +30,7 @@ import useUser from '../../graphql/hooks/useUser';
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
+import { getENS } from '../../services/ens';
 
 const Pool = () => {
     const router = useRouter();
@@ -50,7 +51,7 @@ const Pool = () => {
         stake,
         unstake,
         withdraw,
-    } = useStakingPool(account);
+    } = useStakingPool(pool as string);
 
     const {
         balance,
@@ -64,6 +65,7 @@ const Pool = () => {
 
     const user = useUser(account);
 
+    const [poolEns, setPoolEns] = useState<string>('');
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
@@ -78,12 +80,9 @@ const Pool = () => {
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
 
-    const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
-    const [nodeError, setNodeError] = useState<string>();
+    const waiting = stakingWaiting || tokenWaiting;
 
-    const waiting = stakingWaiting || tokenWaiting || nodeWaiting;
-
-    const error = tokenError || stakingError || nodeError;
+    const error = tokenError || stakingError;
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -108,6 +107,14 @@ const Pool = () => {
         if (!readDisclaimer || readDisclaimer == 'false')
             setReadDisclaimer(false);
     }, []);
+
+    useEffect(() => {
+        async function resolveENS() {
+            setPoolEns(await getENS(pool as string));
+        }
+
+        resolveENS();
+    }, [pool]);
 
     useEffect(() => {
         updateTimers();
@@ -307,6 +314,29 @@ const Pool = () => {
                         {formatCTSI(totalBalance, 2)}{' '}
                         <span className="small-text">CTSI</span>
                     </span>
+                </div>
+            </div>
+
+            <div className="d-flex staking-total-balances my-5">
+                <div className="staking-total-balances-item">
+                    <label className="body-text-1">Total Staked</label>
+                    <img
+                        data-tip={labels.totalStakedPool}
+                        src="/images/question.png"
+                    />
+                    <span className="info-text-md">
+                        {formatCTSI(totalBalance, 2)}{' '}
+                        <span className="small-text">CTSI</span>
+                    </span>
+                </div>
+
+                <div className="staking-total-balances-item">
+                    <label className="body-text-1">Commission</label>
+                    <img
+                        data-tip={labels.totalStakedPool}
+                        src="/images/question.png"
+                    />
+                    <span className="info-text-md">12</span>
                 </div>
             </div>
 

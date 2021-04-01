@@ -27,7 +27,7 @@ type Sort =
     | 'totalReward'
     | 'totalBlocks'
     | 'totalUsers'
-    | 'uptime';
+    | 'commission';
 
 const Pools = (props: PoolsProps) => {
     const [id, setId] = useState<string>(undefined);
@@ -41,9 +41,7 @@ const Pools = (props: PoolsProps) => {
 
     return (
         <div className="pools">
-            <div className="pools-title">
-                <h5 className="pools-sub-title">Staking Pools</h5>
-
+            <div className="pools-title mt-5 mb-2">
                 <div className="input-with-icon input-group">
                     <span>
                         <i className="fas fa-search"></i>
@@ -93,6 +91,15 @@ const Pools = (props: PoolsProps) => {
                                     <i className="fas fa-arrow-down"></i>
                                 )}
                             </th>
+                            <th
+                                className="table-header-text pointer"
+                                onClick={() => setSort('commission')}
+                            >
+                                Commission{' '}
+                                {sort == 'commission' && (
+                                    <i className="fas fa-arrow-down"></i>
+                                )}
+                            </th>
                         </tr>
                     </thead>
 
@@ -132,6 +139,7 @@ const Pools = (props: PoolsProps) => {
                                             )}{' '}
                                             CTSI
                                         </td>
+                                        <td>{pool.commission}</td>
                                     </tr>
                                 );
                             })
