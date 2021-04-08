@@ -46,16 +46,22 @@ export type StakingPool = {
     timestamp: number;
 };
 
+export interface StakingPoolData {
+    stakingPool: StakingPool;
+}
+
+export interface StakingPoolVars {
+    id: string;
+}
+
 export interface StakingPoolsData {
-    pools: StakingPool[];
+    stakingPools: StakingPool[];
 }
 
 export interface StakingPoolsVars {
     first: number;
     skip: number;
     where: any;
-    orderBy: string;
-    orderDirection: string;
 }
 
 export type PoolUser = {

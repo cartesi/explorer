@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import useStakingPools, {
     POOLS_PER_PAGE,
 } from '../graphql/hooks/useStakingPools';
 import { Summary } from '../graphql/models';
-import { tinyString } from '../utils/stringUtils';
 import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
 
@@ -34,7 +34,7 @@ const Pools = (props: PoolsProps) => {
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { summary } = props;
-    const { data, loading } = useStakingPools(pageNumber, id, sort);
+    const { data, loading } = useStakingPools(pageNumber, id);
     const totalPoolsPages = summary
         ? Math.ceil(summary.totalPools / POOLS_PER_PAGE)
         : 1;
@@ -104,7 +104,7 @@ const Pools = (props: PoolsProps) => {
                     </thead>
 
                     <tbody>
-                        {loading || !data?.pools ? (
+                        {loading || !data?.stakingPools ? (
                             <tr>
                                 <td colSpan={5} className="text-center">
                                     <span
@@ -115,32 +115,37 @@ const Pools = (props: PoolsProps) => {
                                 </td>
                             </tr>
                         ) : (
-                            data.pools.map((pool) => {
+                            data.stakingPools.map((pool) => {
                                 return (
-                                    <tr key={pool.id} className="body-text-2">
-                                        <td>
-                                            <Address
-                                                type="address"
-                                                id={pool.id}
-                                            />
-                                        </td>
-                                        <td>{pool.totalUsers}</td>
-                                        <td>
-                                            {formatCTSI(
-                                                pool.user.stakedBalance,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {formatCTSI(
-                                                pool.user.totalReward,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>{pool.commission}</td>
-                                    </tr>
+                                    <Link href={'/pools/' + pool.id}>
+                                        <tr
+                                            key={pool.id}
+                                            className="body-text-2"
+                                        >
+                                            <td>
+                                                <Address
+                                                    type="address"
+                                                    id={pool.id}
+                                                />
+                                            </td>
+                                            <td>{pool.totalUsers}</td>
+                                            <td>
+                                                {formatCTSI(
+                                                    pool.user.stakedBalance,
+                                                    2
+                                                )}{' '}
+                                                CTSI
+                                            </td>
+                                            <td>
+                                                {formatCTSI(
+                                                    pool.user.totalReward,
+                                                    2
+                                                )}{' '}
+                                                CTSI
+                                            </td>
+                                            <td>{pool.commission}</td>
+                                        </tr>
+                                    </Link>
                                 );
                             })
                         )}

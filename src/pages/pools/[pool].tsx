@@ -26,11 +26,13 @@ import { useStakingPool } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
 
 import useUser from '../../graphql/hooks/useUser';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { getENS } from '../../services/ens';
+import { tinyString } from '../../utils/stringUtils';
 
 const Pool = () => {
     const router = useRouter();
@@ -64,6 +66,8 @@ const Pool = () => {
     } = useCartesiToken(account, staking?.address, blockNumber);
 
     const user = useUser(account);
+
+    const stakingPool = useStakingPoolQuery(pool as string);
 
     const [poolEns, setPoolEns] = useState<string>('');
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
@@ -113,7 +117,11 @@ const Pool = () => {
             setPoolEns(await getENS(pool as string));
         }
 
-        resolveENS();
+        if (pool) {
+            setPoolEns(tinyString(pool as string));
+
+            resolveENS();
+        }
     }, [pool]);
 
     useEffect(() => {
@@ -262,7 +270,7 @@ const Pool = () => {
 
             <div className="page-header row align-items-center py-3">
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
-                    Staking
+                    Staking Pool: {poolEns}
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
 
@@ -336,7 +344,9 @@ const Pool = () => {
                         data-tip={labels.totalStakedPool}
                         src="/images/question.png"
                     />
-                    <span className="info-text-md">12</span>
+                    <span className="info-text-md">
+                        {stakingPool ? stakingPool.commission : 0}
+                    </span>
                 </div>
             </div>
 
