@@ -16,12 +16,12 @@ import {
     PoS,
     Staking,
     StakingPool,
-} from '@cartesi/pos';
+} from '@cartesi/pos-private';
 
-import mainnet from '@cartesi/pos/export/abi/mainnet.json';
-import rinkeby from '@cartesi/pos/export/abi/rinkeby.json';
-import goerli from '@cartesi/pos/export/abi/goerli.json';
-import kovan from '@cartesi/pos/export/abi/kovan.json';
+import mainnet from '@cartesi/pos-private/export/abi/mainnet.json';
+import rinkeby from '@cartesi/pos-private/export/abi/rinkeby.json';
+import goerli from '@cartesi/pos-private/export/abi/goerli.json';
+import kovan from '@cartesi/pos-private/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 

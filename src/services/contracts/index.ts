@@ -21,7 +21,7 @@ import {
 } from '@cartesi/util';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import { PoS, Staking, StakingPool } from '@cartesi/pos';
+import { PoS, Staking, StakingPool } from '@cartesi/pos-private';
 import { PoS as PoS1 } from '@cartesi/pos-1.0';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
