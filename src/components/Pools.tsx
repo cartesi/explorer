@@ -117,11 +117,11 @@ const Pools = (props: PoolsProps) => {
                         ) : (
                             data.stakingPools.map((pool) => {
                                 return (
-                                    <Link href={'/pools/' + pool.id}>
-                                        <tr
-                                            key={pool.id}
-                                            className="body-text-2"
-                                        >
+                                    <Link
+                                        key={pool.id}
+                                        href={'/pools/' + pool.id}
+                                    >
+                                        <tr className="body-text-2">
                                             <td>
                                                 <Address
                                                     type="address"

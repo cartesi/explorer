@@ -301,12 +301,15 @@ const Pool = () => {
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Rewards</label>
                     <img
-                        data-tip={labels.totalRewards}
+                        data-tip={labels.totalRewardsPool}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
                         {user
-                            ? formatCTSI(BigNumber.from(user.totalReward), 2)
+                            ? formatCTSI(
+                                  BigNumber.from(stakingPool.user.totalReward),
+                                  2
+                              )
                             : 0}{' '}
                         <span className="small-text">CTSI</span>
                     </span>
@@ -315,7 +318,7 @@ const Pool = () => {
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">In-contract Balance</label>
                     <img
-                        data-tip={labels.inContractBalance}
+                        data-tip={labels.inContractBalancePool}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
@@ -333,7 +336,7 @@ const Pool = () => {
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
-                        {formatCTSI(totalBalance, 2)}{' '}
+                        {formatCTSI(stakingPool.user.stakedBalance, 2)}{' '}
                         <span className="small-text">CTSI</span>
                     </span>
                 </div>
@@ -341,11 +344,11 @@ const Pool = () => {
                 <div className="staking-total-balances-item">
                     <label className="body-text-1">Commission</label>
                     <img
-                        data-tip={labels.totalStakedPool}
+                        data-tip={labels.commission}
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
-                        {stakingPool ? stakingPool.commission : 0}
+                        {stakingPool ? stakingPool.commission / 1000 : 0}
                     </span>
                 </div>
             </div>
