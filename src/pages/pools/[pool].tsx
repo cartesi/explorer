@@ -305,7 +305,7 @@ const Pool = () => {
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
-                        {user
+                        {stakingPool && stakingPool.user
                             ? formatCTSI(
                                   BigNumber.from(stakingPool.user.totalReward),
                                   2
@@ -336,7 +336,12 @@ const Pool = () => {
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
-                        {formatCTSI(stakingPool.user.stakedBalance, 2)}{' '}
+                        {formatCTSI(
+                            stakingPool && stakingPool.user
+                                ? stakingPool.user.stakedBalance
+                                : 0,
+                            2
+                        )}{' '}
                         <span className="small-text">CTSI</span>
                     </span>
                 </div>
