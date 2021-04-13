@@ -1,4 +1,5 @@
 import { getDefaultProvider, providers } from 'ethers';
+import { tinyString } from '../utils/stringUtils';
 
 export const getENS = async (address: string) => {
     const savedEnsStr = localStorage.getItem('ens');
@@ -9,12 +10,16 @@ export const getENS = async (address: string) => {
         infura: 'c9962a997e984fc494703ac6b99c11c5',
     });
     const ens = await provider.lookupAddress(address);
-    savedEns = {
-        ...savedEns,
-        address: ens,
-    };
+    if (ens) {
+        savedEns = {
+            ...savedEns,
+            address: ens,
+        };
 
-    localStorage.setItem('ens', JSON.stringify(savedEns));
+        localStorage.setItem('ens', JSON.stringify(savedEns));
 
-    return ens;
+        return ens;
+    }
+
+    return tinyString(address);
 };
