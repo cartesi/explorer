@@ -39,18 +39,18 @@ export const useStakingPool = (address: string) => {
     useEffect(() => {
         if (stakingPool && account) {
             stakingPool.getStakedBalance(account).then(setStakedBalance);
-            // stakingPool
-            //     .getMaturingTimestamp(account)
-            //     .then((value) =>
-            //         setMaturingTimestamp(new Date(value.toNumber() * 1000))
-            //     );
-            // stakingPool
-            //     .getReleasingTimestamp(account)
-            //     .then((value) =>
-            //         setReleasingTimestamp(new Date(value.toNumber() * 1000))
-            //     );
-            // stakingPool.getMaturingBalance(account).then(setMaturingBalance);
-            // stakingPool.getReleasingBalance(account).then(setReleasingBalance);
+            stakingPool
+                .getMaturingTimestamp(account)
+                .then((value) =>
+                    setMaturingTimestamp(new Date(value.toNumber() * 1000))
+                );
+            stakingPool
+                .getReleasingTimestamp(account)
+                .then((value) =>
+                    setReleasingTimestamp(new Date(value.toNumber() * 1000))
+                );
+            stakingPool.getMaturingBalance(account).then(setMaturingBalance);
+            stakingPool.getReleasingBalance(account).then(setReleasingBalance);
         }
     }, [stakingPool, account, blockNumber]);
 

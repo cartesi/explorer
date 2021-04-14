@@ -65,8 +65,6 @@ const Pool = () => {
         toBigCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    const user = useUser(account);
-
     const stakingPool = useStakingPoolQuery(pool as string);
 
     const [poolEns, setPoolEns] = useState<string>('');
