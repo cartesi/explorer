@@ -143,7 +143,7 @@ const Pools = (props: PoolsProps) => {
                                                 )}{' '}
                                                 CTSI
                                             </td>
-                                            <td>{pool.commission}</td>
+                                            <td>{pool.commission / 100} %</td>
                                         </tr>
                                     </Link>
                                 );

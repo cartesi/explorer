@@ -351,7 +351,7 @@ const Pool = () => {
                         src="/images/question.png"
                     />
                     <span className="info-text-md">
-                        {stakingPool ? stakingPool.commission / 1000 : 0} %
+                        {stakingPool ? stakingPool.commission / 100 : 0} %
                     </span>
                 </div>
             </div>
