@@ -217,10 +217,10 @@
   optionalDependencies:
     fsevents "^2.1.3"
 
-"@cartesi/pos-private@^2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos-private/-/pos-private-2.0.0-alpha.1.tgz#05c403e0fb417e775861652b661b6feabb676d4d"
-  integrity sha512-geaPHWC84JGMVekcmQu8N20gZ0+zx105B2UZ5LKLMbQkPV5YKvTkCzWucelhLJm4/k5iYzNxBbmhnwcJ8PmkVQ==
+"@cartesi/pos-private@^2.0.0-alpha.2":
+  version "2.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@cartesi/pos-private/-/pos-private-2.0.0-alpha.2.tgz#df211e56dd0cb1f34576eb5fb7fe847748585409"
+  integrity sha512-cRBJrXcvNyrtMuORsLariItqfhqkw5LHUbYyBKU7SzBis7gUrX0J8tJV2c6PzPVBAI66gNYVOLBCNVCDBqHZWg==
   dependencies:
     "@cartesi/token" "^1.2.5"
     "@cartesi/util" "^1.0.0"
