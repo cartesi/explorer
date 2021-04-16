@@ -63,7 +63,7 @@ const Pools = (props: PoolsProps) => {
                 <table className="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th className="table-header-text">User</th>
+                            <th className="table-header-text">Address</th>
                             <th
                                 className="table-header-text pointer"
                                 onClick={() => setSort('totalUsers')}
@@ -125,6 +125,7 @@ const Pools = (props: PoolsProps) => {
                                             <td>
                                                 <Address
                                                     type="address"
+                                                    ens
                                                     id={pool.id}
                                                 />
                                             </td>

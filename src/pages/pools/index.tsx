@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -14,7 +14,6 @@ import Head from 'next/head';
 
 import Layout from '../../components/Layout';
 import PoolsTable from '../../components/Pools';
-
 import useSummary from '../../graphql/hooks/useSummary';
 
 interface Props {}

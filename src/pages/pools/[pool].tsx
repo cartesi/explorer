@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -25,13 +25,11 @@ import { useBlockNumber } from '../../services/eth';
 import { useStakingPool } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
 
-import useUser from '../../graphql/hooks/useUser';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
-
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
-import { getENS } from '../../services/ens';
+import { useENS } from '../../services/ens';
 import { tinyString } from '../../utils/stringUtils';
 
 const Pool = () => {
@@ -67,7 +65,9 @@ const Pool = () => {
 
     const stakingPool = useStakingPoolQuery(pool as string);
 
-    const [poolEns, setPoolEns] = useState<string>('');
+    // resolve address to name (if possible)
+    const ensEntry = useENS(pool as string);
+
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
     const [stakeAmount, setStakeAmount] = useState<BigNumber>(
@@ -109,18 +109,6 @@ const Pool = () => {
         if (!readDisclaimer || readDisclaimer == 'false')
             setReadDisclaimer(false);
     }, []);
-
-    useEffect(() => {
-        async function resolveENS() {
-            setPoolEns(await getENS(pool as string));
-        }
-
-        if (pool) {
-            setPoolEns(tinyString(pool as string));
-
-            resolveENS();
-        }
-    }, [pool]);
 
     useEffect(() => {
         updateTimers();
@@ -268,7 +256,8 @@ const Pool = () => {
 
             <div className="page-header row align-items-center py-3">
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
-                    Staking Pool: {poolEns}
+                    Staking Pool:{' '}
+                    {ensEntry.name || tinyString(ensEntry.address)}
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
 

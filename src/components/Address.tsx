@@ -18,16 +18,27 @@ import ReactTooltip from 'react-tooltip';
 import { etherscanLinks } from '../utils/networks';
 import useWindowDimensions from '../utils/windowDimentions';
 import { tinyString } from '../utils/stringUtils';
+import { useENS } from '../services/ens';
 
 interface AddressProps {
     id: string;
     type: string;
+    ens: boolean;
     className?: string;
     rawLink?: boolean;
 }
 
-const Address = ({ id, type, className, rawLink = false }: AddressProps) => {
+const Address = ({
+    id,
+    type,
+    ens = false,
+    className,
+    rawLink = false,
+}: AddressProps) => {
     const { chainId } = useWeb3React<Web3Provider>();
+
+    // resolve ENS entry from address
+    const ensEntry = ens && useENS(id);
 
     const copyToClipboard = () => {
         var dummy = document.createElement('textarea');
@@ -42,6 +53,10 @@ const Address = ({ id, type, className, rawLink = false }: AddressProps) => {
     const { width } = useWindowDimensions();
 
     const formatAddress = (address: string) => {
+        if (ensEntry?.name) {
+            return ensEntry.name;
+        }
+        address = ensEntry?.address || address;
         if (width < 576) {
             return tinyString(address);
         }
