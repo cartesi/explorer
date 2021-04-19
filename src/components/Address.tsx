@@ -23,7 +23,7 @@ import { useENS } from '../services/ens';
 interface AddressProps {
     id: string;
     type: string;
-    ens: boolean;
+    ens?: boolean;
     className?: string;
     rawLink?: boolean;
 }
