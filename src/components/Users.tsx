@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useUsers, { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import { Summary } from '../graphql/models';
-import { tinyString } from '../utils/stringUtils';
 import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
+import Link from 'next/link';
 
 interface UsersProps {
     summary: Summary;
@@ -59,7 +59,6 @@ const Users = (props: UsersProps) => {
                     <thead>
                         <tr>
                             <th className="table-header-text">User</th>
-                            <th className="table-header-text">Type</th>
                             <th
                                 className="table-header-text pointer"
                                 onClick={() => setSort('totalBlocks')}
@@ -87,6 +86,7 @@ const Users = (props: UsersProps) => {
                                     <i className="fas fa-arrow-down"></i>
                                 )}
                             </th>
+                            <th className="table-header-text">Action</th>
                         </tr>
                     </thead>
 
@@ -104,17 +104,17 @@ const Users = (props: UsersProps) => {
                         ) : (
                             data.users.map((user) => {
                                 return (
-                                    <tr key={user.id} className="body-text-2">
+                                    <tr
+                                        key={user.id}
+                                        className={`body-text-2 ${
+                                            user.isPool ? 'pool' : ''
+                                        }`}
+                                    >
                                         <td>
                                             <Address
                                                 type="address"
                                                 id={user.id}
                                             />
-                                        </td>
-                                        <td>
-                                            {user.isPool
-                                                ? 'Staking Pool'
-                                                : 'User'}
                                         </td>
                                         <td>{user.totalBlocks}</td>
                                         <td>
@@ -124,6 +124,17 @@ const Users = (props: UsersProps) => {
                                         <td>
                                             {formatCTSI(user.totalReward, 2)}{' '}
                                             CTSI
+                                        </td>
+                                        <td>
+                                            {user.isPool ? (
+                                                <Link
+                                                    href={'/pools/' + user.id}
+                                                >
+                                                    Stake
+                                                </Link>
+                                            ) : (
+                                                ''
+                                            )}
                                         </td>
                                     </tr>
                                 );

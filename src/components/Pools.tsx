@@ -100,13 +100,14 @@ const Pools = (props: PoolsProps) => {
                                     <i className="fas fa-arrow-down"></i>
                                 )}
                             </th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {loading || !data?.stakingPools ? (
                             <tr>
-                                <td colSpan={5} className="text-center">
+                                <td colSpan={6} className="text-center">
                                     <span
                                         className="spinner-border spinner-border-sm my-1"
                                         role="status"
@@ -117,36 +118,36 @@ const Pools = (props: PoolsProps) => {
                         ) : (
                             data.stakingPools.map((pool) => {
                                 return (
-                                    <Link
-                                        key={pool.id}
-                                        href={'/pools/' + pool.id}
-                                    >
-                                        <tr className="body-text-2">
-                                            <td>
-                                                <Address
-                                                    type="address"
-                                                    ens
-                                                    id={pool.id}
-                                                />
-                                            </td>
-                                            <td>{pool.totalUsers}</td>
-                                            <td>
-                                                {formatCTSI(
-                                                    pool.user.stakedBalance,
-                                                    2
-                                                )}{' '}
-                                                CTSI
-                                            </td>
-                                            <td>
-                                                {formatCTSI(
-                                                    pool.user.totalReward,
-                                                    2
-                                                )}{' '}
-                                                CTSI
-                                            </td>
-                                            <td>{pool.commission / 100} %</td>
-                                        </tr>
-                                    </Link>
+                                    <tr className="body-text-2" key={pool.id}>
+                                        <td>
+                                            <Address
+                                                type="address"
+                                                ens
+                                                id={pool.id}
+                                            />
+                                        </td>
+                                        <td>{pool.totalUsers}</td>
+                                        <td>
+                                            {formatCTSI(
+                                                pool.user.stakedBalance,
+                                                2
+                                            )}{' '}
+                                            CTSI
+                                        </td>
+                                        <td>
+                                            {formatCTSI(
+                                                pool.user.totalReward,
+                                                2
+                                            )}{' '}
+                                            CTSI
+                                        </td>
+                                        <td>{pool.commission / 100} %</td>
+                                        <td>
+                                            <Link href={'/pools/' + pool.id}>
+                                                Stake
+                                            </Link>
+                                        </td>
+                                    </tr>
                                 );
                             })
                         )}
