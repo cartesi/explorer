@@ -24,6 +24,7 @@ export type User = {
     stakedBalance: string;
     totalBlocks: number;
     totalReward: string;
+    isPool: boolean;
 };
 
 export interface UsersData {

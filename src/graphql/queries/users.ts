@@ -19,6 +19,7 @@ export const USERS = gql`
             stakedBalance
             totalBlocks
             totalReward
+            isPool
         }
     }
 `;

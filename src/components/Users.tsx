@@ -59,6 +59,7 @@ const Users = (props: UsersProps) => {
                     <thead>
                         <tr>
                             <th className="table-header-text">User</th>
+                            <th className="table-header-text">Type</th>
                             <th
                                 className="table-header-text pointer"
                                 onClick={() => setSort('totalBlocks')}
@@ -109,6 +110,11 @@ const Users = (props: UsersProps) => {
                                                 type="address"
                                                 id={user.id}
                                             />
+                                        </td>
+                                        <td>
+                                            {user.isPool
+                                                ? 'Staking Pool'
+                                                : 'User'}
                                         </td>
                                         <td>{user.totalBlocks}</td>
                                         <td>
