@@ -81,7 +81,16 @@ const Address = ({
 
         return (
             <>
-                <span className={`${className} address d-flex flex-row`}>
+                <span
+                    className={`${className} address d-flex flex-row align-items-center`}
+                >
+                    {ensEntry.avatar && (
+                        <img
+                            src={ensEntry.avatar}
+                            height="40"
+                            className="mr-2"
+                        />
+                    )}
                     {formatAddress(id)}
                     <span className="address-actions">
                         <a
