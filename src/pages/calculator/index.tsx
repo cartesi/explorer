@@ -168,6 +168,34 @@ const Calculator = (props: Props) => {
                     <div className="calculator-slider">
                         <h5 className="calculator-sub-title">Total Staked</h5>
 
+                        <div className="input-group">
+                            <input
+                                type="number"
+                                className="addon-inline form-control"
+                                id="totalStaked"
+                                value={totalStaked}
+                                onChange={(event) => {
+                                    try {
+                                        const newTotalStaked = event.target
+                                            .value
+                                            ? parseInt(event.target.value)
+                                            : 1;
+                                        setTotalStaked(
+                                            newTotalStaked >
+                                                marketInformation.circulatingSupply
+                                                ? marketInformation.circulatingSupply
+                                                : newTotalStaked
+                                        );
+                                    } catch (e) {
+                                        setTotalStaked(1);
+                                    }
+                                }}
+                            />
+                            <span className="input-group-addon addon-inline input-source-observer small-text">
+                                CTSI
+                            </span>
+                        </div>
+
                         <div className="calculator-slider-labels">
                             <span className="small-text">0</span>
                             <span className="small-text">
