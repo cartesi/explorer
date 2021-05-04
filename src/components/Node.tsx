@@ -29,6 +29,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(false);
+    const [readRetireDisclaimer, setReadRetireDisclaimer] = useState<boolean>(
+        false
+    );
 
     // get nodes hired by user from backend (if any)
     const userNodes = useUserNodes(account);
@@ -276,34 +279,63 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         )}
 
                         {ready && (
-                            <div className="staking-hire-node-buttons">
-                                <button
-                                    type="button"
-                                    disabled={node.waiting || node.loading}
-                                    className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
-                                    onClick={() => node.retire()}
-                                >
-                                    Retire
-                                </button>
+                            <>
+                                <div className="staking-hire-node-buttons">
+                                    <button
+                                        type="button"
+                                        disabled={
+                                            !readRetireDisclaimer ||
+                                            node.waiting ||
+                                            node.loading
+                                        }
+                                        className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
+                                        onClick={() => node.retire()}
+                                    >
+                                        Retire
+                                    </button>
 
-                                <button
-                                    type="button"
-                                    disabled={node.waiting || node.loading}
-                                    className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                    onClick={() => setShowDetails(!showDetails)}
-                                >
-                                    Cancel
-                                </button>
+                                    <button
+                                        type="button"
+                                        disabled={node.waiting || node.loading}
+                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() =>
+                                            setShowDetails(!showDetails)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
 
-                                <button
-                                    type="button"
-                                    disabled={node.waiting || node.loading}
-                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                    onClick={() => node.transfer(transfer)}
-                                >
-                                    Add Funds
-                                </button>
-                            </div>
+                                    <button
+                                        type="button"
+                                        disabled={node.waiting || node.loading}
+                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
+                                        onClick={() => node.transfer(transfer)}
+                                    >
+                                        Add Funds
+                                    </button>
+                                </div>
+                                <div className="mb-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={readRetireDisclaimer}
+                                        onChange={(e) =>
+                                            setReadRetireDisclaimer(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                    {'  '}
+                                    Retirement is final (
+                                    <a
+                                        href="https://github.com/cartesi/noether/wiki/FAQ#i-have-retired-my-node-in-the-cartesi-explorer-but-the-node-funds-were-not-returned-what-is-going-on"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Learn more
+                                    </a>
+                                    )
+                                </div>
+                            </>
                         )}
 
                         {node.owned && !node.authorized && mine && (
