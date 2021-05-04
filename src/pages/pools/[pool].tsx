@@ -565,10 +565,27 @@ const Pool = () => {
                                 </button>
 
                                 {stakeSplit ? (
-                                    <div className="small-text text-center mt-4 danger-text">
-                                        The maturing status will restart
-                                        counting.
-                                    </div>
+                                    <>
+                                        <div className="small-text text-center mt-4 danger-text">
+                                            The maturing status will restart
+                                            counting.
+                                        </div>
+                                        <br />
+                                        <div className="body-text-1">
+                                            <i className="fas fa-info-circle"></i>{' '}
+                                            This stake currently corresponds to
+                                            a X% chance of producing the current
+                                            block (
+                                            <a
+                                                href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Learn more
+                                            </a>
+                                            )
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="text-center mt-3">
                                         <input
