@@ -167,6 +167,7 @@ const Calculator = (props: Props) => {
 
                     <div className="calculator-slider">
                         <h5 className="calculator-sub-title">Total Staked</h5>
+                        <br />
 
                         <div className="input-group">
                             <input
