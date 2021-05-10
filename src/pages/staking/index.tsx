@@ -26,6 +26,7 @@ import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 
 import useUser from '../../graphql/hooks/useUser';
+import useSummary from '../../graphql/hooks/useSummary';
 
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
@@ -48,6 +49,8 @@ const Staking = () => {
         unstake,
         withdraw,
     } = useStaking();
+
+    const summary = useSummary();
 
     const {
         balance,
@@ -226,6 +229,8 @@ const Staking = () => {
     const totalBalance = stakedBalance
         .add(maturingBalance)
         .add(releasingBalance);
+    const totalStaked =
+        summary && summary.totalStaked ? toBigCTSI(summary.totalStaked) : 0;
 
     return (
         <Layout className="staking">
@@ -538,7 +543,15 @@ const Staking = () => {
                                         <div className="body-text-1">
                                             <i className="fas fa-info-circle"></i>{' '}
                                             This stake currently corresponds to
-                                            a X% chance of producing the current
+                                            a{' '}
+                                            {totalStaked
+                                                ? (
+                                                      (stakeAmount.toNumber() *
+                                                          100) /
+                                                      totalStaked.toNumber()
+                                                  ).toFixed(2)
+                                                : 0}
+                                            % chance of producing the current
                                             block (
                                             <a
                                                 href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"
