@@ -28,10 +28,6 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
-    const [readDisclaimer, setReadDisclaimer] = useState<boolean>(false);
-    const [readRetireDisclaimer, setReadRetireDisclaimer] = useState<boolean>(
-        false
-    );
 
     // get nodes hired by user from backend (if any)
     const userNodes = useUserNodes(account);
@@ -82,6 +78,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     } else if (node.retired) {
         status = 'Retired';
     }
+
+    const confirmRetirement = () => {
+        node.retire();
+    };
 
     return (
         <>
@@ -220,19 +220,6 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
                         {node.address && node.available && (
                             <div>
-                                <div className="mb-1">
-                                    <input
-                                        type="checkbox"
-                                        checked={readDisclaimer}
-                                        onChange={(e) =>
-                                            setReadDisclaimer(e.target.checked)
-                                        }
-                                    />
-                                    {'  '}
-                                    Due to a protocol upgrade your node will
-                                    only be eligible to produce blocks starting
-                                    2021-03-15.
-                                </div>
                                 <div className="staking-hire-node-buttons">
                                     <button
                                         type="button"
@@ -240,22 +227,14 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         onClick={() =>
                                             setShowDetails(!showDetails)
                                         }
-                                        disabled={
-                                            node.waiting ||
-                                            node.loading ||
-                                            !readDisclaimer
-                                        }
+                                        disabled={node.waiting || node.loading}
                                     >
                                         Cancel
                                     </button>
 
                                     <button
                                         type="button"
-                                        disabled={
-                                            node.waiting ||
-                                            node.loading ||
-                                            !readDisclaimer
-                                        }
+                                        disabled={node.waiting || node.loading}
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                         onClick={() => node.hire(deposit)}
                                     >
@@ -283,13 +262,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                 <div className="staking-hire-node-buttons">
                                     <button
                                         type="button"
-                                        disabled={
-                                            !readRetireDisclaimer ||
-                                            node.waiting ||
-                                            node.loading
-                                        }
+                                        disabled={node.waiting || node.loading}
                                         className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
-                                        onClick={() => node.retire()}
+                                        onClick={confirmRetirement}
                                     >
                                         Retire
                                     </button>
@@ -314,7 +289,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         Add Funds
                                     </button>
                                 </div>
-                                <div className="mb-1">
+                                {/* <div className="mb-1">
                                     <input
                                         type="checkbox"
                                         checked={readRetireDisclaimer}
@@ -334,7 +309,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         Learn more
                                     </a>
                                     )
-                                </div>
+                                </div> */}
                             </>
                         )}
 
