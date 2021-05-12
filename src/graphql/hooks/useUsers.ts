@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { USERS } from '../queries/users';
 import { UsersData, UsersVars } from '../models';
@@ -19,7 +18,7 @@ export const USERS_PER_PAGE = 10;
 const useUsers = (
     pageNumber: number,
     id: string = undefined,
-    sort: string = 'timestamp'
+    sort = 'timestamp'
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<UsersData, UsersVars>(USERS, {

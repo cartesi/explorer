@@ -18,7 +18,7 @@ import { useTransaction } from './transaction';
 export const useCartesiToken = (
     account: string = null,
     spender: string = null,
-    blockNumber: number = 0
+    blockNumber = 0
 ) => {
     const token = useCartesiTokenContract();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));

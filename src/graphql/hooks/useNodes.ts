@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/nodes';
 import { NodesData, NodesVars } from '../models';
@@ -20,7 +19,7 @@ export const NODES_PER_PAGE = 10;
 const useNodes = (
     pageNumber: number,
     id: string = undefined,
-    sort: string = 'timestamp'
+    sort = 'timestamp'
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<NodesData, NodesVars>(NODES, {
@@ -42,7 +41,7 @@ export const useUserNodes = (owner: string) => {
 
     // convert to lowercase because backend is all lowercase
     owner = owner.toLowerCase();
-    
+
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: NODES_PER_PAGE,

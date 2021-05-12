@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import _ from 'lodash';
 import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
 import { BlocksData, BlocksVars } from '../models';

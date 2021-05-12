@@ -12,10 +12,7 @@
 import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 
-export const formatCTSI = (
-    amount: BigNumberish,
-    decimals: number = 18
-): string => {
+export const formatCTSI = (amount: BigNumberish, decimals = 18): string => {
     amount = BigNumber.from(amount);
 
     // floor value to number of decimals to display
