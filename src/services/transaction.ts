@@ -10,9 +10,8 @@ export const useTransaction = () => {
 
     const [waiting, setWaiting] = useState<boolean>(false);
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<
-        Promise<ContractTransaction>
-    >();
+    const [transaction, setTransaction] =
+        useState<Promise<ContractTransaction>>();
 
     useEffect(() => {
         if (transaction) {
