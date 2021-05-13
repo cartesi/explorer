@@ -176,7 +176,7 @@ const Pool = () => {
     const splitStakeAmount = () => {
         let fromReleasing = BigNumber.from(0),
             fromAllowance = BigNumber.from(0);
-        let stakeAmountCTSI = parseCTSI(stakeAmount);
+        const stakeAmountCTSI = parseCTSI(stakeAmount);
 
         if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
             return null;
@@ -202,7 +202,7 @@ const Pool = () => {
     const splitUnstakeAmount = () => {
         let fromMaturing = BigNumber.from(0),
             fromStaked = BigNumber.from(0);
-        let unstakeAmountCTSI = parseCTSI(unstakeAmount);
+        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
 
         if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
             return null;

@@ -14,9 +14,11 @@ import Link from 'next/link';
 import useStakingPools, {
     POOLS_PER_PAGE,
 } from '../graphql/hooks/useStakingPools';
-import { Summary } from '../graphql/models';
+import { StakingPool, Summary } from '../graphql/models';
 import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
+import { ethers } from 'ethers';
+import { useStakingPoolCommission } from '../services/pool';
 
 interface PoolsProps {
     summary: Summary;
@@ -28,6 +30,27 @@ type Sort =
     | 'totalBlocks'
     | 'totalUsers'
     | 'commission';
+
+const PoolRow = (props: { pool: StakingPool }) => {
+    const { pool } = props;
+    const reward = ethers.utils.parseUnits('2900', 18);
+    const commission = useStakingPoolCommission(pool.id, reward);
+
+    return (
+        <tr className="body-text-2" key={pool.id}>
+            <td>
+                <Address type="address" ens id={pool.id} />
+            </td>
+            <td>{pool.totalUsers}</td>
+            <td>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</td>
+            <td>{formatCTSI(pool.user.totalReward, 2)} CTSI</td>
+            <td>{commission.value && (commission.value * 100).toFixed(2)} %</td>
+            <td>
+                <Link href={'/pools/' + pool.id}>Stake</Link>
+            </td>
+        </tr>
+    );
+};
 
 const Pools = (props: PoolsProps) => {
     const [id, setId] = useState<string>(undefined);
@@ -116,40 +139,9 @@ const Pools = (props: PoolsProps) => {
                                 </td>
                             </tr>
                         ) : (
-                            data.stakingPools.map((pool) => {
-                                return (
-                                    <tr className="body-text-2" key={pool.id}>
-                                        <td>
-                                            <Address
-                                                type="address"
-                                                ens
-                                                id={pool.id}
-                                            />
-                                        </td>
-                                        <td>{pool.totalUsers}</td>
-                                        <td>
-                                            {formatCTSI(
-                                                pool.user.stakedBalance,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {formatCTSI(
-                                                pool.user.totalReward,
-                                                2
-                                            )}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>{pool.commission / 100} %</td>
-                                        <td>
-                                            <Link href={'/pools/' + pool.id}>
-                                                Stake
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                );
-                            })
+                            data.stakingPools.map((pool) => (
+                                <PoolRow pool={pool} key={pool.id} />
+                            ))
                         )}
                     </tbody>
                 </table>

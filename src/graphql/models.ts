@@ -43,6 +43,7 @@ export type StakingPool = {
     id: string;
     user: User;
     commission: number;
+    gas: number;
     totalUsers: number;
     timestamp: number;
 };

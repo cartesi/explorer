@@ -21,9 +21,6 @@ import {
 } from '@cartesi/util';
 import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
 
-import { PoS, Staking, StakingPool } from '@cartesi/pos-private';
-import { PoS as PoS1 } from '@cartesi/pos-1.0';
-
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
 import util_goerli from '@cartesi/util/export/abi/goerli.json';
@@ -178,18 +175,8 @@ export const useCartesiTokenContract = (): CartesiToken => {
     );
 };
 
-export const useStakingContract = (): Staking => {
-    return pos.useStakingContract();
-};
-
-export const useStakingPoolContract = (address: string): StakingPool => {
-    return pos.useStakingPoolContract(address);
-};
-
-export const usePoSContract = (): PoS => {
-    return pos.usePoSContract();
-};
-
-export const usePoS1Contract = (): PoS1 => {
-    return pos1.usePoSContract();
-};
+export const useStakingContract = pos.useStakingContract;
+export const useStakingPoolContract = pos.useStakingPoolContract;
+export const useFeeContract = pos.useFeeContract;
+export const usePoSContract = pos.usePoSContract;
+export const usePoS1Contract = pos1.usePoSContract;

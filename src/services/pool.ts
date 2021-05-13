@@ -12,10 +12,20 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { useBlockNumber } from './eth';
-import { useStakingPoolContract } from './contracts';
+import { useStakingPoolContract, useFeeContract } from './contracts';
 import { useTransaction } from './transaction';
+
+enum StakingPoolCommissionModel {
+    FlatRate,
+    GasTax,
+}
+
+export interface StakingPoolCommission {
+    value: number;
+    loading: boolean;
+}
 
 export const useStakingPool = (address: string) => {
     const { account } = useWeb3React<Web3Provider>();
@@ -100,4 +110,33 @@ export const useStakingPool = (address: string) => {
         unstake,
         withdraw,
     };
+};
+
+export const useStakingPoolCommission = (
+    address: string,
+    reward: BigNumberish
+) => {
+    const fee = useFeeContract(address);
+    const [commission, setCommission] = useState({
+        value: undefined,
+        loading: false,
+    });
+    useEffect(() => {
+        if (fee) {
+            setCommission({
+                value: undefined,
+                loading: true,
+            });
+            fee.getCommission(0, reward).then((value) => {
+                const percentage = FixedNumber.from(value)
+                    .divUnsafe(FixedNumber.from(reward))
+                    .toUnsafeFloat();
+                setCommission({
+                    value: percentage,
+                    loading: false,
+                });
+            });
+        }
+    }, [fee]);
+    return commission;
 };
