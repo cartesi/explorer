@@ -45,6 +45,7 @@ export type StakingPool = {
     commission: number;
     gas: number;
     totalUsers: number;
+    totalCommission: string;
     timestamp: number;
 };
 
@@ -127,6 +128,7 @@ export type Block = {
     producer: User;
     node: Node;
     reward: string;
+    commission: string;
     difficulty: string;
     gasPrice: number;
     gasLimit: number;

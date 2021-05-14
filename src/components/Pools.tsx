@@ -17,8 +17,9 @@ import useStakingPools, {
 import { StakingPool, Summary } from '../graphql/models';
 import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
-import { ethers } from 'ethers';
+import { ethers, FixedNumber } from 'ethers';
 import { useStakingPoolCommission } from '../services/pool';
+import labels from '../utils/labels';
 
 interface PoolsProps {
     summary: Summary;
@@ -33,8 +34,36 @@ type Sort =
 
 const PoolRow = (props: { pool: StakingPool }) => {
     const { pool } = props;
+
+    // calculate historical commission
+    const totalReward = FixedNumber.from(pool.user.totalReward);
+    const totalCommission = FixedNumber.from(pool.totalCommission);
+    let commission: FixedNumber = undefined;
+    if (!totalReward.isZero()) {
+        commission = totalCommission.divUnsafe(totalReward);
+    }
+    const commissionLabel = commission
+        ? `${commission
+              .divUnsafe(totalReward)
+              .mulUnsafe(FixedNumber.from(100))
+              .toUnsafeFloat()
+              .toFixed(2)} %`
+        : '';
+
+    // calculate commission for next block, by calling the fee contract
     const reward = ethers.utils.parseUnits('2900', 18);
-    const commission = useStakingPoolCommission(pool.id, reward);
+    const nextCommission = useStakingPoolCommission(pool.id, reward);
+    const nextCommissionLabel = nextCommission.value
+        ? `${(nextCommission.value * 100).toFixed(2)} %`
+        : '';
+
+    // commission help tooptip
+    let commissionTooltip: string = undefined;
+    if (pool.commission) {
+        commissionTooltip = labels.flatRateCommission;
+    } else if (pool.gas) {
+        commissionTooltip = labels.gasTaxCommission;
+    }
 
     return (
         <tr className="body-text-2" key={pool.id}>
@@ -44,7 +73,15 @@ const PoolRow = (props: { pool: StakingPool }) => {
             <td>{pool.totalUsers}</td>
             <td>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</td>
             <td>{formatCTSI(pool.user.totalReward, 2)} CTSI</td>
-            <td>{commission.value && (commission.value * 100).toFixed(2)} %</td>
+            <td>
+                {commissionLabel} ({nextCommissionLabel}){' '}
+                {commissionTooltip && (
+                    <img
+                        data-tip={commissionTooltip}
+                        src="/images/question.png"
+                    />
+                )}
+            </td>
             <td>
                 <Link href={'/pools/' + pool.id}>Stake</Link>
             </td>

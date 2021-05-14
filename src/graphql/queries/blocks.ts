@@ -24,6 +24,7 @@ export const BLOCKS = gql`
             number
             timestamp
             reward
+            commission
             difficulty
             chain {
                 number

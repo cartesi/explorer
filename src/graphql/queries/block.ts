@@ -8,6 +8,7 @@ export const BLOCK = gql`
             number
             timestamp
             reward
+            commission
             difficulty
 
             chain {

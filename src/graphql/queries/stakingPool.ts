@@ -7,6 +7,7 @@ export const STAKINGPOOL = gql`
             commission
             gas
             totalUsers
+            totalCommission
             timestamp
 
             user {

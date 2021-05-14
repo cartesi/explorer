@@ -117,7 +117,7 @@ export const useStakingPoolCommission = (
     reward: BigNumberish
 ) => {
     const fee = useFeeContract(address);
-    const [commission, setCommission] = useState({
+    const [commission, setCommission] = useState<StakingPoolCommission>({
         value: undefined,
         loading: false,
     });
