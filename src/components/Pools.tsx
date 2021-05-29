@@ -47,7 +47,7 @@ const PoolRow = (props: { pool: StakingPool }) => {
               .toFixed(2)} %`;
 
     // calculate commission for next block, by calling the fee contract
-    const reward = ethers.utils.parseUnits('2900', 18);
+    const reward = ethers.utils.parseUnits('2900', 18); // XXX this value should come from the RewardManager
     const nextCommission = useStakingPoolCommission(pool.id, reward);
     const nextCommissionLabel = nextCommission.value
         ? `${(nextCommission.value * 100).toFixed(2)} %`

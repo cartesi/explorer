@@ -15,14 +15,14 @@ import { useRouter } from 'next/router';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, ethers, FixedNumber } from 'ethers';
 import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 
 import { useBlockNumber } from '../../services/eth';
-import { useStakingPool } from '../../services/pool';
+import { useStakingPool, useStakingPoolCommission } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
 
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
@@ -31,6 +31,51 @@ import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { useENS } from '../../services/ens';
 import { tinyString } from '../../utils/stringUtils';
+import { StakingPool } from '../../graphql/models';
+
+const PoolCommission = (props: { pool: StakingPool }) => {
+    const { pool } = props;
+
+    // commission simulation
+    const reward = ethers.utils.parseUnits('2900', 18);
+    const nextCommission = useStakingPoolCommission(pool.id, reward);
+
+    // calculate historical commission
+    const totalReward = FixedNumber.from(pool.user.totalReward);
+    const totalCommission = FixedNumber.from(pool.totalCommission);
+    const commissionLabel = totalReward.isZero()
+        ? ''
+        : `${totalCommission
+              .divUnsafe(totalReward)
+              .mulUnsafe(FixedNumber.from(100))
+              .toUnsafeFloat()
+              .toFixed(2)} %`;
+
+    // calculate commission for next block, by calling the fee contract
+    const nextCommissionLabel = nextCommission.value
+        ? `(${(nextCommission.value * 100).toFixed(2)} %)`
+        : '';
+
+    // commission help tooptip
+    let commissionTooltip: string = undefined;
+    if (pool.commission) {
+        commissionTooltip = labels.flatRateCommission;
+    } else if (pool.gas) {
+        commissionTooltip = labels.gasTaxCommission;
+    }
+
+    return (
+        <div className="staking-total-balances-item">
+            <label className="body-text-1">Commission</label>
+            {commissionTooltip && (
+                <img data-tip={commissionTooltip} src="/images/question.png" />
+            )}
+            <span className="info-text-md">
+                {commissionLabel} {nextCommissionLabel}{' '}
+            </span>
+        </div>
+    );
+};
 
 const Pool = () => {
     const router = useRouter();
@@ -333,16 +378,7 @@ const Pool = () => {
                     </span>
                 </div>
 
-                <div className="staking-total-balances-item">
-                    <label className="body-text-1">Commission</label>
-                    <img
-                        data-tip={labels.commission}
-                        src="/images/question.png"
-                    />
-                    <span className="info-text-md">
-                        {stakingPool ? stakingPool.commission / 100 : 0} %
-                    </span>
-                </div>
+                {stakingPool && <PoolCommission pool={stakingPool} />}
             </div>
 
             <div className="row">
