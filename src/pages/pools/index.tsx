@@ -16,9 +16,7 @@ import Layout from '../../components/Layout';
 import PoolsTable from '../../components/Pools';
 import useSummary from '../../graphql/hooks/useSummary';
 
-interface Props {}
-
-const Pools = (props: Props) => {
+const Pools = () => {
     const summary = useSummary();
 
     return (
