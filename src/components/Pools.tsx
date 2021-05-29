@@ -38,17 +38,13 @@ const PoolRow = (props: { pool: StakingPool }) => {
     // calculate historical commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
     const totalCommission = FixedNumber.from(pool.totalCommission);
-    let commission: FixedNumber = undefined;
-    if (!totalReward.isZero()) {
-        commission = totalCommission.divUnsafe(totalReward);
-    }
-    const commissionLabel = commission
-        ? `${commission
+    const commissionLabel = totalReward.isZero()
+        ? ''
+        : `${totalCommission
               .divUnsafe(totalReward)
               .mulUnsafe(FixedNumber.from(100))
               .toUnsafeFloat()
-              .toFixed(2)} %`
-        : '';
+              .toFixed(2)} %`;
 
     // calculate commission for next block, by calling the fee contract
     const reward = ethers.utils.parseUnits('2900', 18);
