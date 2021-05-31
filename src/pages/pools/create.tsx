@@ -9,27 +9,36 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
 import { useStakingPoolFactory } from '../../services/poolFactory';
+import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 
 const CreatePool = () => {
     const [progress, setProgress] = useState(0);
     const [flatRateCommission, setFlatRateCommission] = useState(0);
     const [gasTaxCommission, setGasTaxCommission] = useState(0);
-    const { createFlatRateCommission, createGasTaxCommission } =
+    const [isFlatRateCommission, setIsFlatRateCommission] = useState(true);
+    const [submitted, setSubmitted] = useState(false);
+    const { waiting, error, createFlatRateCommission, createGasTaxCommission } =
         useStakingPoolFactory();
 
     const createPool = () => {
-        if (flatRateCommission) {
+        if (isFlatRateCommission && flatRateCommission) {
             createFlatRateCommission(flatRateCommission);
-            setProgress(1);
+            setSubmitted(true);
         } else if (gasTaxCommission) {
             createGasTaxCommission(gasTaxCommission);
-            setProgress(1);
+            setSubmitted(true);
         }
     };
+
+    useEffect(() => {
+        if (!waiting && submitted && !error) {
+            setProgress(progress + 1);
+        }
+    }, [waiting, error]);
 
     return (
         <Layout className="pools">
@@ -39,8 +48,9 @@ const CreatePool = () => {
             </Head>
 
             <div className="page-header pb-4">
-                <div className="info-text-md text-white">
+                <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Create a Staking Pool
+                    <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
             </div>
 
@@ -65,15 +75,36 @@ const CreatePool = () => {
                     {progress == 0 && (
                         <>
                             <div className="form-group mt-3">
-                                <label className="body-text-2 text-secondary">
-                                    Flat Rate Commission
-                                </label>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="commissionType"
+                                        id="flatRateCommission"
+                                        checked={isFlatRateCommission}
+                                        onChange={(e) =>
+                                            setIsFlatRateCommission(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                    <label
+                                        className="body-text-2 text-secondary"
+                                        onClick={() =>
+                                            setIsFlatRateCommission(true)
+                                        }
+                                    >
+                                        Flat Rate Commission
+                                    </label>
+                                </div>
+
                                 <div className="input-group">
                                     <input
                                         type="number"
                                         className="addon-inline form-control"
                                         id="flatRateCommission"
                                         value={flatRateCommission}
+                                        disabled={!isFlatRateCommission}
                                         onChange={(e) =>
                                             setFlatRateCommission(
                                                 e.target.value
@@ -86,15 +117,35 @@ const CreatePool = () => {
                             </div>
 
                             <div className="form-group mt-3">
-                                <label className="body-text-2 text-secondary">
-                                    Gas Tax Commission
-                                </label>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="commissionType"
+                                        id="gasTaxCommission"
+                                        checked={!isFlatRateCommission}
+                                        onChange={(e) =>
+                                            setIsFlatRateCommission(
+                                                !e.target.checked
+                                            )
+                                        }
+                                    />
+                                    <label
+                                        className="body-text-2 text-secondary"
+                                        onClick={() =>
+                                            setIsFlatRateCommission(false)
+                                        }
+                                    >
+                                        Gas Tax Commission
+                                    </label>
+                                </div>
                                 <div className="input-group">
                                     <input
                                         type="number"
                                         className="addon-inline form-control"
                                         id="gasTaxCommission"
                                         value={gasTaxCommission}
+                                        disabled={isFlatRateCommission}
                                         onChange={(e) =>
                                             setGasTaxCommission(
                                                 e.target.value
@@ -110,6 +161,11 @@ const CreatePool = () => {
                                 type="button"
                                 className="btn btn-dark py-2 mt-2 button-text flex-fill"
                                 onClick={createPool}
+                                disabled={
+                                    (isFlatRateCommission &&
+                                        !flatRateCommission) ||
+                                    (!isFlatRateCommission && !gasTaxCommission)
+                                }
                             >
                                 Create Pool
                             </button>

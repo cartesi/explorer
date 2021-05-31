@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { BigNumber } from '@ethersproject/bignumber';
 import { useStakingPoolFactoryContract } from './contracts';
 import { useTransaction } from './transaction';
 
@@ -22,7 +23,9 @@ export const useStakingPoolFactory = () => {
             try {
                 // send transaction
                 setTransaction(
-                    poolFactory.createFlatRateCommission(commission)
+                    poolFactory.createFlatRateCommission(commission, {
+                        value: BigNumber.from(10).pow(15),
+                    })
                 );
             } catch (e) {
                 setError(e.message);
@@ -34,7 +37,11 @@ export const useStakingPoolFactory = () => {
         if (poolFactory) {
             try {
                 // send transaction
-                setTransaction(poolFactory.createGasTaxCommission(gas));
+                setTransaction(
+                    poolFactory.createGasTaxCommission(gas, {
+                        value: BigNumber.from(10).pow(15),
+                    })
+                );
             } catch (e) {
                 setError(e.message);
             }
