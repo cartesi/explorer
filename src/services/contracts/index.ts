@@ -180,3 +180,4 @@ export const useStakingPoolContract = pos.useStakingPoolContract;
 export const useFeeContract = pos.useFeeContract;
 export const usePoSContract = pos.usePoSContract;
 export const usePoS1Contract = pos1.usePoSContract;
+export const useStakingPoolFactoryContract = pos.useStakingPoolFactoryContract;

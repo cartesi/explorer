@@ -1,9 +1,21 @@
+@import '../variables.scss';
+
 .pools {
     &-title {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
+
+        &-create a {
+            background-color: $primary-color;
+            color: white;
+            padding: 8px 12px;
+
+            &:hover {
+                background-color: $secondary-color;
+            }
+        }
     }
 
     .input-with-icon.input-group {

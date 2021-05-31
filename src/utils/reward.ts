@@ -36,7 +36,7 @@ export const getRewardRate = (
         const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
             const blocks: Array<Block> = blocksPerChain[chainId];
             const protocol = blocks[0].chain.protocol.version;
-            const targetInterval = blocks[0].chain.targetInterval;
+            const targetInterval = blocks[0].chain.targetInterval || 1;
 
             // take average difficulty of all blocks in array
             const difficulty = blocks

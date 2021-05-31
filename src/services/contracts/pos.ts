@@ -19,6 +19,8 @@ import {
     StakingPoolImpl,
     Fee,
     Fee__factory,
+    StakingPoolFactoryImpl,
+    StakingPoolFactoryImpl__factory,
 } from '@cartesi/pos-private';
 
 import mainnet from '@cartesi/pos-private/export/abi/mainnet.json';
@@ -46,6 +48,14 @@ export const useStakingContract = (): Staking => {
 
 export const usePoSContract = (): PoS => {
     return useContract(PoS__factory.connect, abis, 'PoS');
+};
+
+export const useStakingPoolFactoryContract = (): StakingPoolFactoryImpl => {
+    return useContract(
+        StakingPoolFactoryImpl__factory.connect,
+        abis,
+        'StakingPoolFactoryImpl'
+    );
 };
 
 export const useStakingPoolContract = (address: string): StakingPoolImpl => {
