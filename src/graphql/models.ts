@@ -41,6 +41,7 @@ export interface UsersVars {
 
 export type StakingPool = {
     id: string;
+    manager: string;
     user: User;
     commission: number;
     gas: number;

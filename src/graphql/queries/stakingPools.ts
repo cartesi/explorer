@@ -16,6 +16,7 @@ export const STAKINGPOOLS = gql`
             orderDirection: $orderDirection
         ) {
             id
+            manager
             commission
             gas
             totalUsers

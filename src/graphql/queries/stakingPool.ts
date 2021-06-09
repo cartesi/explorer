@@ -4,6 +4,7 @@ export const STAKINGPOOL = gql`
     query stakingPool($id: String) {
         stakingPool(id: $id) {
             id
+            manager
             commission
             gas
             totalUsers

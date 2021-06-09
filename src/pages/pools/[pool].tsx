@@ -32,6 +32,7 @@ import { formatCTSI, isInfinite } from '../../utils/token';
 import { useENS } from '../../services/ens';
 import { tinyString } from '../../utils/stringUtils';
 import { StakingPool } from '../../graphql/models';
+import Link from 'next/link';
 
 const PoolCommission = (props: { pool: StakingPool }) => {
     const { pool } = props;
@@ -279,7 +280,7 @@ const Pool = () => {
     return (
         <Layout className="staking">
             <Head>
-                <title>Cartesi</title>
+                <title>Cartesi - Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
@@ -303,6 +304,18 @@ const Pool = () => {
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Staking Pool:{' '}
                     {ensEntry.name || tinyString(ensEntry.address)}
+                    {stakingPool &&
+                        account &&
+                        stakingPool.manager == account.toLowerCase() && (
+                            <Link href={`/pools/manage/${pool}`}>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark button-text py-0 mx-2"
+                                >
+                                    Manage
+                                </button>
+                            </Link>
+                        )}
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
 

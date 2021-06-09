@@ -22,7 +22,7 @@ const Pools = () => {
     return (
         <Layout className="pools">
             <Head>
-                <title>Delegation</title>
+                <title>Cartesi - Pools</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 

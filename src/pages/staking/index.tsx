@@ -235,7 +235,7 @@ const Staking = () => {
     return (
         <Layout className="staking">
             <Head>
-                <title>Cartesi</title>
+                <title>Cartesi - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
