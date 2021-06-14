@@ -284,11 +284,7 @@ const Staking = () => {
                 </div>
             </div>
 
-            <Node
-                account={account}
-                setWaiting={setNodeWaiting}
-                setError={setNodeError}
-            />
+            <Node setWaiting={setNodeWaiting} setError={setNodeError} />
 
             <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">

@@ -17,57 +17,56 @@ import { BigNumber, constants } from 'ethers';
 import { tinyString } from '../utils/stringUtils';
 import { useUserNodes } from '../graphql/hooks/useNodes';
 import { useNode } from '../services/node';
+import { useStakingPool } from '../services/pool';
 
 interface NodeProps {
+    poolAddress: string;
     setWaiting?: (waiting: boolean) => void;
     setError?: (error: string) => void;
 }
 
-const Node = ({ setWaiting, setError }: NodeProps) => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+const PoolNode = ({ poolAddress, setWaiting, setError }: NodeProps) => {
+    const { chainId } = useWeb3React<Web3Provider>();
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
 
     // get nodes hired by user from backend (if any)
-    const userNodes = useUserNodes(account);
+    const userNodes = useUserNodes(poolAddress);
     const existingNode =
         userNodes.data?.nodes?.length > 0 && userNodes.data.nodes[0].id;
 
     // use a state variable for the typed node address
-    const [address, setAddress] = useState<string>('');
+    const [address, setAddress] = useState<string>(
+        userNodes?.data?.nodes?.length > 0 ? userNodes.data.nodes[0].id : ''
+    );
 
     // priority is the typed address (at state variable)
     const activeAddress = address || existingNode || '';
 
     const node = useNode(activeAddress);
+    const pool = useStakingPool(poolAddress);
 
     const notMine =
         !node.loading &&
         node.address &&
         !node.available &&
-        node.user != account;
-    const mine = node.user == account;
-    const ready = node.user == account && node.owned && node.authorized;
+        node.user.toLowerCase() != poolAddress.toLowerCase();
+    const mine = node.user == poolAddress;
+    const ready = node.user == poolAddress && node.owned && node.authorized;
 
     const debug = chainId == 313371;
 
     let status = '';
 
     useEffect(() => {
-        if (userNodes?.data?.nodes?.length > 0) {
-            setAddress(userNodes.data.nodes[0].id);
-        }
-    }, [account]);
-
-    useEffect(() => {
-        if (setWaiting) setWaiting(node.waiting);
-        if (setError) setError(node.error);
-    }, [node.error, node.waiting]);
+        if (setWaiting) setWaiting(pool.waiting);
+        if (setError) setError(pool.error);
+    }, [pool.error, pool.waiting]);
 
     if (node.available) {
         status = 'Available';
-    } else if (node.owned && node.authorized && node.user == account) {
+    } else if (node.owned && node.authorized && node.user == poolAddress) {
         status = 'Ready';
     } else if (node.owned && node.authorized) {
         status = `Owned by ${node.user}`;
@@ -80,7 +79,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     }
 
     const confirmRetirement = () => {
-        node.retire();
+        pool.retire(address);
     };
 
     return (
@@ -94,13 +93,11 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
                             activeAddress !== '' ? 'active' : 'inactive'
                         }`}
-                        onClick={() =>
-                            setShowDetails(!!account && !showDetails)
-                        }
+                        onClick={() => setShowDetails(!!pool && !showDetails)}
                     >
                         {activeAddress
                             ? tinyString(activeAddress)
-                            : account
+                            : pool
                             ? 'Click to enter your node address'
                             : 'Connect to wallet first'}
                     </span>
@@ -130,7 +127,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                     type="text"
                                     className="form-control :invalid"
                                     id="address"
-                                    disabled={node.waiting || node.loading}
+                                    disabled={pool.waiting || node.loading}
                                     value={activeAddress}
                                     onChange={(event) =>
                                         setAddress(event.target.value)
@@ -152,7 +149,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="deposit"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         defaultValue={formatEther(deposit)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -201,7 +198,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="transfer"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         defaultValue={formatEther(transfer)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -227,16 +224,18 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         onClick={() =>
                                             setShowDetails(!showDetails)
                                         }
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                     >
                                         Cancel
                                     </button>
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() => node.hire(deposit)}
+                                        onClick={() =>
+                                            pool.hire(address, deposit)
+                                        }
                                     >
                                         Hire Node
                                     </button>
@@ -248,9 +247,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                             <div className="staking-hire-node-buttons">
                                 <button
                                     type="button"
-                                    disabled={node.waiting || node.loading}
+                                    disabled={pool.waiting || node.loading}
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                    onClick={() => node.cancelHire()}
+                                    onClick={() => pool.cancelHire(address)}
                                 >
                                     Cancel Hire
                                 </button>
@@ -262,7 +261,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                 <div className="staking-hire-node-buttons">
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
                                         onClick={confirmRetirement}
                                     >
@@ -271,7 +270,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
                                         onClick={() =>
                                             setShowDetails(!showDetails)
@@ -282,46 +281,14 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={pool.waiting || node.loading}
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                         onClick={() => node.transfer(transfer)}
                                     >
                                         Add Funds
                                     </button>
                                 </div>
-                                {/* <div className="mb-1">
-                                    <input
-                                        type="checkbox"
-                                        checked={readRetireDisclaimer}
-                                        onChange={(e) =>
-                                            setReadRetireDisclaimer(
-                                                e.target.checked
-                                            )
-                                        }
-                                    />
-                                    {'  '}
-                                    Retirement is final (
-                                    <a
-                                        href="https://github.com/cartesi/noether/wiki/FAQ#i-have-retired-my-node-in-the-cartesi-explorer-but-the-node-funds-were-not-returned-what-is-going-on"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Learn more
-                                    </a>
-                                    )
-                                </div> */}
                             </>
-                        )}
-
-                        {node.owned && !node.authorized && mine && (
-                            <button
-                                type="button"
-                                disabled={node.waiting || node.loading}
-                                className="btn btn-primary py-0 px-3 button-text flex-fill my-2"
-                                onClick={node.authorize}
-                            >
-                                Authorize
-                            </button>
                         )}
                     </div>
                 </div>
@@ -330,4 +297,4 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     );
 };
 
-export default Node;
+export default PoolNode;

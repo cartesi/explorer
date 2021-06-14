@@ -17,7 +17,7 @@ import { useStakingPool } from '../../../services/pool';
 
 import Layout from '../../../components/Layout';
 import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
-import Node from '../../../components/Node';
+import PoolNode from '../../../components/PoolNode';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -57,8 +57,8 @@ const ManagePool = () => {
             </div>
 
             <div className="manage-pool">
-                <Node
-                    account={pool as string}
+                <PoolNode
+                    poolAddress={pool as string}
                     setWaiting={setNodeWaiting}
                     setError={setNodeError}
                 />

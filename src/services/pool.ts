@@ -129,10 +129,10 @@ export const useStakingPool = (address: string) => {
         }
     };
 
-    const hire = (worker: string) => {
+    const hire = (worker: string, amount: BigNumber) => {
         if (stakingPool) {
             try {
-                setTransaction(stakingPool.hire(worker));
+                setTransaction(stakingPool.hire(worker, { value: amount }));
             } catch (e) {
                 setError(e.message);
             }
