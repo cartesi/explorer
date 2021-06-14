@@ -45,6 +45,7 @@ export const useStakingPool = (address: string) => {
     const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
         constants.Zero
     );
+    const [isLocked, setIsLocked] = useState<Boolean>(false);
 
     useEffect(() => {
         if (stakingPool && account) {
@@ -61,6 +62,7 @@ export const useStakingPool = (address: string) => {
                 );
             stakingPool.getMaturingBalance(account).then(setMaturingBalance);
             stakingPool.getReleasingBalance(account).then(setReleasingBalance);
+            stakingPool.isLocked().then(setIsLocked);
         }
     }, [stakingPool, account, blockNumber]);
 
@@ -97,6 +99,66 @@ export const useStakingPool = (address: string) => {
         }
     };
 
+    const setName = (name: string) => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.setName(name));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const lock = () => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.lock());
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const unlock = () => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.unlock());
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const hire = (worker: string) => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.hire(worker));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const cancelHire = (worker: string) => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.cancelHire(worker));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const retire = (worker: string) => {
+        if (stakingPool) {
+            try {
+                setTransaction(stakingPool.retire(worker));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
     return {
         staking: stakingPool,
         error,
@@ -106,9 +168,16 @@ export const useStakingPool = (address: string) => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
+        isLocked,
         stake,
         unstake,
         withdraw,
+        setName,
+        lock,
+        unlock,
+        hire,
+        cancelHire,
+        retire,
     };
 };
 

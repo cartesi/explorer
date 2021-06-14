@@ -11,11 +11,36 @@
 
 import React, { useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+import { useStakingPool } from '../../../services/pool';
 
 import Layout from '../../../components/Layout';
+import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
+import Node from '../../../components/Node';
 
 const ManagePool = () => {
+    const router = useRouter();
+    const { pool } = router.query;
+
     const [poolName, setPoolName] = useState('');
+    const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
+    const [nodeError, setNodeError] = useState<string>();
+
+    const {
+        setName,
+        lock,
+        unlock,
+        hire,
+        cancelHire,
+        retire,
+        isLocked,
+        waiting: poolWaiting,
+        error: poolError,
+    } = useStakingPool(pool as string);
+
+    const waiting = poolWaiting || nodeWaiting;
+    const error = poolError || nodeError;
 
     return (
         <Layout className="pools">
@@ -25,27 +50,52 @@ const ManagePool = () => {
             </Head>
 
             <div className="page-header pb-4">
-                <div className="info-text-md text-white">Manage Pool</div>
+                <div className="info-text-md text-white d-flex flex-row">
+                    Manage Pool
+                    <ConfirmationIndicator loading={waiting} error={error} />
+                </div>
             </div>
 
             <div className="manage-pool">
-                <div className="manage-pool-section">
-                    <div className="form-group mt-3">
-                        <div className="form-check">
-                            <label className="body-text-2 text-secondary">
-                                Pool Name
-                            </label>
-                        </div>
+                <Node
+                    account={pool as string}
+                    setWaiting={setNodeWaiting}
+                    setError={setNodeError}
+                />
 
-                        <div className="input-group">
-                            <input
-                                className="addon-inline form-control"
-                                id="poolName"
-                                value={poolName}
-                                onChange={(e) => setPoolName(e.target.value)}
-                            />
-                        </div>
-                    </div>
+                <div className="manage-pool-item form-group">
+                    <span className="body-text-2 text-secondary manage-pool-item-label">
+                        Pool Name
+                    </span>
+
+                    <input
+                        className="addon-inline form-control manage-pool-item-input"
+                        id="poolName"
+                        value={poolName}
+                        onChange={(e) => setPoolName(e.target.value)}
+                    />
+
+                    <button
+                        type="button"
+                        className="btn btn-dark py-0 mx-3 button-text"
+                        onClick={() => setName(poolName)}
+                    >
+                        Set Name
+                    </button>
+                </div>
+
+                <div className="manage-pool-item form-group">
+                    <span className="body-text-2 text-secondary manage-pool-item-label">
+                        Pool is currently {isLocked ? 'locked' : 'unlocked'}
+                    </span>
+
+                    <button
+                        type="button"
+                        className="btn btn-dark py-0 mx-3 button-text"
+                        onClick={() => (isLocked ? unlock() : lock())}
+                    >
+                        {isLocked ? 'Unlock' : 'Lock'}
+                    </button>
                 </div>
             </div>
         </Layout>

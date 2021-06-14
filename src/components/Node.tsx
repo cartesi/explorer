@@ -19,12 +19,13 @@ import { useUserNodes } from '../graphql/hooks/useNodes';
 import { useNode } from '../services/node';
 
 interface NodeProps {
+    account: string;
     setWaiting?: (waiting: boolean) => void;
     setError?: (error: string) => void;
 }
 
-const Node = ({ setWaiting, setError }: NodeProps) => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+const Node = ({ account, setWaiting, setError }: NodeProps) => {
+    const { chainId } = useWeb3React<Web3Provider>();
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);

@@ -11,12 +11,17 @@
 
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+
 import Layout from '../../../components/Layout';
 import { useStakingPoolFactory } from '../../../services/poolFactory';
 import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
 import { useRouter } from 'next/router';
 
 const CreatePool = () => {
+    const { account } = useWeb3React<Web3Provider>();
+
     const [flatRateCommission, setFlatRateCommission] = useState(0);
     const [gasTaxCommission, setGasTaxCommission] = useState(0);
     const [isFlatRateCommission, setIsFlatRateCommission] = useState(true);
@@ -136,6 +141,7 @@ const CreatePool = () => {
                     className="btn btn-dark py-0 mt-2 button-text flex-fill"
                     onClick={createPool}
                     disabled={
+                        !account ||
                         (isFlatRateCommission && !flatRateCommission) ||
                         (!isFlatRateCommission && !gasTaxCommission)
                     }
