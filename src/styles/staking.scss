@@ -193,42 +193,6 @@
         }
     }
 
-    .input-group-addon.addon-inline {
-        background: #fff;
-        color: #999;
-        border: 1px solid #000;
-        border-left: none;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        padding: 0 35px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &.error {
-            border: 1px solid $error-color;
-            border-left: none;
-        }
-    }
-
-    input.form-control {
-        border: 1px solid #000;
-
-        height: 56px;
-        padding-left: 50px;
-        padding-right: 50px;
-
-        &.error {
-            border: 1px solid $error-color;
-        }
-
-        &.addon-inline {
-            border-right: none;
-            padding-right: 0;
-        }
-    }
-
     &-disclaimer-container {
         position: fixed;
         top: 100px;

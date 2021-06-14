@@ -85,7 +85,7 @@ const Node = ({ account, setWaiting, setError }: NodeProps) => {
     };
 
     return (
-        <>
+        <div className="node-manage">
             <div className="staking-hire">
                 <div className="staking-hire-content row">
                     <span className="col-12 col-sm-auto body-text-1 mx-2">
@@ -327,7 +327,7 @@ const Node = ({ account, setWaiting, setError }: NodeProps) => {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
