@@ -307,12 +307,12 @@ const Pool = () => {
                     {stakingPool &&
                         account &&
                         stakingPool.manager == account.toLowerCase() && (
-                            <Link href={`/pools/manage/${pool}`}>
+                            <Link href={`/pools/${pool}/edit`}>
                                 <button
                                     type="button"
                                     className="btn btn-dark button-text py-0 mx-2"
                                 >
-                                    Manage
+                                    Edit
                                 </button>
                             </Link>
                         )}

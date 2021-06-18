@@ -45,13 +45,13 @@ const ManagePool = () => {
     return (
         <Layout className="pools">
             <Head>
-                <title>Cartesi - Manage Pool</title>
+                <title>Cartesi - Edit Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <div className="page-header pb-4">
                 <div className="info-text-md text-white d-flex flex-row">
-                    Manage Pool
+                    Edit Pool
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
             </div>

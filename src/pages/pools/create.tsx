@@ -14,9 +14,9 @@ import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-import Layout from '../../../components/Layout';
-import { useStakingPoolFactory } from '../../../services/poolFactory';
-import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
+import Layout from '../../components/Layout';
+import { useStakingPoolFactory } from '../../services/poolFactory';
+import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 import { useRouter } from 'next/router';
 
 const CreatePool = () => {

@@ -99,7 +99,7 @@ const Pools = (props: PoolsProps) => {
         <div className="pools">
             <div className="pools-title mt-5 mb-2">
                 <div className="pools-title-create body-text-1">
-                    <Link href="/pools/manage/create">Create New Pool</Link>
+                    <Link href="/pools/create">Create New Pool</Link>
                 </div>
                 <div className="input-with-icon input-group">
                     <span>
