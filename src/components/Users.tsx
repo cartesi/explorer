@@ -10,11 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+
 import useUsers, { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import { Summary } from '../graphql/models';
 import Address from '../components/Address';
 import { formatCTSI } from '../utils/token';
-import Link from 'next/link';
 
 interface UsersProps {
     summary: Summary;
@@ -23,6 +26,8 @@ interface UsersProps {
 type Sort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 
 const Users = (props: UsersProps) => {
+    const { account } = useWeb3React<Web3Provider>();
+
     const [id, setId] = useState<string>(undefined);
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
@@ -107,7 +112,7 @@ const Users = (props: UsersProps) => {
                                     <tr
                                         key={user.id}
                                         className={`body-text-2 ${
-                                            user.isPool ? 'pool' : ''
+                                            user.pool ? 'pool' : ''
                                         }`}
                                     >
                                         <td>
@@ -126,14 +131,31 @@ const Users = (props: UsersProps) => {
                                             CTSI
                                         </td>
                                         <td>
-                                            {user.isPool ? (
-                                                <Link
-                                                    href={'/pools/' + user.id}
-                                                >
-                                                    Stake
-                                                </Link>
-                                            ) : (
-                                                ''
+                                            {user.pool && (
+                                                <>
+                                                    <Link
+                                                        href={
+                                                            '/pools/' + user.id
+                                                        }
+                                                    >
+                                                        Stake
+                                                    </Link>
+                                                    <span className="ml-2" />
+                                                    {account &&
+                                                        account.toLowerCase() ==
+                                                            user.pool
+                                                                .manager && (
+                                                            <Link
+                                                                href={
+                                                                    '/pools/' +
+                                                                    user.id +
+                                                                    '/edit'
+                                                                }
+                                                            >
+                                                                Edit
+                                                            </Link>
+                                                        )}
+                                                </>
                                             )}
                                         </td>
                                     </tr>

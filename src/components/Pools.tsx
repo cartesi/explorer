@@ -11,6 +11,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+
 import useStakingPools, {
     POOLS_PER_PAGE,
 } from '../graphql/hooks/useStakingPools';
@@ -34,6 +37,8 @@ type Sort =
 
 const PoolRow = (props: { pool: StakingPool }) => {
     const { pool } = props;
+
+    const { account } = useWeb3React<Web3Provider>();
 
     // calculate historical commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
@@ -80,6 +85,12 @@ const PoolRow = (props: { pool: StakingPool }) => {
             </td>
             <td>
                 <Link href={'/pools/' + pool.id}>Stake</Link>
+                {account && account.toLowerCase() == pool.manager && (
+                    <>
+                        <span className="ml-2" />
+                        <Link href={'/pools/' + pool.id + '/edit'}>Edit</Link>
+                    </>
+                )}
             </td>
         </tr>
     );
