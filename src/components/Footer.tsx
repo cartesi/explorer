@@ -15,6 +15,7 @@ import {
     useCartesiTokenContract,
     usePoSContract,
     useStakingContract,
+    useStakingPoolFactoryContract,
     useWorkerManagerContract,
 } from '../services/contracts';
 import Address from './Address';
@@ -26,6 +27,7 @@ const Footer = () => {
     const token = useCartesiTokenContract();
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
+    const poolFactory = useStakingPoolFactoryContract();
 
     return (
         <div className="layout-footer">
@@ -105,6 +107,15 @@ const Footer = () => {
                             <Address
                                 type="address"
                                 id={workerManager?.address}
+                                rawLink={true}
+                            />
+                        </div>
+
+                        <div className="d-flex flex-row align-start my-1">
+                            Pool Factory:
+                            <Address
+                                type="address"
+                                id={poolFactory?.address}
                                 rawLink={true}
                             />
                         </div>
