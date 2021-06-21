@@ -106,6 +106,10 @@ const CreatePool = () => {
                             %
                         </span>
                     </div>
+
+                    <label className="body-text-2 text-secondary">
+                        lorem ipsum
+                    </label>
                 </div>
 
                 <div className="form-group mt-3">
@@ -149,6 +153,10 @@ const CreatePool = () => {
                             gas
                         </span>
                     </div>
+
+                    <label className="body-text-2 text-secondary">
+                        lorem ipsum
+                    </label>
                 </div>
 
                 <button
