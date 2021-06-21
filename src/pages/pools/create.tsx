@@ -108,7 +108,9 @@ const CreatePool = () => {
                     </div>
 
                     <label className="body-text-2 text-secondary">
-                        lorem ipsum
+                        This model calculates the commission as a fixed
+                        percentage of the block CTSI reward before distributing
+                        the remaining amount to the pool users.
                     </label>
                 </div>
 
@@ -155,7 +157,18 @@ const CreatePool = () => {
                     </div>
 
                     <label className="body-text-2 text-secondary">
-                        lorem ipsum
+                        This model calculates the commission considering the
+                        current network gas price, Ethereum price and CTSI
+                        price. The configured amount of gas above is multiplied
+                        by the gas price provided by a{' '}
+                        <a href="https://data.chain.link/fast-gas-gwei">
+                            ChainLink oracle
+                        </a>
+                        , then converted from ETH to CTSI using an{' '}
+                        <a href="https://v2.info.uniswap.org/pair/0x58eeb5d44dc41965ab0a9e563536175c8dc5c3b3">
+                            Uniswap V2 price oracle
+                        </a>
+                        .
                     </label>
                 </div>
 
