@@ -92,7 +92,7 @@ const CreatePool = () => {
                                 setFlatRateCommission(
                                     e.target.value
                                         ? Math.min(
-                                              parseInt(e.target.value),
+                                              parseFloat(e.target.value),
                                               100
                                           )
                                         : 0
