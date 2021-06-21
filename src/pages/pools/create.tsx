@@ -32,7 +32,7 @@ const CreatePool = () => {
 
     const createPool = () => {
         if (isFlatRateCommission && flatRateCommission) {
-            createFlatRateCommission(flatRateCommission);
+            createFlatRateCommission(flatRateCommission * 100);
             setSubmitted(true);
         } else if (gasTaxCommission) {
             createGasTaxCommission(gasTaxCommission);
@@ -91,11 +91,20 @@ const CreatePool = () => {
                             onChange={(e) =>
                                 setFlatRateCommission(
                                     e.target.value
-                                        ? parseFloat(e.target.value)
+                                        ? Math.min(
+                                              parseInt(e.target.value),
+                                              100
+                                          )
                                         : 0
                                 )
                             }
                         />
+
+                        <span
+                            className={`input-group-addon addon-inline input-source-observer small-text`}
+                        >
+                            %
+                        </span>
                     </div>
                 </div>
 
@@ -133,6 +142,12 @@ const CreatePool = () => {
                                 )
                             }
                         />
+
+                        <span
+                            className={`input-group-addon addon-inline input-source-observer small-text`}
+                        >
+                            gas
+                        </span>
                     </div>
                 </div>
 
