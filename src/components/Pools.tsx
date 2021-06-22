@@ -60,9 +60,9 @@ const PoolRow = (props: { pool: StakingPool }) => {
 
     // commission help tooptip
     let commissionTooltip: string = undefined;
-    if (pool.commission) {
+    if (pool.fee.commission) {
         commissionTooltip = labels.flatRateCommission;
-    } else if (pool.gas) {
+    } else if (pool.fee.gas) {
         commissionTooltip = labels.gasTaxCommission;
     }
 

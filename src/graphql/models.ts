@@ -43,11 +43,18 @@ export type StakingPool = {
     id: string;
     manager: string;
     user: User;
-    commission: number;
-    gas: number;
+    fee: StakingPoolFee;
     totalUsers: number;
     totalCommission: string;
     timestamp: number;
+};
+
+export type StakingPoolFee = {
+    id: string;
+    commission: number;
+    gas: number;
+    created: number;
+    lastUpdated: number;
 };
 
 export interface StakingPoolData {

@@ -17,11 +17,17 @@ export const STAKINGPOOLS = gql`
         ) {
             id
             manager
-            commission
-            gas
             totalUsers
             totalCommission
             timestamp
+
+            fee {
+                id
+                commission
+                gas
+                created
+                lastUpdated
+            }
 
             user {
                 id

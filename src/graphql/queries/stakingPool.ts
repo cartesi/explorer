@@ -5,11 +5,17 @@ export const STAKINGPOOL = gql`
         stakingPool(id: $id) {
             id
             manager
-            commission
-            gas
             totalUsers
             totalCommission
             timestamp
+
+            fee {
+                id
+                commission
+                gas
+                created
+                lastUpdated
+            }
 
             user {
                 id
