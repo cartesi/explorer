@@ -44,13 +44,21 @@ const PoolCommission = (props: { pool: StakingPool }) => {
     // calculate historical commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
     const totalCommission = FixedNumber.from(pool.totalCommission);
-    const commissionLabel = totalReward.isZero()
+    const accuredCommissionLabel = totalReward.isZero()
         ? ''
         : `${totalCommission
               .divUnsafe(totalReward)
               .mulUnsafe(FixedNumber.from(100))
               .toUnsafeFloat()
               .toFixed(2)} %`;
+
+    // commission label
+    let commissionLabel = '';
+    if (pool.fee.commission) {
+        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
+    } else if (pool.fee.gas) {
+        commissionLabel = `${pool.fee.gas} Gas`;
+    }
 
     // calculate commission for next block, by calling the fee contract
     const nextCommissionLabel = nextCommission.value
@@ -72,7 +80,7 @@ const PoolCommission = (props: { pool: StakingPool }) => {
                 <img data-tip={commissionTooltip} src="/images/question.png" />
             )}
             <span className="info-text-md">
-                {commissionLabel} {nextCommissionLabel}{' '}
+                {accuredCommissionLabel} ({commissionLabel}){' '}
             </span>
         </div>
     );

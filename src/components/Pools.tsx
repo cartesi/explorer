@@ -37,19 +37,26 @@ type Sort =
 
 const PoolRow = (props: { pool: StakingPool }) => {
     const { pool } = props;
-
     const { account } = useWeb3React<Web3Provider>();
 
-    // calculate historical commission
+    // calculate accured commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
     const totalCommission = FixedNumber.from(pool.totalCommission);
-    const commissionLabel = totalReward.isZero()
-        ? ''
+    const accuredCommissionLabel = totalReward.isZero()
+        ? '-'
         : `${totalCommission
               .divUnsafe(totalReward)
               .mulUnsafe(FixedNumber.from(100))
               .toUnsafeFloat()
               .toFixed(2)} %`;
+
+    // commission label
+    let commissionLabel = '';
+    if (pool.fee.commission) {
+        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
+    } else if (pool.fee.gas) {
+        commissionLabel = `${pool.fee.gas} Gas`;
+    }
 
     // calculate commission for next block, by calling the fee contract
     const reward = ethers.utils.parseUnits('2900', 18); // XXX this value should come from the RewardManager
@@ -75,7 +82,7 @@ const PoolRow = (props: { pool: StakingPool }) => {
             <td>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</td>
             <td>{formatCTSI(pool.user.totalReward, 2)} CTSI</td>
             <td>
-                {commissionLabel} ({nextCommissionLabel}){' '}
+                {commissionLabel}{' '}
                 {commissionTooltip && (
                     <img
                         data-tip={commissionTooltip}
@@ -83,6 +90,7 @@ const PoolRow = (props: { pool: StakingPool }) => {
                     />
                 )}
             </td>
+            <td>{accuredCommissionLabel}</td>
             <td>
                 <Link href={'/pools/' + pool.id}>Stake</Link>
                 {account && account.toLowerCase() == pool.manager && (
@@ -161,11 +169,14 @@ const Pools = (props: PoolsProps) => {
                                     <i className="fas fa-arrow-down"></i>
                                 )}
                             </th>
+                            <th className="table-header-text pointer">
+                                Commission
+                            </th>
                             <th
                                 className="table-header-text pointer"
                                 onClick={() => setSort('commission')}
                             >
-                                Commission{' '}
+                                Accrued Commission{' '}
                                 {sort == 'commission' && (
                                     <i className="fas fa-arrow-down"></i>
                                 )}
