@@ -68,7 +68,7 @@ export const useFeeContract = (address: string): Fee => {
     const { library } = useWeb3React<Web3Provider>();
     useEffect(() => {
         if (pool && library) {
-            pool.poolFee().then((feeAddress) => {
+            pool.fee().then((feeAddress) => {
                 setFee(Fee__factory.connect(feeAddress, library));
             });
         }

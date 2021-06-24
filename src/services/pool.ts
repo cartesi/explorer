@@ -45,7 +45,7 @@ export const useStakingPool = (address: string) => {
     const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
         constants.Zero
     );
-    const [isLocked, setIsLocked] = useState<Boolean>(false);
+    const [paused, setPaused] = useState<Boolean>(false);
 
     useEffect(() => {
         if (stakingPool && account) {
@@ -62,7 +62,7 @@ export const useStakingPool = (address: string) => {
                 );
             stakingPool.getMaturingBalance(account).then(setMaturingBalance);
             stakingPool.getReleasingBalance(account).then(setReleasingBalance);
-            stakingPool.isLocked().then(setIsLocked);
+            stakingPool.paused().then(setPaused);
         }
     }, [stakingPool, account, blockNumber]);
 
@@ -109,20 +109,20 @@ export const useStakingPool = (address: string) => {
         }
     };
 
-    const lock = () => {
+    const pause = () => {
         if (stakingPool) {
             try {
-                setTransaction(stakingPool.lock());
+                setTransaction(stakingPool.pause());
             } catch (e) {
                 setError(e.message);
             }
         }
     };
 
-    const unlock = () => {
+    const unpause = () => {
         if (stakingPool) {
             try {
-                setTransaction(stakingPool.unlock());
+                setTransaction(stakingPool.unpause());
             } catch (e) {
                 setError(e.message);
             }
@@ -168,13 +168,13 @@ export const useStakingPool = (address: string) => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        isLocked,
+        paused,
         stake,
         unstake,
         withdraw,
         setName,
-        lock,
-        unlock,
+        pause,
+        unpause,
         hire,
         cancelHire,
         retire,

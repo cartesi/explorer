@@ -92,12 +92,15 @@ const PoolRow = (props: { pool: StakingPool }) => {
             </td>
             <td>{accuredCommissionLabel}</td>
             <td>
-                <Link href={'/pools/' + pool.id}>Stake</Link>
                 {account && account.toLowerCase() == pool.manager && (
                     <>
                         <span className="ml-2" />
                         <Link href={'/pools/' + pool.id + '/edit'}>Edit</Link>
                     </>
+                )}{' '}
+                <Link href={'/pools/' + pool.id}>Stake</Link>{' '}
+                {pool.paused && (
+                    <i className="fa fa-lock" aria-hidden="true"></i>
                 )}
             </td>
         </tr>

@@ -96,6 +96,7 @@ const Pool = () => {
     const {
         staking,
         stakedBalance,
+        paused,
         maturingTimestamp,
         releasingTimestamp,
         maturingBalance,
@@ -496,7 +497,13 @@ const Pool = () => {
                                 ${stakeTab ? 'active' : ''}`}
                             onClick={() => setStakeTab(true)}
                         >
-                            Stake
+                            Stake{' '}
+                            {paused && (
+                                <i
+                                    className="fa fa-lock"
+                                    aria-hidden="true"
+                                ></i>
+                            )}
                         </div>
                         <div
                             className={`staking-ops-tab body-text-1 
@@ -610,6 +617,7 @@ const Pool = () => {
                                 <button
                                     type="button"
                                     disabled={
+                                        paused.valueOf() ||
                                         isInfinite(stakeAmount) ||
                                         !account ||
                                         waiting ||
@@ -618,7 +626,13 @@ const Pool = () => {
                                     className="btn btn-dark py-2 mt-2 button-text flex-fill"
                                     onClick={doApproveOrStake}
                                 >
-                                    Stake
+                                    Stake{' '}
+                                    {paused && (
+                                        <i
+                                            className="fa fa-lock"
+                                            aria-hidden="true"
+                                        ></i>
+                                    )}
                                 </button>
 
                                 {stakeSplit ? (

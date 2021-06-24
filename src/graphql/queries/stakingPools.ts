@@ -19,6 +19,7 @@ export const STAKINGPOOLS = gql`
             manager
             totalUsers
             totalCommission
+            paused
             timestamp
 
             fee {

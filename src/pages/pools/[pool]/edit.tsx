@@ -29,12 +29,12 @@ const ManagePool = () => {
 
     const {
         setName,
-        lock,
-        unlock,
+        pause,
+        unpause,
         hire,
         cancelHire,
         retire,
-        isLocked,
+        paused,
         waiting: poolWaiting,
         error: poolError,
     } = useStakingPool(pool as string);
@@ -86,15 +86,15 @@ const ManagePool = () => {
 
                 <div className="manage-pool-item form-group">
                     <span className="body-text-2 text-secondary manage-pool-item-label">
-                        Pool is currently {isLocked ? 'locked' : 'unlocked'}
+                        Pool is currently {paused ? 'paused' : 'unpaused'}
                     </span>
 
                     <button
                         type="button"
                         className="btn btn-dark py-0 mx-3 button-text"
-                        onClick={() => (isLocked ? unlock() : lock())}
+                        onClick={() => (paused ? unpause() : pause())}
                     >
-                        {isLocked ? 'Unlock' : 'Lock'}
+                        {paused ? 'Unpause' : 'Pause'}
                     </button>
                 </div>
             </div>

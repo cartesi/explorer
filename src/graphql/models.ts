@@ -46,6 +46,7 @@ export type StakingPool = {
     fee: StakingPoolFee;
     totalUsers: number;
     totalCommission: string;
+    paused: boolean;
     timestamp: number;
 };
 
