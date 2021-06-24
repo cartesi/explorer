@@ -27,8 +27,14 @@ const CreatePool = () => {
     const [isFlatRateCommission, setIsFlatRateCommission] = useState(true);
     const [submitted, setSubmitted] = useState(false);
     const router = useRouter();
-    const { waiting, error, createFlatRateCommission, createGasTaxCommission } =
-        useStakingPoolFactory();
+    const {
+        waiting,
+        error,
+        createFlatRateCommission,
+        createGasTaxCommission,
+        loading,
+        paused,
+    } = useStakingPoolFactory();
 
     const createPool = () => {
         if (isFlatRateCommission && flatRateCommission) {
@@ -178,11 +184,15 @@ const CreatePool = () => {
                     onClick={createPool}
                     disabled={
                         !account ||
+                        paused ||
                         (isFlatRateCommission && !flatRateCommission) ||
                         (!isFlatRateCommission && !gasTaxCommission)
                     }
                 >
-                    Create Pool
+                    Create Pool{' '}
+                    {paused && (
+                        <i className="fa fa-lock" aria-hidden="true"></i>
+                    )}
                 </button>
             </div>
         </Layout>

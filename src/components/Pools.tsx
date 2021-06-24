@@ -23,6 +23,7 @@ import { formatCTSI } from '../utils/token';
 import { ethers, FixedNumber } from 'ethers';
 import { useStakingPoolCommission } from '../services/pool';
 import labels from '../utils/labels';
+import { useStakingPoolFactory } from '../services/poolFactory';
 
 interface PoolsProps {
     summary: Summary;
@@ -112,17 +113,21 @@ const Pools = (props: PoolsProps) => {
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { summary } = props;
-    const { data, loading } = useStakingPools(pageNumber, id);
+    const { data, loading: poolLoading } = useStakingPools(pageNumber, id);
     const totalPoolsPages = summary
         ? Math.ceil(summary.totalPools / POOLS_PER_PAGE)
         : 1;
 
+    const { paused, loading: factoryLoading } = useStakingPoolFactory();
+
     return (
         <div className="pools">
             <div className="pools-title mt-5 mb-2">
-                <div className="pools-title-create body-text-1">
-                    <Link href="/pools/create">Create New Pool</Link>
-                </div>
+                {!factoryLoading && !paused && (
+                    <div className="pools-title-create body-text-1">
+                        <Link href="/pools/create">Create New Pool</Link>
+                    </div>
+                )}
                 <div className="input-with-icon input-group">
                     <span>
                         <i className="fas fa-search"></i>
@@ -189,7 +194,7 @@ const Pools = (props: PoolsProps) => {
                     </thead>
 
                     <tbody>
-                        {loading || !data?.stakingPools ? (
+                        {poolLoading || !data?.stakingPools ? (
                             <tr>
                                 <td colSpan={6} className="text-center">
                                     <span

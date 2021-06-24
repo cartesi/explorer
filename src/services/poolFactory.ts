@@ -10,13 +10,22 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { BigNumber } from '@ethersproject/bignumber';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import { useEffect, useState } from 'react';
 import { useStakingPoolFactoryContract } from './contracts';
+import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
 
 export const useStakingPoolFactory = () => {
     const poolFactory = useStakingPoolFactoryContract();
 
+    const { account } = useWeb3React<Web3Provider>();
+    const blockNumber = useBlockNumber();
+
     const { waiting, error, setError, setTransaction } = useTransaction();
+    const [paused, setPaused] = useState<boolean>(false);
+    const [loading, setLoading] = useState<Boolean>(true);
 
     const createFlatRateCommission = (commission: number) => {
         if (poolFactory) {
@@ -48,9 +57,21 @@ export const useStakingPoolFactory = () => {
         }
     };
 
+    // query paused flag
+    useEffect(() => {
+        if (poolFactory && account) {
+            poolFactory.paused().then((paused) => {
+                setPaused(paused);
+                setLoading(false);
+            });
+        }
+    }, [poolFactory, account, blockNumber]);
+
     return {
         createFlatRateCommission,
         createGasTaxCommission,
+        paused,
+        loading,
         error,
         waiting,
     };
