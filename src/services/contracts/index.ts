@@ -178,6 +178,8 @@ export const useCartesiTokenContract = (): CartesiToken => {
 export const useStakingContract = pos.useStakingContract;
 export const useStakingPoolContract = pos.useStakingPoolContract;
 export const useFeeContract = pos.useFeeContract;
+export const useFlatRateCommissionContract = pos.useFlatRateCommissionContract;
+export const useGasTaxCommissionContract = pos.useGasTaxCommissionContract;
 export const usePoSContract = pos.usePoSContract;
 export const usePoS1Contract = pos1.usePoSContract;
 export const useStakingPoolFactoryContract = pos.useStakingPoolFactoryContract;

@@ -21,6 +21,10 @@ import {
     Fee__factory,
     StakingPoolFactoryImpl,
     StakingPoolFactoryImpl__factory,
+    FlatRateCommission,
+    FlatRateCommission__factory,
+    GasTaxCommission,
+    GasTaxCommission__factory,
 } from '@cartesi/pos-private';
 
 import mainnet from '@cartesi/pos-private/export/abi/mainnet.json';
@@ -73,5 +77,41 @@ export const useFeeContract = (address: string): Fee => {
             });
         }
     }, [address, pool, library]);
+    return fee;
+};
+
+export const useFlatRateCommissionContract = (
+    address: string
+): FlatRateCommission => {
+    const [fee, setFee] = useState<FlatRateCommission>();
+    const pool = useStakingPoolContract(address);
+    const { library } = useWeb3React<Web3Provider>();
+    useEffect(() => {
+        if (pool && library) {
+            pool.fee().then((feeAddress) => {
+                setFee(
+                    FlatRateCommission__factory.connect(feeAddress, library)
+                );
+            });
+        }
+    }, [address, pool, library]);
+
+    return fee;
+};
+
+export const useGasTaxCommissionContract = (
+    address: string
+): GasTaxCommission => {
+    const [fee, setFee] = useState<GasTaxCommission>();
+    const pool = useStakingPoolContract(address);
+    const { library } = useWeb3React<Web3Provider>();
+    useEffect(() => {
+        if (pool && library) {
+            pool.fee().then((feeAddress) => {
+                setFee(GasTaxCommission__factory.connect(feeAddress, library));
+            });
+        }
+    }, [address, pool, library]);
+
     return fee;
 };

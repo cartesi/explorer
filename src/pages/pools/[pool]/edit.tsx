@@ -9,19 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { useStakingPool } from '../../../services/pool';
+import {
+    useFlatRateCommission,
+    useGasTaxCommission,
+    useStakingPool,
+} from '../../../services/pool';
+import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 
 import Layout from '../../../components/Layout';
 import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
 import PoolNode from '../../../components/PoolNode';
+import { useENS } from '../../../services/ens';
+import { tinyString } from '../../../utils/stringUtils';
 
 const ManagePool = () => {
     const router = useRouter();
     const { pool } = router.query;
+    // resolve address to name (if possible)
+    const ensEntry = useENS(pool as string);
 
     const [poolName, setPoolName] = useState('');
     const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
@@ -31,16 +40,51 @@ const ManagePool = () => {
         setName,
         pause,
         unpause,
-        hire,
-        cancelHire,
-        retire,
         paused,
         waiting: poolWaiting,
         error: poolError,
     } = useStakingPool(pool as string);
 
-    const waiting = poolWaiting || nodeWaiting;
-    const error = poolError || nodeError;
+    const stakingPool = useStakingPoolQuery(pool as string);
+    const [commission, setCommission] = useState(0);
+
+    const {
+        setRate,
+        waiting: rateWaiting,
+        error: rateError,
+    } = useFlatRateCommission(pool as string);
+
+    const {
+        setGas,
+        waiting: gasWaiting,
+        error: gasError,
+    } = useGasTaxCommission(pool as string);
+
+    useEffect(() => {
+        if (stakingPool?.fee) {
+            setCommission(
+                (stakingPool?.fee?.commission || stakingPool?.fee?.gas) / 100
+            );
+        }
+    }, [stakingPool?.fee]);
+
+    const waiting = poolWaiting || nodeWaiting || rateWaiting || gasWaiting;
+    const error = poolError || nodeError || rateError || gasError;
+
+    const updateCommission = (newCommission: number) => {
+        if (!stakingPool?.fee) return;
+        if (
+            (stakingPool?.fee?.commission || stakingPool?.fee?.gas) / 100 ==
+            newCommission
+        )
+            return;
+
+        if (stakingPool?.fee?.commission) {
+            setRate(newCommission);
+        } else {
+            setGas(newCommission);
+        }
+    };
 
     return (
         <Layout className="pools">
@@ -51,7 +95,7 @@ const ManagePool = () => {
 
             <div className="page-header pb-4">
                 <div className="info-text-md text-white d-flex flex-row">
-                    Edit Pool
+                    Edit Pool: {ensEntry.name || tinyString(ensEntry.address)}
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
             </div>
@@ -62,6 +106,53 @@ const ManagePool = () => {
                     setWaiting={setNodeWaiting}
                     setError={setNodeError}
                 />
+
+                <div className="manage-pool-item form-group">
+                    <span className="body-text-2 text-secondary manage-pool-item-label">
+                        Current Fee Model:
+                    </span>
+                    <span className="body-text-2 text-secondary manage-pool-item-label">
+                        {!stakingPool?.fee
+                            ? ''
+                            : stakingPool.fee.commission
+                            ? `${
+                                  stakingPool?.fee?.commission / 100
+                              }% Flat Rate Commission`
+                            : `${
+                                  stakingPool?.fee?.gas / 100
+                              }% Gas Tax Commission`}
+                    </span>
+                </div>
+
+                <div className="manage-pool-item form-group">
+                    <span className="body-text-2 text-secondary manage-pool-item-label">
+                        Set Commission
+                    </span>
+                    <input
+                        className="addon-inline form-control manage-pool-item-input"
+                        id="commission"
+                        value={commission}
+                        type="number"
+                        onChange={(e) =>
+                            setCommission(
+                                Math.min(
+                                    parseFloat(e.target.value),
+                                    (stakingPool?.fee?.commission ||
+                                        stakingPool?.fee?.gas) / 100
+                                )
+                            )
+                        }
+                    />
+
+                    <button
+                        type="button"
+                        className="btn btn-dark py-0 mx-3 button-text"
+                        onClick={() => updateCommission(commission)}
+                        disabled={!stakingPool?.fee}
+                    >
+                        Set Commission
+                    </button>
+                </div>
 
                 <div className="manage-pool-item form-group">
                     <span className="body-text-2 text-secondary manage-pool-item-label">

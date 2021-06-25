@@ -14,8 +14,15 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { useBlockNumber } from './eth';
-import { useStakingPoolContract, useFeeContract } from './contracts';
+import {
+    useStakingPoolContract,
+    useFeeContract,
+    useFlatRateCommissionContract,
+    useGasTaxCommissionContract,
+} from './contracts';
 import { useTransaction } from './transaction';
+
+import { FlatRateCommission, GasTaxCommission } from '@cartesi/pos-private';
 
 enum StakingPoolCommissionModel {
     FlatRate,
@@ -190,6 +197,7 @@ export const useStakingPoolCommission = (
         value: undefined,
         loading: false,
     });
+
     useEffect(() => {
         if (fee) {
             setCommission({
@@ -207,5 +215,48 @@ export const useStakingPoolCommission = (
             });
         }
     }, [fee]);
+
     return commission;
+};
+
+export const useFlatRateCommission = (address: string) => {
+    const fee = useFlatRateCommissionContract(address);
+    const { waiting, error, setError, setTransaction } = useTransaction();
+
+    const setRate = (rate: number) => {
+        if (fee) {
+            try {
+                setTransaction((fee as FlatRateCommission).setRate(rate));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    return {
+        setRate,
+        waiting,
+        error,
+    };
+};
+
+export const useGasTaxCommission = (address: string) => {
+    const fee = useGasTaxCommissionContract(address);
+    const { waiting, error, setError, setTransaction } = useTransaction();
+
+    const setGas = (gas: number) => {
+        if (fee) {
+            try {
+                setTransaction((fee as GasTaxCommission).setGas(gas));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    return {
+        setGas,
+        waiting,
+        error,
+    };
 };
