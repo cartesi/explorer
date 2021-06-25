@@ -433,7 +433,7 @@ const Staking = () => {
                                                     : ''
                                             }`}
                                             id="stakeAmount"
-                                            value={stakeAmount.toString()}
+                                            value={stakeAmount}
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setStakeAmount(
@@ -584,7 +584,7 @@ const Staking = () => {
                                                 unstakeSplit ? '' : 'error'
                                             }`}
                                             id="unstakeAmount"
-                                            value={unstakeAmount.toString()}
+                                            value={unstakeAmount}
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setUnstakeAmount(
