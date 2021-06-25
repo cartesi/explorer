@@ -224,10 +224,13 @@ export const useFlatRateCommission = (address: string) => {
     const { waiting, error, setError, setTransaction } = useTransaction();
 
     const setRate = (rate: number) => {
+        console.log('1212~~~', fee);
         if (fee) {
             try {
-                setTransaction((fee as FlatRateCommission).setRate(rate));
+                console.log('~~~', fee.setRate(rate), rate);
+                setTransaction(fee.setRate(rate));
             } catch (e) {
+                console.log('1~~~', e);
                 setError(e.message);
             }
         }
@@ -247,7 +250,7 @@ export const useGasTaxCommission = (address: string) => {
     const setGas = (gas: number) => {
         if (fee) {
             try {
-                setTransaction((fee as GasTaxCommission).setGas(gas));
+                setTransaction(fee.setGas(gas));
             } catch (e) {
                 setError(e.message);
             }

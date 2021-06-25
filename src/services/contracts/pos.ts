@@ -83,35 +83,35 @@ export const useFeeContract = (address: string): Fee => {
 export const useFlatRateCommissionContract = (
     address: string
 ): FlatRateCommission => {
-    const [fee, setFee] = useState<FlatRateCommission>();
+    const [feeAddress, setFeeAddress] = useState<string>();
     const pool = useStakingPoolContract(address);
-    const { library } = useWeb3React<Web3Provider>();
-    useEffect(() => {
-        if (pool && library) {
-            pool.fee().then((feeAddress) => {
-                setFee(
-                    FlatRateCommission__factory.connect(feeAddress, library)
-                );
-            });
-        }
-    }, [address, pool, library]);
 
-    return fee;
+    useEffect(() => {
+        if (pool) {
+            pool.fee().then(setFeeAddress);
+        }
+    }, [address, pool]);
+
+    return useContractFromAddress(
+        FlatRateCommission__factory.connect,
+        feeAddress
+    );
 };
 
 export const useGasTaxCommissionContract = (
     address: string
 ): GasTaxCommission => {
-    const [fee, setFee] = useState<GasTaxCommission>();
+    const [feeAddress, setFeeAddress] = useState<string>();
     const pool = useStakingPoolContract(address);
-    const { library } = useWeb3React<Web3Provider>();
-    useEffect(() => {
-        if (pool && library) {
-            pool.fee().then((feeAddress) => {
-                setFee(GasTaxCommission__factory.connect(feeAddress, library));
-            });
-        }
-    }, [address, pool, library]);
 
-    return fee;
+    useEffect(() => {
+        if (pool) {
+            pool.fee().then(setFeeAddress);
+        }
+    }, [address, pool]);
+
+    return useContractFromAddress(
+        GasTaxCommission__factory.connect,
+        feeAddress
+    );
 };
