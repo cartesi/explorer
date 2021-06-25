@@ -115,7 +115,7 @@ const Pool = () => {
         waiting: tokenWaiting,
         approve,
         parseCTSI,
-        toBigCTSI,
+        toCTSI,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
     const stakingPool = useStakingPoolQuery(pool as string);
@@ -125,13 +125,9 @@ const Pool = () => {
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
-    const [stakeAmount, setStakeAmount] = useState<BigNumber>(
-        BigNumber.from(0)
-    );
+    const [stakeAmount, setStakeAmount] = useState<number>(0);
     const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
-    const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
-        BigNumber.from(0)
-    );
+    const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
@@ -188,10 +184,10 @@ const Pool = () => {
     };
 
     const doApprove = () => {
-        if (stakeAmount.gt(0)) {
+        if (stakeAmount > 0) {
             if (infiniteApproval) {
                 approve(staking.address, constants.MaxUint256);
-            } else if (!stakeAmount.eq(toBigCTSI(allowance))) {
+            } else if (stakeAmount != toCTSI(allowance)) {
                 approve(staking.address, parseCTSI(stakeAmount));
             }
         }
@@ -200,16 +196,16 @@ const Pool = () => {
     const doApproveOrStake = () => {
         if (!stakeSplit) {
             doApprove();
-        } else if (stakeAmount.gt(0)) {
+        } else if (stakeAmount > 0) {
             stake(parseCTSI(stakeAmount));
-            setStakeAmount(BigNumber.from(0));
+            setStakeAmount(0);
         }
     };
 
     const doUnstake = () => {
-        if (unstakeAmount.gt(0)) {
+        if (unstakeAmount > 0) {
             unstake(parseCTSI(unstakeAmount));
-            setUnstakeAmount(BigNumber.from(0));
+            setUnstakeAmount(0);
         }
     };
 
@@ -541,9 +537,7 @@ const Pool = () => {
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setStakeAmount(
-                                                    BigNumber.from(
-                                                        validate(e.target.value)
-                                                    )
+                                                    parseFloat(e.target.value)
                                                 )
                                             }
                                         />
@@ -692,9 +686,7 @@ const Pool = () => {
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setUnstakeAmount(
-                                                    BigNumber.from(
-                                                        validate(e.target.value)
-                                                    )
+                                                    parseFloat(e.target.value)
                                                 )
                                             }
                                         />

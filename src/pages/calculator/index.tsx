@@ -42,10 +42,8 @@ const Calculator = (props: Props) => {
     const [period, setPeriod] = useState<number>(100);
 
     // get market information (we need circulation supply)
-    const {
-        marketInformation,
-        error: marketInfomationError,
-    } = useMarketInformation();
+    const { marketInformation, error: marketInfomationError } =
+        useMarketInformation();
     const { parseCTSI, toCTSI } = useCartesiToken();
 
     // total staked simulation
@@ -108,7 +106,7 @@ const Calculator = (props: Props) => {
                                     setStake(
                                         parseCTSI(
                                             event.target.value
-                                                ? event.target.value
+                                                ? parseFloat(event.target.value)
                                                 : 1
                                         )
                                     )

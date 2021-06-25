@@ -47,8 +47,9 @@ export const useCartesiToken = (
         }
     };
 
-    const parseCTSI = (amount: BigNumberish): BigNumber => {
-        return parseUnits(amount.toString(), 18);
+    const parseCTSI = (amount: number): BigNumber => {
+        amount = amount * 1000;
+        return parseUnits(amount.toString(), 15);
     };
 
     const toCTSI = (amount: BigNumberish): number => {
