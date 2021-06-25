@@ -34,7 +34,9 @@ const PoolNode = ({ poolAddress, setWaiting, setError }: NodeProps) => {
     // get nodes hired by user from backend (if any)
     const userNodes = useUserNodes(poolAddress);
     const existingNode =
-        userNodes.data?.nodes?.length > 0 && userNodes.data.nodes[0].id;
+        userNodes.data?.nodes?.length > 0 &&
+        userNodes.data.nodes[0].id != poolAddress &&
+        userNodes.data.nodes[0].id;
 
     // use a state variable for the typed node address
     const [address, setAddress] = useState<string>(
