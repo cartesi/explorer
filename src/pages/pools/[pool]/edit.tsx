@@ -60,11 +60,12 @@ const ManagePool = () => {
         error: gasError,
     } = useGasTaxCommission(pool as string);
 
+    const initialCommission =
+        stakingPool?.fee?.commission / 100 || stakingPool?.fee?.gas;
+
     useEffect(() => {
         if (stakingPool?.fee) {
-            setCommission(
-                (stakingPool?.fee?.commission || stakingPool?.fee?.gas) / 100
-            );
+            setCommission(initialCommission);
         }
     }, [stakingPool?.fee]);
 
@@ -73,16 +74,12 @@ const ManagePool = () => {
 
     const updateCommission = (newCommission: number) => {
         if (!stakingPool?.fee) return;
-        if (
-            (stakingPool?.fee?.commission || stakingPool?.fee?.gas) / 100 ==
-            newCommission
-        )
-            return;
+        if (initialCommission == newCommission) return;
 
         if (stakingPool?.fee?.commission) {
-            setRate(newCommission);
+            setRate(Math.ceil(newCommission * 100));
         } else {
-            setGas(newCommission);
+            setGas(Math.ceil(newCommission));
         }
     };
 
@@ -118,9 +115,7 @@ const ManagePool = () => {
                             ? `${
                                   stakingPool?.fee?.commission / 100
                               }% Flat Rate Commission`
-                            : `${
-                                  stakingPool?.fee?.gas / 100
-                              }% Gas Tax Commission`}
+                            : `${stakingPool?.fee?.gas} Gas Tax Commission`}
                     </span>
                 </div>
 
@@ -128,30 +123,41 @@ const ManagePool = () => {
                     <span className="body-text-2 text-secondary manage-pool-item-label">
                         Set Commission
                     </span>
-                    <input
-                        className="addon-inline form-control manage-pool-item-input"
-                        id="commission"
-                        value={commission}
-                        type="number"
-                        onChange={(e) =>
-                            setCommission(
-                                Math.min(
-                                    parseFloat(e.target.value),
-                                    (stakingPool?.fee?.commission ||
-                                        stakingPool?.fee?.gas) / 100
-                                )
-                            )
-                        }
-                    />
+
+                    <div className="input-group manage-pool-item-input">
+                        <input
+                            className="addon-inline form-control"
+                            id="commission"
+                            value={commission}
+                            type="number"
+                            onChange={(e) =>
+                                setCommission(parseFloat(e.target.value))
+                            }
+                        />
+
+                        <span
+                            className={`input-group-addon addon-inline input-source-observer small-text`}
+                        >
+                            {stakingPool?.fee?.commission ? '%' : 'gas'}
+                        </span>
+                    </div>
 
                     <button
                         type="button"
                         className="btn btn-dark py-0 mx-3 button-text"
                         onClick={() => updateCommission(commission)}
-                        disabled={!stakingPool?.fee}
+                        disabled={
+                            !stakingPool?.fee || commission > initialCommission
+                        }
                     >
                         Set Commission
                     </button>
+
+                    {commission > initialCommission && (
+                        <span className="manage-pool-item-input-error">
+                            New commission must be smaller than the current one
+                        </span>
+                    )}
                 </div>
 
                 <div className="manage-pool-item form-group">

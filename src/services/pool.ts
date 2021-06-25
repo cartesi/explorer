@@ -22,13 +22,6 @@ import {
 } from './contracts';
 import { useTransaction } from './transaction';
 
-import { FlatRateCommission, GasTaxCommission } from '@cartesi/pos-private';
-
-enum StakingPoolCommissionModel {
-    FlatRate,
-    GasTax,
-}
-
 export interface StakingPoolCommission {
     value: number;
     loading: boolean;
@@ -224,13 +217,10 @@ export const useFlatRateCommission = (address: string) => {
     const { waiting, error, setError, setTransaction } = useTransaction();
 
     const setRate = (rate: number) => {
-        console.log('1212~~~', fee);
         if (fee) {
             try {
-                console.log('~~~', fee.setRate(rate), rate);
                 setTransaction(fee.setRate(rate));
             } catch (e) {
-                console.log('1~~~', e);
                 setError(e.message);
             }
         }

@@ -17,6 +17,11 @@
 
         &-input {
             max-width: 30%;
+
+            &-error {
+                color: red;
+                font-size: small;
+            }
         }
     }
 }
