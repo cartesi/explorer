@@ -140,6 +140,13 @@ const ManagePool = () => {
                         >
                             {stakingPool?.fee?.commission ? '%' : 'gas'}
                         </span>
+
+                        {commission > initialCommission && (
+                            <span className="manage-pool-item-input-error">
+                                New commission must be smaller than the current
+                                one
+                            </span>
+                        )}
                     </div>
 
                     <button
@@ -152,12 +159,6 @@ const ManagePool = () => {
                     >
                         Set Commission
                     </button>
-
-                    {commission > initialCommission && (
-                        <span className="manage-pool-item-input-error">
-                            New commission must be smaller than the current one
-                        </span>
-                    )}
                 </div>
 
                 <div className="manage-pool-item form-group">
