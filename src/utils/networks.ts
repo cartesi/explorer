@@ -11,7 +11,6 @@
 
 export const networks = {
     1: 'mainnet',
-    5: 'goerli',
     31337: 'localhost',
 };
 
