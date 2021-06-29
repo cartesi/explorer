@@ -14,6 +14,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 const uris = {
     1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos',
+    3: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-ropsten',
     5: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
     31337: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
 };
