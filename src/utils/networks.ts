@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const networks = {
-    1: 'mainnet',
     3: 'ropsten',
     5: 'goerli',
     31337: 'localhost',
