@@ -13,6 +13,7 @@ import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import {
     useCartesiTokenContract,
+    useSimpleFaucetContract,
     usePoSContract,
     useStakingContract,
     useStakingPoolFactoryContract,
@@ -25,6 +26,7 @@ const Footer = () => {
 
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
+    const faucet = useSimpleFaucetContract();
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
     const poolFactory = useStakingPoolFactoryContract();
@@ -80,6 +82,15 @@ const Footer = () => {
                             <Address
                                 type="address"
                                 id={token?.address}
+                                rawLink={true}
+                            />
+                        </div>
+
+                        <div className="d-flex flex-row align-start my-1">
+                            CTSI Faucet:
+                            <Address
+                                type="address"
+                                id={faucet?.address}
                                 rawLink={true}
                             />
                         </div>

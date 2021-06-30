@@ -19,7 +19,12 @@ import {
     WorkerManagerAuthManagerImpl__factory,
     WorkerManagerAuthManagerImpl,
 } from '@cartesi/util';
-import { CartesiToken, CartesiToken__factory } from '@cartesi/token';
+import {
+    CartesiToken,
+    CartesiToken__factory,
+    SimpleFaucet,
+    SimpleFaucet__factory,
+} from '@cartesi/token';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
@@ -177,6 +182,14 @@ export const useCartesiTokenContract = (): CartesiToken => {
         CartesiToken__factory.connect,
         tokenAbis,
         'CartesiToken'
+    );
+};
+
+export const useSimpleFaucetContract = (): SimpleFaucet => {
+    return useContract(
+        SimpleFaucet__factory.connect,
+        tokenAbis,
+        'SimpleFaucet'
     );
 };
 
