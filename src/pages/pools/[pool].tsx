@@ -537,7 +537,11 @@ const Pool = () => {
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setStakeAmount(
-                                                    parseFloat(e.target.value)
+                                                    e.target.value
+                                                        ? parseFloat(
+                                                              e.target.value
+                                                          )
+                                                        : 0
                                                 )
                                             }
                                         />
@@ -686,7 +690,11 @@ const Pool = () => {
                                             disabled={!account || waiting}
                                             onChange={(e) =>
                                                 setUnstakeAmount(
-                                                    parseFloat(e.target.value)
+                                                    e.target.value
+                                                        ? parseFloat(
+                                                              e.target.value
+                                                          )
+                                                        : 0
                                                 )
                                             }
                                         />
