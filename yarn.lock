@@ -174,17 +174,6 @@
   optionalDependencies:
     fsevents "^2.1.3"
 
-"@cartesi/pos@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-1.1.1.tgz#521b2a8c34fc509a177b1ecb8d931e9f83c17af7"
-  integrity sha512-P2mpDnGOwblB6F0eHyTFxxsnnX+fA2fHskdvDNLmgRfR7fRJXIg5wYam9WWrxkTbNz9iMphRU7wG3n4YunEGxQ==
-  dependencies:
-    "@cartesi/token" "^1.3.0"
-    "@cartesi/util" "^1.0.1"
-    "@openzeppelin/contracts" "3.2.1-solc-0.7"
-  optionalDependencies:
-    fsevents "^2.3.2"
-
 "@cartesi/pos@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-1.1.2.tgz#8527a4bc5eae0f841d5a285bb7c2424f360fc405"
@@ -196,12 +185,12 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/staking-pool@^1.0.0-alpha.1":
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0-alpha.1.tgz#e0a07ee8d399bd2958bb6a08eeeb1cc5f9bd8ea0"
-  integrity sha512-QMpthtcMoE+1ezso+j/3wXxWIVIQm51PUPpVyWya2bCoWUIQrkhN4nssUxczoNQrE3hOB9wRr7z/Rw3g1+y6IA==
+"@cartesi/staking-pool@^1.0.0-alpha.2":
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0-alpha.2.tgz#cc734ebecd19f92bc39ba04abb8ea43ed6957966"
+  integrity sha512-lNW/aW92gh+EcxfGCXF7H+z6+DQAYvuzq1ul3aeIg8NnucmRzO5kHJsmt0NVT4A684mLxUkbmIVQ34zC+8jjzA==
   dependencies:
-    "@cartesi/pos" "^1.1.1"
+    "@cartesi/pos" "^1.1.2"
     "@chainlink/contracts" "^0.1.9"
     "@ensdomains/ens-contracts" "^0.0.5"
     "@openzeppelin/contracts" "^4.1.0"
