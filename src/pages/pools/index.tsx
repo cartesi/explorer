@@ -11,12 +11,17 @@
 
 import React from 'react';
 import Head from 'next/head';
+import { NextRouter, withRouter } from 'next/router';
 
 import Layout from '../../components/Layout';
 import PoolsTable from '../../components/Pools';
 import useSummary from '../../graphql/hooks/useSummary';
 
-const Pools = () => {
+interface PoolsProps {
+    router: NextRouter;
+}
+
+const Pools = ({ router }: PoolsProps) => {
     const summary = useSummary();
 
     return (
@@ -30,9 +35,12 @@ const Pools = () => {
                 <div className="info-text-md text-white">Staking Pools</div>
             </div>
 
-            <PoolsTable summary={summary} />
+            <PoolsTable
+                summary={summary}
+                refresh={(router.query.refresh as string) == 'true'}
+            />
         </Layout>
     );
 };
 
-export default Pools;
+export default withRouter(Pools);

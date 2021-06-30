@@ -32,7 +32,6 @@ const CreatePool = () => {
         error,
         createFlatRateCommission,
         createGasTaxCommission,
-        loading,
         paused,
     } = useStakingPoolFactory();
 
@@ -48,7 +47,10 @@ const CreatePool = () => {
 
     useEffect(() => {
         if (!waiting && submitted && !error) {
-            router.push('/pools');
+            router.push({
+                pathname: '/pools',
+                query: { refresh: true },
+            });
         }
     }, [waiting, error]);
 
@@ -93,7 +95,7 @@ const CreatePool = () => {
                             className="addon-inline form-control"
                             id="flatRateCommission"
                             value={flatRateCommission}
-                            disabled={!isFlatRateCommission}
+                            disabled={!isFlatRateCommission || waiting}
                             onChange={(e) =>
                                 setFlatRateCommission(
                                     e.target.value
@@ -127,7 +129,7 @@ const CreatePool = () => {
                             type="radio"
                             name="commissionType"
                             id="gasTaxCommission"
-                            checked={!isFlatRateCommission}
+                            checked={!isFlatRateCommission || waiting}
                             onChange={(e) =>
                                 setIsFlatRateCommission(!e.target.checked)
                             }
@@ -183,6 +185,7 @@ const CreatePool = () => {
                     className="btn btn-dark py-0 mt-2 button-text flex-fill"
                     onClick={createPool}
                     disabled={
+                        waiting ||
                         !account ||
                         paused ||
                         (isFlatRateCommission && !flatRateCommission) ||

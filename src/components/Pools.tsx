@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -27,6 +27,7 @@ import { useStakingPoolFactory } from '../services/poolFactory';
 
 interface PoolsProps {
     summary: Summary;
+    refresh: boolean;
 }
 
 type Sort =
@@ -108,17 +109,26 @@ const PoolRow = (props: { pool: StakingPool }) => {
     );
 };
 
-const Pools = (props: PoolsProps) => {
+const Pools = ({ refresh, summary }: PoolsProps) => {
     const [id, setId] = useState<string>(undefined);
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const { summary } = props;
-    const { data, loading: poolLoading } = useStakingPools(pageNumber, id);
+    const {
+        data,
+        loading: poolLoading,
+        refetch,
+    } = useStakingPools(pageNumber, id);
     const totalPoolsPages = summary
         ? Math.ceil(summary.totalPools / POOLS_PER_PAGE)
         : 1;
 
     const { paused, loading: factoryLoading } = useStakingPoolFactory();
+
+    useEffect(() => {
+        if (refresh) {
+            refetch();
+        }
+    }, [refresh]);
 
     return (
         <div className="pools">
