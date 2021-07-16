@@ -35,6 +35,11 @@ export const useENS = (address: string): ENSEntry => {
             // convert address to checksum address
             address = ethers.utils.getAddress(address);
 
+            if (!library.network?.ensAddress) {
+                // network does not support ENS
+                return { address, resolving: false };
+            }
+
             // do a reverse lookup
             const name = await library.lookupAddress(address);
 
