@@ -122,7 +122,7 @@ const Pools = ({ refresh, summary }: PoolsProps) => {
         ? Math.ceil(summary.totalPools / POOLS_PER_PAGE)
         : 1;
 
-    const { paused, loading: factoryLoading } = useStakingPoolFactory();
+    const { paused, loading: factoryLoading, ready } = useStakingPoolFactory();
 
     useEffect(() => {
         if (refresh) {
@@ -133,7 +133,7 @@ const Pools = ({ refresh, summary }: PoolsProps) => {
     return (
         <div className="pools">
             <div className="pools-title mt-5 mb-2">
-                {!factoryLoading && !paused && (
+                {!factoryLoading && !paused && ready && (
                     <div className="pools-title-create body-text-1">
                         <Link href="/pools/create">Create New Pool</Link>
                     </div>

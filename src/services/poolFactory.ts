@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useStakingPoolFactoryContract } from './contracts';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
+import { ethers } from 'ethers';
 
 export const useStakingPoolFactory = () => {
     const poolFactory = useStakingPoolFactoryContract();
@@ -25,6 +26,7 @@ export const useStakingPoolFactory = () => {
 
     const { waiting, error, setError, setTransaction } = useTransaction();
     const [paused, setPaused] = useState<boolean>(false);
+    const [ready, setReady] = useState<boolean>(false);
     const [loading, setLoading] = useState<Boolean>(true);
 
     const createFlatRateCommission = (commission: number) => {
@@ -60,9 +62,17 @@ export const useStakingPoolFactory = () => {
     // query paused flag
     useEffect(() => {
         if (poolFactory && account) {
+            // read the paused flag
             poolFactory.paused().then((paused) => {
                 setPaused(paused);
-                setLoading(false);
+
+                // check if there is a reference pool set
+                poolFactory.referencePool().then((referencePool) => {
+                    setReady(referencePool != ethers.constants.AddressZero);
+
+                    // finish loading
+                    setLoading(false);
+                });
             });
         }
     }, [poolFactory, account, blockNumber]);
@@ -71,6 +81,7 @@ export const useStakingPoolFactory = () => {
         createFlatRateCommission,
         createGasTaxCommission,
         paused,
+        ready,
         loading,
         error,
         waiting,

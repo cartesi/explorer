@@ -33,6 +33,7 @@ const CreatePool = () => {
         createFlatRateCommission,
         createGasTaxCommission,
         paused,
+        ready,
     } = useStakingPoolFactory();
 
     const createPool = () => {
@@ -188,6 +189,7 @@ const CreatePool = () => {
                         waiting ||
                         !account ||
                         paused ||
+                        !ready ||
                         (isFlatRateCommission && !flatRateCommission) ||
                         (!isFlatRateCommission && !gasTaxCommission)
                     }
