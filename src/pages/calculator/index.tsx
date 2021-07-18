@@ -28,9 +28,7 @@ import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 
-interface Props {}
-
-const Calculator = (props: Props) => {
+const Calculator = () => {
     // user statke
     const [stake, setStake] = useState<BigNumber>(
         constants.One.mul(100000).mul(constants.WeiPerEther)
