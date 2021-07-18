@@ -25,6 +25,7 @@ import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
 import PoolNode from '../../../components/PoolNode';
 import { useENS } from '../../../services/ens';
 import { tinyString } from '../../../utils/stringUtils';
+import { formatCTSI } from '../../../utils/token';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -40,7 +41,9 @@ const ManagePool = () => {
         setName,
         pause,
         unpause,
+        rebalance,
         paused,
+        amounts,
         waiting: poolWaiting,
         error: poolError,
     } = useStakingPool(pool as string);
@@ -195,6 +198,21 @@ const ManagePool = () => {
                         {paused ? 'Unpause' : 'Pause'}
                     </button>
                 </div>
+            </div>
+            <div className="manage-pool-item form-group">
+                <span className="body-text-2 text-secondary manage-pool-item-label">
+                    Pool has {formatCTSI(amounts.stake)} CTSI to stake,{' '}
+                    {formatCTSI(amounts.unstake)} CTSI to unstake and{' '}
+                    {formatCTSI(amounts.withdraw)} CTSI to withdraw
+                </span>
+
+                <button
+                    type="button"
+                    className="btn btn-dark py-0 mx-3 button-text"
+                    onClick={rebalance}
+                >
+                    Rebalance
+                </button>
             </div>
         </Layout>
     );

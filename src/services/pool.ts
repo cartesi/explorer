@@ -58,6 +58,13 @@ export const useStakingPool = (address: string) => {
         constants.Zero
     );
     const [paused, setPaused] = useState<Boolean>(false);
+    const [amounts, setAmounts] = useState<
+        [BigNumber, BigNumber, BigNumber] & {
+            stake: BigNumber;
+            unstake: BigNumber;
+            withdraw: BigNumber;
+        }
+    >();
 
     useEffect(() => {
         const getData = async () => {
@@ -87,7 +94,11 @@ export const useStakingPool = (address: string) => {
             setPaused(await pool.paused());
 
             // get effective staked balance
-            setEffectiveStake(await staking.getStakedBalance(pool.address));
+            const effectiveStake = await staking.getStakedBalance(pool.address);
+            setEffectiveStake(effectiveStake);
+
+            // query rebalance amounts
+            setAmounts(await pool.amounts());
         };
         if (pool && staking && account) {
             getData();
@@ -209,6 +220,7 @@ export const useStakingPool = (address: string) => {
         withdrawBalance,
         unstakeTimestamp,
         paused,
+        amounts,
         stake,
         unstake,
         withdraw,
