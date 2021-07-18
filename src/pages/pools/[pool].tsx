@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants, ethers, FixedNumber } from 'ethers';
+import { BigNumberInput } from 'big-number-input';
 import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
@@ -28,11 +29,12 @@ import { useCartesiToken } from '../../services/token';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
-import { formatCTSI, isInfinite } from '../../utils/token';
+import { formatCTSI } from '../../utils/token';
 import { useENS } from '../../services/ens';
 import { tinyString } from '../../utils/stringUtils';
 import { StakingPool } from '../../graphql/models';
 import Link from 'next/link';
+import { TokenAmount } from '../../components/TokenAmount';
 
 const PoolCommission = (props: { pool: StakingPool }) => {
     const { pool } = props;
@@ -88,25 +90,24 @@ const PoolCommission = (props: { pool: StakingPool }) => {
 
 const Pool = () => {
     const router = useRouter();
-    const { pool } = router.query;
-
     const { account } = useWeb3React<Web3Provider>();
 
     const blockNumber = useBlockNumber();
     const {
-        staking,
+        pool,
+        amount,
         stakedBalance,
+        effectiveStake,
         paused,
-        maturingTimestamp,
-        releasingTimestamp,
-        maturingBalance,
-        releasingBalance,
+        releasedBalance,
+        withdrawBalance,
+        unstakeTimestamp,
         error: stakingError,
         waiting: stakingWaiting,
         stake,
         unstake,
         withdraw,
-    } = useStakingPool(pool as string);
+    } = useStakingPool(router.query.pool as string);
 
     const {
         balance,
@@ -114,46 +115,24 @@ const Pool = () => {
         error: tokenError,
         waiting: tokenWaiting,
         approve,
-        parseCTSI,
-        toCTSI,
-    } = useCartesiToken(account, staking?.address, blockNumber);
+    } = useCartesiToken(account, pool?.address, blockNumber);
 
-    const stakingPool = useStakingPoolQuery(pool as string);
+    const stakingPool = useStakingPoolQuery(router.query.pool as string);
 
     // resolve address to name (if possible)
-    const ensEntry = useENS(pool as string);
+    const ensEntry = useENS(router.query.pool as string);
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
 
-    const [stakeAmount, setStakeAmount] = useState<number>(0);
+    const [stakeAmount, setStakeAmount] = useState<BigNumber>(constants.Zero);
     const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
-    const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
+    const [unstakeAmount, setUnstakeAmount] = useState<BigNumber>(
+        constants.Zero
+    );
 
     const [stakeTab, setStakeTab] = useState<boolean>(true);
-    const [maturingCountdown, setMaturingCountdown] = useState<number>();
-    const [releasingCountdown, setReleasingCountdown] = useState<number>();
-
     const waiting = stakingWaiting || tokenWaiting;
-
     const error = tokenError || stakingError;
-
-    const updateTimers = () => {
-        if (maturingBalance.gt(0)) {
-            setMaturingCountdown(
-                maturingTimestamp > new Date()
-                    ? maturingTimestamp.getTime() - new Date().getTime()
-                    : 0
-            );
-        }
-
-        if (releasingBalance.gt(0)) {
-            setReleasingCountdown(
-                releasingTimestamp > new Date()
-                    ? releasingTimestamp.getTime() - new Date().getTime()
-                    : 0
-            );
-        }
-    };
 
     useEffect(() => {
         const readDisclaimer = localStorage.getItem('readDisclaimer');
@@ -161,62 +140,26 @@ const Pool = () => {
             setReadDisclaimer(false);
     }, []);
 
-    useEffect(() => {
-        updateTimers();
-
-        const interval = setInterval(() => {
-            updateTimers();
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [maturingTimestamp, releasingTimestamp]);
-
-    const displayTime = (milliseconds: number): string => {
-        const hours = Math.floor(milliseconds / 1000 / 60 / 60);
-        const minutes = Math.floor(milliseconds / 1000 / 60) % 60;
-        const seconds = Math.floor(milliseconds / 1000) % 60;
-
-        return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${(
-            '0' + seconds
-        ).slice(-2)}`;
-    };
-
     const doApprove = () => {
-        if (stakeAmount > 0) {
-            if (infiniteApproval) {
-                approve(staking.address, constants.MaxUint256);
-            } else if (stakeAmount != toCTSI(allowance)) {
-                approve(staking.address, parseCTSI(stakeAmount));
-            }
+        if (infiniteApproval) {
+            approve(pool.address, constants.MaxUint256);
+        } else if (stakeAmount && stakeAmount.gt(0)) {
+            approve(pool.address, stakeAmount);
         }
     };
 
-    const doApproveOrStake = () => {
-        if (!stakeSplit) {
-            doApprove();
-        } else if (stakeAmount > 0) {
-            stake(parseCTSI(stakeAmount));
-            setStakeAmount(0);
+    const doStake = () => {
+        if (stakeAmount && stakeAmount.gt(0)) {
+            stake(stakeAmount);
+            setStakeAmount(constants.Zero);
         }
     };
 
     const doUnstake = () => {
-        if (unstakeAmount > 0) {
-            unstake(parseCTSI(unstakeAmount));
-            setUnstakeAmount(0);
+        if (unstakeAmount && unstakeAmount.gt(0)) {
+            unstake(unstakeAmount);
+            setUnstakeAmount(constants.Zero);
         }
-    };
-
-    const doWithdraw = () => {
-        withdraw(releasingBalance);
-    };
-
-    const validate = (value: string): string => {
-        if (!value) return '0';
-        value = value.split('.')[0];
-        return value;
     };
 
     const acceptDisclaimer = () => {
@@ -224,63 +167,11 @@ const Pool = () => {
         localStorage.setItem('readDisclaimer', 'true');
     };
 
-    const splitStakeAmount = () => {
-        let fromReleasing = BigNumber.from(0),
-            fromAllowance = BigNumber.from(0);
-        const stakeAmountCTSI = parseCTSI(stakeAmount);
-
-        if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
-            return null;
-        }
-
-        if (releasingBalance.eq(0)) {
-            fromAllowance = stakeAmountCTSI;
-        } else {
-            if (releasingBalance.gt(stakeAmountCTSI)) {
-                fromReleasing = stakeAmountCTSI;
-            } else {
-                fromReleasing = releasingBalance;
-                fromAllowance = stakeAmountCTSI.sub(releasingBalance);
-            }
-        }
-
-        return {
-            releasing: fromReleasing,
-            wallet: fromAllowance,
-        };
-    };
-
-    const splitUnstakeAmount = () => {
-        let fromMaturing = BigNumber.from(0),
-            fromStaked = BigNumber.from(0);
-        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
-
-        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
-            return null;
-        }
-
-        if (maturingBalance.eq(0)) {
-            fromStaked = unstakeAmountCTSI;
-        } else {
-            if (maturingBalance.gt(unstakeAmountCTSI)) {
-                fromMaturing = unstakeAmountCTSI;
-            } else {
-                fromMaturing = maturingBalance;
-                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
-            }
-        }
-
-        return {
-            maturing: fromMaturing,
-            staked: fromStaked,
-        };
-    };
-
-    const stakeSplit = splitStakeAmount();
-    const unstakeSplit = splitUnstakeAmount();
-    const totalBalance = stakedBalance
-        .add(maturingBalance)
-        .add(releasingBalance);
+    const now = new Date();
+    const stakeLocked =
+        stakedBalance.gt(0) &&
+        unstakeTimestamp &&
+        unstakeTimestamp.getTime() > now.getTime();
 
     return (
         <Layout className="staking">
@@ -312,7 +203,7 @@ const Pool = () => {
                     {stakingPool &&
                         account &&
                         stakingPool.manager == account.toLowerCase() && (
-                            <Link href={`/pools/${pool}/edit`}>
+                            <Link href={`/pools/${router.query.pool}/edit`}>
                                 <button
                                     type="button"
                                     className="btn btn-dark button-text py-0 mx-2"
@@ -349,83 +240,43 @@ const Pool = () => {
 
             <div className="d-flex staking-total-balances my-5">
                 <div className="staking-total-balances-item">
-                    <label className="body-text-1">Total Rewards</label>
-                    <img
-                        data-tip={labels.totalRewardsPool}
-                        src="/images/question.png"
-                    />
-                    <span className="info-text-md">
-                        {stakingPool && stakingPool.user
-                            ? formatCTSI(
-                                  BigNumber.from(stakingPool.user.totalReward),
-                                  2
-                              )
-                            : 0}{' '}
-                        <span className="small-text">CTSI</span>
-                    </span>
-                </div>
-
-                <div className="staking-total-balances-item">
-                    <label className="body-text-1">In-contract Balance</label>
-                    <img
-                        data-tip={labels.inContractBalancePool}
-                        src="/images/question.png"
-                    />
-                    <span className="info-text-md">
-                        {formatCTSI(totalBalance, 2)}{' '}
-                        <span className="small-text">CTSI</span>
-                    </span>
-                </div>
-            </div>
-
-            <div className="d-flex staking-total-balances my-5">
-                <div className="staking-total-balances-item">
                     <label className="body-text-1">Total Staked</label>
                     <img
                         data-tip={labels.totalStakedPool}
                         src="/images/question.png"
                     />
-                    <span className="info-text-md">
-                        {formatCTSI(
-                            stakingPool && stakingPool.user
-                                ? stakingPool.user.stakedBalance
-                                : 0,
-                            2
-                        )}{' '}
-                        <span className="small-text">CTSI</span>
-                    </span>
+                    <TokenAmount amount={amount} />
                 </div>
 
+                <div className="staking-total-balances-item">
+                    <label className="body-text-1">Effective Stake</label>
+                    <img
+                        data-tip={labels.effectiveStake}
+                        src="/images/question.png"
+                    />
+                    <TokenAmount amount={effectiveStake} />
+                </div>
+            </div>
+
+            <div className="d-flex staking-total-balances my-5">
+                <div className="staking-total-balances-item">
+                    <label className="body-text-1">Total Rewards</label>
+                    <img
+                        data-tip={labels.totalRewardsPool}
+                        src="/images/question.png"
+                    />
+                    <TokenAmount
+                        amount={BigNumber.from(
+                            stakingPool ? stakingPool.user.totalReward : 0
+                        )}
+                    />
+                </div>
                 {stakingPool && <PoolCommission pool={stakingPool} />}
             </div>
 
             <div className="row">
                 <div className="col col-12 col-md-7 pr-3 staking-balances my-3">
                     <div className="staking-balances-item">
-                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
-                            <div className="d-flex flex-column align-items-start">
-                                <div className="mb-1">
-                                    <img src="/images/balance.png" />
-                                    <span className="body-text-1 ml-3">
-                                        Maturing
-                                    </span>
-                                </div>
-                                {maturingBalance.gt(0) &&
-                                    maturingCountdown > 0 && (
-                                        <div className="staking-balances-item-timer">
-                                            <span className="small-text">
-                                                {displayTime(maturingCountdown)}
-                                            </span>
-                                        </div>
-                                    )}
-                            </div>
-
-                            <span className="info-text-md">
-                                {formatCTSI(maturingBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
-                        </div>
-
                         <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between gray-background">
                             <div className="d-flex flex-column align-items-start">
                                 <div className="mb-1">
@@ -436,10 +287,10 @@ const Pool = () => {
                                 </div>
                             </div>
 
-                            <span className="info-text-md">
-                                {formatCTSI(stakedBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                            <TokenAmount
+                                amount={stakedBalance}
+                                locked={stakeLocked}
+                            />
                         </div>
                     </div>
 
@@ -449,39 +300,29 @@ const Pool = () => {
                                 <div className="mb-1">
                                     <img src="/images/releasing.png" />
                                     <span className="body-text-1 ml-3">
-                                        {releasingBalance.gt(0) &&
-                                        releasingCountdown === 0
+                                        {releasedBalance.gt(0) &&
+                                        withdrawBalance.gt(0)
                                             ? 'Released'
                                             : 'Releasing'}
                                     </span>
                                 </div>
-                                {releasingBalance.gt(0) &&
-                                    releasingCountdown > 0 && (
-                                        <div className="staking-balances-item-timer">
-                                            <span className="small-text">
-                                                {displayTime(
-                                                    releasingCountdown
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-                                {releasingBalance.gt(0) &&
-                                    releasingCountdown === 0 && (
-                                        <button
-                                            type="button"
-                                            className="btn btn-dark py-0 px-4 button-text mt-2"
-                                            disabled={!account || waiting}
-                                            onClick={doWithdraw}
-                                        >
-                                            Withdraw
-                                        </button>
-                                    )}
                             </div>
 
-                            <span className="info-text-md">
-                                {formatCTSI(releasingBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                            {releasedBalance.gt(0) && (
+                                <button
+                                    type="button"
+                                    className="btn btn-dark py-2 button-text"
+                                    disabled={
+                                        !account ||
+                                        waiting ||
+                                        withdrawBalance.eq(0)
+                                    }
+                                    onClick={withdraw}
+                                >
+                                    Withdraw
+                                </button>
+                            )}
+                            <TokenAmount amount={releasedBalance} />
                         </div>
                     </div>
                 </div>
@@ -506,7 +347,13 @@ const Pool = () => {
                                 ${!stakeTab ? 'active' : ''}`}
                             onClick={() => setStakeTab(false)}
                         >
-                            Unstake
+                            Unstake{' '}
+                            {stakeLocked && (
+                                <i
+                                    className="fa fa-lock"
+                                    aria-hidden="true"
+                                ></i>
+                            )}
                         </div>
                     </div>
 
@@ -514,100 +361,58 @@ const Pool = () => {
                         {stakeTab && (
                             <>
                                 <div className="body-text-1">Allowance</div>
-
-                                <span className="info-text-md">
-                                    {formatCTSI(allowance)}{' '}
-                                    <span className="small-text">CTSI</span>
-                                </span>
+                                <TokenAmount amount={allowance} />
 
                                 <div className="form-group mt-3">
                                     <label className="body-text-2 text-secondary">
                                         Amount to stake
                                     </label>
                                     <div className="input-group">
-                                        <input
-                                            type="number"
-                                            className={`addon-inline form-control ${
-                                                isInfinite(stakeAmount)
-                                                    ? 'error'
-                                                    : ''
-                                            }`}
-                                            id="stakeAmount"
-                                            value={stakeAmount}
-                                            disabled={!account || waiting}
-                                            onChange={(e) =>
-                                                setStakeAmount(
-                                                    e.target.value
-                                                        ? parseFloat(
-                                                              e.target.value
+                                        <BigNumberInput
+                                            renderInput={(props) => (
+                                                <input
+                                                    id="stakeAmount"
+                                                    className={`addon-inline form-control`}
+                                                    {...props}
+                                                />
+                                            )}
+                                            autofocus={true}
+                                            decimals={18}
+                                            placeholder={'0'}
+                                            min={'0'}
+                                            onChange={(newValue) =>
+                                                newValue
+                                                    ? setStakeAmount(
+                                                          BigNumber.from(
+                                                              newValue
                                                           )
-                                                        : 0
-                                                )
+                                                      )
+                                                    : undefined
+                                            }
+                                            value={
+                                                stakeAmount
+                                                    ? stakeAmount.toString()
+                                                    : ''
                                             }
                                         />
                                         <span
-                                            className={`input-group-addon addon-inline input-source-observer small-text ${
-                                                isInfinite(stakeAmount)
-                                                    ? 'error'
-                                                    : ''
-                                            }`}
+                                            className={`input-group-addon addon-inline input-source-observer small-text`}
                                         >
                                             CTSI
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
-                                    {stakeSplit ? (
-                                        <>
-                                            {stakeSplit.releasing.gt(0) && (
-                                                <div className="d-flex flex-row align-items-center justify-content-between">
-                                                    <span>
-                                                        {formatCTSI(
-                                                            stakeSplit.releasing
-                                                        )}{' '}
-                                                        <span className="small-text">
-                                                            CTSI
-                                                        </span>
-                                                    </span>
-                                                    <span>
-                                                        From "releasing"
-                                                    </span>
-                                                </div>
-                                            )}
-                                            {stakeSplit.wallet.gt(0) && (
-                                                <div className="d-flex flex-row align-items-center justify-content-between">
-                                                    <span>
-                                                        {formatCTSI(
-                                                            stakeSplit.wallet
-                                                        )}{' '}
-                                                        <span className="small-text">
-                                                            CTSI
-                                                        </span>
-                                                    </span>
-                                                    <span>From "wallet"</span>
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <div>
-                                            Maximum staking limit exceeded!
-                                            Please approve more allowance to
-                                            stake.
-                                        </div>
-                                    )}
-                                </div>
-
                                 <button
                                     type="button"
                                     disabled={
-                                        isInfinite(stakeAmount) ||
-                                        !account ||
-                                        waiting ||
-                                        !!stakeSplit
+                                        (stakeAmount.lte(allowance) ||
+                                            !account ||
+                                            waiting) &&
+                                        !infiniteApproval
                                     }
                                     className="btn btn-dark py-2 button-text flex-fill"
-                                    onClick={doApproveOrStake}
+                                    onClick={doApprove}
                                 >
                                     Approve
                                 </button>
@@ -616,13 +421,12 @@ const Pool = () => {
                                     type="button"
                                     disabled={
                                         paused.valueOf() ||
-                                        isInfinite(stakeAmount) ||
+                                        stakeAmount.gt(allowance) ||
                                         !account ||
-                                        waiting ||
-                                        !stakeSplit
+                                        waiting
                                     }
                                     className="btn btn-dark py-2 mt-2 button-text flex-fill"
-                                    onClick={doApproveOrStake}
+                                    onClick={doStake}
                                 >
                                     Stake{' '}
                                     {paused && (
@@ -633,43 +437,19 @@ const Pool = () => {
                                     )}
                                 </button>
 
-                                {stakeSplit ? (
-                                    <>
-                                        <div className="small-text text-center mt-4 danger-text">
-                                            The maturing status will restart
-                                            counting.
-                                        </div>
-                                        <br />
-                                        <div className="body-text-1">
-                                            <i className="fas fa-info-circle"></i>{' '}
-                                            This stake currently corresponds to
-                                            a X% chance of producing the current
-                                            block (
-                                            <a
-                                                href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Learn more
-                                            </a>
+                                <div className="text-center mt-3">
+                                    <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        checked={infiniteApproval}
+                                        onChange={(e) =>
+                                            setInfiniteApproval(
+                                                e.target.checked
                                             )
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="text-center mt-3">
-                                        <input
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            checked={infiniteApproval}
-                                            onChange={(e) =>
-                                                setInfiniteApproval(
-                                                    e.target.checked
-                                                )
-                                            }
-                                        />
-                                        Infinite Approval
-                                    </div>
-                                )}
+                                        }
+                                    />
+                                    Infinite Approval
+                                </div>
                             </>
                         )}
 
@@ -680,28 +460,35 @@ const Pool = () => {
                                         Amount to unstake
                                     </label>
                                     <div className="input-group">
-                                        <input
-                                            type="number"
-                                            className={`addon-inline form-control ${
-                                                unstakeSplit ? '' : 'error'
-                                            }`}
-                                            id="unstakeAmount"
-                                            value={unstakeAmount}
-                                            disabled={!account || waiting}
-                                            onChange={(e) =>
-                                                setUnstakeAmount(
-                                                    e.target.value
-                                                        ? parseFloat(
-                                                              e.target.value
+                                        <BigNumberInput
+                                            renderInput={(props) => (
+                                                <input
+                                                    id="unstakeAmount"
+                                                    className={`addon-inline form-control`}
+                                                    {...props}
+                                                />
+                                            )}
+                                            autofocus={true}
+                                            decimals={18}
+                                            placeholder={'0'}
+                                            min={'0'}
+                                            onChange={(newValue) =>
+                                                newValue
+                                                    ? setUnstakeAmount(
+                                                          BigNumber.from(
+                                                              newValue
                                                           )
-                                                        : 0
-                                                )
+                                                      )
+                                                    : undefined
+                                            }
+                                            value={
+                                                unstakeAmount
+                                                    ? unstakeAmount.toString()
+                                                    : ''
                                             }
                                         />
                                         <span
-                                            className={`input-group-addon addon-inline input-source-observer small-text ${
-                                                unstakeSplit ? '' : 'error'
-                                            }`}
+                                            className={`input-group-addon addon-inline input-source-observer small-text`}
                                         >
                                             CTSI
                                         </span>
@@ -709,40 +496,7 @@ const Pool = () => {
                                 </div>
 
                                 <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
-                                    {unstakeSplit ? (
-                                        <>
-                                            {unstakeSplit.maturing.gt(0) && (
-                                                <div className="d-flex flex-row align-items-center justify-content-between">
-                                                    <span>
-                                                        {formatCTSI(
-                                                            unstakeSplit.maturing
-                                                        )}{' '}
-                                                        <span className="small-text">
-                                                            CTSI
-                                                        </span>
-                                                    </span>
-                                                    <span>From "maturing"</span>
-                                                </div>
-                                            )}
-                                            {unstakeSplit.staked.gt(0) && (
-                                                <div className="d-flex flex-row align-items-center justify-content-between">
-                                                    <span>
-                                                        {formatCTSI(
-                                                            unstakeSplit.staked
-                                                        )}{' '}
-                                                        <span className="small-text">
-                                                            CTSI
-                                                        </span>
-                                                    </span>
-                                                    <span>From "staked"</span>
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <div>
-                                            Maximum unstaking limit exceeded!
-                                        </div>
-                                    )}
+                                    <div>Maximum unstaking limit exceeded!</div>
                                 </div>
 
                                 <button

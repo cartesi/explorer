@@ -31,6 +31,7 @@ import useSummary from '../../graphql/hooks/useSummary';
 import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
+import { TokenAmount } from '../../components/TokenAmount';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -166,7 +167,7 @@ const Staking = () => {
     const splitStakeAmount = () => {
         let fromReleasing = BigNumber.from(0),
             fromAllowance = BigNumber.from(0);
-        let stakeAmountCTSI = parseCTSI(stakeAmount);
+        const stakeAmountCTSI = parseCTSI(stakeAmount);
 
         if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
             return null;
@@ -192,7 +193,7 @@ const Staking = () => {
     const splitUnstakeAmount = () => {
         let fromMaturing = BigNumber.from(0),
             fromStaked = BigNumber.from(0);
-        let unstakeAmountCTSI = parseCTSI(unstakeAmount);
+        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
 
         if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
             return null;
@@ -284,12 +285,9 @@ const Staking = () => {
                         data-tip={labels.totalRewards}
                         src="/images/question.png"
                     />
-                    <span className="info-text-md">
-                        {user
-                            ? formatCTSI(BigNumber.from(user.totalReward), 2)
-                            : 0}{' '}
-                        <span className="small-text">CTSI</span>
-                    </span>
+                    <TokenAmount
+                        amount={BigNumber.from(user ? user.totalReward : 0)}
+                    />
                 </div>
 
                 <div className="staking-total-balances-item">
@@ -298,10 +296,7 @@ const Staking = () => {
                         data-tip={labels.inContractBalance}
                         src="/images/question.png"
                     />
-                    <span className="info-text-md">
-                        {formatCTSI(totalBalance, 2)}{' '}
-                        <span className="small-text">CTSI</span>
-                    </span>
+                    <TokenAmount amount={totalBalance} />
                 </div>
             </div>
 
@@ -325,11 +320,7 @@ const Staking = () => {
                                         </div>
                                     )}
                             </div>
-
-                            <span className="info-text-md">
-                                {formatCTSI(maturingBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                            <TokenAmount amount={maturingBalance} />
                         </div>
 
                         <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between gray-background">
@@ -341,11 +332,7 @@ const Staking = () => {
                                     </span>
                                 </div>
                             </div>
-
-                            <span className="info-text-md">
-                                {formatCTSI(stakedBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                            <TokenAmount amount={stakedBalance} />
                         </div>
                     </div>
 
@@ -383,11 +370,7 @@ const Staking = () => {
                                         </button>
                                     )}
                             </div>
-
-                            <span className="info-text-md">
-                                {formatCTSI(releasingBalance)}{' '}
-                                <span className="small-text">CTSI</span>
-                            </span>
+                            <TokenAmount amount={releasingBalance} />
                         </div>
                     </div>
                 </div>
@@ -414,11 +397,7 @@ const Staking = () => {
                         {stakeTab && (
                             <>
                                 <div className="body-text-1">Allowance</div>
-
-                                <span className="info-text-md">
-                                    {formatCTSI(allowance)}{' '}
-                                    <span className="small-text">CTSI</span>
-                                </span>
+                                <TokenAmount amount={allowance} />
 
                                 <div className="form-group mt-3">
                                     <label className="body-text-2 text-secondary">

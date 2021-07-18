@@ -12,7 +12,13 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
+import {
+    BigNumber,
+    BigNumberish,
+    constants,
+    ethers,
+    FixedNumber,
+} from 'ethers';
 import { useBlockNumber } from './eth';
 import {
     useStakingPoolContract,
@@ -21,6 +27,7 @@ import {
     useGasTaxCommissionContract,
 } from './contracts';
 import { useTransaction } from './transaction';
+import { useStakingContract } from './contracts/pos';
 
 export interface StakingPoolCommission {
     value: number;
@@ -29,7 +36,8 @@ export interface StakingPoolCommission {
 
 export const useStakingPool = (address: string) => {
     const { account } = useWeb3React<Web3Provider>();
-    const stakingPool = useStakingPoolContract(address);
+    const pool = useStakingPoolContract(address);
+    const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
     const { waiting, error, setError, setTransaction } = useTransaction();
@@ -37,40 +45,60 @@ export const useStakingPool = (address: string) => {
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
         constants.Zero
     );
-    const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
-    const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
-    const [maturingBalance, setMaturingBalance] = useState<BigNumber>(
+    const [effectiveStake, setEffectiveStake] = useState<BigNumber>(
         constants.Zero
     );
-    const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
+    const [shares, setShares] = useState<BigNumber>(constants.Zero);
+    const [amount, setAmount] = useState<BigNumber>(constants.Zero);
+    const [unstakeTimestamp, setUnstakeTimestamp] = useState<Date>(null);
+    const [withdrawBalance, setWithdrawBalance] = useState<BigNumber>(
+        constants.Zero
+    );
+    const [releasedBalance, setReleasedBalance] = useState<BigNumber>(
         constants.Zero
     );
     const [paused, setPaused] = useState<Boolean>(false);
 
     useEffect(() => {
-        if (stakingPool && account) {
-            stakingPool.getStakedBalance(account).then(setStakedBalance);
-            stakingPool
-                .getMaturingTimestamp(account)
-                .then((value) =>
-                    setMaturingTimestamp(new Date(value.toNumber() * 1000))
-                );
-            stakingPool
-                .getReleasingTimestamp(account)
-                .then((value) =>
-                    setReleasingTimestamp(new Date(value.toNumber() * 1000))
-                );
-            stakingPool.getMaturingBalance(account).then(setMaturingBalance);
-            stakingPool.getReleasingBalance(account).then(setReleasingBalance);
-            stakingPool.paused().then(setPaused);
+        const getData = async () => {
+            // query pool total shares
+            const shares = await pool.shares();
+            setShares(shares);
+
+            // query pool token amount
+            const amount = await pool.amount();
+            setAmount(amount);
+
+            // query user balance
+            const balance = await pool.userBalance(account);
+
+            // calculate user stake (tokens)
+            setStakedBalance(
+                shares.gt(0)
+                    ? balance.shares.mul(amount).div(shares)
+                    : ethers.constants.Zero
+            );
+
+            setUnstakeTimestamp(
+                new Date(balance.unstakeTimestamp.toNumber() * 1000)
+            );
+            setReleasedBalance(balance.released);
+            setWithdrawBalance(await pool.getWithdrawBalance());
+            setPaused(await pool.paused());
+
+            // get effective staked balance
+            setEffectiveStake(await staking.getStakedBalance(pool.address));
+        };
+        if (pool && staking && account) {
+            getData();
         }
-    }, [stakingPool, account, blockNumber]);
+    }, [pool, account, blockNumber]);
 
     const stake = (amount: BigNumberish) => {
-        if (stakingPool) {
+        if (pool) {
             try {
                 // send transaction
-                setTransaction(stakingPool.stake(amount));
+                setTransaction(pool.stake(amount));
             } catch (e) {
                 setError(e.message);
             }
@@ -78,21 +106,21 @@ export const useStakingPool = (address: string) => {
     };
 
     const unstake = (amount: BigNumberish) => {
-        if (stakingPool) {
+        if (pool) {
             try {
                 // send transaction
-                setTransaction(stakingPool.unstake(amount));
+                setTransaction(pool.unstake(amount));
             } catch (e) {
                 setError(e.message);
             }
         }
     };
 
-    const withdraw = (amount: BigNumberish) => {
-        if (stakingPool) {
+    const withdraw = () => {
+        if (pool) {
             try {
                 // send transaction
-                setTransaction(stakingPool.withdraw(amount));
+                setTransaction(pool.withdraw());
             } catch (e) {
                 setError(e.message);
             }
@@ -100,9 +128,9 @@ export const useStakingPool = (address: string) => {
     };
 
     const setName = (name: string) => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.setName(name));
+                setTransaction(pool.setName(name));
             } catch (e) {
                 setError(e.message);
             }
@@ -110,9 +138,9 @@ export const useStakingPool = (address: string) => {
     };
 
     const pause = () => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.pause());
+                setTransaction(pool.pause());
             } catch (e) {
                 setError(e.message);
             }
@@ -120,9 +148,9 @@ export const useStakingPool = (address: string) => {
     };
 
     const unpause = () => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.unpause());
+                setTransaction(pool.unpause());
             } catch (e) {
                 setError(e.message);
             }
@@ -130,9 +158,9 @@ export const useStakingPool = (address: string) => {
     };
 
     const hire = (worker: string, amount: BigNumber) => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.hire(worker, { value: amount }));
+                setTransaction(pool.hire(worker, { value: amount }));
             } catch (e) {
                 setError(e.message);
             }
@@ -140,9 +168,9 @@ export const useStakingPool = (address: string) => {
     };
 
     const cancelHire = (worker: string) => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.cancelHire(worker));
+                setTransaction(pool.cancelHire(worker));
             } catch (e) {
                 setError(e.message);
             }
@@ -150,9 +178,19 @@ export const useStakingPool = (address: string) => {
     };
 
     const retire = (worker: string) => {
-        if (stakingPool) {
+        if (pool) {
             try {
-                setTransaction(stakingPool.retire(worker));
+                setTransaction(pool.retire(worker));
+            } catch (e) {
+                setError(e.message);
+            }
+        }
+    };
+
+    const rebalance = () => {
+        if (pool) {
+            try {
+                setTransaction(pool.rebalance());
             } catch (e) {
                 setError(e.message);
             }
@@ -160,14 +198,16 @@ export const useStakingPool = (address: string) => {
     };
 
     return {
-        staking: stakingPool,
+        pool,
+        shares,
+        amount,
+        effectiveStake,
         error,
         waiting,
         stakedBalance,
-        maturingTimestamp,
-        releasingTimestamp,
-        maturingBalance,
-        releasingBalance,
+        releasedBalance,
+        withdrawBalance,
+        unstakeTimestamp,
         paused,
         stake,
         unstake,
@@ -178,6 +218,7 @@ export const useStakingPool = (address: string) => {
         hire,
         cancelHire,
         retire,
+        rebalance,
     };
 };
 

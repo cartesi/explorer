@@ -16,7 +16,7 @@ const labels = {
         'Estimated values can be highly variable, depending directly on the current amount of actively staked CTSI.',
     inContractBalance:
         'This is the sum of all maturing, staked, released/releasing balances',
-    inContractBalancePool: `This is the sum of all maturing, staked, released/releasing balances in this pool`,
+    effectiveStake: `This is the amount of pool tokens actually mature in the Staking contract`,
     totalStakedPool: 'This is the total staked balance of this pool',
     participationRate: 'Total Staked / Circ. Supply',
     projectedAnnualEarnings:
