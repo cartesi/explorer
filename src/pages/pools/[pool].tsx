@@ -35,11 +35,13 @@ import { tinyString } from '../../utils/stringUtils';
 import { StakingPool } from '../../graphql/models';
 import Link from 'next/link';
 import { TokenAmount } from '../../components/TokenAmount';
+import { useStaking } from '../../services/staking';
 
 const PoolCommission = (props: { pool: StakingPool }) => {
     const { pool } = props;
 
     // commission simulation
+    // XXX: 2900 should not be here
     const reward = ethers.utils.parseUnits('2900', 18);
     const nextCommission = useStakingPoolCommission(pool.id, reward);
 
@@ -97,7 +99,6 @@ const Pool = () => {
         pool,
         amount,
         stakedBalance,
-        effectiveStake,
         paused,
         releasedBalance,
         withdrawBalance,
@@ -115,8 +116,9 @@ const Pool = () => {
         error: tokenError,
         waiting: tokenWaiting,
         approve,
-    } = useCartesiToken(account, pool?.address, blockNumber);
+    } = useCartesiToken(account, router.query.pool as string, blockNumber);
 
+    const staking = useStaking(router.query.pool as string);
     const stakingPool = useStakingPoolQuery(router.query.pool as string);
 
     // resolve address to name (if possible)
@@ -254,7 +256,7 @@ const Pool = () => {
                         data-tip={labels.effectiveStake}
                         src="/images/question.png"
                     />
-                    <TokenAmount amount={effectiveStake} />
+                    <TokenAmount amount={staking.stakedBalance} />
                 </div>
             </div>
 
@@ -315,7 +317,7 @@ const Pool = () => {
                                     disabled={
                                         !account ||
                                         waiting ||
-                                        withdrawBalance.eq(0)
+                                        withdrawBalance.isZero()
                                     }
                                     onClick={withdraw}
                                 >

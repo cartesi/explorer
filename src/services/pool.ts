@@ -27,7 +27,6 @@ import {
     useGasTaxCommissionContract,
 } from './contracts';
 import { useTransaction } from './transaction';
-import { useStakingContract } from './contracts/pos';
 
 export interface StakingPoolCommission {
     value: number;
@@ -37,15 +36,11 @@ export interface StakingPoolCommission {
 export const useStakingPool = (address: string) => {
     const { account } = useWeb3React<Web3Provider>();
     const pool = useStakingPoolContract(address);
-    const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
     const { waiting, error, setError, setTransaction } = useTransaction();
 
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
-        constants.Zero
-    );
-    const [effectiveStake, setEffectiveStake] = useState<BigNumber>(
         constants.Zero
     );
     const [shares, setShares] = useState<BigNumber>(constants.Zero);
@@ -93,14 +88,10 @@ export const useStakingPool = (address: string) => {
             setWithdrawBalance(await pool.getWithdrawBalance());
             setPaused(await pool.paused());
 
-            // get effective staked balance
-            const effectiveStake = await staking.getStakedBalance(pool.address);
-            setEffectiveStake(effectiveStake);
-
             // query rebalance amounts
             setAmounts(await pool.amounts());
         };
-        if (pool && staking && account) {
+        if (pool && account) {
             getData();
         }
     }, [pool, account, blockNumber]);
@@ -212,7 +203,6 @@ export const useStakingPool = (address: string) => {
         pool,
         shares,
         amount,
-        effectiveStake,
         error,
         waiting,
         stakedBalance,

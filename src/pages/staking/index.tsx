@@ -49,7 +49,7 @@ const Staking = () => {
         stake,
         unstake,
         withdraw,
-    } = useStaking();
+    } = useStaking(account);
 
     const summary = useSummary();
 

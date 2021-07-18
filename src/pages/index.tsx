@@ -43,7 +43,7 @@ const Header = (props: HeaderProps) => {
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
     const { balance } = useCartesiToken(account, null, blockNumber);
-    const { stakedBalance } = useStaking();
+    const { stakedBalance } = useStaking(account);
     return (
         <div className="page-header row">
             {marketInformation && (

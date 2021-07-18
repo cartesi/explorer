@@ -10,15 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { useBlockNumber } from './eth';
 import { useStakingContract } from './contracts';
 import { useTransaction } from './transaction';
 
-export const useStaking = () => {
-    const { account } = useWeb3React<Web3Provider>();
+export const useStaking = (user: string) => {
     const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
@@ -37,22 +34,22 @@ export const useStaking = () => {
     );
 
     useEffect(() => {
-        if (staking && account) {
-            staking.getStakedBalance(account).then(setStakedBalance);
+        if (staking && user) {
+            staking.getStakedBalance(user).then(setStakedBalance);
             staking
-                .getMaturingTimestamp(account)
+                .getMaturingTimestamp(user)
                 .then((value) =>
                     setMaturingTimestamp(new Date(value.toNumber() * 1000))
                 );
             staking
-                .getReleasingTimestamp(account)
+                .getReleasingTimestamp(user)
                 .then((value) =>
                     setReleasingTimestamp(new Date(value.toNumber() * 1000))
                 );
-            staking.getMaturingBalance(account).then(setMaturingBalance);
-            staking.getReleasingBalance(account).then(setReleasingBalance);
+            staking.getMaturingBalance(user).then(setMaturingBalance);
+            staking.getReleasingBalance(user).then(setReleasingBalance);
         }
-    }, [staking, account, blockNumber]);
+    }, [staking, user, blockNumber]);
 
     const stake = (amount: BigNumberish) => {
         if (staking) {
