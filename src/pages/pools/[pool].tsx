@@ -494,23 +494,18 @@ const Pool = () => {
                                         </span>
                                     </div>
                                 </div>
-
-                                <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
-                                    <div>Maximum unstaking limit exceeded!</div>
-                                </div>
-
                                 <button
                                     type="button"
                                     className="btn btn-dark py-2 button-text flex-fill"
-                                    disabled={!account || waiting}
+                                    disabled={
+                                        !account ||
+                                        waiting ||
+                                        stakedBalance.isZero()
+                                    }
                                     onClick={doUnstake}
                                 >
                                     Unstake
                                 </button>
-
-                                <div className="small-text text-center mt-4 danger-text">
-                                    The releasing status will restart counting.
-                                </div>
                             </>
                         )}
                     </div>

@@ -201,9 +201,9 @@ const ManagePool = () => {
             </div>
             <div className="manage-pool-item form-group">
                 <span className="body-text-2 text-secondary manage-pool-item-label">
-                    Pool has {formatCTSI(amounts.stake)} CTSI to stake,{' '}
-                    {formatCTSI(amounts.unstake)} CTSI to unstake and{' '}
-                    {formatCTSI(amounts.withdraw)} CTSI to withdraw
+                    Pool has {formatCTSI(amounts?.stake || 0)} CTSI to stake,{' '}
+                    {formatCTSI(amounts?.unstake || 0)} CTSI to unstake and{' '}
+                    {formatCTSI(amounts?.withdraw || 0)} CTSI to withdraw
                 </span>
 
                 <button
