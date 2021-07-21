@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Block } from '../graphql/models';
-import { tinyString } from '../utils/stringUtils';
+import { truncateString } from '../utils/stringUtils';
 import { tinyGraphUrl } from '../utils/tinygraph';
 
 interface BlockCardProps {
@@ -54,13 +54,13 @@ const BlockCard = (props: BlockCardProps) => {
                         <div className="body-text-2">
                             Producer
                             <div className="sub-title-3 mt-1">
-                                {tinyString(block.producer.id)}
+                                {truncateString(block.producer.id)}
                             </div>
                         </div>
                         <div className="body-text-2 mt-4">
                             Node
                             <div className="mt-1">
-                                {tinyString(block.node.id)}
+                                {truncateString(block.node.id)}
                             </div>
                         </div>
                     </div>

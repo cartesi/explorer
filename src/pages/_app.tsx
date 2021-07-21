@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -11,18 +11,11 @@
 
 import React from 'react';
 import { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
-
 import ApolloContainer from '../components/ApolloContainer';
-
-import '../styles/styles.scss';
-import '@fortawesome/fontawesome-free/css/all.css';
-
-if (typeof window !== 'undefined') {
-    require('jquery');
-    require('popper.js');
-    require('bootstrap');
-}
+import theme from './theme';
+import '@fontsource/rubik';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
@@ -30,11 +23,13 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 
 const App = ({ Component, pageProps }: AppProps) => {
     return (
-        <Web3Container>
-            <ApolloContainer>
-                <Component {...pageProps} />
-            </ApolloContainer>
-        </Web3Container>
+        <ChakraProvider theme={theme}>
+            <Web3Container>
+                <ApolloContainer>
+                    <Component {...pageProps} />
+                </ApolloContainer>
+            </Web3Container>
+        </ChakraProvider>
     );
 };
 

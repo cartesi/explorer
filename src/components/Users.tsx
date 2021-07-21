@@ -10,20 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
+import UserTable, { Sort } from './users/UserTable';
 import useUsers, { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import { Summary } from '../graphql/models';
-import Address from '../components/Address';
-import { formatCTSI } from '../utils/token';
 
 interface UsersProps {
     summary: Summary;
 }
-
-type Sort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 
 const Users = (props: UsersProps) => {
     const { account } = useWeb3React<Web3Provider>();
@@ -59,112 +55,12 @@ const Users = (props: UsersProps) => {
                 </div>
             </div>
 
-            <div className="table-responsive mb-2">
-                <table className="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th className="table-header-text">User</th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('totalBlocks')}
-                            >
-                                #Blocks Produced{' '}
-                                {sort == 'totalBlocks' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('stakedBalance')}
-                            >
-                                Total Staked{' '}
-                                {sort == 'stakedBalance' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('totalReward')}
-                            >
-                                Total Rewards{' '}
-                                {sort == 'totalReward' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th className="table-header-text">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {loading || !data?.users ? (
-                            <tr>
-                                <td colSpan={5} className="text-center">
-                                    <span
-                                        className="spinner-border spinner-border-sm my-1"
-                                        role="status"
-                                        aria-hidden="true"
-                                    ></span>
-                                </td>
-                            </tr>
-                        ) : (
-                            data.users.map((user) => {
-                                return (
-                                    <tr
-                                        key={user.id}
-                                        className={`body-text-2 ${
-                                            user.pool ? 'pool' : ''
-                                        }`}
-                                    >
-                                        <td>
-                                            <Address
-                                                type="address"
-                                                id={user.id}
-                                            />
-                                        </td>
-                                        <td>{user.totalBlocks}</td>
-                                        <td>
-                                            {formatCTSI(user.stakedBalance, 2)}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {formatCTSI(user.totalReward, 2)}{' '}
-                                            CTSI
-                                        </td>
-                                        <td>
-                                            {user.pool && (
-                                                <>
-                                                    <Link
-                                                        href={
-                                                            '/pools/' + user.id
-                                                        }
-                                                    >
-                                                        Stake
-                                                    </Link>
-                                                    <span className="ml-2" />
-                                                    {account &&
-                                                        account.toLowerCase() ==
-                                                            user.pool
-                                                                .manager && (
-                                                            <Link
-                                                                href={
-                                                                    '/pools/' +
-                                                                    user.id +
-                                                                    '/edit'
-                                                                }
-                                                            >
-                                                                Edit
-                                                            </Link>
-                                                        )}
-                                                </>
-                                            )}
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <UserTable
+                account={account}
+                loading={loading}
+                data={data?.users}
+                onSort={(order) => setSort(order)}
+            />
             {!id && (
                 <div className="landing-producers-pagination body-text-2">
                     <button

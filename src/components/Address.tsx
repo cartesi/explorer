@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,115 +9,85 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-
-import ReactTooltip from 'react-tooltip';
+import React, { FunctionComponent, useState } from 'react';
+import {
+    HStack,
+    Image,
+    Link,
+    Text,
+    TextProps,
+    useBreakpointValue,
+    useClipboard,
+} from '@chakra-ui/react';
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { etherscanLinks } from '../utils/networks';
-import useWindowDimensions from '../utils/windowDimentions';
-import { tinyString } from '../utils/stringUtils';
+import { truncateString } from '../utils/stringUtils';
 import { useENS } from '../services/ens';
 
-interface AddressProps {
+export type AddressType = 'tx' | 'address' | 'contract' | 'token';
+
+export interface AddressProps extends TextProps {
     id: string;
-    type: string;
+    chainId?: number;
+    type?: AddressType;
     ens?: boolean;
-    className?: string;
-    rawLink?: boolean;
+    truncated?: boolean;
+    responsive?: boolean;
+    hideActions?: boolean;
 }
 
-const Address = ({
-    id,
-    type,
-    ens = false,
-    className,
-    rawLink = false,
-}: AddressProps) => {
-    const { chainId } = useWeb3React<Web3Provider>();
+const Address: FunctionComponent<AddressProps> = (props) => {
+    const {
+        id,
+        chainId = 1,
+        type = 'address',
+        ens,
+        truncated = false,
+        responsive = false,
+        hideActions = false,
+    } = props;
 
     // resolve ENS entry from address
     const ensEntry = ens && useENS(id);
 
-    const copyToClipboard = () => {
-        var dummy = document.createElement('textarea');
-        document.body.appendChild(dummy);
-        dummy.value = id;
-        dummy.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummy);
-    };
+    const { hasCopied, onCopy } = useClipboard(id);
+    const [hover, setHover] = useState(false);
 
-    // This wouldn't be necessary in real production
-    const { width } = useWindowDimensions();
+    // truncate if screen is 'small'
+    const responsiveTruncate = useBreakpointValue({
+        base: true,
+        md: false,
+        lg: false,
+        xl: false,
+    });
 
-    const formatAddress = (address: string) => {
-        if (ensEntry?.name) {
-            return ensEntry.name;
-        }
-        address = ensEntry?.address || address;
-        if (width < 576) {
-            return tinyString(address);
-        }
-        return address;
-    };
+    const label =
+        truncated || (responsive && responsiveTruncate)
+            ? truncateString(id)
+            : id;
+    const showActions = !hideActions || hover;
 
-    if (!chainId || etherscanLinks[chainId]) {
-        if (rawLink) {
-            return (
-                <span className={`${className} address`}>
-                    <a
-                        href={`${etherscanLinks[chainId || 1]}/${type}/${id}`}
-                        className="address-link ml-3"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {formatAddress(id)}
-                    </a>
-                </span>
-            );
-        }
+    const externalLink = etherscanLinks[chainId]
+        ? `${etherscanLinks[chainId]}/${type}/${id}`
+        : undefined;
 
-        return (
-            <>
-                <span
-                    className={`${className} address d-flex flex-row align-items-center`}
-                >
-                    {ensEntry.avatar && (
-                        <img
-                            src={ensEntry.avatar}
-                            height="40"
-                            className="mr-2"
-                        />
-                    )}
-                    {formatAddress(id)}
-                    <span className="address-actions">
-                        <a
-                            href={`${
-                                etherscanLinks[chainId || 1]
-                            }/${type}/${id}`}
-                            className="address-link ml-3"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-tip="View on Etherscan"
-                        >
-                            <i className="fas fa-external-link-alt"></i>
-                        </a>
-                        <span
-                            className="address-link ml-1"
-                            onClick={copyToClipboard}
-                            data-tip="Copy to Clipboard"
-                        >
-                            <i className="far fa-copy"></i>
-                        </span>
-                    </span>
-                </span>
-                <ReactTooltip />
-            </>
-        );
-    }
-
-    return <span className={className}>{formatAddress(id)}</span>;
+    return (
+        <HStack
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+        >
+            {ensEntry?.avatar && <Image src={ensEntry.avatar} h={40} />}
+            <Text {...props}>{label}</Text>
+            {showActions && !hasCopied && <CopyIcon onClick={onCopy} />}
+            {hasCopied && <Text fontSize="sm">Copied</Text>}
+            {showActions && externalLink && (
+                <Link href={externalLink}>
+                    <ExternalLinkIcon />
+                </Link>
+            )}
+        </HStack>
+    );
 };
+
 export default Address;

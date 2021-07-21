@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -10,55 +10,23 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
+import { Box, Flex } from '@chakra-ui/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import NavBar from './NavBar';
+import Header from './Header';
 import Footer from './Footer';
-import { useBlockNumber } from '../services/eth';
-import useMeta from '../graphql/hooks/useMeta';
 
-const threshold = 25;
-
-const SyncStatus = () => {
-    const blockNumber = useBlockNumber();
-    const meta = useMeta();
-
-    const issues =
-        meta &&
-        blockNumber > 0 &&
-        (meta.hasIndexingErrors ||
-            Math.abs(meta.block.number - blockNumber) > threshold);
-
-    return issues ? (
-        <div className="layout-content-issue">
-            <i className="fas fa-exclamation-triangle"></i> Synchronization
-            issue between backend data and blockchain data. Blocks may be
-            appearing slowly.
-        </div>
-    ) : (
-        <div />
-    );
-};
-
-const LayoutComponent = ({ children, className = '' }) => {
+const LayoutComponent = ({ children }) => {
     const { error } = useWeb3React();
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
     return (
-        <div
-            className={`layout container-fluid ${className}`}
-            style={{ minHeight: '100vh' }}
-        >
-            <NavBar />
-            <div>
-                {!isUnsupportedChainIdError && (
-                    <div className="layout-content">
-                        <SyncStatus />
-                        {children}
-                    </div>
-                )}
-            </div>
+        <Flex direction="column" align="center" m="0 auto">
+            <Header />
+            <Box width="100%" paddingTop="100px">
+                {children}
+            </Box>
             <Footer />
-        </div>
+        </Flex>
     );
 };
 

@@ -14,7 +14,7 @@ import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
-import { tinyString } from '../utils/stringUtils';
+import { truncateString } from '../utils/stringUtils';
 import { useUserNodes } from '../graphql/hooks/useNodes';
 import { useNode } from '../services/node';
 
@@ -99,7 +99,7 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         }
                     >
                         {activeAddress
-                            ? tinyString(activeAddress)
+                            ? truncateString(activeAddress)
                             : account
                             ? 'Click to enter your node address'
                             : 'Connect to wallet first'}

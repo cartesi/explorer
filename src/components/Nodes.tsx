@@ -12,7 +12,7 @@
 import { useState } from 'react';
 import useNodes, { NODES_PER_PAGE } from '../graphql/hooks/useNodes';
 import { Summary } from '../graphql/models';
-import { tinyString } from '../utils/stringUtils';
+import { truncateString } from '../utils/stringUtils';
 import Address from './Address';
 import { formatCTSI } from '../utils/token';
 

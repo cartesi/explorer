@@ -13,267 +13,138 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { BigNumber, constants, FixedNumber } from 'ethers';
+import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import ReactTooltip from 'react-tooltip';
+import { Center, Divider, Flex, HStack } from '@chakra-ui/react';
+import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
-import BlockCard from '../components/BlockCard';
+import BlockCard from '../components/block/BlockCard';
 import Users from '../components/Users';
 
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
-import { Block, Summary } from '../graphql/models';
+import { Block } from '../graphql/models';
 
-import { MarketInformation, useMarketInformation } from '../services/market';
+import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
 
 import { getRewardRate } from '../utils/reward';
-import { formatCTSI, toCTSI } from '../utils/token';
+import { toCTSI } from '../utils/token';
 import labels from '../utils/labels';
+import StatsPanel from '../components/home/StatsPanel';
+import StatsItem from '../components/Stats';
+import CTSIText from '../components/CTSIText';
+import MarketInfo from '../components/MarketInfo';
 
-interface HeaderProps {
-    market: MarketInformation;
-}
-const Header = (props: HeaderProps) => {
-    const marketInformation = props.market;
+const Home = () => {
+    const { marketInformation } = useMarketInformation();
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
     const { balance } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking(account);
-    return (
-        <div className="page-header row">
-            {marketInformation && (
-                <>
-                    <div className="col col-12 col-md-4 col-lg-2">
-                        <div className="caption white-text">CTSI Price</div>
-                        <div className="info-text-sm dark-white-text">
-                            {`$${marketInformation.price}  `}
-                            <span className="caption">USD</span>
-                        </div>
-                    </div>
-
-                    <div className="col col-12 col-md-4 col-lg-2">
-                        <div className="caption white-text">
-                            CTSI Market Cap
-                        </div>
-                        <div className="info-text-sm dark-white-text">
-                            {`$${
-                                marketInformation.marketCap
-                                    ? marketInformation.marketCap.toLocaleString(
-                                          'en'
-                                      )
-                                    : ''
-                            }  `}
-                            <span className="caption">USD</span>
-                        </div>
-                    </div>
-
-                    <div className="col col-12 col-md-4 col-lg-2">
-                        <div className="caption white-text">Circ. Supply</div>
-                        <div className="info-text-sm dark-white-text">
-                            {`${
-                                marketInformation.circulatingSupply
-                                    ? marketInformation.circulatingSupply.toLocaleString(
-                                          'en'
-                                      )
-                                    : ''
-                            }  `}
-                            <span className="caption">CTSI</span>
-                        </div>
-                    </div>
-
-                    <div className="col col-12 col-md-6 col-lg-3">
-                        <div className="sub-title-2 white-text">
-                            <img src="/images/wallet.png" />
-                            &nbsp; Wallet Balance
-                        </div>
-                        <div className="info-text-md dark-white-text">
-                            {`${account ? formatCTSI(balance, 2) : 'N/A'}  `}
-                            <span className="caption">CTSI</span>
-                        </div>
-                    </div>
-
-                    <div className="col col-12 col-md-6 col-lg-3">
-                        <div className="sub-title-2 white-text">
-                            <img src="/images/staked.png" />
-                            &nbsp; Staked Balance
-                        </div>
-                        <div className="info-text-md dark-white-text">
-                            {`${
-                                account ? formatCTSI(stakedBalance, 2) : 'N/A'
-                            }`}
-                            <span className="caption"> CTSI</span>
-                        </div>
-                    </div>
-                </>
-            )}
-        </div>
-    );
-};
-
-interface StatsProps {
-    market: MarketInformation;
-    summary: Summary;
-    blocks: Block[];
-}
-const Stats = (props: StatsProps) => {
-    const { blocks, market, summary } = props;
-
-    let participationRateLabel = '-';
-    let aprLabel = '-';
-    if (blocks && blocks.length > 0 && market?.circulatingSupply && summary) {
-        const { yearReturn } = getRewardRate(blocks, market.circulatingSupply);
-
-        const participationRate = toCTSI(summary.totalStaked).divUnsafe(
-            FixedNumber.from(market.circulatingSupply)
-        );
-
-        // build label
-        participationRateLabel =
-            participationRate
-                .mulUnsafe(FixedNumber.from(100))
-                .round(1)
-                .toString() + '%';
-
-        aprLabel =
-            yearReturn.mulUnsafe(FixedNumber.from(100)).round(1).toString() +
-            '%';
-    }
-
-    const totalStaked = BigNumber.from(
-        summary && summary.totalStaked ? summary.totalStaked : 0
-    );
-    let totalStakedLabel = '0';
-
-    if (
-        totalStaked.gte(
-            BigNumber.from(1e9).mul(BigNumber.from(constants.WeiPerEther))
-        )
-    ) {
-        totalStakedLabel =
-            toCTSI(totalStaked)
-                .divUnsafe(FixedNumber.from(1e9))
-                .round(2)
-                .toString() + 'G';
-    } else if (
-        totalStaked.gte(
-            BigNumber.from(1e6).mul(BigNumber.from(constants.WeiPerEther))
-        )
-    ) {
-        totalStakedLabel =
-            toCTSI(totalStaked)
-                .divUnsafe(FixedNumber.from(1e6))
-                .round(2)
-                .toString() + 'M';
-    } else if (
-        totalStaked.gte(
-            BigNumber.from(1e3).mul(BigNumber.from(constants.WeiPerEther))
-        )
-    ) {
-        totalStakedLabel =
-            toCTSI(totalStaked)
-                .divUnsafe(FixedNumber.from(1e3))
-                .round(2)
-                .toString() + 'K';
-    } else {
-        totalStakedLabel = totalStaked.toString();
-    }
-
-    return (
-        <div className="landing-dashboard">
-            <div className="landing-dashboard-content row">
-                <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1"># Active Nodes</div>
-                    <div className="info-text-bg">
-                        {summary ? summary.totalNodes.toLocaleString() : 0}
-                    </div>
-                </div>
-                <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">
-                        Total Staked (CTSI){' '}
-                        <img
-                            data-tip={labels.totalStaked}
-                            src="/images/question.png"
-                        />
-                    </div>
-                    <div className="info-text-bg">{totalStakedLabel}</div>
-                </div>
-                <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">
-                        Projected Annual Earnings{' '}
-                        <img
-                            data-tip={labels.projectedAnnualEarnings}
-                            src="/images/question.png"
-                        />
-                    </div>
-                    <div className="info-text-bg">{aprLabel}</div>
-                </div>
-                <div className="col col-12 col-md-6 col-lg-3 landing-dashboard-content-item">
-                    <div className="sub-title-1">
-                        Participation Rate{' '}
-                        <img
-                            data-tip={labels.participationRate}
-                            src="/images/question.png"
-                        />
-                    </div>
-                    <div className="info-text-bg">{participationRateLabel}</div>
-                </div>
-            </div>
-            <ReactTooltip />
-        </div>
-    );
-};
-
-interface BlocksProps {
-    blocks: Block[];
-}
-const Blocks = (props: BlocksProps) => {
-    const { blocks } = props;
-    return (
-        <div className="landing-blocks">
-            <Link href="/blocks">
-                <a className="landing-link">
-                    <h5 className="landing-sub-title">Blocks</h5>
-                </a>
-            </Link>
-
-            <div className="landing-blocks-list">
-                {blocks.slice(0, 4).map((block) => (
-                    <Link href={'/blocks/'} key={block.id}>
-                        <a className="landing-link flex-fill">
-                            <BlockCard block={block} key={block.id} />
-                        </a>
-                    </Link>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const Home = () => {
-    const { marketInformation } = useMarketInformation();
     const summary = useSummary();
     const { data } = useBlocks();
     const blocks = data?.blocks || [];
+    const { yearReturn } = getRewardRate(
+        blocks,
+        marketInformation.circulatingSupply
+    );
+    const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
+        FixedNumber.from(marketInformation?.circulatingSupply || 1)
+    );
 
     return (
-        <Layout className="landing">
+        <Layout>
             <Head>
                 <title>Cartesi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <Flex
+                direction={['column', 'column', 'column', 'row']}
+                align={['flex-start', 'flex-start', 'flex-start', 'flex-end']}
+                justify="space-around"
+                bg="black"
+                color="white"
+                opacity={0.87}
+                p="50px 6vw 50px 6vw"
+            >
+                <MarketInfo
+                    label="CTSI Price"
+                    value={marketInformation?.price}
+                    unit="USD"
+                />
+                <MarketInfo
+                    label="CTSI Market Cap"
+                    value={marketInformation?.marketCap}
+                    unit="USD"
+                />
+                <MarketInfo
+                    label="Circ. Supply"
+                    value={marketInformation?.circulatingSupply}
+                    unit="CTSI"
+                />
+                <CTSIText
+                    label="Wallet Balance"
+                    value={balance}
+                    icon={FaWallet}
+                    bg="black"
+                    color="white"
+                />
+                <CTSIText
+                    label="Staked Balance"
+                    value={stakedBalance}
+                    icon={FaCoins}
+                    bg="black"
+                    color="white"
+                />
+            </Flex>
+            <Center
+                p="0 6vw"
+                bgGradient="linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, white 50%, white 100%)"
+            >
+                <StatsPanel w="100%">
+                    <StatsItem
+                        label="# Active Nodes"
+                        value={summary?.totalNodes}
+                    />
+                    <Divider orientation="vertical" />
+                    <StatsItem
+                        label="Total Staked (CTSI)"
+                        value={toCTSI(
+                            summary?.totalStaked || 0
+                        ).toUnsafeFloat()}
+                        fractionDigits={2}
+                        help={labels.totalStaked}
+                    />
+                    <Divider orientation="vertical" />
+                    <StatsItem
+                        label="Projected Annual Earnings"
+                        value={yearReturn.toUnsafeFloat()}
+                        unit="percent"
+                        fractionDigits={1}
+                        help={labels.projectedAnnualEarnings}
+                    />
+                    <Divider orientation="vertical" />
+                    <StatsItem
+                        label="Participation Rate"
+                        value={participationRate.toUnsafeFloat()}
+                        unit="percent"
+                        fractionDigits={1}
+                        help={labels.participationRate}
+                    />
+                </StatsPanel>
+            </Center>
 
-            <Header market={marketInformation} />
-            <Stats
-                blocks={blocks}
-                summary={summary}
-                market={marketInformation}
-            />
-            <Blocks blocks={blocks} />
+            <HStack p="30px 6vw" justify="space-between">
+                {blocks.slice(0, 4).map((block) => (
+                    <BlockCard block={block} key={block.id} w="100%" />
+                ))}
+            </HStack>
+
             <Users summary={summary} />
         </Layout>
     );

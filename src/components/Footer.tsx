@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -10,7 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useWeb3React } from '@web3-react/core';
-import React from 'react';
+import React, { ReactNode } from 'react';
+import {
+    Box,
+    Container,
+    Stack,
+    SimpleGrid,
+    Text,
+    Link,
+    VisuallyHidden,
+    chakra,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { FaTwitter } from 'react-icons/fa';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     useCartesiTokenContract,
     useSimpleFaucetContract,
@@ -20,6 +33,46 @@ import {
     useWorkerManagerContract,
 } from '../services/contracts';
 import Address from './Address';
+
+const ListHeader = ({ children }: { children: ReactNode }) => {
+    return (
+        <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
+            {children}
+        </Text>
+    );
+};
+
+const SocialButton = ({
+    children,
+    label,
+    href,
+}: {
+    children: ReactNode;
+    label: string;
+    href: string;
+}) => {
+    return (
+        <chakra.button
+            bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+            rounded={'full'}
+            w={8}
+            h={8}
+            cursor={'pointer'}
+            as={'a'}
+            href={href}
+            display={'inline-flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            transition={'background 0.3s ease'}
+            _hover={{
+                bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+            }}
+        >
+            <VisuallyHidden>{label}</VisuallyHidden>
+            {children}
+        </chakra.button>
+    );
+};
 
 const Footer = () => {
     const { chainId } = useWeb3React();
@@ -31,112 +84,108 @@ const Footer = () => {
     const workerManager = useWorkerManagerContract();
     const poolFactory = useStakingPoolFactoryContract();
 
+    const links = [
+        {
+            label: 'Audit Report',
+            href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
+        },
+        {
+            label: 'CTSI Reserve Mining',
+            href: 'https://cartesi.io/en/mine/',
+        },
+        {
+            label: 'How to Run a Node',
+            href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
+        },
+        {
+            label: 'FAQ',
+            href: 'https://github.com/cartesi/noether/wiki/FAQ',
+        },
+    ];
+
+    const contracts = [
+        {
+            name: 'Token',
+            address: token?.address,
+        },
+        {
+            name: 'Faucet',
+            address: faucet?.address,
+        },
+        {
+            name: 'PoS',
+            address: pos?.address,
+        },
+        {
+            name: 'Staking',
+            address: staking?.address,
+        },
+        {
+            name: 'Worker Manager',
+            address: workerManager?.address,
+        },
+        {
+            name: 'Pool Factory',
+            address: poolFactory?.address,
+        },
+    ];
+
     return (
-        <div className="layout-footer">
-            <div className="layout-footer__content flex-column flex-lg-row py-4">
-                <div className="my-1 d-flex flex-column align-start mb-4 mb-lg-0">
-                    <b className="mb-3">Resources</b>
-                    <div className="my-1">
-                        <a
-                            href="https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
+        <Box
+            bg={useColorModeValue('gray.50', 'gray.900')}
+            color={useColorModeValue('gray.700', 'gray.200')}
+            w="100%"
+            p="0 6vw"
+        >
+            <Container as={Stack} maxW={'100%'} py={10}>
+                <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+                    <Stack align={'flex-start'}>
+                        <ListHeader>Resources</ListHeader>
+                        {links.map(({ label, href }, index) => (
+                            <Link href={href} key={index} isExternal>
+                                {label}
+                                <ExternalLinkIcon mx="4px" />
+                            </Link>
+                        ))}
+                    </Stack>
+
+                    <Stack align={'flex-start'}>
+                        <ListHeader>Contracts</ListHeader>
+                        {contracts.map(({ name, address }, index) => (
+                            <Link href={address} key={index} isExternal>
+                                {name}
+                            </Link>
+                        ))}
+                    </Stack>
+                </SimpleGrid>
+            </Container>
+
+            <Box
+                borderTopWidth={1}
+                borderStyle={'solid'}
+                borderColor={useColorModeValue('gray.200', 'gray.700')}
+            >
+                <Container
+                    as={Stack}
+                    maxW={'100%'}
+                    py={4}
+                    direction={{ base: 'column', md: 'row' }}
+                    spacing={4}
+                    justify={{ md: 'space-between' }}
+                    align={{ md: 'center' }}
+                >
+                    <Text>© 2021 Cartesi Pte. Ltd. All rights reserved</Text>
+                    <Stack direction={'row'} spacing={6}>
+                        <SocialButton
+                            label={'Twitter'}
+                            href="http://twitter.com/cartesiproject"
                         >
-                            Audit Report
-                        </a>
-                    </div>
-                    <div className="my-1">
-                        <a
-                            href="https://cartesi.io/en/mine/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            CTSI Reserve Mining
-                        </a>
-                    </div>
-                    <div className="my-1">
-                        <a
-                            href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            How to Run a Node
-                        </a>
-                    </div>
-                    <div className="my-1">
-                        <a
-                            href="https://github.com/cartesi/noether/wiki/FAQ"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            FAQ
-                        </a>
-                    </div>
-                </div>
-
-                {chainId && (
-                    <div className="my-1 d-flex flex-column align-start">
-                        <b className="mb-3">Contract Addresses</b>
-                        <div className="d-flex flex-row align-start my-1">
-                            CTSI Token:
-                            <Address
-                                type="address"
-                                id={token?.address}
-                                rawLink={true}
-                            />
-                        </div>
-
-                        <div className="d-flex flex-row align-start my-1">
-                            CTSI Faucet:
-                            <Address
-                                type="address"
-                                id={faucet?.address}
-                                rawLink={true}
-                            />
-                        </div>
-
-                        <div className="d-flex flex-row align-start my-1">
-                            PoS:
-                            <Address
-                                type="address"
-                                id={pos?.address}
-                                rawLink={true}
-                            />
-                        </div>
-
-                        <div className="d-flex flex-row align-start my-1">
-                            Staking:
-                            <Address
-                                type="address"
-                                id={staking?.address}
-                                rawLink={true}
-                            />
-                        </div>
-
-                        <div className="d-flex flex-row align-start my-1">
-                            Worker Manager:
-                            <Address
-                                type="address"
-                                id={workerManager?.address}
-                                rawLink={true}
-                            />
-                        </div>
-
-                        <div className="d-flex flex-row align-start my-1">
-                            Pool Factory:
-                            <Address
-                                type="address"
-                                id={poolFactory?.address}
-                                rawLink={true}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className="text-center w-100 py-4 border-top">
-                Copyright (C) 2020 Cartesi Pte. Ltd.
-            </div>
-        </div>
+                            <FaTwitter />
+                        </SocialButton>
+                    </Stack>
+                </Container>
+            </Box>
+        </Box>
     );
 };
 

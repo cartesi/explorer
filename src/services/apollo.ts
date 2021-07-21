@@ -43,7 +43,8 @@ const mergeUniqueSort = (fieldName: string) => {
 
 export const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
-        uris[chainId] || 'https://api.thegraph.com/subgraphs/name/cartesi/pos';
+        uris[chainId] ||
+        'https://api.thegraph.com/subgraphs/name/cartesi/pos-ropsten';
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({

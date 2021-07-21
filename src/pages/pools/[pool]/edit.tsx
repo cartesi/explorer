@@ -24,7 +24,7 @@ import Layout from '../../../components/Layout';
 import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
 import PoolNode from '../../../components/PoolNode';
 import { useENS } from '../../../services/ens';
-import { tinyString } from '../../../utils/stringUtils';
+import { truncateString } from '../../../utils/stringUtils';
 import { formatCTSI } from '../../../utils/token';
 
 const ManagePool = () => {
@@ -95,7 +95,8 @@ const ManagePool = () => {
 
             <div className="page-header pb-4">
                 <div className="info-text-md text-white d-flex flex-row">
-                    Edit Pool: {ensEntry.name || tinyString(ensEntry.address)}
+                    Edit Pool:{' '}
+                    {ensEntry.name || truncateString(ensEntry.address)}
                     <ConfirmationIndicator loading={waiting} error={error} />
                 </div>
             </div>

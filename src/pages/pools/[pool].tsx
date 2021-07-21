@@ -31,7 +31,7 @@ import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI } from '../../utils/token';
 import { useENS } from '../../services/ens';
-import { tinyString } from '../../utils/stringUtils';
+import { truncateString } from '../../utils/stringUtils';
 import { StakingPool } from '../../graphql/models';
 import Link from 'next/link';
 import { TokenAmount } from '../../components/TokenAmount';
@@ -201,7 +201,7 @@ const Pool = () => {
             <div className="page-header row align-items-center py-3">
                 <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
                     Staking Pool:{' '}
-                    {ensEntry.name || tinyString(ensEntry.address)}
+                    {ensEntry.name || truncateString(ensEntry.address)}
                     {stakingPool &&
                         account &&
                         stakingPool.manager == account.toLowerCase() && (

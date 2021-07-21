@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export const tinyString = (str: string): string => {
+export const truncateString = (str: string): string => {
     if (str && str.length > 9) {
-        return str.slice(0, 5) + '...' + str.slice(-4);
+        return `${str.slice(0, 5)}...${str.slice(-4)}`;
     }
     return str;
 };
