@@ -131,15 +131,10 @@ const Footer = () => {
     ];
 
     return (
-        <Box
-            bg={useColorModeValue('gray.50', 'gray.900')}
-            color={useColorModeValue('gray.700', 'gray.200')}
-            w="100%"
-            p="0 6vw"
-        >
+        <Box bg="black" color="white" opacity={0.87} w="100%" p="0 6vw">
             <Container as={Stack} maxW={'100%'} py={10}>
                 <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-                    <Stack align={'flex-start'}>
+                    <Stack align="flex-start">
                         <ListHeader>Resources</ListHeader>
                         {links.map(({ label, href }, index) => (
                             <Link href={href} key={index} isExternal>
@@ -149,13 +144,18 @@ const Footer = () => {
                         ))}
                     </Stack>
 
-                    <Stack align={'flex-start'}>
+                    <Stack align="flex-start">
                         <ListHeader>Contracts</ListHeader>
-                        {contracts.map(({ name, address }, index) => (
-                            <Link href={address} key={index} isExternal>
-                                {name}
-                            </Link>
-                        ))}
+                        {contracts
+                            .filter(({ address }) => address)
+                            .map(({ name, address }, index) => (
+                                <Address
+                                    address={address}
+                                    name={name}
+                                    key={index}
+                                    truncated
+                                />
+                            ))}
                     </Stack>
                 </SimpleGrid>
             </Container>

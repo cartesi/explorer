@@ -21,7 +21,7 @@ export default {
 } as ComponentMeta<typeof Address>;
 
 const Template: ComponentStory<typeof Address> = (args) => (
-    <Address {...args} id="0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D" />
+    <Address {...args} address="0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D" />
 );
 
 export const Basic = Template.bind({});
@@ -38,3 +38,6 @@ Responsive.args = { responsive: true };
 
 export const TokenLink = Template.bind({});
 TokenLink.args = { type: 'token' };
+
+export const WithName = Template.bind({});
+WithName.args = { name: 'Pool Factory' };

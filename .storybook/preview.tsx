@@ -16,6 +16,8 @@ import { withPerformance } from 'storybook-addon-performance';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import withColorMode from './withColorMode';
+import Web3Container from '../src/components/Web3Container';
+import SelectedChain from '../src/components/header/SelectedChain';
 import theme from '../src/pages/theme';
 import '@fontsource/rubik';
 
@@ -50,7 +52,10 @@ export const globalTypes = {
 const withChakra = (Story: Function, context: StoryContext) => {
     return (
         <ChakraProvider resetCSS theme={theme}>
-            <Story />
+            <Web3Container>
+                <SelectedChain />
+                <Story />
+            </Web3Container>
         </ChakraProvider>
     );
 };

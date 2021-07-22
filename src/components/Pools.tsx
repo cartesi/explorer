@@ -78,7 +78,7 @@ const PoolRow = (props: { pool: StakingPool }) => {
     return (
         <tr className="body-text-2" key={pool.id}>
             <td>
-                <Address type="address" ens id={pool.id} />
+                <Address ens address={pool.id} />
             </td>
             <td>{pool.totalUsers}</td>
             <td>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</td>

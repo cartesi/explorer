@@ -28,7 +28,8 @@ import { useENS } from '../services/ens';
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
 
 export interface AddressProps extends TextProps {
-    id: string;
+    address: string;
+    name?: string;
     chainId?: number;
     type?: AddressType;
     ens?: boolean;
@@ -39,7 +40,8 @@ export interface AddressProps extends TextProps {
 
 const Address: FunctionComponent<AddressProps> = (props) => {
     const {
-        id,
+        address,
+        name,
         chainId = 1,
         type = 'address',
         ens,
@@ -49,9 +51,9 @@ const Address: FunctionComponent<AddressProps> = (props) => {
     } = props;
 
     // resolve ENS entry from address
-    const ensEntry = ens && useENS(id);
+    const ensEntry = ens && useENS(address);
 
-    const { hasCopied, onCopy } = useClipboard(id);
+    const { hasCopied, onCopy } = useClipboard(address);
     const [hover, setHover] = useState(false);
 
     // truncate if screen is 'small'
@@ -64,12 +66,12 @@ const Address: FunctionComponent<AddressProps> = (props) => {
 
     const label =
         truncated || (responsive && responsiveTruncate)
-            ? truncateString(id)
-            : id;
+            ? truncateString(address)
+            : address;
     const showActions = !hideActions || hover;
 
     const externalLink = etherscanLinks[chainId]
-        ? `${etherscanLinks[chainId]}/${type}/${id}`
+        ? `${etherscanLinks[chainId]}/${type}/${address}`
         : undefined;
 
     return (
@@ -78,6 +80,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             onMouseLeave={() => setHover(false)}
         >
             {ensEntry?.avatar && <Image src={ensEntry.avatar} h={40} />}
+            {name && <Text>{name}</Text>}
             <Text {...props}>{label}</Text>
             {showActions && !hasCopied && (
                 <Link>

@@ -76,7 +76,7 @@ const Calculator = () => {
     const currentReward = blocks[0].reward;
 
     return (
-        <Layout className="calculator">
+        <Layout>
             <Head>
                 <title>Staking Calculator</title>
                 <link rel="icon" href="/favicon.ico" />

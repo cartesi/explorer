@@ -58,7 +58,7 @@ const BlockItem = (props: BlockItemProps) => {
                             'producer'
                         )}`}
                         type="address"
-                        id={block.producer.id}
+                        address={block.producer.id}
                     />
 
                     <div className="sub-title-4 col-4 my-1">Node</div>
@@ -67,14 +67,14 @@ const BlockItem = (props: BlockItemProps) => {
                             'node'
                         )}`}
                         type="address"
-                        id={block.node.id}
+                        address={block.node.id}
                     />
 
                     <div className="sub-title-4 col-4 my-1">Hash</div>
                     <Address
                         className={`body-text-2 col-8 my-1 ${highlight('id')}`}
                         type="tx"
-                        id={block.id}
+                        address={block.id}
                     />
 
                     <div className="sub-title-4 col-4 my-1">Reward</div>

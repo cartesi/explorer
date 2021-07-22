@@ -64,7 +64,7 @@ const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
                     <Box>
                         <Text>Producer</Text>
                         <Address
-                            id={block.producer.id}
+                            address={block.producer.id}
                             truncated
                             fontWeight="bold"
                             fontSize="large"
@@ -73,7 +73,7 @@ const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
                     <Spacer minH={5} />
                     <Box>
                         <Text>Node</Text>
-                        <Address id={block.node.id} truncated />
+                        <Address address={block.node.id} truncated />
                     </Box>
                 </Flex>
                 <Image src={tinyGraphUrl(block)} w="120px" h="120px" />

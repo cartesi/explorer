@@ -113,10 +113,7 @@ const Nodes = (props: NodesProps) => {
                                 return (
                                     <tr key={node.id} className="body-text-2">
                                         <td>
-                                            <Address
-                                                type="address"
-                                                id={node.id}
-                                            />
+                                            <Address address={node.id} />
                                         </td>
                                         <td>{node.totalBlocks}</td>
                                         <td>

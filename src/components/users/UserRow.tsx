@@ -30,7 +30,7 @@ const UserRow: FunctionComponent<UserRowProps> = ({ user, account }) => {
     return (
         <Tr key={user.id} _hover={{ backgroundColor: 'WhiteSmoke' }}>
             <Td>
-                <Address id={user.id} />
+                <Address address={user.id} />
             </Td>
             <Td isNumeric>{user.totalBlocks}</Td>
             <Td isNumeric>{formatCTSI(user.stakedBalance, 2)} CTSI</Td>
