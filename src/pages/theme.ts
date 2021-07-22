@@ -13,6 +13,24 @@ import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
     components: {
+        Button: {
+            baseStyle: {
+                borderRadius: 0,
+                fontWeight: 'normal',
+            },
+            variants: {
+                solid: {
+                    bg: 'gray.800',
+                    color: 'white',
+                    _hover: {
+                        bg: 'gray.700',
+                    },
+                },
+            },
+            defaultProps: {
+                size: 'lg',
+            },
+        },
         Link: {
             baseStyle: {
                 _hover: { color: '#007bff', textDecoration: 'none' },
@@ -32,11 +50,11 @@ const theme = extendTheme({
             sizes: {
                 sm: {
                     th: {
-                        lineHeight: '3',
+                        lineHeight: '40px',
                     },
                     td: {
-                        fontSize: 'xs',
-                        lineHeight: '3',
+                        fontSize: 'small',
+                        lineHeight: '40px',
                     },
                 },
             },

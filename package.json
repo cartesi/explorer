@@ -8,8 +8,8 @@
         "start": "next start",
         "lint": "eslint --color --ext .ts src/",
         "lint:fix": "yarn lint --fix",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "storybook": "start-storybook -s ./public -p 6006",
+        "build-storybook": "build-storybook -s ./public"
     },
     "dependencies": {
         "@apollo/client": "^3.3.21",
@@ -33,6 +33,7 @@
         "big-number-input": "^1.0.3",
         "bootstrap": "^4.6.0",
         "cors": "^2.8.5",
+        "eth-chains": "^0.3.5",
         "ethers": "^5.4.1",
         "framer-motion": "^4",
         "graphql": "^15.5.0",

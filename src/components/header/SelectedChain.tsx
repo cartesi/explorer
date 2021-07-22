@@ -9,24 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FunctionComponent } from 'react';
+import { Box, Button, HStack, Image, Text } from '@chakra-ui/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { IChainData, getChain } from '../services/chain';
-import { networks } from '../utils/networks';
+import { chains, Chain } from 'eth-chains';
+import { networks } from '../../utils/networks';
 
-const SelectedChain = () => {
-    const {
-        chainId,
-        activate,
-        deactivate,
-        error,
-        active,
-    } = useWeb3React<Web3Provider>();
+const SelectedChain: FunctionComponent = () => {
+    const { chainId, activate, deactivate, error, active } =
+        useWeb3React<Web3Provider>();
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-    const [chain, setChain] = useState<IChainData>(undefined);
+    const [chain, setChain] = useState<Chain>(undefined);
     const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
 
     React.useEffect(() => {
@@ -35,10 +31,10 @@ const SelectedChain = () => {
         }
     }, []);
 
-    // get chain name
+    // set chain name
     useEffect(() => {
         if (chainId) {
-            getChain(chainId).then(setChain);
+            setChain(chains.getById(chainId));
         } else if (error) {
             setChain(undefined);
         }
@@ -61,29 +57,33 @@ const SelectedChain = () => {
     };
 
     return (
-        <div className="selected-chain">
-            {chain && (
-                <div>
-                    <span style={{ color: 'white' }}>{chain.name}</span>
-                </div>
-            )}
+        <Box>
+            {chain && <Text>{chain.name}</Text>}
             {isUnsupportedChainIdError && (
-                <button type="button" className="btn btn-danger button-text">
-                    <img src="/images/metamask.png" />
-                    Unsupported Network
-                </button>
+                <Button>
+                    <HStack>
+                        <Image src="/images/metamask-fox.svg" />
+                        <Text>Unsupported Network</Text>
+                    </HStack>
+                </Button>
             )}
             {!active && !isUnsupportedChainIdError && (
-                <button
-                    type="button"
-                    className="btn btn-primary button-text"
-                    onClick={connectNetwork}
-                >
-                    <img src="/images/metamask.png" />
-                    {hasMetaMask ? 'Connect To Wallet' : 'Install MetaMask'}
-                </button>
+                <Button onClick={connectNetwork} bg="#007bff">
+                    <HStack>
+                        <Image
+                            src="/images/metamask-fox.svg"
+                            w="25px"
+                            h="25px"
+                        />
+                        <Text>
+                            {hasMetaMask
+                                ? 'Connect To Wallet'
+                                : 'Install MetaMask'}
+                        </Text>
+                    </HStack>
+                </Button>
             )}
-        </div>
+        </Box>
     );
 };
 
