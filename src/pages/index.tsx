@@ -46,6 +46,7 @@ import StatsPanel from '../components/home/StatsPanel';
 import StatsItem from '../components/Stats';
 import CTSIText from '../components/CTSIText';
 import MarketInfo from '../components/MarketInfo';
+import { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 
 const SectionHeading: FunctionComponent = (props) => {
     return (
@@ -179,7 +180,12 @@ const Home = () => {
                 </InputGroup>
             </HStack>
             <HStack p="20px 6vw" justify="space-between">
-                <Users account={account} summary={summary} />
+                <Users
+                    account={account}
+                    pages={Math.ceil(
+                        (summary?.totalUsers || 0) / USERS_PER_PAGE
+                    )}
+                />
             </HStack>
         </Layout>
     );

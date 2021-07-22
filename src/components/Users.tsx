@@ -9,34 +9,39 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
-
+import React, { FunctionComponent, useState } from 'react';
+import { VStack } from '@chakra-ui/react';
 import UserTable, { Sort } from './users/UserTable';
-import useUsers, { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
-import { Summary } from '../graphql/models';
+import useUsers from '../graphql/hooks/useUsers';
+import Pagination from './Pagination';
 
 interface UsersProps {
     account?: string;
     search?: string;
-    summary: Summary;
+    pages: number;
 }
 
-const Users = (props: UsersProps) => {
-    const { account, search, summary } = props;
+const Users: FunctionComponent<UsersProps> = (props) => {
+    const { account, search, pages } = props;
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort);
-    const totalUsersPages = summary
-        ? Math.ceil(summary.totalUsers / USERS_PER_PAGE)
-        : 1;
 
     return (
-        <UserTable
-            account={account}
-            loading={loading}
-            data={data?.users}
-            onSort={(order) => setSort(order)}
-        />
+        <VStack w="100%">
+            <UserTable
+                account={account}
+                loading={loading}
+                data={data?.users}
+                sort={sort}
+                onSort={(order) => setSort(order)}
+            />
+            <Pagination
+                pages={pages}
+                currentPage={pageNumber}
+                onPageClick={setPageNumber}
+            />
+        </VStack>
     );
 };
 
