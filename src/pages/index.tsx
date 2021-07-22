@@ -111,7 +111,6 @@ const Home = () => {
                         label="# Active Nodes"
                         value={summary?.totalNodes}
                     />
-                    <Divider orientation="vertical" />
                     <StatsItem
                         label="Total Staked (CTSI)"
                         value={toCTSI(
@@ -120,7 +119,6 @@ const Home = () => {
                         fractionDigits={2}
                         help={labels.totalStaked}
                     />
-                    <Divider orientation="vertical" />
                     <StatsItem
                         label="Projected Annual Earnings"
                         value={yearReturn.toUnsafeFloat()}
@@ -128,7 +126,6 @@ const Home = () => {
                         fractionDigits={1}
                         help={labels.projectedAnnualEarnings}
                     />
-                    <Divider orientation="vertical" />
                     <StatsItem
                         label="Participation Rate"
                         value={participationRate.toUnsafeFloat()}

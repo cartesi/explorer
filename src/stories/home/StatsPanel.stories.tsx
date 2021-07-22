@@ -11,7 +11,6 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Divider } from '@chakra-ui/react';
 
 import StatsPanelComponent from '../../components/home/StatsPanel';
 import { Nodes, TotalStaked, APR, ParticipationRate } from '../Stats.stories';
@@ -27,11 +26,8 @@ export const StatsPanel: ComponentStory<typeof StatsPanelComponent> = (
 ) => (
     <StatsPanelComponent {...args}>
         <Nodes {...Nodes.args} />
-        <Divider orientation="vertical" />
         <TotalStaked {...TotalStaked.args} />
-        <Divider orientation="vertical" />
         <APR {...APR.args} />
-        <Divider orientation="vertical" />
         <ParticipationRate {...ParticipationRate.args} />
     </StatsPanelComponent>
 );
