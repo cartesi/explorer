@@ -44,13 +44,7 @@ const UserTable: FunctionComponent<UserTableProps> = ({
     onSort,
 }) => {
     return (
-        <Table
-            w="100%"
-            variant="simple"
-            size="sm"
-            border="1px"
-            borderColor="gray.200"
-        >
+        <Table w="100%" variant="simple" size="sm">
             <Thead>
                 <Tr>
                     <Th>User</Th>
@@ -85,7 +79,7 @@ const UserTable: FunctionComponent<UserTableProps> = ({
                     (data.length === 0 && (
                         <Tr>
                             <Td colSpan={5} textAlign="center">
-                                <Text>No itens</Text>
+                                <Text>No items</Text>
                             </Td>
                         </Tr>
                     ))}

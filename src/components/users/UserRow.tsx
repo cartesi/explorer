@@ -28,12 +28,7 @@ const UserRow: FunctionComponent<UserRowProps> = ({ user, account }) => {
         user.pool && account && account.toLowerCase() == user.pool.manager;
 
     return (
-        <Tr
-            key={user.id}
-            _hover={{ backgroundColor: 'WhiteSmoke' }}
-            border="1px"
-            borderColor="gray.500"
-        >
+        <Tr key={user.id} _hover={{ backgroundColor: 'WhiteSmoke' }}>
             <Td>
                 <Address id={user.id} />
             </Td>

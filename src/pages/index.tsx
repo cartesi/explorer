@@ -9,14 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Center, Divider, Flex, HStack } from '@chakra-ui/react';
+import {
+    Center,
+    Flex,
+    Heading,
+    HStack,
+    Input,
+    InputGroup,
+    InputLeftElement,
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
@@ -25,7 +33,6 @@ import Users from '../components/Users';
 
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
-import { Block } from '../graphql/models';
 
 import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
@@ -39,6 +46,23 @@ import StatsPanel from '../components/home/StatsPanel';
 import StatsItem from '../components/Stats';
 import CTSIText from '../components/CTSIText';
 import MarketInfo from '../components/MarketInfo';
+
+const SectionHeading: FunctionComponent = (props) => {
+    return (
+        <Heading
+            as="h5"
+            borderLeftWidth="1px"
+            borderLeftColor="gray.900"
+            borderLeftStyle="solid"
+            marginTop={10}
+            paddingLeft={3}
+            size="lg"
+            fontWeight="normal"
+        >
+            {props.children}
+        </Heading>
+    );
+};
 
 const Home = () => {
     const { marketInformation } = useMarketInformation();
@@ -135,14 +159,28 @@ const Home = () => {
                     />
                 </StatsPanel>
             </Center>
-
-            <HStack p="30px 6vw" justify="space-between">
+            <HStack p="0 6vw">
+                <SectionHeading>Blocks</SectionHeading>
+            </HStack>
+            <HStack p="20px 6vw" justify="space-between">
                 {blocks.slice(0, 4).map((block) => (
                     <BlockCard block={block} key={block.id} w="100%" />
                 ))}
             </HStack>
 
-            <Users summary={summary} />
+            <HStack p="20px 6vw" justify="space-between" align="flex-end">
+                <SectionHeading>Block Producers</SectionHeading>
+                <InputGroup w={400}>
+                    <InputLeftElement
+                        pointerEvents="none"
+                        children={<SearchIcon color="gray.300" />}
+                    />
+                    <Input placeholder="Search" />
+                </InputGroup>
+            </HStack>
+            <HStack p="20px 6vw" justify="space-between">
+                <Users account={account} summary={summary} />
+            </HStack>
         </Layout>
     );
 };
