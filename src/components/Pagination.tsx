@@ -24,15 +24,15 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
 
     return (
         <HStack>
-            {currentPage > 1 && (
+            {currentPage > 0 && (
                 <Link>
                     <ChevronLeftIcon
                         onClick={() => onPageClick(currentPage - 1)}
                     />
                 </Link>
             )}
-            {pages > 1 && <Text>{`Page ${currentPage} of ${pages}`}</Text>}
-            {currentPage < pages && (
+            {pages > 1 && <Text>{`Page ${currentPage + 1} of ${pages}`}</Text>}
+            {currentPage < pages - 1 && (
                 <Link>
                     <ChevronRightIcon
                         onClick={() => onPageClick(currentPage + 1)}
