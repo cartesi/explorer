@@ -11,7 +11,11 @@
 
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
+import { StoryContext } from '@storybook/react';
+import { withPerformance } from 'storybook-addon-performance';
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import withColorMode from './withColorMode';
 import theme from '../src/pages/theme';
 import '@fontsource/rubik';
 
@@ -26,12 +30,29 @@ export const parameters = {
     nextRouter: {
         Provider: RouterContext.Provider,
     },
+    viewport: {
+        viewports: MINIMAL_VIEWPORTS,
+    },
 };
 
-export const decorators = [
-    (Story) => (
-        <ChakraProvider theme={theme}>
+export const globalTypes = {
+    theme: {
+        name: 'Theme',
+        description: 'Global theme for components',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: ['light', 'dark'],
+        },
+    },
+};
+
+const withChakra = (Story: Function, context: StoryContext) => {
+    return (
+        <ChakraProvider resetCSS theme={theme}>
             <Story />
         </ChakraProvider>
-    ),
-];
+    );
+};
+
+export const decorators = [withColorMode, withChakra, withPerformance];

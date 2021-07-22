@@ -9,20 +9,31 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+const path = require('path');
+const toPath = (_path) => path.join(process.cwd(), _path);
+
 module.exports = {
-    refs: {
-        'chakra-ui': {
-            title: 'Chakra UI',
-            url: 'https://chakra-ui.netlify.app/',
-        },
-    },
     stories: [
         '../src/**/*.stories.mdx',
         '../src/**/*.stories.@(js|jsx|ts|tsx)',
     ],
     addons: [
+        'storybook-addon-performance/register',
         '@storybook/addon-links',
         '@storybook/addon-essentials',
         'storybook-addon-next-router',
     ],
+    webpackFinal: async (config) => {
+        return {
+            ...config,
+            resolve: {
+                ...config.resolve,
+                alias: {
+                    ...config.resolve.alias,
+                    '@emotion/core': toPath('node_modules/@emotion/react'),
+                    'emotion-theming': toPath('node_modules/@emotion/react'),
+                },
+            },
+        };
+    },
 };
