@@ -79,7 +79,11 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         >
             {ensEntry?.avatar && <Image src={ensEntry.avatar} h={40} />}
             <Text {...props}>{label}</Text>
-            {showActions && !hasCopied && <CopyIcon onClick={onCopy} />}
+            {showActions && !hasCopied && (
+                <Link>
+                    <CopyIcon onClick={onCopy} />
+                </Link>
+            )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link href={externalLink}>

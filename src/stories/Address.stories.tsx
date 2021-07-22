@@ -36,5 +36,5 @@ HiddenActions.args = { hideActions: true };
 export const Responsive = Template.bind({});
 Responsive.args = { responsive: true };
 
-export const Token = Template.bind({});
-Token.args = { type: 'token' };
+export const TokenLink = Template.bind({});
+TokenLink.args = { type: 'token' };
