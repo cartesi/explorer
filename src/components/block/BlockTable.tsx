@@ -10,24 +10,35 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { Table, TableProps, Tbody, Td, Th, Tr } from '@chakra-ui/react';
+import { Table, TableProps, Tbody, Td, Text, Th, Tr } from '@chakra-ui/react';
 
 import Address from '../Address';
 import { Block } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
 
+export type BlockHighlightProp = 'id' | 'node' | 'producer';
+
 interface BlockTableProps extends TableProps {
     block: Block;
+    highlight?: BlockHighlightProp;
+    highlightColor: string;
 }
 
 const BlockTable: FunctionComponent<BlockTableProps> = (props) => {
-    const { block, ...tableProps } = props;
+    const {
+        block,
+        highlight,
+        highlightColor = 'lightyellow',
+        ...tableProps
+    } = props;
     return (
         <Table {...tableProps} variant="clear" size="sm">
             <Tbody>
-                <Tr>
-                    <Th>Block</Th>
-                    <Td>{block.number}</Td>
+                <Tr bg={highlight === 'id' && highlightColor}>
+                    <Th>Block {highlight}</Th>
+                    <Td>
+                        <Text>{block.number}</Text>
+                    </Td>
                 </Tr>
                 <Tr>
                     <Th>Chain</Th>
@@ -41,13 +52,13 @@ const BlockTable: FunctionComponent<BlockTableProps> = (props) => {
                     <Th>Date</Th>
                     <Td>{new Date(block.timestamp * 1000).toUTCString()}</Td>
                 </Tr>
-                <Tr>
+                <Tr bg={highlight === 'producer' && highlightColor}>
                     <Th>Producer</Th>
                     <Td>
                         <Address address={block.producer.id} responsive />
                     </Td>
                 </Tr>
-                <Tr>
+                <Tr bg={highlight === 'node' && highlightColor}>
                     <Th>Node</Th>
                     <Td>
                         <Address address={block.node.id} responsive />

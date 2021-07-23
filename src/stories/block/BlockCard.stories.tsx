@@ -12,16 +12,36 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import BlockCardComponent from '../../components/block/BlockCard';
+import BlockCard from '../../components/block/BlockCard';
 
 export default {
     title: 'BlockCard',
-    component: BlockCardComponent,
-    argTypes: {},
-} as ComponentMeta<typeof BlockCardComponent>;
+    component: BlockCard,
+    argTypes: {
+        highlightColor: { control: 'color' },
+    },
+} as ComponentMeta<typeof BlockCard>;
 
 import blocks from './blocks.json';
 
-export const BlockCard: ComponentStory<typeof BlockCardComponent> = (args) => (
-    <BlockCardComponent block={blocks[0]} {...args} />
+const Template: ComponentStory<typeof BlockCard> = (args) => (
+    <BlockCard block={blocks[0]} {...args} />
 );
+
+export const Default = Template.bind({});
+Default.args = {};
+
+export const HighlightId = Template.bind({});
+HighlightId.args = {
+    highlight: 'id',
+};
+
+export const HighlightProducer = Template.bind({});
+HighlightProducer.args = {
+    highlight: 'producer',
+};
+
+export const HighlightNode = Template.bind({});
+HighlightNode.args = {
+    highlight: 'node',
+};

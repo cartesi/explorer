@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,97 +9,66 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
-
+import React, { FunctionComponent, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import {
+    Button,
+    Center,
+    Heading,
+    HStack,
+    Spinner,
+    StackProps,
+    Tag,
+    TagLabel,
+    TagCloseButton,
+    VStack,
+} from '@chakra-ui/react';
+import { FaEllipsisH } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
 import useBlocks, {
     useNodeBlocks,
     useProducerBlocks,
 } from '../../graphql/hooks/useBlocks';
-import { tinyGraphUrl } from '../../utils/tinygraph';
-import { formatCTSI } from '../../utils/token';
-import { Block, BlocksData, BlocksVars } from '../../graphql/models';
+import { BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
 import BlocksChart from '../../components/BlocksChart';
-import Address from '../../components/Address';
+import BlockCard from '../../components/block/BlockCard';
 
-interface BlockItemProps {
-    block: Block;
-    highlight?: 'node' | 'producer' | 'id';
+interface FilterProps {
+    label: string;
+    value: string;
+    onDelete?: () => void;
 }
-const BlockItem = (props: BlockItemProps) => {
-    const { block } = props;
-    const highlight = (field: string) =>
-        field === props.highlight ? 'highlight' : '';
 
-    return (
-        <div className="blocks-content-block row" key={block.id}>
-            <div className="col-12 col-md-9">
-                <div className="row">
-                    <div className="sub-title-4 col-4 my-1">
-                        Protocol-Chain-Block
-                    </div>
-                    <div className="body-text-2 col-8 my-1">
-                        {block.chain.protocol.version}-{block.chain.number}-
-                        {block.number}
-                    </div>
+const Filter: FunctionComponent<FilterProps> = ({ label, value, onDelete }) => (
+    <HStack spacing={4}>
+        {['sm', 'md', 'lg'].map((size) => (
+            <Tag
+                size={size}
+                key={size}
+                borderRadius="full"
+                variant="solid"
+                colorScheme="green"
+            >
+                <TagLabel>
+                    {label}: {value}
+                </TagLabel>
+                <TagCloseButton onClick={onDelete} />
+            </Tag>
+        ))}
+    </HStack>
+);
 
-                    <div className="sub-title-4 col-4 my-1">Date</div>
-                    <div className="body-text-2 col-8 my-1">
-                        {new Date(block.timestamp * 1000).toUTCString()}
-                    </div>
-
-                    <div className="sub-title-4 col-4 my-1">Producer</div>
-                    <Address
-                        className={`body-text-2 col-8 my-1 ${highlight(
-                            'producer'
-                        )}`}
-                        type="address"
-                        address={block.producer.id}
-                    />
-
-                    <div className="sub-title-4 col-4 my-1">Node</div>
-                    <Address
-                        className={`body-text-2 col-8 my-1 ${highlight(
-                            'node'
-                        )}`}
-                        type="address"
-                        address={block.node.id}
-                    />
-
-                    <div className="sub-title-4 col-4 my-1">Hash</div>
-                    <Address
-                        className={`body-text-2 col-8 my-1 ${highlight('id')}`}
-                        type="tx"
-                        address={block.id}
-                    />
-
-                    <div className="sub-title-4 col-4 my-1">Reward</div>
-                    <div className="body-text-2 col-8 my-1">
-                        {formatCTSI(block.reward, 18)} CTSI
-                    </div>
-                </div>
-            </div>
-            <div className="col-12 col-md-3 d-flex flex-column align-items-center justify-content-center pt-2">
-                <img
-                    className="blocks-content-block-image"
-                    src={tinyGraphUrl(block)}
-                />
-            </div>
-        </div>
-    );
-};
-
-interface BlockListProps {
+interface BlockListProps extends StackProps {
     result: QueryResult<BlocksData, BlocksVars>;
     filterField?: 'node' | 'producer' | 'id';
     filterValue?: string;
 }
+
 const BlockList = (props: BlockListProps) => {
-    const { result, filterField, filterValue } = props;
+    const { result, filterField, filterValue, ...stackProps } = props;
     const { data, loading, fetchMore } = result;
     const blocks = data?.blocks || [];
 
@@ -123,45 +92,24 @@ const BlockList = (props: BlockListProps) => {
     }
 
     return (
-        <div className="blocks-content mt-5">
-            {filterField && (
-                <span className="badge rounded-pill bg-secondary">
-                    {filterField}: {filterValue}
-                </span>
-            )}
-            <div className="blocks-content-block-list">
-                {blocks.map((block) => {
-                    return (
-                        <BlockItem
-                            key={block.id}
-                            block={block}
-                            highlight={filterField}
-                        />
-                    );
-                })}
-            </div>
-
-            <div className="text-center">
-                <button
-                    type="button"
-                    className="btn btn-dark"
-                    onClick={loadMore}
-                    disabled={loading}
-                >
-                    <div className="d-flex flex-row align-items-center justify-content-between">
-                        {loading ? (
-                            <span
-                                className="spinner-border spinner-border-sm my-1"
-                                role="status"
-                                aria-hidden="true"
-                            ></span>
-                        ) : (
-                            <i className="fas fa-ellipsis-h my-1"></i>
-                        )}
-                    </div>
-                </button>
-            </div>
-        </div>
+        <VStack spacing={5} {...stackProps}>
+            {filterField && <Filter label={filterField} value={filterValue} />}
+            {blocks.map((block) => {
+                return (
+                    <BlockCard
+                        key={block.id}
+                        block={block}
+                        highlight={filterField}
+                        width="100%"
+                    />
+                );
+            })}
+            <Center>
+                <Button onClick={loadMore} disabled={loading}>
+                    {loading ? <Spinner /> : <FaEllipsisH />}
+                </Button>
+            </Center>
+        </VStack>
     );
 };
 
@@ -184,15 +132,13 @@ const Blocks = () => {
     const byNode = useNodeBlocks(searchKey);
 
     return (
-        <Layout className="blocks">
+        <Layout>
             <Head>
                 <title>Cartesi - Blocks</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <div className="page-header pb-4">
-                <div className="info-text-md text-white">Blocks</div>
-
                 <div className="d-flex flex-row align-items-center justify-content-start">
                     <div className="input-with-icon input-group">
                         <span>
@@ -209,19 +155,30 @@ const Blocks = () => {
                 </div>
             </div>
 
-            <h5 className="mt-4 mb-2">Difficulty per Chain</h5>
+            <Heading w="100%" px="6vw" py="5">
+                Difficulty per Chain
+            </Heading>
             <BlocksChart result={all} />
 
-            {!searchKey && <BlockList result={all} />}
+            <Heading w="100%" px="6vw" py="5">
+                Blocks
+            </Heading>
+            {!searchKey && <BlockList result={all} w="100%" px="6vw" py="5" />}
             <BlockList
                 result={byProducer}
                 filterField="producer"
                 filterValue={searchKey}
+                w="100%"
+                px="6vw"
+                py="5"
             />
             <BlockList
                 result={byNode}
                 filterField="node"
                 filterValue={searchKey}
+                w="100%"
+                px="6vw"
+                py="5"
             />
         </Layout>
     );
