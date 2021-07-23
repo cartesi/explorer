@@ -36,6 +36,30 @@ const theme = extendTheme({
                 _hover: { color: '#007bff', textDecoration: 'none' },
             },
         },
+        Input: {
+            sizes: {
+                xs: {
+                    field: {
+                        borderRadius: 0,
+                    },
+                },
+                sm: {
+                    field: {
+                        borderRadius: 0,
+                    },
+                },
+                md: {
+                    field: {
+                        borderRadius: 0,
+                    },
+                },
+                lg: {
+                    field: {
+                        borderRadius: 0,
+                    },
+                },
+            },
+        },
         Table: {
             variants: {
                 simple: {

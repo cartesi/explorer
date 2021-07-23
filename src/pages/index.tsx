@@ -49,6 +49,7 @@ import StatsItem from '../components/Stats';
 import CTSIText from '../components/CTSIText';
 import MarketInfo from '../components/MarketInfo';
 import { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
+import SearchInput from '../components/SearchInput';
 
 const SectionHeading: FunctionComponent = (props) => {
     return (
@@ -175,13 +176,7 @@ const Home = () => {
 
             <HStack p="20px 6vw" justify="space-between" align="flex-end">
                 <SectionHeading>Block Producers</SectionHeading>
-                <InputGroup w={400}>
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={<SearchIcon color="gray.300" />}
-                    />
-                    <Input placeholder="Search" />
-                </InputGroup>
+                <SearchInput w={[100, 200, 400, 400]} />
             </HStack>
             <HStack p="20px 6vw" justify="space-between">
                 <Users

@@ -35,6 +35,8 @@ import { BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
 import BlocksChart from '../../components/BlocksChart';
 import BlockCard from '../../components/block/BlockCard';
+import SearchInput from '../../components/SearchInput';
+import PageHeader from '../../components/PageHeader';
 
 interface FilterProps {
     label: string;
@@ -43,21 +45,13 @@ interface FilterProps {
 }
 
 const Filter: FunctionComponent<FilterProps> = ({ label, value, onDelete }) => (
-    <HStack spacing={4}>
-        {['sm', 'md', 'lg'].map((size) => (
-            <Tag
-                size={size}
-                key={size}
-                borderRadius="full"
-                variant="solid"
-                colorScheme="green"
-            >
-                <TagLabel>
-                    {label}: {value}
-                </TagLabel>
-                <TagCloseButton onClick={onDelete} />
-            </Tag>
-        ))}
+    <HStack spacing={4} justify="flex-start">
+        <Tag borderRadius="full" variant="solid">
+            <TagLabel>
+                {label}: {value}
+            </TagLabel>
+            <TagCloseButton onClick={onDelete} />
+        </Tag>
     </HStack>
 );
 
@@ -138,31 +132,19 @@ const Blocks = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="page-header pb-4">
-                <div className="d-flex flex-row align-items-center justify-content-start">
-                    <div className="input-with-icon input-group">
-                        <span>
-                            <i className="fas fa-search"></i>
-                        </span>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search"
-                            value={searchKey}
-                            onChange={(e) => setSearchKey(e.target.value)}
-                        />
-                    </div>
-                </div>
-            </div>
+            <PageHeader title="Blocks">
+                <SearchInput
+                    w={[100, 200, 400, 400]}
+                    bg="gray.200"
+                    onSearchChange={(e) => setSearchKey(e.target.value)}
+                />
+            </PageHeader>
 
             <Heading w="100%" px="6vw" py="5">
                 Difficulty per Chain
             </Heading>
             <BlocksChart result={all} />
 
-            <Heading w="100%" px="6vw" py="5">
-                Blocks
-            </Heading>
             {!searchKey && <BlockList result={all} w="100%" px="6vw" py="5" />}
             <BlockList
                 result={byProducer}
