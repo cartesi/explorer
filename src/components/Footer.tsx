@@ -36,7 +36,7 @@ import Address from './Address';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
-        <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
+        <Text fontWeight="500" fontSize="lg" mb={2}>
             {children}
         </Text>
     );

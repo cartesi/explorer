@@ -48,6 +48,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         truncated = false,
         responsive = false,
         hideActions = false,
+        ...textProps
     } = props;
 
     // resolve ENS entry from address
@@ -81,7 +82,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         >
             {ensEntry?.avatar && <Image src={ensEntry.avatar} h={40} />}
             {name && <Text>{name}</Text>}
-            <Text {...props}>{label}</Text>
+            <Text {...textProps}>{label}</Text>
             {showActions && !hasCopied && (
                 <Link>
                     <CopyIcon onClick={onCopy} />

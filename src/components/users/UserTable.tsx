@@ -44,7 +44,7 @@ const UserTable: FunctionComponent<UserTableProps> = ({
     onSort,
 }) => {
     return (
-        <Table variant="simple" size="sm">
+        <Table variant="simple">
             <Thead>
                 <Tr>
                     <Th>User</Th>

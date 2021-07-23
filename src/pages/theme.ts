@@ -40,23 +40,11 @@ const theme = extendTheme({
             variants: {
                 simple: {
                     th: {
-                        fontFamily: 'Rubik',
                         backgroundColor: 'black',
                         color: 'white',
-                        textTransform: 'none',
                     },
                 },
-            },
-            sizes: {
-                sm: {
-                    th: {
-                        lineHeight: '40px',
-                    },
-                    td: {
-                        fontSize: 'small',
-                        lineHeight: '40px',
-                    },
-                },
+                clear: {},
             },
         },
     },

@@ -12,16 +12,34 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import BlockCardComponent from '../../components/block/BlockCard';
+import BlockMiniCard from '../../components/block/BlockMiniCard';
 
 export default {
-    title: 'BlockCard',
-    component: BlockCardComponent,
+    title: 'BlockMiniCard',
+    component: BlockMiniCard,
     argTypes: {},
-} as ComponentMeta<typeof BlockCardComponent>;
+} as ComponentMeta<typeof BlockMiniCard>;
+
+const Template: ComponentStory<typeof BlockMiniCard> = (args) => (
+    <BlockMiniCard {...args} />
+);
 
 import blocks from './blocks.json';
 
-export const BlockCard: ComponentStory<typeof BlockCardComponent> = (args) => (
-    <BlockCardComponent block={blocks[0]} {...args} />
-);
+export const Complete = Template.bind({});
+Complete.args = {
+    block: blocks[0],
+};
+
+export const NoProtocol = Template.bind({});
+NoProtocol.args = {
+    block: blocks[0],
+    showProtocol: false,
+};
+
+export const OnlyNumber = Template.bind({});
+OnlyNumber.args = {
+    block: blocks[0],
+    showChain: false,
+    showProtocol: false,
+};

@@ -37,7 +37,7 @@ const Stats: FunctionComponent<StatsProps> = (props) => {
     return (
         <VStack>
             <HStack>
-                <Text {...props}>{label}</Text>
+                <Text>{label}</Text>
                 {help && (
                     <Tooltip
                         placement="top"
@@ -50,11 +50,7 @@ const Stats: FunctionComponent<StatsProps> = (props) => {
                     </Tooltip>
                 )}
             </HStack>
-            {value && (
-                <Text fontSize="xxx-large" {...props}>
-                    {valueLabel}
-                </Text>
-            )}
+            {value && <Text fontSize="xxx-large">{valueLabel}</Text>}
             {!value && <Text>-</Text>}
         </VStack>
     );

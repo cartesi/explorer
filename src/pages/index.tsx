@@ -28,7 +28,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
-import BlockCard from '../components/block/BlockCard';
+import BlockCard from '../components/block/BlockMiniCard';
 import Users from '../components/Users';
 
 import useBlocks from '../graphql/hooks/useBlocks';

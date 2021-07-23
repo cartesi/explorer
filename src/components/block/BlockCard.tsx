@@ -10,75 +10,25 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import {
-    Box,
-    BoxProps,
-    Center,
-    Flex,
-    HStack,
-    Image,
-    Spacer,
-    Text,
-} from '@chakra-ui/react';
-import { TimeIcon } from '@chakra-ui/icons';
-import humanizeDuration from 'humanize-duration';
-
-import Address from '../Address';
+import { HStack, StackProps, Image } from '@chakra-ui/react';
 import { Block } from '../../graphql/models';
+import BlockTable from './BlockTable';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
-interface BlockCardProps extends BoxProps {
+interface BlockCardProps extends StackProps {
     block: Block;
-    showProtocol?: boolean;
-    showChain?: boolean;
 }
 
 const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
-    const { block, showProtocol = true, showChain = true } = props;
-    let id = `${block.number}`;
-    if (showChain) {
-        id = `${block.chain.number}-${id}`;
-    }
-    if (showProtocol) {
-        id = `${block.chain.protocol.version}-${id}`;
-    }
+    const { block, ...rest } = props;
     return (
-        <Box {...props}>
-            <Center p={2}>
-                <HStack>
-                    <TimeIcon />
-                    <Text fontWeight="bold">
-                        {humanizeDuration(block.timestamp, { largest: 2 })} ago
-                    </Text>
-                </HStack>
-            </Center>
-            <Center bg="black" p={2}>
-                <Text color="white">Block {id}</Text>
-            </Center>
-            <Flex p={10} align="center" justify="space-between" boxShadow="md">
-                <Flex
-                    direction="column"
-                    align="flex-start"
-                    justify="space-around"
-                >
-                    <Box>
-                        <Text>Producer</Text>
-                        <Address
-                            address={block.producer.id}
-                            truncated
-                            fontWeight="bold"
-                            fontSize="large"
-                        />
-                    </Box>
-                    <Spacer minH={5} />
-                    <Box>
-                        <Text>Node</Text>
-                        <Address address={block.node.id} truncated />
-                    </Box>
-                </Flex>
-                <Image src={tinyGraphUrl(block)} w="120px" h="120px" />
-            </Flex>
-        </Box>
+        <HStack {...rest} shadow="md" p={4} borderLeft="20px solid black">
+            <BlockTable block={block} />
+            <Image
+                src={tinyGraphUrl(block)}
+                boxSize={['0', '50px', '120px', '160px']}
+            />
+        </HStack>
     );
 };
 
