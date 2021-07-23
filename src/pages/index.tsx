@@ -23,6 +23,8 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
+    Wrap,
+    WrapItem,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
@@ -163,11 +165,13 @@ const Home = () => {
             <HStack p="0 6vw">
                 <SectionHeading>Blocks</SectionHeading>
             </HStack>
-            <HStack p="20px 6vw" justify="space-between">
+            <Wrap p="20px 6vw" justify="space-around">
                 {blocks.slice(0, 4).map((block) => (
-                    <BlockCard block={block} key={block.id} w="100%" />
+                    <WrapItem>
+                        <BlockCard block={block} key={block.id} />
+                    </WrapItem>
                 ))}
-            </HStack>
+            </Wrap>
 
             <HStack p="20px 6vw" justify="space-between" align="flex-end">
                 <SectionHeading>Block Producers</SectionHeading>

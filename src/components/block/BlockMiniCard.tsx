@@ -76,6 +76,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                         <Address address={block.node.id} truncated />
                     </Box>
                 </Flex>
+                <Spacer minW={5} />
                 <Image src={tinyGraphUrl(block)} w="120px" h="120px" />
             </Flex>
         </Box>
