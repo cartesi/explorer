@@ -66,11 +66,15 @@ const Address: FunctionComponent<AddressProps> = (props) => {
     });
 
     const label =
-        truncated || (responsive && responsiveTruncate)
+        ensEntry?.name ||
+        (truncated || (responsive && responsiveTruncate)
             ? truncateString(address)
-            : address;
+            : address);
+
+    // hide or show action buttons
     const showActions = !hideActions || hover;
 
+    // build etherscan link
     const externalLink = etherscanLinks[chainId]
         ? `${etherscanLinks[chainId]}/${type}/${address}`
         : undefined;
@@ -80,7 +84,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            {ensEntry?.avatar && <Image src={ensEntry.avatar} h={40} />}
+            {ensEntry?.avatar && <Image src={ensEntry.avatar} h={10} />}
             {name && <Text>{name}</Text>}
             <Text {...textProps}>{label}</Text>
             {showActions && !hasCopied && (

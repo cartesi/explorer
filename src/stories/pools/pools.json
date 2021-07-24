@@ -1,0 +1,706 @@
+{
+    "data": {
+        "stakingPools": [
+            {
+                "fee": {
+                    "commission": 250,
+                    "created": "1626937698",
+                    "gas": null,
+                    "id": "0x07b56b208c7747ec33f8c1fc70a8b53941e9fdf9",
+                    "lastUpdated": "1626937698"
+                },
+                "id": "0x3330a212f40b51bf2a4147a04e2ab7246d250a02",
+                "manager": "0x4517b954abb76523d90a3f5a779a9cbfbdb850bc",
+                "paused": false,
+                "timestamp": "1626937698",
+                "totalCommission": "0",
+                "totalUsers": 1,
+                "user": {
+                    "id": "0x3330a212f40b51bf2a4147a04e2ab7246d250a02",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 300,
+                    "created": "1626836549",
+                    "gas": null,
+                    "id": "0x2a35ce3ca0b0a406bcfa7dfbf6542e47c1e76c7f",
+                    "lastUpdated": "1626836549"
+                },
+                "id": "0xfa97d477e35d52855bcc2ec48996259173434c4b",
+                "manager": "0x881ff22a29543a153b865f388054b9c1a40368d9",
+                "paused": false,
+                "timestamp": "1626836549",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xfa97d477e35d52855bcc2ec48996259173434c4b",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": null,
+                    "created": "1626008441",
+                    "gas": 400000,
+                    "id": "0xf81f480a5c18e6f8cbf038f0d083b1ac1bb6b15a",
+                    "lastUpdated": "1626008441"
+                },
+                "id": "0x2b5fd259d99c481d9bdc0a3abd1180834b4b6a11",
+                "manager": "0x79bdc19c6f823f2911190b005f489ed00af6246d",
+                "paused": false,
+                "timestamp": "1626008441",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x2b5fd259d99c481d9bdc0a3abd1180834b4b6a11",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625839340",
+                    "gas": null,
+                    "id": "0x4cedf711a103b6b98978d501c0bf5fab1ba9b64c",
+                    "lastUpdated": "1625839340"
+                },
+                "id": "0x4379cedd3914266c4b095a3743ea5518e5f53d74",
+                "manager": "0x980aa416e2d67fc97c671162d8ae261c105b2043",
+                "paused": false,
+                "timestamp": "1625839340",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x4379cedd3914266c4b095a3743ea5518e5f53d74",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 1000,
+                    "created": "1625837470",
+                    "gas": null,
+                    "id": "0x09c3811e92e9011a8e94c5c96ba5756db7865e9e",
+                    "lastUpdated": "1625837470"
+                },
+                "id": "0xf38468aa31cd68c6005cf26c81d3eb4339bbbbb4",
+                "manager": "0xb4097230aebdae37b69636c668db803cf4a999b0",
+                "paused": true,
+                "timestamp": "1625837470",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xf38468aa31cd68c6005cf26c81d3eb4339bbbbb4",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 900,
+                    "created": "1625833875",
+                    "gas": null,
+                    "id": "0x5dee8e9e1c1b5f90f16cec5b3f371ce183dac0f9",
+                    "lastUpdated": "1626428627"
+                },
+                "id": "0x5a1de4b2fca64143c59c98bccd30d4ab93748642",
+                "manager": "0xb4097230aebdae37b69636c668db803cf4a999b0",
+                "paused": false,
+                "timestamp": "1625833875",
+                "totalCommission": "0",
+                "totalUsers": 15,
+                "user": {
+                    "id": "0x5a1de4b2fca64143c59c98bccd30d4ab93748642",
+                    "stakedBalance": "1400900000000000000000000",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 200,
+                    "created": "1625823151",
+                    "gas": null,
+                    "id": "0x8491f259a20529e19506f5e77c2a5b76fbc940e1",
+                    "lastUpdated": "1625823151"
+                },
+                "id": "0x9c22a9cb184a043aca57333f8ff548adf27362f9",
+                "manager": "0xca312b0aa927e8177c19a81ace2e508193f90b6d",
+                "paused": false,
+                "timestamp": "1625823151",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x9c22a9cb184a043aca57333f8ff548adf27362f9",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 200,
+                    "created": "1625821934",
+                    "gas": null,
+                    "id": "0x95b34aba891eb9e9b01cef6ef6b3f2098a371653",
+                    "lastUpdated": "1625821934"
+                },
+                "id": "0xd9cb08a4e0584d4b50a1aca4f8acad8e86500ad0",
+                "manager": "0xca312b0aa927e8177c19a81ace2e508193f90b6d",
+                "paused": false,
+                "timestamp": "1625821934",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xd9cb08a4e0584d4b50a1aca4f8acad8e86500ad0",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 200,
+                    "created": "1625820254",
+                    "gas": null,
+                    "id": "0x0cf4607dd4d2c8d3ae500a4fe8f8ed418b84f696",
+                    "lastUpdated": "1625820254"
+                },
+                "id": "0x9164bed37330cc26ff5e18f16fc4962776b5974a",
+                "manager": "0xca312b0aa927e8177c19a81ace2e508193f90b6d",
+                "paused": false,
+                "timestamp": "1625820254",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x9164bed37330cc26ff5e18f16fc4962776b5974a",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 700,
+                    "created": "1625787701",
+                    "gas": null,
+                    "id": "0x665472114888336f65e39f6c471c717eac81d612",
+                    "lastUpdated": "1625787701"
+                },
+                "id": "0x80baf1816930321999e2478a47362710a2f19937",
+                "manager": "0x5700078234cd6d1b686f0554353dbf27a42ffd1c",
+                "paused": false,
+                "timestamp": "1625787701",
+                "totalCommission": "0",
+                "totalUsers": 1,
+                "user": {
+                    "id": "0x80baf1816930321999e2478a47362710a2f19937",
+                    "stakedBalance": "99998000000000000000000",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 375,
+                    "created": "1625686590",
+                    "gas": null,
+                    "id": "0x06cdfb122e39d679991376bb31e7bd44312debbc",
+                    "lastUpdated": "1625686590"
+                },
+                "id": "0xb4bccc502f58e45e20011662961bb058cbe7edc4",
+                "manager": "0x488538577d3284506c1a971d83448ee8b65bcb54",
+                "paused": false,
+                "timestamp": "1625686590",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xb4bccc502f58e45e20011662961bb058cbe7edc4",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 400,
+                    "created": "1625683820",
+                    "gas": null,
+                    "id": "0xc610df06d231a1c571e4784763c11c8e53564bfd",
+                    "lastUpdated": "1625683820"
+                },
+                "id": "0xd6342f1d53e620b85b358b810b1b4dd32d3b5704",
+                "manager": "0x8c50cc22d7ed32244c80f7d57c2613436f86cb40",
+                "paused": false,
+                "timestamp": "1625683820",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xd6342f1d53e620b85b358b810b1b4dd32d3b5704",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625584582",
+                    "gas": null,
+                    "id": "0xd43e341349de16d5e10f267c868822f99bccc1f8",
+                    "lastUpdated": "1625584582"
+                },
+                "id": "0xb000ec945faabd8e99fb88a4a62fac425857b366",
+                "manager": "0x980aa416e2d67fc97c671162d8ae261c105b2043",
+                "paused": true,
+                "timestamp": "1625584582",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xb000ec945faabd8e99fb88a4a62fac425857b366",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625510397",
+                    "gas": null,
+                    "id": "0xb2e2123de738513939483f74dd9074678abfbcc3",
+                    "lastUpdated": "1625510397"
+                },
+                "id": "0x5f567ab5ed8e7aaa8ebb2cd603511dfd0e25a9b2",
+                "manager": "0x980aa416e2d67fc97c671162d8ae261c105b2043",
+                "paused": true,
+                "timestamp": "1625510397",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x5f567ab5ed8e7aaa8ebb2cd603511dfd0e25a9b2",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625510100",
+                    "gas": null,
+                    "id": "0xc8defe66a75468fac583708aca6fd27ab4e00662",
+                    "lastUpdated": "1625510100"
+                },
+                "id": "0x47e47a514017f6d81599e259c297f849d68e4dfa",
+                "manager": "0x980aa416e2d67fc97c671162d8ae261c105b2043",
+                "paused": false,
+                "timestamp": "1625510100",
+                "totalCommission": "31610000000000000000000",
+                "totalUsers": 16,
+                "user": {
+                    "id": "0x47e47a514017f6d81599e259c297f849d68e4dfa",
+                    "stakedBalance": "2129300000000000000000000",
+                    "totalReward": "632200000000000000000000"
+                }
+            },
+            {
+                "fee": {
+                    "commission": null,
+                    "created": "1625495790",
+                    "gas": 400000,
+                    "id": "0x27cca0263405a71eee303157e344091940a0a4ad",
+                    "lastUpdated": "1625495790"
+                },
+                "id": "0x8c304dd76511b7851f06e330aa03c58b485b96cf",
+                "manager": "0x46cba151808d41db43b0c03c0cfb28cc9b890509",
+                "paused": false,
+                "timestamp": "1625495790",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x8c304dd76511b7851f06e330aa03c58b485b96cf",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 450,
+                    "created": "1625356030",
+                    "gas": null,
+                    "id": "0xfec6bd66be43939d91874ce339a1ee7fedca8b9b",
+                    "lastUpdated": "1625356030"
+                },
+                "id": "0xfee7efd34d4b2d6d0a48cdd5ff772c9f2f37bd71",
+                "manager": "0xae1bdfff06513baa55dd140f7f4d7c726224ac52",
+                "paused": false,
+                "timestamp": "1625356030",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xfee7efd34d4b2d6d0a48cdd5ff772c9f2f37bd71",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 450,
+                    "created": "1625354871",
+                    "gas": null,
+                    "id": "0xcf528f85de130fc139f34504e5ace6afe3bbe215",
+                    "lastUpdated": "1625354871"
+                },
+                "id": "0x4ea1f3a27fe857411b0edd4a934e2bd9eca2d9ee",
+                "manager": "0xae1bdfff06513baa55dd140f7f4d7c726224ac52",
+                "paused": false,
+                "timestamp": "1625354871",
+                "totalCommission": "42282000000000000000000",
+                "totalUsers": 6,
+                "user": {
+                    "id": "0x4ea1f3a27fe857411b0edd4a934e2bd9eca2d9ee",
+                    "stakedBalance": "1719900000000000000000001",
+                    "totalReward": "939600000000000000000000"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 100,
+                    "created": "1625350596",
+                    "gas": null,
+                    "id": "0x321f879a810dd2c750fa50b9e0fabfc5a5894df7",
+                    "lastUpdated": "1625350596"
+                },
+                "id": "0x378426d7e85b3b402f9093e9c6927afb8b560d4e",
+                "manager": "0x07e644c2a1e2229a2d9aea37cbbbba7e42d89339",
+                "paused": false,
+                "timestamp": "1625350596",
+                "totalCommission": "3799000000000000000000",
+                "totalUsers": 9,
+                "user": {
+                    "id": "0x378426d7e85b3b402f9093e9c6927afb8b560d4e",
+                    "stakedBalance": "1225206999987434209622388",
+                    "totalReward": "379900000000000000000000"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 70,
+                    "created": "1625350517",
+                    "gas": null,
+                    "id": "0xc5742ade2bb558a6ea14156948fe2c5bc621a9cc",
+                    "lastUpdated": "1625350517"
+                },
+                "id": "0xe29f941e7bfcab993cf72030e953eb56b44d407e",
+                "manager": "0x07e644c2a1e2229a2d9aea37cbbbba7e42d89339",
+                "paused": false,
+                "timestamp": "1625350517",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xe29f941e7bfcab993cf72030e953eb56b44d407e",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 70,
+                    "created": "1625350383",
+                    "gas": null,
+                    "id": "0x444a411b8acced490509b12be032e7f91ef4f08e",
+                    "lastUpdated": "1625350383"
+                },
+                "id": "0xc85b66c6ea23ca7d38d1ea9da0048820ea8609f8",
+                "manager": "0x07e644c2a1e2229a2d9aea37cbbbba7e42d89339",
+                "paused": false,
+                "timestamp": "1625350383",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xc85b66c6ea23ca7d38d1ea9da0048820ea8609f8",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 100,
+                    "created": "1625321772",
+                    "gas": null,
+                    "id": "0x541bf167fe65348a2dacd9df0048a54c8630f091",
+                    "lastUpdated": "1625325498"
+                },
+                "id": "0x7e5ef523f7faa6cab009add85939784ccb1f98e7",
+                "manager": "0x55d55bd506c3ec37453fe23056325e12a13db282",
+                "paused": false,
+                "timestamp": "1625321772",
+                "totalCommission": "29000000000000000000",
+                "totalUsers": 1,
+                "user": {
+                    "id": "0x7e5ef523f7faa6cab009add85939784ccb1f98e7",
+                    "stakedBalance": "102900000000000000000000",
+                    "totalReward": "2900000000000000000000"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 300,
+                    "created": "1625321546",
+                    "gas": null,
+                    "id": "0x40b038da9c93679ed2a9494a3b5a9f2811bf7f0b",
+                    "lastUpdated": "1625321546"
+                },
+                "id": "0xaf64d4695f7491940fb03890a105dfba03abf1de",
+                "manager": "0x55d55bd506c3ec37453fe23056325e12a13db282",
+                "paused": true,
+                "timestamp": "1625321546",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xaf64d4695f7491940fb03890a105dfba03abf1de",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 300,
+                    "created": "1625265175",
+                    "gas": null,
+                    "id": "0x1bc2e6ca19984cad034baca63c74ec828501e3ec",
+                    "lastUpdated": "1625265175"
+                },
+                "id": "0x3045f5644cb58141e1e44b7963409df75b17522f",
+                "manager": "0x78e021bb60962a42958e353db4e9f70b4f3e6223",
+                "paused": false,
+                "timestamp": "1625265175",
+                "totalCommission": "0",
+                "totalUsers": 3,
+                "user": {
+                    "id": "0x3045f5644cb58141e1e44b7963409df75b17522f",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625157015",
+                    "gas": null,
+                    "id": "0x97f4d24f6c644580797964d88ea0e27c683ea5bf",
+                    "lastUpdated": "1625157015"
+                },
+                "id": "0xa2dc9f381e737458b5ba6e0d035ead0b8688bc09",
+                "manager": "0x6c06ce6912a3c8b52cdac97cbc3794e15f91e9d9",
+                "paused": false,
+                "timestamp": "1625157015",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xa2dc9f381e737458b5ba6e0d035ead0b8688bc09",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625156863",
+                    "gas": null,
+                    "id": "0x844bd5b1ce476d674306a45b51e8d32c28d945ba",
+                    "lastUpdated": "1625156863"
+                },
+                "id": "0x455da4d901d3a1b2ed75d25e0e8c218859a6a856",
+                "manager": "0x6c06ce6912a3c8b52cdac97cbc3794e15f91e9d9",
+                "paused": false,
+                "timestamp": "1625156863",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x455da4d901d3a1b2ed75d25e0e8c218859a6a856",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 1000,
+                    "created": "1625145247",
+                    "gas": null,
+                    "id": "0x7629dfbda9aa2d4162f3ff66dc474459da20cb63",
+                    "lastUpdated": "1625145247"
+                },
+                "id": "0x438eb4d8047a18386ac1ce8901f10f29a8066c53",
+                "manager": "0x3b975d0c078ef4573a675a291c57b7c4bba32a1f",
+                "paused": false,
+                "timestamp": "1625145247",
+                "totalCommission": "0",
+                "totalUsers": 1,
+                "user": {
+                    "id": "0x438eb4d8047a18386ac1ce8901f10f29a8066c53",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": null,
+                    "created": "1625132192",
+                    "gas": 400000,
+                    "id": "0x2077c58ac98c1e1d85c2c8804627316c7dc0569e",
+                    "lastUpdated": "1625132192"
+                },
+                "id": "0x927f919755a279996fd860ba7cd3a728beaba729",
+                "manager": "0x79bdc19c6f823f2911190b005f489ed00af6246d",
+                "paused": false,
+                "timestamp": "1625132192",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x927f919755a279996fd860ba7cd3a728beaba729",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": null,
+                    "created": "1625121383",
+                    "gas": 400000,
+                    "id": "0x2ab001d7db5e0e7be36206645d70b64e8e88451a",
+                    "lastUpdated": "1625121383"
+                },
+                "id": "0x3b1b9da37554c6e80a7163514a537eea8a098b82",
+                "manager": "0x66224cb02336de35f75048317f14d76d61fcba03",
+                "paused": false,
+                "timestamp": "1625121383",
+                "totalCommission": "0",
+                "totalUsers": 3,
+                "user": {
+                    "id": "0x3b1b9da37554c6e80a7163514a537eea8a098b82",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 1000,
+                    "created": "1625118413",
+                    "gas": null,
+                    "id": "0x48143fd5479d9f09da8f7e137c5b7c75dacf1e13",
+                    "lastUpdated": "1625118413"
+                },
+                "id": "0x44bc7ea6f418bef32a3b8628fd7a4abeca572194",
+                "manager": "0xc13fccab9b45a635eadde7214c2a008d979821ae",
+                "paused": false,
+                "timestamp": "1625118413",
+                "totalCommission": "0",
+                "totalUsers": 1,
+                "user": {
+                    "id": "0x44bc7ea6f418bef32a3b8628fd7a4abeca572194",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": null,
+                    "created": "1625118152",
+                    "gas": 400000,
+                    "id": "0x19d20d7993951cff4d124e7c8fad3a1af45d000a",
+                    "lastUpdated": "1625118152"
+                },
+                "id": "0x2b1df4ba2202558d5a5e7950bb761821d96eac69",
+                "manager": "0xc13fccab9b45a635eadde7214c2a008d979821ae",
+                "paused": true,
+                "timestamp": "1625118152",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0x2b1df4ba2202558d5a5e7950bb761821d96eac69",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 999,
+                    "created": "1625105933",
+                    "gas": null,
+                    "id": "0xfe0c155e6e0547c482f8ff7d458e1bd1048f4497",
+                    "lastUpdated": "1625237426"
+                },
+                "id": "0x835b50fe343ee1197ae9011815875f7631aa8772",
+                "manager": "0x3b975d0c078ef4573a675a291c57b7c4bba32a1f",
+                "paused": false,
+                "timestamp": "1625105933",
+                "totalCommission": "0",
+                "totalUsers": 4,
+                "user": {
+                    "id": "0x835b50fe343ee1197ae9011815875f7631aa8772",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 1000,
+                    "created": "1625097484",
+                    "gas": null,
+                    "id": "0x57db749b92cd4b508fdef84a3c67f35d67d5ffcb",
+                    "lastUpdated": "1625097484"
+                },
+                "id": "0xa9622ee4923c7149f5491c94be2ae9acad5f31d0",
+                "manager": "0x79bdc19c6f823f2911190b005f489ed00af6246d",
+                "paused": false,
+                "timestamp": "1625097484",
+                "totalCommission": "0",
+                "totalUsers": 0,
+                "user": {
+                    "id": "0xa9622ee4923c7149f5491c94be2ae9acad5f31d0",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 500,
+                    "created": "1625082285",
+                    "gas": null,
+                    "id": "0x6412293a4a5be910d37eeb54c2a781e0c2e66945",
+                    "lastUpdated": "1625083620"
+                },
+                "id": "0x71a19241c6e78501922a1564b37b97a997e7cf28",
+                "manager": "0x79bdc19c6f823f2911190b005f489ed00af6246d",
+                "paused": false,
+                "timestamp": "1625082285",
+                "totalCommission": "14645000000000000000000",
+                "totalUsers": 10,
+                "user": {
+                    "id": "0x71a19241c6e78501922a1564b37b97a997e7cf28",
+                    "stakedBalance": "838898999981249535923227",
+                    "totalReward": "292900000000000000000000"
+                }
+            },
+            {
+                "fee": {
+                    "commission": 10,
+                    "created": "1625074225",
+                    "gas": null,
+                    "id": "0x99b491750da2f7d941e34c26bbf33b8ae235ec9e",
+                    "lastUpdated": "1625755856"
+                },
+                "id": "0x4f4575455783c4c0d147de35e3b58c858b14962f",
+                "manager": "0x37659a1b40b87a1ebffbcb793c042e01f6bce55a",
+                "paused": false,
+                "timestamp": "1625074225",
+                "totalCommission": "0",
+                "totalUsers": 6,
+                "user": {
+                    "id": "0x4f4575455783c4c0d147de35e3b58c858b14962f",
+                    "stakedBalance": "0",
+                    "totalReward": "0"
+                }
+            }
+        ]
+    }
+}

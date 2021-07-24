@@ -9,38 +9,54 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Head from 'next/head';
 import { NextRouter, withRouter } from 'next/router';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
 
 import Layout from '../../components/Layout';
-import PoolsTable from '../../components/Pools';
 import useSummary from '../../graphql/hooks/useSummary';
+import PageHeader from '../../components/PageHeader';
+import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
+import Pools from '../../components/Pools';
+import SearchInput from '../../components/SearchInput';
+import { useStakingPoolFactory } from '../../services/poolFactory';
+import { HStack, Link } from '@chakra-ui/react';
 
 interface PoolsProps {
     router: NextRouter;
 }
 
-const Pools = ({ router }: PoolsProps) => {
+const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
+    const { account } = useWeb3React<Web3Provider>();
+    const { paused, loading, ready } = useStakingPoolFactory();
     const summary = useSummary();
 
     return (
-        <Layout className="pools">
+        <Layout>
             <Head>
                 <title>Cartesi - Pools</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="page-header pb-4">
-                <div className="info-text-md text-white">Staking Pools</div>
-            </div>
+            <PageHeader title="Staking Pools">
+                <SearchInput w={[100, 200, 400, 400]} bg="gray.200" />
+                {!loading && !paused && ready && (
+                    <Link href="/pools/create">Create Pool</Link>
+                )}
+            </PageHeader>
 
-            <PoolsTable
-                summary={summary}
-                refresh={(router.query.refresh as string) == 'true'}
-            />
+            <HStack p="20px 6vw" justify="space-between">
+                <Pools
+                    pages={Math.ceil(
+                        (summary?.totalPools || 0) / POOLS_PER_PAGE
+                    )}
+                    account={account}
+                />
+            </HStack>
         </Layout>
     );
 };
 
-export default withRouter(Pools);
+export default withRouter(StakingPools);

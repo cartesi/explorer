@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,120 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import useStakingPools, {
-    POOLS_PER_PAGE,
-} from '../graphql/hooks/useStakingPools';
-import { StakingPool, Summary } from '../graphql/models';
-import Address from '../components/Address';
-import { formatCTSI } from '../utils/token';
-import { ethers, FixedNumber } from 'ethers';
-import { useStakingPoolCommission } from '../services/pool';
-import labels from '../utils/labels';
-import { useStakingPoolFactory } from '../services/poolFactory';
+import useStakingPools from '../graphql/hooks/useStakingPools';
+import PoolTable, { Sort } from './pools/PoolTable';
+import Pagination from './Pagination';
+import { VStack } from '@chakra-ui/react';
 
 interface PoolsProps {
-    summary: Summary;
-    refresh: boolean;
+    account?: string;
+    refresh?: boolean;
+    pages: number;
 }
 
-type Sort =
-    | 'stakedBalance'
-    | 'totalReward'
-    | 'totalBlocks'
-    | 'totalUsers'
-    | 'commission';
-
-const PoolRow = (props: { pool: StakingPool }) => {
-    const { pool } = props;
-    const { account } = useWeb3React<Web3Provider>();
-
-    // calculate accured commission
-    const totalReward = FixedNumber.from(pool.user.totalReward);
-    const totalCommission = FixedNumber.from(pool.totalCommission);
-    const accuredCommissionLabel = totalReward.isZero()
-        ? '-'
-        : `${totalCommission
-              .divUnsafe(totalReward)
-              .mulUnsafe(FixedNumber.from(100))
-              .toUnsafeFloat()
-              .toFixed(2)} %`;
-
-    // commission label
-    let commissionLabel = '';
-    if (pool.fee.commission) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (pool.fee.gas) {
-        commissionLabel = `${pool.fee.gas} Gas`;
-    }
-
-    // calculate commission for next block, by calling the fee contract
-    const reward = ethers.utils.parseUnits('2900', 18); // XXX this value should come from the RewardManager
-    const nextCommission = useStakingPoolCommission(pool.id, reward);
-    const nextCommissionLabel = nextCommission.value
-        ? `${(nextCommission.value * 100).toFixed(2)} %`
-        : '';
-
-    // commission help tooptip
-    let commissionTooltip: string = undefined;
-    if (pool.fee.commission) {
-        commissionTooltip = labels.flatRateCommission;
-    } else if (pool.fee.gas) {
-        commissionTooltip = labels.gasTaxCommission;
-    }
-
-    return (
-        <tr className="body-text-2" key={pool.id}>
-            <td>
-                <Address ens address={pool.id} />
-            </td>
-            <td>{pool.totalUsers}</td>
-            <td>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</td>
-            <td>{formatCTSI(pool.user.totalReward, 2)} CTSI</td>
-            <td>
-                {commissionLabel}{' '}
-                {commissionTooltip && (
-                    <img
-                        data-tip={commissionTooltip}
-                        src="/images/question.png"
-                    />
-                )}
-            </td>
-            <td>{accuredCommissionLabel}</td>
-            <td>
-                {account && account.toLowerCase() == pool.manager && (
-                    <>
-                        <span className="ml-2" />
-                        <Link href={'/pools/' + pool.id + '/edit'}>Edit</Link>
-                    </>
-                )}{' '}
-                <Link href={'/pools/' + pool.id}>Stake</Link>{' '}
-                {pool.paused && (
-                    <i className="fa fa-lock" aria-hidden="true"></i>
-                )}
-            </td>
-        </tr>
-    );
-};
-
-const Pools = ({ refresh, summary }: PoolsProps) => {
-    const [id, setId] = useState<string>(undefined);
+const Pools: FunctionComponent<PoolsProps> = ({ account, pages, refresh }) => {
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const {
-        data,
-        loading: poolLoading,
-        refetch,
-    } = useStakingPools(pageNumber, id);
-    const totalPoolsPages = summary
-        ? Math.ceil(summary.totalPools / POOLS_PER_PAGE)
-        : 1;
-
-    const { paused, loading: factoryLoading, ready } = useStakingPoolFactory();
+    const { data, loading, refetch } = useStakingPools(pageNumber);
 
     useEffect(() => {
         if (refresh) {
@@ -131,119 +34,20 @@ const Pools = ({ refresh, summary }: PoolsProps) => {
     }, [refresh]);
 
     return (
-        <div className="pools">
-            <div className="pools-title mt-5 mb-2">
-                {!factoryLoading && !paused && ready && (
-                    <div className="pools-title-create body-text-1">
-                        <Link href="/pools/create">Create New Pool</Link>
-                    </div>
-                )}
-                <div className="input-with-icon input-group">
-                    <span>
-                        <i className="fas fa-search"></i>
-                    </span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search"
-                        value={id}
-                        onChange={(e) => {
-                            setId(e.target.value);
-                            setPageNumber(0);
-                        }}
-                    />
-                </div>
-            </div>
-
-            <div className="table-responsive mb-2">
-                <table className="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th className="table-header-text">Address</th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('totalUsers')}
-                            >
-                                Total Users
-                                {sort == 'totalBlocks' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('stakedBalance')}
-                            >
-                                Total Staked{' '}
-                                {sort == 'stakedBalance' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('totalReward')}
-                            >
-                                Total Rewards{' '}
-                                {sort == 'totalReward' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th className="table-header-text pointer">
-                                Commission
-                            </th>
-                            <th
-                                className="table-header-text pointer"
-                                onClick={() => setSort('commission')}
-                            >
-                                Accrued Commission{' '}
-                                {sort == 'commission' && (
-                                    <i className="fas fa-arrow-down"></i>
-                                )}
-                            </th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {poolLoading || !data?.stakingPools ? (
-                            <tr>
-                                <td colSpan={6} className="text-center">
-                                    <span
-                                        className="spinner-border spinner-border-sm my-1"
-                                        role="status"
-                                        aria-hidden="true"
-                                    ></span>
-                                </td>
-                            </tr>
-                        ) : (
-                            data.stakingPools.map((pool) => (
-                                <PoolRow pool={pool} key={pool.id} />
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
-            {!id && (
-                <div className="pools-pagination body-text-2">
-                    <button
-                        className="btn"
-                        type="button"
-                        disabled={pageNumber <= 0}
-                        onClick={() => setPageNumber(pageNumber - 1)}
-                    >
-                        <i className="fas fa-chevron-left"></i>
-                    </button>
-                    Page {pageNumber + 1} of {totalPoolsPages}
-                    <button
-                        className="btn"
-                        type="button"
-                        disabled={pageNumber + 1 >= totalPoolsPages}
-                        onClick={() => setPageNumber(pageNumber + 1)}
-                    >
-                        <i className="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            )}
-        </div>
+        <VStack w="100%">
+            <PoolTable
+                account={account}
+                loading={loading}
+                data={data?.stakingPools || []}
+                sort={sort}
+                onSort={(order) => setSort(order)}
+            />
+            <Pagination
+                pages={pages}
+                currentPage={pageNumber}
+                onPageClick={setPageNumber}
+            />
+        </VStack>
     );
 };
 
