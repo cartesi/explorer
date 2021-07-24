@@ -20,13 +20,9 @@ import {
     Flex,
     Heading,
     HStack,
-    Input,
-    InputGroup,
-    InputLeftElement,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
@@ -75,7 +71,7 @@ const Home = () => {
     const { balance } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking(account);
     const summary = useSummary();
-    const { data } = useBlocks();
+    const { data } = useBlocks(4);
     const blocks = data?.blocks || [];
     const { yearReturn } = getRewardRate(
         blocks,

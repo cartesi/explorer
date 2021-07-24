@@ -11,9 +11,22 @@
 
 import React, { useState } from 'react';
 import Head from 'next/head';
-
+import {
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+    Heading,
+    HStack,
+    Input,
+    Slider,
+    Table,
+    Tbody,
+    Td,
+    Th,
+    Tr,
+} from '@chakra-ui/react';
 import { BigNumber, constants, FixedNumber } from 'ethers';
-import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
 
@@ -27,6 +40,7 @@ import { getEstimatedRewardRate } from '../../utils/reward';
 import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
+import Stats from '../../components/Stats';
 
 const Calculator = () => {
     // user statke
@@ -48,7 +62,7 @@ const Calculator = () => {
     const [totalStaked, setTotalStaked] = useState<number>(-1);
 
     // get latest block
-    const { data } = useBlocks();
+    const { data } = useBlocks(10);
     const blocks = data?.blocks || [];
 
     // bail out if not loaded
@@ -82,190 +96,69 @@ const Calculator = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="page-header row">
-                <div className="col col-12 info-text-md text-white">
-                    Staking Calculator
-                </div>
-            </div>
+            <Heading>Staking Calculator</Heading>
 
             {loaded ? (
-                <form className="calculator-form">
-                    <div className="form-group">
-                        <label className="body-text-2 text-secondary">
-                            Amount to stake
-                        </label>
-                        <div className="input-group">
-                            <input
-                                type="number"
-                                className="addon-inline form-control"
-                                id="stake"
-                                value={toCTSI(stake)}
-                                onChange={(event) =>
-                                    setStake(
-                                        parseCTSI(
-                                            event.target.value
-                                                ? parseFloat(event.target.value)
-                                                : 1
-                                        )
-                                    )
-                                }
-                            />
-                            <span className="input-group-addon addon-inline input-source-observer small-text">
-                                CTSI
-                            </span>
-                        </div>
-                    </div>
+                <form>
+                    <FormControl id="stake">
+                        <FormLabel>Amount to stake</FormLabel>
+                        <Input />
+                        <FormHelperText>
+                            Amount of CTSI tokens to stake.
+                        </FormHelperText>
+                    </FormControl>
 
-                    <div className="form-group">
-                        <label className="body-text-2 text-secondary">
-                            Staking period
-                        </label>
-                        <div className="input-group">
-                            <input
-                                type="number"
-                                className="addon-inline form-control"
-                                id="period"
-                                value={period}
-                                onChange={(event) =>
-                                    setPeriod(
-                                        event.target.value
-                                            ? parseInt(event.target.value)
-                                            : 0
-                                    )
-                                }
-                            />
-                            <span className="input-group-addon addon-inline input-source-observer small-text">
-                                Days
-                            </span>
-                        </div>
-                    </div>
+                    <FormControl id="period">
+                        <FormLabel>Staking period</FormLabel>
+                        <Input />
+                        <FormHelperText>
+                            Amount of days you will keep your stake.
+                        </FormHelperText>
+                    </FormControl>
 
-                    <div className="body-text-1">
-                        Current Block Reward: {formatCTSI(currentReward, 2)}{' '}
-                        <span className="small-text">CTSI</span>
-                    </div>
+                    <Table variant="clear">
+                        <Tbody>
+                            <Tr>
+                                <Th>Current Block Reward</Th>
+                                <Td>{formatCTSI(currentReward, 2)} CTSI</Td>
+                            </Tr>
+                            <Tr>
+                                <Th>Total Staked</Th>
+                                <Td>
+                                    {formatCTSI(
+                                        summary ? summary.totalStaked : 0
+                                    )}
+                                </Td>
+                            </Tr>
+                            <Tr>
+                                <Th>Effective Total Stake</Th>
+                                <Td>
+                                    {toCTSI(activeStake).toLocaleString()} CTSI
+                                </Td>
+                            </Tr>
+                        </Tbody>
+                    </Table>
+                    <FormControl id="totalStaked">
+                        <FormLabel>Total Staked</FormLabel>
+                        <Input />
+                        <FormHelperText>
+                            Total amount of CTSI tokens staked.
+                        </FormHelperText>
+                    </FormControl>
 
-                    <div className="body-text-1">
-                        Total Staked:{' '}
-                        {formatCTSI(summary ? summary.totalStaked : 0)}{' '}
-                        <span className="small-text">CTSI</span>
-                    </div>
+                    <Slider />
 
-                    <div className="body-text-1">
-                        Effective Total Stake:{' '}
-                        {toCTSI(activeStake).toLocaleString()}{' '}
-                        <span className="small-text">CTSI </span>
-                        <img
-                            data-tip={labels.effectiveTotalStake}
-                            src="/images/question.png"
+                    <Heading>Results</Heading>
+
+                    <HStack>
+                        <Stats label="Projected Period Reward" unit="decimal" />
+                        <Stats
+                            label="Projected Annual Earnings"
+                            unit="percent"
                         />
-                    </div>
+                    </HStack>
 
-                    <div className="calculator-slider">
-                        <h5 className="calculator-sub-title">Total Staked</h5>
-                        <br />
-
-                        <div className="input-group">
-                            <input
-                                type="number"
-                                className="addon-inline form-control"
-                                id="totalStaked"
-                                value={totalStaked}
-                                onChange={(event) => {
-                                    try {
-                                        const newTotalStaked = event.target
-                                            .value
-                                            ? parseInt(event.target.value)
-                                            : 1;
-                                        setTotalStaked(
-                                            newTotalStaked >
-                                                marketInformation.circulatingSupply
-                                                ? marketInformation.circulatingSupply
-                                                : newTotalStaked
-                                        );
-                                    } catch (e) {
-                                        setTotalStaked(1);
-                                    }
-                                }}
-                            />
-                            <span className="input-group-addon addon-inline input-source-observer small-text">
-                                CTSI
-                            </span>
-                        </div>
-
-                        <div className="calculator-slider-labels">
-                            <span className="small-text">0</span>
-                            <span className="small-text">
-                                {totalStaked.toLocaleString()} CTSI
-                            </span>
-                            <span className="small-text">
-                                {marketInformation.circulatingSupply.toLocaleString()}{' '}
-                                CTSI
-                            </span>
-                        </div>
-                        <input
-                            type="range"
-                            min="0"
-                            max={marketInformation.circulatingSupply}
-                            value={totalStaked}
-                            onChange={(e) =>
-                                setTotalStaked(e.target.valueAsNumber)
-                            }
-                            className="slider"
-                            style={{
-                                background: `linear-gradient(
-                                to right,
-                                #000,
-                                #000 ${blackBarPosition}%,
-                                #fff ${blackBarPosition}%,
-                                #fff
-                            )`,
-                            }}
-                        />
-                    </div>
-
-                    <div className="calculator-result">
-                        <h5 className="calculator-sub-title">Results</h5>
-
-                        <div className="calculator-result-rewards row">
-                            <div className="col col-12 col-sm-6">
-                                <div className="calculator-result-reward">
-                                    <span className="body-text-2 mb-1">
-                                        Projected Period Reward
-                                    </span>
-                                    <span className="info-text-md">
-                                        {formatCTSI(reward, 2)}{' '}
-                                        <span className="small-text">CTSI</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="col col-12 col-sm-6">
-                                <div className="calculator-result-reward">
-                                    <span className="body-text-2 mb-1">
-                                        Projected Annual Earnings{' '}
-                                        <img
-                                            data-tip={
-                                                labels.projectedAnnualEarnings
-                                            }
-                                            src="/images/question.png"
-                                        />
-                                    </span>
-                                    <span className="info-text-md">
-                                        {apr
-                                            .mulUnsafe(FixedNumber.from(100))
-                                            .round(1)
-                                            .toString() + '%'}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="col col-12">
-                                <StakingDisclaimer />
-                            </div>
-                        </div>
-                    </div>
-                    <ReactTooltip />
+                    <StakingDisclaimer />
                 </form>
             ) : (
                 <div />

@@ -13,9 +13,10 @@ import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
 import { BlocksData, BlocksVars } from '../models';
 
-const useBlocks = () => {
+const useBlocks = (count = 100) => {
     const variables = {
         where: {},
+        count,
         skip: 0,
     };
 
@@ -26,12 +27,13 @@ const useBlocks = () => {
     });
 };
 
-export const useProducerBlocks = (producer: string) => {
+export const useProducerBlocks = (producer: string, count = 100) => {
     if (producer) {
         producer = producer.toLowerCase();
     }
     const variables = {
         where: { producer },
+        count,
     };
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
@@ -40,12 +42,13 @@ export const useProducerBlocks = (producer: string) => {
     });
 };
 
-export const useNodeBlocks = (node: string) => {
+export const useNodeBlocks = (node: string, count = 100) => {
     if (node) {
         node = node.toLowerCase();
     }
     const variables = {
         where: { node },
+        count,
     };
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
