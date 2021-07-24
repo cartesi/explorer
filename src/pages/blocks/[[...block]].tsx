@@ -140,10 +140,9 @@ const Blocks = () => {
                 />
             </PageHeader>
 
-            <Heading w="100%" px="6vw" py="5">
-                Difficulty per Chain
-            </Heading>
-            <BlocksChart result={all} />
+            <HStack w="100%" px="6vw" py="5">
+                <BlocksChart result={all} />
+            </HStack>
 
             {!searchKey && <BlockList result={all} w="100%" px="6vw" py="5" />}
             <BlockList

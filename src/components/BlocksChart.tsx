@@ -22,8 +22,8 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
-import { BlocksData, BlocksVars } from '../graphql/models';
 import { QueryResult } from '@apollo/client';
+import { BlocksData, BlocksVars } from '../graphql/models';
 
 export interface BlocksChartProps {
     result: QueryResult<BlocksData, BlocksVars>;
@@ -122,30 +122,28 @@ const BlocksChart = (props: BlocksChartProps) => {
     };
 
     return (
-        <div className="blocks-chart-container">
-            <ResponsiveContainer width="100%" minWidth={700} height={300}>
-                <ScatterChart margin={{ left: 30 }}>
-                    <CartesianGrid stroke="#ccc" />
-                    <XAxis
-                        dataKey="timestamp"
-                        domain={['auto', 'auto']}
-                        tickFormatter={timestampFormat}
-                        name="Time"
-                        type="number"
-                        scale="time"
-                        tick={{ width: 100 }}
-                    />
-                    {yAxes}
-                    <Legend
-                        wrapperStyle={{
-                            paddingTop: 15,
-                        }}
-                    />
-                    {chains}
-                    <Tooltip formatter={tooltipFormatter} />
-                </ScatterChart>
-            </ResponsiveContainer>
-        </div>
+        <ResponsiveContainer height={300}>
+            <ScatterChart>
+                <CartesianGrid stroke="#ccc" />
+                <XAxis
+                    dataKey="timestamp"
+                    domain={['auto', 'auto']}
+                    tickFormatter={timestampFormat}
+                    name="Time"
+                    type="number"
+                    scale="time"
+                    tick={{ width: 100 }}
+                />
+                {yAxes}
+                <Legend
+                    wrapperStyle={{
+                        paddingTop: 15,
+                    }}
+                />
+                {chains}
+                <Tooltip formatter={tooltipFormatter} />
+            </ScatterChart>
+        </ResponsiveContainer>
     );
 };
 
