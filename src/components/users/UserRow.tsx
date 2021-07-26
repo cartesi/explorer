@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { Tr, Td } from '@chakra-ui/react';
+import { Tr, Td, useColorModeValue } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import { User } from '../../graphql/models';
@@ -23,12 +23,14 @@ export interface UserRowProps {
 }
 
 const UserRow: FunctionComponent<UserRowProps> = ({ user, account }) => {
+    const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
+
     // if logged user is manager, show edit button
     const edit =
         user.pool && account && account.toLowerCase() == user.pool.manager;
 
     return (
-        <Tr key={user.id} _hover={{ backgroundColor: 'WhiteSmoke' }}>
+        <Tr key={user.id} _hover={{ backgroundColor }}>
             <Td>
                 <Address address={user.id} />
             </Td>

@@ -20,6 +20,7 @@ import {
     Flex,
     Heading,
     HStack,
+    useColorModeValue,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
@@ -80,6 +81,7 @@ const Home = () => {
     const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
         FixedNumber.from(marketInformation?.circulatingSupply || 1)
     );
+    const bgColor = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>
@@ -128,7 +130,7 @@ const Home = () => {
             </Flex>
             <Center
                 p="0 6vw"
-                bgGradient="linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, white 50%, white 100%)"
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgColor} 50%, ${bgColor} 100%)`}
             >
                 <StatsPanel w="100%">
                     <StatsItem

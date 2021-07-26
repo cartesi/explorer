@@ -72,6 +72,10 @@ const theme = extendTheme({
             },
         },
     },
+    config: {
+        initialColorMode: 'light',
+        useSystemColorMode: false,
+    },
     fonts: {
         body: 'Rubik',
         heading: 'Rubik',
