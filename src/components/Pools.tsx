@@ -12,7 +12,8 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import useStakingPools from '../graphql/hooks/useStakingPools';
-import PoolTable, { Sort } from './pools/PoolTable';
+import PoolTable from './pools/PoolTable';
+import { StakingPoolSort } from '../graphql/models';
 import Pagination from './Pagination';
 import { VStack } from '@chakra-ui/react';
 
@@ -23,9 +24,13 @@ interface PoolsProps {
 }
 
 const Pools: FunctionComponent<PoolsProps> = ({ account, pages, refresh }) => {
-    const [sort, setSort] = useState<Sort>('stakedBalance');
+    const [sort, setSort] = useState<StakingPoolSort>('totalUsers');
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const { data, loading, refetch } = useStakingPools(pageNumber);
+    const { data, loading, refetch } = useStakingPools(
+        pageNumber,
+        undefined, // TODO: pool search by id
+        sort
+    );
 
     useEffect(() => {
         if (refresh) {

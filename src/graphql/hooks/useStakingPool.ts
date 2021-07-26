@@ -11,10 +11,10 @@
 
 import { useQuery } from '@apollo/client';
 import { StakingPoolData, StakingPoolVars } from '../models';
-import { STAKINGPOOL } from '../queries/stakingPool';
+import { STAKING_POOL } from '../queries/stakingPool';
 
 const useStakingPool = (id: string) => {
-    const { data } = useQuery<StakingPoolData, StakingPoolVars>(STAKINGPOOL, {
+    const { data } = useQuery<StakingPoolData, StakingPoolVars>(STAKING_POOL, {
         variables: {
             id: id?.toLowerCase(),
         },

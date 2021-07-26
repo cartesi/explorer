@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const STAKINGPOOLS = gql`
+export const STAKING_POOLS = gql`
     query stakingPools(
         $first: Int
         $skip: Int
@@ -39,10 +39,3 @@ export const STAKINGPOOLS = gql`
         }
     }
 `;
-
-export const stakingPoolsQueryVars = {
-    first: 10,
-    where: {},
-    orderBy: 'totalUsers',
-    orderDirection: 'desc',
-};

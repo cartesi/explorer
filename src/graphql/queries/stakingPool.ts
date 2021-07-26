@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const STAKINGPOOL = gql`
+export const STAKING_POOL = gql`
     query stakingPool($id: String) {
         stakingPool(id: $id) {
             id
@@ -27,7 +27,3 @@ export const STAKINGPOOL = gql`
         }
     }
 `;
-
-export const stakingPoolQueryVars = {
-    id: '0',
-};

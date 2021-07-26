@@ -22,21 +22,15 @@ import {
     Spinner,
 } from '@chakra-ui/react';
 import PoolRow from './PoolRow';
-import { StakingPool } from '../../graphql/models';
+import { StakingPool, StakingPoolSort } from '../../graphql/models';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-
-export type Sort =
-    | 'totalUsers'
-    | 'stakedBalance'
-    | 'totalReward'
-    | 'commission';
 
 export interface PoolTableProps {
     account?: string;
     loading: boolean;
     data?: StakingPool[];
-    sort?: Sort;
-    onSort: (order: Sort) => void;
+    sort?: StakingPoolSort;
+    onSort: (order: StakingPoolSort) => void;
 }
 
 const PoolTable: FunctionComponent<PoolTableProps> = ({
@@ -53,9 +47,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                     <Th>Address</Th>
                     <Th isNumeric onClick={() => onSort('totalUsers')}>
                         Total Users
-                        {sort == 'totalUsers' && (
-                            <i className="fas fa-arrow-down"></i>
-                        )}
+                        {sort == 'totalUsers' && <ArrowDownIcon />}
                     </Th>
                     <Th isNumeric onClick={() => onSort('stakedBalance')}>
                         Total Staked{' '}
