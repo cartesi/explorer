@@ -20,6 +20,7 @@ import {
     Thead,
     HStack,
     Spinner,
+    Link,
 } from '@chakra-ui/react';
 import PoolRow from './PoolRow';
 import { StakingPool, StakingPoolSort } from '../../graphql/models';
@@ -47,17 +48,24 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
             <Thead>
                 <Tr>
                     <Th>Address</Th>
-                    <Th isNumeric onClick={() => onSort('totalUsers')}>
-                        Total Users
+                    <Th isNumeric>
+                        <Link onClick={() => onSort('totalUsers')}>
+                            Total Users
+                        </Link>
                         {sort == 'totalUsers' && <ArrowDownIcon />}
                     </Th>
-                    <Th isNumeric onClick={() => onSort('amount')}>
-                        Total Staked {sort == 'amount' && <ArrowDownIcon />}
+                    <Th isNumeric>
+                        <Link onClick={() => onSort('amount')}>
+                            Total Staked
+                        </Link>{' '}
+                        {sort == 'amount' && <ArrowDownIcon />}
                     </Th>
                     <Th isNumeric>Total Rewards</Th>
                     <Th>Commission</Th>
-                    <Th onClick={() => onSort('totalCommission')}>
-                        Accrued Commission{' '}
+                    <Th>
+                        <Link onClick={() => onSort('totalCommission')}>
+                            Accrued Commission
+                        </Link>{' '}
                         {sort == 'totalCommission' && <ArrowDownIcon />}
                     </Th>
                     <Th textAlign="right">Action</Th>
