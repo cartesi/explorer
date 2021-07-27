@@ -153,6 +153,7 @@ const Footer = () => {
                                     address={address}
                                     name={name}
                                     key={index}
+                                    chainId={chainId}
                                     truncated
                                 />
                             ))}
