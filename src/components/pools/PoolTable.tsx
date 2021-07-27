@@ -51,18 +51,14 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                         Total Users
                         {sort == 'totalUsers' && <ArrowDownIcon />}
                     </Th>
-                    <Th isNumeric onClick={() => onSort('stakedBalance')}>
-                        Total Staked{' '}
-                        {sort == 'stakedBalance' && <ArrowDownIcon />}
+                    <Th isNumeric onClick={() => onSort('amount')}>
+                        Total Staked {sort == 'amount' && <ArrowDownIcon />}
                     </Th>
-                    <Th isNumeric onClick={() => onSort('totalReward')}>
-                        Total Rewards{' '}
-                        {sort == 'totalReward' && <ArrowDownIcon />}
-                    </Th>
+                    <Th isNumeric>Total Rewards</Th>
                     <Th>Commission</Th>
-                    <Th onClick={() => onSort('commission')}>
+                    <Th onClick={() => onSort('totalCommission')}>
                         Accrued Commission{' '}
-                        {sort == 'commission' && <ArrowDownIcon />}
+                        {sort == 'totalCommission' && <ArrowDownIcon />}
                     </Th>
                     <Th textAlign="right">Action</Th>
                 </Tr>
