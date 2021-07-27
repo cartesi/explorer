@@ -18,12 +18,18 @@ import Pagination from './Pagination';
 import { VStack } from '@chakra-ui/react';
 
 interface PoolsProps {
+    chainId: number;
     account?: string;
     refresh?: boolean;
     pages: number;
 }
 
-const Pools: FunctionComponent<PoolsProps> = ({ account, pages, refresh }) => {
+const Pools: FunctionComponent<PoolsProps> = ({
+    chainId,
+    account,
+    pages,
+    refresh,
+}) => {
     const [sort, setSort] = useState<StakingPoolSort>('totalUsers');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading, refetch } = useStakingPools(
@@ -41,6 +47,7 @@ const Pools: FunctionComponent<PoolsProps> = ({ account, pages, refresh }) => {
     return (
         <VStack w="100%">
             <PoolTable
+                chainId={chainId}
                 account={account}
                 loading={loading}
                 data={data?.stakingPools || []}

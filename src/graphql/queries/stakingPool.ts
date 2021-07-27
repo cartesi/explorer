@@ -5,6 +5,8 @@ export const STAKING_POOL = gql`
         stakingPool(id: $id) {
             id
             manager
+            amount
+            shares
             totalUsers
             totalCommission
             paused

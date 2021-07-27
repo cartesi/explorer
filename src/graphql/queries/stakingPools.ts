@@ -17,6 +17,8 @@ export const STAKING_POOLS = gql`
         ) {
             id
             manager
+            amount
+            shares
             totalUsers
             totalCommission
             paused

@@ -29,8 +29,13 @@ interface PoolsProps {
 }
 
 const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
-    const { account } = useWeb3React<Web3Provider>();
-    const { paused, loading, ready } = useStakingPoolFactory();
+    const { account, chainId } = useWeb3React<Web3Provider>();
+    // const { paused, loading, ready } = useStakingPoolFactory();
+    const { paused, loading, ready } = {
+        paused: true,
+        loading: false,
+        ready: false,
+    };
     const summary = useSummary();
 
     return (
@@ -49,6 +54,7 @@ const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
 
             <HStack p="20px 6vw" justify="space-between">
                 <Pools
+                    chainId={chainId}
                     pages={Math.ceil(
                         (summary?.totalPools || 0) / POOLS_PER_PAGE
                     )}

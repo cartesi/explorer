@@ -26,6 +26,7 @@ import { StakingPool, StakingPoolSort } from '../../graphql/models';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 
 export interface PoolTableProps {
+    chainId: number;
     account?: string;
     loading: boolean;
     data?: StakingPool[];
@@ -34,6 +35,7 @@ export interface PoolTableProps {
 }
 
 const PoolTable: FunctionComponent<PoolTableProps> = ({
+    chainId,
     account,
     data,
     loading,
@@ -62,7 +64,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                         Accrued Commission{' '}
                         {sort == 'commission' && <ArrowDownIcon />}
                     </Th>
-                    <Th>Action</Th>
+                    <Th textAlign="right">Action</Th>
                 </Tr>
             </Thead>
 
@@ -90,7 +92,12 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                     data &&
                     data.length > 0 &&
                     data.map((pool) => (
-                        <PoolRow key={pool.id} pool={pool} account={account} />
+                        <PoolRow
+                            key={pool.id}
+                            chainId={chainId}
+                            pool={pool}
+                            account={account}
+                        />
                     ))}
             </Tbody>
         </Table>
