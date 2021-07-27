@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -20,8 +20,6 @@ import {
     FormControl,
     FormErrorMessage,
     FormHelperText,
-    FormLabel,
-    HStack,
     Input,
     InputGroup,
     InputRightAddon,
@@ -30,28 +28,20 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import {
-    Formik,
-    FormikHelpers,
-    FormikProps,
-    Form,
-    Field,
-    FieldProps,
-} from 'formik';
+import { Controller, useForm } from 'react-hook-form';
 
 import Layout from '../../components/Layout';
 import { useStakingPoolFactory } from '../../services/poolFactory';
 import ConfirmationIndicator from '../../components/ConfirmationIndicator';
-import { useRouter } from 'next/router';
 import PageHeader from '../../components/PageHeader';
 import { LockIcon } from '@chakra-ui/icons';
 
 type CommissionModel = 'flatRate' | 'gasTax';
-interface FormValues {
+type FormData = {
     model: CommissionModel;
-    flatRate: string;
-    gasTax: string;
-}
+    flatRate: number;
+    gasTax: number;
+};
 
 const CreatePool: FunctionComponent = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -64,56 +54,47 @@ const CreatePool: FunctionComponent = () => {
         paused,
         ready,
     } = useStakingPoolFactory();
+    const {
+        control,
+        register,
+        handleSubmit,
+        formState: { errors, touchedFields },
+        watch,
+    } = useForm<FormData>({
+        defaultValues: {
+            model: 'flatRate',
+            flatRate: undefined,
+            gasTax: undefined,
+        },
+    });
 
-    const initialValues: FormValues = {
-        model: 'flatRate',
-        flatRate: '',
-        gasTax: '',
-    };
+    // watch the model value, for validation and disabling controls
+    const model = watch('model');
 
-    const validate = (values: FormValues) => {
-        const errors: any = {};
-        console.log(values);
-        if (values.model === 'flatRate') {
-            if (!values.flatRate) {
-                errors.flatRate = 'This value is required';
-            } else {
-                const value = Number.parseFloat(values.flatRate);
-                if (Number.isNaN(value)) {
-                    errors.flatRate = 'Value is not a number';
-                } else if (value > 100) {
-                    errors.flatRate = 'Maximum value is 100';
-                }
+    const numberValidation =
+        (m: CommissionModel, maxValue?: number) => (value: number) => {
+            if (m !== model) {
+                return true;
             }
-        } else if (values.model === 'gasTax') {
-            if (!values.gasTax) {
-                errors.gasTax = 'This value is required';
-            } else {
-                const value = Number.parseFloat(values.gasTax);
-                if (Number.isNaN(value)) {
-                    errors.gasTax = 'Value is not a number';
-                } else if (!Number.isInteger(value)) {
-                    errors.gasTax = 'Value must be an integer';
-                }
-            }
-        }
-        return errors;
-    };
 
-    const onCreate = (
-        values: FormValues,
-        actions: FormikHelpers<FormValues>
-    ) => {
-        if (values.model == 'flatRate') {
-            const flatRate = Number.parseFloat(values.flatRate);
-            createFlatRateCommission(flatRate * 100);
-            actions.setSubmitting(true);
-        } else if (values.model == 'gasTax') {
-            const gasTax = Number.parseInt(values.gasTax);
-            createGasTaxCommission(gasTax);
-            actions.setSubmitting(true);
+            if (Number.isNaN(value)) {
+                return 'Value is not a number';
+            }
+
+            if (maxValue && value > maxValue) {
+                return `Maximum value is ${maxValue}`;
+            }
+
+            return true;
+        };
+
+    const onSubmit = handleSubmit((data) => {
+        if (data.model == 'flatRate') {
+            createFlatRateCommission(data.flatRate * 100);
+        } else if (data.model == 'gasTax') {
+            createGasTaxCommission(data.gasTax);
         }
-    };
+    });
 
     return (
         <Layout>
@@ -141,131 +122,134 @@ const CreatePool: FunctionComponent = () => {
                         </Alert>
                     )}
                 </VStack>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={onCreate}
-                    validate={validate}
-                >
-                    {(props) => (
-                        <FormControl>
-                            <RadioGroup
-                                name="commissionModel"
-                                defaultValue="flatRate"
-                            >
-                                <VStack spacing="24px" align="flex-start">
-                                    <VStack align="flex-start">
-                                        <Field
-                                            type="radio"
-                                            name="model"
-                                            value="flatRate"
-                                        >
-                                            {({ field }) => (
-                                                <Radio {...field}>
-                                                    Flat Rate Commission
-                                                </Radio>
-                                            )}
-                                        </Field>
-                                        <FormHelperText>
-                                            This model calculates the commission
-                                            as a fixed percentage of the block
-                                            CTSI reward before distributing the
-                                            remaining amount to the pool users.
-                                        </FormHelperText>
-                                        <Field name="flatRate">
-                                            {({ field, form }) => (
-                                                <FormControl
-                                                    isInvalid={
-                                                        form.errors.flatRate &&
-                                                        form.touched.flatRate
-                                                    }
-                                                >
-                                                    <InputGroup>
-                                                        <Input
-                                                            {...field}
-                                                            id="flatRate"
-                                                            width="xs"
-                                                            placeholder="Percentage"
-                                                        />
-                                                        <InputRightAddon children="%" />
-                                                    </InputGroup>
-                                                    <FormErrorMessage>
-                                                        {props.errors.flatRate}
-                                                    </FormErrorMessage>
-                                                </FormControl>
-                                            )}
-                                        </Field>
-                                    </VStack>
+                <form onSubmit={onSubmit}>
+                    <Controller
+                        name="model"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <FormControl>
+                                <RadioGroup
+                                    name="commissionModel"
+                                    defaultValue="flatRate"
+                                    value={value}
+                                    onChange={onChange}
+                                >
+                                    <VStack spacing="24px" align="flex-start">
+                                        <VStack align="flex-start">
+                                            <Radio
+                                                name="model"
+                                                value="flatRate"
+                                            >
+                                                Flat Rate Commission
+                                            </Radio>
+                                            <FormHelperText>
+                                                This model calculates the
+                                                commission as a fixed percentage
+                                                of the block CTSI reward before
+                                                distributing the remaining
+                                                amount to the pool users.
+                                            </FormHelperText>
+                                            <FormControl
+                                                isInvalid={
+                                                    errors.flatRate &&
+                                                    touchedFields.flatRate
+                                                }
+                                            >
+                                                <InputGroup>
+                                                    <Input
+                                                        {...register(
+                                                            'flatRate',
+                                                            {
+                                                                valueAsNumber:
+                                                                    true,
+                                                                validate:
+                                                                    numberValidation(
+                                                                        'flatRate',
+                                                                        100
+                                                                    ),
+                                                            }
+                                                        )}
+                                                        width="xs"
+                                                        placeholder="Percentage"
+                                                        disabled={
+                                                            model != 'flatRate'
+                                                        }
+                                                    />
+                                                    <InputRightAddon children="%" />
+                                                </InputGroup>
+                                                <FormErrorMessage>
+                                                    {errors.flatRate?.message}
+                                                </FormErrorMessage>
+                                            </FormControl>
+                                        </VStack>
 
-                                    <VStack align="flex-start">
-                                        <Field
-                                            type="radio"
-                                            name="model"
-                                            value="gasTax"
+                                        <VStack align="flex-start">
+                                            <Radio name="model" value="gasTax">
+                                                Gas Tax Commission
+                                            </Radio>
+                                            <FormHelperText>
+                                                This model calculates the
+                                                commission considering the
+                                                current network gas price,
+                                                Ethereum price and CTSI price.
+                                                The configured amount of gas
+                                                above is multiplied by the gas
+                                                price provided by a{' '}
+                                                <a href="https://data.chain.link/fast-gas-gwei">
+                                                    ChainLink oracle
+                                                </a>
+                                                , then converted from ETH to
+                                                CTSI using an{' '}
+                                                <a href="https://v2.info.uniswap.org/pair/0x58eeb5d44dc41965ab0a9e563536175c8dc5c3b3">
+                                                    Uniswap V2 price oracle
+                                                </a>
+                                                .
+                                            </FormHelperText>
+                                            <FormControl
+                                                isInvalid={
+                                                    errors.gasTax &&
+                                                    touchedFields.gasTax
+                                                }
+                                            >
+                                                <InputGroup>
+                                                    <Input
+                                                        {...register('gasTax', {
+                                                            valueAsNumber: true,
+                                                            validate:
+                                                                numberValidation(
+                                                                    'gasTax'
+                                                                ),
+                                                        })}
+                                                        width="xs"
+                                                        disabled={
+                                                            model != 'gasTax'
+                                                        }
+                                                    />
+                                                    <InputRightAddon children="Gas" />
+                                                </InputGroup>
+                                                <FormErrorMessage>
+                                                    {errors.gasTax?.message}
+                                                </FormErrorMessage>
+                                            </FormControl>
+                                        </VStack>
+                                        <Button
+                                            type="submit"
+                                            disabled={
+                                                waiting ||
+                                                !account ||
+                                                paused ||
+                                                !ready
+                                            }
                                         >
-                                            {({ field }) => (
-                                                <Radio {...field}>
-                                                    Gas Tax Commission
-                                                </Radio>
-                                            )}
-                                        </Field>
-                                        <FormHelperText>
-                                            This model calculates the commission
-                                            considering the current network gas
-                                            price, Ethereum price and CTSI
-                                            price. The configured amount of gas
-                                            above is multiplied by the gas price
-                                            provided by a{' '}
-                                            <a href="https://data.chain.link/fast-gas-gwei">
-                                                ChainLink oracle
-                                            </a>
-                                            , then converted from ETH to CTSI
-                                            using an{' '}
-                                            <a href="https://v2.info.uniswap.org/pair/0x58eeb5d44dc41965ab0a9e563536175c8dc5c3b3">
-                                                Uniswap V2 price oracle
-                                            </a>
-                                            .
-                                        </FormHelperText>
-                                        <Field name="gasTax">
-                                            {({ field, form }) => (
-                                                <FormControl
-                                                    isInvalid={
-                                                        form.errors.gasTax &&
-                                                        form.touched.gasTax
-                                                    }
-                                                >
-                                                    <InputGroup>
-                                                        <Input
-                                                            {...field}
-                                                            id="gasTax"
-                                                            width="xs"
-                                                        />
-                                                        <InputRightAddon children="Gas" />
-                                                    </InputGroup>
-                                                    <FormErrorMessage>
-                                                        {props.errors.gasTax}
-                                                    </FormErrorMessage>
-                                                </FormControl>
-                                            )}
-                                        </Field>
+                                            <Text>Create Pool</Text>
+                                            {paused && <LockIcon />}
+                                        </Button>
                                     </VStack>
-                                    <Button
-                                        type="submit"
-                                        onClick={props.submitForm}
-                                        disabled={
-                                            waiting ||
-                                            !account ||
-                                            paused ||
-                                            !ready
-                                        }
-                                    >
-                                        <Text>Create Pool</Text>
-                                        {paused && <LockIcon />}
-                                    </Button>
-                                </VStack>
-                            </RadioGroup>
-                        </FormControl>
-                    )}
-                </Formik>
+                                </RadioGroup>
+                            </FormControl>
+                        )}
+                    />
+                </form>
             </VStack>
         </Layout>
     );
