@@ -35,6 +35,7 @@
         "cors": "^2.8.5",
         "eth-chains": "^0.3.5",
         "ethers": "^5.4.1",
+        "formik": "^2.2.9",
         "framer-motion": "^4",
         "graphql": "^15.5.0",
         "humanize-duration": "^3.27.0",
