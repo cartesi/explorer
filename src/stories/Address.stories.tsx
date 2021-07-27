@@ -39,5 +39,8 @@ Responsive.args = { responsive: true };
 export const TokenLink = Template.bind({});
 TokenLink.args = { type: 'token' };
 
+export const Goerli = Template.bind({});
+Goerli.args = { chainId: 5 };
+
 export const WithName = Template.bind({});
 WithName.args = { name: 'Pool Factory' };

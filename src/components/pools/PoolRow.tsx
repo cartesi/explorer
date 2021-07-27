@@ -22,11 +22,16 @@ import { useStakingPoolCommission } from '../../services/pool';
 import labels from '../../utils/labels';
 
 export interface PoolRowProps {
+    chainId: number;
     pool: StakingPool;
     account?: string;
 }
 
-const PoolRow: FunctionComponent<PoolRowProps> = ({ account, pool }) => {
+const PoolRow: FunctionComponent<PoolRowProps> = ({
+    chainId,
+    account,
+    pool,
+}) => {
     // calculate accured commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
     const totalCommission = FixedNumber.from(pool.totalCommission);
@@ -67,7 +72,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({ account, pool }) => {
     return (
         <Tr key={pool.id}>
             <Td>
-                <Address ens address={pool.id} />
+                <Address ens address={pool.id} chainId={chainId} />
             </Td>
             <Td isNumeric>{pool.totalUsers}</Td>
             <Td isNumeric>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</Td>

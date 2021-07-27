@@ -16,13 +16,14 @@ import useUsers from '../graphql/hooks/useUsers';
 import Pagination from './Pagination';
 
 interface UsersProps {
+    chainId: number;
     account?: string;
     search?: string;
     pages: number;
 }
 
 const Users: FunctionComponent<UsersProps> = (props) => {
-    const { account, search, pages } = props;
+    const { chainId, account, search, pages } = props;
     const [sort, setSort] = useState<Sort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort);
@@ -30,6 +31,7 @@ const Users: FunctionComponent<UsersProps> = (props) => {
     return (
         <VStack w="100%">
             <UserTable
+                chainId={chainId}
                 account={account}
                 loading={loading}
                 data={data?.users}

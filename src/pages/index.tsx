@@ -67,7 +67,7 @@ const SectionHeading: FunctionComponent = (props) => {
 
 const Home = () => {
     const { marketInformation } = useMarketInformation();
-    const { account } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
     const { balance } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking(account);
@@ -167,7 +167,11 @@ const Home = () => {
             <Wrap p="20px 6vw" justify="space-around">
                 {blocks.slice(0, 4).map((block) => (
                     <WrapItem>
-                        <BlockCard block={block} key={block.id} />
+                        <BlockCard
+                            chainId={chainId}
+                            block={block}
+                            key={block.id}
+                        />
                     </WrapItem>
                 ))}
             </Wrap>
@@ -178,6 +182,7 @@ const Home = () => {
             </HStack>
             <HStack p="20px 6vw" justify="space-between">
                 <Users
+                    chainId={chainId}
                     account={account}
                     pages={Math.ceil(
                         (summary?.totalUsers || 0) / USERS_PER_PAGE

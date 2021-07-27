@@ -28,13 +28,14 @@ import { Block } from '../../graphql/models';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
 interface BlockMiniCardProps extends BoxProps {
+    chainId: number;
     block: Block;
     showProtocol?: boolean;
     showChain?: boolean;
 }
 
 const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
-    const { block, showProtocol = true, showChain = true } = props;
+    const { chainId, block, showProtocol = true, showChain = true } = props;
     let id = `${block.number}`;
     if (showChain) {
         id = `${block.chain.number}-${id}`;
@@ -65,6 +66,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                         <Text>Producer</Text>
                         <Address
                             address={block.producer.id}
+                            chainId={chainId}
                             truncated
                             fontWeight="bold"
                             fontSize="large"
@@ -73,7 +75,11 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     <Spacer minH={5} />
                     <Box>
                         <Text>Node</Text>
-                        <Address address={block.node.id} truncated />
+                        <Address
+                            address={block.node.id}
+                            chainId={chainId}
+                            truncated
+                        />
                     </Box>
                 </Flex>
                 <Spacer minW={5} />

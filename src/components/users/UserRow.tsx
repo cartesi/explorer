@@ -18,11 +18,16 @@ import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 
 export interface UserRowProps {
+    chainId: number;
     user: User;
     account?: string;
 }
 
-const UserRow: FunctionComponent<UserRowProps> = ({ user, account }) => {
+const UserRow: FunctionComponent<UserRowProps> = ({
+    chainId,
+    user,
+    account,
+}) => {
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
 
     // if logged user is manager, show edit button
@@ -32,7 +37,7 @@ const UserRow: FunctionComponent<UserRowProps> = ({ user, account }) => {
     return (
         <Tr key={user.id} _hover={{ backgroundColor }}>
             <Td>
-                <Address address={user.id} />
+                <Address address={user.id} chainId={chainId} />
             </Td>
             <Td isNumeric>{user.totalBlocks}</Td>
             <Td isNumeric>{formatCTSI(user.stakedBalance, 2)} CTSI</Td>

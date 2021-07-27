@@ -19,6 +19,7 @@ import { formatCTSI } from '../../utils/token';
 export type BlockHighlightProp = 'id' | 'node' | 'producer';
 
 interface BlockTableProps extends TableProps {
+    chainId: number;
     block: Block;
     highlight?: BlockHighlightProp;
     highlightColor: string;
@@ -26,6 +27,7 @@ interface BlockTableProps extends TableProps {
 
 const BlockTable: FunctionComponent<BlockTableProps> = (props) => {
     const {
+        chainId,
         block,
         highlight,
         highlightColor = 'lightyellow',
@@ -55,19 +57,32 @@ const BlockTable: FunctionComponent<BlockTableProps> = (props) => {
                 <Tr bg={highlight === 'producer' && highlightColor}>
                     <Th>Producer</Th>
                     <Td>
-                        <Address address={block.producer.id} responsive />
+                        <Address
+                            address={block.producer.id}
+                            chainId={chainId}
+                            responsive
+                        />
                     </Td>
                 </Tr>
                 <Tr bg={highlight === 'node' && highlightColor}>
                     <Th>Node</Th>
                     <Td>
-                        <Address address={block.node.id} responsive />
+                        <Address
+                            address={block.node.id}
+                            chainId={chainId}
+                            responsive
+                        />
                     </Td>
                 </Tr>
                 <Tr>
                     <Th>Hash</Th>
                     <Td>
-                        <Address type="tx" address={block.id} truncated />
+                        <Address
+                            type="tx"
+                            address={block.id}
+                            chainId={chainId}
+                            truncated
+                        />
                     </Td>
                 </Tr>
                 <Tr>

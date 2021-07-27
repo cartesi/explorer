@@ -29,6 +29,7 @@ import UserRow from './UserRow';
 export type Sort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 
 export interface UserTableProps {
+    chainId: number;
     account?: string;
     loading: boolean;
     data?: User[];
@@ -37,6 +38,7 @@ export interface UserTableProps {
 }
 
 const UserTable: FunctionComponent<UserTableProps> = ({
+    chainId,
     account,
     data,
     loading,
@@ -87,7 +89,12 @@ const UserTable: FunctionComponent<UserTableProps> = ({
                     data &&
                     data.length > 0 &&
                     data.map((user) => (
-                        <UserRow key={user.id} user={user} account={account} />
+                        <UserRow
+                            key={user.id}
+                            chainId={chainId}
+                            user={user}
+                            account={account}
+                        />
                     ))}
             </Tbody>
         </Table>
