@@ -30,7 +30,7 @@ const PageHeader: FunctionComponent<PageHeaderProps> = (props) => {
             {...rest}
         >
             <Heading fontWeight="normal">{title}</Heading>
-            {children}
+            <HStack>{children}</HStack>
         </HStack>
     );
 };

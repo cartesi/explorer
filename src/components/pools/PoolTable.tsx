@@ -31,6 +31,7 @@ export interface PoolTableProps {
     account?: string;
     loading: boolean;
     data?: StakingPool[];
+    size?: 'lg' | 'md' | 'sm';
     sort?: StakingPoolSort;
     onSort: (order: StakingPoolSort) => void;
 }
@@ -40,34 +41,52 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
     account,
     data,
     loading,
+    size = 'lg',
     sort,
     onSort,
 }) => {
+    let columns = 6;
+    switch (size) {
+        case 'lg':
+            columns = 6;
+            break;
+        case 'md':
+            columns = 5;
+            break;
+        case 'sm':
+            columns = 3;
+            break;
+    }
+
     return (
         <Table>
             <Thead>
                 <Tr>
                     <Th>Address</Th>
-                    <Th isNumeric>
-                        <Link onClick={() => onSort('totalUsers')}>
-                            Total Users
-                        </Link>
-                        {sort == 'totalUsers' && <ArrowDownIcon />}
-                    </Th>
+                    {(size == 'lg' || size == 'md') && (
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('totalUsers')}>
+                                Total Users
+                            </Link>
+                            {sort == 'totalUsers' && <ArrowDownIcon />}
+                        </Th>
+                    )}
                     <Th isNumeric>
                         <Link onClick={() => onSort('amount')}>
                             Total Staked
                         </Link>{' '}
                         {sort == 'amount' && <ArrowDownIcon />}
                     </Th>
-                    <Th isNumeric>Total Rewards</Th>
-                    <Th>Commission</Th>
-                    <Th>
-                        <Link onClick={() => onSort('totalCommission')}>
-                            Accrued Commission
-                        </Link>{' '}
-                        {sort == 'totalCommission' && <ArrowDownIcon />}
-                    </Th>
+                    {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
+                    {size == 'lg' && <Th>Commission</Th>}
+                    {(size == 'lg' || size == 'md') && (
+                        <Th>
+                            <Link onClick={() => onSort('totalCommission')}>
+                                Accrued Commission
+                            </Link>{' '}
+                            {sort == 'totalCommission' && <ArrowDownIcon />}
+                        </Th>
+                    )}
                     <Th textAlign="right">Action</Th>
                 </Tr>
             </Thead>
@@ -75,7 +94,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
             <Tbody>
                 {loading && (
                     <Tr>
-                        <Td colSpan={6} textAlign="center">
+                        <Td colSpan={columns} textAlign="center">
                             <HStack justify="center">
                                 <Spinner />
                                 <Text>Loading</Text>
@@ -87,7 +106,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                     (!data ||
                         (data.length === 0 && (
                             <Tr>
-                                <Td colSpan={6} textAlign="center">
+                                <Td colSpan={columns} textAlign="center">
                                     <Text>No items</Text>
                                 </Td>
                             </Tr>
@@ -100,6 +119,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                             key={pool.id}
                             chainId={chainId}
                             pool={pool}
+                            size={size}
                             account={account}
                         />
                     ))}

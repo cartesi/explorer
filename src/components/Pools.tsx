@@ -15,7 +15,7 @@ import useStakingPools from '../graphql/hooks/useStakingPools';
 import PoolTable from './pools/PoolTable';
 import { StakingPoolSort } from '../graphql/models';
 import Pagination from './Pagination';
-import { VStack } from '@chakra-ui/react';
+import { useBreakpointValue, VStack } from '@chakra-ui/react';
 
 interface PoolsProps {
     chainId: number;
@@ -37,6 +37,7 @@ const Pools: FunctionComponent<PoolsProps> = ({
         undefined, // TODO: pool search by id
         sort
     );
+    const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);
 
     useEffect(() => {
         if (refresh) {
@@ -51,6 +52,7 @@ const Pools: FunctionComponent<PoolsProps> = ({
                 account={account}
                 loading={loading}
                 data={data?.stakingPools || []}
+                size={size as 'lg' | 'md' | 'sm'}
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />

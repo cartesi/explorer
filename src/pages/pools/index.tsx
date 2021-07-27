@@ -22,7 +22,7 @@ import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import Pools from '../../components/Pools';
 import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
-import { HStack, Link } from '@chakra-ui/react';
+import { Button, HStack, Link, VStack } from '@chakra-ui/react';
 
 interface PoolsProps {
     router: NextRouter;
@@ -30,12 +30,7 @@ interface PoolsProps {
 
 const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
     const { account, chainId } = useWeb3React<Web3Provider>();
-    // const { paused, loading, ready } = useStakingPoolFactory();
-    const { paused, loading, ready } = {
-        paused: true,
-        loading: false,
-        ready: false,
-    };
+    const { paused, loading, ready } = useStakingPoolFactory();
     const summary = useSummary();
 
     return (
@@ -45,14 +40,17 @@ const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <PageHeader title="Staking Pools">
-                <SearchInput w={[100, 200, 400, 400]} bg="gray.200" />
-                {!loading && !paused && ready && (
-                    <Link href="/pools/create">Create Pool</Link>
-                )}
-            </PageHeader>
+            <PageHeader title="Staking Pools" />
 
-            <HStack p="20px 6vw" justify="space-between">
+            <VStack p="20px 6vw" align="stretch">
+                <HStack justify="space-between">
+                    {!loading && !paused && ready && (
+                        <Link href="/pools/create">
+                            <Button>Create Pool</Button>
+                        </Link>
+                    )}
+                    <SearchInput w={[100, 200, 400, 400]} bg="gray.200" />
+                </HStack>
                 <Pools
                     chainId={chainId}
                     pages={Math.ceil(
@@ -60,7 +58,7 @@ const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
                     )}
                     account={account}
                 />
-            </HStack>
+            </VStack>
         </Layout>
     );
 };

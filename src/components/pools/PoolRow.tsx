@@ -25,12 +25,14 @@ export interface PoolRowProps {
     chainId: number;
     pool: StakingPool;
     account?: string;
+    size?: 'lg' | 'md' | 'sm' | 'xs';
 }
 
 const PoolRow: FunctionComponent<PoolRowProps> = ({
     chainId,
     account,
     pool,
+    size = 'lg',
 }) => {
     // calculate accured commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
@@ -72,26 +74,35 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
     return (
         <Tr key={pool.id}>
             <Td>
-                <Address ens address={pool.id} chainId={chainId} />
+                <Address ens address={pool.id} chainId={chainId} truncated />
             </Td>
-            <Td isNumeric>{pool.totalUsers}</Td>
-            <Td isNumeric>{formatCTSI(pool.user.stakedBalance, 2)} CTSI</Td>
-            <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
-            <Td>
-                {commissionLabel}{' '}
-                {commissionTooltip && (
-                    <Tooltip
-                        placement="top"
-                        label={commissionTooltip}
-                        fontSize="small"
-                        bg="black"
-                        color="white"
-                    >
-                        <Icon />
-                    </Tooltip>
-                )}
-            </Td>
-            <Td>{accuredCommissionLabel}</Td>
+            {(size == 'lg' || size == 'md') && (
+                <Td isNumeric>{pool.totalUsers}</Td>
+            )}
+            <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
+            {size == 'lg' && (
+                <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
+            )}
+            {size == 'lg' && (
+                <Td>
+                    {commissionLabel}{' '}
+                    {commissionTooltip && (
+                        <Tooltip
+                            placement="top"
+                            label={commissionTooltip}
+                            fontSize="small"
+                            bg="black"
+                            color="white"
+                            size="md"
+                        >
+                            <Icon />
+                        </Tooltip>
+                    )}
+                </Td>
+            )}
+            {(size == 'lg' || size == 'md') && (
+                <Td>{accuredCommissionLabel}</Td>
+            )}
             <Td>
                 <HStack justify="flex-end">
                     {edit && (
