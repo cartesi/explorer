@@ -94,7 +94,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
-                <Link href={externalLink}>
+                <Link href={externalLink} isExternal>
                     <ExternalLinkIcon />
                 </Link>
             )}
