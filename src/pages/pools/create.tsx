@@ -23,6 +23,7 @@ import {
     Input,
     InputGroup,
     InputRightAddon,
+    Link,
     Radio,
     RadioGroup,
     Text,
@@ -35,6 +36,7 @@ import { useStakingPoolFactory } from '../../services/poolFactory';
 import PageHeader from '../../components/PageHeader';
 import { LockIcon } from '@chakra-ui/icons';
 import TransactionFeedback from '../../components/TransactionFeedback';
+import { truncateString } from '../../utils/stringUtils';
 
 type CommissionModel = 'flatRate' | 'gasTax';
 type FormData = {
@@ -108,12 +110,21 @@ const CreatePool: FunctionComponent = () => {
                 <VStack align="flex-start" w="100%">
                     {transaction.transaction && (
                         <TransactionFeedback
-                            title="Creating pool..."
                             chainId={chainId}
                             progress={transaction.receipt?.confirmations}
                             error={transaction.error}
                             hash={transaction.transaction?.hash}
-                        />
+                        >
+                            {transaction.result ? (
+                                <Link
+                                    href={'/pools/' + transaction.result}
+                                >{`Pool ${truncateString(
+                                    transaction.result
+                                )} created`}</Link>
+                            ) : (
+                                'Creating pool...'
+                            )}
+                        </TransactionFeedback>
                     )}
                     {!loading && !ready && (
                         <Alert status="error">

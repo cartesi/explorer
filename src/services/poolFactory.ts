@@ -23,7 +23,19 @@ export const useStakingPoolFactory = () => {
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
 
-    const transaction = useTransaction();
+    const transaction = useTransaction<string>((receipt) => {
+        // result is pool address taken from transaction event
+        if (receipt.events) {
+            const event = receipt.events.find(
+                (e) =>
+                    e.event == 'NewFlatRateCommissionStakingPool' ||
+                    e.event == 'NewGasTaxCommissionStakingPool'
+            );
+            if (event && event.args && event.args.length > 0) {
+                return event.args[0];
+            }
+        }
+    });
     const [paused, setPaused] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
     const [loading, setLoading] = useState<Boolean>(true);

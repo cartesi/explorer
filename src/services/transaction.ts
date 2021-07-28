@@ -14,24 +14,33 @@ import { ContractReceipt, ContractTransaction } from 'ethers';
 import { useEffect, useState } from 'react';
 import { confirmations } from '../utils/networks';
 
-export interface Transaction {
+export interface Transaction<R> {
     transaction: ContractTransaction;
     error?: string;
     receipt?: ContractReceipt;
+    set: (transaction: ContractTransaction) => void;
+    result?: R;
 }
 
-export const useTransaction = () => {
+export function useTransaction<R>(
+    resultResolver: (receipt: ContractReceipt) => R
+): Transaction<R> {
     const { chainId } = useWeb3React();
     const [error, setError] = useState<string>();
     const [transaction, set] = useState<ContractTransaction>();
     const [receipt, setReceipt] = useState<ContractReceipt>();
+    const [result, setResult] = useState<R>();
 
     useEffect(() => {
         const update = async () => {
             setError(null);
             try {
                 // wait for confirmations
-                setReceipt(await transaction.wait(confirmations[chainId]));
+                const receipt = await transaction.wait(confirmations[chainId]);
+                setReceipt(receipt);
+
+                // resolve result from receipt (events?)
+                setResult(resultResolver(receipt));
             } catch (e) {
                 setError(e.message);
             }
@@ -46,5 +55,6 @@ export const useTransaction = () => {
         error,
         receipt,
         set,
+        result,
     };
-};
+}

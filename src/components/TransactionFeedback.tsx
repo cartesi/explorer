@@ -23,7 +23,6 @@ import {
 import Address from './Address';
 
 export interface TransactionFeedbackProps {
-    title: string;
     chainId: number;
     hash?: string;
     progress: number;
@@ -31,8 +30,8 @@ export interface TransactionFeedbackProps {
 }
 
 const TransactionFeedback: FC<TransactionFeedbackProps> = ({
-    title,
     chainId,
+    children,
     hash,
     progress,
     error,
@@ -44,12 +43,11 @@ const TransactionFeedback: FC<TransactionFeedbackProps> = ({
             {status !== 'info' && <AlertIcon />}
             <Box flex="1">
                 <HStack>
-                    <AlertTitle>{title}</AlertTitle>
+                    <AlertTitle>{children}</AlertTitle>
                     {hash && (
                         <Address
                             address={hash}
                             type="tx"
-                            size="xs"
                             truncated
                             chainId={chainId}
                         />
