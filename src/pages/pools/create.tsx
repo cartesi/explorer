@@ -32,9 +32,9 @@ import { Controller, useForm } from 'react-hook-form';
 
 import Layout from '../../components/Layout';
 import { useStakingPoolFactory } from '../../services/poolFactory';
-import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 import PageHeader from '../../components/PageHeader';
 import { LockIcon } from '@chakra-ui/icons';
+import TransactionFeedback from '../../components/TransactionFeedback';
 
 type CommissionModel = 'flatRate' | 'gasTax';
 type FormData = {
@@ -44,15 +44,14 @@ type FormData = {
 };
 
 const CreatePool: FunctionComponent = () => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
     const {
-        waiting,
-        error,
         loading,
-        createFlatRateCommission,
-        createGasTaxCommission,
         paused,
         ready,
+        createFlatRateCommission,
+        createGasTaxCommission,
+        transaction,
     } = useStakingPoolFactory();
     const {
         control,
@@ -103,12 +102,19 @@ const CreatePool: FunctionComponent = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <PageHeader title="Create Pool">
-                <ConfirmationIndicator loading={waiting} error={error} />
-            </PageHeader>
+            <PageHeader title="Create Pool" />
 
             <VStack px="6vw" py={10} spacing={10}>
                 <VStack align="flex-start" w="100%">
+                    {transaction.transaction && (
+                        <TransactionFeedback
+                            title="Creating pool..."
+                            chainId={chainId}
+                            progress={transaction.receipt?.confirmations}
+                            error={transaction.error}
+                            hash={transaction.transaction?.hash}
+                        />
+                    )}
                     {!loading && !ready && (
                         <Alert status="error">
                             <AlertIcon />
@@ -235,10 +241,7 @@ const CreatePool: FunctionComponent = () => {
                                         <Button
                                             type="submit"
                                             disabled={
-                                                waiting ||
-                                                !account ||
-                                                paused ||
-                                                !ready
+                                                !account || paused || !ready
                                             }
                                         >
                                             <Text>Create Pool</Text>
