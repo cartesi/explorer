@@ -37,7 +37,7 @@ export const useNode = (address: string) => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { waiting, error, setError, setTransaction } = useTransaction();
+    const transaction = useTransaction();
 
     // make balance depend on owner, so if it changes we update the balance
     // also update on every block
@@ -79,71 +79,50 @@ export const useNode = (address: string) => {
     useEffect(() => {
         if (workerManager) {
             setLoading(true);
-            updateState(address)
-                .then(() => setLoading(false))
-                .catch((e) => setError(e.message));
+            updateState(address).then(() => setLoading(false));
         }
     }, [workerManager, address, block]);
 
     const authorize = () => {
         if (workerManager) {
-            try {
-                setTransaction(workerManager.authorize(address, pos.address));
-            } catch (e) {
-                setError(e.message);
-            }
+            workerManager.authorize(address, pos.address).then(transaction.set);
         }
     };
 
     const hire = (value: BigNumberish) => {
         if (workerManager) {
-            try {
-                setTransaction(
-                    workerManager.hireAndAuthorize(address, pos.address, {
-                        value,
-                    })
-                );
-            } catch (e) {
-                setError(e.message);
-            }
+            workerManager
+                .hireAndAuthorize(address, pos.address, {
+                    value,
+                })
+                .then(transaction.set);
         }
     };
 
     const cancelHire = () => {
         if (workerManager) {
-            try {
-                setTransaction(workerManager.cancelHire(address));
-            } catch (e) {
-                setError(e.message);
-            }
+            workerManager.cancelHire(address).then(transaction.set);
         }
     };
 
     const retire = () => {
         if (workerManager) {
-            try {
-                setTransaction(workerManager.retire(address));
-            } catch (e) {
-                setError(e.message);
-            }
+            workerManager.retire(address).then(transaction.set);
         }
     };
 
     const transfer = (value: BigNumberish) => {
         if (library && chainId && address) {
-            try {
-                const signer = library.getSigner();
-                setTransaction(signer.sendTransaction({ to: address, value }));
-            } catch (e) {
-                setError(e.message);
-            }
+            const signer = library.getSigner();
+            signer
+                .sendTransaction({ to: address, value })
+                .then(transaction.set);
         }
     };
 
     return {
         address: isAddress(address) ? address : undefined,
         balance,
-        error,
         user,
         available,
         pending,
@@ -151,8 +130,8 @@ export const useNode = (address: string) => {
         retired,
         authorized,
         authorized1,
-        waiting,
         loading,
+        transaction,
         hire,
         authorize,
         cancelHire,

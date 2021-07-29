@@ -23,7 +23,7 @@ export interface Transaction<R> {
 }
 
 export function useTransaction<R>(
-    resultResolver: (receipt: ContractReceipt) => R
+    resultResolver?: (receipt: ContractReceipt) => R
 ): Transaction<R> {
     const { chainId } = useWeb3React();
     const [error, setError] = useState<string>();
@@ -40,7 +40,9 @@ export function useTransaction<R>(
                 setReceipt(receipt);
 
                 // resolve result from receipt (events?)
-                setResult(resultResolver(receipt));
+                if (resultResolver) {
+                    setResult(resultResolver(receipt));
+                }
             } catch (e) {
                 setError(e.message);
             }
