@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import React, { FC, useState } from 'react';
 import Head from 'next/head';
-import { NextRouter, withRouter } from 'next/router';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
@@ -24,14 +23,11 @@ import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
 import { Button, HStack, Link, VStack } from '@chakra-ui/react';
 
-interface PoolsProps {
-    router: NextRouter;
-}
-
-const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
+const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
     const { paused, loading, ready } = useStakingPoolFactory();
     const summary = useSummary();
+    const [search, setSearch] = useState<string>();
 
     return (
         <Layout>
@@ -49,7 +45,11 @@ const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
                             <Button>Create Pool</Button>
                         </Link>
                     )}
-                    <SearchInput w={[100, 200, 400, 400]} bg="gray.200" />
+                    <SearchInput
+                        w={[100, 200, 400, 400]}
+                        bg="gray.200"
+                        onSearchChange={(e) => setSearch(e.target.value)}
+                    />
                 </HStack>
                 <Pools
                     chainId={chainId}
@@ -57,10 +57,11 @@ const StakingPools: FunctionComponent<PoolsProps> = ({ router }) => {
                         (summary?.totalPools || 0) / POOLS_PER_PAGE
                     )}
                     account={account}
+                    search={search}
                 />
             </VStack>
         </Layout>
     );
 };
 
-export default withRouter(StakingPools);
+export default StakingPools;

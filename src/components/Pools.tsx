@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import useStakingPools from '../graphql/hooks/useStakingPools';
 import PoolTable from './pools/PoolTable';
@@ -20,30 +20,15 @@ import { useBreakpointValue, VStack } from '@chakra-ui/react';
 interface PoolsProps {
     chainId: number;
     account?: string;
-    refresh?: boolean;
     pages: number;
+    search?: string;
 }
 
-const Pools: FunctionComponent<PoolsProps> = ({
-    chainId,
-    account,
-    pages,
-    refresh,
-}) => {
+const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
     const [sort, setSort] = useState<StakingPoolSort>('totalUsers');
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const { data, loading, refetch } = useStakingPools(
-        pageNumber,
-        undefined, // TODO: pool search by id
-        sort
-    );
+    const { data, loading } = useStakingPools(pageNumber, search, sort);
     const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);
-
-    useEffect(() => {
-        if (refresh) {
-            refetch();
-        }
-    }, [refresh]);
 
     return (
         <VStack w="100%">
@@ -56,11 +41,13 @@ const Pools: FunctionComponent<PoolsProps> = ({
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />
-            <Pagination
-                pages={pages}
-                currentPage={pageNumber}
-                onPageClick={setPageNumber}
-            />
+            {!search && (
+                <Pagination
+                    pages={pages}
+                    currentPage={pageNumber}
+                    onPageClick={setPageNumber}
+                />
+            )}
         </VStack>
     );
 };
