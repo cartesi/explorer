@@ -39,11 +39,13 @@ const Users: FunctionComponent<UsersProps> = (props) => {
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />
-            <Pagination
-                pages={pages}
-                currentPage={pageNumber}
-                onPageClick={setPageNumber}
-            />
+            {!search && (
+                <Pagination
+                    pages={pages}
+                    currentPage={pageNumber}
+                    onPageClick={setPageNumber}
+                />
+            )}
         </VStack>
     );
 };

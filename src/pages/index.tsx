@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import Head from 'next/head';
 
 import { FixedNumber } from 'ethers';
@@ -95,6 +95,8 @@ const Home = () => {
     const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
         FixedNumber.from(marketInformation?.circulatingSupply || 1)
     );
+
+    const [userSearch, setUserSearch] = useState<string>();
 
     // dark mode compatible background color
     const bgColor = useColorModeValue('white', 'gray.800');
@@ -207,12 +209,16 @@ const Home = () => {
 
             <HStack p="20px 6vw" justify="space-between" align="flex-end">
                 <SectionHeading>Block Producers</SectionHeading>
-                <SearchInput w={[100, 200, 400, 400]} />
+                <SearchInput
+                    w={[100, 200, 400, 500]}
+                    onSearchChange={(e) => setUserSearch(e.target.value)}
+                />
             </HStack>
             <HStack p="20px 6vw" justify="space-between">
                 <Users
                     chainId={chainId}
                     account={account}
+                    search={userSearch}
                     pages={Math.ceil(
                         (summary?.totalUsers || 0) / USERS_PER_PAGE
                     )}
