@@ -32,6 +32,10 @@ import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { TokenAmount } from '../../components/TokenAmount';
+import { Flex, Heading, Box, Spacer, Button } from '@chakra-ui/react';
+import CTSIText from '../../components/CTSIText';
+import { FaCoins, FaWallet } from 'react-icons/fa';
+import Balances from '../../components/staking/Balances';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -225,7 +229,7 @@ const Staking = () => {
         summary && summary.totalStaked ? toBigCTSI(summary.totalStaked) : 0;
 
     return (
-        <Layout className="staking">
+        <Layout>
             <Head>
                 <title>Cartesi - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
@@ -247,34 +251,12 @@ const Staking = () => {
                 </div>
             )}
 
-            <div className="page-header row align-items-center py-3">
-                <div className="col col-12 col-lg-6 info-text-md text-white d-flex flex-row">
-                    Staking
-                    <ConfirmationIndicator loading={waiting} error={error} />
-                </div>
-
-                <div className="col col-12 col-sm-6 col-lg-3">
-                    <div className="sub-title-2 white-text">
-                        <img src="/images/wallet.png" />
-                        &nbsp; Wallet Balance
-                    </div>
-                    <div className="info-text-md dark-white-text">
-                        {`${account ? formatCTSI(balance, 2) : 'N/A'}  `}
-                        <span className="caption">CTSI</span>
-                    </div>
-                </div>
-
-                <div className="col col-12 col-sm-6 col-lg-3">
-                    <div className="sub-title-2 white-text">
-                        <img src="/images/staked.png" />
-                        &nbsp; Staked Balance
-                    </div>
-                    <div className="info-text-md dark-white-text">
-                        {`${account ? formatCTSI(stakedBalance, 2) : 'N/A'}`}
-                        <span className="caption"> CTSI</span>
-                    </div>
-                </div>
-            </div>
+            <Balances
+                waiting={waiting}
+                error={error}
+                balance={account ? formatCTSI(balance, 2) : 'N/A'}
+                stakedBalance={account ? formatCTSI(stakedBalance, 2) : 'N/A'}
+            />
 
             <Node setWaiting={setNodeWaiting} setError={setNodeError} />
 
