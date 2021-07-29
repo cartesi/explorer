@@ -30,5 +30,5 @@ Simple.args = {};
 
 export const WithSearch = Template.bind({});
 WithSearch.args = {
-    children: [<SearchInput w={[100, 200, 400, 400]} bg="gray.200" />],
+    children: [<SearchInput w={[100, 200, 400, 400]} />],
 };

@@ -18,15 +18,6 @@ const theme = extendTheme({
                 borderRadius: 0,
                 fontWeight: 'normal',
             },
-            variants: {
-                solid: {
-                    bg: 'gray.800',
-                    color: 'white',
-                    _hover: {
-                        bg: 'gray.700',
-                    },
-                },
-            },
             defaultProps: {
                 size: 'lg',
             },

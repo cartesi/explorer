@@ -12,7 +12,14 @@
 import React, { FunctionComponent } from 'react';
 import Link from 'next/link';
 import { ethers, FixedNumber } from 'ethers';
-import { HStack, Icon, Td, Tooltip, Tr } from '@chakra-ui/react';
+import {
+    HStack,
+    Icon,
+    Td,
+    Tooltip,
+    Tr,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { LockIcon } from '@chakra-ui/icons';
 
 import { StakingPool } from '../../graphql/models';
@@ -34,6 +41,9 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
     pool,
     size = 'lg',
 }) => {
+    // hover style
+    const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
+
     // calculate accured commission
     const totalReward = FixedNumber.from(pool.user.totalReward);
     const totalCommission = FixedNumber.from(pool.totalCommission);
@@ -72,7 +82,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
     const edit = account && account.toLowerCase() === pool.manager;
 
     return (
-        <Tr key={pool.id}>
+        <Tr key={pool.id} _hover={{ backgroundColor }}>
             <Td>
                 <Address ens address={pool.id} chainId={chainId} truncated />
             </Td>

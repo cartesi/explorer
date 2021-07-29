@@ -26,7 +26,7 @@ export const Simple = Template.bind({});
 Simple.args = {};
 
 export const Dark = Template.bind({});
-Dark.args = { bg: 'gray.100' };
+Dark.args = {};
 Dark.parameters = {
     backgrounds: {
         default: 'dark',

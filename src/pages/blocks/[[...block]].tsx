@@ -140,7 +140,6 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
             <PageHeader title="Blocks">
                 <SearchInput
                     w={[100, 200, 400, 400]}
-                    bg="gray.200"
                     onSearchChange={(e) => setSearchKey(e.target.value)}
                 />
             </PageHeader>

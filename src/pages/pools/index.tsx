@@ -13,6 +13,7 @@ import React, { FC, useState } from 'react';
 import Head from 'next/head';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
+import NextLink from 'next/link';
 
 import Layout from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -21,7 +22,7 @@ import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import Pools from '../../components/Pools';
 import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
-import { Button, HStack, Link, VStack } from '@chakra-ui/react';
+import { Button, HStack, VStack } from '@chakra-ui/react';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -41,13 +42,12 @@ const StakingPools: FC = () => {
             <VStack p="20px 6vw" align="stretch">
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
-                        <Link href="/pools/create">
+                        <NextLink href="/pools/create">
                             <Button>Create Pool</Button>
-                        </Link>
+                        </NextLink>
                     )}
                     <SearchInput
                         w={[100, 200, 400, 400]}
-                        bg="gray.200"
                         onSearchChange={(e) => setSearch(e.target.value)}
                     />
                 </HStack>
