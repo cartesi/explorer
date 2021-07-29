@@ -22,7 +22,7 @@ export interface MarketInfoProps extends TextProps {
 }
 
 const MarketInfo: FunctionComponent<MarketInfoProps> = (props) => {
-    const { fractionDigits = 4, label, value, unit } = props;
+    const { fractionDigits = 4, label, value, unit, ...textProps } = props;
 
     const numberFormat =
         unit == 'USD'
@@ -40,15 +40,15 @@ const MarketInfo: FunctionComponent<MarketInfoProps> = (props) => {
 
     return (
         <VStack align="flex-start">
-            <Text fontSize="small" {...props}>
+            <Text fontSize="small" {...textProps}>
                 {label}
             </Text>
             {value && (
                 <HStack align="baseline">
-                    <Text fontWeight="bold" {...props}>
+                    <Text fontWeight="bold" {...textProps}>
                         {valueLabel}
                     </Text>
-                    <Text fontSize="small" {...props}>
+                    <Text fontSize="small" {...textProps}>
                         {unit}
                     </Text>
                 </HStack>
