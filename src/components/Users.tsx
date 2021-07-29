@@ -11,9 +11,10 @@
 
 import React, { FunctionComponent, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
-import UserTable, { Sort } from './users/UserTable';
+import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
 import Pagination from './Pagination';
+import { UserSort } from '../graphql/models';
 
 interface UsersProps {
     chainId: number;
@@ -24,7 +25,7 @@ interface UsersProps {
 
 const Users: FunctionComponent<UsersProps> = (props) => {
     const { chainId, account, search, pages } = props;
-    const [sort, setSort] = useState<Sort>('stakedBalance');
+    const [sort, setSort] = useState<UserSort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort);
 

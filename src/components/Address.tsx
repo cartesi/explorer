@@ -60,8 +60,8 @@ const Address: FunctionComponent<AddressProps> = (props) => {
     // truncate if screen is 'small'
     const responsiveTruncate = useBreakpointValue({
         base: true,
-        md: false,
-        lg: false,
+        md: true,
+        lg: true,
         xl: false,
     });
 

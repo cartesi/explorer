@@ -20,21 +20,20 @@ import {
     Th,
     Tr,
     Td,
+    Link,
 } from '@chakra-ui/react';
-import { ArrowDownIcon } from '@chakra-ui/icons';
+import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { User } from '../../graphql/models';
+import { User, UserSort } from '../../graphql/models';
 import UserRow from './UserRow';
-
-export type Sort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 
 export interface UserTableProps {
     chainId: number;
     account?: string;
     loading: boolean;
     data?: User[];
-    sort?: Sort;
-    onSort: (order: Sort) => void;
+    sort?: UserSort;
+    onSort: (order: UserSort) => void;
 }
 
 const UserTable: FunctionComponent<UserTableProps> = ({
@@ -45,23 +44,25 @@ const UserTable: FunctionComponent<UserTableProps> = ({
     sort,
     onSort,
 }) => {
+    const header = (title: string, thisSort: UserSort) => (
+        <Th isNumeric>
+            <Link onClick={() => onSort(thisSort)}>
+                <HStack justify="flex-end">
+                    <Text>{title}</Text>
+                    {sort === thisSort && <TriangleDownIcon />}
+                </HStack>
+            </Link>
+        </Th>
+    );
+
     return (
         <Table variant="simple">
             <Thead>
                 <Tr>
                     <Th>User</Th>
-                    <Th onClick={() => onSort('totalBlocks')} isNumeric>
-                        #Blocks Produced{' '}
-                        {sort == 'totalBlocks' && <ArrowDownIcon />}
-                    </Th>
-                    <Th onClick={() => onSort('stakedBalance')} isNumeric>
-                        Total Staked{' '}
-                        {sort == 'stakedBalance' && <ArrowDownIcon />}
-                    </Th>
-                    <Th onClick={() => onSort('totalReward')} isNumeric>
-                        Total Rewards{' '}
-                        {sort == 'totalReward' && <ArrowDownIcon />}
-                    </Th>
+                    {header('#Blocks Produced', 'totalBlocks')}
+                    {header('Total Staked', 'stakedBalance')}
+                    {header('Total Rewards', 'totalReward')}
                     <Th></Th>
                 </Tr>
             </Thead>

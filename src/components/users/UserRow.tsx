@@ -37,11 +37,11 @@ const UserRow: FunctionComponent<UserRowProps> = ({
     return (
         <Tr key={user.id} _hover={{ backgroundColor }}>
             <Td>
-                <Address address={user.id} chainId={chainId} />
+                <Address address={user.id} chainId={chainId} responsive />
             </Td>
             <Td isNumeric>{user.totalBlocks}</Td>
-            <Td isNumeric>{formatCTSI(user.stakedBalance, 2)} CTSI</Td>
-            <Td isNumeric>{formatCTSI(user.totalReward, 2)} CTSI</Td>
+            <Td isNumeric>{formatCTSI(user.stakedBalance, 0)} CTSI</Td>
+            <Td isNumeric>{formatCTSI(user.totalReward, 0)} CTSI</Td>
             <Td>
                 {user.pool && (
                     <>

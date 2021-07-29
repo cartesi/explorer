@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export type StakingPoolSort = 'totalUsers' | 'amount' | 'totalCommission';
+export type UserSort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 
 export type Summary = {
     id: string;
