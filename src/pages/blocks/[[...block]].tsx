@@ -9,13 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, FunctionComponent, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {
     Button,
     Center,
-    Heading,
     HStack,
     Spinner,
     StackProps,
@@ -56,13 +55,14 @@ const Filter: FunctionComponent<FilterProps> = ({ label, value, onDelete }) => (
 );
 
 interface BlockListProps extends StackProps {
+    chainId: number;
     result: QueryResult<BlocksData, BlocksVars>;
     filterField?: 'node' | 'producer' | 'id';
     filterValue?: string;
 }
 
 const BlockList = (props: BlockListProps) => {
-    const { result, filterField, filterValue, ...stackProps } = props;
+    const { chainId, result, filterField, filterValue, ...stackProps } = props;
     const { data, loading, fetchMore } = result;
     const blocks = data?.blocks || [];
 
@@ -91,6 +91,7 @@ const BlockList = (props: BlockListProps) => {
             {blocks.map((block) => {
                 return (
                     <BlockCard
+                        chainId={chainId}
                         key={block.id}
                         block={block}
                         highlight={filterField}
@@ -107,7 +108,11 @@ const BlockList = (props: BlockListProps) => {
     );
 };
 
-const Blocks = () => {
+interface BlocksProps {
+    chainId: number;
+}
+
+const Blocks: FC<BlocksProps> = ({ chainId }) => {
     const router = useRouter();
 
     let { block: blockId } = router.query;
@@ -144,8 +149,17 @@ const Blocks = () => {
                 <BlocksChart result={all} />
             </HStack>
 
-            {!searchKey && <BlockList result={all} w="100%" px="6vw" py="5" />}
+            {!searchKey && (
+                <BlockList
+                    chainId={chainId}
+                    result={all}
+                    w="100%"
+                    px="6vw"
+                    py="5"
+                />
+            )}
             <BlockList
+                chainId={chainId}
                 result={byProducer}
                 filterField="producer"
                 filterValue={searchKey}
@@ -154,6 +168,7 @@ const Blocks = () => {
                 py="5"
             />
             <BlockList
+                chainId={chainId}
                 result={byNode}
                 filterField="node"
                 filterValue={searchKey}

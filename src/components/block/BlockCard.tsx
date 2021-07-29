@@ -16,13 +16,14 @@ import BlockTable, { BlockHighlightProp } from './BlockTable';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
 interface BlockCardProps extends StackProps {
+    chainId: number;
     block: Block;
     highlight?: BlockHighlightProp;
     highlightColor?: string;
 }
 
 const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
-    const { block, highlight, highlightColor, ...rest } = props;
+    const { chainId, block, highlight, highlightColor, ...rest } = props;
     return (
         <HStack
             {...rest}
@@ -32,6 +33,7 @@ const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
             align="flex-start"
         >
             <BlockTable
+                chainId={chainId}
                 block={block}
                 highlight={highlight}
                 highlightColor={highlightColor}
