@@ -17,7 +17,6 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import {
     Center,
-    Flex,
     Heading,
     HStack,
     useColorModeValue,
@@ -66,14 +65,29 @@ const SectionHeading: FunctionComponent = (props) => {
 };
 
 const Home = () => {
-    const { marketInformation } = useMarketInformation();
+    // user account and blockchain information (from metamask)
     const { account, chainId } = useWeb3React<Web3Provider>();
+
+    // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();
+
+    // user CTSI balance
     const { balance } = useCartesiToken(account, null, blockNumber);
+
+    // user staked balance
     const { stakedBalance } = useStaking(account);
+
+    // global summary information
     const summary = useSummary();
+
+    // CTSI market information (from coingecko)
+    const { marketInformation } = useMarketInformation();
+
+    // latest 4 produced blocks
     const { data } = useBlocks(4);
     const blocks = data?.blocks || [];
+
+    // APR calculation
     const { yearReturn } = getRewardRate(
         blocks,
         marketInformation.circulatingSupply
@@ -81,6 +95,8 @@ const Home = () => {
     const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
         FixedNumber.from(marketInformation?.circulatingSupply || 1)
     );
+
+    // dark mode compatible background color
     const bgColor = useColorModeValue('white', 'gray.800');
 
     return (
@@ -89,45 +105,57 @@ const Home = () => {
                 <title>Cartesi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Flex
-                direction={['column', 'column', 'column', 'row']}
-                align={['flex-start', 'flex-start', 'flex-start', 'flex-end']}
-                justify="space-around"
+
+            <Wrap
                 bg="black"
                 color="white"
                 opacity={0.87}
-                p="50px 6vw 50px 6vw"
+                justify="space-around"
+                align="flex-end"
+                px="6vw"
+                py={8}
+                wrap="wrap"
             >
-                <MarketInfo
-                    label="CTSI Price"
-                    value={marketInformation?.price}
-                    unit="USD"
-                />
-                <MarketInfo
-                    label="CTSI Market Cap"
-                    value={marketInformation?.marketCap}
-                    unit="USD"
-                />
-                <MarketInfo
-                    label="Circ. Supply"
-                    value={marketInformation?.circulatingSupply}
-                    unit="CTSI"
-                />
-                <CTSIText
-                    label="Wallet Balance"
-                    value={balance}
-                    icon={FaWallet}
-                    bg="black"
-                    color="white"
-                />
-                <CTSIText
-                    label="Staked Balance"
-                    value={stakedBalance}
-                    icon={FaCoins}
-                    bg="black"
-                    color="white"
-                />
-            </Flex>
+                <WrapItem p={2}>
+                    <MarketInfo
+                        label="CTSI Price"
+                        value={marketInformation?.price}
+                        unit="USD"
+                    />
+                </WrapItem>
+                <WrapItem p={2}>
+                    <MarketInfo
+                        label="CTSI Market Cap"
+                        value={marketInformation?.marketCap}
+                        unit="USD"
+                    />
+                </WrapItem>
+                <WrapItem p={2}>
+                    <MarketInfo
+                        label="Circ. Supply"
+                        value={marketInformation?.circulatingSupply}
+                        unit="CTSI"
+                    />
+                </WrapItem>
+                <WrapItem p={2}>
+                    <CTSIText
+                        label="Wallet Balance"
+                        value={balance}
+                        icon={FaWallet}
+                        bg="black"
+                        color="white"
+                    />
+                </WrapItem>
+                <WrapItem p={2}>
+                    <CTSIText
+                        label="Staked Balance"
+                        value={stakedBalance}
+                        icon={FaCoins}
+                        bg="black"
+                        color="white"
+                    />
+                </WrapItem>
+            </Wrap>
             <Center
                 p="0 6vw"
                 bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgColor} 50%, ${bgColor} 100%)`}
@@ -161,6 +189,7 @@ const Home = () => {
                     />
                 </StatsPanel>
             </Center>
+
             <HStack p="0 6vw">
                 <SectionHeading>Blocks</SectionHeading>
             </HStack>
