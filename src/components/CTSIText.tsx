@@ -31,6 +31,7 @@ const CTSIText: FunctionComponent<CTSITextProps> = (props) => {
         fractionDigits = 4,
         direction = 'column',
         icon,
+        ...textProps
     } = props;
     const valueLabel = formatCTSI(value, fractionDigits);
 
@@ -38,13 +39,13 @@ const CTSIText: FunctionComponent<CTSITextProps> = (props) => {
         <Flex direction={direction} align="baseline" justify="space-between">
             <HStack>
                 {icon && <Icon as={icon} color={props.color} />}
-                <Text {...props}>{label}</Text>
+                <Text {...textProps}>{label}</Text>
             </HStack>
             <HStack align="baseline">
-                <Text fontSize="xx-large" {...props}>
+                <Text fontSize="xx-large" {...textProps}>
                     {valueLabel}
                 </Text>
-                <Text fontSize="small" {...props}>
+                <Text fontSize="small" {...textProps}>
                     CTSI
                 </Text>
             </HStack>
