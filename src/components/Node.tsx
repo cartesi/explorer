@@ -61,9 +61,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
     }, [account]);
 
     useEffect(() => {
-        if (setWaiting) setWaiting(node.waiting);
-        if (setError) setError(node.error);
-    }, [node.error, node.waiting]);
+        if (setWaiting) setWaiting(node.transaction.submitting);
+        if (setError) setError(node.transaction.error);
+    }, [node.transaction.error, node.transaction.submitting]);
 
     if (node.available) {
         status = 'Available';
@@ -130,7 +130,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                     type="text"
                                     className="form-control :invalid"
                                     id="address"
-                                    disabled={node.waiting || node.loading}
+                                    disabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
                                     value={activeAddress}
                                     onChange={(event) =>
                                         setAddress(event.target.value)
@@ -152,7 +155,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="deposit"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         defaultValue={formatEther(deposit)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -201,7 +207,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         type="number"
                                         className="addon-inline form-control"
                                         id="transfer"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         defaultValue={formatEther(transfer)}
                                         onBlur={(e) => {
                                             const value = parseEther(
@@ -227,14 +236,20 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         onClick={() =>
                                             setShowDetails(!showDetails)
                                         }
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                     >
                                         Cancel
                                     </button>
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                         onClick={() => node.hire(deposit)}
                                     >
@@ -248,7 +263,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                             <div className="staking-hire-node-buttons">
                                 <button
                                     type="button"
-                                    disabled={node.waiting || node.loading}
+                                    disabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
                                     className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => node.cancelHire()}
                                 >
@@ -262,7 +280,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                 <div className="staking-hire-node-buttons">
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
                                         onClick={confirmRetirement}
                                     >
@@ -271,7 +292,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
                                         onClick={() =>
                                             setShowDetails(!showDetails)
@@ -282,7 +306,10 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
                                     <button
                                         type="button"
-                                        disabled={node.waiting || node.loading}
+                                        disabled={
+                                            node.transaction.submitting ||
+                                            node.loading
+                                        }
                                         className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                         onClick={() => node.transfer(transfer)}
                                     >
@@ -316,7 +343,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                         {node.owned && !node.authorized && mine && (
                             <button
                                 type="button"
-                                disabled={node.waiting || node.loading}
+                                disabled={
+                                    node.transaction.submitting || node.loading
+                                }
                                 className="btn btn-primary py-0 px-3 button-text flex-fill my-2"
                                 onClick={node.authorize}
                             >

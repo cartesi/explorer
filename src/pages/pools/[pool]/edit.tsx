@@ -49,24 +49,19 @@ const ManagePool = () => {
         rebalance,
         paused,
         amounts,
-        waiting: poolWaiting,
-        error: poolError,
+        transaction: poolTransaction,
     } = useStakingPool(pool as string, account);
 
     const stakingPool = useStakingPoolQuery(pool as string);
     const [commission, setCommission] = useState(0);
 
-    const {
-        setRate,
-        waiting: rateWaiting,
-        error: rateError,
-    } = useFlatRateCommission(pool as string);
+    const { setRate, transaction: flatRateTransaction } = useFlatRateCommission(
+        pool as string
+    );
 
-    const {
-        setGas,
-        waiting: gasWaiting,
-        error: gasError,
-    } = useGasTaxCommission(pool as string);
+    const { setGas, transaction: gasTaxTransaction } = useGasTaxCommission(
+        pool as string
+    );
 
     const initialCommission =
         stakingPool?.fee?.commission / 100 || stakingPool?.fee?.gas;
@@ -77,8 +72,16 @@ const ManagePool = () => {
         }
     }, [stakingPool?.fee]);
 
-    const waiting = poolWaiting || nodeWaiting || rateWaiting || gasWaiting;
-    const error = poolError || nodeError || rateError || gasError;
+    const waiting =
+        poolTransaction.submitting ||
+        nodeWaiting ||
+        flatRateTransaction.submitting ||
+        gasTaxTransaction.submitting;
+    const error =
+        poolTransaction.error ||
+        nodeError ||
+        flatRateTransaction.error ||
+        gasTaxTransaction.error;
 
     const updateCommission = (newCommission: number) => {
         if (!stakingPool?.fee) return;
@@ -92,7 +95,7 @@ const ManagePool = () => {
     };
 
     return (
-        <Layout className="pools">
+        <Layout>
             <Head>
                 <title>Cartesi - Edit Pool</title>
                 <link rel="icon" href="/favicon.ico" />

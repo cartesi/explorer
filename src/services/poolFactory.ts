@@ -42,21 +42,21 @@ export const useStakingPoolFactory = () => {
 
     const createFlatRateCommission = (commission: number) => {
         if (poolFactory) {
-            poolFactory
-                .createFlatRateCommission(commission, {
+            transaction.set(
+                poolFactory.createFlatRateCommission(commission, {
                     value: ethers.utils.parseEther('0.001'),
                 })
-                .then((t) => transaction.set(t));
+            );
         }
     };
 
     const createGasTaxCommission = (gas: number) => {
         if (poolFactory) {
-            poolFactory
-                .createGasTaxCommission(gas, {
+            transaction.set(
+                poolFactory.createGasTaxCommission(gas, {
                     value: ethers.utils.parseEther('0.001'),
                 })
-                .then((t) => transaction.set(t));
+            );
         }
     };
 

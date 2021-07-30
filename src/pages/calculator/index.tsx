@@ -14,7 +14,6 @@ import Head from 'next/head';
 import {
     FormControl,
     FormLabel,
-    FormErrorMessage,
     FormHelperText,
     Heading,
     HStack,
@@ -26,7 +25,7 @@ import {
     Th,
     Tr,
 } from '@chakra-ui/react';
-import { BigNumber, constants, FixedNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 
 import Layout from '../../components/Layout';
 
@@ -37,7 +36,6 @@ import useBlocks from '../../graphql/hooks/useBlocks';
 import useSummary from '../../graphql/hooks/useSummary';
 
 import { getEstimatedRewardRate } from '../../utils/reward';
-import labels from '../../utils/labels';
 import { formatCTSI } from '../../utils/token';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import Stats from '../../components/Stats';
@@ -158,7 +156,7 @@ const Calculator = () => {
                         />
                     </HStack>
 
-                    <StakingDisclaimer />
+                    <StakingDisclaimer key="calculator" />
                 </form>
             ) : (
                 <div />

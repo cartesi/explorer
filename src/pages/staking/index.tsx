@@ -48,8 +48,7 @@ const Staking = () => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        error: stakingError,
-        waiting: stakingWaiting,
+        transaction: stakingTransaction,
         stake,
         unstake,
         withdraw,
@@ -60,8 +59,7 @@ const Staking = () => {
     const {
         balance,
         allowance,
-        error: tokenError,
-        waiting: tokenWaiting,
+        transaction: tokenTransaction,
         approve,
         parseCTSI,
         toBigCTSI,
@@ -83,9 +81,13 @@ const Staking = () => {
     const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
     const [nodeError, setNodeError] = useState<string>();
 
-    const waiting = stakingWaiting || tokenWaiting || nodeWaiting;
+    const waiting =
+        stakingTransaction.submitting ||
+        tokenTransaction.submitting ||
+        nodeWaiting;
 
-    const error = tokenError || stakingError || nodeError;
+    const error =
+        tokenTransaction.error || stakingTransaction.error || nodeError;
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -237,7 +239,7 @@ const Staking = () => {
 
             {!readDisclaimer && (
                 <div className="staking-disclaimer-container">
-                    <StakingDisclaimer />
+                    <StakingDisclaimer key="readDisclaimer" />
 
                     <div className="w-100 d-flex flex-row align-center justify-content-end mt-2">
                         <button

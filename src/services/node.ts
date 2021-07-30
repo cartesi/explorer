@@ -85,38 +85,36 @@ export const useNode = (address: string) => {
 
     const authorize = () => {
         if (workerManager) {
-            workerManager.authorize(address, pos.address).then(transaction.set);
+            transaction.set(workerManager.authorize(address, pos.address));
         }
     };
 
     const hire = (value: BigNumberish) => {
         if (workerManager) {
-            workerManager
-                .hireAndAuthorize(address, pos.address, {
+            transaction.set(
+                workerManager.hireAndAuthorize(address, pos.address, {
                     value,
                 })
-                .then(transaction.set);
+            );
         }
     };
 
     const cancelHire = () => {
         if (workerManager) {
-            workerManager.cancelHire(address).then(transaction.set);
+            transaction.set(workerManager.cancelHire(address));
         }
     };
 
     const retire = () => {
         if (workerManager) {
-            workerManager.retire(address).then(transaction.set);
+            transaction.set(workerManager.retire(address));
         }
     };
 
     const transfer = (value: BigNumberish) => {
         if (library && chainId && address) {
             const signer = library.getSigner();
-            signer
-                .sendTransaction({ to: address, value })
-                .then(transaction.set);
+            transaction.set(signer.sendTransaction({ to: address, value }));
         }
     };
 

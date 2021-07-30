@@ -11,6 +11,7 @@
 
 export type StakingPoolSort = 'totalUsers' | 'amount' | 'totalCommission';
 export type UserSort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
+export type PoolBalanceSort = 'shares' | 'released';
 
 export type Summary = {
     id: string;
@@ -102,10 +103,21 @@ export type PoolBalance = {
     id: string;
     pool: StakingPool;
     user: PoolUser;
-    stakedBalance: number;
-    totalStaked: number;
-    totalUnstaked: number;
-    totalWithdraw: number;
+    shares: number;
+    released: number;
+    unstakeTimestamp: number;
+};
+
+export type PoolBalancesData = {
+    poolBalances: PoolBalance[];
+};
+
+export type PoolBalancesVars = {
+    first: number;
+    skip: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
 };
 
 export type Node = {

@@ -14,6 +14,7 @@ import Head from 'next/head';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import NextLink from 'next/link';
+import { Button, HStack, VStack } from '@chakra-ui/react';
 
 import Layout from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -22,13 +23,24 @@ import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import Pools from '../../components/Pools';
 import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
-import { Button, HStack, VStack } from '@chakra-ui/react';
+import StatsPanel from '../../components/home/StatsPanel';
+import StatsItem from '../../components/Stats';
+import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
+
+    // interact with pool factory
     const { paused, loading, ready } = useStakingPoolFactory();
+
+    // query summary data
     const summary = useSummary();
+
+    // search pool by id
     const [search, setSearch] = useState<string>();
+
+    // query user balances in all his pools
+    const balances = usePoolBalances(account);
 
     return (
         <Layout>
@@ -39,7 +51,22 @@ const StakingPools: FC = () => {
 
             <PageHeader title="Staking Pools" />
 
-            <VStack p="20px 6vw" align="stretch">
+            <VStack p="20px 6vw" align="stretch" spacing={5}>
+                <StatsPanel>
+                    <StatsItem
+                        label="# Pools"
+                        value={summary?.totalPools}
+                        fractionDigits={1}
+                        help="Total number of pools"
+                    />
+                    <StatsItem
+                        label="My Pools"
+                        value={2}
+                        fractionDigits={1}
+                        help="Number of pools user staked in"
+                    />
+                </StatsPanel>
+
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
                         <NextLink href="/pools/create">

@@ -14,7 +14,7 @@ import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import ApolloContainer from '../components/ApolloContainer';
-import theme from './theme';
+import theme from '../styles/theme';
 import '@fontsource/rubik';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
