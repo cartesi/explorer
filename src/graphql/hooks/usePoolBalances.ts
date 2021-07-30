@@ -20,7 +20,7 @@ const usePoolBalances = (
     pageNumber = 0,
     sort: PoolBalanceSort = 'shares'
 ) => {
-    const filter = { user: user.toLowerCase() };
+    const filter = { user: user?.toLowerCase() };
     return useQuery<PoolBalancesData, PoolBalancesVars>(POOL_BALANCES, {
         variables: {
             first: POOLS_PER_PAGE,
