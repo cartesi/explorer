@@ -89,13 +89,13 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             <Text {...textProps}>{label}</Text>
             {showActions && !hasCopied && (
                 <Link>
-                    <CopyIcon onClick={onCopy} />
+                    <CopyIcon onClick={onCopy} fontSize={textProps.fontSize} />
                 </Link>
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link href={externalLink} isExternal>
-                    <ExternalLinkIcon />
+                    <ExternalLinkIcon fontSize={textProps.fontSize} />
                 </Link>
             )}
         </HStack>

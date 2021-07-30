@@ -12,6 +12,8 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 import {
     useFlatRateCommission,
@@ -30,6 +32,9 @@ import { formatCTSI } from '../../../utils/token';
 const ManagePool = () => {
     const router = useRouter();
     const { pool } = router.query;
+
+    const { account } = useWeb3React<Web3Provider>();
+
     // resolve address to name (if possible)
     const ensEntry = useENS(pool as string);
 
@@ -46,7 +51,7 @@ const ManagePool = () => {
         amounts,
         waiting: poolWaiting,
         error: poolError,
-    } = useStakingPool(pool as string);
+    } = useStakingPool(pool as string, account);
 
     const stakingPool = useStakingPoolQuery(pool as string);
     const [commission, setCommission] = useState(0);

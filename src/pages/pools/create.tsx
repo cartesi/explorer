@@ -46,7 +46,7 @@ type FormData = {
 };
 
 const CreatePool: FunctionComponent = () => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account } = useWeb3React<Web3Provider>();
     const {
         loading,
         paused,
@@ -108,24 +108,17 @@ const CreatePool: FunctionComponent = () => {
 
             <VStack px="6vw" py={10} spacing={10}>
                 <VStack align="flex-start" w="100%">
-                    {transaction.transaction && (
-                        <TransactionFeedback
-                            chainId={chainId}
-                            progress={transaction.receipt?.confirmations}
-                            error={transaction.error}
-                            hash={transaction.transaction?.hash}
-                        >
-                            {transaction.result ? (
-                                <Link
-                                    href={'/pools/' + transaction.result}
-                                >{`Pool ${truncateString(
-                                    transaction.result
-                                )} created`}</Link>
-                            ) : (
-                                'Creating pool...'
-                            )}
-                        </TransactionFeedback>
-                    )}
+                    <TransactionFeedback transaction={transaction}>
+                        {transaction.result ? (
+                            <Link
+                                href={'/pools/' + transaction.result}
+                            >{`Pool ${truncateString(
+                                transaction.result
+                            )} created`}</Link>
+                        ) : (
+                            'Creating pool...'
+                        )}
+                    </TransactionFeedback>
                     {!loading && !ready && (
                         <Alert status="error">
                             <AlertIcon />

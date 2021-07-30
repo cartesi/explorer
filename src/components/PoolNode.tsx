@@ -26,7 +26,7 @@ interface NodeProps {
 }
 
 const PoolNode = ({ poolAddress, setWaiting, setError }: NodeProps) => {
-    const { chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
     const [transfer, setTransfer] = useState<BigNumber>(constants.Zero);
@@ -47,7 +47,7 @@ const PoolNode = ({ poolAddress, setWaiting, setError }: NodeProps) => {
     const activeAddress = address || existingNode || '';
 
     const node = useNode(activeAddress);
-    const pool = useStakingPool(poolAddress);
+    const pool = useStakingPool(poolAddress, account);
 
     const notMine =
         !node.loading &&

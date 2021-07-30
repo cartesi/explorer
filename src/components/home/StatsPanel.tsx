@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import {
     Stack,
     StackDivider,
@@ -17,8 +17,8 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-const StatsPanel: FunctionComponent<StackProps> = (props) => {
-    const bgColor = useColorModeValue('white', 'gray.800');
+const StatsPanel: FC<StackProps> = (props) => {
+    const bg = useColorModeValue('white', 'gray.800');
     return (
         <Stack
             direction={['column', 'column', 'row', 'row']}
@@ -26,7 +26,7 @@ const StatsPanel: FunctionComponent<StackProps> = (props) => {
             p="40px"
             justify="space-evenly"
             boxShadow="md"
-            bg={bgColor}
+            bg={bg}
             {...props}
         >
             {props.children}

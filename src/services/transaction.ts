@@ -12,24 +12,59 @@
 import { useWeb3React } from '@web3-react/core';
 import { ContractReceipt, ContractTransaction } from 'ethers';
 import { useEffect, useState } from 'react';
+import { serializeError } from 'eth-rpc-errors';
+import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
 import { confirmations } from '../utils/networks';
 
-export interface Transaction<R> {
-    transaction: ContractTransaction;
+export class Transaction<R> {
+    submitting: boolean;
+    acknowledged: boolean;
+    transaction?: ContractTransaction;
     error?: string;
     receipt?: ContractReceipt;
-    set: (transaction: ContractTransaction) => void;
+    set: (transaction: Promise<ContractTransaction>) => void;
+    ack: () => void;
     result?: R;
+}
+
+function extractError(error: SerializedEthereumRpcError): string {
+    if (error.data) {
+        const data: any = error.data as any;
+        if (data?.originalError?.error) {
+            return extractError(
+                data.originalError.error as SerializedEthereumRpcError
+            );
+        }
+    }
+    return error.message;
 }
 
 export function useTransaction<R>(
     resultResolver?: (receipt: ContractReceipt) => R
 ): Transaction<R> {
     const { chainId } = useWeb3React();
+    const [acknowledged, setAcknowledged] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string>();
-    const [transaction, set] = useState<ContractTransaction>();
+    const [transaction, setTransaction] = useState<ContractTransaction>();
     const [receipt, setReceipt] = useState<ContractReceipt>();
     const [result, setResult] = useState<R>();
+
+    const set = (transaction: Promise<ContractTransaction>) => {
+        setAcknowledged(false);
+        setSubmitting(true);
+        setReceipt(undefined);
+        setResult(undefined);
+        setError(undefined);
+        transaction
+            .then(setTransaction)
+            .catch((e) => {
+                const error = serializeError(e);
+                setError(extractError(error));
+            })
+            .finally(() => setSubmitting(false));
+    };
+    const ack = () => setAcknowledged(true);
 
     useEffect(() => {
         const update = async () => {
@@ -53,10 +88,13 @@ export function useTransaction<R>(
     }, [transaction]);
 
     return {
+        submitting,
+        acknowledged,
         transaction,
         error,
         receipt,
         set,
+        ack,
         result,
     };
 }

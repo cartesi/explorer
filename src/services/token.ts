@@ -23,8 +23,7 @@ export const useCartesiToken = (
     const token = useCartesiTokenContract();
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
     const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
-
-    const { waiting, error, setError, setTransaction } = useTransaction();
+    const transaction = useTransaction<void>();
 
     // balances
     useEffect(() => {
@@ -38,12 +37,7 @@ export const useCartesiToken = (
 
     const approve = (spender: string, amount: BigNumberish) => {
         if (token) {
-            try {
-                // send transaction
-                setTransaction(token.approve(spender, amount));
-            } catch (e) {
-                setError(e.message);
-            }
+            transaction.set(token.approve(spender, amount));
         }
     };
 
@@ -63,8 +57,7 @@ export const useCartesiToken = (
     return {
         allowance,
         balance,
-        error,
-        waiting,
+        transaction,
         approve,
         parseCTSI,
         toCTSI,
