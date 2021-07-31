@@ -10,11 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent, useState } from 'react';
-import { FlexProps } from '@chakra-ui/react';
+import { FlexProps, HStack } from '@chakra-ui/react';
 import NavBarContainer from './NavBarContainer';
 import Logo from './Logo';
 import MenuToggle from './MenuToggle';
 import MenuLinks from './MenuLinks';
+import SelectedChain from './SelectedChain';
 
 const NavBar: FunctionComponent<FlexProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,10 +23,13 @@ const NavBar: FunctionComponent<FlexProps> = (props) => {
 
     return (
         <NavBarContainer bg="black" opacity={0.87} {...props}>
-            <Logo
-                w="100px"
-                color={['white', 'white', 'primary.500', 'primary.500']}
-            />
+            <HStack>
+                <Logo
+                    w="180px"
+                    color={['white', 'white', 'primary.500', 'primary.500']}
+                />
+                <SelectedChain />
+            </HStack>
             <MenuToggle toggle={toggle} isOpen={isOpen} />
             <MenuLinks isOpen={isOpen} />
         </NavBarContainer>

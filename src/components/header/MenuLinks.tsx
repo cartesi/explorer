@@ -13,7 +13,8 @@ import React, { FunctionComponent } from 'react';
 import { Box, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import MenuItem from './MenuItem';
-import SelectedChain from './SelectedChain';
+import ConnectMetamask from './ConnectMetamask';
+import Account from './Account';
 
 export interface MenuLinksProps {
     isOpen: boolean;
@@ -75,7 +76,8 @@ const MenuLinks: FunctionComponent<MenuLinksProps> = ({ isOpen }) => {
                         {label}
                     </MenuItem>
                 ))}
-                <SelectedChain />
+                <ConnectMetamask />
+                <Account />
             </Stack>
         </Box>
     );

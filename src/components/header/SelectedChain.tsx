@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,81 +9,37 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState, FunctionComponent } from 'react';
-import { Box, Button, HStack, Image, Text } from '@chakra-ui/react';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import React, { FC } from 'react';
+import { Tag, TagLabel } from '@chakra-ui/react';
 import { Web3Provider } from '@ethersproject/providers';
-import MetaMaskOnboarding from '@metamask/onboarding';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { chains, Chain } from 'eth-chains';
-import { networks } from '../../utils/networks';
+import { chains } from 'eth-chains';
+import { useWeb3React } from '@web3-react/core';
 
-const SelectedChain: FunctionComponent = () => {
-    const { chainId, activate, deactivate, error, active } =
-        useWeb3React<Web3Provider>();
-    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-    const [chain, setChain] = useState<Chain>(undefined);
-    const hasMetaMask = MetaMaskOnboarding.isMetaMaskInstalled();
+const SelectedChain: FC = () => {
+    const { chainId } = useWeb3React<Web3Provider>();
+    const chain = chains.get(chainId);
 
-    React.useEffect(() => {
-        if (window?.ethereum?.selectedAddress) {
-            connectNetwork();
-        }
-    }, []);
-
-    // set chain name
-    useEffect(() => {
-        if (chainId) {
-            setChain(chains.getById(chainId));
-        } else if (error) {
-            setChain(undefined);
-        }
-    }, [chainId, error]);
-
-    const connectNetwork = () => {
-        const supportedChainIds = Object.keys(networks).map((key) =>
-            parseInt(key)
-        );
-        const connector = new InjectedConnector({ supportedChainIds });
-        activate(connector);
-        if (window.ethereum) {
-            window.ethereum.on('accountsChanged', (accounts: string[]) => {
-                if (!accounts || accounts.length == 0) {
-                    deactivate();
-                    setChain(undefined);
-                }
-            });
-        }
+    const defaultColorScheme = 'gray';
+    const colorSchemes = {
+        1: 'teal', // mainnet
+        3: 'pink', // ropsten
+        42: 'purple', // kovan
+        4: 'yellow', // rinkeby
+        5: 'blue', // goerli
     };
 
+    // do now show anything for mainnet or disconnected from metamask
+    if (!chainId || !chain || chainId == 1) {
+        return null;
+    }
+
     return (
-        <Box>
-            {chain && <Text>{chain.name}</Text>}
-            {isUnsupportedChainIdError && (
-                <Button>
-                    <HStack>
-                        <Image src="/images/metamask-fox.svg" />
-                        <Text>Unsupported Network</Text>
-                    </HStack>
-                </Button>
-            )}
-            {!active && !isUnsupportedChainIdError && (
-                <Button onClick={connectNetwork} bg="#007bff">
-                    <HStack>
-                        <Image
-                            src="/images/metamask-fox.svg"
-                            w="25px"
-                            h="25px"
-                        />
-                        <Text>
-                            {hasMetaMask
-                                ? 'Connect To Wallet'
-                                : 'Install MetaMask'}
-                        </Text>
-                    </HStack>
-                </Button>
-            )}
-        </Box>
+        <Tag
+            borderRadius="full"
+            colorScheme={colorSchemes[chainId] || defaultColorScheme}
+        >
+            <TagLabel>{chain.network}</TagLabel>
+        </Tag>
     );
 };
 

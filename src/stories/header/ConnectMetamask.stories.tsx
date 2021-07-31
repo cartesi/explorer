@@ -12,16 +12,16 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import SelectedChain from '../../components/header/SelectedChain';
+import ConnectMetamask from '../../components/header/ConnectMetamask';
 
 export default {
-    title: 'SelectedChain',
-    component: SelectedChain,
+    title: 'ConnectMetamask',
+    component: ConnectMetamask,
     argTypes: {},
-} as ComponentMeta<typeof SelectedChain>;
+} as ComponentMeta<typeof ConnectMetamask>;
 
-const Template: ComponentStory<typeof SelectedChain> = (args) => (
-    <SelectedChain {...args} />
+const Template: ComponentStory<typeof ConnectMetamask> = (args) => (
+    <ConnectMetamask {...args} />
 );
 
 export const Connect = Template.bind({});
