@@ -26,8 +26,14 @@ import Layout from '../../../components/Layout';
 import PoolNode from '../../../components/pools/PoolNode';
 import { formatCTSI } from '../../../utils/token';
 import {
+    Button,
     Center,
+    FormControl,
+    FormHelperText,
+    FormLabel,
     HStack,
+    Input,
+    Switch,
     Text,
     useColorModeValue,
     VStack,
@@ -35,6 +41,7 @@ import {
 import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import { FaUsers } from 'react-icons/fa';
+import NameForm from '../../../components/pools/NameForm';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -121,6 +128,20 @@ const ManagePool = () => {
             </Center>
             <VStack px="6vw" py={10} spacing={5}>
                 <TransactionFeedback transaction={poolTransaction} />
+
+                <FormControl display="flex" alignItems="center">
+                    <FormLabel htmlFor="pause" mb="0">
+                        Pool accepting new stakes?
+                    </FormLabel>
+                    <Switch
+                        id="pause"
+                        size="lg"
+                        isChecked={!paused}
+                        onChange={paused ? unpause : pause}
+                    />
+                </FormControl>
+
+                <NameForm onSetName={setName} />
             </VStack>
 
             <div className="manage-pool">
@@ -178,41 +199,6 @@ const ManagePool = () => {
                         }
                     >
                         Set Commission
-                    </button>
-                </div>
-
-                <div className="manage-pool-item form-group">
-                    <span className="body-text-2 text-secondary manage-pool-item-label">
-                        Pool Name
-                    </span>
-
-                    <input
-                        className="addon-inline form-control manage-pool-item-input"
-                        id="poolName"
-                        value={poolName}
-                        onChange={(e) => setPoolName(e.target.value)}
-                    />
-
-                    <button
-                        type="button"
-                        className="btn btn-dark py-0 mx-3 button-text"
-                        onClick={() => setName(poolName)}
-                    >
-                        Set Name
-                    </button>
-                </div>
-
-                <div className="manage-pool-item form-group">
-                    <span className="body-text-2 text-secondary manage-pool-item-label">
-                        Pool is currently {paused ? 'paused' : 'unpaused'}
-                    </span>
-
-                    <button
-                        type="button"
-                        className="btn btn-dark py-0 mx-3 button-text"
-                        onClick={() => (paused ? unpause() : pause())}
-                    >
-                        {paused ? 'Unpause' : 'Pause'}
                     </button>
                 </div>
             </div>
