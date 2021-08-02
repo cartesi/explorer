@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -35,8 +35,8 @@ const useNodes = (
     });
 };
 
-export const useUserNodes = (owner: string) => {
-    // if no owner, user address zero, so no nodes are returned
+export const useUserNodes = (owner: string, count = NODES_PER_PAGE) => {
+    // if no owner, use address zero, so no nodes are returned
     owner = owner || constants.AddressZero;
 
     // convert to lowercase because backend is all lowercase
@@ -44,7 +44,7 @@ export const useUserNodes = (owner: string) => {
 
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
-            first: NODES_PER_PAGE,
+            first: count,
             where: { owner },
             skip: 0,
             orderBy: 'timestamp',

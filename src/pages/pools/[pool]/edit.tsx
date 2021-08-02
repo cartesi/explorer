@@ -23,24 +23,26 @@ import {
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 
 import Layout from '../../../components/Layout';
-import ConfirmationIndicator from '../../../components/ConfirmationIndicator';
-import PoolNode from '../../../components/PoolNode';
-import { useENS } from '../../../services/ens';
-import { truncateString } from '../../../utils/stringUtils';
+import PoolNode from '../../../components/pools/PoolNode';
 import { formatCTSI } from '../../../utils/token';
+import {
+    Center,
+    HStack,
+    Text,
+    useColorModeValue,
+    VStack,
+} from '@chakra-ui/react';
+import AddressText from '../../../components/AddressText';
+import TransactionFeedback from '../../../components/TransactionFeedback';
+import { FaUsers } from 'react-icons/fa';
 
 const ManagePool = () => {
     const router = useRouter();
     const { pool } = router.query;
 
-    const { account } = useWeb3React<Web3Provider>();
-
-    // resolve address to name (if possible)
-    const ensEntry = useENS(pool as string);
+    const { account, chainId } = useWeb3React<Web3Provider>();
 
     const [poolName, setPoolName] = useState('');
-    const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
-    const [nodeError, setNodeError] = useState<string>();
 
     const {
         setName,
@@ -72,17 +74,6 @@ const ManagePool = () => {
         }
     }, [stakingPool?.fee]);
 
-    const waiting =
-        poolTransaction.submitting ||
-        nodeWaiting ||
-        flatRateTransaction.submitting ||
-        gasTaxTransaction.submitting;
-    const error =
-        poolTransaction.error ||
-        nodeError ||
-        flatRateTransaction.error ||
-        gasTaxTransaction.error;
-
     const updateCommission = (newCommission: number) => {
         if (!stakingPool?.fee) return;
         if (initialCommission == newCommission) return;
@@ -94,6 +85,9 @@ const ManagePool = () => {
         }
     };
 
+    // dark mode compatible background color
+    const bgColor = useColorModeValue('white', 'gray.800');
+
     return (
         <Layout>
             <Head>
@@ -101,21 +95,35 @@ const ManagePool = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="page-header pb-4">
-                <div className="info-text-md text-white d-flex flex-row">
-                    Edit Pool:{' '}
-                    {ensEntry.name || truncateString(ensEntry.address)}
-                    <ConfirmationIndicator loading={waiting} error={error} />
-                </div>
-            </div>
+            <HStack
+                px="6vw"
+                py={5}
+                justify="space-between"
+                align="flex-end"
+                bg="black"
+                opacity={0.87}
+                color="white"
+            >
+                <AddressText
+                    address={stakingPool?.id}
+                    chainId={chainId}
+                    icon={FaUsers}
+                >
+                    <Text>Staking Pool</Text>
+                </AddressText>
+            </HStack>
+
+            <Center
+                px="6vw"
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgColor} 50%, ${bgColor} 100%)`}
+            >
+                <PoolNode poolAddress={pool as string} />
+            </Center>
+            <VStack px="6vw" py={10} spacing={5}>
+                <TransactionFeedback transaction={poolTransaction} />
+            </VStack>
 
             <div className="manage-pool">
-                <PoolNode
-                    poolAddress={pool as string}
-                    setWaiting={setNodeWaiting}
-                    setError={setNodeError}
-                />
-
                 <div className="manage-pool-item form-group">
                     <span className="body-text-2 text-secondary manage-pool-item-label">
                         Current Fee Model:

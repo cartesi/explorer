@@ -23,6 +23,7 @@ import {
     FaPercentage,
     FaTrophy,
     FaUnlock,
+    FaUsers,
     FaWallet,
 } from 'react-icons/fa';
 
@@ -34,7 +35,7 @@ import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { useStaking } from '../../services/staking';
 import CTSIText from '../../components/CTSIText';
-import PoolId from '../../components/pools/PoolId';
+import AddressText from '../../components/AddressText';
 import StatsPanel from '../../components/home/StatsPanel';
 import ActionsTab from '../../components/pools/ActionsTab';
 import TransactionFeedback from '../../components/TransactionFeedback';
@@ -116,7 +117,13 @@ const Pool = () => {
                 opacity={0.87}
                 color="white"
             >
-                <PoolId pool={stakingPool} chainId={chainId} />
+                <AddressText
+                    address={stakingPool?.id}
+                    chainId={chainId}
+                    icon={FaUsers}
+                >
+                    <Text>Staking Pool</Text>
+                </AddressText>
                 <CTSIText
                     label="Wallet Balance"
                     value={balance}

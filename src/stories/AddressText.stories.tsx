@@ -12,20 +12,25 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import PoolId from './../../components/pools/PoolId';
+import AddressText from '../components/AddressText';
+import { Text } from '@chakra-ui/react';
 
 export default {
-    title: 'Pools/Id',
-    component: PoolId,
+    title: 'Address Text',
+    component: AddressText,
     argTypes: {},
-} as ComponentMeta<typeof PoolId>;
+} as ComponentMeta<typeof AddressText>;
 
-const Template: ComponentStory<typeof PoolId> = (args) => <PoolId {...args} />;
+const Template: ComponentStory<typeof AddressText> = (args) => (
+    <AddressText {...args}>
+        <Text>Staking Pool</Text>
+    </AddressText>
+);
 
-import data from './pools.json';
+import data from './pools/pools.json';
 
 export const Default = Template.bind({});
 Default.args = {
-    pool: data.data.stakingPools[0],
+    address: data.data.stakingPools[0].id,
     chainId: 5,
 };

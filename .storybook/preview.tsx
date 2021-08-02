@@ -18,7 +18,7 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import withColorMode from './withColorMode';
 import Web3Container from '../src/components/Web3Container';
 import SelectedChain from '../src/components/header/SelectedChain';
-import theme from '../src/pages/theme';
+import theme from '../src/styles/theme';
 import '@fontsource/rubik';
 
 export const parameters = {

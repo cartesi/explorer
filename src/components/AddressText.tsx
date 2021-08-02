@@ -10,29 +10,29 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Flex, HStack, Text, TextProps } from '@chakra-ui/react';
-import { FaUsers } from 'react-icons/fa';
-import { StakingPool } from '../../graphql/models';
-import Address from '../Address';
+import { Flex, HStack, Icon, TextProps } from '@chakra-ui/react';
+import { IconType } from 'react-icons';
+import Address from './Address';
 
 export interface PoolIdProps extends TextProps {
+    address: string;
     chainId: number;
-    pool: StakingPool;
+    icon?: IconType;
 }
 
-const PoolId: FC<PoolIdProps> = (props) => {
-    const { chainId, pool, ...textProps } = props;
+const AddressText: FC<PoolIdProps> = (props) => {
+    const { address, chainId, children, icon } = props;
 
     return (
         <Flex align="baseline" justify="space-between" direction="column">
             <HStack>
-                <FaUsers />
-                <Text {...textProps}>Staking Pool</Text>
+                {icon && <Icon as={icon} color={props.color} />}
+                {children}
             </HStack>
             <HStack align="baseline">
-                {pool && (
+                {address && (
                     <Address
-                        address={pool.id}
+                        address={address}
                         chainId={chainId}
                         ens
                         truncated
@@ -44,4 +44,4 @@ const PoolId: FC<PoolIdProps> = (props) => {
     );
 };
 
-export default PoolId;
+export default AddressText;

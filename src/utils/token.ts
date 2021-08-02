@@ -20,9 +20,7 @@ export const formatCTSI = (amount: BigNumberish, decimals = 18): string => {
     amount = amount.sub(amount.mod(m));
 
     // convert to string
-    const ctsiValue = parseFloat(formatUnits(amount, 18));
-    if (isInfinite(ctsiValue)) return 'Infinite';
-    return ctsiValue.toLocaleString();
+    return formatUnits(amount, 18);
 };
 
 export const toCTSI = (amount: BigNumberish): FixedNumber => {
