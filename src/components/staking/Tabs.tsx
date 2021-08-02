@@ -65,10 +65,7 @@ export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
                     ))}
                 </TabList>
 
-                <TabPanels
-                    boxShadow={theme.boxShadows.card}
-                    padding="35px 4.5vw"
-                >
+                <TabPanels boxShadow={theme.boxShadows.md} padding="35px 4.5vw">
                     <TabPanel>{Stake}</TabPanel>
                     <TabPanel>{Unstake}</TabPanel>
                 </TabPanels>
