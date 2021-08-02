@@ -19,7 +19,6 @@ import ReactTooltip from 'react-tooltip';
 
 import Layout from '../../components/Layout';
 import Node from '../../components/Node';
-import ConfirmationIndicator from '../../components/ConfirmationIndicator';
 
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
@@ -32,11 +31,11 @@ import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { TokenAmount } from '../../components/TokenAmount';
-import { Flex, Heading, Box, Spacer, Button } from '@chakra-ui/react';
-import CTSIText from '../../components/CTSIText';
-import { FaCoins, FaWallet } from 'react-icons/fa';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import Balances from '../../components/staking/Balances';
-import Tabs from '../../components/staking/Tabs';
+import StackingTabs from '../../components/staking/Tabs';
+import StackingCard from '../../components/staking/Card';
+import theme from '../../styles/theme';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -75,7 +74,6 @@ const Staking = () => {
     const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
     const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
 
-    const [stakeTab, setStakeTab] = useState<boolean>(true);
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
 
@@ -289,81 +287,58 @@ const Staking = () => {
                 direction={['column', 'column', 'column', 'row']}
                 p="50px 6vw 50px 6vw"
             >
-                <Box flex="3">
-                    <div className="staking-balances-item">
-                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
-                            <div className="d-flex flex-column align-items-start">
-                                <div className="mb-1">
-                                    <img src="/images/balance.png" />
-                                    <span className="body-text-1 ml-3">
-                                        Maturing
-                                    </span>
-                                </div>
-                                {maturingBalance.gt(0) &&
-                                    maturingCountdown > 0 && (
-                                        <div className="staking-balances-item-timer">
-                                            <span className="small-text">
-                                                {displayTime(maturingCountdown)}
-                                            </span>
-                                        </div>
-                                    )}
-                            </div>
-                            <TokenAmount amount={maturingBalance} />
-                        </div>
+                <Box flex="3" pr={8}>
+                    <Box mb={8} boxShadow={theme.boxShadows.lg}>
+                        <StackingCard
+                            title="Maturing"
+                            balance={maturingBalance}
+                        >
+                            {maturingBalance.gt(0) && maturingCountdown > 0 && (
+                                <Box>
+                                    <Text fontSize="sm">{displayTime(1)}</Text>
+                                </Box>
+                            )}
+                        </StackingCard>
 
-                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between gray-background">
-                            <div className="d-flex flex-column align-items-start">
-                                <div className="mb-1">
-                                    <img src="/images/balance.png" />
-                                    <span className="body-text-1 ml-3">
-                                        Staked
-                                    </span>
-                                </div>
-                            </div>
-                            <TokenAmount amount={stakedBalance} />
-                        </div>
-                    </div>
+                        <StackingCard
+                            title="Staked"
+                            balance={stakedBalance}
+                            isActive
+                        />
+                    </Box>
 
-                    <div className="staking-balances-item mt-4">
-                        <div className="px-5 py-4 d-flex flex-row align-items-center justify-content-between">
-                            <div className="d-flex flex-column align-items-start">
-                                <div className="mb-1">
-                                    <img src="/images/releasing.png" />
-                                    <span className="body-text-1 ml-3">
-                                        {releasingBalance.gt(0) &&
-                                        releasingCountdown === 0
-                                            ? 'Released'
-                                            : 'Releasing'}
-                                    </span>
-                                </div>
-                                {releasingBalance.gt(0) &&
-                                    releasingCountdown > 0 && (
-                                        <div className="staking-balances-item-timer">
-                                            <span className="small-text">
-                                                {displayTime(
-                                                    releasingCountdown
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-                                {releasingBalance.gt(0) &&
-                                    releasingCountdown === 0 && (
-                                        <button
-                                            type="button"
-                                            className="btn btn-dark py-0 px-4 button-text mt-2"
-                                            disabled={!account || waiting}
-                                            onClick={doWithdraw}
-                                        >
-                                            Withdraw
-                                        </button>
-                                    )}
-                            </div>
-                            <TokenAmount amount={releasingBalance} />
-                        </div>
-                    </div>
+                    <StackingCard
+                        title={
+                            releasingBalance.gt(0) && releasingCountdown === 0
+                                ? 'Released'
+                                : 'Releasing'
+                        }
+                        icon="down"
+                        balance={maturingBalance}
+                        boxShadow={theme.boxShadows.lg}
+                    >
+                        {releasingBalance.gt(0) && releasingCountdown > 0 && (
+                            <Box>
+                                <Text fontSize="sm">
+                                    {displayTime(releasingCountdown)}
+                                </Text>
+                            </Box>
+                        )}
+
+                        {releasingBalance.gt(0) && releasingCountdown === 0 && (
+                            <button
+                                type="button"
+                                className="btn btn-dark py-0 px-4 button-text mt-2"
+                                disabled={!account || waiting}
+                                onClick={doWithdraw}
+                            >
+                                Withdraw
+                            </button>
+                        )}
+                    </StackingCard>
                 </Box>
 
-                <Tabs
+                <StackingTabs
                     flex={2}
                     Stake={
                         <>
