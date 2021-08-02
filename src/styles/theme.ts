@@ -72,12 +72,14 @@ const theme = extendTheme({
         heading: 'Rubik',
     },
     boxShadows: {
-        card: '0 4px 4px rgb(0 0 0 / 25%)',
+        md: '0 4px 4px rgb(0 0 0 / 25%)',
+        lg: '0 4px 8px rgb(0 0 0 / 25%)',
     },
     colors: {
         primary: 'rgba(0, 0, 0, 0.87)',
         secondary: '#3d3d3d',
         info: '#007bff',
+        gray: '#e0e0e0',
     },
 });
 
