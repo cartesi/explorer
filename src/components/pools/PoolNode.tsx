@@ -46,7 +46,7 @@ const PoolNode = ({ poolAddress }: NodeProps) => {
     const balance = useBalance(account, [blockNumber]);
 
     // get most recent node hired by user (if any)
-    const userNodes = useUserNodes(poolAddress, 1);
+    const userNodes = useUserNodes(poolAddress, 2);
     const existingNode =
         userNodes.data?.nodes?.length > 0 &&
         userNodes.data.nodes[0].id != poolAddress &&
@@ -61,17 +61,13 @@ const PoolNode = ({ poolAddress }: NodeProps) => {
     const node = useNode(activeAddress);
     const pool = useStakingPool(poolAddress, account);
 
-    // available:
-    //   hire node, input for deposit
-    // pending: cancel hire if mine
-    // ready: add funds, retire
-
     // dark mode compatible background color
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
         <VStack bg={bg} w="100%" shadow="md">
             <TransactionFeedback transaction={node?.transaction} />
+            <TransactionFeedback transaction={pool?.transaction} />
             <HStack justify="space-between" w="100%" p={10} spacing={10}>
                 <Text>Node</Text>
                 <Editable
@@ -79,13 +75,8 @@ const PoolNode = ({ poolAddress }: NodeProps) => {
                     fontSize="xx-large"
                     textAlign="center"
                     color={activeAddress ? undefined : 'gray.300'}
-                    defaultValue={
-                        activeAddress
-                            ? activeAddress
-                            : pool
-                            ? 'Click to enter your node address'
-                            : 'Connect to wallet first'
-                    }
+                    placeholder="Click to enter your node address"
+                    value={activeAddress}
                     onChange={setAddress}
                 >
                     <EditablePreview />
@@ -93,28 +84,30 @@ const PoolNode = ({ poolAddress }: NodeProps) => {
                 </Editable>
             </HStack>
             {node.available && (
-                <AvailableNode balance={balance} onHire={node.hire} />
+                <AvailableNode
+                    balance={balance}
+                    onHire={(deposit) => pool.hire(activeAddress, deposit)}
+                />
             )}
             {node.pending && (
                 <PendingNode
-                    account={account}
+                    account={poolAddress}
                     balance={node?.balance}
                     chainId={chainId}
                     user={node?.user}
-                    onCancelHire={node.cancelHire}
+                    onCancelHire={() => pool.cancelHire(activeAddress)}
                 />
             )}
             {node.owned && (
                 <OwnedNode
-                    account={account}
-                    authorized={node.authorized}
+                    account={poolAddress}
+                    authorized={true}
                     nodeBalance={node.balance}
                     userBalance={balance}
                     chainId={chainId}
                     user={node.user}
-                    onRetire={node.retire}
+                    onRetire={() => pool.retire(activeAddress)}
                     onTransfer={node.transfer}
-                    onAuthorize={node.authorize}
                 />
             )}
             {node.retired && (

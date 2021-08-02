@@ -29,14 +29,14 @@ import AddressText from '../AddressText';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
 
 type OwnedNodeProps = {
-    account: string; // metamask account
+    account: string; // metamask account (or pool address)
     chainId: number;
     user: string; // node user
     nodeBalance: BigNumber; // node balance
     userBalance: BigNumber; // user balance
     authorized: boolean;
     onTransfer: (amount: BigNumberish) => void;
-    onAuthorize: () => void;
+    onAuthorize?: () => void;
     onRetire: () => void;
 };
 
@@ -91,7 +91,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
             >
                 <Text>Node Balance</Text>
             </BigNumberText>
-            {account === user && (
+            {account.toLowerCase() === user.toLowerCase() && (
                 <>
                     <FormControl isInvalid={!!errors.deposit} w={200}>
                         <FormLabel>Deposit</FormLabel>

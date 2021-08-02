@@ -152,7 +152,7 @@ export const useStakingPool = (address: string, account: string) => {
         }
     };
 
-    const hire = (worker: string, amount: BigNumber) => {
+    const hire = (worker: string, amount: BigNumberish) => {
         if (pool) {
             transaction.set(pool.hire(worker, { value: amount }));
         }

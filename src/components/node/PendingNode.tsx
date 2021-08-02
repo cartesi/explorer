@@ -17,7 +17,7 @@ import AddressText from '../AddressText';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
 
 type PendingNodeProps = {
-    account: string; // metamask account
+    account: string; // metamask account (or pool)
     chainId: number;
     user: string; // node user
     balance: BigNumber; // node balance
@@ -47,10 +47,13 @@ const PendingNode: FC<PendingNodeProps> = ({
             <Tooltip
                 label="Node hired by another user"
                 placement="top"
-                isDisabled={account === user}
+                isDisabled={account.toLowerCase() === user.toLowerCase()}
             >
                 <span>
-                    <Button onClick={onCancelHire} disabled={account !== user}>
+                    <Button
+                        onClick={onCancelHire}
+                        disabled={account.toLowerCase() !== user.toLowerCase()}
+                    >
                         Cancel Hire
                     </Button>
                 </span>
