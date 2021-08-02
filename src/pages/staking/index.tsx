@@ -256,8 +256,8 @@ const Staking = () => {
             <Balances
                 waiting={waiting}
                 error={error}
-                balance={account ? formatCTSI(balance, 2) : 'N/A'}
-                stakedBalance={account ? formatCTSI(stakedBalance, 2) : 'N/A'}
+                balance={balance}
+                stakedBalance={stakedBalance}
             />
 
             <Node setWaiting={setNodeWaiting} setError={setNodeError} />

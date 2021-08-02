@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
 import { Box, Flex, FlexProps, Heading, Spacer, Text } from '@chakra-ui/react';
 import { FaCoins, FaWallet } from 'react-icons/fa';
+import { BigNumberish } from 'ethers';
 import ConfirmationIndicator from '../ConfirmationIndicator';
 import CTSIText from '../CTSIText';
 
 interface BalancesProps extends FlexProps {
+    balance: BigNumberish;
+    stakedBalance: BigNumberish;
     waiting: boolean;
-    balance: string;
-    stakedBalance: string;
     error?: string;
 }
 
