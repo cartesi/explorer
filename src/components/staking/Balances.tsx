@@ -20,10 +20,11 @@ const areEqual = (prevProps: BalancesProps, nextProps: BalancesProps) =>
 
 export const Balances: React.FunctionComponent<BalancesProps> = memo(
     (props) => {
-        const { waiting, error, balance, stakedBalance } = props;
+        const { waiting, error, balance, stakedBalance, ...restProps } = props;
 
         return (
             <Flex
+                {...restProps}
                 direction={['column', 'column', 'column', 'row']}
                 bg="black"
                 color="white"
