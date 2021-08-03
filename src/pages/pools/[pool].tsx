@@ -40,6 +40,7 @@ import StatsPanel from '../../components/home/StatsPanel';
 import ActionsTab from '../../components/pools/ActionsTab';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BalancePanel from '../../components/pools/BalancePanel';
+import UserStake from '../../components/pools/UserStake';
 
 const Pool = () => {
     const router = useRouter();
@@ -129,26 +130,6 @@ const Pool = () => {
                         Wallet Balance
                     </Text>
                 </CTSIText>
-                <CTSIText
-                    value={stakedBalance}
-                    icon={FaCoins}
-                    bg="black"
-                    color="white"
-                >
-                    <Text bg="black" color="white">
-                        Staked Balance
-                    </Text>
-                </CTSIText>
-                <CTSIText
-                    value={releasedBalance}
-                    icon={FaUnlock}
-                    bg="black"
-                    color="white"
-                >
-                    <Text bg="black" color="white">
-                        Released Balance
-                    </Text>
-                </CTSIText>
             </HStack>
             {stakingPool &&
                 account &&
@@ -192,46 +173,56 @@ const Pool = () => {
                 <StakingDisclaimer key="readDisclaimer" />
             </VStack>
 
-            <Wrap px="6vw" justify="space-between">
-                <WrapItem>
-                    <StatsPanel w="100%">
-                        <CTSIText
-                            icon={FaTrophy}
-                            value={BigNumber.from(
-                                stakingPool?.user?.totalReward || 0
-                            )}
-                        >
-                            <Text>Total Rewards</Text>
-                        </CTSIText>
-                        <CTSIText
-                            icon={FaPercentage}
-                            value={BigNumber.from(
-                                stakingPool?.totalCommission || 0
-                            )}
-                        >
-                            <Text>Commission</Text>
-                        </CTSIText>
-                    </StatsPanel>
-                </WrapItem>
-                <WrapItem>
-                    <ActionsTab
-                        minW={500}
-                        maxW={500}
-                        allowance={allowance}
-                        paused={paused.valueOf()}
-                        stakedAmount={stakedBalance}
-                        stakedShares={stakedShares}
-                        releasedBalance={releasedBalance}
-                        withdrawBalance={withdrawBalance}
-                        onApprove={(amount) => approve(pool.address, amount)}
-                        onStake={(amount) => stake(amount)}
-                        onUnstake={onUnstake}
-                        onWithdraw={withdraw}
-                    >
-                        <Text>Test</Text>
-                    </ActionsTab>
-                </WrapItem>
-            </Wrap>
+            <HStack
+                px="6vw"
+                justify="space-between"
+                spacing={10}
+                align="flex-start"
+            >
+                <UserStake
+                    w="100%"
+                    allowance={allowance}
+                    shares={stakedShares}
+                    staked={stakedBalance}
+                    released={releasedBalance}
+                    withdrawBalance={withdrawBalance}
+                    paused={paused.valueOf()}
+                    onApprove={(amount) => approve(pool.address, amount)}
+                    onStake={stake}
+                    onUnstake={onUnstake}
+                    onWithdraw={withdraw}
+                />
+                <ActionsTab
+                    minW={500}
+                    maxW={500}
+                    allowance={allowance}
+                    paused={paused.valueOf()}
+                    stakedAmount={stakedBalance}
+                    stakedShares={stakedShares}
+                    releasedBalance={releasedBalance}
+                    withdrawBalance={withdrawBalance}
+                    onApprove={(amount) => approve(pool.address, amount)}
+                    onStake={(amount) => stake(amount)}
+                    onUnstake={onUnstake}
+                    onWithdraw={withdraw}
+                >
+                    <Text>Test</Text>
+                </ActionsTab>
+            </HStack>
+            <StatsPanel w="100%">
+                <CTSIText
+                    icon={FaTrophy}
+                    value={BigNumber.from(stakingPool?.user?.totalReward || 0)}
+                >
+                    <Text>Total Rewards</Text>
+                </CTSIText>
+                <CTSIText
+                    icon={FaPercentage}
+                    value={BigNumber.from(stakingPool?.totalCommission || 0)}
+                >
+                    <Text>Commission</Text>
+                </CTSIText>
+            </StatsPanel>
         </Layout>
     );
 };

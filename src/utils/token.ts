@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 
 export const formatCTSI = (amount: BigNumberish, decimals = 18): string => {
     amount = BigNumber.from(amount);
@@ -30,3 +30,6 @@ export const toCTSI = (amount: BigNumberish): FixedNumber => {
 export const isInfinite = (amount: BigNumberish): boolean => {
     return amount > 1e9;
 };
+
+export const toBigNumber = (value: number, decimals = 18) =>
+    parseUnits(value.toString(), decimals);
