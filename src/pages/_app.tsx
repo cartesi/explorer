@@ -12,6 +12,7 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
+import { TrackingProvider } from '../contexts/tracker';
 import dynamic from 'next/dynamic';
 import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
@@ -25,9 +26,11 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
         <ChakraProvider theme={theme}>
             <Web3Container>
-                <ApolloContainer>
-                    <Component {...pageProps} />
-                </ApolloContainer>
+                <TrackingProvider>
+                    <ApolloContainer>
+                        <Component {...pageProps} />
+                    </ApolloContainer>
+                </TrackingProvider>
             </Web3Container>
         </ChakraProvider>
     );
