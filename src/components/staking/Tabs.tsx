@@ -55,9 +55,11 @@ export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
                                 color: 'white',
                                 borderBottomWidth: 5,
                                 borderBottomColor: theme.colors.info,
+                                boxShadow: theme.boxShadows.sm,
                             }}
                             _hover={{
                                 opacity: 0.9,
+                                boxShadow: 'none',
                             }}
                         >
                             {tab.label}
