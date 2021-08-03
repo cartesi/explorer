@@ -18,7 +18,7 @@ export const Card: React.FunctionComponent<CardProps> = (props) => {
         balance,
         children,
         icon = 'up',
-        isActive,
+        isActive = false,
         ...restProps
     } = props;
 
