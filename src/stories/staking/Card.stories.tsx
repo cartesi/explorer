@@ -45,3 +45,12 @@ Releasing.args = {
     balance: 0,
     icon: 'down',
 };
+
+export const Active = Template.bind({});
+Active.args = {
+    ...props,
+    title: 'Releasing',
+    balance: 0,
+    icon: 'down',
+    isActive: true,
+};
