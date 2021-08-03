@@ -16,6 +16,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
 import ReactTooltip from 'react-tooltip';
+import { Flex, Box, Text, Button } from '@chakra-ui/react';
 
 import Layout from '../../components/Layout';
 import Node from '../../components/Node';
@@ -31,10 +32,9 @@ import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { TokenAmount } from '../../components/TokenAmount';
-import { Flex, Box, Text } from '@chakra-ui/react';
 import Balances from '../../components/staking/Balances';
-import StackingTabs from '../../components/staking/Tabs';
-import StackingCard from '../../components/staking/Card';
+import StakingTabs from '../../components/staking/Tabs';
+import StakingCard from '../../components/staking/Card';
 import theme from '../../styles/theme';
 
 const Staking = () => {
@@ -289,25 +289,22 @@ const Staking = () => {
             >
                 <Box flex="3" pr={8}>
                     <Box mb={8} boxShadow={theme.boxShadows.lg}>
-                        <StackingCard
-                            title="Maturing"
-                            balance={maturingBalance}
-                        >
+                        <StakingCard title="Maturing" balance={maturingBalance}>
                             {maturingBalance.gt(0) && maturingCountdown > 0 && (
-                                <Box>
+                                <Box mt={1}>
                                     <Text fontSize="sm">{displayTime(1)}</Text>
                                 </Box>
                             )}
-                        </StackingCard>
+                        </StakingCard>
 
-                        <StackingCard
+                        <StakingCard
                             title="Staked"
                             balance={stakedBalance}
                             isActive
                         />
                     </Box>
 
-                    <StackingCard
+                    <StakingCard
                         title={
                             releasingBalance.gt(0) && releasingCountdown === 0
                                 ? 'Released'
@@ -318,7 +315,7 @@ const Staking = () => {
                         boxShadow={theme.boxShadows.lg}
                     >
                         {releasingBalance.gt(0) && releasingCountdown > 0 && (
-                            <Box>
+                            <Box mt={1}>
                                 <Text fontSize="sm">
                                     {displayTime(releasingCountdown)}
                                 </Text>
@@ -326,19 +323,22 @@ const Staking = () => {
                         )}
 
                         {releasingBalance.gt(0) && releasingCountdown === 0 && (
-                            <button
-                                type="button"
-                                className="btn btn-dark py-0 px-4 button-text mt-2"
+                            <Button
+                                size="sm"
+                                mt={4}
+                                borderRadius={2}
+                                color="white"
+                                bg={theme.colors.gray9}
                                 disabled={!account || waiting}
                                 onClick={doWithdraw}
                             >
                                 Withdraw
-                            </button>
+                            </Button>
                         )}
-                    </StackingCard>
+                    </StakingCard>
                 </Box>
 
-                <StackingTabs
+                <StakingTabs
                     flex={2}
                     Stake={
                         <>
