@@ -15,8 +15,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from 'ethers';
-import { Button, HStack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { BigNumber, constants } from 'ethers';
+import { HStack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import {
     FaCoins,
@@ -39,6 +39,7 @@ import AddressText from '../../components/AddressText';
 import StatsPanel from '../../components/home/StatsPanel';
 import ActionsTab from '../../components/pools/ActionsTab';
 import TransactionFeedback from '../../components/TransactionFeedback';
+import BalancePanel from '../../components/pools/BalancePanel';
 
 const Pool = () => {
     const router = useRouter();
@@ -70,6 +71,12 @@ const Pool = () => {
         approve,
     } = useCartesiToken(account, router.query.pool as string, blockNumber);
 
+    const { balance: poolBalance } = useCartesiToken(
+        router.query.pool as string,
+        null,
+        blockNumber
+    );
+
     const staking = useStaking(router.query.pool as string);
     const stakingPool = useStakingPoolQuery(router.query.pool as string);
 
@@ -78,18 +85,6 @@ const Pool = () => {
         stakedBalance.gt(0) &&
         unstakeTimestamp &&
         unstakeTimestamp.getTime() > now.getTime();
-
-    // indicator for effective stake
-    const balanceUp = amounts && amounts.stake.gt(0);
-    const balanceDown =
-        amounts && (amounts.unstake.gt(0) || amounts.withdraw.gt(0));
-    const colorEffective = balanceUp
-        ? 'red.500'
-        : balanceDown
-        ? 'green.500'
-        : undefined;
-
-    // TODO: values tooltips
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
@@ -170,49 +165,54 @@ const Pool = () => {
                 <TransactionFeedback transaction={tokenTransaction}>
                     Sending transaction...
                 </TransactionFeedback>
-                <StatsPanel w="100%" align="flex-start">
-                    <CTSIText icon={FaCoins} value={amount}>
-                        <Text>Total Staked</Text>
-                    </CTSIText>
-                    <VStack>
-                        <CTSIText
-                            icon={FaCoins}
-                            color={colorEffective}
-                            value={staking.stakedBalance}
-                        >
-                            <Text color={colorEffective}>Effective Stake</Text>
-                        </CTSIText>
-                        {(balanceUp || balanceDown) && (
-                            <Button
-                                variant="link"
-                                size="sm"
-                                onClick={rebalance}
-                            >
-                                update
-                            </Button>
-                        )}
-                    </VStack>
-                    <CTSIText
-                        icon={FaTrophy}
-                        value={BigNumber.from(
-                            stakingPool?.user?.totalReward || 0
-                        )}
-                    >
-                        <Text>Total Rewards</Text>
-                    </CTSIText>
-                    <CTSIText
-                        icon={FaPercentage}
-                        value={BigNumber.from(
-                            stakingPool?.totalCommission || 0
-                        )}
-                    >
-                        <Text>Commission</Text>
-                    </CTSIText>
-                </StatsPanel>
+                <BalancePanel
+                    w="100%"
+                    amount={amount}
+                    pool={poolBalance}
+                    stake={amounts?.stake}
+                    unstake={amounts?.unstake}
+                    withdraw={amounts?.withdraw}
+                    stakingMature={staking?.stakedBalance}
+                    stakingMaturing={staking?.maturingBalance}
+                    stakingReleasing={
+                        staking?.releasingTimestamp?.getTime() > Date.now()
+                            ? staking.releasingBalance
+                            : constants.Zero
+                    }
+                    stakingReleased={
+                        staking?.releasingTimestamp?.getTime() <= Date.now()
+                            ? staking.releasingBalance
+                            : constants.Zero
+                    }
+                    stakingMaturingTimestamp={staking?.maturingTimestamp}
+                    stakingReleasingTimestamp={staking?.releasingTimestamp}
+                    hideZeros={true}
+                    onRebalance={rebalance}
+                />
                 <StakingDisclaimer key="readDisclaimer" />
             </VStack>
 
             <Wrap px="6vw" justify="space-between">
+                <WrapItem>
+                    <StatsPanel w="100%">
+                        <CTSIText
+                            icon={FaTrophy}
+                            value={BigNumber.from(
+                                stakingPool?.user?.totalReward || 0
+                            )}
+                        >
+                            <Text>Total Rewards</Text>
+                        </CTSIText>
+                        <CTSIText
+                            icon={FaPercentage}
+                            value={BigNumber.from(
+                                stakingPool?.totalCommission || 0
+                            )}
+                        >
+                            <Text>Commission</Text>
+                        </CTSIText>
+                    </StatsPanel>
+                </WrapItem>
                 <WrapItem>
                     <ActionsTab
                         minW={500}

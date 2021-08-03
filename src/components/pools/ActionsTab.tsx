@@ -54,7 +54,7 @@ const ActionsTab: FC<ActionsTabProps> = (props) => {
         ...tabsProps
     } = props;
     return (
-        <Tabs {...tabsProps}>
+        <Tabs {...tabsProps} shadow="md">
             <TabList>
                 <Tab>
                     <HStack>

@@ -11,14 +11,21 @@
 
 import { FC } from 'react';
 import { BigNumber, constants } from 'ethers';
-import { HStack, Icon, Link, Text, Tooltip } from '@chakra-ui/react';
+import {
+    HStack,
+    Icon,
+    Link,
+    StackProps,
+    Text,
+    Tooltip,
+} from '@chakra-ui/react';
 import { FaBalanceScaleLeft, FaBolt, FaCoins, FaUsers } from 'react-icons/fa';
 import { BsClockHistory } from 'react-icons/bs';
 import StatsPanel from '../home/StatsPanel';
 import CTSIText from '../CTSIText';
 import { formatCTSI } from '../../utils/token';
 
-export type BalancePanelProps = {
+export interface BalancePanelProps extends StackProps {
     amount: BigNumber;
     pool: BigNumber;
     stake: BigNumber;
@@ -28,9 +35,11 @@ export type BalancePanelProps = {
     stakingMaturing: BigNumber;
     stakingReleasing: BigNumber;
     stakingReleased: BigNumber;
+    stakingMaturingTimestamp: Date;
+    stakingReleasingTimestamp: Date;
     hideZeros: boolean;
     onRebalance?: () => void;
-};
+}
 
 const BalancePanel: FC<BalancePanelProps> = ({
     amount,
@@ -42,29 +51,32 @@ const BalancePanel: FC<BalancePanelProps> = ({
     stakingMaturing,
     stakingReleasing,
     stakingReleased,
+    stakingMaturingTimestamp,
+    stakingReleasingTimestamp,
     hideZeros = true,
     onRebalance,
+    ...stackProps
 }) => {
     // tells if an action needs to be done to move tokens around
     const needRebalance =
-        stake.gt(constants.Zero) ||
-        unstake.gt(constants.Zero) ||
-        withdraw.gt(constants.Zero);
+        stake?.gt(constants.Zero) ||
+        unstake?.gt(constants.Zero) ||
+        withdraw?.gt(constants.Zero);
 
     let rebalanceLabel = 'click to rebalance.';
-    if (stake.gt(constants.Zero)) {
+    if (stake?.gt(constants.Zero)) {
         rebalanceLabel =
             `${formatCTSI(stake)} CTSI to stake, ` + rebalanceLabel;
-    } else if (unstake.gt(constants.Zero)) {
+    } else if (unstake?.gt(constants.Zero)) {
         rebalanceLabel =
             `${formatCTSI(unstake)} CTSI to unstake, ` + rebalanceLabel;
-    } else if (withdraw.gt(constants.Zero)) {
+    } else if (withdraw?.gt(constants.Zero)) {
         rebalanceLabel =
             `${formatCTSI(withdraw)} CTSI to withdraw, ` + rebalanceLabel;
     }
 
     return (
-        <StatsPanel>
+        <StatsPanel {...stackProps}>
             <CTSIText value={amount} icon={FaCoins}>
                 <HStack>
                     <Text>Staked Balance</Text>
@@ -127,7 +139,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                 },
             ].map(
                 ({ value, label, icon, help }) =>
-                    !(value.isZero() && hideZeros) && (
+                    !(value?.isZero() && hideZeros) && (
                         <CTSIText value={value} icon={icon}>
                             <HStack>
                                 <Text>{label}</Text>
