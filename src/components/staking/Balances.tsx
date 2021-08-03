@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Box, Flex, FlexProps, Heading, Spacer } from '@chakra-ui/react';
+import { Box, Flex, FlexProps, Heading, Spacer, Text } from '@chakra-ui/react';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 import ConfirmationIndicator from '../ConfirmationIndicator';
 import CTSIText from '../CTSIText';
@@ -42,22 +42,24 @@ export const Balances: React.FunctionComponent<BalancesProps> = memo(
                 <Flex w={['100%', '100%', '100%', '50%']}>
                     <Box w="50%">
                         <CTSIText
-                            label="Wallet Balance"
                             value={balance}
                             icon={FaWallet}
                             bg="black"
                             color="white"
-                        />
+                        >
+                            <Text>Wallet Balance</Text>
+                        </CTSIText>
                     </Box>
 
                     <Box w="50%">
                         <CTSIText
-                            label="Staked Balance"
                             value={stakedBalance}
                             icon={FaCoins}
                             bg="black"
                             color="white"
-                        />
+                        >
+                            <Text>Staked Balance</Text>
+                        </CTSIText>
                     </Box>
                 </Flex>
             </Flex>

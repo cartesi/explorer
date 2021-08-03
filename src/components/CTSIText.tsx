@@ -17,7 +17,6 @@ import { IconType } from 'react-icons';
 import { formatCTSI } from '../utils/token';
 
 export interface CTSITextProps extends TextProps {
-    label: string;
     icon?: IconType;
     value: BigNumberish;
     fractionDigits?: number;
@@ -26,7 +25,7 @@ export interface CTSITextProps extends TextProps {
 
 const CTSIText: FC<CTSITextProps> = (props) => {
     const {
-        label,
+        children,
         value,
         fractionDigits = 4,
         direction = 'column',
@@ -39,7 +38,7 @@ const CTSIText: FC<CTSITextProps> = (props) => {
         <Flex direction={direction} align="baseline" justify="space-between">
             <HStack>
                 {icon && <Icon as={icon} color={props.color} />}
-                <Text {...textProps}>{label}</Text>
+                {children}
             </HStack>
             <HStack align="baseline">
                 <Text fontSize="xx-large" {...textProps}>

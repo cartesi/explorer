@@ -14,6 +14,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import CTSIText from '../components/CTSIText';
+import { Text } from '@chakra-ui/react';
 
 export default {
     title: 'CTSI Text',
@@ -22,11 +23,9 @@ export default {
 } as ComponentMeta<typeof CTSIText>;
 
 const Template: ComponentStory<typeof CTSIText> = (args) => (
-    <CTSIText
-        value="5000100000000000000000000"
-        label="Wallet Balance"
-        {...args}
-    />
+    <CTSIText value="5000100000000000000000000" {...args}>
+        <Text>Wallet Balance</Text>
+    </CTSIText>
 );
 
 export const Vertical = Template.bind({});

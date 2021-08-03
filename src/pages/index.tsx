@@ -19,6 +19,7 @@ import {
     Center,
     Heading,
     HStack,
+    Text,
     useColorModeValue,
     Wrap,
     WrapItem,
@@ -141,21 +142,27 @@ const Home = () => {
                 </WrapItem>
                 <WrapItem p={2}>
                     <CTSIText
-                        label="Wallet Balance"
                         value={balance}
                         icon={FaWallet}
                         bg="black"
                         color="white"
-                    />
+                    >
+                        <Text bg="black" color="white">
+                            Wallet Balance
+                        </Text>
+                    </CTSIText>
                 </WrapItem>
                 <WrapItem p={2}>
                     <CTSIText
-                        label="Staked Balance"
                         value={stakedBalance}
                         icon={FaCoins}
                         bg="black"
                         color="white"
-                    />
+                    >
+                        <Text bg="black" color="white">
+                            Staked Balance
+                        </Text>
+                    </CTSIText>
                 </WrapItem>
             </Wrap>
             <Center

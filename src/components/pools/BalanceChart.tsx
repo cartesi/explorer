@@ -11,21 +11,12 @@
 
 import { BigNumber, FixedNumber } from 'ethers';
 import React, { FC } from 'react';
-import {
-    Bar,
-    BarChart,
-    LabelList,
-    Legend,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts';
+import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import { toCTSI } from '../../utils/token';
 
 export type BalanceChartProps = {
     amount: BigNumber;
     poolBalance: BigNumber;
-    poolRequiredLiquidity: BigNumber;
     stakingMatureBalance: BigNumber;
     stakingMaturingBalance: BigNumber;
     stakingReleasing: BigNumber;
@@ -37,7 +28,6 @@ const BalanceChart: FC<BalanceChartProps> = (props: BalanceChartProps) => {
         {
             name: 'Amount',
             value: toCTSI(props.amount),
-            requiredLiquidity: toCTSI(props.poolRequiredLiquidity),
         },
         {
             name: 'Pool',
@@ -72,48 +62,9 @@ const BalanceChart: FC<BalanceChartProps> = (props: BalanceChartProps) => {
                 bottom: 5,
             }}
         >
-            <Bar dataKey="value" stackId="a" fill="#B3C2F2">
-                <LabelList
-                    dataKey="value"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
-            <Bar dataKey="requiredLiquidity" stackId="a" fill="#D4AA7D">
-                <LabelList
-                    dataKey="requiredLiquidity"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
-            <Bar dataKey="matureBalance" stackId="a" fill="#735CDD">
-                <LabelList
-                    dataKey="matureBalance"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
-            <Bar dataKey="maturingBalance" stackId="a" fill="#9000B3">
-                <LabelList
-                    dataKey="maturingBalance"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
-            <Bar dataKey="releasing" stackId="a" fill="#7E007B">
-                <LabelList
-                    dataKey="releasing"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
-            <Bar dataKey="released" stackId="a" fill="#37000A">
-                <LabelList
-                    dataKey="released"
-                    position="top"
-                    formatter={(value: number) => numberFormat.format(value)}
-                />
-            </Bar>
+            <Bar dataKey="maturingBalance" stackId="a" fill="#9000B3"></Bar>
+            <Bar dataKey="releasing" stackId="a" fill="#7E007B"></Bar>
+            <Bar dataKey="released" stackId="a" fill="#37000A"></Bar>
             <YAxis dataKey="name" type="category" />
             <XAxis
                 type="number"

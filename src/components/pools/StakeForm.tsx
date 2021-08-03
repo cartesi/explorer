@@ -18,6 +18,7 @@ import {
     Input,
     InputGroup,
     InputRightAddon,
+    Text,
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
@@ -36,7 +37,9 @@ const StakeForm: FC<StakeFormProps> = (props) => {
     const [amount, setAmount] = useState<string>();
     return (
         <VStack align="stretch" spacing={5}>
-            <CTSIText label="Allowance" value={allowance} />
+            <CTSIText value={allowance}>
+                <Text>Allowance</Text>
+            </CTSIText>
             <FormControl id="stake">
                 <FormLabel>Amount to stake</FormLabel>
                 <InputGroup>

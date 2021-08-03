@@ -125,26 +125,35 @@ const Pool = () => {
                     <Text>Staking Pool</Text>
                 </AddressText>
                 <CTSIText
-                    label="Wallet Balance"
                     value={balance}
                     icon={FaWallet}
                     bg="black"
                     color="white"
-                />
+                >
+                    <Text bg="black" color="white">
+                        Wallet Balance
+                    </Text>
+                </CTSIText>
                 <CTSIText
-                    label="Staked Balance"
                     value={stakedBalance}
                     icon={FaCoins}
                     bg="black"
                     color="white"
-                />
+                >
+                    <Text bg="black" color="white">
+                        Staked Balance
+                    </Text>
+                </CTSIText>
                 <CTSIText
-                    label="Released Balance"
                     value={releasedBalance}
                     icon={FaUnlock}
                     bg="black"
                     color="white"
-                />
+                >
+                    <Text bg="black" color="white">
+                        Released Balance
+                    </Text>
+                </CTSIText>
             </HStack>
             {stakingPool &&
                 account &&
@@ -162,18 +171,17 @@ const Pool = () => {
                     Sending transaction...
                 </TransactionFeedback>
                 <StatsPanel w="100%" align="flex-start">
-                    <CTSIText
-                        icon={FaCoins}
-                        label="Total Staked"
-                        value={amount}
-                    />
+                    <CTSIText icon={FaCoins} value={amount}>
+                        <Text>Total Staked</Text>
+                    </CTSIText>
                     <VStack>
                         <CTSIText
                             icon={FaCoins}
                             color={colorEffective}
-                            label="Effective Stake"
                             value={staking.stakedBalance}
-                        />
+                        >
+                            <Text color={colorEffective}>Effective Stake</Text>
+                        </CTSIText>
                         {(balanceUp || balanceDown) && (
                             <Button
                                 variant="link"
@@ -185,19 +193,21 @@ const Pool = () => {
                         )}
                     </VStack>
                     <CTSIText
-                        label="Total Rewards"
                         icon={FaTrophy}
                         value={BigNumber.from(
                             stakingPool?.user?.totalReward || 0
                         )}
-                    />
+                    >
+                        <Text>Total Rewards</Text>
+                    </CTSIText>
                     <CTSIText
-                        label="Commission"
                         icon={FaPercentage}
                         value={BigNumber.from(
                             stakingPool?.totalCommission || 0
                         )}
-                    />
+                    >
+                        <Text>Commission</Text>
+                    </CTSIText>
                 </StatsPanel>
                 <StakingDisclaimer key="readDisclaimer" />
             </VStack>

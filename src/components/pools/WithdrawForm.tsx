@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Button, VStack } from '@chakra-ui/react';
+import { Button, Text, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import CTSIText from '../CTSIText';
 
@@ -33,11 +33,9 @@ const WithdrawForm: FC<WithdrawFormProps> = ({
 
     return (
         <VStack align="stretch" spacing={5}>
-            <CTSIText
-                label="Withdraw Balance"
-                value={withdrawBalance}
-                color={color}
-            />
+            <CTSIText value={withdrawBalance} color={color}>
+                <Text color={color}>Withdraw Balance</Text>
+            </CTSIText>
             <Button disabled={withdrawBalance.isZero()} onClick={onWithdraw}>
                 Withdraw
             </Button>
