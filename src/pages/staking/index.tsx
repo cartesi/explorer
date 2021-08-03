@@ -28,13 +28,13 @@ import { useCartesiToken } from '../../services/token';
 import useUser from '../../graphql/hooks/useUser';
 import useSummary from '../../graphql/hooks/useSummary';
 
-import labels from '../../utils/labels';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { formatCTSI, isInfinite } from '../../utils/token';
 import { TokenAmount } from '../../components/TokenAmount';
 import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
 import StakingCard from '../../components/staking/Card';
+import TotalBalances from '../../components/staking/TotalBalances';
 import theme from '../../styles/theme';
 
 const Staking = () => {
@@ -261,33 +261,13 @@ const Staking = () => {
 
             <Node setWaiting={setNodeWaiting} setError={setNodeError} />
 
-            <div className="d-flex staking-total-balances my-5">
-                <div className="staking-total-balances-item">
-                    <label className="body-text-1">Total Rewards</label>
-                    <img
-                        data-tip={labels.totalRewards}
-                        src="/images/question.png"
-                    />
-                    <TokenAmount
-                        amount={BigNumber.from(user ? user.totalReward : 0)}
-                    />
-                </div>
-
-                <div className="staking-total-balances-item">
-                    <label className="body-text-1">In-contract Balance</label>
-                    <img
-                        data-tip={labels.inContractBalance}
-                        src="/images/question.png"
-                    />
-                    <TokenAmount amount={totalBalance} />
-                </div>
-            </div>
+            <TotalBalances user={user} totalBalance={totalBalance} my={5} />
 
             <Flex
                 direction={['column', 'column', 'column', 'row']}
                 p="50px 6vw 50px 6vw"
             >
-                <Box flex="3" pr={8}>
+                <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
                     <Box mb={8} boxShadow={theme.boxShadows.lg}>
                         <StakingCard title="Maturing" balance={maturingBalance}>
                             {maturingBalance.gt(0) && maturingCountdown > 0 && (
