@@ -9,18 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
+import { BigNumberish, FixedNumber } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 
 export const formatCTSI = (amount: BigNumberish, decimals = 18): string => {
-    amount = BigNumber.from(amount);
-
-    // floor value to number of decimals to display
-    const m = constants.One.mul(10).pow(18 - decimals);
-    amount = amount.sub(amount.mod(m));
+    const numberFormat = new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: decimals,
+    });
 
     // convert to string
-    return formatUnits(amount, 18);
+    return numberFormat.format(parseFloat(formatUnits(amount, 18)));
 };
 
 export const toCTSI = (amount: BigNumberish): FixedNumber => {
