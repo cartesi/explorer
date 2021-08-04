@@ -12,6 +12,7 @@
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import {
+    Box,
     Button,
     FormControl,
     FormErrorMessage,
@@ -20,11 +21,15 @@ import {
     Input,
     InputGroup,
     InputRightAddon,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
     Tooltip,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { formatCTSI, toBigNumber } from '../../utils/token';
 
 export interface UserStakeFormProps {
@@ -40,6 +45,7 @@ type FormData = {
 
 const UserStakeForm: FC<UserStakeFormProps> = (props) => {
     const { allowance, onApprove, onCancel, onStake } = props;
+    const nf = new Intl.NumberFormat('en-US');
     const {
         register,
         handleSubmit,
@@ -65,28 +71,52 @@ const UserStakeForm: FC<UserStakeFormProps> = (props) => {
                 <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
             </FormControl>
             {amount && toBigNumber(amount).gt(allowance) && (
-                <Button
-                    size="md"
-                    px={8}
-                    leftIcon={<CheckIcon />}
-                    onClick={handleSubmit((data) =>
-                        onApprove(toBigNumber(data.amount))
-                    )}
-                >
-                    Approve
-                </Button>
+                <Box>
+                    <Menu>
+                        <MenuButton
+                            as={Button}
+                            size="md"
+                            leftIcon={<CheckIcon />}
+                        >
+                            Approve
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem
+                                onClick={handleSubmit((data) =>
+                                    onApprove(toBigNumber(data.amount))
+                                )}
+                            >{`Approve ${nf.format(amount)}`}</MenuItem>
+                            <MenuItem
+                                onClick={handleSubmit((data) =>
+                                    onApprove(toBigNumber(data.amount * 2))
+                                )}
+                            >{`Approve ${nf.format(amount * 2)}`}</MenuItem>
+                            <MenuItem
+                                onClick={handleSubmit((data) =>
+                                    onApprove(toBigNumber(data.amount * 10))
+                                )}
+                            >{`Approve ${nf.format(amount * 10)}`}</MenuItem>
+                            <MenuItem
+                                onClick={() => onApprove(constants.MaxUint256)}
+                            >
+                                Approve indefinitely
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Box>
             )}
             {amount && toBigNumber(amount).lte(allowance) && (
-                <Button
-                    size="md"
-                    px={8}
-                    leftIcon={<CheckIcon />}
-                    onClick={handleSubmit((data) =>
-                        onStake(toBigNumber(data.amount))
-                    )}
-                >
-                    Stake
-                </Button>
+                <Box>
+                    <Button
+                        size="md"
+                        leftIcon={<CheckIcon />}
+                        onClick={handleSubmit((data) =>
+                            onStake(toBigNumber(data.amount))
+                        )}
+                    >
+                        Stake
+                    </Button>
+                </Box>
             )}
             <Tooltip label="Cancel" placement="top">
                 <IconButton
