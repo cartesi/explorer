@@ -28,12 +28,7 @@ const RetiredNode: FC<RetiredNodeProps> = ({ chainId, user, balance }) => {
             <AddressText address={user} chainId={chainId} icon={FaNetworkWired}>
                 <Text>Node Owner</Text>
             </AddressText>
-            <BigNumberText
-                value={balance}
-                unit="ETH"
-                fractionDigits={4}
-                icon={FaCoins}
-            >
+            <BigNumberText value={balance} unit="eth" icon={FaCoins}>
                 <Text>Node Balance</Text>
             </BigNumberText>
             <Alert status="info" maxW={200}>

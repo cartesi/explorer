@@ -76,19 +76,13 @@ const OwnedNode: FC<OwnedNodeProps> = ({
             </AddressText>
             <BigNumberText
                 value={userBalance}
-                unit="ETH"
-                fractionDigits={4}
+                unit="eth"
                 icon={FaCoins}
                 color={errors.deposit ? 'red' : undefined}
             >
                 <Text>Your Balance</Text>
             </BigNumberText>
-            <BigNumberText
-                value={nodeBalance}
-                unit="ETH"
-                fractionDigits={4}
-                icon={FaCoins}
-            >
+            <BigNumberText value={nodeBalance} unit="eth" icon={FaCoins}>
                 <Text>Node Balance</Text>
             </BigNumberText>
             {account.toLowerCase() === user.toLowerCase() && (

@@ -54,8 +54,7 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
         <HStack p={10} spacing={10}>
             <BigNumberText
                 value={balance}
-                unit="ETH"
-                fractionDigits={4}
+                unit="eth"
                 color={errors.deposit ? 'red' : undefined}
             >
                 <Text>Your Balance</Text>
