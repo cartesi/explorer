@@ -24,6 +24,7 @@ import {
 import { BigNumber } from 'ethers';
 import { BigNumberInput } from 'big-number-input';
 import CTSIText from '../CTSIText';
+import { isInfinite } from '../../utils/token';
 
 export interface StakeFormProps {
     allowance: BigNumber;
@@ -37,9 +38,11 @@ const StakeForm: FC<StakeFormProps> = (props) => {
     const [amount, setAmount] = useState<string>();
     return (
         <VStack align="stretch" spacing={5}>
-            <CTSIText value={allowance}>
-                <Text>Allowance</Text>
-            </CTSIText>
+            {!isInfinite(allowance) && (
+                <CTSIText value={allowance}>
+                    <Text>Allowance</Text>
+                </CTSIText>
+            )}
             <FormControl id="stake">
                 <FormLabel>Amount to stake</FormLabel>
                 <InputGroup>

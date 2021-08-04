@@ -30,7 +30,7 @@ import {
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 import { BigNumber, BigNumberish, constants } from 'ethers';
-import { formatCTSI, toBigNumber } from '../../utils/token';
+import { formatCTSI, toBigNumber, isInfinite } from '../../utils/token';
 
 export interface UserStakeFormProps {
     allowance: BigNumber;
@@ -60,7 +60,9 @@ const UserStakeForm: FC<UserStakeFormProps> = (props) => {
             <FormControl isInvalid={!!errors.amount}>
                 <InputGroup>
                     <Input
-                        placeholder={formatCTSI(allowance)}
+                        placeholder={
+                            isInfinite(allowance) ? '' : formatCTSI(allowance)
+                        }
                         {...register('amount', {
                             required: true,
                             valueAsNumber: true,
