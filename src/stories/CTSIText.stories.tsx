@@ -15,6 +15,7 @@ import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import CTSIText from '../components/CTSIText';
 import { Text } from '@chakra-ui/react';
+import { ethers } from 'ethers';
 
 export default {
     title: 'CTSI Text',
@@ -45,5 +46,15 @@ Horizontal.args = {
 
 export const FractionalAmount = Template.bind({});
 FractionalAmount.args = {
-    value: '1000000000000000',
+    value: ethers.utils.parseUnits('0.0001', 18),
+};
+
+export const HugeAmount = Template.bind({});
+HugeAmount.args = {
+    value: ethers.utils.parseUnits('345812800.12', 18),
+    options: {
+        notation: 'compact',
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+    },
 };

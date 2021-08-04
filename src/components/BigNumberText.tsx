@@ -11,40 +11,82 @@
 
 import React, { FC } from 'react';
 import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumberish } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
-import { formatCTSI } from '../utils/token';
+
+type Unit = 'eth' | 'ctsi' | 'percent' | 'usd';
+
+const unitLabel = (unit: Unit) => {
+    switch (unit) {
+        case 'eth':
+            return 'ETH';
+        case 'ctsi':
+            return 'CTSI';
+        case 'percent':
+            return '%';
+        case 'usd':
+            return 'USD';
+        default:
+            return '';
+    }
+};
+
+const formatPercentNumber = (
+    value: number,
+    options?: Intl.NumberFormatOptions
+) => {
+    const formatter = new Intl.NumberFormat('en-US', options);
+    return formatter.format(value * 100);
+};
+
+const formatPercent = (
+    value: BigNumberish,
+    options?: Intl.NumberFormatOptions
+) => {
+    if (typeof value === 'number') {
+        return formatPercentNumber(value, options);
+    } else {
+        return formatPercentNumber(parseFloat(value.toString()), options);
+    }
+};
 
 export interface BigNumberTextProps extends TextProps {
     icon?: IconType;
     value: BigNumberish;
     nullLabel?: string;
-    fractionDigits?: number;
     direction?: SystemProps['flexDirection'];
-    unit?: 'ETH' | 'CTSI' | '%';
+    unit?: Unit;
+    options?: Intl.NumberFormatOptions;
 }
+
+const defaultOptions: Intl.NumberFormatOptions = {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4,
+};
 
 const BigNumberText: FC<BigNumberTextProps> = (props) => {
     const {
         children,
         value,
         nullLabel = '-',
-        fractionDigits = 4,
         direction = 'column',
         icon,
         unit,
+        options = defaultOptions,
         ...textProps
     } = props;
+    const numberFormat = new Intl.NumberFormat('en-US', options);
     const valueLabel = !value
         ? nullLabel
-        : unit == 'ETH'
-        ? formatCTSI(value, fractionDigits)
-        : unit == 'CTSI'
-        ? formatCTSI(value, fractionDigits)
-        : unit == '%'
-        ? BigNumber.from(value).mul(100).toNumber().toFixed(fractionDigits)
-        : value.toString();
+        : unit == 'eth'
+        ? numberFormat.format(parseFloat(formatUnits(value, 18)))
+        : unit == 'ctsi'
+        ? numberFormat.format(parseFloat(formatUnits(value, 18)))
+        : unit == 'percent'
+        ? formatPercent(value, options)
+        : numberFormat.format(parseFloat(value.toString()));
 
     return (
         <Flex direction={direction} align="baseline" justify="space-between">
@@ -58,7 +100,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                 </Text>
                 {unit && value && (
                     <Text fontSize="small" {...textProps}>
-                        {unit}
+                        {unitLabel(unit)}
                     </Text>
                 )}
             </HStack>

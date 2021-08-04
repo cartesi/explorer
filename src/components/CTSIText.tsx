@@ -10,46 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
-import { BigNumberish } from 'ethers';
-import { Icon } from '@chakra-ui/icons';
-import { IconType } from 'react-icons';
-import { formatCTSI } from '../utils/token';
+import BigNumberText, { BigNumberTextProps } from './BigNumberText';
 
-export interface CTSITextProps extends TextProps {
-    icon?: IconType;
-    value: BigNumberish;
-    fractionDigits?: number;
-    direction?: SystemProps['flexDirection'];
-}
-
-const CTSIText: FC<CTSITextProps> = (props) => {
-    const {
-        children,
-        value,
-        fractionDigits = 4,
-        direction = 'column',
-        icon,
-        ...textProps
-    } = props;
-    const valueLabel = formatCTSI(value, fractionDigits);
-
-    return (
-        <Flex direction={direction} align="baseline" justify="space-between">
-            <HStack>
-                {icon && <Icon as={icon} color={props.color} />}
-                {children}
-            </HStack>
-            <HStack align="baseline">
-                <Text fontSize="xx-large" {...textProps}>
-                    {valueLabel}
-                </Text>
-                <Text fontSize="small" {...textProps}>
-                    CTSI
-                </Text>
-            </HStack>
-        </Flex>
-    );
+const CTSIText: FC<BigNumberTextProps> = (props) => {
+    return <BigNumberText unit="ctsi" {...props} />;
 };
 
 export default CTSIText;

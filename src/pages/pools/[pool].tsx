@@ -16,16 +16,9 @@ import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
-import { HStack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { HStack, Text, VStack } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
-import {
-    FaCoins,
-    FaPercentage,
-    FaTrophy,
-    FaUnlock,
-    FaUsers,
-    FaWallet,
-} from 'react-icons/fa';
+import { FaPercentage, FaTrophy, FaUsers, FaWallet } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
@@ -41,6 +34,7 @@ import ActionsTab from '../../components/pools/ActionsTab';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BalancePanel from '../../components/pools/BalancePanel';
 import UserStake from '../../components/pools/UserStake';
+import PoolStatsPanel from '../../components/pools/PoolStatsPanel';
 
 const Pool = () => {
     const router = useRouter();
@@ -170,6 +164,13 @@ const Pool = () => {
                     hideZeros={true}
                     onRebalance={rebalance}
                 />
+                <PoolStatsPanel
+                    w="100%"
+                    totalBlocks={stakingPool?.user?.totalBlocks}
+                    totalReward={stakingPool?.user?.totalReward}
+                    totalUsers={stakingPool?.totalUsers}
+                    totalCommission={stakingPool?.totalCommission}
+                />
                 <StakingDisclaimer key="readDisclaimer" />
             </VStack>
 
@@ -209,20 +210,6 @@ const Pool = () => {
                     <Text>Test</Text>
                 </ActionsTab>
             </HStack>
-            <StatsPanel w="100%">
-                <CTSIText
-                    icon={FaTrophy}
-                    value={BigNumber.from(stakingPool?.user?.totalReward || 0)}
-                >
-                    <Text>Total Rewards</Text>
-                </CTSIText>
-                <CTSIText
-                    icon={FaPercentage}
-                    value={BigNumber.from(stakingPool?.totalCommission || 0)}
-                >
-                    <Text>Commission</Text>
-                </CTSIText>
-            </StatsPanel>
         </Layout>
     );
 };
