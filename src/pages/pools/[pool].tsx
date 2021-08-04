@@ -112,7 +112,16 @@ const Pool = () => {
                     chainId={chainId}
                     icon={FaUsers}
                 >
-                    <Text>Staking Pool</Text>
+                    <HStack>
+                        <Text>Staking Pool</Text>
+                        {stakingPool &&
+                            account &&
+                            stakingPool.manager == account.toLowerCase() && (
+                                <Link href={`/pools/${router.query.pool}/edit`}>
+                                    <EditIcon />
+                                </Link>
+                            )}
+                    </HStack>
                 </AddressText>
                 <CTSIText
                     value={balance}
@@ -125,14 +134,6 @@ const Pool = () => {
                     </Text>
                 </CTSIText>
             </HStack>
-            {stakingPool &&
-                account &&
-                stakingPool.manager == account.toLowerCase() && (
-                    <Link href={`/pools/${router.query.pool}/edit`}>
-                        <EditIcon fontSize="xx-large" />
-                    </Link>
-                )}
-
             <VStack px="6vw" py={5} spacing={10}>
                 <TransactionFeedback transaction={transaction}>
                     Sending transaction...
