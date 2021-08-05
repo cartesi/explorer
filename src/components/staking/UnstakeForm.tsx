@@ -22,11 +22,11 @@ import { useCartesiToken } from '../../services/token';
 import { useStaking } from '../../services/staking';
 import { useBlockNumber } from '../../services/eth';
 
-interface UnstakingFormProps {
+interface UnstakeFormProps {
     waiting?: boolean;
 }
 
-const UnstackingForm: FC<UnstakingFormProps> = (props) => {
+const UnstakeForm: FC<UnstakeFormProps> = (props) => {
     const { waiting = false } = props;
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
@@ -178,4 +178,4 @@ const UnstackingForm: FC<UnstakingFormProps> = (props) => {
     );
 };
 
-export default UnstackingForm;
+export default UnstakeForm;

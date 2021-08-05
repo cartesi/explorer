@@ -35,7 +35,7 @@ import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
 import StakingCard from '../../components/staking/Card';
 import TotalBalances from '../../components/staking/TotalBalances';
-import UnstakingForm from '../../components/staking/UnstakingForm';
+import UnstakeForm from '../../components/staking/UnstakeForm';
 import theme from '../../styles/theme';
 
 const Staking = () => {
@@ -439,7 +439,7 @@ const Staking = () => {
                             )}
                         </>
                     }
-                    Unstake={<UnstakingForm waiting={waiting} />}
+                    Unstake={<UnstakeForm waiting={waiting} />}
                 />
             </Flex>
 
