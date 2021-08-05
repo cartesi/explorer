@@ -34,17 +34,17 @@ const TransactionFeedback = <R extends unknown>(
 
     // TODO: take into account a higher number of confirmations
     // and calculate a percentage
-    const progress = transaction.receipt?.confirmations || 0;
+    const progress = transaction?.receipt?.confirmations || 0;
 
-    const status = transaction.error
+    const status = transaction?.error
         ? 'error'
         : progress >= 1
         ? 'success'
         : 'info';
 
-    const hash = transaction.transaction?.hash;
-    const chainId = transaction.transaction?.chainId;
-    return !transaction.acknowledged ? (
+    const hash = transaction?.transaction?.hash;
+    const chainId = transaction?.transaction?.chainId;
+    return !transaction?.acknowledged ? (
         <Alert status={status} variant="left-accent">
             {status === 'info' && <Spinner mx={2} />}
             {status !== 'info' && <AlertIcon />}
@@ -61,14 +61,14 @@ const TransactionFeedback = <R extends unknown>(
                     )}
                 </HStack>
                 <AlertDescription display="block">
-                    {transaction.error}
+                    {transaction?.error}
                 </AlertDescription>
             </Box>
             <CloseButton
                 position="absolute"
                 right="8px"
                 top="8px"
-                onClick={() => transaction.ack()}
+                onClick={() => transaction?.ack()}
             />
         </Alert>
     ) : (

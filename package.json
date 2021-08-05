@@ -9,7 +9,8 @@
         "lint": "eslint --color --ext .ts src/",
         "lint:fix": "yarn lint --fix",
         "storybook": "start-storybook -s ./public -p 6006",
-        "build-storybook": "build-storybook -s ./public"
+        "build-storybook": "build-storybook -s ./public",
+        "chromatic": "chromatic --exit-zero-on-changes"
     },
     "dependencies": {
         "@apollo/client": "^3.3.21",
@@ -74,6 +75,7 @@
         "@typescript-eslint/eslint-plugin": "4.28.3",
         "@typescript-eslint/parser": "4.28.3",
         "babel-loader": "^8.2.2",
+        "chromatic": "^5.10.0-canary.0",
         "eslint": "7.31.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-import": "2.23.4",
