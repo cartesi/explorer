@@ -35,6 +35,7 @@ import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
 import StakingCard from '../../components/staking/Card';
 import TotalBalances from '../../components/staking/TotalBalances';
+import UnstakingForm from '../../components/staking/UnstakingForm';
 import theme from '../../styles/theme';
 
 const Staking = () => {
@@ -50,7 +51,6 @@ const Staking = () => {
         releasingBalance,
         transaction: stakingTransaction,
         stake,
-        unstake,
         withdraw,
     } = useStaking(account);
 
@@ -72,7 +72,6 @@ const Staking = () => {
 
     const [stakeAmount, setStakeAmount] = useState<number>(0);
     const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
-    const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
 
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
@@ -153,13 +152,6 @@ const Staking = () => {
         }
     };
 
-    const doUnstake = () => {
-        if (unstakeAmount > 0) {
-            unstake(parseCTSI(unstakeAmount));
-            setUnstakeAmount(0);
-        }
-    };
-
     const doWithdraw = () => {
         withdraw(releasingBalance);
     };
@@ -195,34 +187,7 @@ const Staking = () => {
         };
     };
 
-    const splitUnstakeAmount = () => {
-        let fromMaturing = BigNumber.from(0),
-            fromStaked = BigNumber.from(0);
-        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
-
-        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
-            return null;
-        }
-
-        if (maturingBalance.eq(0)) {
-            fromStaked = unstakeAmountCTSI;
-        } else {
-            if (maturingBalance.gt(unstakeAmountCTSI)) {
-                fromMaturing = unstakeAmountCTSI;
-            } else {
-                fromMaturing = maturingBalance;
-                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
-            }
-        }
-
-        return {
-            maturing: fromMaturing,
-            staked: fromStaked,
-        };
-    };
-
     const stakeSplit = splitStakeAmount();
-    const unstakeSplit = splitUnstakeAmount();
     const totalBalance = stakedBalance
         .add(maturingBalance)
         .add(releasingBalance);
@@ -474,88 +439,7 @@ const Staking = () => {
                             )}
                         </>
                     }
-                    Unstake={
-                        <>
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Amount to unstake
-                                </label>
-                                <div className="input-group">
-                                    <input
-                                        type="number"
-                                        className={`addon-inline form-control ${
-                                            unstakeSplit ? '' : 'error'
-                                        }`}
-                                        id="unstakeAmount"
-                                        value={unstakeAmount}
-                                        disabled={!account || waiting}
-                                        onChange={(e) =>
-                                            setUnstakeAmount(
-                                                e.target.value
-                                                    ? parseFloat(e.target.value)
-                                                    : 0
-                                            )
-                                        }
-                                    />
-                                    <span
-                                        className={`input-group-addon addon-inline input-source-observer small-text ${
-                                            unstakeSplit ? '' : 'error'
-                                        }`}
-                                    >
-                                        CTSI
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="mt-2 mb-4 mx-2 px-2 border-left border-dark body-text-1">
-                                {unstakeSplit ? (
-                                    <>
-                                        {unstakeSplit.maturing.gt(0) && (
-                                            <div className="d-flex flex-row align-items-center justify-content-between">
-                                                <span>
-                                                    {formatCTSI(
-                                                        unstakeSplit.maturing
-                                                    )}{' '}
-                                                    <span className="small-text">
-                                                        CTSI
-                                                    </span>
-                                                </span>
-                                                <span>From "maturing"</span>
-                                            </div>
-                                        )}
-                                        {unstakeSplit.staked.gt(0) && (
-                                            <div className="d-flex flex-row align-items-center justify-content-between">
-                                                <span>
-                                                    {formatCTSI(
-                                                        unstakeSplit.staked
-                                                    )}{' '}
-                                                    <span className="small-text">
-                                                        CTSI
-                                                    </span>
-                                                </span>
-                                                <span>From "staked"</span>
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <div>Maximum unstaking limit exceeded!</div>
-                                )}
-                            </div>
-
-                            <button
-                                type="button"
-                                className="btn btn-dark py-2 button-text flex-fill"
-                                disabled={!account || waiting}
-                                onClick={doUnstake}
-                            >
-                                Unstake
-                            </button>
-
-                            <div className="small-text text-center mt-4 danger-text">
-                                The releasing status will restart counting.
-                            </div>
-                        </>
-                    }
+                    Unstake={<UnstakingForm waiting={waiting} />}
                 />
             </Flex>
 
