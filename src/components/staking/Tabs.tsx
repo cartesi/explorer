@@ -17,7 +17,7 @@ interface TabsProps extends BoxProps {
 
 export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
     const { Stake, Unstake, ...restProps } = props;
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(1);
     const tabs = useMemo(
         () => [
             {
@@ -36,7 +36,7 @@ export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
         <Box {...restProps}>
             <CharkaTabs
                 variant="unstyled"
-                tabIndex={tabIndex}
+                index={tabIndex}
                 isFitted
                 onChange={setTabIndex}
             >
