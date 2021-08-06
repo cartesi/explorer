@@ -13,7 +13,7 @@ import React from 'react';
 import NavBar from './header/NavBar';
 
 const Header = () => {
-    return <NavBar p="0 6vw" minHeight="100px" />;
+    return <NavBar p="0 6vw" minHeight="100px" zIndex={10} />;
 };
 
 export default Header;
