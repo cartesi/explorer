@@ -17,7 +17,7 @@ interface TabsProps extends BoxProps {
 
 export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
     const { Stake, Unstake, ...restProps } = props;
-    const [tabIndex, setTabIndex] = useState(1);
+    const [tabIndex, setTabIndex] = useState(0);
     const tabs = useMemo(
         () => [
             {
@@ -68,8 +68,8 @@ export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
                 </TabList>
 
                 <TabPanels boxShadow={theme.boxShadows.md} padding="35px 4.5vw">
-                    <TabPanel>{Stake}</TabPanel>
-                    <TabPanel>{Unstake}</TabPanel>
+                    <TabPanel p={0}>{Stake}</TabPanel>
+                    <TabPanel p={0}>{Unstake}</TabPanel>
                 </TabPanels>
             </CharkaTabs>
         </Box>
