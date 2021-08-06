@@ -3,6 +3,7 @@ import {
     Alert,
     AlertIcon,
     Box,
+    BoxProps,
     Button,
     FormControl,
     FormErrorMessage,
@@ -11,70 +12,77 @@ import {
     InputGroup,
     InputRightAddon,
     Text,
+    Flex,
+    Checkbox,
 } from '@chakra-ui/react';
-import { formatCTSI } from '../../utils/token';
+import { formatCTSI, toCTSI } from '../../utils/token';
 import theme from '../../styles/theme';
 import { useForm } from 'react-hook-form';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { useCartesiToken } from '../../services/token';
 import { useStaking } from '../../services/staking';
 import { useBlockNumber } from '../../services/eth';
+import { isInfinite } from '../../utils/token';
+import CTSIText from '../CTSIText';
+import useSummary from '../../graphql/hooks/useSummary';
+import { Summary } from '../../graphql/models';
 
-interface UnstakingFormProps {
+interface StakeFormProps extends BoxProps {
+    summary: Summary;
     waiting?: boolean;
 }
 
-const StakeForm: FC<UnstakingFormProps> = (props) => {
-    const { waiting = false } = props;
+const StakeForm: FC<StakeFormProps> = (props) => {
+    const { summary, waiting = false, ...restProps } = props;
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
-    const { staking, stakedBalance, maturingBalance, unstake } =
-        useStaking(account);
-    const { parseCTSI } = useCartesiToken(
+    const { staking, releasingBalance } = useStaking(account);
+    const { parseCTSI, allowance, approve, toBigCTSI } = useCartesiToken(
         account,
         staking?.address,
         blockNumber
     );
-    const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
+    const { stake } = useStaking(account);
 
-    const splitUnstakeAmount = () => {
-        let fromMaturing = BigNumber.from(0),
-            fromStaked = BigNumber.from(0);
-        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
+    const [stakeAmount, setStakeAmount] = useState<number>(0);
+    const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
 
-        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
+    const splitStakeAmount = () => {
+        let fromReleasing = BigNumber.from(0),
+            fromAllowance = BigNumber.from(0);
+        const stakeAmountCTSI = parseCTSI(stakeAmount);
+
+        if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
             return null;
         }
 
-        if (maturingBalance.eq(0)) {
-            fromStaked = unstakeAmountCTSI;
+        if (releasingBalance.eq(0)) {
+            fromAllowance = stakeAmountCTSI;
         } else {
-            if (maturingBalance.gt(unstakeAmountCTSI)) {
-                fromMaturing = unstakeAmountCTSI;
+            if (releasingBalance.gt(stakeAmountCTSI)) {
+                fromReleasing = stakeAmountCTSI;
             } else {
-                fromMaturing = maturingBalance;
-                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
+                fromReleasing = releasingBalance;
+                fromAllowance = stakeAmountCTSI.sub(releasingBalance);
             }
         }
 
         return {
-            maturing: fromMaturing,
-            staked: fromStaked,
+            releasing: fromReleasing,
+            wallet: fromAllowance,
         };
     };
-
-    const unstakeSplit = splitUnstakeAmount();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<{ unstake: number }>({
+    } = useForm<{ stake: number }>({
         defaultValues: {
-            unstake: 0,
+            stake: 0,
         },
     });
 
@@ -82,72 +90,110 @@ const StakeForm: FC<UnstakingFormProps> = (props) => {
         if (value <= 0) {
             return 'Value must be greater than 0';
         }
+        if (isInfinite(value)) {
+            return 'Value must be a finite number';
+        }
         return true;
     };
 
-    const doUnstake = (unstakeAmount) => {
-        unstake(parseCTSI(unstakeAmount));
-        reset({ unstake: 0 });
+    const doApprove = (stakeAmount: number) => {
+        if (stakeAmount > 0) {
+            if (infiniteApproval) {
+                approve(staking.address, constants.MaxUint256);
+            } else if (stakeAmount !== Number(toCTSI(allowance))) {
+                approve(staking.address, parseCTSI(stakeAmount));
+            }
+        }
     };
 
+    const doApproveOrStake = (stakeAmount: number) => {
+        if (!stakeSplit) {
+            doApprove(stakeAmount);
+        } else if (stakeAmount > 0) {
+            stake(parseCTSI(stakeAmount));
+            reset({ stake: 0 });
+        }
+    };
+
+    const stakeSplit = splitStakeAmount();
+    const totalStaked =
+        summary && summary.totalStaked ? toBigCTSI(summary.totalStaked) : 0;
+
     return (
-        <Box>
-            <FormControl isInvalid={!!errors.unstake}>
-                <FormLabel>Amount to unstake</FormLabel>
+        <Box {...restProps}>
+            <CTSIText value={allowance}>
+                <Text>Allowance</Text>
+            </CTSIText>
+
+            <FormControl isInvalid={!!errors.stake} mt={4}>
+                <FormLabel>Amount to stake</FormLabel>
 
                 <InputGroup>
                     <Input
                         type="number"
                         min={0}
-                        isInvalid={!!errors.unstake}
+                        isInvalid={!!errors.stake}
                         isDisabled={!account || waiting}
-                        {...register('unstake', {
+                        {...register('stake', {
                             required: true,
                             valueAsNumber: true,
                             validate,
                         })}
                         onChange={(e) => {
-                            setUnstakeAmount(
+                            setStakeAmount(
                                 e.target.value ? parseFloat(e.target.value) : 0
                             );
                         }}
                     />
                     <InputRightAddon children={<span>CTSI</span>} />
                 </InputGroup>
-                <FormErrorMessage>{errors.unstake?.message}</FormErrorMessage>
+                <FormErrorMessage>{errors.stake?.message}</FormErrorMessage>
             </FormControl>
 
             <Box>
-                {unstakeSplit ? (
+                {stakeSplit ? (
                     <>
-                        {unstakeSplit.maturing.gt(0) && (
-                            <Alert status="info">
-                                <Text>
-                                    {formatCTSI(unstakeSplit.maturing)}{' '}
-                                    <Text display="inline" fontSize="sm">
-                                        CTSI
+                        {stakeSplit.releasing.gt(0) && (
+                            <Alert status="info" mt={2}>
+                                <AlertIcon />
+
+                                <Flex justify="space-between" width="100%">
+                                    <Text>
+                                        {formatCTSI(stakeSplit.releasing)}{' '}
+                                        <Text display="inline" fontSize="sm">
+                                            CTSI
+                                        </Text>
                                     </Text>
-                                </Text>
-                                <Text>From "maturing"</Text>
+
+                                    <Text>From "releasing"</Text>
+                                </Flex>
                             </Alert>
                         )}
 
-                        {unstakeSplit.staked.gt(0) && (
-                            <Alert status="info">
-                                <Text>
-                                    {formatCTSI(unstakeSplit.staked)}{' '}
-                                    <Text display="inline" fontSize="sm">
-                                        CTSI
+                        {stakeSplit.wallet.gt(0) && (
+                            <Alert status="info" mt={2}>
+                                <AlertIcon />
+
+                                <Flex justify="space-between" width="100%">
+                                    <Text>
+                                        {formatCTSI(stakeSplit.wallet)}{' '}
+                                        <Text display="inline" fontSize="sm">
+                                            CTSI
+                                        </Text>
                                     </Text>
-                                </Text>
-                                <Text>From "staked"</Text>
+
+                                    <Text>From "wallet"</Text>
+                                </Flex>
                             </Alert>
                         )}
                     </>
                 ) : (
-                    <Alert status="warning">
+                    <Alert status="warning" mt={2}>
                         <AlertIcon />
-                        <Text>Maximum unstaking limit exceeded!</Text>
+                        <Text>
+                            Maximum staking limit exceeded! Please approve more
+                            allowance to stake.
+                        </Text>
                     </Alert>
                 )}
             </Box>
@@ -165,15 +211,88 @@ const StakeForm: FC<UnstakingFormProps> = (props) => {
                         : theme.colors.secondary
                 }
                 isFullWidth
-                isDisabled={!account || waiting}
-                onClick={handleSubmit((data) => doUnstake(data.unstake))}
+                isDisabled={
+                    isInfinite(stakeAmount) ||
+                    !account ||
+                    waiting ||
+                    !!stakeSplit
+                }
+                onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
             >
-                Unstake
+                Approve
             </Button>
 
-            <Text fontSize="12px" color="red.500" align="center" mt={4}>
-                The releasing status will restart counting.
-            </Text>
+            <Button
+                size="sm"
+                mt={2}
+                py={4}
+                height="auto"
+                borderRadius={2}
+                color="white"
+                bg={
+                    !account || waiting
+                        ? theme.colors.gray9
+                        : theme.colors.secondary
+                }
+                isFullWidth
+                isDisabled={
+                    isInfinite(stakeAmount) ||
+                    !account ||
+                    waiting ||
+                    !stakeSplit
+                }
+                onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
+            >
+                Stake
+            </Button>
+
+            {stakeSplit ? (
+                <>
+                    <Text fontSize="12px" color="red.500" align="center" mt={4}>
+                        The maturing status will restart counting.
+                    </Text>
+
+                    {stakeAmount > 0 && (
+                        <Alert status="info" mt={2}>
+                            <AlertIcon />
+
+                            <Text>
+                                This stake currently corresponds to a{' '}
+                                {totalStaked
+                                    ? (
+                                          (stakeAmount * 100) /
+                                          totalStaked.toNumber()
+                                      ).toFixed(2)
+                                    : 0}{' '}
+                                % chance of producing the current block (
+                                <a
+                                    href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn more
+                                </a>
+                                )
+                            </Text>
+                        </Alert>
+                    )}
+                </>
+            ) : (
+                <Flex justify="center" mt={3}>
+                    <Checkbox
+                        colorScheme="green"
+                        borderColor={
+                            infiniteApproval
+                                ? theme.colors.primary
+                                : theme.colors.gray
+                        }
+                        isDisabled={!infiniteApproval}
+                        onChange={(e) => setInfiniteApproval(e.target.checked)}
+                    >
+                        Infinite Approval
+                    </Checkbox>
+                </Flex>
+            )}
         </Box>
     );
 };
