@@ -3,7 +3,9 @@ import {
     Alert,
     AlertIcon,
     Box,
+    BoxProps,
     Button,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -12,8 +14,6 @@ import {
     InputRightAddon,
     Text,
 } from '@chakra-ui/react';
-import { formatCTSI } from '../../utils/token';
-import theme from '../../styles/theme';
 import { useForm } from 'react-hook-form';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -21,13 +21,15 @@ import { BigNumber } from 'ethers';
 import { useCartesiToken } from '../../services/token';
 import { useStaking } from '../../services/staking';
 import { useBlockNumber } from '../../services/eth';
+import { formatCTSI } from '../../utils/token';
+import theme from '../../styles/theme';
 
-interface UnstakeFormProps {
+interface UnstakeFormProps extends BoxProps {
     waiting?: boolean;
 }
 
 const UnstakeForm: FC<UnstakeFormProps> = (props) => {
-    const { waiting = false } = props;
+    const { waiting = false, ...restProps } = props;
     const { account } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
     const { staking, stakedBalance, maturingBalance, unstake } =
@@ -91,7 +93,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
     };
 
     return (
-        <Box>
+        <Box {...restProps}>
             <FormControl isInvalid={!!errors.unstake}>
                 <FormLabel>Amount to unstake</FormLabel>
 
@@ -121,31 +123,41 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                 {unstakeSplit ? (
                     <>
                         {unstakeSplit.maturing.gt(0) && (
-                            <Alert status="info">
-                                <Text>
-                                    {formatCTSI(unstakeSplit.maturing)}{' '}
-                                    <Text display="inline" fontSize="sm">
-                                        CTSI
+                            <Alert status="info" mt={2}>
+                                <AlertIcon />
+
+                                <Flex justify="space-between" width="100%">
+                                    <Text>
+                                        {formatCTSI(unstakeSplit.maturing)}{' '}
+                                        <Text display="inline" fontSize="sm">
+                                            CTSI
+                                        </Text>
                                     </Text>
-                                </Text>
-                                <Text>From "maturing"</Text>
+
+                                    <Text>From "maturing"</Text>
+                                </Flex>
                             </Alert>
                         )}
 
                         {unstakeSplit.staked.gt(0) && (
-                            <Alert status="info">
-                                <Text>
-                                    {formatCTSI(unstakeSplit.staked)}{' '}
-                                    <Text display="inline" fontSize="sm">
-                                        CTSI
+                            <Alert status="info" mt={2}>
+                                <AlertIcon />
+
+                                <Flex justify="space-between" width="100%">
+                                    <Text>
+                                        {formatCTSI(unstakeSplit.staked)}{' '}
+                                        <Text display="inline" fontSize="sm">
+                                            CTSI
+                                        </Text>
                                     </Text>
-                                </Text>
-                                <Text>From "staked"</Text>
+
+                                    <Text>From "staked"</Text>
+                                </Flex>
                             </Alert>
                         )}
                     </>
                 ) : (
-                    <Alert status="warning">
+                    <Alert status="warning" mt={2}>
                         <AlertIcon />
                         <Text>Maximum unstaking limit exceeded!</Text>
                     </Alert>
