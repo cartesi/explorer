@@ -11,16 +11,16 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import UnstakingForm from '../../components/staking/UnstakingForm';
+import UnstakeForm from '../../components/staking/UnstakeForm';
 
 export default {
-    title: 'Staking/UnstakingForm',
-    component: UnstakingForm,
+    title: 'Staking/UnstakeForm',
+    component: UnstakeForm,
     argTypes: {},
-} as ComponentMeta<typeof UnstakingForm>;
+} as ComponentMeta<typeof UnstakeForm>;
 
-const Template: ComponentStory<typeof UnstakingForm> = (args) => (
-    <UnstakingForm {...args} />
+const Template: ComponentStory<typeof UnstakeForm> = (args) => (
+    <UnstakeForm {...args} />
 );
 
 const props = {
