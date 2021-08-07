@@ -73,15 +73,23 @@ const theme = extendTheme({
     },
     boxShadows: {
         sm: '0 2px 2px rgba(0, 0, 0, 0.25)',
-        md: '0 4px 4px rgb(0 0 0 / 25%)',
-        lg: '0 4px 8px rgb(0 0 0 / 25%)',
+        md: '0 4px 4px rgba(0, 0, 0, 0.25)',
+        lg: '0 4px 8px rgba(0, 0, 0, 0.25)',
     },
     colors: {
         primary: 'rgba(0, 0, 0, 0.87)',
         secondary: '#3d3d3d',
         info: '#007bff',
-        gray: '#e0e0e0',
+        gray1: '#e9e9e9',
+        gray2: '#b9b9b9',
         gray9: '#242424',
+    },
+    zIndices: {
+        sm: 1010,
+        md: 1020,
+        lg: 1030,
+        xl: 1040,
+        xxl: 1050,
     },
 });
 
