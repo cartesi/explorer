@@ -11,21 +11,15 @@
 
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import ReactTooltip from 'react-tooltip';
 import { Flex, Box, Text, Button } from '@chakra-ui/react';
-
-import Layout from '../../components/Layout';
-import Node from '../../components/Node';
-
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
-
 import useUser from '../../graphql/hooks/useUser';
-
+import Layout from '../../components/Layout';
+import Node from '../../components/Node';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
@@ -33,8 +27,8 @@ import StakingCard from '../../components/staking/Card';
 import TotalBalances from '../../components/staking/TotalBalances';
 import UnstakeForm from '../../components/staking/UnstakeForm';
 import StakeForm from '../../components/staking/StakeForm';
-import theme from '../../styles/theme';
 import useSummary from '../../graphql/hooks/useSummary';
+import theme from '../../styles/theme';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -147,7 +141,7 @@ const Staking = () => {
                     position="fixed"
                     right={0}
                     width="100%"
-                    zIndex={10}
+                    zIndex={theme.zIndices.xxl}
                     bg="orange.100"
                     pb={2}
                 >
@@ -172,7 +166,11 @@ const Staking = () => {
                 stakedBalance={stakedBalance}
             />
 
-            <Node setWaiting={setNodeWaiting} setError={setNodeError} />
+            <Node
+                setWaiting={setNodeWaiting}
+                setError={setNodeError}
+                mt="-2.5vw"
+            />
 
             <TotalBalances user={user} totalBalance={totalBalance} my={5} />
 
@@ -237,12 +235,6 @@ const Staking = () => {
                     Unstake={<UnstakeForm waiting={waiting} />}
                 />
             </Flex>
-
-            <div className="row">
-                <div className="col col-12 col-md-7 pr-3 staking-balances my-3"></div>
-            </div>
-
-            <ReactTooltip />
         </Layout>
     );
 };
