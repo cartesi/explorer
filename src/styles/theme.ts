@@ -81,7 +81,8 @@ const theme = extendTheme({
         secondary: '#3d3d3d',
         info: '#007bff',
         gray1: '#e9e9e9',
-        gray2: '#b9b9b9',
+        gray2: '#e0e0e0',
+        gray3: '#b9b9b9',
         gray9: '#242424',
     },
     zIndices: {
