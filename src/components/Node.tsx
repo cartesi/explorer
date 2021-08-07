@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { Box, BoxProps, Button, Text, Flex } from '@chakra-ui/react';
 import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -17,13 +18,15 @@ import { BigNumber, constants } from 'ethers';
 import { truncateString } from '../utils/stringUtils';
 import { useUserNodes } from '../graphql/hooks/useNodes';
 import { useNode } from '../services/node';
+import theme from '../styles/theme';
 
-interface NodeProps {
+interface NodeProps extends BoxProps {
     setWaiting?: (waiting: boolean) => void;
     setError?: (error: string) => void;
 }
 
-const Node = ({ setWaiting, setError }: NodeProps) => {
+const Node: FC<NodeProps> = (props) => {
+    const { setWaiting, setError, ...restProps } = props;
     const { account, chainId } = useWeb3React<Web3Provider>();
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [deposit, setDeposit] = useState<BigNumber>(parseEther('0.1'));
@@ -54,17 +57,6 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
 
     let status = '';
 
-    useEffect(() => {
-        if (userNodes?.data?.nodes?.length > 0) {
-            setAddress(userNodes.data.nodes[0].id);
-        }
-    }, [account]);
-
-    useEffect(() => {
-        if (setWaiting) setWaiting(node.transaction.submitting);
-        if (setError) setError(node.transaction.error);
-    }, [node.transaction.error, node.transaction.submitting]);
-
     if (node.available) {
         status = 'Available';
     } else if (node.owned && node.authorized && node.user == account) {
@@ -83,43 +75,89 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
         node.retire();
     };
 
+    useEffect(() => {
+        if (userNodes?.data?.nodes?.length > 0) {
+            setAddress(userNodes.data.nodes[0].id);
+        }
+    }, [account]);
+
+    useEffect(() => {
+        if (setWaiting) {
+            setWaiting(node.transaction.submitting);
+        }
+
+        if (setError) {
+            setError(node.transaction.error);
+        }
+    }, [node.transaction.error, node.transaction.submitting]);
+
     return (
-        <div className="node-manage">
-            <div className="staking-hire">
-                <div className="staking-hire-content row">
-                    <span className="col-12 col-sm-auto body-text-1 mx-2">
-                        Node
-                    </span>
-                    <span
-                        className={`col-12 col-sm-auto info-text-md staking-hire-content-address mx-2 flex-grow-1 ${
-                            activeAddress !== '' ? 'active' : 'inactive'
-                        }`}
-                        onClick={() =>
-                            setShowDetails(!!account && !showDetails)
-                        }
-                    >
-                        {activeAddress
-                            ? truncateString(activeAddress)
-                            : account
-                            ? 'Click to enter your node address'
-                            : 'Connect to wallet first'}
-                    </span>
-                    {notMine && (
-                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-error">
-                            node owned by other account
-                        </span>
-                    )}
-                    {node.balance && (
-                        <span className="col-12 col-sm-auto mx-2 staking-hire-content-balance">
-                            {formatEther(node.balance)}{' '}
-                            <span className="small-text">ETH</span>
-                        </span>
-                    )}
-                </div>
-            </div>
+        <Box
+            {...restProps}
+            position="relative"
+            justify="center"
+            minHeight={90}
+            marginLeft="6vw"
+            marginRight="6vw"
+            bg="white"
+            zIndex={theme.zIndices.sm}
+        >
+            <Flex
+                position="relative"
+                direction={['column', 'column', 'row', 'row']}
+                align="center"
+                p="25px 6vw 25px 6vw"
+                boxShadow={theme.boxShadows.md}
+                zIndex={theme.zIndices.sm}
+            >
+                <Text mx={2}>Node</Text>
+
+                <Button
+                    color={
+                        activeAddress !== ''
+                            ? theme.colors.primary
+                            : theme.colors.gray2
+                    }
+                    bg="transparent"
+                    fontSize={32}
+                    fontWeight={300}
+                    _hover={{
+                        bg: 'transparent',
+                    }}
+                    _active={{
+                        bg: 'transparent',
+                    }}
+                    onClick={() => setShowDetails(!!account && !showDetails)}
+                >
+                    {activeAddress
+                        ? truncateString(activeAddress)
+                        : account
+                        ? 'Click to enter your node address'
+                        : 'Connect to wallet first'}
+                </Button>
+
+                {notMine && (
+                    <Text color="red.300">node owned by other account</Text>
+                )}
+
+                {node.balance && (
+                    <Text mx={2}>
+                        abcd{' '}
+                        <Text fontSize="sm" display="inline">
+                            ETH
+                        </Text>
+                    </Text>
+                )}
+            </Flex>
 
             {showDetails && (
-                <div className="staking-hire-node d-flex align-items-center justify-content-center">
+                <Flex
+                    justify="center"
+                    align="center"
+                    bg="white"
+                    padding={25}
+                    boxShadow={theme.boxShadows.md}
+                >
                     <div className="staking-hire-node-content">
                         <div className="form-group">
                             <label className="body-text-2 text-secondary">
@@ -316,27 +354,6 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                                         Add Funds
                                     </button>
                                 </div>
-                                {/* <div className="mb-1">
-                                    <input
-                                        type="checkbox"
-                                        checked={readRetireDisclaimer}
-                                        onChange={(e) =>
-                                            setReadRetireDisclaimer(
-                                                e.target.checked
-                                            )
-                                        }
-                                    />
-                                    {'  '}
-                                    Retirement is final (
-                                    <a
-                                        href="https://github.com/cartesi/noether/wiki/FAQ#i-have-retired-my-node-in-the-cartesi-explorer-but-the-node-funds-were-not-returned-what-is-going-on"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Learn more
-                                    </a>
-                                    )
-                                </div> */}
                             </>
                         )}
 
@@ -353,9 +370,9 @@ const Node = ({ setWaiting, setError }: NodeProps) => {
                             </button>
                         )}
                     </div>
-                </div>
+                </Flex>
             )}
-        </div>
+        </Box>
     );
 };
 
