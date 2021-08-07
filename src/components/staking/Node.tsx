@@ -28,10 +28,10 @@ import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
-import { truncateString } from '../utils/stringUtils';
-import { useUserNodes } from '../graphql/hooks/useNodes';
-import { useNode } from '../services/node';
-import theme from '../styles/theme';
+import { truncateString } from '../../utils/stringUtils';
+import { useUserNodes } from '../../graphql/hooks/useNodes';
+import { useNode } from '../../services/node';
+import theme from '../../styles/theme';
 
 interface NodeProps extends BoxProps {
     setWaiting?: (waiting: boolean) => void;
