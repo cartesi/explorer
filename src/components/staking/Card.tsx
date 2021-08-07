@@ -27,7 +27,7 @@ export const Card: React.FunctionComponent<CardProps> = (props) => {
             padding="1.5rem 3rem"
             borderLeftWidth={10}
             borderLeftColor={theme.colors.primary}
-            bg={isActive ? theme.colors.gray : 'white'}
+            bg={isActive ? theme.colors.gray2 : 'white'}
             {...restProps}
         >
             <Flex justify="space-between" align="center">

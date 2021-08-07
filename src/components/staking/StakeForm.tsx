@@ -26,7 +26,6 @@ import { useStaking } from '../../services/staking';
 import { useBlockNumber } from '../../services/eth';
 import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
-import useSummary from '../../graphql/hooks/useSummary';
 import { Summary } from '../../graphql/models';
 
 interface StakeFormProps extends BoxProps {
@@ -284,7 +283,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                         borderColor={
                             infiniteApproval
                                 ? theme.colors.primary
-                                : theme.colors.gray
+                                : theme.colors.gray2
                         }
                         isDisabled={!infiniteApproval}
                         onChange={(e) => setInfiniteApproval(e.target.checked)}

@@ -29,7 +29,7 @@ export const Balances: React.FunctionComponent<BalancesProps> = memo(
                 bg="black"
                 color="white"
                 opacity={0.87}
-                p="50px 6vw 50px 6vw"
+                p="50px 6vw 65px 6vw"
             >
                 <Box pb={[4, 4, 4, 0]}>
                     <Heading as="h5" size="lg" fontWeight="normal">
