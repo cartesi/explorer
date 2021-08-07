@@ -209,6 +209,9 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                         ? theme.colors.gray9
                         : theme.colors.secondary
                 }
+                _hover={{
+                    filter: 'opacity(90%)',
+                }}
                 isFullWidth
                 isDisabled={
                     isInfinite(stakeAmount) ||
@@ -233,6 +236,9 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                         ? theme.colors.gray9
                         : theme.colors.secondary
                 }
+                _hover={{
+                    filter: 'opacity(90%)',
+                }}
                 isFullWidth
                 isDisabled={
                     isInfinite(stakeAmount) ||

@@ -176,6 +176,9 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                         ? theme.colors.gray9
                         : theme.colors.secondary
                 }
+                _hover={{
+                    filter: 'opacity(90%)',
+                }}
                 isFullWidth
                 isDisabled={!account || waiting}
                 onClick={handleSubmit((data) => doUnstake(data.unstake))}

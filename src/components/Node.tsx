@@ -282,6 +282,9 @@ const Node: FC<NodeProps> = (props) => {
                                             ? theme.colors.gray9
                                             : theme.colors.secondary
                                     }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -304,6 +307,9 @@ const Node: FC<NodeProps> = (props) => {
                                             ? theme.colors.gray9
                                             : theme.colors.secondary
                                     }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -317,76 +323,136 @@ const Node: FC<NodeProps> = (props) => {
                         )}
 
                         {mine && node.pending && (
-                            <div className="staking-hire-node-buttons">
-                                <button
-                                    type="button"
-                                    disabled={
+                            <ButtonGroup>
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
+                                    isFullWidth
+                                    isDisabled={
                                         node.transaction.submitting ||
                                         node.loading
                                     }
-                                    className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
                                     onClick={() => node.cancelHire()}
                                 >
                                     Cancel Hire
-                                </button>
-                            </div>
+                                </Button>
+                            </ButtonGroup>
                         )}
 
                         {ready && (
-                            <>
-                                <div className="staking-hire-node-buttons">
-                                    <button
-                                        type="button"
-                                        disabled={
-                                            node.transaction.submitting ||
-                                            node.loading
-                                        }
-                                        className="btn btn-link px-0 py-0 m-2 button-text flex-fill text-left"
-                                        onClick={confirmRetirement}
-                                    >
-                                        Retire
-                                    </button>
+                            <ButtonGroup width="100%">
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
+                                    isFullWidth
+                                    isDisabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
+                                    onClick={confirmRetirement}
+                                >
+                                    Retire
+                                </Button>
 
-                                    <button
-                                        type="button"
-                                        disabled={
-                                            node.transaction.submitting ||
-                                            node.loading
-                                        }
-                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() =>
-                                            setShowDetails(!showDetails)
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
+                                    isFullWidth
+                                    isDisabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
+                                    onClick={() => setShowDetails(!showDetails)}
+                                >
+                                    Cancel
+                                </Button>
 
-                                    <button
-                                        type="button"
-                                        disabled={
-                                            node.transaction.submitting ||
-                                            node.loading
-                                        }
-                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() => node.transfer(transfer)}
-                                    >
-                                        Add Funds
-                                    </button>
-                                </div>
-                            </>
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    _hover={{
+                                        filter: 'opacity(90%)',
+                                    }}
+                                    isFullWidth
+                                    isDisabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
+                                    onClick={() => node.transfer(transfer)}
+                                >
+                                    Add Funds
+                                </Button>
+                            </ButtonGroup>
                         )}
 
                         {node.owned && !node.authorized && mine && (
-                            <button
-                                type="button"
-                                disabled={
+                            <Button
+                                size="sm"
+                                mt={2}
+                                px={3}
+                                borderRadius={2}
+                                color="white"
+                                bg={
+                                    node.transaction.submitting || node.loading
+                                        ? theme.colors.gray9
+                                        : theme.colors.secondary
+                                }
+                                _hover={{
+                                    filter: 'opacity(90%)',
+                                }}
+                                isFullWidth
+                                isDisabled={
                                     node.transaction.submitting || node.loading
                                 }
-                                className="btn btn-primary py-0 px-3 button-text flex-fill my-2"
                                 onClick={node.authorize}
                             >
                                 Authorize
-                            </button>
+                            </Button>
                         )}
                     </Box>
                 </Flex>
