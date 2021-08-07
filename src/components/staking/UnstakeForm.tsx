@@ -114,7 +114,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                             );
                         }}
                     />
-                    <InputRightAddon children={<span>CTSI</span>} />
+                    <InputRightAddon children="CTSI" />
                 </InputGroup>
                 <FormErrorMessage>{errors.unstake?.message}</FormErrorMessage>
             </FormControl>

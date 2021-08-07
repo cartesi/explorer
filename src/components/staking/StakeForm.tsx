@@ -144,7 +144,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                             );
                         }}
                     />
-                    <InputRightAddon children={<span>CTSI</span>} />
+                    <InputRightAddon children="CTSI" />
                 </InputGroup>
                 <FormErrorMessage>{errors.stake?.message}</FormErrorMessage>
             </FormControl>
@@ -283,7 +283,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                         borderColor={
                             infiniteApproval
                                 ? theme.colors.primary
-                                : theme.colors.gray2
+                                : theme.colors.gray3
                         }
                         isDisabled={!infiniteApproval}
                         onChange={(e) => setInfiniteApproval(e.target.checked)}
