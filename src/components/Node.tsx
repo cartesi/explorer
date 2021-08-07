@@ -10,7 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect, useState } from 'react';
-import { Box, BoxProps, Button, Text, Flex } from '@chakra-ui/react';
+import {
+    Box,
+    BoxProps,
+    Button,
+    ButtonGroup,
+    Text,
+    Flex,
+    FormLabel,
+    InputGroup,
+    Input,
+    FormErrorMessage,
+    FormControl,
+    InputRightAddon,
+} from '@chakra-ui/react';
 import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -45,14 +58,17 @@ const Node: FC<NodeProps> = (props) => {
 
     const node = useNode(activeAddress);
 
+    node.address = '173 Simeonovsko shose St • Sofia, Bulgaria • 1434';
+    node.available = true;
+
     const notMine =
         !node.loading &&
         node.address &&
         !node.available &&
         node.user != account;
     const mine = node.user == account;
-    const ready = node.user == account && node.owned && node.authorized;
-
+    const ready = true; // node.user == account && node.owned && node.authorized;
+    const isValidAddress = address === '' || node.address;
     const debug = chainId == 313371;
 
     let status = '';
@@ -116,11 +132,13 @@ const Node: FC<NodeProps> = (props) => {
                     color={
                         activeAddress !== ''
                             ? theme.colors.primary
-                            : theme.colors.gray2
+                            : theme.colors.gray3
                     }
+                    height="auto"
                     bg="transparent"
                     fontSize={32}
                     fontWeight={300}
+                    whiteSpace="normal"
                     _hover={{
                         bg: 'transparent',
                     }}
@@ -142,7 +160,7 @@ const Node: FC<NodeProps> = (props) => {
 
                 {node.balance && (
                     <Text mx={2}>
-                        abcd{' '}
+                        {formatEther(node.balance)}{' '}
                         <Text fontSize="sm" display="inline">
                             ETH
                         </Text>
@@ -158,143 +176,144 @@ const Node: FC<NodeProps> = (props) => {
                     padding={25}
                     boxShadow={theme.boxShadows.md}
                 >
-                    <div className="staking-hire-node-content">
-                        <div className="form-group">
-                            <label className="body-text-2 text-secondary">
-                                Node Address
-                            </label>
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control :invalid"
+                    <Box>
+                        <FormControl isInvalid={!isValidAddress}>
+                            <FormLabel>Node Address</FormLabel>
+
+                            <InputGroup>
+                                <Input
                                     id="address"
-                                    disabled={
+                                    min={0}
+                                    width={520}
+                                    maxWidth="100%"
+                                    isInvalid={!isValidAddress}
+                                    isDisabled={
                                         node.transaction.submitting ||
                                         node.loading
                                     }
-                                    value={activeAddress}
-                                    onChange={(event) =>
-                                        setAddress(event.target.value)
-                                    }
+                                    value={address}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value);
+                                    }}
                                 />
-                            </div>
-                            <div className="invalid-feedback">
-                                Invalid address.
-                            </div>
-                        </div>
+                            </InputGroup>
+                            <FormErrorMessage>
+                                {!isValidAddress && (
+                                    <Text>Invalid address</Text>
+                                )}
+                            </FormErrorMessage>
+                        </FormControl>
 
                         {node.address && node.available && (
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Deposit
-                                </label>
-                                <div className="input-group">
-                                    <input
+                            <FormControl mt={4}>
+                                <FormLabel>Deposit</FormLabel>
+
+                                <InputGroup>
+                                    <Input
                                         type="number"
-                                        className="addon-inline form-control"
-                                        id="deposit"
-                                        disabled={
+                                        min={0}
+                                        isDisabled={
                                             node.transaction.submitting ||
                                             node.loading
                                         }
-                                        defaultValue={formatEther(deposit)}
+                                        value={formatEther(deposit)}
                                         onBlur={(e) => {
-                                            const value = parseEther(
-                                                e.target.value
+                                            setDeposit(
+                                                parseEther(e.target.value)
                                             );
-                                            setDeposit(value);
-                                            e.target.value = formatEther(value);
                                         }}
                                     />
-                                    <span className="input-group-addon addon-inline input-source-observer small-text">
-                                        ETH
-                                    </span>
-                                </div>
-                            </div>
+                                    <InputRightAddon children="ETH" />
+                                </InputGroup>
+                            </FormControl>
                         )}
 
                         {node.address &&
                             debug &&
                             node.user != constants.AddressZero && (
-                                <div className="form-group">
-                                    <label className="body-text-2 text-secondary">
-                                        Owner
-                                    </label>
-                                    <div className="sub-title-1">
-                                        {node.user}
-                                    </div>
-                                </div>
+                                <Box>
+                                    <Text>
+                                        Owner: {node.user ? node.user : 'N/A'}
+                                    </Text>
+                                </Box>
                             )}
 
                         {node.address && debug && (
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Status
-                                </label>
-                                <div className="sub-title-1">{status}</div>
-                            </div>
+                            <Box>
+                                <Text>Status: {status ? status : 'N/A'}</Text>
+                            </Box>
                         )}
 
                         {ready && (
-                            <div className="form-group">
-                                <label className="body-text-2 text-secondary">
-                                    Add Funds
-                                </label>
-                                <div className="input-group">
-                                    <input
+                            <FormControl mt={4}>
+                                <FormLabel>Add Funds</FormLabel>
+
+                                <InputGroup>
+                                    <Input
                                         type="number"
-                                        className="addon-inline form-control"
-                                        id="transfer"
-                                        disabled={
+                                        min={0}
+                                        isDisabled={
                                             node.transaction.submitting ||
                                             node.loading
                                         }
-                                        defaultValue={formatEther(transfer)}
+                                        value={formatEther(transfer)}
                                         onBlur={(e) => {
-                                            const value = parseEther(
-                                                e.target.value
+                                            setTransfer(
+                                                parseEther(e.target.value)
                                             );
-                                            setTransfer(value);
-                                            e.target.value = formatEther(value);
                                         }}
                                     />
-                                    <span className="input-group-addon addon-inline input-source-observer small-text">
-                                        ETH
-                                    </span>
-                                </div>
-                            </div>
+                                    <InputRightAddon children="ETH" />
+                                </InputGroup>
+                            </FormControl>
                         )}
 
                         {node.address && node.available && (
-                            <div>
-                                <div className="staking-hire-node-buttons">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-dark py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() =>
-                                            setShowDetails(!showDetails)
-                                        }
-                                        disabled={
-                                            node.transaction.submitting ||
-                                            node.loading
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
+                            <ButtonGroup width="100%">
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    isFullWidth
+                                    isDisabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
+                                    onClick={() => setShowDetails(!showDetails)}
+                                >
+                                    Cancel
+                                </Button>
 
-                                    <button
-                                        type="button"
-                                        disabled={
-                                            node.transaction.submitting ||
-                                            node.loading
-                                        }
-                                        className="btn btn-primary py-0 px-3 button-text flex-fill m-2"
-                                        onClick={() => node.hire(deposit)}
-                                    >
-                                        Hire Node
-                                    </button>
-                                </div>
-                            </div>
+                                <Button
+                                    size="sm"
+                                    mt={2}
+                                    px={3}
+                                    borderRadius={2}
+                                    color="white"
+                                    bg={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                            ? theme.colors.gray9
+                                            : theme.colors.secondary
+                                    }
+                                    isFullWidth
+                                    isDisabled={
+                                        node.transaction.submitting ||
+                                        node.loading
+                                    }
+                                    onClick={() => node.hire(deposit)}
+                                >
+                                    Hire Node
+                                </Button>
+                            </ButtonGroup>
                         )}
 
                         {mine && node.pending && (
@@ -369,7 +388,7 @@ const Node: FC<NodeProps> = (props) => {
                                 Authorize
                             </button>
                         )}
-                    </div>
+                    </Box>
                 </Flex>
             )}
         </Box>
