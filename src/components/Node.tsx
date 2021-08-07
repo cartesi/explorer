@@ -58,16 +58,13 @@ const Node: FC<NodeProps> = (props) => {
 
     const node = useNode(activeAddress);
 
-    node.address = '173 Simeonovsko shose St • Sofia, Bulgaria • 1434';
-    node.available = true;
-
     const notMine =
         !node.loading &&
         node.address &&
         !node.available &&
         node.user != account;
     const mine = node.user == account;
-    const ready = true; // node.user == account && node.owned && node.authorized;
+    const ready = node.user == account && node.owned && node.authorized;
     const isValidAddress = address === '' || node.address;
     const debug = chainId == 313371;
 
