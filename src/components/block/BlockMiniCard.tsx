@@ -35,7 +35,13 @@ interface BlockMiniCardProps extends BoxProps {
 }
 
 const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
-    const { chainId, block, showProtocol = true, showChain = true } = props;
+    const {
+        chainId,
+        block,
+        showProtocol = true,
+        showChain = true,
+        ...boxProps
+    } = props;
     let id = `${block.number}`;
     if (showChain) {
         id = `${block.chain.number}-${id}`;
@@ -44,7 +50,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
         id = `${block.chain.protocol.version}-${id}`;
     }
     return (
-        <Box {...props}>
+        <Box {...boxProps}>
             <Center p={2}>
                 <HStack>
                     <TimeIcon />

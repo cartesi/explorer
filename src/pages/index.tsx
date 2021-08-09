@@ -27,7 +27,7 @@ import {
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
-import BlockCard from '../components/block/BlockMiniCard';
+import BlockMiniCard from '../components/block/BlockMiniCard';
 import Users from '../components/Users';
 
 import useBlocks from '../graphql/hooks/useBlocks';
@@ -203,9 +203,9 @@ const Home = () => {
                 <SectionHeading>Blocks</SectionHeading>
             </HStack>
             <Wrap p="20px 6vw" justify="space-around">
-                {blocks.slice(0, 4).map((block) => (
-                    <WrapItem>
-                        <BlockCard
+                {blocks.slice(0, 4).map((block, index) => (
+                    <WrapItem key={index}>
+                        <BlockMiniCard
                             chainId={chainId}
                             block={block}
                             key={block.id}
