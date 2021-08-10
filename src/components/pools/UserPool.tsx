@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Box,
     HStack,
     Icon,
     IconButton,
@@ -24,24 +25,23 @@ import {
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
 import { FaCoins, FaUser, FaUsers, FaWallet } from 'react-icons/fa';
-import { GrAdd, GrSubtract } from 'react-icons/gr';
+import { GrAdd, GrLinkTop, GrSubtract } from 'react-icons/gr';
 import { BsClockHistory } from 'react-icons/bs';
 import CTSIText from '../CTSIText';
-import { LockIcon } from '@chakra-ui/icons';
+import { EditIcon, LockIcon } from '@chakra-ui/icons';
 import UserStakeForm from './UserStakeForm';
 import UserUnstakeForm from './UserUnstakeForm';
 
 export interface UserPoolProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
-    shares: BigNumber;
-    staked: BigNumber;
-    released: BigNumber;
-    withdrawBalance: BigNumber;
+    userBalance: BigNumber; // user pool balance
+    shares: BigNumber; // user shares
+    staked: BigNumber; // user stake
     paused: boolean;
+    onApprove: (amount: BigNumberish) => void;
     onDeposit: (amount: BigNumberish) => void;
     onWithdraw: (amount: BigNumberish) => void;
-    onApprove: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
     onUnstake: (amount?: BigNumberish) => void;
 }
@@ -53,8 +53,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
         paused,
         shares,
         staked,
-        released,
-        withdrawBalance,
+        userBalance,
         onApprove,
         onStake,
         onUnstake,
@@ -77,14 +76,95 @@ const UserPool: FC<UserPoolProps> = (props) => {
             divider={<StackDivider />}
             {...stackProps}
         >
-            <CTSIText value={balance} direction="row" icon={FaWallet}>
-                <HStack>
-                    <Text>Wallet</Text>
+            <HStack>
+                <Box w="100%">
+                    <CTSIText
+                        value={balance}
+                        direction="row"
+                        icon={FaWallet}
+                        textDecoration="line-through"
+                        color="red"
+                    >
+                        <HStack>
+                            <Text>Wallet</Text>
+                            <Tooltip
+                                placement="top"
+                                label="Amount of tokens in your wallet"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
+                    </CTSIText>
+                </Box>
+                <HStack minW={100}></HStack>
+            </HStack>
+            <HStack justify="space-between">
+                <Box w="100%">
+                    <CTSIText
+                        value={allowance}
+                        direction="row"
+                        icon={GrLinkTop}
+                    >
+                        <HStack>
+                            <Text>Allowance</Text>
+                            <Tooltip
+                                placement="top"
+                                label="Maximum amount of tokens this pool can transfer out of your wallet"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
+                    </CTSIText>
+                </Box>
+                <HStack minW={100}>
+                    <IconButton
+                        icon={<EditIcon />}
+                        aria-label="Change"
+                        size="md"
+                    />
                 </HStack>
-            </CTSIText>
-            <CTSIText value={released} direction="row" icon={FaUsers}>
-                <HStack>
-                    <Text>Pool</Text>
+            </HStack>
+            <HStack>
+                <Box w="100%">
+                    <CTSIText
+                        value={userBalance}
+                        direction="row"
+                        icon={FaUsers}
+                    >
+                        <HStack>
+                            <Text>Pool</Text>
+                            <Tooltip
+                                placement="top"
+                                label="Amount of free tokens in the pool assigned to you. You must deposit tokens before staking them."
+                            >
+                                <Icon />
+                            </Tooltip>
+                            <ScaleFade
+                                initialScale={0.9}
+                                in={deposit.isOpen}
+                                unmountOnExit
+                            >
+                                <UserStakeForm
+                                    allowance={allowance}
+                                    onApprove={onApprove}
+                                    onStake={onDeposit}
+                                    onCancel={deposit.onClose}
+                                />
+                            </ScaleFade>
+                            <ScaleFade
+                                initialScale={0.9}
+                                in={withdraw.isOpen}
+                                unmountOnExit
+                            >
+                                <UserUnstakeForm
+                                    onUnstake={onUnstake}
+                                    onCancel={withdraw.onClose}
+                                />
+                            </ScaleFade>
+                        </HStack>
+                    </CTSIText>
+                </Box>
+                <HStack minW={100}>
                     {!(withdraw.isOpen || deposit.isOpen) && (
                         <Tooltip
                             label={paused ? 'Deposit paused' : 'Deposit'}
@@ -101,18 +181,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                             </span>
                         </Tooltip>
                     )}
-                    <ScaleFade
-                        initialScale={0.9}
-                        in={deposit.isOpen}
-                        unmountOnExit
-                    >
-                        <UserStakeForm
-                            allowance={allowance}
-                            onApprove={onApprove}
-                            onStake={onDeposit}
-                            onCancel={deposit.onClose}
-                        />
-                    </ScaleFade>
                     {!(withdraw.isOpen || deposit.isOpen) && (
                         <Tooltip label="Withdraw" placement="top">
                             <IconButton
@@ -123,21 +191,45 @@ const UserPool: FC<UserPoolProps> = (props) => {
                             />
                         </Tooltip>
                     )}
-                    <ScaleFade
-                        initialScale={0.9}
-                        in={withdraw.isOpen}
-                        unmountOnExit
-                    >
-                        <UserUnstakeForm
-                            onUnstake={onUnstake}
-                            onCancel={withdraw.onClose}
-                        />
-                    </ScaleFade>
                 </HStack>
-            </CTSIText>
-            <CTSIText value={staked} direction="row" icon={FaCoins}>
-                <HStack>
-                    <Text>Staked</Text>
+            </HStack>
+            <HStack>
+                <Box w="100%">
+                    <CTSIText value={staked} direction="row" icon={FaCoins}>
+                        <HStack>
+                            <Text>Staked</Text>
+                            <Tooltip
+                                placement="top"
+                                label="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
+                            >
+                                <Icon />
+                            </Tooltip>
+                            <ScaleFade
+                                initialScale={0.9}
+                                in={stake.isOpen}
+                                unmountOnExit
+                            >
+                                <UserStakeForm
+                                    allowance={allowance}
+                                    onApprove={onApprove}
+                                    onStake={onStake}
+                                    onCancel={stake.onClose}
+                                />
+                            </ScaleFade>
+                            <ScaleFade
+                                initialScale={0.9}
+                                in={unstake.isOpen}
+                                unmountOnExit
+                            >
+                                <UserUnstakeForm
+                                    onUnstake={onUnstake}
+                                    onCancel={unstake.onClose}
+                                />
+                            </ScaleFade>
+                        </HStack>
+                    </CTSIText>
+                </Box>
+                <HStack minW={100}>
                     {!(unstake.isOpen || stake.isOpen) && (
                         <Tooltip
                             label={paused ? 'Stake paused' : 'Stake'}
@@ -154,18 +246,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                             </span>
                         </Tooltip>
                     )}
-                    <ScaleFade
-                        initialScale={0.9}
-                        in={stake.isOpen}
-                        unmountOnExit
-                    >
-                        <UserStakeForm
-                            allowance={allowance}
-                            onApprove={onApprove}
-                            onStake={onStake}
-                            onCancel={stake.onClose}
-                        />
-                    </ScaleFade>
                     {!(unstake.isOpen || stake.isOpen) && (
                         <Tooltip label="Unstake" placement="top">
                             <IconButton
@@ -176,18 +256,8 @@ const UserPool: FC<UserPoolProps> = (props) => {
                             />
                         </Tooltip>
                     )}
-                    <ScaleFade
-                        initialScale={0.9}
-                        in={unstake.isOpen}
-                        unmountOnExit
-                    >
-                        <UserUnstakeForm
-                            onUnstake={onUnstake}
-                            onCancel={unstake.onClose}
-                        />
-                    </ScaleFade>
                 </HStack>
-            </CTSIText>{' '}
+            </HStack>
         </VStack>
     );
 };

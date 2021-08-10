@@ -32,9 +32,9 @@ ZeroAllowance.args = {
     balance: ethers.utils.parseUnits('90200', 18),
     allowance: BigNumber.from(0),
     paused: false,
+    userBalance: v('0'),
     shares: v('1200'),
     staked: v('1200'),
-    released: v('0'),
     withdrawBalance: v('0'),
 };
 
@@ -43,9 +43,9 @@ With1000Allowance.args = {
     balance: ethers.utils.parseUnits('90200', 18),
     allowance: ethers.utils.parseUnits('1000', 18),
     paused: false,
+    userBalance: v('0'),
     shares: v('1200'),
     staked: v('1200'),
-    released: v('0'),
     withdrawBalance: v('0'),
 };
 
@@ -54,9 +54,9 @@ WithdrawNotAvailable.args = {
     balance: ethers.utils.parseUnits('90200', 18),
     allowance: ethers.utils.parseUnits('1000', 18),
     paused: false,
+    userBalance: v('500'),
     shares: v('1200'),
     staked: v('1200'),
-    released: v('500'),
     withdrawBalance: v('0'),
 };
 
@@ -65,9 +65,9 @@ Withdraw.args = {
     balance: ethers.utils.parseUnits('90200', 18),
     allowance: ethers.utils.parseUnits('1000', 18),
     paused: false,
+    userBalance: v('500'),
     shares: v('1200'),
     staked: v('1200'),
-    released: v('500'),
     withdrawBalance: v('500'),
 };
 
@@ -76,8 +76,8 @@ Paused.args = {
     balance: ethers.utils.parseUnits('90200', 18),
     allowance: ethers.utils.parseUnits('1000', 18),
     paused: true,
+    userBalance: v('0'),
     shares: v('1200'),
     staked: v('1200'),
-    released: v('0'),
     withdrawBalance: v('0'),
 };
