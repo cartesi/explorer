@@ -32,8 +32,8 @@ export const POOL_BALANCES = gql`
             }
 
             shares
-            released
-            unstakeTimestamp
+            balance
+            stakeTimestamp
 
             pool {
                 id

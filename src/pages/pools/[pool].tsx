@@ -18,7 +18,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
-import { FaPercentage, FaTrophy, FaUsers, FaWallet } from 'react-icons/fa';
+import { FaUsers } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
@@ -27,14 +27,12 @@ import { useCartesiToken } from '../../services/token';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { useStaking } from '../../services/staking';
-import CTSIText from '../../components/CTSIText';
 import AddressText from '../../components/AddressText';
 import StatsPanel from '../../components/home/StatsPanel';
-import ActionsTab from '../../components/pools/ActionsTab';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BalancePanel from '../../components/pools/BalancePanel';
-import UserStake from '../../components/pools/UserStake';
 import PoolStatsPanel from '../../components/pools/PoolStatsPanel';
+import UserPool from '../../components/pools/UserPool';
 
 const Pool = () => {
     const router = useRouter();
@@ -48,11 +46,14 @@ const Pool = () => {
         stakedBalance,
         stakedShares,
         paused,
-        releasedBalance,
+        balance: userBalance,
         withdrawBalance,
-        unstakeTimestamp,
+        shares,
+        depositTimestamp,
+        lockTime,
         transaction,
         amountToShares,
+        deposit,
         stake,
         unstake,
         withdraw,
@@ -78,8 +79,8 @@ const Pool = () => {
     const now = new Date();
     const stakeLocked =
         stakedBalance.gt(0) &&
-        unstakeTimestamp &&
-        unstakeTimestamp.getTime() > now.getTime();
+        depositTimestamp &&
+        depositTimestamp.getTime() + lockTime.toNumber() > now.getTime();
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
@@ -123,16 +124,6 @@ const Pool = () => {
                             )}
                     </HStack>
                 </AddressText>
-                <CTSIText
-                    value={balance}
-                    icon={FaWallet}
-                    bg="black"
-                    color="white"
-                >
-                    <Text bg="black" color="white">
-                        Wallet Balance
-                    </Text>
-                </CTSIText>
             </HStack>
             <VStack px="6vw" py={5} spacing={10}>
                 <TransactionFeedback transaction={transaction}>
@@ -173,44 +164,22 @@ const Pool = () => {
                     totalCommission={stakingPool?.totalCommission}
                 />
                 <StakingDisclaimer key="readDisclaimer" />
-            </VStack>
 
-            <HStack
-                px="6vw"
-                justify="space-between"
-                spacing={10}
-                align="flex-start"
-            >
-                <UserStake
+                <UserPool
                     w="100%"
                     allowance={allowance}
-                    shares={stakedShares}
-                    staked={stakedBalance}
-                    released={releasedBalance}
-                    withdrawBalance={withdrawBalance}
-                    paused={paused.valueOf()}
+                    balance={balance}
+                    paused={paused?.valueOf()}
+                    userBalance={userBalance}
                     onApprove={(amount) => approve(pool.address, amount)}
+                    onDeposit={deposit}
+                    onWithdraw={withdraw}
                     onStake={stake}
-                    onUnstake={onUnstake}
-                    onWithdraw={withdraw}
+                    onUnstake={unstake}
+                    shares={shares}
+                    staked={stakedBalance}
                 />
-                <ActionsTab
-                    minW={500}
-                    maxW={500}
-                    allowance={allowance}
-                    paused={paused.valueOf()}
-                    stakedAmount={stakedBalance}
-                    stakedShares={stakedShares}
-                    releasedBalance={releasedBalance}
-                    withdrawBalance={withdrawBalance}
-                    onApprove={(amount) => approve(pool.address, amount)}
-                    onStake={(amount) => stake(amount)}
-                    onUnstake={onUnstake}
-                    onWithdraw={withdraw}
-                >
-                    <Text>Test</Text>
-                </ActionsTab>
-            </HStack>
+            </VStack>
         </Layout>
     );
 };

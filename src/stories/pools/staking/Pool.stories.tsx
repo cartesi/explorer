@@ -12,24 +12,18 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import UnstakeForm from '../../components/pools/UnstakeForm';
-import { BigNumber, ethers } from 'ethers';
+import Pool from '../../../components/pools/staking/Pool';
+import { ethers } from 'ethers';
 
 export default {
-    title: 'Pools/Unstake Form',
-    component: UnstakeForm,
+    title: 'Pools/Staking/Pool',
+    component: Pool,
     argTypes: {},
-} as ComponentMeta<typeof UnstakeForm>;
+} as ComponentMeta<typeof Pool>;
 
-const Template: ComponentStory<typeof UnstakeForm> = (args) => (
-    <UnstakeForm {...args} />
-);
+const Template: ComponentStory<typeof Pool> = (args) => <Pool {...args} />;
 
-export const ZeroShares = Template.bind({});
-ZeroShares.args = { shares: BigNumber.from(0), amount: BigNumber.from(0) };
-
-export const Enabled = Template.bind({});
-Enabled.args = {
-    shares: ethers.utils.parseUnits('100000', 18),
-    amount: ethers.utils.parseUnits('100000', 18),
+export const Basic = Template.bind({});
+Basic.args = {
+    balance: ethers.utils.parseUnits('2000', 18),
 };

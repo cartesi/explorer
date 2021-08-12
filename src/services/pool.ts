@@ -49,13 +49,14 @@ export const useStakingPool = (address: string, account: string) => {
     // total amount of token "in" pool
     const [amount, setAmount] = useState<BigNumber>(constants.Zero);
 
+    // total amount of token "in" pool
+    const [lockTime, setLockTime] = useState<BigNumber>(constants.Zero);
+
     // instant when user can unstake
-    const [unstakeTimestamp, setUnstakeTimestamp] = useState<Date>(null);
+    const [depositTimestamp, setDepositTimestamp] = useState<Date>(null);
 
     // amount of tokens user requested to withdraw
-    const [releasedBalance, setReleasedBalance] = useState<BigNumber>(
-        constants.Zero
-    );
+    const [balance, setBalance] = useState<BigNumber>(constants.Zero);
 
     // amount of token user can withdraw
     const [withdrawBalance, setWithdrawBalance] = useState<BigNumber>(
@@ -92,6 +93,9 @@ export const useStakingPool = (address: string, account: string) => {
             const amount = await pool.amount();
             setAmount(amount);
 
+            // query pool lock time
+            setLockTime(await pool.lockTime());
+
             // query user balance
             const balance = await pool.userBalance(account);
 
@@ -101,10 +105,10 @@ export const useStakingPool = (address: string, account: string) => {
             // calculate user stake in tokens
             setStakedBalance(sharesToAmount(balance.shares));
 
-            setUnstakeTimestamp(
-                new Date(balance.unstakeTimestamp.toNumber() * 1000)
+            setDepositTimestamp(
+                new Date(balance.depositTimestamp.toNumber() * 1000)
             );
-            setReleasedBalance(balance.released);
+            setBalance(balance.balance);
             setWithdrawBalance(await pool.getWithdrawBalance());
             setPaused(await pool.paused());
 
@@ -115,6 +119,12 @@ export const useStakingPool = (address: string, account: string) => {
             getData();
         }
     }, [pool, account, blockNumber]);
+
+    const deposit = (amount: BigNumberish) => {
+        if (pool) {
+            transaction.set(pool.deposit(amount));
+        }
+    };
 
     const stake = (amount: BigNumberish) => {
         if (pool) {
@@ -128,9 +138,9 @@ export const useStakingPool = (address: string, account: string) => {
         }
     };
 
-    const withdraw = () => {
+    const withdraw = (amount: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.withdraw());
+            transaction.set(pool.withdraw(amount));
         }
     };
 
@@ -183,11 +193,13 @@ export const useStakingPool = (address: string, account: string) => {
         transaction,
         stakedBalance,
         stakedShares,
-        releasedBalance,
+        balance,
         withdrawBalance,
-        unstakeTimestamp,
+        depositTimestamp,
         paused,
         amounts,
+        lockTime,
+        deposit,
         stake,
         unstake,
         withdraw,

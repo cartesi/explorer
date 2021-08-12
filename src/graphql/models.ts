@@ -104,8 +104,8 @@ export type PoolBalance = {
     pool: StakingPool;
     user: PoolUser;
     shares: number;
-    released: number;
-    unstakeTimestamp: number;
+    balance: number;
+    stakeTimestamp: number;
 };
 
 export type PoolBalancesData = {

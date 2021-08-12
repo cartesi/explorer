@@ -10,12 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
+    Collapse,
     HStack,
-    Icon,
     IconButton,
-    ScaleFade,
-    StackDivider,
     StackProps,
     Text,
     Tooltip,
@@ -24,13 +21,15 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
-import { FaCoins, FaUser, FaUsers, FaWallet } from 'react-icons/fa';
-import { GrAdd, GrLinkTop, GrSubtract } from 'react-icons/gr';
-import { BsClockHistory } from 'react-icons/bs';
-import CTSIText from '../CTSIText';
-import { EditIcon, LockIcon } from '@chakra-ui/icons';
-import UserStakeForm from './UserStakeForm';
-import UserUnstakeForm from './UserUnstakeForm';
+import { FaCoins } from 'react-icons/fa';
+import { GrAdd, GrSubtract } from 'react-icons/gr';
+import CTSI from './staking/CTSI';
+import Title from './staking/Title';
+import Wallet from './staking/Wallet';
+import Allowance from './staking/Allowance';
+import Deposit from './staking/Deposit';
+import Pool from './staking/Pool';
+import Withdraw from './staking/Withdraw';
 
 export interface UserPoolProps extends StackProps {
     balance: BigNumber; // wallet balance
@@ -62,200 +61,87 @@ const UserPool: FC<UserPoolProps> = (props) => {
         ...stackProps
     } = props;
 
-    const stake = useDisclosure();
-    const unstake = useDisclosure();
-    const deposit = useDisclosure();
-    const withdraw = useDisclosure();
+    // controller for hidden fields
+    const depositDisclosure = useDisclosure();
+    const withdrawDisclosure = useDisclosure();
+    const stakeDisclosure = useDisclosure();
+    const unstakeDisclosure = useDisclosure();
+
+    const onDepositChange = (value: BigNumberish) => {
+        console.log('deposit', value.toString());
+    };
+
+    const onWithdrawChange = (value: BigNumberish) => {
+        console.log('withdraw', value.toString());
+    };
 
     return (
         <VStack
             shadow="md"
             p={5}
-            borderLeft="10px solid black"
             align="stretch"
-            divider={<StackDivider />}
+            borderLeft="10px solid black"
             {...stackProps}
         >
-            <HStack>
-                <Box w="100%">
-                    <CTSIText
-                        value={balance}
-                        direction="row"
-                        icon={FaWallet}
-                        textDecoration="line-through"
-                        color="red"
-                    >
-                        <HStack>
-                            <Text>Wallet</Text>
-                            <Tooltip
-                                placement="top"
-                                label="Amount of tokens in your wallet"
-                            >
-                                <Icon />
-                            </Tooltip>
-                        </HStack>
-                    </CTSIText>
-                </Box>
-                <HStack minW={100}></HStack>
-            </HStack>
+            <Wallet balance={balance} />
+            <Allowance allowance={allowance} onApprove={onApprove} />
+            <Collapse
+                in={depositDisclosure.isOpen}
+                animateOpacity
+                unmountOnExit
+            >
+                <Deposit
+                    allowance={allowance}
+                    balance={balance}
+                    onCancel={depositDisclosure.onClose}
+                    onSubmit={onDeposit}
+                    onChange={onDepositChange}
+                />
+            </Collapse>
+            <Collapse
+                in={withdrawDisclosure.isOpen}
+                animateOpacity
+                unmountOnExit
+            >
+                <Withdraw
+                    balance={userBalance}
+                    onCancel={withdrawDisclosure.onClose}
+                    onSubmit={onWithdraw}
+                    onChange={onWithdrawChange}
+                />
+            </Collapse>
+            <Pool
+                balance={userBalance}
+                onDeposit={depositDisclosure.onOpen}
+                onWithdraw={withdrawDisclosure.onOpen}
+            />
             <HStack justify="space-between">
-                <Box w="100%">
-                    <CTSIText
-                        value={allowance}
-                        direction="row"
-                        icon={GrLinkTop}
-                    >
-                        <HStack>
-                            <Text>Allowance</Text>
-                            <Tooltip
-                                placement="top"
-                                label="Maximum amount of tokens this pool can transfer out of your wallet"
-                            >
-                                <Icon />
-                            </Tooltip>
-                        </HStack>
-                    </CTSIText>
-                </Box>
-                <HStack minW={100}>
-                    <IconButton
-                        icon={<EditIcon />}
-                        aria-label="Change"
-                        size="md"
-                    />
-                </HStack>
-            </HStack>
-            <HStack>
-                <Box w="100%">
-                    <CTSIText
-                        value={userBalance}
-                        direction="row"
-                        icon={FaUsers}
-                    >
-                        <HStack>
-                            <Text>Pool</Text>
-                            <Tooltip
-                                placement="top"
-                                label="Amount of free tokens in the pool assigned to you. You must deposit tokens before staking them."
-                            >
-                                <Icon />
-                            </Tooltip>
-                            <ScaleFade
-                                initialScale={0.9}
-                                in={deposit.isOpen}
-                                unmountOnExit
-                            >
-                                <UserStakeForm
-                                    allowance={allowance}
-                                    onApprove={onApprove}
-                                    onStake={onDeposit}
-                                    onCancel={deposit.onClose}
-                                />
-                            </ScaleFade>
-                            <ScaleFade
-                                initialScale={0.9}
-                                in={withdraw.isOpen}
-                                unmountOnExit
-                            >
-                                <UserUnstakeForm
-                                    onUnstake={onUnstake}
-                                    onCancel={withdraw.onClose}
-                                />
-                            </ScaleFade>
-                        </HStack>
-                    </CTSIText>
-                </Box>
-                <HStack minW={100}>
-                    {!(withdraw.isOpen || deposit.isOpen) && (
-                        <Tooltip
-                            label={paused ? 'Deposit paused' : 'Deposit'}
-                            placement="top"
-                        >
-                            <span>
-                                <IconButton
-                                    isDisabled={paused}
-                                    icon={paused ? <LockIcon /> : <GrAdd />}
-                                    aria-label="Deposit"
-                                    size="md"
-                                    onClick={deposit.onToggle}
-                                />
-                            </span>
-                        </Tooltip>
-                    )}
-                    {!(withdraw.isOpen || deposit.isOpen) && (
-                        <Tooltip label="Withdraw" placement="top">
+                <Title
+                    title="Staked"
+                    icon={<FaCoins />}
+                    help="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
+                />
+                <HStack align="baseline">
+                    <CTSI value={staked} />
+                    <Text fontSize="small">CTSI</Text>
+                    <HStack minW={100}>
+                        <Tooltip label="Stake" placement="top">
                             <IconButton
-                                icon={<GrSubtract />}
-                                aria-label="Withdraw"
+                                icon={<GrAdd />}
+                                aria-label="Stake"
                                 size="md"
-                                onClick={withdraw.onToggle}
+                                onClick={stakeDisclosure.onToggle}
                             />
                         </Tooltip>
-                    )}
-                </HStack>
-            </HStack>
-            <HStack>
-                <Box w="100%">
-                    <CTSIText value={staked} direction="row" icon={FaCoins}>
-                        <HStack>
-                            <Text>Staked</Text>
-                            <Tooltip
-                                placement="top"
-                                label="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
-                            >
-                                <Icon />
-                            </Tooltip>
-                            <ScaleFade
-                                initialScale={0.9}
-                                in={stake.isOpen}
-                                unmountOnExit
-                            >
-                                <UserStakeForm
-                                    allowance={allowance}
-                                    onApprove={onApprove}
-                                    onStake={onStake}
-                                    onCancel={stake.onClose}
-                                />
-                            </ScaleFade>
-                            <ScaleFade
-                                initialScale={0.9}
-                                in={unstake.isOpen}
-                                unmountOnExit
-                            >
-                                <UserUnstakeForm
-                                    onUnstake={onUnstake}
-                                    onCancel={unstake.onClose}
-                                />
-                            </ScaleFade>
-                        </HStack>
-                    </CTSIText>
-                </Box>
-                <HStack minW={100}>
-                    {!(unstake.isOpen || stake.isOpen) && (
-                        <Tooltip
-                            label={paused ? 'Stake paused' : 'Stake'}
-                            placement="top"
-                        >
-                            <span>
-                                <IconButton
-                                    isDisabled={paused}
-                                    icon={paused ? <LockIcon /> : <GrAdd />}
-                                    aria-label="Stake"
-                                    size="md"
-                                    onClick={stake.onToggle}
-                                />
-                            </span>
-                        </Tooltip>
-                    )}
-                    {!(unstake.isOpen || stake.isOpen) && (
                         <Tooltip label="Unstake" placement="top">
                             <IconButton
                                 icon={<GrSubtract />}
                                 aria-label="Unstake"
                                 size="md"
-                                onClick={unstake.onToggle}
+                                onClick={unstakeDisclosure.onToggle}
                             />
                         </Tooltip>
-                    )}
+                    </HStack>
                 </HStack>
             </HStack>
         </VStack>

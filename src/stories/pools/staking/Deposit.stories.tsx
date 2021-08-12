@@ -12,30 +12,33 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import StakeForm from '../../components/pools/StakeForm';
-import { BigNumber, ethers } from 'ethers';
+import Deposit from '../../../components/pools/staking/Deposit';
+import { ethers } from 'ethers';
 
 export default {
-    title: 'Pools/Stake Form',
-    component: StakeForm,
+    title: 'Pools/Staking/Deposit',
+    component: Deposit,
     argTypes: {},
-} as ComponentMeta<typeof StakeForm>;
+} as ComponentMeta<typeof Deposit>;
 
-const Template: ComponentStory<typeof StakeForm> = (args) => (
-    <StakeForm {...args} />
+const Template: ComponentStory<typeof Deposit> = (args) => (
+    <Deposit {...args} />
 );
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = { allowance: BigNumber.from(0), paused: false };
-
-export const WithAllowance = Template.bind({});
-WithAllowance.args = {
-    allowance: ethers.utils.parseUnits('1000', 18),
-    paused: false,
+export const Zero = Template.bind({});
+Zero.args = {
+    allowance: ethers.utils.parseUnits('0', 18),
+    balance: ethers.utils.parseUnits('0', 18),
 };
 
-export const Paused = Template.bind({});
-Paused.args = {
-    allowance: ethers.utils.parseUnits('1000', 18),
-    paused: true,
+export const ZeroAllowance = Template.bind({});
+ZeroAllowance.args = {
+    allowance: ethers.utils.parseUnits('0', 18),
+    balance: ethers.utils.parseUnits('20000', 18),
+};
+
+export const NonZero = Template.bind({});
+NonZero.args = {
+    allowance: ethers.utils.parseUnits('20000', 18),
+    balance: ethers.utils.parseUnits('20000', 18),
 };
