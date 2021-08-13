@@ -45,7 +45,7 @@ const Staking = () => {
         withdraw,
     } = useStaking(account);
 
-    const { balance, transaction: tokenTransaction } = useCartesiToken(
+    const { transaction: tokenTransaction } = useCartesiToken(
         account,
         staking?.address,
         blockNumber
@@ -55,20 +55,14 @@ const Staking = () => {
     const user = useUser(account);
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
-
     const [maturingCountdown, setMaturingCountdown] = useState<number>();
     const [releasingCountdown, setReleasingCountdown] = useState<number>();
-
     const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
-    const [nodeError, setNodeError] = useState<string>();
 
     const waiting =
         stakingTransaction.submitting ||
         tokenTransaction.submitting ||
         nodeWaiting;
-
-    const error =
-        tokenTransaction.error || stakingTransaction.error || nodeError;
 
     const updateTimers = () => {
         if (maturingBalance.gt(0)) {
@@ -159,18 +153,9 @@ const Staking = () => {
                 </Box>
             )}
 
-            <Balances
-                waiting={waiting}
-                error={error}
-                balance={balance}
-                stakedBalance={stakedBalance}
-            />
+            <Balances />
 
-            <Node
-                setWaiting={setNodeWaiting}
-                setError={setNodeError}
-                mt="-2.5vw"
-            />
+            <Node setWaiting={setNodeWaiting} mt="-2.5vw" />
 
             <TotalBalances user={user} totalBalance={totalBalance} my={5} />
 
