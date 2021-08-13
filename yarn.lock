@@ -1180,10 +1180,10 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/staking-pool@^1.0.0-alpha.3":
-  version "1.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0-alpha.4.tgz#1ebaf23e256bd8c750d3151149341fe0cd8d9dde"
-  integrity sha512-FfjN6YxBfk4/7ngDCaFR1H8GCpF2L6H5dRgtbF6UcmH1AjBok6TQRk85aSj+JB66RPN8JYZLiOWTiVHFCPNznA==
+"@cartesi/staking-pool@^1.0.0-beta.0":
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0-beta.0.tgz#00092b0a16b61bdfe43a6d30b91d2a496ca863a1"
+  integrity sha512-V8FKYQYF6gTlW22tNNxaSZFuznQIs5FxrvbRbaA+AyOY6DCyHjrND8Ix9yO+64bTMtDj8KAUV20mdSQD/sGfyw==
   dependencies:
     "@cartesi/pos" "^1.1.2"
     "@chainlink/contracts" "^0.2.1"
