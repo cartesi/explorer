@@ -42,24 +42,14 @@ export const Balances: React.FunctionComponent<BalancesProps> = memo(
                 <Spacer />
 
                 <Flex w={['100%', '100%', '100%', '50%']}>
-                    <Box w="50%">
-                        <CTSIText
-                            value={balance}
-                            icon={FaWallet}
-                            bg="black"
-                            color="white"
-                        >
+                    <Box flex={1}>
+                        <CTSIText value={balance} icon={FaWallet}>
                             <Text>Wallet Balance</Text>
                         </CTSIText>
                     </Box>
 
-                    <Box w="50%">
-                        <CTSIText
-                            value={stakedBalance}
-                            icon={FaCoins}
-                            bg="black"
-                            color="white"
-                        >
+                    <Box flex={1}>
+                        <CTSIText value={stakedBalance} icon={FaCoins}>
                             <Text>Staked Balance</Text>
                         </CTSIText>
                     </Box>
