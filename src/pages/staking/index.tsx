@@ -34,6 +34,7 @@ const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
 
     const blockNumber = useBlockNumber();
+
     const {
         staking,
         stakedBalance,
@@ -45,7 +46,7 @@ const Staking = () => {
         withdraw,
     } = useStaking(account);
 
-    const { transaction: tokenTransaction } = useCartesiToken(
+    const { balance, transaction: tokenTransaction } = useCartesiToken(
         account,
         staking?.address,
         blockNumber
@@ -153,7 +154,11 @@ const Staking = () => {
                 </Box>
             )}
 
-            <Balances />
+            <Balances
+                balance={balance}
+                stakedBalance={stakedBalance}
+                transaction={stakingTransaction}
+            />
 
             <Node setWaiting={setNodeWaiting} mt="-2.5vw" />
 
