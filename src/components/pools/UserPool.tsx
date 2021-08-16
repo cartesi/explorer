@@ -9,27 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Collapse,
-    HStack,
-    IconButton,
-    StackProps,
-    Text,
-    Tooltip,
-    useDisclosure,
-    VStack,
-} from '@chakra-ui/react';
+import { Collapse, StackProps, useDisclosure, VStack } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
-import { FaCoins } from 'react-icons/fa';
-import { GrAdd, GrSubtract } from 'react-icons/gr';
-import CTSI from './staking/CTSI';
-import Title from './staking/Title';
 import Wallet from './staking/Wallet';
 import Allowance from './staking/Allowance';
 import Deposit from './staking/Deposit';
 import Pool from './staking/Pool';
 import Withdraw from './staking/Withdraw';
+import Staked from './staking/Staked';
+import Stake from './staking/Stake';
+import Unstake from './staking/Unstake';
 
 export interface UserPoolProps extends StackProps {
     balance: BigNumber; // wallet balance
@@ -69,6 +59,14 @@ const UserPool: FC<UserPoolProps> = (props) => {
 
     const onDepositChange = (value: BigNumberish) => {
         console.log('deposit', value.toString());
+    };
+
+    const onStakeChange = (value: BigNumberish) => {
+        console.log('stake', value.toString());
+    };
+
+    const onUnstakeChange = (value: BigNumberish) => {
+        console.log('unstake', value.toString());
     };
 
     const onWithdrawChange = (value: BigNumberish) => {
@@ -115,35 +113,32 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 onDeposit={depositDisclosure.onOpen}
                 onWithdraw={withdrawDisclosure.onOpen}
             />
-            <HStack justify="space-between">
-                <Title
-                    title="Staked"
-                    icon={<FaCoins />}
-                    help="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
+            <Collapse in={stakeDisclosure.isOpen} animateOpacity unmountOnExit>
+                <Stake
+                    balance={userBalance}
+                    onCancel={stakeDisclosure.onClose}
+                    onChange={onStakeChange}
+                    onSubmit={onStake}
                 />
-                <HStack align="baseline">
-                    <CTSI value={staked} />
-                    <Text fontSize="small">CTSI</Text>
-                    <HStack minW={100}>
-                        <Tooltip label="Stake" placement="top">
-                            <IconButton
-                                icon={<GrAdd />}
-                                aria-label="Stake"
-                                size="md"
-                                onClick={stakeDisclosure.onToggle}
-                            />
-                        </Tooltip>
-                        <Tooltip label="Unstake" placement="top">
-                            <IconButton
-                                icon={<GrSubtract />}
-                                aria-label="Unstake"
-                                size="md"
-                                onClick={unstakeDisclosure.onToggle}
-                            />
-                        </Tooltip>
-                    </HStack>
-                </HStack>
-            </HStack>
+            </Collapse>
+            <Collapse
+                in={unstakeDisclosure.isOpen}
+                animateOpacity
+                unmountOnExit
+            >
+                <Unstake
+                    balance={staked}
+                    shares={shares}
+                    onCancel={unstakeDisclosure.onClose}
+                    onChange={onUnstakeChange}
+                    onSubmit={onUnstake}
+                />
+            </Collapse>
+            <Staked
+                balance={staked}
+                onStake={stakeDisclosure.onOpen}
+                onUnstake={unstakeDisclosure.onOpen}
+            />
         </VStack>
     );
 };

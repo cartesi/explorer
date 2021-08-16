@@ -126,12 +126,6 @@ const Pool = () => {
                 </AddressText>
             </HStack>
             <VStack px="6vw" py={5} spacing={10}>
-                <TransactionFeedback transaction={transaction}>
-                    Sending transaction...
-                </TransactionFeedback>
-                <TransactionFeedback transaction={tokenTransaction}>
-                    Sending transaction...
-                </TransactionFeedback>
                 <BalancePanel
                     w="100%"
                     amount={amount}
@@ -165,6 +159,12 @@ const Pool = () => {
                 />
                 <StakingDisclaimer key="readDisclaimer" />
 
+                <TransactionFeedback transaction={transaction}>
+                    Sending transaction...
+                </TransactionFeedback>
+                <TransactionFeedback transaction={tokenTransaction}>
+                    Sending transaction...
+                </TransactionFeedback>
                 <UserPool
                     w="100%"
                     allowance={allowance}
