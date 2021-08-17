@@ -23,7 +23,36 @@ export default {
 
 const Template: ComponentStory<typeof Pool> = (args) => <Pool {...args} />;
 
+const v = (n: string) => ethers.utils.parseUnits(n, 18);
+
 export const Basic = Template.bind({});
 Basic.args = {
-    balance: ethers.utils.parseUnits('2000', 18),
+    balance: v('30000'),
+    allowance: v('30000'),
+    userBalance: v('2000'),
+    withdrawBalance: v('2000'),
+};
+
+export const NoBalance = Template.bind({});
+NoBalance.args = {
+    balance: v('0'),
+    allowance: v('30000'),
+    userBalance: v('2000'),
+    withdrawBalance: v('2000'),
+};
+
+export const NoAllowance = Template.bind({});
+NoAllowance.args = {
+    balance: v('30000'),
+    allowance: v('0'),
+    userBalance: v('2000'),
+    withdrawBalance: v('2000'),
+};
+
+export const NoWithdrawBalance = Template.bind({});
+NoWithdrawBalance.args = {
+    balance: v('30000'),
+    allowance: v('30000'),
+    userBalance: v('2000'),
+    withdrawBalance: v('0'),
 };

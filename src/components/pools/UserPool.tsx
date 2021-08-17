@@ -27,6 +27,7 @@ export interface UserPoolProps extends StackProps {
     userBalance: BigNumber; // user pool balance
     shares: BigNumber; // user shares
     staked: BigNumber; // user stake
+    withdrawBalance: BigNumber; // amount of token user can actually withdraw
     paused: boolean;
     onApprove: (amount: BigNumberish) => void;
     onDeposit: (amount: BigNumberish) => void;
@@ -43,6 +44,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
         shares,
         staked,
         userBalance,
+        withdrawBalance,
         onApprove,
         onStake,
         onUnstake,
@@ -109,7 +111,10 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 />
             </Collapse>
             <Pool
-                balance={userBalance}
+                balance={balance}
+                allowance={allowance}
+                userBalance={userBalance}
+                withdrawBalance={withdrawBalance}
                 onDeposit={depositDisclosure.onOpen}
                 onWithdraw={withdrawDisclosure.onOpen}
             />
