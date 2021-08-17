@@ -19,15 +19,19 @@ export default {
     argTypes: {},
 } as ComponentMeta<typeof Balances>;
 
+const transaction = {
+    submitting: true,
+    acknowledged: true,
+};
+
 const Template: ComponentStory<typeof Balances> = (args) => (
     <Balances {...args} />
 );
 
 const props = {
-    waiting: false,
     balance: '100000000000000000000000',
     stakedBalance: '100000000000000000000000',
-    error: undefined,
+    transaction,
 };
 
 export const Default = Template.bind({});
@@ -39,4 +43,9 @@ export const Pending = Template.bind({});
 Pending.args = {
     ...props,
     waiting: true,
+    transaction: {
+        ...transaction,
+        submitting: false,
+        acknowledged: false,
+    },
 };
