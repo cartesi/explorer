@@ -156,7 +156,7 @@ const Calculator = () => {
                         />
                     </HStack>
 
-                    <StakingDisclaimer key="calculator" />
+                    <StakingDisclaimer persistanceKey="calculator" />
                 </form>
             ) : (
                 <div />

@@ -157,7 +157,7 @@ const Pool = () => {
                     totalUsers={stakingPool?.totalUsers}
                     totalCommission={stakingPool?.totalCommission}
                 />
-                <StakingDisclaimer key="readDisclaimer" />
+                <StakingDisclaimer persistanceKey="readDisclaimer" />
 
                 <TransactionFeedback transaction={transaction}>
                     Sending transaction...

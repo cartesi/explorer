@@ -25,12 +25,12 @@ import {
 import createPersistedState from 'use-persisted-state';
 
 export interface StakingDisclaimerProps {
-    key: string;
+    persistanceKey: string;
 }
 
-const StakingDisclaimer: FC<StakingDisclaimerProps> = ({ key }) => {
+const StakingDisclaimer: FC<StakingDisclaimerProps> = ({ persistanceKey }) => {
     // persistent state of user read disclaimer message, stored in browser localStorage
-    const useDisclaimerState = createPersistedState(key);
+    const useDisclaimerState = createPersistedState(persistanceKey);
     const [acknowledged, setAcknowledged] = useDisclaimerState(false);
 
     return (

@@ -145,7 +145,7 @@ const Staking = () => {
                     bg="orange.100"
                     pb={2}
                 >
-                    <StakingDisclaimer key="readDisclaimer" />
+                    <StakingDisclaimer persistanceKey="readDisclaimer" />
 
                     <Flex align="center" justify="flex-end" mt={2} pr={2}>
                         <Button
