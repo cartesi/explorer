@@ -29,23 +29,15 @@ import Title from './Title';
 export interface UnstakeProps {
     balance: BigNumber;
     shares: BigNumber;
-    onChange: (value: BigNumberish) => void;
     onCancel: () => void;
     onSubmit: (value: BigNumberish) => void;
 }
 
-const Unstake: FC<UnstakeProps> = ({
-    balance,
-    shares,
-    onChange,
-    onCancel,
-    onSubmit,
-}) => {
+const Unstake: FC<UnstakeProps> = ({ balance, shares, onCancel, onSubmit }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-        watch,
     } = useForm<{ unstake: number }>({
         defaultValues: {
             unstake: parseFloat(formatUnits(shares, 18)),
@@ -62,9 +54,6 @@ const Unstake: FC<UnstakeProps> = ({
         }
         return true;
     };
-
-    // notify changes to input values to outside
-    watch((data) => onChange(parseUnits(data.unstake.toString(), 18)));
 
     return (
         <HStack justify="space-between">

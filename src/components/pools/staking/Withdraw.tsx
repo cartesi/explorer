@@ -28,17 +28,11 @@ import Title from './Title';
 
 export interface WithdrawProps {
     balance: BigNumber;
-    onChange: (value: BigNumberish) => void;
     onCancel: () => void;
     onSubmit: (value: BigNumberish) => void;
 }
 
-const Withdraw: FC<WithdrawProps> = ({
-    balance,
-    onChange,
-    onCancel,
-    onSubmit,
-}) => {
+const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
     const {
         register,
         handleSubmit,
@@ -60,9 +54,6 @@ const Withdraw: FC<WithdrawProps> = ({
         }
         return true;
     };
-
-    // notify changes to input values to outside
-    watch((data) => onChange(parseUnits(data.withdraw.toString(), 18)));
 
     return (
         <HStack justify="space-between">

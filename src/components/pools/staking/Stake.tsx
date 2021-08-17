@@ -28,17 +28,15 @@ import Title from './Title';
 
 export interface StakeProps {
     balance: BigNumber;
-    onChange: (value: BigNumberish) => void;
     onCancel: () => void;
     onSubmit: (value: BigNumberish) => void;
 }
 
-const Stake: FC<StakeProps> = ({ balance, onChange, onCancel, onSubmit }) => {
+const Stake: FC<StakeProps> = ({ balance, onCancel, onSubmit }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-        watch,
     } = useForm<{ stake: number }>({
         defaultValues: {
             stake: parseFloat(formatUnits(balance, 18)),
@@ -55,9 +53,6 @@ const Stake: FC<StakeProps> = ({ balance, onChange, onCancel, onSubmit }) => {
         }
         return true;
     };
-
-    // notify changes to input values to outside
-    watch((data) => onChange(parseUnits(data.stake.toString(), 18)));
 
     return (
         <HStack justify="space-between">

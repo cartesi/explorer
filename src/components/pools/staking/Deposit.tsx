@@ -29,7 +29,6 @@ import Title from './Title';
 export interface DepositProps {
     allowance: BigNumber;
     balance: BigNumber;
-    onChange: (value: BigNumberish) => void;
     onCancel: () => void;
     onSubmit: (value: BigNumberish) => void;
 }
@@ -37,7 +36,6 @@ export interface DepositProps {
 const Deposit: FC<DepositProps> = ({
     allowance,
     balance,
-    onChange,
     onCancel,
     onSubmit,
 }) => {
@@ -45,7 +43,6 @@ const Deposit: FC<DepositProps> = ({
         register,
         handleSubmit,
         formState: { errors },
-        watch,
     } = useForm<{ deposit: number }>({
         defaultValues: {
             deposit: Math.min(
@@ -67,9 +64,6 @@ const Deposit: FC<DepositProps> = ({
         }
         return true;
     };
-
-    // notify changes to input values to outside
-    watch((data) => onChange(parseUnits(data.deposit.toString(), 18)));
 
     return (
         <HStack justify="space-between">

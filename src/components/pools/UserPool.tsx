@@ -59,22 +59,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
-    const onDepositChange = (value: BigNumberish) => {
-        console.log('deposit', value.toString());
-    };
-
-    const onStakeChange = (value: BigNumberish) => {
-        console.log('stake', value.toString());
-    };
-
-    const onUnstakeChange = (value: BigNumberish) => {
-        console.log('unstake', value.toString());
-    };
-
-    const onWithdrawChange = (value: BigNumberish) => {
-        console.log('withdraw', value.toString());
-    };
-
     return (
         <VStack
             shadow="md"
@@ -95,7 +79,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                     balance={balance}
                     onCancel={depositDisclosure.onClose}
                     onSubmit={onDeposit}
-                    onChange={onDepositChange}
                 />
             </Collapse>
             <Collapse
@@ -107,7 +90,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                     balance={userBalance}
                     onCancel={withdrawDisclosure.onClose}
                     onSubmit={onWithdraw}
-                    onChange={onWithdrawChange}
                 />
             </Collapse>
             <Pool
@@ -122,7 +104,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 <Stake
                     balance={userBalance}
                     onCancel={stakeDisclosure.onClose}
-                    onChange={onStakeChange}
                     onSubmit={onStake}
                 />
             </Collapse>
@@ -135,7 +116,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                     balance={staked}
                     shares={shares}
                     onCancel={unstakeDisclosure.onClose}
-                    onChange={onUnstakeChange}
                     onSubmit={onUnstake}
                 />
             </Collapse>
