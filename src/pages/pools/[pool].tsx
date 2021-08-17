@@ -178,6 +178,7 @@ const Pool = () => {
                     onUnstake={unstake}
                     shares={shares}
                     staked={stakedBalance}
+                    withdrawBalance={withdrawBalance}
                 />
             </VStack>
         </Layout>
