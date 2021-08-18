@@ -78,7 +78,10 @@ const UserPool: FC<UserPoolProps> = (props) => {
                     allowance={allowance}
                     balance={balance}
                     onCancel={depositDisclosure.onClose}
-                    onSubmit={onDeposit}
+                    onSubmit={(amount: BigNumberish) => {
+                        onDeposit(amount);
+                        depositDisclosure.onClose();
+                    }}
                 />
             </Collapse>
             <Collapse
@@ -113,7 +116,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 unmountOnExit
             >
                 <Unstake
-                    balance={staked}
                     shares={shares}
                     onCancel={unstakeDisclosure.onClose}
                     onSubmit={onUnstake}

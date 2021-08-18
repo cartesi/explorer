@@ -9,17 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { HStack, Icon, Text, Tooltip } from '@chakra-ui/react';
+import { HStack, Icon, StackProps, Text, Tooltip } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 
-export interface TitleProps {
+export interface TitleProps extends StackProps {
     title: string;
     icon: ReactNode;
     help: string;
 }
 
-const Title: FC<TitleProps> = ({ title, icon, help }) => (
-    <HStack>
+const Title: FC<TitleProps> = ({ title, icon, help, ...stackProps }) => (
+    <HStack {...stackProps}>
         {icon}
         <Text>{title}</Text>
         <Tooltip placement="top" label={help}>

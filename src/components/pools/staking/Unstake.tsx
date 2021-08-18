@@ -13,11 +13,14 @@ import { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import {
+    Fade,
     FormControl,
     FormErrorMessage,
     HStack,
     IconButton,
     Input,
+    Radio,
+    RadioGroup,
     Text,
     Tooltip,
 } from '@chakra-ui/react';
@@ -27,20 +30,25 @@ import { GrSubtract } from 'react-icons/gr';
 import Title from './Title';
 
 export interface UnstakeProps {
-    balance: BigNumber;
     shares: BigNumber;
     onCancel: () => void;
     onSubmit: (value: BigNumberish) => void;
 }
 
-const Unstake: FC<UnstakeProps> = ({ balance, shares, onCancel, onSubmit }) => {
+interface FormData {
+    type: 'full' | 'partial';
+    amount: number;
+}
+
+const Unstake: FC<UnstakeProps> = ({ shares, onCancel, onSubmit }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<{ unstake: number }>({
+        watch,
+    } = useForm<FormData>({
         defaultValues: {
-            unstake: parseFloat(formatUnits(shares, 18)),
+            amount: parseFloat(formatUnits(shares, 18)),
         },
         mode: 'onChange',
     });
@@ -55,6 +63,8 @@ const Unstake: FC<UnstakeProps> = ({ balance, shares, onCancel, onSubmit }) => {
         return true;
     };
 
+    const type = watch('type');
+
     return (
         <HStack justify="space-between">
             <Title
@@ -62,26 +72,40 @@ const Unstake: FC<UnstakeProps> = ({ balance, shares, onCancel, onSubmit }) => {
                 icon={<GrSubtract />}
                 help="Amount of tokens to unstake from pool"
             />
-            <HStack align="baseline">
-                <FormControl isInvalid={!!errors.unstake}>
-                    <Input
-                        fontSize="xx-large"
-                        textAlign="right"
-                        type="number"
-                        min={0}
-                        autoFocus
-                        isInvalid={!!errors.unstake}
-                        {...register('unstake', {
-                            required: true,
-                            valueAsNumber: true,
-                            validate,
-                        })}
-                    />
-                    <FormErrorMessage>
-                        {errors.unstake?.message}
-                    </FormErrorMessage>
-                </FormControl>
-                <Text fontSize="small">CTSI</Text>
+            <HStack>
+                <Fade in={type === 'partial'} unmountOnExit={true}>
+                    <HStack align="baseline">
+                        <FormControl isInvalid={!!errors.amount}>
+                            <Input
+                                maxW={200}
+                                fontSize="xx-large"
+                                textAlign="right"
+                                type="number"
+                                min={0}
+                                autoFocus
+                                {...register('amount', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                    validate,
+                                })}
+                            />
+                            <FormErrorMessage>
+                                {errors.amount?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <Text fontSize="small">CTSI</Text>{' '}
+                    </HStack>
+                </Fade>
+                <RadioGroup>
+                    <HStack minW="280px">
+                        <Radio value="partial" {...register('type')}>
+                            Partial amount
+                        </Radio>
+                        <Radio value="full" {...register('type')}>
+                            Full amount
+                        </Radio>
+                    </HStack>
+                </RadioGroup>
                 <HStack minW={100}>
                     <Tooltip label="Save" placement="top">
                         <IconButton
@@ -89,9 +113,7 @@ const Unstake: FC<UnstakeProps> = ({ balance, shares, onCancel, onSubmit }) => {
                             aria-label="Save"
                             size="md"
                             onClick={handleSubmit((data) =>
-                                onSubmit(
-                                    parseUnits(data.unstake.toString(), 18)
-                                )
+                                onSubmit(parseUnits(data.amount.toString(), 18))
                             )}
                         />
                     </Tooltip>

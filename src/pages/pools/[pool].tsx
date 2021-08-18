@@ -28,7 +28,6 @@ import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { useStaking } from '../../services/staking';
 import AddressText from '../../components/AddressText';
-import StatsPanel from '../../components/home/StatsPanel';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BalancePanel from '../../components/pools/BalancePanel';
 import PoolStatsPanel from '../../components/pools/PoolStatsPanel';
@@ -48,7 +47,6 @@ const Pool = () => {
         paused,
         balance: userBalance,
         withdrawBalance,
-        shares,
         depositTimestamp,
         lockTime,
         transaction,
@@ -175,8 +173,8 @@ const Pool = () => {
                     onDeposit={deposit}
                     onWithdraw={withdraw}
                     onStake={stake}
-                    onUnstake={unstake}
-                    shares={shares}
+                    onUnstake={onUnstake}
+                    shares={stakedShares}
                     staked={stakedBalance}
                     withdrawBalance={withdrawBalance}
                 />

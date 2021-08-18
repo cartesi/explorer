@@ -27,12 +27,10 @@ const Template: ComponentStory<typeof Unstake> = (args) => (
 
 export const Zero = Template.bind({});
 Zero.args = {
-    balance: ethers.utils.parseUnits('0', 18),
     shares: ethers.utils.parseUnits('0', 27),
 };
 
 export const NonZero = Template.bind({});
 NonZero.args = {
-    balance: ethers.utils.parseUnits('20000', 18),
     shares: ethers.utils.parseUnits('20000', 27),
 };
