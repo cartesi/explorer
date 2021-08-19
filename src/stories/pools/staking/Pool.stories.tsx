@@ -31,6 +31,7 @@ Basic.args = {
     allowance: v('30000'),
     userBalance: v('2000'),
     withdrawBalance: v('2000'),
+    paused: false,
 };
 
 export const NoBalance = Template.bind({});
@@ -39,6 +40,7 @@ NoBalance.args = {
     allowance: v('30000'),
     userBalance: v('2000'),
     withdrawBalance: v('2000'),
+    paused: false,
 };
 
 export const NoAllowance = Template.bind({});
@@ -47,6 +49,7 @@ NoAllowance.args = {
     allowance: v('0'),
     userBalance: v('2000'),
     withdrawBalance: v('2000'),
+    paused: false,
 };
 
 export const NoWithdrawBalance = Template.bind({});
@@ -55,4 +58,14 @@ NoWithdrawBalance.args = {
     allowance: v('30000'),
     userBalance: v('2000'),
     withdrawBalance: v('0'),
+    paused: false,
+};
+
+export const Paused = Template.bind({});
+Paused.args = {
+    balance: v('30000'),
+    allowance: v('30000'),
+    userBalance: v('2000'),
+    withdrawBalance: v('0'),
+    paused: true,
 };

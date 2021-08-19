@@ -14,16 +14,31 @@ import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaCoins } from 'react-icons/fa';
 import { GrAdd, GrSubtract } from 'react-icons/gr';
+import { TimeIcon } from '@chakra-ui/icons';
 import CTSI from './CTSI';
 import Title from './Title';
+import { useTimeLeft } from '../../../utils/react';
 
 export interface StakedProps {
     balance: BigNumber;
+    depositTimestamp: Date;
+    lockTime: number;
     onStake: () => void;
     onUnstake: () => void;
 }
 
-const Staked: FC<StakedProps> = ({ balance, onStake, onUnstake }) => {
+const Staked: FC<StakedProps> = ({
+    balance,
+    depositTimestamp,
+    lockTime,
+    onStake,
+    onUnstake,
+}) => {
+    const stakeUnlock = depositTimestamp
+        ? depositTimestamp.getTime() + lockTime * 1000
+        : 0;
+    const unlock = useTimeLeft(stakeUnlock);
+
     return (
         <HStack justify="space-between">
             <Title
@@ -31,25 +46,40 @@ const Staked: FC<StakedProps> = ({ balance, onStake, onUnstake }) => {
                 icon={<FaCoins />}
                 help="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
             />
-            <HStack align="baseline">
-                <CTSI value={balance} />
-                <Text fontSize="small">CTSI</Text>
+            <HStack>
+                {unlock && (
+                    <HStack>
+                        <Text fontSize="sm" color="red">
+                            {unlock} to unlock staking
+                        </Text>
+                        <TimeIcon color="red" />
+                    </HStack>
+                )}
+                <HStack align="baseline">
+                    <CTSI value={balance} />
+                    <Text fontSize="small" alignSelf="baseline">
+                        CTSI
+                    </Text>
+                </HStack>
                 <HStack minW={100}>
                     <Tooltip label="Stake" placement="top">
                         <IconButton
                             icon={<GrAdd />}
-                            aria-label="Deposit"
+                            aria-label="Stake"
                             size="md"
                             onClick={onStake}
                         />
                     </Tooltip>
                     <Tooltip label="Unstake" placement="top">
-                        <IconButton
-                            icon={<GrSubtract />}
-                            aria-label="Withdraw"
-                            size="md"
-                            onClick={onUnstake}
-                        />
+                        <span>
+                            <IconButton
+                                icon={<GrSubtract />}
+                                aria-label="Unstake"
+                                size="md"
+                                disabled={balance.isZero()}
+                                onClick={onUnstake}
+                            />
+                        </span>
                     </Tooltip>
                 </HStack>
             </HStack>

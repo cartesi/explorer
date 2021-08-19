@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'ethers/lib/utils';
 import {
     Fade,
     FormControl,
@@ -30,9 +30,9 @@ import { GrSubtract } from 'react-icons/gr';
 import Title from './Title';
 
 export interface UnstakeProps {
-    shares: BigNumber;
+    staked: BigNumber;
     onCancel: () => void;
-    onSubmit: (value: BigNumberish) => void;
+    onSubmit: (value?: BigNumberish) => void;
 }
 
 interface FormData {
@@ -40,30 +40,30 @@ interface FormData {
     amount: number;
 }
 
-const Unstake: FC<UnstakeProps> = ({ shares, onCancel, onSubmit }) => {
+const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
         watch,
     } = useForm<FormData>({
-        defaultValues: {
-            amount: parseFloat(formatUnits(shares, 18)),
-        },
+        defaultValues: { amount: 0 },
         mode: 'onChange',
     });
 
+    const type = watch('type');
+
     const validate = (value: number) => {
-        const bn = parseUnits(value.toString(), 18);
-        if (bn.isZero()) {
-            return 'Value must be greater than 0';
-        } else if (bn.gt(shares)) {
-            return 'Not enough balance';
+        if (type === 'partial') {
+            const bn = parseUnits(value.toString(), 18);
+            if (bn.isZero()) {
+                return 'Value must be greater than 0';
+            } else if (bn.gt(staked)) {
+                return 'Not enough balance';
+            }
         }
         return true;
     };
-
-    const type = watch('type');
 
     return (
         <HStack justify="space-between">
@@ -113,7 +113,13 @@ const Unstake: FC<UnstakeProps> = ({ shares, onCancel, onSubmit }) => {
                             aria-label="Save"
                             size="md"
                             onClick={handleSubmit((data) =>
-                                onSubmit(parseUnits(data.amount.toString(), 18))
+                                onSubmit(
+                                    type === 'full'
+                                        ? undefined
+                                        : type === 'partial'
+                                        ? parseUnits(data.amount.toString(), 18)
+                                        : undefined
+                                )
                             )}
                         />
                     </Tooltip>

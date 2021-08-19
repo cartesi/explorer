@@ -22,6 +22,7 @@ export interface PoolProps {
     allowance: BigNumber;
     userBalance: BigNumber; // user pool balance
     withdrawBalance: BigNumber; // amount of token user can actually withdraw
+    paused: boolean; // indicates if pool is paused (not accepting new deposits)
     onDeposit: () => void;
     onWithdraw: () => void;
 }
@@ -31,6 +32,7 @@ const Pool: FC<PoolProps> = ({
     allowance,
     userBalance,
     withdrawBalance,
+    paused,
     onDeposit,
     onWithdraw,
 }) => {
@@ -51,7 +53,9 @@ const Pool: FC<PoolProps> = ({
                                 icon={<GrAdd />}
                                 aria-label="Deposit"
                                 size="md"
-                                disabled={allowance.eq(0) || balance.eq(0)}
+                                disabled={
+                                    allowance.eq(0) || balance.eq(0) || paused
+                                }
                                 onClick={onDeposit}
                             />
                         </span>

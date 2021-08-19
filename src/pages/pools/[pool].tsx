@@ -74,12 +74,6 @@ const Pool = () => {
     const staking = useStaking(router.query.pool as string);
     const stakingPool = useStakingPoolQuery(router.query.pool as string);
 
-    const now = new Date();
-    const stakeLocked =
-        stakedBalance.gt(0) &&
-        depositTimestamp &&
-        depositTimestamp.getTime() + lockTime.toNumber() > now.getTime();
-
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
             // convert CTSI to shares
@@ -168,6 +162,8 @@ const Pool = () => {
                     allowance={allowance}
                     balance={balance}
                     paused={paused?.valueOf()}
+                    depositTimestamp={depositTimestamp}
+                    lockTime={lockTime?.toNumber()}
                     userBalance={userBalance}
                     onApprove={(amount) => approve(pool.address, amount)}
                     onDeposit={deposit}

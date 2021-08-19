@@ -23,7 +23,41 @@ export default {
 
 const Template: ComponentStory<typeof Staked> = (args) => <Staked {...args} />;
 
+const lockTime = 120;
+const now = new Date();
+const past = new Date(now.getTime() - lockTime * 2000);
+
 export const Basic = Template.bind({});
 Basic.args = {
     balance: ethers.utils.parseUnits('2000', 18),
+    depositTimestamp: past,
+    lockTime,
+};
+
+export const Zero = Template.bind({});
+Zero.args = {
+    balance: ethers.utils.parseUnits('0', 18),
+    depositTimestamp: past,
+    lockTime,
+};
+
+export const NoBalance = Template.bind({});
+NoBalance.args = {
+    balance: ethers.utils.parseUnits('0', 18),
+    depositTimestamp: past,
+    lockTime,
+};
+
+export const Locked = Template.bind({});
+Locked.args = {
+    balance: ethers.utils.parseUnits('0', 18),
+    depositTimestamp: now,
+    lockTime,
+};
+
+export const LongLock = Template.bind({});
+LongLock.args = {
+    balance: ethers.utils.parseUnits('0', 18),
+    depositTimestamp: now,
+    lockTime: 21600, // 6 hours
 };
