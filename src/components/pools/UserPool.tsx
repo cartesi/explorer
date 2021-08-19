@@ -45,7 +45,6 @@ const UserPool: FC<UserPoolProps> = (props) => {
         paused,
         depositTimestamp,
         lockTime,
-        shares,
         staked,
         userBalance,
         withdrawBalance,
@@ -82,7 +81,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
                     allowance={allowance}
                     balance={balance}
                     onCancel={depositDisclosure.onClose}
-                    onSubmit={(amount: BigNumberish) => {
+                    onSubmit={(amount) => {
                         onDeposit(amount);
                         depositDisclosure.onClose();
                     }}
@@ -96,7 +95,10 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 <Withdraw
                     balance={userBalance}
                     onCancel={withdrawDisclosure.onClose}
-                    onSubmit={onWithdraw}
+                    onSubmit={(amount) => {
+                        onWithdraw(amount);
+                        withdrawDisclosure.onClose();
+                    }}
                 />
             </Collapse>
             <Pool
@@ -112,7 +114,10 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 <Stake
                     balance={userBalance}
                     onCancel={stakeDisclosure.onClose}
-                    onSubmit={onStake}
+                    onSubmit={(value) => {
+                        onStake(value);
+                        stakeDisclosure.onClose();
+                    }}
                 />
             </Collapse>
             <Collapse
@@ -123,7 +128,10 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 <Unstake
                     staked={staked}
                     onCancel={unstakeDisclosure.onClose}
-                    onSubmit={onUnstake}
+                    onSubmit={(value) => {
+                        onUnstake(value);
+                        unstakeDisclosure.onClose();
+                    }}
                 />
             </Collapse>
             <Staked
