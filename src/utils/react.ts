@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import countdown from 'countdown';
 import { useEffect, useState } from 'react';
-import { useTimer } from 'use-timer';
+import humanizeDuration from 'humanize-duration';
 
 export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
     const [state, setState] = useState<D>(dependency);
@@ -28,28 +27,23 @@ export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
  * Label updates every second, until it reaches the given date, where it becomes undefined.
  **/
 export const useTimeLeft = (timestamp: number, fields = 2) => {
-    const now = new Date().getTime();
     const [timeLeft, setTimeLeft] = useState<string>(undefined);
-    const { pause } = useTimer({
-        autostart: true,
-        initialTime: now,
-        endTime: timestamp,
-        step: 1000,
-        onTimeUpdate: (time) => {
-            if (time >= timestamp) {
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const t = Date.now();
+            if (t >= timestamp) {
                 setTimeLeft(undefined);
-                pause();
+                clearInterval(intervalId);
             } else {
                 setTimeLeft(
-                    countdown(
-                        undefined,
-                        timestamp,
-                        undefined,
-                        fields
-                    ).toLocaleString()
+                    humanizeDuration(timestamp - Date.now(), {
+                        largest: fields,
+                        round: true,
+                    })
                 );
             }
-        },
-    });
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, [timestamp, fields]);
     return timeLeft;
 };

@@ -67,6 +67,7 @@ const Staked: FC<StakedProps> = ({
                             icon={<GrAdd />}
                             aria-label="Stake"
                             size="md"
+                            disabled={!!unlock}
                             onClick={onStake}
                         />
                     </Tooltip>
