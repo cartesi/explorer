@@ -140,7 +140,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
             ].map(
                 ({ value, label, icon, help }) =>
                     !(value?.isZero() && hideZeros) && (
-                        <CTSIText value={value} icon={icon}>
+                        <CTSIText value={value} icon={icon} key={label}>
                             <HStack>
                                 <Text>{label}</Text>
                                 <Tooltip label={help} placement="top">
