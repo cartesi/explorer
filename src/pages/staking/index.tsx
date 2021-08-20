@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Flex, Box, Text, Button } from '@chakra-ui/react';
+import { Flex, Box, Text, Button, VStack } from '@chakra-ui/react';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
@@ -29,6 +29,8 @@ import UnstakeForm from '../../components/staking/UnstakeForm';
 import StakeForm from '../../components/staking/StakeForm';
 import useSummary from '../../graphql/hooks/useSummary';
 import theme from '../../styles/theme';
+import TransactionFeedback from '../../components/TransactionFeedback';
+import { BigNumber } from 'ethers';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -44,15 +46,17 @@ const Staking = () => {
         releasingBalance,
         transaction: stakingTransaction,
         withdraw,
+        stake,
     } = useStaking(account);
 
-    const { balance, transaction: tokenTransaction } = useCartesiToken(
-        account,
-        staking?.address,
-        blockNumber
-    );
-    const summary = useSummary();
+    const {
+        allowance,
+        approve,
+        balance,
+        transaction: tokenTransaction,
+    } = useCartesiToken(account, staking?.address, blockNumber);
 
+    const summary = useSummary();
     const user = useUser(account);
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
@@ -154,13 +158,14 @@ const Staking = () => {
                 </Box>
             )}
 
-            <Balances
-                balance={balance}
-                stakedBalance={stakedBalance}
-                transaction={stakingTransaction}
-            />
+            <Balances balance={balance} stakedBalance={stakedBalance} />
 
             <Node setWaiting={setNodeWaiting} mt="-2.5vw" />
+
+            <VStack p="20px 6vw 20px 6vw">
+                <TransactionFeedback transaction={tokenTransaction} />
+                <TransactionFeedback transaction={stakingTransaction} />
+            </VStack>
 
             <TotalBalances user={user} totalBalance={totalBalance} my={5} />
 
@@ -221,7 +226,20 @@ const Staking = () => {
 
                 <StakingTabs
                     flex={2}
-                    Stake={<StakeForm summary={summary} waiting={waiting} />}
+                    Stake={
+                        <StakeForm
+                            allowance={allowance}
+                            releasing={releasingBalance}
+                            totalStaked={BigNumber.from(
+                                summary?.totalStaked || '0'
+                            )}
+                            disabled={!account || waiting}
+                            onApprove={(amount) =>
+                                approve(staking.address, amount)
+                            }
+                            onStake={stake}
+                        />
+                    }
                     Unstake={<UnstakeForm waiting={waiting} />}
                 />
             </Flex>

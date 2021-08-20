@@ -1,3 +1,14 @@
+// Copyright (C) 2021 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 import React, { FC, useState } from 'react';
 import {
     Alert,
@@ -15,75 +26,48 @@ import {
     Flex,
     Checkbox,
 } from '@chakra-ui/react';
-import { formatCTSI, toCTSI } from '../../utils/token';
+import { formatCTSI } from '../../utils/token';
 import theme from '../../styles/theme';
 import { useForm } from 'react-hook-form';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, constants } from 'ethers';
-import { useCartesiToken } from '../../services/token';
-import { useStaking } from '../../services/staking';
-import { useBlockNumber } from '../../services/eth';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
-import { Summary } from '../../graphql/models';
+import { parseUnits } from 'ethers/lib/utils';
 
 interface StakeFormProps extends BoxProps {
-    summary: Summary;
-    waiting?: boolean;
+    allowance: BigNumber;
+    releasing: BigNumber;
+    totalStaked: BigNumber;
+    disabled?: boolean;
+    onApprove: (amount: BigNumberish) => void;
+    onStake: (amount: BigNumberish) => void;
 }
 
 const StakeForm: FC<StakeFormProps> = (props) => {
-    const { summary, waiting = false, ...restProps } = props;
-    const { account } = useWeb3React<Web3Provider>();
-    const blockNumber = useBlockNumber();
-    const { staking, releasingBalance } = useStaking(account);
-    const { parseCTSI, allowance, approve, toBigCTSI } = useCartesiToken(
-        account,
-        staking?.address,
-        blockNumber
-    );
-    const { stake } = useStaking(account);
-
-    const [stakeAmount, setStakeAmount] = useState<number>(0);
+    const {
+        allowance,
+        releasing,
+        totalStaked,
+        disabled = false,
+        onApprove,
+        onStake,
+        ...restProps
+    } = props;
     const [infiniteApproval, setInfiniteApproval] = useState<boolean>(false);
-
-    const splitStakeAmount = () => {
-        let fromReleasing = BigNumber.from(0),
-            fromAllowance = BigNumber.from(0);
-        const stakeAmountCTSI = parseCTSI(stakeAmount);
-
-        if (releasingBalance.add(allowance).lt(stakeAmountCTSI)) {
-            return null;
-        }
-
-        if (releasingBalance.eq(0)) {
-            fromAllowance = stakeAmountCTSI;
-        } else {
-            if (releasingBalance.gt(stakeAmountCTSI)) {
-                fromReleasing = stakeAmountCTSI;
-            } else {
-                fromReleasing = releasingBalance;
-                fromAllowance = stakeAmountCTSI.sub(releasingBalance);
-            }
-        }
-
-        return {
-            releasing: fromReleasing,
-            wallet: fromAllowance,
-        };
-    };
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
+        watch,
     } = useForm<{ stake: number }>({
         defaultValues: {
             stake: 0,
         },
     });
+
+    const amount = watch('stake') || 0;
 
     const validate = (value: number) => {
         if (value <= 0) {
@@ -95,28 +79,28 @@ const StakeForm: FC<StakeFormProps> = (props) => {
         return true;
     };
 
-    const doApprove = (stakeAmount: number) => {
-        if (stakeAmount > 0) {
+    const doApproveOrStake = (amount: number) => {
+        const bn = parseUnits(amount.toString(), 18);
+        if (allowance.lt(fromWallet)) {
             if (infiniteApproval) {
-                approve(staking.address, constants.MaxUint256);
-            } else if (stakeAmount !== Number(toCTSI(allowance))) {
-                approve(staking.address, parseCTSI(stakeAmount));
+                onApprove(constants.MaxUint256);
+            } else {
+                onApprove(fromWallet);
             }
-        }
-    };
-
-    const doApproveOrStake = (stakeAmount: number) => {
-        if (!stakeSplit) {
-            doApprove(stakeAmount);
-        } else if (stakeAmount > 0) {
-            stake(parseCTSI(stakeAmount));
+        } else if (bn.gt(0)) {
+            onStake(bn);
             reset({ stake: 0 });
         }
     };
 
-    const stakeSplit = splitStakeAmount();
-    const totalStaked =
-        summary && summary.totalStaked ? toBigCTSI(summary.totalStaked) : 0;
+    // convert to CTSI
+    const amount_ = parseUnits(amount.toString(), 18);
+
+    // amount from releasing used for staking, whole or whatever is there
+    const fromReleasing = releasing.gte(amount_) ? amount_ : releasing;
+
+    // part coming from wallet is the original amount minus the amount from releasing
+    const fromWallet = amount_.sub(fromReleasing);
 
     return (
         <Box {...restProps}>
@@ -132,17 +116,12 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                         type="number"
                         min={0}
                         isInvalid={!!errors.stake}
-                        isDisabled={!account || waiting}
+                        isDisabled={disabled}
                         {...register('stake', {
                             required: true,
                             valueAsNumber: true,
                             validate,
                         })}
-                        onChange={(e) => {
-                            setStakeAmount(
-                                e.target.value ? parseFloat(e.target.value) : 0
-                            );
-                        }}
                     />
                     <InputRightAddon children="CTSI" />
                 </InputGroup>
@@ -150,43 +129,39 @@ const StakeForm: FC<StakeFormProps> = (props) => {
             </FormControl>
 
             <Box>
-                {stakeSplit ? (
-                    <>
-                        {stakeSplit.releasing.gt(0) && (
-                            <Alert status="info" mt={2}>
-                                <AlertIcon />
+                {fromReleasing.gt(0) && (
+                    <Alert status="info" mt={2}>
+                        <AlertIcon />
+                        <Flex justify="space-between" width="100%">
+                            <Text>
+                                {formatCTSI(fromReleasing)}{' '}
+                                <Text display="inline" fontSize="sm">
+                                    CTSI
+                                </Text>
+                            </Text>
 
-                                <Flex justify="space-between" width="100%">
-                                    <Text>
-                                        {formatCTSI(stakeSplit.releasing)}{' '}
-                                        <Text display="inline" fontSize="sm">
-                                            CTSI
-                                        </Text>
-                                    </Text>
+                            <Text>From "releasing"</Text>
+                        </Flex>
+                    </Alert>
+                )}
 
-                                    <Text>From "releasing"</Text>
-                                </Flex>
-                            </Alert>
-                        )}
+                {fromWallet.gt(0) && (
+                    <Alert status="info" mt={2}>
+                        <AlertIcon />
 
-                        {stakeSplit.wallet.gt(0) && (
-                            <Alert status="info" mt={2}>
-                                <AlertIcon />
+                        <Flex justify="space-between" width="100%">
+                            <Text>
+                                {formatCTSI(fromWallet)}{' '}
+                                <Text display="inline" fontSize="sm">
+                                    CTSI
+                                </Text>
+                            </Text>
 
-                                <Flex justify="space-between" width="100%">
-                                    <Text>
-                                        {formatCTSI(stakeSplit.wallet)}{' '}
-                                        <Text display="inline" fontSize="sm">
-                                            CTSI
-                                        </Text>
-                                    </Text>
-
-                                    <Text>From "wallet"</Text>
-                                </Flex>
-                            </Alert>
-                        )}
-                    </>
-                ) : (
+                            <Text>From "wallet"</Text>
+                        </Flex>
+                    </Alert>
+                )}
+                {allowance.lt(fromWallet) && (
                     <Alert status="warning" mt={2}>
                         <AlertIcon />
                         <Text>
@@ -204,21 +179,12 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                 height="auto"
                 borderRadius={2}
                 color="white"
-                bg={
-                    !account || waiting
-                        ? theme.colors.gray9
-                        : theme.colors.secondary
-                }
+                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
                 _hover={{
                     filter: 'opacity(90%)',
                 }}
                 isFullWidth
-                isDisabled={
-                    isInfinite(stakeAmount) ||
-                    !account ||
-                    waiting ||
-                    !!stakeSplit
-                }
+                isDisabled={disabled || allowance.gte(fromWallet)}
                 onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
             >
                 Approve
@@ -231,44 +197,36 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                 height="auto"
                 borderRadius={2}
                 color="white"
-                bg={
-                    !account || waiting
-                        ? theme.colors.gray9
-                        : theme.colors.secondary
-                }
+                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
                 _hover={{
                     filter: 'opacity(90%)',
                 }}
                 isFullWidth
                 isDisabled={
-                    isInfinite(stakeAmount) ||
-                    !account ||
-                    waiting ||
-                    !stakeSplit
+                    disabled || allowance.lt(fromWallet) || amount_.isZero()
                 }
                 onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
             >
                 Stake
             </Button>
 
-            {stakeSplit ? (
+            {fromWallet.gt(0) ? (
                 <>
                     <Text fontSize="12px" color="red.500" align="center" mt={4}>
                         The maturing status will restart counting.
                     </Text>
 
-                    {stakeAmount > 0 && (
+                    {amount > 0 && (
                         <Alert status="info" mt={2}>
                             <AlertIcon />
 
                             <Text>
                                 This stake currently corresponds to a{' '}
-                                {totalStaked
-                                    ? (
-                                          (stakeAmount * 100) /
-                                          totalStaked.toNumber()
-                                      ).toFixed(2)
-                                    : 0}{' '}
+                                {amount_
+                                    .mul(100)
+                                    .div(totalStaked)
+                                    .toNumber()
+                                    .toFixed(2)}{' '}
                                 % chance of producing the current block (
                                 <a
                                     href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"

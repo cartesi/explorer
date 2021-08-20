@@ -12,6 +12,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import StakeForm from '../../components/staking/StakeForm';
+import { parseUnits } from 'ethers/lib/utils';
 
 export default {
     title: 'Staking/StakeForm',
@@ -23,11 +24,26 @@ const Template: ComponentStory<typeof StakeForm> = (args) => (
     <StakeForm {...args} />
 );
 
-const props = {
-    waiting: false,
-};
-
 export const Default = Template.bind({});
 Default.args = {
-    ...props,
+    waiting: false,
+    allowance: parseUnits('10000', 18),
+    releasing: parseUnits('0', 18),
+    totalStaked: parseUnits('20000000', 18),
+};
+
+export const NoAllowance = Template.bind({});
+NoAllowance.args = {
+    waiting: false,
+    allowance: parseUnits('0', 18),
+    releasing: parseUnits('0', 18),
+    totalStaked: parseUnits('20000000', 18),
+};
+
+export const Releasing = Template.bind({});
+Releasing.args = {
+    waiting: false,
+    allowance: parseUnits('10000', 18),
+    releasing: parseUnits('20000', 18),
+    totalStaked: parseUnits('20000000', 18),
 };

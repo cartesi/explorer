@@ -1,63 +1,60 @@
-import React, { memo } from 'react';
+// Copyright (C) 2021 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import React, { FC } from 'react';
 import { Box, Flex, FlexProps, Heading, Spacer, Text } from '@chakra-ui/react';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 import { BigNumberish } from 'ethers';
-import { isEqual } from 'lodash';
-import { Transaction } from '../../services/transaction';
-import TransactionFeedback from '../TransactionFeedback';
 import CTSIText from '../CTSIText';
 
 interface BalancesProps extends FlexProps {
     balance: BigNumberish;
     stakedBalance: BigNumberish;
-    transaction: Transaction<unknown>;
 }
 
-const areEqual = (prevProps: BalancesProps, nextProps: BalancesProps) =>
-    prevProps.balance === nextProps.balance &&
-    prevProps.stakedBalance === nextProps.stakedBalance &&
-    isEqual(prevProps.transaction, nextProps.transaction);
+export const Balances: FC<BalancesProps> = (props) => {
+    const { balance, stakedBalance, ...restProps } = props;
 
-export const Balances: React.FunctionComponent<BalancesProps> = memo(
-    (props) => {
-        const { balance, stakedBalance, transaction, ...restProps } = props;
+    return (
+        <Flex
+            {...restProps}
+            direction={['column', 'column', 'column', 'row']}
+            bg="black"
+            color="white"
+            opacity={0.87}
+            p="50px 6vw 65px 6vw"
+        >
+            <Box pb={[4, 4, 4, 0]}>
+                <Heading as="h5" size="lg" fontWeight="normal">
+                    Staking
+                </Heading>
+            </Box>
 
-        return (
-            <Flex
-                {...restProps}
-                direction={['column', 'column', 'column', 'row']}
-                bg="black"
-                color="white"
-                opacity={0.87}
-                p="50px 6vw 65px 6vw"
-            >
-                <Box pb={[4, 4, 4, 0]}>
-                    <Heading as="h5" size="lg" fontWeight="normal">
-                        Staking
-                    </Heading>
+            <Spacer />
 
-                    <TransactionFeedback transaction={transaction} />
+            <Flex w={['100%', '100%', '100%', '50%']}>
+                <Box flex={1}>
+                    <CTSIText value={balance} icon={FaWallet}>
+                        <Text>Wallet Balance</Text>
+                    </CTSIText>
                 </Box>
 
-                <Spacer />
-
-                <Flex w={['100%', '100%', '100%', '50%']}>
-                    <Box flex={1}>
-                        <CTSIText value={balance} icon={FaWallet}>
-                            <Text>Wallet Balance</Text>
-                        </CTSIText>
-                    </Box>
-
-                    <Box flex={1}>
-                        <CTSIText value={stakedBalance} icon={FaCoins}>
-                            <Text>Staked Balance</Text>
-                        </CTSIText>
-                    </Box>
-                </Flex>
+                <Box flex={1}>
+                    <CTSIText value={stakedBalance} icon={FaCoins}>
+                        <Text>Staked Balance</Text>
+                    </CTSIText>
+                </Box>
             </Flex>
-        );
-    },
-    areEqual
-);
+        </Flex>
+    );
+};
 
 export default Balances;
