@@ -26,21 +26,36 @@ import {
 import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
 
-export interface FlatRateFormProps {
-    rate: number; // current rate
+export interface CommissionFormProps {
+    currentValue: number; // current value
+    unit: string; // unit: '%' | 'gas'
+    min?: number; // minimum value
+    max?: number; // maximum value
     maxRaise: number; // max raise of the value
+    maxDigits: number; // max number of decimals digits
     nextIncrease?: Date; // when the next increase can happen
     increaseWaitPeriod: number; // seconds
-    onSubmit: (rate: number) => void;
+    helperText?: string;
+    onSubmit: (value: number) => void;
 }
 
 interface FormData {
     value: number;
 }
 
-const FlatRateForm: FC<FlatRateFormProps> = (props) => {
-    const { rate, maxRaise, increaseWaitPeriod, nextIncrease, onSubmit } =
-        props;
+const CommissionForm: FC<CommissionFormProps> = (props) => {
+    const {
+        currentValue,
+        unit,
+        min = 0,
+        max,
+        maxRaise,
+        maxDigits = 2,
+        increaseWaitPeriod,
+        nextIncrease,
+        helperText,
+        onSubmit,
+    } = props;
     const {
         register,
         handleSubmit,
@@ -48,29 +63,32 @@ const FlatRateForm: FC<FlatRateFormProps> = (props) => {
         reset,
         watch,
     } = useForm<FormData>({
-        defaultValues: useMemo(() => ({ value: rate }), [rate]),
+        defaultValues: useMemo(() => ({ value: currentValue }), [currentValue]),
         mode: 'onChange',
     });
 
-    // reset to default values if rate changes
-    useEffect(() => reset({ value: rate }), [rate]);
+    // reset to default values if current value changes
+    useEffect(() => reset({ value: currentValue }), [currentValue]);
 
     const value = watch('value');
     const wait = humanizeDuration(increaseWaitPeriod * 1000);
     const validate = (value: number) => {
         if (Number.isNaN(value)) {
             return 'Value is required';
-        } else if (value < 0) {
+        } else if (value < min) {
             // not allow lower than 0
-            return 'Minimum value is zero';
-        } else if (value > 100) {
-            // not allow more then 100%
-            return 'Maximum value is 100';
-        } else if (Math.floor(value * 100) != value * 100) {
+            return `Minimum value is ${min}`;
+        } else if (max && value > max) {
+            // not allow more then max
+            return `Maximum value is ${max}`;
+        } else if (
+            Math.floor(value * Math.pow(10, maxDigits)) !=
+            value * Math.pow(10, maxDigits)
+        ) {
             // in the smart contract value is an integer with base 10000
             // so we only support two decimals points
             return 'Maximum precision is limited to 2 decimal digits';
-        } else if (value > rate) {
+        } else if (value > currentValue) {
             // check increase time restriction
             if (nextIncrease) {
                 const timeout = nextIncrease.getTime() - Date.now();
@@ -81,8 +99,8 @@ const FlatRateForm: FC<FlatRateFormProps> = (props) => {
                     )}`;
                 }
             }
-            if (value - rate > maxRaise) {
-                return `Value can only be increased by at most ${maxRaise}%`;
+            if (value - currentValue > maxRaise) {
+                return `Value can only be increased by at most ${maxRaise} ${unit}`;
             }
         }
     };
@@ -90,10 +108,10 @@ const FlatRateForm: FC<FlatRateFormProps> = (props) => {
     return (
         <FormControl id="commission" isInvalid={!!errors.value}>
             <FormLabel>Commission</FormLabel>
-            <Collapse in={value > rate}>
+            <Collapse in={value > currentValue}>
                 <Alert status="warning" variant="left-accent">
                     <Text>
-                        After increasing the current rate you can only increase
+                        After increasing the current value you can only increase
                         it again after {wait}
                     </Text>
                 </Alert>
@@ -112,18 +130,15 @@ const FlatRateForm: FC<FlatRateFormProps> = (props) => {
                             validate,
                         })}
                     />
-                    <InputRightAddon children="%" />
+                    <InputRightAddon children={unit} />
                 </InputGroup>
                 <Button onClick={handleSubmit((data) => onSubmit(data.value))}>
                     Save
                 </Button>
             </HStack>
-            <FormHelperText>
-                Commission is set as a fixed percentage of every block reward
-                (CTSI)
-            </FormHelperText>
+            <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
     );
 };
 
-export default FlatRateForm;
+export default CommissionForm;

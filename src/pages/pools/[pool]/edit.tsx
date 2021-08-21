@@ -39,7 +39,7 @@ import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import { FaUsers } from 'react-icons/fa';
 import NameForm from '../../../components/pools/NameForm';
-import FlatRateForm from '../../../components/pools/fee/FlatRateForm';
+import CommissiomForm from '../../../components/pools/fee/CommissionForm';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -123,12 +123,17 @@ const ManagePool = () => {
                 </FormControl>
 
                 <NameForm onSetName={setName} />
-                <FlatRateForm
-                    rate={rate?.toNumber() / 100}
+                <CommissiomForm
+                    currentValue={rate?.toNumber() / 100}
+                    unit="%"
+                    min={0}
+                    max={100}
+                    maxDigits={2}
                     increaseWaitPeriod={raiseTimeout?.toNumber()}
                     nextIncrease={timeoutTimestamp}
                     maxRaise={maxRaise?.toNumber() / 100}
-                    onSubmit={(rate) => changeRate(rate * 100)}
+                    onSubmit={(value) => changeRate(value * 100)}
+                    helperText="Commission is set as a fixed percentage of every block reward (CTSI)"
                 />
             </VStack>
 
