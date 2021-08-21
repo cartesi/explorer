@@ -20,7 +20,7 @@ import Layout from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
 import PageHeader from '../../components/PageHeader';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
-import Pools from '../../components/Pools';
+import Pools from '../../containers/pool/Pools';
 import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
 import StatsPanel from '../../components/home/StatsPanel';
@@ -56,14 +56,14 @@ const StakingPools: FC = () => {
                     <StatsItem
                         label="# Pools"
                         value={summary?.totalPools}
-                        fractionDigits={1}
+                        fractionDigits={0}
                         help="Total number of pools"
                     />
                     <StatsItem
                         label="My Pools"
-                        value={2}
-                        fractionDigits={1}
-                        help="Number of pools user staked in"
+                        value={balances.data?.poolBalances?.length}
+                        fractionDigits={0}
+                        help="Number of pools user staked"
                     />
                 </StatsPanel>
 

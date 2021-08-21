@@ -241,7 +241,7 @@ export const useStakingPoolCommission = (
                 });
             });
         }
-    }, [fee]);
+    }, [fee, reward]);
 
     return commission;
 };

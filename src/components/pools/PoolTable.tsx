@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -22,9 +22,9 @@ import {
     Spinner,
     Link,
 } from '@chakra-ui/react';
+import { ArrowDownIcon } from '@chakra-ui/icons';
 import PoolRow from './PoolRow';
 import { StakingPool, StakingPoolSort } from '../../graphql/models';
-import { ArrowDownIcon } from '@chakra-ui/icons';
 
 export interface PoolTableProps {
     chainId: number;
@@ -45,19 +45,12 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
     sort,
     onSort,
 }) => {
-    let columns = 6;
-    switch (size) {
-        case 'lg':
-            columns = 6;
-            break;
-        case 'md':
-            columns = 5;
-            break;
-        case 'sm':
-            columns = 3;
-            break;
-    }
-
+    const sizes = {
+        lg: 6,
+        md: 5,
+        sm: 3,
+    };
+    const columns = sizes[size] || 6;
     return (
         <Table>
             <Thead>
