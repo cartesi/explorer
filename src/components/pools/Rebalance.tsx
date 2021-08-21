@@ -24,7 +24,7 @@ export interface RebalanceProps extends StackProps {
 
 const Rebalance: FC<RebalanceProps> = (props) => {
     const { stake, unstake, withdraw, onRebalance, ...stackProps } = props;
-    const disabled = stake.isZero() && unstake.isZero() && withdraw.isZero();
+    const disabled = stake?.isZero() && unstake?.isZero() && withdraw?.isZero();
     return (
         <HStack {...stackProps}>
             <IconButton
@@ -33,11 +33,11 @@ const Rebalance: FC<RebalanceProps> = (props) => {
                 onClick={onRebalance}
                 icon={<FaBalanceScaleLeft />}
             />
-            {stake.gt(0) && <Text>{formatCTSI(stake)} CTSI to stake</Text>}
-            {unstake.gt(0) && (
+            {stake?.gt(0) && <Text>{formatCTSI(stake)} CTSI to stake</Text>}
+            {unstake?.gt(0) && (
                 <Text>{formatCTSI(unstake)} CTSI to unstake</Text>
             )}
-            {withdraw.gt(0) && (
+            {withdraw?.gt(0) && (
                 <Text>{formatCTSI(withdraw)} CTSI to withdraw</Text>
             )}
             {disabled && <Text>No need to rebalance</Text>}
