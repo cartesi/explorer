@@ -24,8 +24,20 @@ const Template: ComponentStory<typeof FlatRateForm> = (args) => (
     <FlatRateForm {...args} />
 );
 
+const now = new Date();
+
 export const Basic = Template.bind({});
 Basic.args = {
     rate: 14.5,
+    maxRaise: 5,
     increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
+    nextIncrease: new Date(now.getTime() - 60 * 1000),
+};
+
+export const IncreaseLocked = Template.bind({});
+IncreaseLocked.args = {
+    rate: 14.5,
+    maxRaise: 5,
+    increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
+    nextIncrease: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
 };

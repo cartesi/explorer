@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
@@ -26,13 +26,10 @@ import Layout from '../../../components/Layout';
 import PoolNode from '../../../components/pools/PoolNode';
 import { formatCTSI } from '../../../utils/token';
 import {
-    Button,
     Center,
     FormControl,
-    FormHelperText,
     FormLabel,
     HStack,
-    Input,
     Switch,
     Text,
     useColorModeValue,
@@ -42,14 +39,12 @@ import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import { FaUsers } from 'react-icons/fa';
 import NameForm from '../../../components/pools/NameForm';
+import FlatRateForm from '../../../components/pools/fee/FlatRateForm';
 
 const ManagePool = () => {
     const router = useRouter();
     const { pool } = router.query;
-
     const { account, chainId } = useWeb3React<Web3Provider>();
-
-    const [poolName, setPoolName] = useState('');
 
     const {
         setName,
@@ -62,35 +57,19 @@ const ManagePool = () => {
     } = useStakingPool(pool as string, account);
 
     const stakingPool = useStakingPoolQuery(pool as string);
-    const [commission, setCommission] = useState(0);
 
-    const { setRate, transaction: flatRateTransaction } = useFlatRateCommission(
-        pool as string
-    );
+    const {
+        rate,
+        maxRaise,
+        timeoutTimestamp,
+        raiseTimeout,
+        changeRate,
+        transaction: flatRateTransaction,
+    } = useFlatRateCommission(pool as string);
 
     const { setGas, transaction: gasTaxTransaction } = useGasTaxCommission(
         pool as string
     );
-
-    const initialCommission =
-        stakingPool?.fee?.commission / 100 || stakingPool?.fee?.gas;
-
-    useEffect(() => {
-        if (stakingPool?.fee) {
-            setCommission(initialCommission);
-        }
-    }, [stakingPool?.fee]);
-
-    const updateCommission = (newCommission: number) => {
-        if (!stakingPool?.fee) return;
-        if (initialCommission == newCommission) return;
-
-        if (stakingPool?.fee?.commission) {
-            setRate(Math.ceil(newCommission * 100));
-        } else {
-            setGas(Math.ceil(newCommission));
-        }
-    };
 
     // dark mode compatible background color
     const bgColor = useColorModeValue('white', 'gray.800');
@@ -128,6 +107,8 @@ const ManagePool = () => {
             </Center>
             <VStack px="6vw" py={10} spacing={5}>
                 <TransactionFeedback transaction={poolTransaction} />
+                <TransactionFeedback transaction={flatRateTransaction} />
+                <TransactionFeedback transaction={gasTaxTransaction} />
 
                 <FormControl display="flex" alignItems="center">
                     <FormLabel htmlFor="pause" mb="0">
@@ -142,66 +123,15 @@ const ManagePool = () => {
                 </FormControl>
 
                 <NameForm onSetName={setName} />
+                <FlatRateForm
+                    rate={rate?.toNumber() / 100}
+                    increaseWaitPeriod={raiseTimeout?.toNumber()}
+                    nextIncrease={timeoutTimestamp}
+                    maxRaise={maxRaise?.toNumber() / 100}
+                    onSubmit={(rate) => changeRate(rate * 100)}
+                />
             </VStack>
 
-            <div className="manage-pool">
-                <div className="manage-pool-item form-group">
-                    <span className="body-text-2 text-secondary manage-pool-item-label">
-                        Current Fee Model:
-                    </span>
-                    <span className="body-text-2 text-secondary manage-pool-item-label">
-                        {!stakingPool?.fee
-                            ? ''
-                            : stakingPool.fee.commission
-                            ? `${
-                                  stakingPool?.fee?.commission / 100
-                              }% Flat Rate Commission`
-                            : `${stakingPool?.fee?.gas} Gas Tax Commission`}
-                    </span>
-                </div>
-
-                <div className="manage-pool-item form-group">
-                    <span className="body-text-2 text-secondary manage-pool-item-label">
-                        Set Commission
-                    </span>
-
-                    <div className="input-group manage-pool-item-input">
-                        <input
-                            className="addon-inline form-control"
-                            id="commission"
-                            value={commission}
-                            type="number"
-                            onChange={(e) =>
-                                setCommission(parseFloat(e.target.value))
-                            }
-                        />
-
-                        <span
-                            className={`input-group-addon addon-inline input-source-observer small-text`}
-                        >
-                            {stakingPool?.fee?.commission ? '%' : 'gas'}
-                        </span>
-
-                        {commission > initialCommission && (
-                            <span className="manage-pool-item-input-error">
-                                New commission must be smaller than the current
-                                one
-                            </span>
-                        )}
-                    </div>
-
-                    <button
-                        type="button"
-                        className="btn btn-dark py-0 mx-3 button-text"
-                        onClick={() => updateCommission(commission)}
-                        disabled={
-                            !stakingPool?.fee || commission > initialCommission
-                        }
-                    >
-                        Set Commission
-                    </button>
-                </div>
-            </div>
             <div className="manage-pool-item form-group">
                 <span className="body-text-2 text-secondary manage-pool-item-label">
                     Pool has {formatCTSI(amounts?.stake || 0)} CTSI to stake,{' '}

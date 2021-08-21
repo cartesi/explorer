@@ -248,16 +248,35 @@ export const useStakingPoolCommission = (
 
 export const useFlatRateCommission = (address: string) => {
     const fee = useFlatRateCommissionContract(address);
+    const [rate, setRate] = useState<BigNumber>(undefined);
+    const [maxRaise, setMaxRaise] = useState<BigNumber>(undefined);
+    const [timeoutTimestamp, setTimeoutTimestamp] = useState<Date>(undefined);
+    const [raiseTimeout, setRaiseTimeout] = useState<BigNumber>(undefined);
     const transaction = useTransaction();
 
-    const setRate = (rate: number) => {
+    useEffect(() => {
+        if (fee) {
+            fee.rate().then(setRate);
+            fee.feeRaiseTimeout().then(setRaiseTimeout);
+            fee.maxRaise().then(setMaxRaise);
+            fee.timeoutTimestamp().then((ts) =>
+                setTimeoutTimestamp(new Date(ts.toNumber() * 1000))
+            );
+        }
+    }, [fee]);
+
+    const changeRate = (rate: number) => {
         if (fee) {
             transaction.set(fee.setRate(rate));
         }
     };
 
     return {
-        setRate,
+        rate,
+        maxRaise,
+        timeoutTimestamp,
+        raiseTimeout,
+        changeRate,
         transaction,
     };
 };
