@@ -11,7 +11,7 @@
 
 import React, { FunctionComponent } from 'react';
 import Link from 'next/link';
-import { ethers, FixedNumber } from 'ethers';
+import { FixedNumber } from 'ethers';
 import {
     HStack,
     Icon,
@@ -25,7 +25,6 @@ import { LockIcon } from '@chakra-ui/icons';
 import { StakingPool } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
-import { useStakingPoolCommission } from '../../services/pool';
 import labels from '../../utils/labels';
 
 export interface PoolRowProps {
