@@ -15,11 +15,7 @@ import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-import {
-    useFlatRateCommission,
-    useGasTaxCommission,
-    useStakingPool,
-} from '../../../services/pool';
+import { useStakingPool } from '../../../services/pool';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 
 import Layout from '../../../components/Layout';
@@ -39,7 +35,8 @@ import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import { FaUsers } from 'react-icons/fa';
 import NameForm from '../../../components/pools/NameForm';
-import CommissiomForm from '../../../components/pools/fee/CommissionForm';
+import FlatRateContainer from '../../../containers/pool/FlatRateContainer';
+import GasTaxContainer from '../../../containers/pool/GasTaxContainer';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -58,18 +55,13 @@ const ManagePool = () => {
 
     const stakingPool = useStakingPoolQuery(pool as string);
 
-    const {
-        rate,
-        maxRaise,
-        timeoutTimestamp,
-        raiseTimeout,
-        changeRate,
-        transaction: flatRateTransaction,
-    } = useFlatRateCommission(pool as string);
-
-    const { setGas, transaction: gasTaxTransaction } = useGasTaxCommission(
-        pool as string
-    );
+    // infer fee type from graphql data (not contract)
+    const feeType =
+        stakingPool?.fee?.commission != null
+            ? 'flatRate'
+            : stakingPool?.fee?.gas != null
+            ? 'gasTax'
+            : undefined;
 
     // dark mode compatible background color
     const bgColor = useColorModeValue('white', 'gray.800');
@@ -107,9 +99,6 @@ const ManagePool = () => {
             </Center>
             <VStack px="6vw" py={10} spacing={5}>
                 <TransactionFeedback transaction={poolTransaction} />
-                <TransactionFeedback transaction={flatRateTransaction} />
-                <TransactionFeedback transaction={gasTaxTransaction} />
-
                 <FormControl display="flex" alignItems="center">
                     <FormLabel htmlFor="pause" mb="0">
                         Pool accepting new stakes?
@@ -121,20 +110,15 @@ const ManagePool = () => {
                         onChange={paused ? unpause : pause}
                     />
                 </FormControl>
-
                 <NameForm onSetName={setName} />
-                <CommissiomForm
-                    currentValue={rate?.toNumber() / 100}
-                    unit="%"
-                    min={0}
-                    max={100}
-                    maxDigits={2}
-                    increaseWaitPeriod={raiseTimeout?.toNumber()}
-                    nextIncrease={timeoutTimestamp}
-                    maxRaise={maxRaise?.toNumber() / 100}
-                    onSubmit={(value) => changeRate(value * 100)}
-                    helperText="Commission is set as a fixed percentage of every block reward (CTSI)"
-                />
+            </VStack>
+            <VStack px="6vw" py={10} spacing={5}>
+                {feeType == 'flatRate' && (
+                    <FlatRateContainer pool={pool as string} />
+                )}
+                {feeType == 'gasTax' && (
+                    <GasTaxContainer pool={pool as string} />
+                )}
             </VStack>
 
             <div className="manage-pool-item form-group">

@@ -10,10 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { StakingPoolData, StakingPoolVars } from '../models';
+import { StakingPool, StakingPoolData, StakingPoolVars } from '../models';
 import { STAKING_POOL } from '../queries/stakingPool';
 
-const useStakingPool = (id: string) => {
+const useStakingPool = (id: string): StakingPool => {
     const { data } = useQuery<StakingPoolData, StakingPoolVars>(STAKING_POOL, {
         variables: {
             id: id?.toLowerCase(),
