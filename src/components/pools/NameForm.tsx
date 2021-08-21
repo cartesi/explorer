@@ -35,7 +35,9 @@ const NameForm: FC<NameFormProps> = ({ onSetName }) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <Button onClick={() => onSetName(name)}>Save</Button>
+                <Button size="md" onClick={() => onSetName(name)}>
+                    Save
+                </Button>
             </HStack>
             <FormHelperText>
                 After registering a ENS domain and setting it up, set the name

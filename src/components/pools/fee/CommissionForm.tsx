@@ -122,9 +122,8 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                 </Alert>
             </Collapse>
             <HStack>
-                <InputGroup>
+                <InputGroup w={200}>
                     <Input
-                        w={100}
                         {...register('value', {
                             valueAsNumber: true,
                             validate,
@@ -132,7 +131,10 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                     />
                     <InputRightAddon children={unit} />
                 </InputGroup>
-                <Button onClick={handleSubmit((data) => onSubmit(data.value))}>
+                <Button
+                    onClick={handleSubmit((data) => onSubmit(data.value))}
+                    size="md"
+                >
                     Save
                 </Button>
             </HStack>

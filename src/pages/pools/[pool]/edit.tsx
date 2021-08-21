@@ -37,6 +37,7 @@ import { FaUsers } from 'react-icons/fa';
 import NameForm from '../../../components/pools/NameForm';
 import FlatRateContainer from '../../../containers/pool/FlatRateContainer';
 import GasTaxContainer from '../../../containers/pool/GasTaxContainer';
+import Rebalance from '../../../components/pools/Rebalance';
 
 const ManagePool = () => {
     const router = useRouter();
@@ -111,31 +112,20 @@ const ManagePool = () => {
                     />
                 </FormControl>
                 <NameForm onSetName={setName} />
-            </VStack>
-            <VStack px="6vw" py={10} spacing={5}>
                 {feeType == 'flatRate' && (
                     <FlatRateContainer pool={pool as string} />
                 )}
                 {feeType == 'gasTax' && (
                     <GasTaxContainer pool={pool as string} />
                 )}
+                <Rebalance
+                    w="100%"
+                    stake={amounts?.stake}
+                    unstake={amounts?.unstake}
+                    withdraw={amounts?.withdraw}
+                    onRebalance={rebalance}
+                />
             </VStack>
-
-            <div className="manage-pool-item form-group">
-                <span className="body-text-2 text-secondary manage-pool-item-label">
-                    Pool has {formatCTSI(amounts?.stake || 0)} CTSI to stake,{' '}
-                    {formatCTSI(amounts?.unstake || 0)} CTSI to unstake and{' '}
-                    {formatCTSI(amounts?.withdraw || 0)} CTSI to withdraw
-                </span>
-
-                <button
-                    type="button"
-                    className="btn btn-dark py-0 mx-3 button-text"
-                    onClick={rebalance}
-                >
-                    Rebalance
-                </button>
-            </div>
         </Layout>
     );
 };

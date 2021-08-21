@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useState } from 'react';
+import { useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import useStakingPools from '../graphql/hooks/useStakingPools';
 import PoolTable from './pools/PoolTable';
 import { StakingPoolSort } from '../graphql/models';
 import Pagination from './Pagination';
-import { useBreakpointValue, VStack } from '@chakra-ui/react';
 
 interface PoolsProps {
     chainId: number;
