@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -64,7 +64,6 @@ const Staking = () => {
     const summary = useSummary();
     const user = useUser(account);
 
-    const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
     const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
 
     const waiting =
@@ -76,19 +75,8 @@ const Staking = () => {
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(releasingTimestamp?.getTime());
 
-    useEffect(() => {
-        const readDisclaimer = localStorage.getItem('readDisclaimer');
-        if (!readDisclaimer || readDisclaimer == 'false')
-            setReadDisclaimer(false);
-    }, []);
-
     const doWithdraw = () => {
         withdraw(releasingBalance);
-    };
-
-    const acceptDisclaimer = () => {
-        setReadDisclaimer(true);
-        localStorage.setItem('readDisclaimer', 'true');
     };
 
     const totalBalance = stakedBalance
@@ -102,34 +90,11 @@ const Staking = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            {!readDisclaimer && (
-                <Box
-                    position="fixed"
-                    right={0}
-                    width="100%"
-                    zIndex={theme.zIndices.xxl}
-                    bg="orange.100"
-                    pb={2}
-                >
-                    <StakingDisclaimer persistanceKey="readDisclaimer" />
-
-                    <Flex align="center" justify="flex-end" mt={2} pr={2}>
-                        <Button
-                            color="white"
-                            bg={theme.colors.primary}
-                            onClick={acceptDisclaimer}
-                        >
-                            Accept and continue
-                        </Button>
-                    </Flex>
-                </Box>
-            )}
-
             <Balances balance={balance} stakedBalance={stakedBalance} />
-
             <Node setWaiting={setNodeWaiting} mt="-2.5vw" />
 
             <VStack p="20px 6vw 20px 6vw">
+                <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
             </VStack>
