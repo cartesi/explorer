@@ -35,6 +35,7 @@ import useSummary from '../../graphql/hooks/useSummary';
 import theme from '../../styles/theme';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import CTSIText from '../../components/CTSIText';
+import { useTimeLeft } from '../../utils/react';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
@@ -64,8 +65,6 @@ const Staking = () => {
     const user = useUser(account);
 
     const [readDisclaimer, setReadDisclaimer] = useState<boolean>(true);
-    const [maturingCountdown, setMaturingCountdown] = useState<number>();
-    const [releasingCountdown, setReleasingCountdown] = useState<number>();
     const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
 
     const waiting =
@@ -73,51 +72,15 @@ const Staking = () => {
         tokenTransaction.submitting ||
         nodeWaiting;
 
-    const updateTimers = () => {
-        if (maturingBalance.gt(0)) {
-            setMaturingCountdown(
-                maturingTimestamp > new Date()
-                    ? maturingTimestamp.getTime() - new Date().getTime()
-                    : 0
-            );
-        }
-
-        if (releasingBalance.gt(0)) {
-            setReleasingCountdown(
-                releasingTimestamp > new Date()
-                    ? releasingTimestamp.getTime() - new Date().getTime()
-                    : 0
-            );
-        }
-    };
+    // countdown timers for maturation and release
+    const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
+    const releasingLeft = useTimeLeft(releasingTimestamp?.getTime());
 
     useEffect(() => {
         const readDisclaimer = localStorage.getItem('readDisclaimer');
         if (!readDisclaimer || readDisclaimer == 'false')
             setReadDisclaimer(false);
     }, []);
-
-    useEffect(() => {
-        updateTimers();
-
-        const interval = setInterval(() => {
-            updateTimers();
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [maturingTimestamp, releasingTimestamp]);
-
-    const displayTime = (milliseconds: number): string => {
-        const hours = Math.floor(milliseconds / 1000 / 60 / 60);
-        const minutes = Math.floor(milliseconds / 1000 / 60) % 60;
-        const seconds = Math.floor(milliseconds / 1000) % 60;
-
-        return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${(
-            '0' + seconds
-        ).slice(-2)}`;
-    };
 
     const doWithdraw = () => {
         withdraw(releasingBalance);
@@ -186,8 +149,10 @@ const Staking = () => {
                             direction="row"
                         >
                             <Text>Maturing</Text>
-                            {maturingBalance.gt(0) && maturingCountdown > 0 && (
-                                <Text fontSize="sm">{displayTime(1)}</Text>
+                            {maturingBalance.gt(0) && maturingLeft && (
+                                <Text fontSize="sm">
+                                    {maturingLeft} to mature
+                                </Text>
                             )}
                         </CTSIText>
                         <CTSIText
@@ -207,24 +172,22 @@ const Staking = () => {
                             icon={AiOutlineDollar}
                             direction="row"
                         >
-                            {releasingCountdown > 0 && <Text>Releasing</Text>}
-                            {releasingCountdown === 0 && <Text>Released</Text>}
-                            {releasingBalance.gt(0) &&
-                                releasingCountdown > 0 && (
-                                    <Text fontSize="sm">
-                                        {displayTime(releasingCountdown)}
-                                    </Text>
-                                )}
-                            {releasingBalance.gt(0) &&
-                                releasingCountdown === 0 && (
-                                    <Button
-                                        size="sm"
-                                        disabled={!account || waiting}
-                                        onClick={doWithdraw}
-                                    >
-                                        Withdraw
-                                    </Button>
-                                )}
+                            {releasingLeft && <Text>Releasing</Text>}
+                            {!releasingLeft && <Text>Released</Text>}
+                            {releasingBalance.gt(0) && releasingLeft && (
+                                <Text fontSize="sm">
+                                    {releasingLeft} to release
+                                </Text>
+                            )}
+                            {releasingBalance.gt(0) && !releasingLeft && (
+                                <Button
+                                    size="sm"
+                                    disabled={!account || waiting}
+                                    onClick={doWithdraw}
+                                >
+                                    Withdraw
+                                </Button>
+                            )}
                         </CTSIText>
                     </Box>
                 </Box>
