@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
+import { Flex, FlexProps, HStack, SystemProps, Text } from '@chakra-ui/react';
 import { BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { Icon } from '@chakra-ui/icons';
@@ -52,7 +52,7 @@ const formatPercent = (
     }
 };
 
-export interface BigNumberTextProps extends TextProps {
+export interface BigNumberTextProps extends FlexProps {
     icon?: IconType;
     value: BigNumberish;
     nullLabel?: string;
@@ -75,7 +75,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         icon,
         unit,
         options = defaultOptions,
-        ...textProps
+        ...flexProps
     } = props;
     const numberFormat = new Intl.NumberFormat('en-US', options);
     const valueLabel = !value
@@ -89,19 +89,20 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         : numberFormat.format(parseFloat(value.toString()));
 
     return (
-        <Flex direction={direction} align="baseline" justify="space-between">
+        <Flex
+            direction={direction}
+            align="baseline"
+            justify="space-between"
+            {...flexProps}
+        >
             <HStack>
                 {icon && <Icon as={icon} color={props.color} />}
                 {children}
             </HStack>
             <HStack align="baseline">
-                <Text fontSize="xx-large" {...textProps}>
-                    {valueLabel}
-                </Text>
+                <Text fontSize="xx-large">{valueLabel}</Text>
                 {unit && value && (
-                    <Text fontSize="small" {...textProps}>
-                        {unitLabel(unit)}
-                    </Text>
+                    <Text fontSize="small">{unitLabel(unit)}</Text>
                 )}
             </HStack>
         </Flex>

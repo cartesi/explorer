@@ -58,3 +58,10 @@ HugeAmount.args = {
         maximumFractionDigits: 1,
     },
 };
+
+export const Red = Template.bind({});
+Red.args = {
+    icon: FaWallet,
+    direction: 'row',
+    color: 'red',
+};

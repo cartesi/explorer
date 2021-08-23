@@ -14,6 +14,11 @@ import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Flex, Box, Text, Button, VStack } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { FaCoins } from 'react-icons/fa';
+import { BsClockHistory } from 'react-icons/bs';
+import { AiOutlineDollar } from 'react-icons/ai';
+
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
@@ -23,18 +28,16 @@ import StakingDisclaimer from '../../components/StakingDisclaimer';
 import Node from '../../components/staking/Node';
 import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
-import StakingCard from '../../components/staking/Card';
 import TotalBalances from '../../components/staking/TotalBalances';
 import UnstakeForm from '../../components/staking/UnstakeForm';
 import StakeForm from '../../components/staking/StakeForm';
 import useSummary from '../../graphql/hooks/useSummary';
 import theme from '../../styles/theme';
 import TransactionFeedback from '../../components/TransactionFeedback';
-import { BigNumber } from 'ethers';
+import CTSIText from '../../components/CTSIText';
 
 const Staking = () => {
     const { account } = useWeb3React<Web3Provider>();
-
     const blockNumber = useBlockNumber();
 
     const {
@@ -175,54 +178,55 @@ const Staking = () => {
                 p="50px 6vw 50px 6vw"
             >
                 <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
-                    <Box mb={8} boxShadow={theme.boxShadows.lg}>
-                        <StakingCard title="Maturing" balance={maturingBalance}>
+                    <Box mb={8} boxShadow="lg" borderLeft="10px solid black">
+                        <CTSIText
+                            p={6}
+                            value={maturingBalance}
+                            icon={BsClockHistory}
+                            direction="row"
+                        >
+                            <Text>Maturing</Text>
                             {maturingBalance.gt(0) && maturingCountdown > 0 && (
-                                <Box mt={1}>
-                                    <Text fontSize="sm">{displayTime(1)}</Text>
-                                </Box>
+                                <Text fontSize="sm">{displayTime(1)}</Text>
                             )}
-                        </StakingCard>
-
-                        <StakingCard
-                            title="Staked"
-                            balance={stakedBalance}
-                            isActive
-                        />
+                        </CTSIText>
+                        <CTSIText
+                            p={6}
+                            value={stakedBalance}
+                            icon={FaCoins}
+                            direction="row"
+                        >
+                            <Text>Staked</Text>
+                        </CTSIText>
                     </Box>
 
-                    <StakingCard
-                        title={
-                            releasingBalance.gt(0) && releasingCountdown === 0
-                                ? 'Released'
-                                : 'Releasing'
-                        }
-                        icon="down"
-                        balance={releasingBalance}
-                        boxShadow={theme.boxShadows.lg}
-                    >
-                        {releasingBalance.gt(0) && releasingCountdown > 0 && (
-                            <Box mt={1}>
-                                <Text fontSize="sm">
-                                    {displayTime(releasingCountdown)}
-                                </Text>
-                            </Box>
-                        )}
-
-                        {releasingBalance.gt(0) && releasingCountdown === 0 && (
-                            <Button
-                                size="sm"
-                                mt={4}
-                                borderRadius={2}
-                                color="white"
-                                bg={theme.colors.gray9}
-                                disabled={!account || waiting}
-                                onClick={doWithdraw}
-                            >
-                                Withdraw
-                            </Button>
-                        )}
-                    </StakingCard>
+                    <Box mb={8} boxShadow="lg" borderLeft="10px solid black">
+                        <CTSIText
+                            p={6}
+                            value={releasingBalance}
+                            icon={AiOutlineDollar}
+                            direction="row"
+                        >
+                            {releasingCountdown > 0 && <Text>Releasing</Text>}
+                            {releasingCountdown === 0 && <Text>Released</Text>}
+                            {releasingBalance.gt(0) &&
+                                releasingCountdown > 0 && (
+                                    <Text fontSize="sm">
+                                        {displayTime(releasingCountdown)}
+                                    </Text>
+                                )}
+                            {releasingBalance.gt(0) &&
+                                releasingCountdown === 0 && (
+                                    <Button
+                                        size="sm"
+                                        disabled={!account || waiting}
+                                        onClick={doWithdraw}
+                                    >
+                                        Withdraw
+                                    </Button>
+                                )}
+                        </CTSIText>
+                    </Box>
                 </Box>
 
                 <StakingTabs
