@@ -14,7 +14,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { StoryContext } from '@storybook/react';
 import { withPerformance } from 'storybook-addon-performance';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 import withColorMode from './withColorMode';
 import Web3Container from '../src/components/Web3Container';
 import SelectedChain from '../src/components/header/SelectedChain';
