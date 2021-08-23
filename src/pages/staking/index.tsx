@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -32,7 +32,6 @@ import TotalBalances from '../../components/staking/TotalBalances';
 import UnstakeForm from '../../components/staking/UnstakeForm';
 import StakeForm from '../../components/staking/StakeForm';
 import useSummary from '../../graphql/hooks/useSummary';
-import theme from '../../styles/theme';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import CTSIText from '../../components/CTSIText';
 import { useTimeLeft } from '../../utils/react';
@@ -75,10 +74,6 @@ const Staking = () => {
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(releasingTimestamp?.getTime());
 
-    const doWithdraw = () => {
-        withdraw(releasingBalance);
-    };
-
     const totalBalance = stakedBalance
         .add(maturingBalance)
         .add(releasingBalance);
@@ -99,7 +94,13 @@ const Staking = () => {
                 <TransactionFeedback transaction={stakingTransaction} />
             </VStack>
 
-            <TotalBalances user={user} totalBalance={totalBalance} my={5} />
+            <TotalBalances
+                p="25px 6vw 0 6vw"
+                justify="flex-start"
+                spacing={100}
+                totalReward={BigNumber.from(user?.totalReward || 0)}
+                totalBalance={totalBalance}
+            />
 
             <Flex
                 direction={['column', 'column', 'column', 'row']}
@@ -148,7 +149,7 @@ const Staking = () => {
                                 <Button
                                     size="sm"
                                     disabled={!account || waiting}
-                                    onClick={doWithdraw}
+                                    onClick={() => withdraw(releasingBalance)}
                                 >
                                     Withdraw
                                 </Button>
