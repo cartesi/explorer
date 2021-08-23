@@ -47,6 +47,7 @@ const Staking = () => {
         transaction: stakingTransaction,
         withdraw,
         stake,
+        unstake,
     } = useStaking(account);
 
     const {
@@ -197,7 +198,7 @@ const Staking = () => {
                                 : 'Releasing'
                         }
                         icon="down"
-                        balance={maturingBalance}
+                        balance={releasingBalance}
                         boxShadow={theme.boxShadows.lg}
                     >
                         {releasingBalance.gt(0) && releasingCountdown > 0 && (
@@ -240,7 +241,14 @@ const Staking = () => {
                             onStake={stake}
                         />
                     }
-                    Unstake={<UnstakeForm waiting={waiting} />}
+                    Unstake={
+                        <UnstakeForm
+                            maturing={maturingBalance}
+                            staked={stakedBalance}
+                            onUnstake={unstake}
+                            disabled={!account || waiting}
+                        />
+                    }
                 />
             </Flex>
         </Layout>

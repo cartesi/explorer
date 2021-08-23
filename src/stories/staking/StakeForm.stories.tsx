@@ -26,7 +26,7 @@ const Template: ComponentStory<typeof StakeForm> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    waiting: false,
+    disabled: false,
     allowance: parseUnits('10000', 18),
     releasing: parseUnits('0', 18),
     totalStaked: parseUnits('20000000', 18),
@@ -34,7 +34,7 @@ Default.args = {
 
 export const NoAllowance = Template.bind({});
 NoAllowance.args = {
-    waiting: false,
+    disabled: false,
     allowance: parseUnits('0', 18),
     releasing: parseUnits('0', 18),
     totalStaked: parseUnits('20000000', 18),
@@ -42,7 +42,15 @@ NoAllowance.args = {
 
 export const Releasing = Template.bind({});
 Releasing.args = {
-    waiting: false,
+    disabled: false,
+    allowance: parseUnits('10000', 18),
+    releasing: parseUnits('20000', 18),
+    totalStaked: parseUnits('20000000', 18),
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    disabled: true,
     allowance: parseUnits('10000', 18),
     releasing: parseUnits('20000', 18),
     totalStaked: parseUnits('20000000', 18),

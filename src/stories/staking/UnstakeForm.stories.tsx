@@ -12,6 +12,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import UnstakeForm from '../../components/staking/UnstakeForm';
+import { parseUnits } from 'ethers/lib/utils';
 
 export default {
     title: 'Staking/UnstakeForm',
@@ -23,11 +24,30 @@ const Template: ComponentStory<typeof UnstakeForm> = (args) => (
     <UnstakeForm {...args} />
 );
 
-const props = {
-    waiting: false,
+export const Staked = Template.bind({});
+Staked.args = {
+    disabled: false,
+    maturing: parseUnits('0', 18),
+    staked: parseUnits('10000', 18),
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...props,
+export const Maturing = Template.bind({});
+Maturing.args = {
+    disabled: false,
+    maturing: parseUnits('10000', 18),
+    staked: parseUnits('0', 18),
+};
+
+export const MaturingAndStaked = Template.bind({});
+MaturingAndStaked.args = {
+    disabled: false,
+    maturing: parseUnits('10000', 18),
+    staked: parseUnits('20000', 18),
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    disabled: true,
+    maturing: parseUnits('10000', 18),
+    staked: parseUnits('0', 18),
 };

@@ -1,4 +1,15 @@
-import React, { FC, useState } from 'react';
+// Copyright (C) 2021 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import React, { FC } from 'react';
 import {
     Alert,
     AlertIcon,
@@ -15,70 +26,49 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from 'ethers';
-import { useCartesiToken } from '../../services/token';
-import { useStaking } from '../../services/staking';
-import { useBlockNumber } from '../../services/eth';
+import { BigNumber, BigNumberish } from 'ethers';
 import { formatCTSI } from '../../utils/token';
 import theme from '../../styles/theme';
+import { parseUnits } from 'ethers/lib/utils';
 
 interface UnstakeFormProps extends BoxProps {
-    waiting?: boolean;
+    maturing: BigNumber;
+    staked: BigNumber;
+    disabled?: boolean;
+    onUnstake: (amount: BigNumberish) => void;
 }
 
 const UnstakeForm: FC<UnstakeFormProps> = (props) => {
-    const { waiting = false, ...restProps } = props;
-    const { account } = useWeb3React<Web3Provider>();
-    const blockNumber = useBlockNumber();
-    const { staking, stakedBalance, maturingBalance, unstake } =
-        useStaking(account);
-    const { parseCTSI } = useCartesiToken(
-        account,
-        staking?.address,
-        blockNumber
-    );
-    const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
-
-    const splitUnstakeAmount = () => {
-        let fromMaturing = BigNumber.from(0),
-            fromStaked = BigNumber.from(0);
-        const unstakeAmountCTSI = parseCTSI(unstakeAmount);
-
-        if (maturingBalance.add(stakedBalance).lt(unstakeAmountCTSI)) {
-            return null;
-        }
-
-        if (maturingBalance.eq(0)) {
-            fromStaked = unstakeAmountCTSI;
-        } else {
-            if (maturingBalance.gt(unstakeAmountCTSI)) {
-                fromMaturing = unstakeAmountCTSI;
-            } else {
-                fromMaturing = maturingBalance;
-                fromStaked = unstakeAmountCTSI.sub(maturingBalance);
-            }
-        }
-
-        return {
-            maturing: fromMaturing,
-            staked: fromStaked,
-        };
-    };
-
-    const unstakeSplit = splitUnstakeAmount();
+    const {
+        maturing,
+        staked,
+        disabled = false,
+        onUnstake,
+        ...restProps
+    } = props;
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<{ unstake: number }>({
+        watch,
+    } = useForm<{ amount: number }>({
         defaultValues: {
-            unstake: 0,
+            amount: 0,
         },
     });
+
+    const amount = watch('amount') || 0;
+
+    // convert to CTSI
+    const amount_ = parseUnits(amount.toString(), 18);
+
+    // use everything that is currently maturing
+    const fromMaturing = maturing.gt(amount_) ? amount_ : maturing;
+
+    // everything else must come from staked
+    const fromStaked = amount_.sub(fromMaturing);
 
     const validate = (value: number) => {
         if (value <= 0) {
@@ -87,76 +77,68 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
         return true;
     };
 
-    const doUnstake = (unstakeAmount) => {
-        unstake(parseCTSI(unstakeAmount));
-        reset({ unstake: 0 });
+    const doUnstake = (amount: number) => {
+        onUnstake(parseUnits(amount.toString(), 18));
+        reset({ amount: 0 });
     };
 
     return (
         <Box {...restProps}>
-            <FormControl isInvalid={!!errors.unstake}>
+            <FormControl isInvalid={!!errors.amount}>
                 <FormLabel>Amount to unstake</FormLabel>
 
                 <InputGroup>
                     <Input
                         type="number"
                         min={0}
-                        isInvalid={!!errors.unstake}
-                        isDisabled={!account || waiting}
-                        {...register('unstake', {
+                        isInvalid={!!errors.amount}
+                        isDisabled={disabled}
+                        {...register('amount', {
                             required: true,
                             valueAsNumber: true,
                             validate,
                         })}
-                        onChange={(e) => {
-                            setUnstakeAmount(
-                                e.target.value ? parseFloat(e.target.value) : 0
-                            );
-                        }}
                     />
                     <InputRightAddon children="CTSI" />
                 </InputGroup>
-                <FormErrorMessage>{errors.unstake?.message}</FormErrorMessage>
+                <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
             </FormControl>
 
             <Box>
-                {unstakeSplit ? (
-                    <>
-                        {unstakeSplit.maturing.gt(0) && (
-                            <Alert status="info" mt={2}>
-                                <AlertIcon />
+                {fromMaturing.gt(0) && (
+                    <Alert status="info" mt={2}>
+                        <AlertIcon />
 
-                                <Flex justify="space-between" width="100%">
-                                    <Text>
-                                        {formatCTSI(unstakeSplit.maturing)}{' '}
-                                        <Text display="inline" fontSize="sm">
-                                            CTSI
-                                        </Text>
-                                    </Text>
+                        <Flex justify="space-between" width="100%">
+                            <Text>
+                                {formatCTSI(fromMaturing)}{' '}
+                                <Text display="inline" fontSize="sm">
+                                    CTSI
+                                </Text>
+                            </Text>
 
-                                    <Text>From "maturing"</Text>
-                                </Flex>
-                            </Alert>
-                        )}
+                            <Text>From "maturing"</Text>
+                        </Flex>
+                    </Alert>
+                )}
 
-                        {unstakeSplit.staked.gt(0) && (
-                            <Alert status="info" mt={2}>
-                                <AlertIcon />
+                {fromStaked.gt(0) && (
+                    <Alert status="info" mt={2}>
+                        <AlertIcon />
 
-                                <Flex justify="space-between" width="100%">
-                                    <Text>
-                                        {formatCTSI(unstakeSplit.staked)}{' '}
-                                        <Text display="inline" fontSize="sm">
-                                            CTSI
-                                        </Text>
-                                    </Text>
+                        <Flex justify="space-between" width="100%">
+                            <Text>
+                                {formatCTSI(fromStaked)}{' '}
+                                <Text display="inline" fontSize="sm">
+                                    CTSI
+                                </Text>
+                            </Text>
 
-                                    <Text>From "staked"</Text>
-                                </Flex>
-                            </Alert>
-                        )}
-                    </>
-                ) : (
+                            <Text>From "staked"</Text>
+                        </Flex>
+                    </Alert>
+                )}
+                {fromStaked.gt(staked) && (
                     <Alert status="warning" mt={2}>
                         <AlertIcon />
                         <Text>Maximum unstaking limit exceeded!</Text>
@@ -171,17 +153,13 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                 height="auto"
                 borderRadius={2}
                 color="white"
-                bg={
-                    !account || waiting
-                        ? theme.colors.gray9
-                        : theme.colors.secondary
-                }
+                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
                 _hover={{
                     filter: 'opacity(90%)',
                 }}
                 isFullWidth
-                isDisabled={!account || waiting}
-                onClick={handleSubmit((data) => doUnstake(data.unstake))}
+                isDisabled={disabled}
+                onClick={handleSubmit((data) => doUnstake(data.amount))}
             >
                 Unstake
             </Button>
