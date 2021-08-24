@@ -94,7 +94,7 @@ const Calculator = () => {
         if (summary?.totalStaked) {
             setValue(
                 'totalStaked',
-                parseFloat(formatUnits(summary.totalStaked, 18))
+                Math.floor(parseFloat(formatUnits(summary.totalStaked, 18)))
             );
         }
     }, [summary]);
