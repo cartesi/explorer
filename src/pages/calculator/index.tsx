@@ -12,6 +12,7 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
 import {
+    Flex,
     FormControl,
     FormHelperText,
     FormLabel,
@@ -20,10 +21,12 @@ import {
     Input,
     InputGroup,
     InputRightAddon,
+    SimpleGrid,
     Slider,
     SliderFilledTrack,
     SliderThumb,
     SliderTrack,
+    StackDivider,
     Text,
     Tooltip,
     VStack,
@@ -115,156 +118,164 @@ const Calculator = () => {
 
             <PageHeader title="Staking Calculator" />
 
-            <VStack p="20px 6vw" align="stretch" spacing={5}>
-                <StakingDisclaimer persistanceKey="calculator" />
-                <FormControl id="stake">
-                    <FormLabel>Amount to stake</FormLabel>
-                    <InputGroup size="lg">
-                        <Input
-                            type="number"
-                            maxW={200}
-                            min={0}
-                            isInvalid={!!errors.stake}
-                            {...register('stake', {
-                                required: true,
-                                valueAsNumber: true,
-                            })}
-                        />
-                        <InputRightAddon children="CTSI" />
-                    </InputGroup>
-                    <FormHelperText>
-                        Amount of CTSI tokens to stake.
-                    </FormHelperText>
-                </FormControl>
+            <Flex p="20px 6vw" justify="center">
+                <VStack spacing={10}>
+                    <StakingDisclaimer persistanceKey="calculator" />
+                    <FormControl id="stake">
+                        <FormLabel>Amount to stake</FormLabel>
+                        <InputGroup size="lg">
+                            <Input
+                                type="number"
+                                min={0}
+                                isInvalid={!!errors.stake}
+                                {...register('stake', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            <InputRightAddon children="CTSI" />
+                        </InputGroup>
+                        <FormHelperText>
+                            Amount of CTSI tokens to stake.
+                        </FormHelperText>
+                    </FormControl>
 
-                <FormControl id="period">
-                    <FormLabel>Staking period</FormLabel>
-                    <InputGroup size="lg">
-                        <Input
-                            type="number"
-                            maxW={200}
-                            min={1}
-                            isInvalid={!!errors.stake}
-                            {...register('period', {
-                                required: true,
-                                valueAsNumber: true,
-                            })}
-                        />
-                        <InputRightAddon children="days" />
-                    </InputGroup>
-                    <FormHelperText>
-                        Amount of days you will keep your stake.
-                    </FormHelperText>
-                </FormControl>
+                    <FormControl id="period">
+                        <FormLabel>Staking period</FormLabel>
+                        <InputGroup size="lg">
+                            <Input
+                                type="number"
+                                min={1}
+                                isInvalid={!!errors.stake}
+                                {...register('period', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            <InputRightAddon children="days" />
+                        </InputGroup>
+                        <FormHelperText>
+                            Amount of days you will keep your stake.
+                        </FormHelperText>
+                    </FormControl>
 
-                <HStack justify="space-evenly">
-                    <CTSIText value={currentReward}>
-                        <Text>Current Block Reward</Text>
-                    </CTSIText>
-                    <CTSIText
-                        value={summary?.totalStaked}
-                        options={{
-                            notation: 'compact',
-                            minimumFractionDigits: 1,
-                            maximumFractionDigits: 1,
-                        }}
+                    <HStack
+                        justify="space-evenly"
+                        w="100%"
+                        shadow="md"
+                        p={6}
+                        divider={<StackDivider />}
                     >
-                        <Text>Total Staked</Text>
-                    </CTSIText>
-                    <CTSIText
-                        value={activeStake}
-                        options={{
-                            notation: 'compact',
-                            minimumFractionDigits: 1,
-                            maximumFractionDigits: 1,
-                        }}
-                    >
-                        <HStack>
-                            <Text>Effective Total Stake</Text>
-                            <Tooltip label={labels.effectiveTotalStake}>
-                                <Icon />
-                            </Tooltip>
-                        </HStack>
-                    </CTSIText>
-                </HStack>
-
-                <FormControl id="totalStaked">
-                    <FormLabel>Total Staked</FormLabel>
-                    <InputGroup size="lg">
-                        <Input
-                            type="number"
-                            maxW={200}
-                            min={0}
-                            isInvalid={!!errors.stake}
-                            {...register('totalStaked', {
-                                required: true,
-                                valueAsNumber: true,
-                            })}
-                        />
-                        <InputRightAddon children="CTSI" />
-                    </InputGroup>
-                    <FormHelperText>
-                        Total amount of CTSI tokens staked.
-                    </FormHelperText>
-                </FormControl>
-                <VStack w="100%" spacing={0}>
-                    <HStack justify="space-between" w="100%">
-                        <Text fontSize="sm">{numberFormat.format(0)} CTSI</Text>
-                        <Text fontSize="sm">
-                            {numberFormat.format(totalStaked)} CTSI
-                        </Text>
-                        <Text fontSize="sm">
-                            {numberFormat.format(
-                                marketInformation.circulatingSupply
-                            )}{' '}
-                            CTSI
-                        </Text>
+                        <CTSIText value={currentReward}>
+                            <Text>Current Block Reward</Text>
+                        </CTSIText>
+                        <CTSIText
+                            value={summary?.totalStaked}
+                            options={{
+                                notation: 'compact',
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                            }}
+                        >
+                            <Text>Total Staked</Text>
+                        </CTSIText>
+                        <CTSIText
+                            value={activeStake}
+                            options={{
+                                notation: 'compact',
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                            }}
+                        >
+                            <HStack>
+                                <Text>Effective Total Stake</Text>
+                                <Tooltip label={labels.effectiveTotalStake}>
+                                    <Icon />
+                                </Tooltip>
+                            </HStack>
+                        </CTSIText>
                     </HStack>
-                    <Slider
-                        aria-label="totalStaked"
-                        defaultValue={totalStaked}
-                        value={totalStaked}
-                        max={marketInformation.circulatingSupply}
-                        onChange={(value) => setValue('totalStaked', value)}
-                    >
-                        <SliderTrack h={4}>
-                            <SliderFilledTrack bg="black" />
-                        </SliderTrack>
-                        <SliderThumb boxSize={8}>
-                            <BiCube />
-                        </SliderThumb>
-                    </Slider>
-                </VStack>
-                <HStack justify="space-evenly">
-                    <CTSIText
-                        value={reward}
-                        bg="black"
-                        color="white"
-                        p={50}
-                        options={{
-                            notation: 'compact',
-                            minimumFractionDigits: 1,
-                            maximumFractionDigits: 1,
-                        }}
-                    >
-                        <Text>Projected Period Reward</Text>
-                    </CTSIText>
-                    <BigNumberText
-                        value={apr.toUnsafeFloat()}
-                        bg="black"
-                        color="white"
-                        p={50}
-                        unit="percent"
-                    >
-                        <HStack>
-                            <Text>Projected Annual Earnings</Text>
-                            <Tooltip label={labels.projectedAnnualEarnings}>
-                                <Icon />
-                            </Tooltip>
+
+                    <FormControl id="totalStaked">
+                        <FormLabel>Total Staked</FormLabel>
+                        <InputGroup size="lg">
+                            <Input
+                                type="number"
+                                min={0}
+                                isInvalid={!!errors.stake}
+                                {...register('totalStaked', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            <InputRightAddon children="CTSI" />
+                        </InputGroup>
+                        <FormHelperText>
+                            Total amount of CTSI tokens staked.
+                        </FormHelperText>
+                    </FormControl>
+                    <VStack w="100%" spacing={0}>
+                        <HStack justify="space-between" w="100%">
+                            <Text fontSize="sm">
+                                {numberFormat.format(0)} CTSI
+                            </Text>
+                            <Text fontSize="sm">
+                                {numberFormat.format(totalStaked)} CTSI
+                            </Text>
+                            <Text fontSize="sm">
+                                {numberFormat.format(
+                                    marketInformation.circulatingSupply
+                                )}{' '}
+                                CTSI
+                            </Text>
                         </HStack>
-                    </BigNumberText>
-                </HStack>
-            </VStack>
+                        <Slider
+                            aria-label="totalStaked"
+                            defaultValue={totalStaked}
+                            value={totalStaked}
+                            focusThumbOnChange={false}
+                            max={marketInformation.circulatingSupply}
+                            onChange={(value) => setValue('totalStaked', value)}
+                        >
+                            <SliderTrack h={4}>
+                                <SliderFilledTrack bg="black" />
+                            </SliderTrack>
+                            <SliderThumb boxSize={8}>
+                                <BiCube />
+                            </SliderThumb>
+                        </Slider>
+                    </VStack>
+                    <SimpleGrid columns={2} spacing={8}>
+                        <CTSIText
+                            value={reward}
+                            bg="black"
+                            color="white"
+                            p={50}
+                            options={{
+                                notation: 'compact',
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                            }}
+                        >
+                            <Text>Projected Period Reward</Text>
+                        </CTSIText>
+                        <BigNumberText
+                            value={apr.toUnsafeFloat()}
+                            bg="black"
+                            color="white"
+                            p={50}
+                            unit="percent"
+                        >
+                            <HStack>
+                                <Text>Projected Annual Earnings</Text>
+                                <Tooltip label={labels.projectedAnnualEarnings}>
+                                    <Icon />
+                                </Tooltip>
+                            </HStack>
+                        </BigNumberText>
+                    </SimpleGrid>
+                </VStack>
+            </Flex>
         </Layout>
     );
 };
