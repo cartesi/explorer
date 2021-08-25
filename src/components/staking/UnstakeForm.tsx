@@ -24,6 +24,7 @@ import {
     InputGroup,
     InputRightAddon,
     Text,
+    VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { BigNumber, BigNumberish } from 'ethers';
@@ -83,7 +84,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
     };
 
     return (
-        <Box {...restProps}>
+        <VStack {...restProps}>
             <FormControl isInvalid={!!errors.amount}>
                 <FormLabel>Amount to unstake</FormLabel>
 
@@ -104,9 +105,9 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                 <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
             </FormControl>
 
-            <Box>
+            <Box w="100%">
                 {fromMaturing.gt(0) && (
-                    <Alert status="info" mt={2}>
+                    <Alert status="info">
                         <AlertIcon />
 
                         <Flex justify="space-between" width="100%">
@@ -123,7 +124,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                 )}
 
                 {fromStaked.gt(0) && (
-                    <Alert status="info" mt={2}>
+                    <Alert status="info">
                         <AlertIcon />
 
                         <Flex justify="space-between" width="100%">
@@ -139,7 +140,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                     </Alert>
                 )}
                 {fromStaked.gt(staked) && (
-                    <Alert status="warning" mt={2}>
+                    <Alert status="warning">
                         <AlertIcon />
                         <Text>Maximum unstaking limit exceeded!</Text>
                     </Alert>
@@ -147,16 +148,6 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
             </Box>
 
             <Button
-                size="sm"
-                mt={2}
-                py={4}
-                height="auto"
-                borderRadius={2}
-                color="white"
-                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
-                _hover={{
-                    filter: 'opacity(90%)',
-                }}
                 isFullWidth
                 isDisabled={disabled}
                 onClick={handleSubmit((data) => doUnstake(data.amount))}
@@ -164,10 +155,10 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
                 Unstake
             </Button>
 
-            <Text fontSize="12px" color="red.500" align="center" mt={4}>
+            <Text fontSize="sm" color="red.500" align="center">
                 The releasing status will restart counting.
             </Text>
-        </Box>
+        </VStack>
     );
 };
 

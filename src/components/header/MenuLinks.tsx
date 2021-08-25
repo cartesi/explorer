@@ -9,18 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
-import { Box, Stack } from '@chakra-ui/react';
+import { FC } from 'react';
+import { Box, IconButton, Stack, useColorMode } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import MenuItem from './MenuItem';
 import ConnectMetamask from './ConnectMetamask';
 import Account from './Account';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 export interface MenuLinksProps {
     isOpen: boolean;
 }
 
-const MenuLinks: FunctionComponent<MenuLinksProps> = ({ isOpen }) => {
+const MenuLinks: FC<MenuLinksProps> = ({ isOpen }) => {
     const items = [
         {
             key: 'home',
@@ -51,9 +52,13 @@ const MenuLinks: FunctionComponent<MenuLinksProps> = ({ isOpen }) => {
 
     // use router to figure out the active item
     const router = useRouter();
+    console.log(router.route);
     const selectedKeys = items
         .filter((item) => router.route.startsWith(item.href))
         .map((item) => item.key);
+
+    // color mode switcher
+    const { colorMode, toggleColorMode } = useColorMode();
 
     return (
         <Box
@@ -76,6 +81,14 @@ const MenuLinks: FunctionComponent<MenuLinksProps> = ({ isOpen }) => {
                         {label}
                     </MenuItem>
                 ))}
+                <IconButton
+                    size="sm"
+                    bg="black"
+                    _hover={{ bg: 'gray.800' }}
+                    aria-label="Toggle dark mode"
+                    icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                    onClick={toggleColorMode}
+                />
                 <ConnectMetamask />
                 <Account />
             </Stack>

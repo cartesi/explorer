@@ -24,6 +24,7 @@ import {
 } from 'recharts';
 import { QueryResult } from '@apollo/client';
 import { BlocksData, BlocksVars } from '../graphql/models';
+import { useColorModeValue } from '@chakra-ui/react';
 
 export interface BlocksChartProps {
     result: QueryResult<BlocksData, BlocksVars>;
@@ -121,10 +122,11 @@ const BlocksChart = (props: BlocksChartProps) => {
         return value;
     };
 
+    const bg = useColorModeValue('white', '#2D3748'); // gray.700 = #2D3748
     return (
         <ResponsiveContainer height={300}>
             <ScatterChart>
-                <CartesianGrid stroke="#ccc" />
+                <CartesianGrid stroke="#ccc" fill={bg} />
                 <XAxis
                     dataKey="timestamp"
                     domain={['auto', 'auto']}

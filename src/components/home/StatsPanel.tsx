@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 
 const StatsPanel: FC<StackProps> = (props) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'gray.700');
     return (
         <Stack
             direction={['column', 'column', 'row', 'row']}

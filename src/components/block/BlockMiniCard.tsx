@@ -19,6 +19,7 @@ import {
     Image,
     Spacer,
     Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { TimeIcon } from '@chakra-ui/icons';
 import humanizeDuration from 'humanize-duration';
@@ -49,6 +50,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     if (showProtocol) {
         id = `${block.chain.protocol.version}-${id}`;
     }
+    const bg = useColorModeValue('white', 'gray.700');
     return (
         <Box {...boxProps}>
             <Center p={2}>
@@ -62,7 +64,13 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
             <Center bg="black" p={2}>
                 <Text color="white">Block {id}</Text>
             </Center>
-            <Flex p={10} align="center" justify="space-between" boxShadow="md">
+            <Flex
+                p={10}
+                align="center"
+                justify="space-between"
+                boxShadow="md"
+                bg={bg}
+            >
                 <Flex
                     direction="column"
                     align="flex-start"

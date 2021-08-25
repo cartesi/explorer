@@ -23,6 +23,7 @@ import {
     FormErrorMessage,
     FormControl,
     InputRightAddon,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
@@ -104,6 +105,9 @@ const Node: FC<NodeProps> = (props) => {
         }
     }, [node.transaction.error, node.transaction.submitting]);
 
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
+
     return (
         <Box
             {...restProps}
@@ -112,7 +116,7 @@ const Node: FC<NodeProps> = (props) => {
             minHeight={90}
             marginLeft="6vw"
             marginRight="6vw"
-            bg="white"
+            bg={bg}
             zIndex={theme.zIndices.sm}
         >
             <Flex

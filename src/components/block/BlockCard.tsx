@@ -9,8 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
-import { HStack, StackProps, Image, Box } from '@chakra-ui/react';
+import { FC } from 'react';
+import {
+    HStack,
+    StackProps,
+    Image,
+    Box,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { Block } from '../../graphql/models';
 import BlockTable, { BlockHighlightProp } from './BlockTable';
 import { tinyGraphUrl } from '../../utils/tinygraph';
@@ -22,12 +28,14 @@ interface BlockCardProps extends StackProps {
     highlightColor?: string;
 }
 
-const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
+const BlockCard: FC<BlockCardProps> = (props) => {
     const { chainId, block, highlight, highlightColor, ...stackProps } = props;
+    const bg = useColorModeValue('white', 'gray.700');
     return (
         <HStack
             shadow="md"
             p={4}
+            bg={bg}
             borderLeft="15px solid black"
             align="flex-start"
             {...stackProps}

@@ -49,11 +49,12 @@ import { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import SearchInput from '../components/SearchInput';
 
 const SectionHeading: FunctionComponent = (props) => {
+    const borderLeftColor = useColorModeValue('gray.900', 'gray.200');
     return (
         <Heading
             as="h5"
             borderLeftWidth="1px"
-            borderLeftColor="gray.900"
+            borderLeftColor={borderLeftColor}
             borderLeftStyle="solid"
             marginTop={10}
             paddingLeft={3}

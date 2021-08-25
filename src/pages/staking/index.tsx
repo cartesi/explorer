@@ -13,7 +13,14 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { Flex, Box, Text, Button, VStack } from '@chakra-ui/react';
+import {
+    Flex,
+    Box,
+    Text,
+    Button,
+    VStack,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FaCoins } from 'react-icons/fa';
 import { BsClockHistory } from 'react-icons/bs';
@@ -78,6 +85,9 @@ const Staking = () => {
         .add(maturingBalance)
         .add(releasingBalance);
 
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
+
     return (
         <Layout>
             <Head>
@@ -107,7 +117,12 @@ const Staking = () => {
                 p="50px 6vw 50px 6vw"
             >
                 <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
-                    <Box mb={8} boxShadow="lg" borderLeft="10px solid black">
+                    <Box
+                        mb={8}
+                        boxShadow="lg"
+                        borderLeft="10px solid black"
+                        bg={bg}
+                    >
                         <CTSIText
                             p={6}
                             value={maturingBalance}
@@ -131,7 +146,12 @@ const Staking = () => {
                         </CTSIText>
                     </Box>
 
-                    <Box mb={8} boxShadow="lg" borderLeft="10px solid black">
+                    <Box
+                        mb={8}
+                        boxShadow="lg"
+                        borderLeft="10px solid black"
+                        bg={bg}
+                    >
                         <CTSIText
                             p={6}
                             value={releasingBalance}
@@ -160,6 +180,7 @@ const Staking = () => {
 
                 <StakingTabs
                     flex={2}
+                    bg={bg}
                     Stake={
                         <StakeForm
                             allowance={allowance}

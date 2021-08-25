@@ -14,7 +14,6 @@ import {
     Alert,
     AlertIcon,
     Box,
-    BoxProps,
     Button,
     FormControl,
     FormErrorMessage,
@@ -25,6 +24,8 @@ import {
     Text,
     Flex,
     Checkbox,
+    VStack,
+    StackProps,
 } from '@chakra-ui/react';
 import { formatCTSI } from '../../utils/token';
 import theme from '../../styles/theme';
@@ -34,7 +35,7 @@ import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
 import { parseUnits } from 'ethers/lib/utils';
 
-interface StakeFormProps extends BoxProps {
+interface StakeFormProps extends StackProps {
     allowance: BigNumber;
     releasing: BigNumber;
     totalStaked: BigNumber;
@@ -103,12 +104,12 @@ const StakeForm: FC<StakeFormProps> = (props) => {
     const fromWallet = amount_.sub(fromReleasing);
 
     return (
-        <Box {...restProps}>
+        <VStack align="flex-start" {...restProps}>
             <CTSIText value={allowance}>
                 <Text>Allowance</Text>
             </CTSIText>
 
-            <FormControl isInvalid={!!errors.stake} mt={4}>
+            <FormControl isInvalid={!!errors.stake}>
                 <FormLabel>Amount to stake</FormLabel>
 
                 <InputGroup>
@@ -130,7 +131,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
 
             <Box>
                 {fromReleasing.gt(0) && (
-                    <Alert status="info" mt={2}>
+                    <Alert status="info">
                         <AlertIcon />
                         <Flex justify="space-between" width="100%">
                             <Text>
@@ -146,7 +147,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                 )}
 
                 {fromWallet.gt(0) && (
-                    <Alert status="info" mt={2}>
+                    <Alert status="info">
                         <AlertIcon />
 
                         <Flex justify="space-between" width="100%">
@@ -162,7 +163,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                     </Alert>
                 )}
                 {allowance.lt(fromWallet) && (
-                    <Alert status="warning" mt={2}>
+                    <Alert status="warning">
                         <AlertIcon />
                         <Text>
                             Maximum staking limit exceeded! Please approve more
@@ -173,16 +174,6 @@ const StakeForm: FC<StakeFormProps> = (props) => {
             </Box>
 
             <Button
-                size="sm"
-                mt={2}
-                py={4}
-                height="auto"
-                borderRadius={2}
-                color="white"
-                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
-                _hover={{
-                    filter: 'opacity(90%)',
-                }}
                 isFullWidth
                 isDisabled={disabled || allowance.gte(fromWallet)}
                 onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
@@ -191,16 +182,6 @@ const StakeForm: FC<StakeFormProps> = (props) => {
             </Button>
 
             <Button
-                size="sm"
-                mt={2}
-                py={4}
-                height="auto"
-                borderRadius={2}
-                color="white"
-                bg={disabled ? theme.colors.gray9 : theme.colors.secondary}
-                _hover={{
-                    filter: 'opacity(90%)',
-                }}
                 isFullWidth
                 isDisabled={
                     disabled || allowance.lt(fromWallet) || amount_.isZero()
@@ -212,12 +193,12 @@ const StakeForm: FC<StakeFormProps> = (props) => {
 
             {fromWallet.gt(0) ? (
                 <>
-                    <Text fontSize="12px" color="red.500" align="center" mt={4}>
+                    <Text fontSize="sm" color="red.500" align="center">
                         The maturing status will restart counting.
                     </Text>
 
                     {amount > 0 && (
-                        <Alert status="info" mt={2}>
+                        <Alert status="info">
                             <AlertIcon />
 
                             <Text>
@@ -241,7 +222,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                     )}
                 </>
             ) : (
-                <Flex justify="center" mt={3}>
+                <Flex justify="center">
                     <Checkbox
                         colorScheme="green"
                         borderColor={
@@ -256,7 +237,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
                     </Checkbox>
                 </Flex>
             )}
-        </Box>
+        </VStack>
     );
 };
 

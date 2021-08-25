@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
-import { Link } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import { FC } from 'react';
+import { Link, Text } from '@chakra-ui/react';
 
 export interface MenuItemProps {
     selected: boolean;
