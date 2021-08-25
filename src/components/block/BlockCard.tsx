@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { HStack, StackProps, Image } from '@chakra-ui/react';
+import { HStack, StackProps, Image, Box } from '@chakra-ui/react';
 import { Block } from '../../graphql/models';
 import BlockTable, { BlockHighlightProp } from './BlockTable';
 import { tinyGraphUrl } from '../../utils/tinygraph';
@@ -23,21 +23,23 @@ interface BlockCardProps extends StackProps {
 }
 
 const BlockCard: FunctionComponent<BlockCardProps> = (props) => {
-    const { chainId, block, highlight, highlightColor, ...rest } = props;
+    const { chainId, block, highlight, highlightColor, ...stackProps } = props;
     return (
         <HStack
-            {...rest}
             shadow="md"
             p={4}
-            borderLeft="20px solid black"
+            borderLeft="15px solid black"
             align="flex-start"
+            {...stackProps}
         >
-            <BlockTable
-                chainId={chainId}
-                block={block}
-                highlight={highlight}
-                highlightColor={highlightColor}
-            />
+            <Box w="100%">
+                <BlockTable
+                    chainId={chainId}
+                    block={block}
+                    highlight={highlight}
+                    highlightColor={highlightColor}
+                />
+            </Box>
             <Image
                 src={tinyGraphUrl(block)}
                 boxSize={['0', '50px', '120px', '160px']}
