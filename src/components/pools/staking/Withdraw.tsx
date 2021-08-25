@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
-import { GrSubtract } from 'react-icons/gr';
+import { MdRemove } from 'react-icons/md';
 import Title from './Title';
 
 export interface WithdrawProps {
@@ -58,7 +58,7 @@ const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
         <HStack justify="space-between">
             <Title
                 title="Withdraw"
-                icon={<GrSubtract />}
+                icon={<MdRemove />}
                 help="Amount of tokens to withdraw from pool"
             />
             <HStack align="baseline">

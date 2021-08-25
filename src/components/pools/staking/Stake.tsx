@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
-import { GrAdd } from 'react-icons/gr';
+import { MdAdd } from 'react-icons/md';
 import Title from './Title';
 
 export interface StakeProps {
@@ -58,7 +58,7 @@ const Stake: FC<StakeProps> = ({ balance, onCancel, onSubmit }) => {
         <HStack justify="space-between">
             <Title
                 title="Stake"
-                icon={<GrAdd />}
+                icon={<MdAdd />}
                 help="Amount of tokens to stake"
             />
             <HStack align="baseline">

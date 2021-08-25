@@ -21,7 +21,7 @@ import {
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { FC, useState } from 'react';
-import { GrLinkTop } from 'react-icons/gr';
+import { MdVerticalAlignTop } from 'react-icons/md';
 import CTSI from './CTSI';
 import Title from './Title';
 
@@ -55,7 +55,7 @@ const Allowance: FC<AllowanceProps> = ({
         <HStack justify="space-between">
             <Title
                 title="Allowance"
-                icon={<GrLinkTop />}
+                icon={<MdVerticalAlignTop />}
                 help="Maximum amount of tokens this pool can transfer out of your wallet"
             />
             <HStack align="baseline">

@@ -13,7 +13,7 @@ import { HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaUsers } from 'react-icons/fa';
-import { GrAdd, GrSubtract } from 'react-icons/gr';
+import { MdAdd, MdRemove } from 'react-icons/md';
 import CTSI from './CTSI';
 import Title from './Title';
 
@@ -50,7 +50,7 @@ const Pool: FC<PoolProps> = ({
                     <Tooltip label="Deposit" placement="top">
                         <span>
                             <IconButton
-                                icon={<GrAdd />}
+                                icon={<MdAdd />}
                                 aria-label="Deposit"
                                 size="md"
                                 disabled={
@@ -63,7 +63,7 @@ const Pool: FC<PoolProps> = ({
                     <Tooltip label="Withdraw" placement="top">
                         <span>
                             <IconButton
-                                icon={<GrSubtract />}
+                                icon={<MdRemove />}
                                 aria-label="Withdraw"
                                 size="md"
                                 disabled={withdrawBalance.eq(0)}

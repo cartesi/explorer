@@ -24,6 +24,7 @@ import {
     FormControl,
     InputRightAddon,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
 import { formatEther, parseEther } from '@ethersproject/units';
 import { Web3Provider } from '@ethersproject/providers';
@@ -130,22 +131,10 @@ const Node: FC<NodeProps> = (props) => {
                 <Text mx={2}>Node</Text>
 
                 <Button
-                    color={
-                        activeAddress !== ''
-                            ? theme.colors.primary
-                            : theme.colors.gray3
-                    }
-                    height="auto"
                     bg="transparent"
                     fontSize={32}
                     fontWeight={300}
                     whiteSpace="normal"
-                    _hover={{
-                        bg: 'transparent',
-                    }}
-                    _active={{
-                        bg: 'transparent',
-                    }}
                     onClick={() => setShowDetails(!!account && !showDetails)}
                 >
                     {activeAddress
@@ -173,11 +162,10 @@ const Node: FC<NodeProps> = (props) => {
                 <Flex
                     justify="center"
                     align="center"
-                    bg="white"
                     padding={25}
                     boxShadow="md"
                 >
-                    <Box>
+                    <VStack>
                         <FormControl isInvalid={!isValidAddress}>
                             <FormLabel>Node Address</FormLabel>
 
@@ -272,20 +260,7 @@ const Node: FC<NodeProps> = (props) => {
                         {node.address && node.available && (
                             <ButtonGroup width="100%">
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -297,20 +272,7 @@ const Node: FC<NodeProps> = (props) => {
                                 </Button>
 
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -326,20 +288,7 @@ const Node: FC<NodeProps> = (props) => {
                         {mine && node.pending && (
                             <ButtonGroup>
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -355,20 +304,7 @@ const Node: FC<NodeProps> = (props) => {
                         {ready && (
                             <ButtonGroup width="100%">
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -380,20 +316,7 @@ const Node: FC<NodeProps> = (props) => {
                                 </Button>
 
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -405,20 +328,7 @@ const Node: FC<NodeProps> = (props) => {
                                 </Button>
 
                                 <Button
-                                    size="sm"
-                                    mt={2}
-                                    px={3}
-                                    borderRadius={2}
-                                    color="white"
-                                    bg={
-                                        node.transaction.submitting ||
-                                        node.loading
-                                            ? theme.colors.gray9
-                                            : theme.colors.secondary
-                                    }
-                                    _hover={{
-                                        filter: 'opacity(90%)',
-                                    }}
+                                    size="md"
                                     isFullWidth
                                     isDisabled={
                                         node.transaction.submitting ||
@@ -433,19 +343,7 @@ const Node: FC<NodeProps> = (props) => {
 
                         {node.owned && !node.authorized && mine && (
                             <Button
-                                size="sm"
-                                mt={2}
-                                px={3}
-                                borderRadius={2}
-                                color="white"
-                                bg={
-                                    node.transaction.submitting || node.loading
-                                        ? theme.colors.gray9
-                                        : theme.colors.secondary
-                                }
-                                _hover={{
-                                    filter: 'opacity(90%)',
-                                }}
+                                size="md"
                                 isFullWidth
                                 isDisabled={
                                     node.transaction.submitting || node.loading
@@ -455,7 +353,7 @@ const Node: FC<NodeProps> = (props) => {
                                 Authorize
                             </Button>
                         )}
-                    </Box>
+                    </VStack>
                 </Flex>
             )}
         </Box>

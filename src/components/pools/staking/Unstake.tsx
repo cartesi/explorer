@@ -26,7 +26,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
-import { GrSubtract } from 'react-icons/gr';
+import { MdRemove } from 'react-icons/md';
 import Title from './Title';
 
 export interface UnstakeProps {
@@ -69,7 +69,7 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
         <HStack justify="space-between">
             <Title
                 title="Unstake"
-                icon={<GrSubtract />}
+                icon={<MdRemove />}
                 help="Amount of tokens to unstake from pool"
             />
             <HStack>

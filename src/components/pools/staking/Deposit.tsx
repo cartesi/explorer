@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
-import { GrAdd } from 'react-icons/gr';
+import { MdAdd } from 'react-icons/md';
 import Title from './Title';
 
 export interface DepositProps {
@@ -69,7 +69,7 @@ const Deposit: FC<DepositProps> = ({
         <HStack justify="space-between">
             <Title
                 title="Deposit"
-                icon={<GrAdd />}
+                icon={<MdAdd />}
                 help="Amount of tokens to transfer to pool"
             />
             <HStack align="baseline">

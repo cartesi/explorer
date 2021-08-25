@@ -13,7 +13,7 @@ import { HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaCoins } from 'react-icons/fa';
-import { GrAdd, GrSubtract } from 'react-icons/gr';
+import { MdAdd, MdRemove } from 'react-icons/md';
 import { TimeIcon } from '@chakra-ui/icons';
 import CTSI from './CTSI';
 import Title from './Title';
@@ -64,7 +64,7 @@ const Staked: FC<StakedProps> = ({
                 <HStack minW={100}>
                     <Tooltip label="Stake" placement="top">
                         <IconButton
-                            icon={<GrAdd />}
+                            icon={<MdAdd />}
                             aria-label="Stake"
                             size="md"
                             disabled={!!unlock}
@@ -74,7 +74,7 @@ const Staked: FC<StakedProps> = ({
                     <Tooltip label="Unstake" placement="top">
                         <span>
                             <IconButton
-                                icon={<GrSubtract />}
+                                icon={<MdRemove />}
                                 aria-label="Unstake"
                                 size="md"
                                 disabled={balance.isZero()}

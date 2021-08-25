@@ -9,7 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Collapse, StackProps, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+    Collapse,
+    StackProps,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
+} from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
 import Wallet from './staking/Wallet';
@@ -62,10 +68,14 @@ const UserPool: FC<UserPoolProps> = (props) => {
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
+
     return (
         <VStack
             shadow="md"
             p={5}
+            bg={bg}
             align="stretch"
             borderLeft="10px solid black"
             {...stackProps}
