@@ -29,6 +29,7 @@ import {
     StackDivider,
     Text,
     Tooltip,
+    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -109,6 +110,9 @@ const Calculator = () => {
         maximumFractionDigits: 1,
     });
 
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
+
     return (
         <Layout>
             <Head>
@@ -163,6 +167,7 @@ const Calculator = () => {
                         justify="space-evenly"
                         w="100%"
                         shadow="md"
+                        bg={bg}
                         p={6}
                         divider={<StackDivider />}
                     >

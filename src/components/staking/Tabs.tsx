@@ -66,7 +66,7 @@ export const Tabs: FC<TabsProps> = (props) => {
                                 color: 'white',
                                 borderBottomWidth: 5,
                                 borderBottomColor: theme.colors.info,
-                                boxShadow: theme.boxShadows.sm,
+                                boxShadow: 'md',
                             }}
                             _hover={{
                                 opacity: 0.9,

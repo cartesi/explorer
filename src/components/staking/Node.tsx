@@ -124,7 +124,7 @@ const Node: FC<NodeProps> = (props) => {
                 direction={['column', 'column', 'row', 'row']}
                 align="center"
                 p="25px 6vw 25px 6vw"
-                boxShadow={theme.boxShadows.md}
+                boxShadow="md"
                 zIndex={theme.zIndices.sm}
             >
                 <Text mx={2}>Node</Text>
@@ -175,7 +175,7 @@ const Node: FC<NodeProps> = (props) => {
                     align="center"
                     bg="white"
                     padding={25}
-                    boxShadow={theme.boxShadows.md}
+                    boxShadow="md"
                 >
                     <Box>
                         <FormControl isInvalid={!isValidAddress}>

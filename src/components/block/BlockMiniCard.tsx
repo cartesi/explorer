@@ -50,7 +50,10 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     if (showProtocol) {
         id = `${block.chain.protocol.version}-${id}`;
     }
+
+    // dark mode support
     const bg = useColorModeValue('white', 'gray.700');
+
     return (
         <Box {...boxProps}>
             <Center p={2}>

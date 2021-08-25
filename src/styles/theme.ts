@@ -71,11 +71,6 @@ const theme = extendTheme({
         body: 'Rubik',
         heading: 'Rubik',
     },
-    boxShadows: {
-        sm: '0 2px 2px rgba(0, 0, 0, 0.25)',
-        md: '0 4px 4px rgba(0, 0, 0, 0.25)',
-        lg: '0 4px 8px rgba(0, 0, 0, 0.25)',
-    },
     colors: {
         primary: 'rgba(0, 0, 0, 0.87)',
         secondary: '#3d3d3d',
