@@ -37,7 +37,6 @@ const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
         register,
         handleSubmit,
         formState: { errors },
-        watch,
     } = useForm<{ withdraw: number }>({
         defaultValues: {
             withdraw: parseFloat(formatUnits(balance, 18)),

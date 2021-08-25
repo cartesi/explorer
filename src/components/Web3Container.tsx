@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -14,7 +14,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 
 const Web3Container = ({ children }) => {
-    const getLibrary = (provider: any, _connector: any) => {
+    const getLibrary = (provider: any) => {
         return new Web3Provider(provider, 'any');
     };
 

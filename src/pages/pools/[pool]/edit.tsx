@@ -14,13 +14,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-
-import { useStakingPool } from '../../../services/pool';
-import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-
-import Layout from '../../../components/Layout';
-import PoolNode from '../../../components/pools/PoolNode';
-import { formatCTSI } from '../../../utils/token';
 import {
     Center,
     FormControl,
@@ -31,9 +24,14 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
+import { FaUsers } from 'react-icons/fa';
+
+import { useStakingPool } from '../../../services/pool';
+import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import Layout from '../../../components/Layout';
+import PoolNode from '../../../components/pools/PoolNode';
 import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
-import { FaUsers } from 'react-icons/fa';
 import NameForm from '../../../components/pools/NameForm';
 import FlatRateContainer from '../../../containers/pool/FlatRateContainer';
 import GasTaxContainer from '../../../containers/pool/GasTaxContainer';

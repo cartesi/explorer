@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { Table, TableProps, Tbody, Td, Text, Th, Tr } from '@chakra-ui/react';
 
 import Address from '../Address';
@@ -25,7 +25,7 @@ interface BlockTableProps extends TableProps {
     highlightColor: string;
 }
 
-const BlockTable: FunctionComponent<BlockTableProps> = (props) => {
+const BlockTable: FC<BlockTableProps> = (props) => {
     const {
         chainId,
         block,

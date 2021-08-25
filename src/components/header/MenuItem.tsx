@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
-//import Link from 'next/link';
+import React, { FC } from 'react';
 import { Link } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
 
@@ -20,7 +19,7 @@ export interface MenuItemProps {
     to: string;
 }
 
-const MenuItem: FunctionComponent<MenuItemProps> = ({
+const MenuItem: FC<MenuItemProps> = ({
     children,
     selected,
     isLast,

@@ -110,7 +110,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
     };
 
-    const tooltipFormatter = (value, name, props) => {
+    const tooltipFormatter = (value, name) => {
         if (name === 'Difficulty') {
             return value;
         } else if (name === 'Time') {
