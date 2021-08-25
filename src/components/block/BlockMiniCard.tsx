@@ -57,7 +57,11 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                 <HStack>
                     <TimeIcon />
                     <Text fontWeight="bold">
-                        {humanizeDuration(block.timestamp, { largest: 2 })} ago
+                        {humanizeDuration(Date.now() - block.timestamp * 1000, {
+                            units: ['m'],
+                            round: true,
+                        })}{' '}
+                        ago
                     </Text>
                 </HStack>
             </Center>
