@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useState } from 'react';
-import { VStack } from '@chakra-ui/react';
+import React, { FC, useState } from 'react';
+import { useBreakpointValue, VStack } from '@chakra-ui/react';
 import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
 import Pagination from './Pagination';
@@ -23,11 +23,12 @@ interface UsersProps {
     pages: number;
 }
 
-const Users: FunctionComponent<UsersProps> = (props) => {
+const Users: FC<UsersProps> = (props) => {
     const { chainId, account, search, pages } = props;
     const [sort, setSort] = useState<UserSort>('stakedBalance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort);
+    const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);
 
     return (
         <VStack w="100%">
@@ -36,6 +37,7 @@ const Users: FunctionComponent<UsersProps> = (props) => {
                 account={account}
                 loading={loading}
                 data={data?.users}
+                size={size as 'lg' | 'md' | 'sm'}
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />

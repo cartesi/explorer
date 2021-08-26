@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Tr, Td, useColorModeValue } from '@chakra-ui/react';
 import Link from 'next/link';
 
@@ -21,13 +21,10 @@ export interface UserRowProps {
     chainId: number;
     user: User;
     account?: string;
+    size?: 'lg' | 'md' | 'sm';
 }
 
-const UserRow: FunctionComponent<UserRowProps> = ({
-    chainId,
-    user,
-    account,
-}) => {
+const UserRow: FC<UserRowProps> = ({ chainId, user, account, size = 'lg' }) => {
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
 
     // if logged user is manager, show edit button
@@ -39,19 +36,25 @@ const UserRow: FunctionComponent<UserRowProps> = ({
             <Td>
                 <Address address={user.id} chainId={chainId} responsive />
             </Td>
-            <Td isNumeric>{user.totalBlocks}</Td>
+            {size != 'sm' && <Td isNumeric>{user.totalBlocks}</Td>}
             <Td isNumeric>{formatCTSI(user.stakedBalance, 0)} CTSI</Td>
-            <Td isNumeric>{formatCTSI(user.totalReward, 0)} CTSI</Td>
-            <Td>
-                {user.pool && (
-                    <>
-                        <Link href={`/pools/${user.id}`}>Stake</Link>
-                        {edit && (
-                            <Link href={`/pools/${user.id}/edit`}>Edit</Link>
-                        )}
-                    </>
-                )}
-            </Td>
+            {size != 'sm' && (
+                <Td isNumeric>{formatCTSI(user.totalReward, 0)} CTSI</Td>
+            )}
+            {size != 'sm' && (
+                <Td>
+                    {user.pool && (
+                        <>
+                            <Link href={`/pools/${user.id}`}>Stake</Link>
+                            {edit && (
+                                <Link href={`/pools/${user.id}/edit`}>
+                                    Edit
+                                </Link>
+                            )}
+                        </>
+                    )}
+                </Td>
+            )}
         </Tr>
     );
 };

@@ -113,7 +113,7 @@ const Home = () => {
             <Wrap
                 bg="black"
                 color="white"
-                opacity={0.87}
+                opacity={0.9}
                 justify="space-around"
                 align="flex-end"
                 px="6vw"

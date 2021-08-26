@@ -14,7 +14,7 @@ import NavBar from './header/NavBar';
 import theme from '../styles/theme';
 
 const Header = () => {
-    return <NavBar p="0 6vw" minHeight="100px" zIndex={theme.zIndices.xxl} />;
+    return <NavBar w="100%" zIndex={theme.zIndices.xxl} />;
 };
 
 export default Header;

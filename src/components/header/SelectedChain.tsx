@@ -10,37 +10,24 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Tag, TagLabel } from '@chakra-ui/react';
-import { Web3Provider } from '@ethersproject/providers';
-import { chains } from 'eth-chains';
 import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import Chain from './Chain';
+import { TagProps } from '@chakra-ui/react';
 
-const SelectedChain: FC = () => {
+export interface SelectedChainProps extends TagProps {
+    showMainnet?: boolean;
+}
+
+const SelectedChain: FC<SelectedChainProps> = ({
+    showMainnet = false,
+    ...tagProps
+}) => {
+    // get chain from context, undefined if not connected
     const { chainId } = useWeb3React<Web3Provider>();
-    const chain = chains.get(chainId);
 
-    const defaultColorScheme = 'gray';
-    const colorSchemes = {
-        1: 'teal', // mainnet
-        3: 'pink', // ropsten
-        42: 'purple', // kovan
-        4: 'yellow', // rinkeby
-        5: 'blue', // goerli
-    };
-
-    // do now show anything for mainnet or disconnected from metamask
-    if (!chainId || !chain || chainId == 1) {
-        return null;
-    }
-
-    return (
-        <Tag
-            borderRadius="full"
-            colorScheme={colorSchemes[chainId] || defaultColorScheme}
-        >
-            <TagLabel>{chain.network}</TagLabel>
-        </Tag>
-    );
+    // render component
+    return <Chain chainId={chainId} showMainnet={showMainnet} {...tagProps} />;
 };
 
 export default SelectedChain;

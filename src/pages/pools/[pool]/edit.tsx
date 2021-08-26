@@ -78,7 +78,7 @@ const ManagePool = () => {
                 justify="space-between"
                 align="flex-end"
                 bg="black"
-                opacity={0.87}
+                opacity={0.9}
                 color="white"
             >
                 <AddressText

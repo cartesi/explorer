@@ -29,7 +29,7 @@ export const Balances: FC<BalancesProps> = (props) => {
             direction={['column', 'column', 'column', 'row']}
             bg="black"
             color="white"
-            opacity={0.87}
+            opacity={0.9}
             p="50px 6vw 65px 6vw"
         >
             <Box pb={[4, 4, 4, 0]}>

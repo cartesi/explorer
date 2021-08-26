@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 
-const Logo: FunctionComponent<BoxProps> = (props) => (
+const Logo: FC<BoxProps> = (props) => (
     <Box {...props}>
         <svg
             width="160"

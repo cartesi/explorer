@@ -72,7 +72,7 @@ const theme = extendTheme({
         heading: 'Rubik',
     },
     colors: {
-        primary: 'rgba(0, 0, 0, 0.87)',
+        primary: 'rgba(0, 0, 0, 0.9)',
         secondary: '#3d3d3d',
         info: '#007bff',
         gray1: '#e9e9e9',

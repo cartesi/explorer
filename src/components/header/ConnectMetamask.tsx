@@ -56,6 +56,7 @@ const ConnectMetamask: FC = () => {
             )}
             {!active && !isUnsupportedChainIdError && (
                 <Button
+                    size="md"
                     onClick={connectNetwork}
                     bg="#007bff"
                     _hover={{ bg: '#005fc4' }}

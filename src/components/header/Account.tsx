@@ -27,13 +27,13 @@ const Account: FC = () => {
 
     return (
         <Tag
-            size="lg"
+            size="md"
             borderRadius="full"
             colorScheme="whiteAlpha"
             color="gray.200"
         >
             <HStack>
-                <Jazzicon diameter={20} seed={jsNumberForAddress(account)} />
+                <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
                 <TagLabel>{ens.name || truncateString(ens.address)}</TagLabel>
             </HStack>
         </Tag>

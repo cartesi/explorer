@@ -24,7 +24,7 @@ const PageHeader: FunctionComponent<PageHeaderProps> = (props) => {
             px="6vw"
             py="5"
             bg="black"
-            opacity={0.87}
+            opacity={0.9}
             color="white"
             justify="space-between"
             {...rest}
