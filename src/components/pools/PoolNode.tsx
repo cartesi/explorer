@@ -72,7 +72,7 @@ const PoolNode = ({ poolAddress }: NodeProps) => {
                 <Text>Node</Text>
                 <Editable
                     w="100%"
-                    fontSize="xx-large"
+                    fontSize="3xl"
                     textAlign="center"
                     color={activeAddress ? undefined : 'gray.300'}
                     placeholder="Click to enter your node address"

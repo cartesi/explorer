@@ -75,7 +75,7 @@ const Deposit: FC<DepositProps> = ({
             <HStack align="baseline">
                 <FormControl isInvalid={!!errors.deposit}>
                     <Input
-                        fontSize="xx-large"
+                        fontSize="3xl"
                         textAlign="right"
                         type="number"
                         min={0}

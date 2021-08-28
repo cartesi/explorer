@@ -73,7 +73,7 @@ const PoolCommission: FC<PoolCommissionProps> = (props) => {
                 <Text {...textProps}>{label}</Text>
             </HStack>
             <HStack align="baseline">
-                <Text fontSize="xx-large" {...textProps}>
+                <Text fontSize="3xl" {...textProps}>
                     {valueLabel}
                 </Text>
                 <Text fontSize="small" {...textProps}>

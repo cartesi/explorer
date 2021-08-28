@@ -100,7 +100,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                 {children}
             </HStack>
             <HStack align="baseline">
-                <Text fontSize="xx-large">{valueLabel}</Text>
+                <Text fontSize="3xl">{valueLabel}</Text>
                 {unit && value && (
                     <Text fontSize="small">{unitLabel(unit)}</Text>
                 )}

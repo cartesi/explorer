@@ -50,7 +50,7 @@ const Stats: FunctionComponent<StatsProps> = (props) => {
                     </Tooltip>
                 )}
             </HStack>
-            {value && <Text fontSize="xxx-large">{valueLabel}</Text>}
+            {value && <Text fontSize="5xl">{valueLabel}</Text>}
             {!value && <Text>-</Text>}
         </VStack>
     );

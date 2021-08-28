@@ -78,7 +78,7 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                         <FormControl isInvalid={!!errors.amount}>
                             <Input
                                 maxW={200}
-                                fontSize="xx-large"
+                                fontSize="3xl"
                                 textAlign="right"
                                 type="number"
                                 min={0}

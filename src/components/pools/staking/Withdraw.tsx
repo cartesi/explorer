@@ -64,7 +64,7 @@ const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
             <HStack align="baseline">
                 <FormControl isInvalid={!!errors.withdraw}>
                     <Input
-                        fontSize="xx-large"
+                        fontSize="3xl"
                         textAlign="right"
                         type="number"
                         min={0}

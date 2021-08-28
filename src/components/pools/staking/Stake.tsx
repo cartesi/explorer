@@ -64,7 +64,7 @@ const Stake: FC<StakeProps> = ({ balance, onCancel, onSubmit }) => {
             <HStack align="baseline">
                 <FormControl isInvalid={!!errors.stake}>
                     <Input
-                        fontSize="xx-large"
+                        fontSize="3xl"
                         textAlign="right"
                         type="number"
                         min={0}

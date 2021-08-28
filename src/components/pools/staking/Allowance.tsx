@@ -71,7 +71,7 @@ const Allowance: FC<AllowanceProps> = ({
                 )}
                 {disclosure.isOpen && (
                     <Input
-                        fontSize="xx-large"
+                        fontSize="3xl"
                         textAlign="right"
                         autoFocus
                         value={newAllowance}
