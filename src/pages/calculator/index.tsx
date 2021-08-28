@@ -125,44 +125,6 @@ const Calculator = () => {
             <Flex p="20px 6vw" justify="center">
                 <VStack spacing={10}>
                     <StakingDisclaimer persistanceKey="calculator" />
-                    <FormControl id="stake">
-                        <FormLabel>Amount to stake</FormLabel>
-                        <InputGroup size="lg">
-                            <Input
-                                type="number"
-                                min={0}
-                                isInvalid={!!errors.stake}
-                                {...register('stake', {
-                                    required: true,
-                                    valueAsNumber: true,
-                                })}
-                            />
-                            <InputRightAddon children="CTSI" />
-                        </InputGroup>
-                        <FormHelperText>
-                            Amount of CTSI tokens to stake.
-                        </FormHelperText>
-                    </FormControl>
-
-                    <FormControl id="period">
-                        <FormLabel>Staking period</FormLabel>
-                        <InputGroup size="lg">
-                            <Input
-                                type="number"
-                                min={1}
-                                isInvalid={!!errors.stake}
-                                {...register('period', {
-                                    required: true,
-                                    valueAsNumber: true,
-                                })}
-                            />
-                            <InputRightAddon children="days" />
-                        </InputGroup>
-                        <FormHelperText>
-                            Amount of days you will keep your stake.
-                        </FormHelperText>
-                    </FormControl>
-
                     <HStack
                         justify="space-evenly"
                         w="100%"
@@ -200,6 +162,44 @@ const Calculator = () => {
                             </HStack>
                         </CTSIText>
                     </HStack>
+
+                    <FormControl id="stake">
+                        <FormLabel>Amount to stake</FormLabel>
+                        <InputGroup size="lg">
+                            <Input
+                                type="number"
+                                min={0}
+                                isInvalid={!!errors.stake}
+                                {...register('stake', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            <InputRightAddon children="CTSI" />
+                        </InputGroup>
+                        <FormHelperText>
+                            Amount of CTSI tokens to stake.
+                        </FormHelperText>
+                    </FormControl>
+
+                    <FormControl id="period">
+                        <FormLabel>Staking period</FormLabel>
+                        <InputGroup size="lg">
+                            <Input
+                                type="number"
+                                min={1}
+                                isInvalid={!!errors.stake}
+                                {...register('period', {
+                                    required: true,
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            <InputRightAddon children="days" />
+                        </InputGroup>
+                        <FormHelperText>
+                            Amount of days you will keep your stake.
+                        </FormHelperText>
+                    </FormControl>
 
                     <FormControl id="totalStaked">
                         <FormLabel>Total Staked</FormLabel>
@@ -262,7 +262,7 @@ const Calculator = () => {
                                 maximumFractionDigits: 1,
                             }}
                         >
-                            <Text>Projected Period Reward</Text>
+                            <Text>Average Period Reward</Text>
                         </CTSIText>
                         <BigNumberText
                             value={apr.toUnsafeFloat()}
@@ -272,7 +272,7 @@ const Calculator = () => {
                             unit="percent"
                         >
                             <HStack>
-                                <Text>Projected Annual Earnings</Text>
+                                <Text>Average Annual Earnings</Text>
                                 <Tooltip label={labels.projectedAnnualEarnings}>
                                     <Icon />
                                 </Tooltip>
