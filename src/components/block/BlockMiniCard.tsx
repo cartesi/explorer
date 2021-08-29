@@ -90,7 +90,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                             chainId={chainId}
                             truncated
                             fontWeight="bold"
-                            fontSize="large"
+                            fontSize="lg"
                         />
                     </Box>
                     <Spacer minH={5} />
@@ -104,7 +104,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     </Box>
                 </Flex>
                 <Spacer minW={5} />
-                <Image src={tinyGraphUrl(block)} w="120px" h="120px" />
+                <Image src={tinyGraphUrl(block)} w="110px" h="110px" />
             </Flex>
         </Box>
     );
