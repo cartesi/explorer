@@ -20,6 +20,7 @@ import {
     Input,
     InputGroup,
     InputRightAddon,
+    Stack,
     Text,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
@@ -70,7 +71,11 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     };
 
     return (
-        <HStack p={10} spacing={10}>
+        <Stack
+            spacing={[4, 8]}
+            direction={['column', 'row']}
+            align={[undefined, 'center']}
+        >
             <AddressText address={user} chainId={chainId} icon={FaNetworkWired}>
                 <Text>Node Owner</Text>
             </AddressText>
@@ -107,6 +112,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                         </FormErrorMessage>
                     </FormControl>
                     <Button
+                        colorScheme="blue"
                         onClick={handleSubmit((data) =>
                             onTransfer(toBigNumber(data.deposit))
                         )}
@@ -114,12 +120,16 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                         Deposit
                     </Button>
                     {!authorized && (
-                        <Button onClick={onAuthorize}>Authorize</Button>
+                        <Button colorScheme="blue" onClick={onAuthorize}>
+                            Authorize
+                        </Button>
                     )}
-                    <Button onClick={onRetire}>Retire Node</Button>
+                    <Button onClick={onRetire} colorScheme="red">
+                        Retire
+                    </Button>
                 </>
             )}
-        </HStack>
+        </Stack>
     );
 };
 

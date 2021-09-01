@@ -16,10 +16,10 @@ import {
     FormErrorMessage,
     FormHelperText,
     FormLabel,
-    HStack,
     Input,
     InputGroup,
     InputRightAddon,
+    Stack,
     Text,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
@@ -27,7 +27,7 @@ import { useForm } from 'react-hook-form';
 import BigNumberText from '../BigNumberText';
 
 type AvailableNodeProps = {
-    balance: BigNumber;
+    balance: BigNumber; // user ETH balance
     onHire: (deposit: BigNumberish) => void;
 };
 
@@ -51,11 +51,16 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
     };
 
     return (
-        <HStack p={10} spacing={10}>
+        <Stack
+            direction={['column', 'row']}
+            spacing={[4, 8]}
+            align={[undefined, 'center']}
+        >
             <BigNumberText
                 value={balance}
                 unit="eth"
                 color={errors.deposit ? 'red' : undefined}
+                alignSelf="flex-start"
             >
                 <Text>Your Balance</Text>
             </BigNumberText>
@@ -63,6 +68,7 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
                 <FormLabel>Deposit</FormLabel>
                 <InputGroup>
                     <Input
+                        w={100}
                         {...register('deposit', {
                             required: true,
                             valueAsNumber: true,
@@ -79,13 +85,14 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
                 <FormErrorMessage>{errors.deposit?.message}</FormErrorMessage>
             </FormControl>
             <Button
+                colorScheme="blue"
                 onClick={handleSubmit((data) =>
                     onHire(toBigNumber(data.deposit))
                 )}
             >
                 Hire Node
             </Button>
-        </HStack>
+        </Stack>
     );
 };
 
