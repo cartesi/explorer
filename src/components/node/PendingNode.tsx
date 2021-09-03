@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Button, HStack, Text, Tooltip } from '@chakra-ui/react';
+import { Button, HStack, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import BigNumberText from '../BigNumberText';
 import AddressText from '../AddressText';
@@ -32,28 +32,35 @@ const PendingNode: FC<PendingNodeProps> = ({
     onCancelHire,
 }) => {
     return (
-        <HStack p={10} spacing={10}>
-            <AddressText address={user} chainId={chainId} icon={FaNetworkWired}>
-                <Text>Node Owner</Text>
-            </AddressText>
-            <BigNumberText value={balance} unit="eth" icon={FaCoins}>
-                <Text>Node Balance</Text>
-            </BigNumberText>
-            <Tooltip
-                label="Node hired by another user"
-                placement="top"
-                isDisabled={account.toLowerCase() === user.toLowerCase()}
+        <VStack align="stretch">
+            <Stack
+                direction={['column', 'row']}
+                spacing={[4, 8]}
+                align={[undefined, 'center']}
             >
-                <span>
+                <AddressText
+                    address={user}
+                    chainId={chainId}
+                    icon={FaNetworkWired}
+                >
+                    <Text>Node Owner</Text>
+                </AddressText>
+                <BigNumberText value={balance} unit="eth" icon={FaCoins}>
+                    <Text>Node Balance</Text>
+                </BigNumberText>
+            </Stack>
+            <HStack>
+                {account.toLowerCase() === user.toLowerCase() && (
                     <Button
                         onClick={onCancelHire}
-                        disabled={account.toLowerCase() !== user.toLowerCase()}
+                        colorScheme="blue"
+                        isFullWidth
                     >
                         Cancel Hire
                     </Button>
-                </span>
-            </Tooltip>
-        </HStack>
+                )}
+            </HStack>
+        </VStack>
     );
 };
 

@@ -22,6 +22,7 @@ import {
     InputRightAddon,
     Stack,
     Text,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
@@ -71,65 +72,86 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     };
 
     return (
-        <Stack
-            spacing={[4, 8]}
-            direction={['column', 'row']}
-            align={[undefined, 'center']}
-        >
-            <AddressText address={user} chainId={chainId} icon={FaNetworkWired}>
-                <Text>Node Owner</Text>
-            </AddressText>
-            <BigNumberText
-                value={userBalance}
-                unit="eth"
-                icon={FaCoins}
-                color={errors.deposit ? 'red' : undefined}
+        <VStack align="stretch">
+            <Stack
+                spacing={[4, 8]}
+                direction={['column', 'row']}
+                align={[undefined, 'center']}
             >
-                <Text>Your Balance</Text>
-            </BigNumberText>
-            <BigNumberText value={nodeBalance} unit="eth" icon={FaCoins}>
-                <Text>Node Balance</Text>
-            </BigNumberText>
-            {account.toLowerCase() === user.toLowerCase() && (
-                <>
-                    <FormControl isInvalid={!!errors.deposit} w={200}>
-                        <FormLabel>Deposit</FormLabel>
-                        <InputGroup>
-                            <Input
-                                {...register('deposit', {
-                                    required: true,
-                                    valueAsNumber: true,
-                                    validate: validate,
-                                })}
-                            />
-                            <InputRightAddon children="ETH" />
-                        </InputGroup>
-                        <FormHelperText>
-                            Amount of ETH to transfer to node
-                        </FormHelperText>
-                        <FormErrorMessage>
-                            {errors.deposit?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <Button
-                        colorScheme="blue"
-                        onClick={handleSubmit((data) =>
-                            onTransfer(toBigNumber(data.deposit))
-                        )}
-                    >
-                        Deposit
-                    </Button>
-                    {!authorized && (
-                        <Button colorScheme="blue" onClick={onAuthorize}>
-                            Authorize
+                <AddressText
+                    address={user}
+                    chainId={chainId}
+                    icon={FaNetworkWired}
+                >
+                    <Text>Node Owner</Text>
+                </AddressText>
+                <BigNumberText
+                    value={userBalance}
+                    unit="eth"
+                    icon={FaCoins}
+                    color={errors.deposit ? 'red' : undefined}
+                >
+                    <Text>Your Balance</Text>
+                </BigNumberText>
+                <BigNumberText value={nodeBalance} unit="eth" icon={FaCoins}>
+                    <Text>Node Balance</Text>
+                </BigNumberText>
+                {account.toLowerCase() === user.toLowerCase() && (
+                    <>
+                        <FormControl isInvalid={!!errors.deposit} w={200}>
+                            <FormLabel>Deposit</FormLabel>
+                            <InputGroup>
+                                <Input
+                                    {...register('deposit', {
+                                        required: true,
+                                        valueAsNumber: true,
+                                        validate: validate,
+                                    })}
+                                />
+                                <InputRightAddon children="ETH" />
+                            </InputGroup>
+                            <FormHelperText>
+                                Amount of ETH to transfer to node
+                            </FormHelperText>
+                            <FormErrorMessage>
+                                {errors.deposit?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                    </>
+                )}
+            </Stack>
+            <HStack>
+                {account.toLowerCase() === user.toLowerCase() && (
+                    <>
+                        <Button
+                            colorScheme="blue"
+                            isFullWidth
+                            onClick={handleSubmit((data) =>
+                                onTransfer(toBigNumber(data.deposit))
+                            )}
+                        >
+                            Deposit
                         </Button>
-                    )}
-                    <Button onClick={onRetire} colorScheme="red">
-                        Retire
-                    </Button>
-                </>
-            )}
-        </Stack>
+                        {!authorized && (
+                            <Button
+                                colorScheme="blue"
+                                onClick={onAuthorize}
+                                isFullWidth
+                            >
+                                Authorize
+                            </Button>
+                        )}
+                        <Button
+                            onClick={onRetire}
+                            colorScheme="red"
+                            isFullWidth
+                        >
+                            Retire
+                        </Button>
+                    </>
+                )}
+            </HStack>
+        </VStack>
     );
 };
 

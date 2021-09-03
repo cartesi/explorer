@@ -10,7 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Alert, AlertIcon, HStack, Text } from '@chakra-ui/react';
+import {
+    Alert,
+    AlertIcon,
+    HStack,
+    Stack,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import BigNumberText from '../BigNumberText';
 import AddressText from '../AddressText';
@@ -24,18 +31,30 @@ type RetiredNodeProps = {
 
 const RetiredNode: FC<RetiredNodeProps> = ({ chainId, user, balance }) => {
     return (
-        <HStack p={10} spacing={10}>
-            <AddressText address={user} chainId={chainId} icon={FaNetworkWired}>
-                <Text>Node Owner</Text>
-            </AddressText>
-            <BigNumberText value={balance} unit="eth" icon={FaCoins}>
-                <Text>Node Balance</Text>
-            </BigNumberText>
-            <Alert status="info" maxW={200}>
-                <AlertIcon />
-                <Text>This node is retired</Text>
-            </Alert>
-        </HStack>
+        <VStack align="stretch">
+            <Stack
+                direction={['column', 'row']}
+                spacing={[4, 8]}
+                align={[undefined, 'center']}
+            >
+                <AddressText
+                    address={user}
+                    chainId={chainId}
+                    icon={FaNetworkWired}
+                >
+                    <Text>Node Owner</Text>
+                </AddressText>
+                <BigNumberText value={balance} unit="eth" icon={FaCoins}>
+                    <Text>Node Balance</Text>
+                </BigNumberText>
+            </Stack>
+            <HStack>
+                <Alert status="warning">
+                    <AlertIcon />
+                    <Text>This node is retired</Text>
+                </Alert>
+            </HStack>
+        </VStack>
     );
 };
 

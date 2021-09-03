@@ -16,11 +16,13 @@ import {
     FormErrorMessage,
     FormHelperText,
     FormLabel,
+    HStack,
     Input,
     InputGroup,
     InputRightAddon,
     Stack,
     Text,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
@@ -51,48 +53,55 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
     };
 
     return (
-        <Stack
-            direction={['column', 'row']}
-            spacing={[4, 8]}
-            align={[undefined, 'center']}
-        >
-            <BigNumberText
-                value={balance}
-                unit="eth"
-                color={errors.deposit ? 'red' : undefined}
-                alignSelf="flex-start"
+        <VStack align="stretch">
+            <Stack
+                direction={['column', 'row']}
+                spacing={[4, 8]}
+                align={[undefined, 'center']}
             >
-                <Text>Your Balance</Text>
-            </BigNumberText>
-            <FormControl isInvalid={!!errors.deposit} w={300}>
-                <FormLabel>Deposit</FormLabel>
-                <InputGroup>
-                    <Input
-                        w={100}
-                        {...register('deposit', {
-                            required: true,
-                            valueAsNumber: true,
-                            validate: validate,
-                        })}
-                    />
-                    <InputRightAddon children="ETH" />
-                </InputGroup>
-                {!errors.deposit && (
-                    <FormHelperText>
-                        Amount of ETH to transfer to node on hire
-                    </FormHelperText>
-                )}
-                <FormErrorMessage>{errors.deposit?.message}</FormErrorMessage>
-            </FormControl>
-            <Button
-                colorScheme="blue"
-                onClick={handleSubmit((data) =>
-                    onHire(toBigNumber(data.deposit))
-                )}
-            >
-                Hire Node
-            </Button>
-        </Stack>
+                <BigNumberText
+                    value={balance}
+                    unit="eth"
+                    color={errors.deposit ? 'red' : undefined}
+                    alignSelf="flex-start"
+                >
+                    <Text>Your Balance</Text>
+                </BigNumberText>
+                <FormControl isInvalid={!!errors.deposit} w={300}>
+                    <FormLabel>Deposit</FormLabel>
+                    <InputGroup>
+                        <Input
+                            w={100}
+                            {...register('deposit', {
+                                required: true,
+                                valueAsNumber: true,
+                                validate: validate,
+                            })}
+                        />
+                        <InputRightAddon children="ETH" />
+                    </InputGroup>
+                    {!errors.deposit && (
+                        <FormHelperText>
+                            Amount of ETH to transfer to node on hire
+                        </FormHelperText>
+                    )}
+                    <FormErrorMessage>
+                        {errors.deposit?.message}
+                    </FormErrorMessage>
+                </FormControl>
+            </Stack>
+            <HStack>
+                <Button
+                    colorScheme="blue"
+                    isFullWidth
+                    onClick={handleSubmit((data) =>
+                        onHire(toBigNumber(data.deposit))
+                    )}
+                >
+                    Hire Node
+                </Button>
+            </HStack>
+        </VStack>
     );
 };
 
