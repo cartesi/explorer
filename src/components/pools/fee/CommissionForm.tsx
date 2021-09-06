@@ -22,6 +22,7 @@ import {
     InputGroup,
     InputRightAddon,
     Text,
+    VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
@@ -107,38 +108,40 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
 
     return (
         <FormControl id="commission" isInvalid={!!errors.value}>
-            <FormLabel>Commission</FormLabel>
-            <Collapse in={value > currentValue}>
-                <Alert status="warning" variant="left-accent">
-                    <Text>
-                        After increasing the current value you can only increase
-                        it again after {wait}
-                    </Text>
-                </Alert>
-            </Collapse>
-            <Collapse in={!!errors.value}>
-                <Alert status="error" variant="left-accent">
-                    <Text>{errors.value?.message}</Text>
-                </Alert>
-            </Collapse>
-            <HStack>
-                <InputGroup w={200}>
-                    <Input
-                        {...register('value', {
-                            valueAsNumber: true,
-                            validate,
-                        })}
-                    />
-                    <InputRightAddon children={unit} />
-                </InputGroup>
-                <Button
-                    onClick={handleSubmit((data) => onSubmit(data.value))}
-                    size="md"
-                >
-                    Save
-                </Button>
-            </HStack>
-            <FormHelperText>{helperText}</FormHelperText>
+            <VStack align="stretch">
+                <FormLabel>Commission</FormLabel>
+                <Collapse in={value > currentValue}>
+                    <Alert status="warning" variant="left-accent">
+                        <Text>
+                            After increasing the current value you can only
+                            increase it again after {wait}
+                        </Text>
+                    </Alert>
+                </Collapse>
+                <Collapse in={!!errors.value}>
+                    <Alert status="error" variant="left-accent">
+                        <Text>{errors.value?.message}</Text>
+                    </Alert>
+                </Collapse>
+                <HStack>
+                    <InputGroup w={200}>
+                        <Input
+                            {...register('value', {
+                                valueAsNumber: true,
+                                validate,
+                            })}
+                        />
+                        <InputRightAddon children={unit} />
+                    </InputGroup>
+                    <Button
+                        onClick={handleSubmit((data) => onSubmit(data.value))}
+                        size="md"
+                    >
+                        Save
+                    </Button>
+                </HStack>
+                <FormHelperText>{helperText}</FormHelperText>
+            </VStack>
         </FormControl>
     );
 };
