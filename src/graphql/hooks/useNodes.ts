@@ -53,4 +53,14 @@ export const useUserNodes = (owner: string, count = NODES_PER_PAGE) => {
     });
 };
 
+export const useUserNode = (owner: string): string => {
+    // get most recent node hired by user (if any)
+    const nodes = useUserNodes(owner, 2);
+    const existingNode =
+        nodes.data?.nodes?.length > 0 &&
+        nodes.data.nodes[0].id != owner &&
+        nodes.data.nodes[0].id;
+    return existingNode;
+};
+
 export default useNodes;

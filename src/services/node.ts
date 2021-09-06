@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
@@ -19,9 +19,28 @@ import {
     usePoS1Contract,
     useWorkerManagerContract,
 } from './contracts';
-import { useTransaction } from './transaction';
+import { Transaction, useTransaction } from './transaction';
 
-export const useNode = (address: string) => {
+export interface Node {
+    address: string;
+    balance: BigNumber;
+    user: string;
+    available: boolean;
+    pending: boolean;
+    owned: boolean;
+    retired: boolean;
+    authorized: boolean;
+    authorized1: boolean;
+    loading: boolean;
+    transaction: Transaction<any>;
+    hire: (amount: BigNumberish) => void;
+    authorize: () => void;
+    cancelHire: () => void;
+    retire: () => void;
+    transfer: (amount: BigNumberish) => void;
+}
+
+export const useNode = (address: string): Node => {
     const { library, chainId } = useWeb3React();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();

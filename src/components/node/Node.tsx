@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
     Editable,
     EditableInput,
@@ -18,98 +18,104 @@ import {
     Text,
     useColorModeValue,
     VStack,
+    StackProps,
 } from '@chakra-ui/react';
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
-import { useUserNodes } from '../../graphql/hooks/useNodes';
-import { useNode } from '../../services/node';
-import TransactionFeedback from '../TransactionFeedback';
 import AvailableNode from './AvailableNode';
 import PendingNode from './PendingNode';
 import OwnedNode from './OwnedNode';
 import RetiredNode from './RetiredNode';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
-interface NodeProps {
+interface NodeProps extends StackProps {
     chainId: number;
+    account: string; // metamask user
     user: string; // in case of pool, user is the pool address, in case of direct, user is same as account
-    balance: BigNumber;
+    balance: BigNumber; // node ETH balance
+    userBalance: BigNumber; // user ETH balance
+    address: string; // node address
+    available: boolean;
+    pending: boolean;
+    owned: boolean;
+    retired: boolean;
+    authorized: boolean;
+    onAddressChange: (worker: string) => void;
     onHire: (worker: string, deposit: BigNumberish) => void;
     onCancelHire: (worker: string) => void;
     onRetire: (worker: string) => void;
+    onTransfer: (worker: string, amount: BigNumberish) => void;
 }
 
 const Node: FC<NodeProps> = (props) => {
-    const { balance, chainId, user, onHire, onCancelHire, onRetire } = props;
-
-    // get most recent node hired by user (if any)
-    const nodes = useUserNodes(user, 2);
-    const existingNode =
-        nodes.data?.nodes?.length > 0 &&
-        nodes.data.nodes[0].id != user &&
-        nodes.data.nodes[0].id;
-
-    // use a state variable for the typed node address
-    const [address, setAddress] = useState<string>();
-
-    // priority is the typed address (at state variable)
-    const activeAddress = address || existingNode || '';
-
-    const node = useNode(activeAddress);
+    const {
+        chainId,
+        account,
+        address,
+        balance,
+        user,
+        userBalance,
+        available,
+        pending,
+        owned,
+        retired,
+        authorized,
+        onAddressChange,
+        onHire,
+        onCancelHire,
+        onRetire,
+        onTransfer,
+        ...stackProps
+    } = props;
 
     // dark mode compatible background color
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
-        <VStack bg={bg} w="100%" shadow="md">
-            <TransactionFeedback transaction={node?.transaction} />
-            <HStack justify="space-between" w="100%" p={10} spacing={10}>
+        <VStack bg={bg} w="100%" shadow="md" p={10} {...stackProps}>
+            <HStack justify="space-between" w="100%" spacing={10}>
                 <Text>Node</Text>
                 <Editable
                     w="100%"
                     fontSize="3xl"
                     textAlign="center"
-                    color={activeAddress ? undefined : 'gray.300'}
+                    color={address ? undefined : 'gray.300'}
                     placeholder="Click to enter your node address"
-                    value={activeAddress}
-                    onChange={setAddress}
+                    value={address}
+                    onChange={onAddressChange}
                 >
                     <EditablePreview />
                     <EditableInput />
                 </Editable>
             </HStack>
-            {node.available && (
+            {available && (
                 <AvailableNode
-                    balance={balance}
-                    onHire={(deposit) => onHire(activeAddress, deposit)}
+                    balance={userBalance}
+                    onHire={(deposit) => onHire(address, deposit)}
                 />
             )}
-            {node.pending && (
+            {pending && (
                 <PendingNode
-                    account={user}
-                    balance={node?.balance}
+                    account={account}
+                    balance={balance}
                     chainId={chainId}
-                    user={node?.user}
-                    onCancelHire={() => onCancelHire(activeAddress)}
+                    user={user}
+                    onCancelHire={() => onCancelHire(address)}
                 />
             )}
-            {node.owned && (
+            {owned && (
                 <OwnedNode
-                    account={user}
-                    authorized={true}
-                    nodeBalance={node.balance}
-                    userBalance={balance}
+                    account={account}
+                    authorized={authorized}
+                    nodeBalance={balance}
+                    userBalance={userBalance}
                     chainId={chainId}
-                    user={node.user}
-                    onRetire={() => onRetire(activeAddress)}
-                    onTransfer={node.transfer}
+                    user={user}
+                    onRetire={() => onRetire(address)}
+                    onTransfer={(amount) => onTransfer(address, amount)}
                 />
             )}
-            {node.retired && (
-                <RetiredNode
-                    chainId={chainId}
-                    user={node.user}
-                    balance={node.balance}
-                />
+            {retired && (
+                <RetiredNode chainId={chainId} user={user} balance={balance} />
             )}
         </VStack>
     );

@@ -71,6 +71,8 @@ const OwnedNode: FC<OwnedNodeProps> = ({
         return true;
     };
 
+    const mine = account.toLowerCase() === user.toLowerCase();
+
     return (
         <VStack align="stretch">
             <Stack
@@ -85,18 +87,20 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                 >
                     <Text>Node Owner</Text>
                 </AddressText>
-                <BigNumberText
-                    value={userBalance}
-                    unit="eth"
-                    icon={FaCoins}
-                    color={errors.deposit ? 'red' : undefined}
-                >
-                    <Text>Your Balance</Text>
-                </BigNumberText>
+                {mine && (
+                    <BigNumberText
+                        value={userBalance}
+                        unit="eth"
+                        icon={FaCoins}
+                        color={errors.deposit ? 'red' : undefined}
+                    >
+                        <Text>Your Balance</Text>
+                    </BigNumberText>
+                )}
                 <BigNumberText value={nodeBalance} unit="eth" icon={FaCoins}>
                     <Text>Node Balance</Text>
                 </BigNumberText>
-                {account.toLowerCase() === user.toLowerCase() && (
+                {mine && (
                     <>
                         <FormControl isInvalid={!!errors.deposit} w={200}>
                             <FormLabel>Deposit</FormLabel>
@@ -121,7 +125,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                 )}
             </Stack>
             <HStack>
-                {account.toLowerCase() === user.toLowerCase() && (
+                {mine && (
                     <>
                         <Button
                             colorScheme="blue"

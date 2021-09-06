@@ -36,10 +36,10 @@ import UserPool from '../../components/pools/UserPool';
 const Pool = () => {
     const router = useRouter();
     const { account, chainId } = useWeb3React<Web3Provider>();
+    const address = router.query.pool as string;
 
     const blockNumber = useBlockNumber();
     const {
-        pool,
         amount,
         amounts,
         stakedBalance,
@@ -56,23 +56,23 @@ const Pool = () => {
         unstake,
         withdraw,
         rebalance,
-    } = useStakingPool(router.query.pool as string, account);
+    } = useStakingPool(address, account);
 
     const {
         balance,
         allowance,
         transaction: tokenTransaction,
         approve,
-    } = useCartesiToken(account, router.query.pool as string, blockNumber);
+    } = useCartesiToken(account, address, blockNumber);
 
     const { balance: poolBalance } = useCartesiToken(
-        router.query.pool as string,
+        address,
         null,
         blockNumber
     );
 
-    const staking = useStaking(router.query.pool as string);
-    const stakingPool = useStakingPoolQuery(router.query.pool as string);
+    const staking = useStaking(address);
+    const stakingPool = useStakingPoolQuery(address);
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
@@ -110,7 +110,7 @@ const Pool = () => {
                         {stakingPool &&
                             account &&
                             stakingPool.manager == account.toLowerCase() && (
-                                <Link href={`/pools/${router.query.pool}/edit`}>
+                                <Link href={`/pools/${address}/edit`}>
                                     <EditIcon />
                                 </Link>
                             )}
@@ -165,7 +165,7 @@ const Pool = () => {
                     depositTimestamp={depositTimestamp}
                     lockTime={lockTime?.toNumber()}
                     userBalance={userBalance}
-                    onApprove={(amount) => approve(pool.address, amount)}
+                    onApprove={(amount) => approve(address, amount)}
                     onDeposit={deposit}
                     onWithdraw={withdraw}
                     onStake={stake}

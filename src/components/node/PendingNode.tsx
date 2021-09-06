@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Button, HStack, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Button, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import BigNumberText from '../BigNumberText';
 import AddressText from '../AddressText';

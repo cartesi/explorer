@@ -18,14 +18,51 @@ import {
     useFlatRateCommissionContract,
     useGasTaxCommissionContract,
 } from './contracts';
-import { useTransaction } from './transaction';
+import { Transaction, useTransaction } from './transaction';
 
 export interface StakingPoolCommission {
     value: number;
     loading: boolean;
 }
 
-export const useStakingPool = (address: string, account: string) => {
+type Amounts = [BigNumber, BigNumber, BigNumber] & {
+    stake: BigNumber;
+    unstake: BigNumber;
+    withdraw: BigNumber;
+};
+
+export interface StakingPool {
+    address: string;
+    shares: BigNumber;
+    amount: BigNumber;
+    transaction: Transaction<any>;
+    stakedBalance: BigNumber;
+    stakedShares: BigNumber;
+    balance: BigNumber;
+    withdrawBalance: BigNumber;
+    depositTimestamp: Date;
+    paused: Boolean;
+    amounts: Amounts;
+    lockTime: BigNumber;
+    deposit: (amount: BigNumberish) => void;
+    stake: (amount: BigNumberish) => void;
+    unstake: (shares: BigNumberish) => void;
+    withdraw: (amount: BigNumberish) => void;
+    setName: (name: string) => void;
+    pause: () => void;
+    unpause: () => void;
+    hire: (worker: string, amount: BigNumberish) => void;
+    cancelHire: (worker: string) => void;
+    retire: (worker: string) => void;
+    rebalance: () => void;
+    sharesToAmount: (s: BigNumber) => BigNumber;
+    amountToShares: (a: BigNumber) => BigNumber;
+}
+
+export const useStakingPool = (
+    address: string,
+    account: string
+): StakingPool => {
     // connect to pool
     const pool = useStakingPoolContract(address);
 
@@ -187,7 +224,7 @@ export const useStakingPool = (address: string, account: string) => {
     };
 
     return {
-        pool,
+        address,
         shares,
         amount,
         transaction,

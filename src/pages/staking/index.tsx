@@ -14,10 +14,11 @@ import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import {
-    Flex,
     Box,
-    Text,
     Button,
+    Center,
+    Flex,
+    Text,
     VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
@@ -32,7 +33,6 @@ import { useCartesiToken } from '../../services/token';
 import useUser from '../../graphql/hooks/useUser';
 import Layout from '../../components/Layout';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
-import Node from '../../components/staking/Node';
 import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
 import TotalBalances from '../../components/staking/TotalBalances';
@@ -42,9 +42,12 @@ import useSummary from '../../graphql/hooks/useSummary';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import CTSIText from '../../components/CTSIText';
 import { useTimeLeft } from '../../utils/react';
+import { useUserNode } from '../../graphql/hooks/useNodes';
+import { useNode } from '../../services/node';
+import Node from '../../components/node/Node';
 
 const Staking = () => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
 
     const {
@@ -70,12 +73,8 @@ const Staking = () => {
     const summary = useSummary();
     const user = useUser(account);
 
-    const [nodeWaiting, setNodeWaiting] = useState<boolean>(false);
-
     const waiting =
-        stakingTransaction.submitting ||
-        tokenTransaction.submitting ||
-        nodeWaiting;
+        stakingTransaction.submitting || tokenTransaction.submitting;
 
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
@@ -84,6 +83,17 @@ const Staking = () => {
     const totalBalance = stakedBalance
         .add(maturingBalance)
         .add(releasingBalance);
+
+    // get most recent node hired by user (if any)
+    const existingNode = useUserNode(account);
+
+    // use a state variable for the typed node address
+    const [worker, setWorker] = useState<string>();
+
+    // priority is the typed address (at state variable)
+    const activeWorker = worker || existingNode || '';
+
+    const node = useNode(activeWorker);
 
     // dark mode support
     const bg = useColorModeValue('white', 'gray.700');
@@ -96,12 +106,35 @@ const Staking = () => {
             </Head>
 
             <Balances balance={balance} stakedBalance={stakedBalance} />
-            <Node setWaiting={setNodeWaiting} mt="-2.5vw" />
+            <Center
+                px="6vw"
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bg} 50%, ${bg} 100%)`}
+            >
+                <Node
+                    chainId={chainId}
+                    account={account}
+                    address={activeWorker}
+                    user={node.user}
+                    balance={node.balance}
+                    userBalance={balance}
+                    available={node.available}
+                    pending={node.pending}
+                    owned={node.owned}
+                    retired={node.retired}
+                    authorized={node.authorized}
+                    onAddressChange={setWorker}
+                    onHire={node.hire}
+                    onCancelHire={node.cancelHire}
+                    onRetire={node.retire}
+                    onTransfer={node.transfer}
+                />
+            </Center>
 
             <VStack p="20px 6vw 20px 6vw">
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
+                <TransactionFeedback transaction={node.transaction} />
             </VStack>
 
             <TotalBalances
