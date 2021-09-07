@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import Link from 'next/link';
 import { FixedNumber } from 'ethers';
 import {
     HStack,
@@ -20,12 +19,14 @@ import {
     Tr,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { LockIcon } from '@chakra-ui/icons';
+import { EditIcon, LockIcon } from '@chakra-ui/icons';
 
 import { StakingPool } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import labels from '../../utils/labels';
+import { FaCoins } from 'react-icons/fa';
+import IconLink from '../IconLink';
 
 export interface PoolRowProps {
     chainId: number;
@@ -108,9 +109,17 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
             <Td>
                 <HStack justify="flex-end">
                     {edit && (
-                        <Link href={'/pools/' + pool.id + '/edit'}>Edit</Link>
+                        <IconLink
+                            href={'/pools/' + pool.id + '/edit'}
+                            icon={<EditIcon />}
+                            tooltip="Stake"
+                        />
                     )}
-                    <Link href={'/pools/' + pool.id}>Stake</Link>
+                    <IconLink
+                        href={'/pools/' + pool.id}
+                        icon={<FaCoins />}
+                        tooltip="Stake"
+                    />
                     {pool.paused && (
                         <Tooltip
                             placement="top"

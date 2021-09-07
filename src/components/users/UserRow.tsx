@@ -10,21 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import {
-    Link,
-    Tr,
-    Td,
-    useColorModeValue,
-    Tooltip,
-    HStack,
-} from '@chakra-ui/react';
+import { Tr, Td, useColorModeValue, HStack } from '@chakra-ui/react';
 import { FaCoins } from 'react-icons/fa';
 
 import { User } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
-import NextLink from 'next/link';
 import { EditIcon } from '@chakra-ui/icons';
+import IconLink from '../IconLink';
 
 export interface UserRowProps {
     chainId: number;
@@ -54,34 +47,17 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, account, size = 'lg' }) => {
                 <Td>
                     {user.pool && (
                         <HStack>
-                            <NextLink href={`/pools/${user.id}`} passHref>
-                                <Link>
-                                    <Tooltip
-                                        label="Stake"
-                                        placement="top"
-                                        aria-label="Stake"
-                                    >
-                                        <span>
-                                            <FaCoins />
-                                        </span>
-                                    </Tooltip>
-                                </Link>
-                            </NextLink>
+                            <IconLink
+                                href={`/pools/${user.id}`}
+                                tooltip="Stake"
+                                icon={<FaCoins />}
+                            />
                             {edit && (
-                                <NextLink
+                                <IconLink
                                     href={`/pools/${user.id}/edit`}
-                                    passHref
-                                >
-                                    <Link>
-                                        <Tooltip
-                                            label="Edit"
-                                            placement="top"
-                                            aria-label="Edit"
-                                        >
-                                            <EditIcon />
-                                        </Tooltip>
-                                    </Link>
-                                </NextLink>
+                                    tooltip="Edit"
+                                    icon={<EditIcon />}
+                                />
                             )}
                         </HStack>
                     )}
