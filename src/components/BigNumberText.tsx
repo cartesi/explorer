@@ -11,26 +11,19 @@
 
 import React, { FC } from 'react';
 import { Flex, FlexProps, HStack, SystemProps, Text } from '@chakra-ui/react';
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
+import humanizeDuration from 'humanize-duration';
 
-type Unit = 'eth' | 'ctsi' | 'percent' | 'usd';
+type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
 
-const unitLabel = (unit: Unit) => {
-    switch (unit) {
-        case 'eth':
-            return 'ETH';
-        case 'ctsi':
-            return 'CTSI';
-        case 'percent':
-            return '%';
-        case 'usd':
-            return 'USD';
-        default:
-            return '';
-    }
+const formatDuration = (ms: number): string[] => {
+    return humanizeDuration(ms, {
+        round: true,
+        largest: 1,
+    }).split(' ');
 };
 
 const formatPercentNumber = (
@@ -49,6 +42,34 @@ const formatPercent = (
         return formatPercentNumber(value, options);
     } else {
         return formatPercentNumber(parseFloat(value.toString()), options);
+    }
+};
+
+const format = (
+    value: BigNumberish,
+    unit: Unit,
+    options: Intl.NumberFormatOptions
+): string[] => {
+    const numberFormat = new Intl.NumberFormat('en-US', options);
+    switch (unit) {
+        case 'eth':
+            return [
+                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                'ETH',
+            ];
+        case 'ctsi':
+            return [
+                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                'CTSI',
+            ];
+        case 'percent':
+            return [formatPercent(value, options), '%'];
+        case 'usd':
+            return [numberFormat.format(parseFloat(value.toString())), 'USD'];
+        case 'duration':
+            return formatDuration(BigNumber.from(value).toNumber());
+        default:
+            return [numberFormat.format(BigNumber.from(value).toNumber()), ''];
     }
 };
 
@@ -77,16 +98,9 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         options = defaultOptions,
         ...flexProps
     } = props;
-    const numberFormat = new Intl.NumberFormat('en-US', options);
-    const valueLabel = !value
-        ? nullLabel
-        : unit == 'eth'
-        ? numberFormat.format(parseFloat(formatUnits(value, 18)))
-        : unit == 'ctsi'
-        ? numberFormat.format(parseFloat(formatUnits(value, 18)))
-        : unit == 'percent'
-        ? formatPercent(value, options)
-        : numberFormat.format(parseFloat(value.toString()));
+    const [valueLabel, unitLabel] = value
+        ? format(value, unit, options)
+        : [nullLabel, ''];
 
     return (
         <Flex
@@ -101,9 +115,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
             </HStack>
             <HStack align="baseline">
                 <Text fontSize="3xl">{valueLabel}</Text>
-                {unit && value && (
-                    <Text fontSize="small">{unitLabel(unit)}</Text>
-                )}
+                {unit && value && <Text fontSize="small">{unitLabel}</Text>}
             </HStack>
         </Flex>
     );

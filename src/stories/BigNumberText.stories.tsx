@@ -12,7 +12,7 @@
 import React from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { FaCoins, FaPercentage, FaUsers, FaWallet } from 'react-icons/fa';
-import { ImPriceTag } from 'react-icons/im';
+import { ImClock, ImPriceTag } from 'react-icons/im';
 import BigNumberText from '../components/BigNumberText';
 import { Text } from '@chakra-ui/react';
 import { ethers } from 'ethers';
@@ -25,6 +25,12 @@ export default {
 
 export const Number = () => (
     <BigNumberText value={13} icon={FaUsers}>
+        <Text>Users</Text>
+    </BigNumberText>
+);
+
+export const Zero = () => (
+    <BigNumberText value={0} icon={FaUsers}>
         <Text>Users</Text>
     </BigNumberText>
 );
@@ -65,5 +71,25 @@ export const Price = () => (
         }}
     >
         <Text>Price</Text>
+    </BigNumberText>
+);
+
+export const LongDuration = () => (
+    <BigNumberText
+        value={1000 * 60 * 60 * 24 * 3} // 3 days
+        icon={ImClock}
+        unit="duration"
+    >
+        <Text>Production Rate</Text>
+    </BigNumberText>
+);
+
+export const ShortDuration = () => (
+    <BigNumberText
+        value={1000 * 60 * 27 + 25000} // 27 minutes
+        icon={ImClock}
+        unit="duration"
+    >
+        <Text>Production Rate</Text>
     </BigNumberText>
 );
