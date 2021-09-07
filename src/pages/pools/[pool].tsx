@@ -167,6 +167,7 @@ const Pool = () => {
                     totalReward={stakingPool?.user?.totalReward}
                     totalUsers={stakingPool?.totalUsers}
                     totalCommission={stakingPool?.totalCommission}
+                    fee={stakingPool?.fee}
                 />
             </Center>
             <VStack px="6vw" py={5} spacing={10}>

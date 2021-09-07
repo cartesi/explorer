@@ -45,6 +45,13 @@ NoBlocks.args = {
     productionInterval: 0,
     totalReward: constants.Zero,
     totalCommission: constants.Zero,
+    fee: {
+        id: '',
+        commission: 1250,
+        gas: undefined,
+        created: Date.now(),
+        lastUpdated: Date.now(),
+    },
 };
 
 export const NoStake = Template.bind({});
@@ -55,4 +62,11 @@ NoStake.args = {
     productionInterval: 0,
     totalReward: constants.Zero,
     totalCommission: constants.Zero,
+    fee: {
+        id: '',
+        commission: undefined,
+        gas: 240000,
+        created: Date.now(),
+        lastUpdated: Date.now(),
+    },
 };

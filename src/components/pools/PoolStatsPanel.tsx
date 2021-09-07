@@ -18,6 +18,8 @@ import { FiBox } from 'react-icons/fi';
 import StatsPanel from '../home/StatsPanel';
 import CTSIText from '../CTSIText';
 import BigNumberText from '../BigNumberText';
+import { StakingPoolFee } from '../../graphql/models';
+import CommissionText from '../CommissionText';
 
 export interface PoolStatsPanelProps extends StackProps {
     stakedBalance: BigNumber;
@@ -26,6 +28,7 @@ export interface PoolStatsPanelProps extends StackProps {
     productionInterval: number; // average number of milliseconds between blocks considering the last 10 produced blocks
     totalReward: BigNumberish;
     totalCommission: BigNumberish;
+    fee: StakingPoolFee;
 }
 
 const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
@@ -36,6 +39,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
         productionInterval,
         totalReward,
         totalCommission,
+        fee,
         ...stackProps
     } = props;
 
@@ -97,17 +101,34 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     </Tooltip>
                 </HStack>
             </BigNumberText>
-            <BigNumberText icon={GiPieChart} value={commission} unit="percent">
-                <HStack>
+            {commission && (
+                <BigNumberText
+                    icon={GiPieChart}
+                    value={commission}
+                    unit="percent"
+                >
+                    <HStack>
+                        <Text>Commission</Text>
+                        <Tooltip
+                            label="Effective commission taken by pool manager"
+                            placement="top"
+                        >
+                            <Icon />
+                        </Tooltip>
+                    </HStack>
+                </BigNumberText>
+            )}
+            {!commission && (
+                <CommissionText icon={GiPieChart} value={fee}>
                     <Text>Commission</Text>
                     <Tooltip
-                        label="Effective commission taken by pool manager"
+                        label="Configured commission taken by pool manager"
                         placement="top"
                     >
                         <Icon />
                     </Tooltip>
-                </HStack>
-            </BigNumberText>
+                </CommissionText>
+            )}
         </StatsPanel>
     );
 };
