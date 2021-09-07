@@ -188,8 +188,13 @@ export interface BlocksData {
     blocks: Block[];
 }
 
+export interface BlocksWhere {
+    producer?: string;
+    node?: string;
+}
+
 export interface BlocksVars {
-    where: any;
+    where: BlocksWhere;
 }
 
 export interface BlockData {

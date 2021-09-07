@@ -16,9 +16,16 @@ import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
-import { HStack, Text, VStack } from '@chakra-ui/react';
+import {
+    Center,
+    HStack,
+    Text,
+    VStack,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { FaUsers } from 'react-icons/fa';
+import { QueryResult } from '@apollo/client';
 
 import Layout from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
@@ -32,13 +39,31 @@ import TransactionFeedback from '../../components/TransactionFeedback';
 import BalancePanel from '../../components/pools/BalancePanel';
 import PoolStatsPanel from '../../components/pools/PoolStatsPanel';
 import UserPool from '../../components/pools/UserPool';
+import useBlocks from '../../graphql/hooks/useBlocks';
+import { BlocksData, BlocksVars } from '../../graphql/models';
+
+const blockAverageInterval = (
+    result: QueryResult<BlocksData, BlocksVars>
+): number => {
+    const count = result.data?.blocks?.length;
+    if (count > 0) {
+        const last = result.data.blocks[count - 1];
+        return (Date.now() - last.timestamp) / count;
+    }
+    return 0;
+};
 
 const Pool = () => {
-    const router = useRouter();
     const { account, chainId } = useWeb3React<Web3Provider>();
+
+    // get pool address from path
+    const router = useRouter();
     const address = router.query.pool as string;
 
+    // query block number (continuouly)
     const blockNumber = useBlockNumber();
+
+    // query pool data
     const {
         amount,
         amounts,
@@ -58,6 +83,7 @@ const Pool = () => {
         rebalance,
     } = useStakingPool(address, account);
 
+    // query user balance and allowance
     const {
         balance,
         allowance,
@@ -65,14 +91,23 @@ const Pool = () => {
         approve,
     } = useCartesiToken(account, address, blockNumber);
 
+    // query pool contract ERC20 balance
     const { balance: poolBalance } = useCartesiToken(
         address,
         null,
         blockNumber
     );
 
+    // query staking contract with pool address
     const staking = useStaking(address);
+
+    // query thegraph pool data
     const stakingPool = useStakingPoolQuery(address);
+
+    // query 10 latest blocks for average interval
+    const productionInterval = blockAverageInterval(
+        useBlocks({ producer: address }, 10)
+    );
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
@@ -83,6 +118,9 @@ const Pool = () => {
             unstake(stakedShares);
         }
     };
+
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
 
     return (
         <Layout>
@@ -117,6 +155,20 @@ const Pool = () => {
                     </HStack>
                 </AddressText>
             </HStack>
+            <Center
+                px="6vw"
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bg} 50%, ${bg} 100%)`}
+            >
+                <PoolStatsPanel
+                    w="100%"
+                    productionInterval={productionInterval}
+                    stakedBalance={amount}
+                    totalBlocks={stakingPool?.user?.totalBlocks}
+                    totalReward={stakingPool?.user?.totalReward}
+                    totalUsers={stakingPool?.totalUsers}
+                    totalCommission={stakingPool?.totalCommission}
+                />
+            </Center>
             <VStack px="6vw" py={5} spacing={10}>
                 <BalancePanel
                     w="100%"
@@ -142,15 +194,8 @@ const Pool = () => {
                     hideZeros={true}
                     onRebalance={rebalance}
                 />
-                <PoolStatsPanel
-                    w="100%"
-                    totalBlocks={stakingPool?.user?.totalBlocks}
-                    totalReward={stakingPool?.user?.totalReward}
-                    totalUsers={stakingPool?.totalUsers}
-                    totalCommission={stakingPool?.totalCommission}
-                />
-                <StakingDisclaimer persistanceKey="readDisclaimer" />
 
+                <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={transaction}>
                     Sending transaction...
                 </TransactionFeedback>

@@ -26,10 +26,7 @@ import {
 import { FaEllipsisH } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
-import useBlocks, {
-    useNodeBlocks,
-    useProducerBlocks,
-} from '../../graphql/hooks/useBlocks';
+import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
 import { QueryResult } from '@apollo/client';
 import BlocksChart from '../../components/BlocksChart';
@@ -125,10 +122,10 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     const all = useBlocks();
 
     // list of blocks filtered by producer
-    const byProducer = useProducerBlocks(searchKey);
+    const byProducer = useBlocks({ producer: searchKey });
 
     // list of blocks filtered by node
-    const byNode = useNodeBlocks(searchKey);
+    const byNode = useBlocks({ node: searchKey });
 
     return (
         <Layout>

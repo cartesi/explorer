@@ -86,7 +86,7 @@ const Home = () => {
     const { marketInformation } = useMarketInformation();
 
     // latest 4 produced blocks
-    const { data } = useBlocks(4);
+    const { data } = useBlocks({}, 4);
     const blocks = data?.blocks || [];
 
     // APR calculation

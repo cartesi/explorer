@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -11,45 +11,19 @@
 
 import { useQuery } from '@apollo/client';
 import { BLOCKS } from '../queries/blocks';
-import { BlocksData, BlocksVars } from '../models';
+import { BlocksData, BlocksVars, BlocksWhere } from '../models';
 
-const useBlocks = (count = 100) => {
+const useBlocks = (where: BlocksWhere = {}, count = 100) => {
+    // normalize to lowercase, because thegraph is all lowercase
+    where.node = where.node ? where.node.toLowerCase() : undefined;
+    where.producer = where.producer ? where.producer.toLowerCase() : undefined;
+
     const variables = {
-        where: {},
+        where,
         count,
         skip: 0,
     };
 
-    return useQuery<BlocksData, BlocksVars>(BLOCKS, {
-        variables,
-        pollInterval: 30000,
-        notifyOnNetworkStatusChange: true,
-    });
-};
-
-export const useProducerBlocks = (producer: string, count = 100) => {
-    if (producer) {
-        producer = producer.toLowerCase();
-    }
-    const variables = {
-        where: { producer },
-        count,
-    };
-    return useQuery<BlocksData, BlocksVars>(BLOCKS, {
-        variables,
-        pollInterval: 30000,
-        notifyOnNetworkStatusChange: true,
-    });
-};
-
-export const useNodeBlocks = (node: string, count = 100) => {
-    if (node) {
-        node = node.toLowerCase();
-    }
-    const variables = {
-        where: { node },
-        count,
-    };
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
         pollInterval: 30000,
