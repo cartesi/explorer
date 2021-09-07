@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Cartesi Pte. Ltd.
+// Copyright (C) 2021 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -47,6 +47,7 @@ import CTSIText from '../components/CTSIText';
 import MarketInfo from '../components/MarketInfo';
 import { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import SearchInput from '../components/SearchInput';
+import useTotalPoolBalance from '../graphql/hooks/useTotalPoolBalance';
 
 const SectionHeading: FunctionComponent = (props) => {
     const borderLeftColor = useColorModeValue('gray.900', 'gray.200');
@@ -78,6 +79,9 @@ const Home = () => {
 
     // user staked balance
     const { stakedBalance } = useStaking(account);
+
+    // query total pool balance
+    const poolBalance = useTotalPoolBalance(account);
 
     // global summary information
     const summary = useSummary();
@@ -155,7 +159,7 @@ const Home = () => {
                 </WrapItem>
                 <WrapItem p={2}>
                     <CTSIText
-                        value={stakedBalance}
+                        value={stakedBalance.add(poolBalance)}
                         icon={FaCoins}
                         bg="black"
                         color="white"

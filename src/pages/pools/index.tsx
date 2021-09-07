@@ -14,7 +14,17 @@ import Head from 'next/head';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import NextLink from 'next/link';
-import { Button, HStack, VStack } from '@chakra-ui/react';
+import {
+    Button,
+    Center,
+    HStack,
+    Text,
+    Tooltip,
+    VStack,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/icons';
+import { FaCoins } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -24,8 +34,10 @@ import Pools from '../../containers/pool/Pools';
 import SearchInput from '../../components/SearchInput';
 import { useStakingPoolFactory } from '../../services/poolFactory';
 import StatsPanel from '../../components/home/StatsPanel';
-import StatsItem from '../../components/Stats';
 import usePoolBalances from '../../graphql/hooks/usePoolBalances';
+import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
+import CTSIText from '../../components/CTSIText';
+import BigNumberText from '../../components/BigNumberText';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -36,11 +48,17 @@ const StakingPools: FC = () => {
     // query summary data
     const summary = useSummary();
 
+    // query total user pool balance
+    const poolBalance = useTotalPoolBalance(account);
+
     // search pool by id
     const [search, setSearch] = useState<string>();
 
     // query user balances in all his pools
     const balances = usePoolBalances(account);
+
+    // dark mode support
+    const bg = useColorModeValue('white', 'gray.700');
 
     return (
         <Layout>
@@ -50,23 +68,48 @@ const StakingPools: FC = () => {
             </Head>
 
             <PageHeader title="Staking Pools" />
+            <Center
+                px="6vw"
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bg} 50%, ${bg} 100%)`}
+            >
+                <StatsPanel w="100%">
+                    <BigNumberText value={summary?.totalPools}>
+                        <HStack>
+                            <Text># Pools</Text>
+                            <Tooltip
+                                label="Total number of pools"
+                                placement="top"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
+                    </BigNumberText>
+                    <BigNumberText value={balances.data?.poolBalances?.length}>
+                        <HStack>
+                            <Text>My Pools</Text>
+                            <Tooltip
+                                label="Number of pools user staked"
+                                placement="top"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
+                    </BigNumberText>
+                    <CTSIText value={poolBalance} icon={FaCoins}>
+                        <HStack>
+                            <Text>My Stake</Text>
+                            <Tooltip
+                                label="Total user stake in pools"
+                                placement="top"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
+                    </CTSIText>
+                </StatsPanel>
+            </Center>
 
             <VStack p="20px 6vw" align="stretch" spacing={5}>
-                <StatsPanel>
-                    <StatsItem
-                        label="# Pools"
-                        value={summary?.totalPools}
-                        fractionDigits={0}
-                        help="Total number of pools"
-                    />
-                    <StatsItem
-                        label="My Pools"
-                        value={balances.data?.poolBalances?.length}
-                        fractionDigits={0}
-                        help="Number of pools user staked"
-                    />
-                </StatsPanel>
-
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
                         <NextLink href="/pools/create">

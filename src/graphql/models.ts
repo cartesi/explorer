@@ -103,8 +103,8 @@ export type PoolBalance = {
     id: string;
     pool: StakingPool;
     user: PoolUser;
-    shares: number;
-    balance: number;
+    shares: string;
+    balance: string;
     stakeTimestamp: number;
 };
 
