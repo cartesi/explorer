@@ -80,7 +80,7 @@ const Calculator = () => {
     const { marketInformation } = useMarketInformation();
 
     // get latest block
-    const { data } = useBlocks(10);
+    const { data } = useBlocks({}, 10);
     const blocks = data?.blocks || [];
 
     // do all the math
