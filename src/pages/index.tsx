@@ -20,10 +20,12 @@ import {
     Heading,
     HStack,
     Text,
+    Tooltip,
     useColorModeValue,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import Layout from '../components/Layout';
@@ -164,9 +166,17 @@ const Home = () => {
                         bg="black"
                         color="white"
                     >
-                        <Text bg="black" color="white">
-                            Staked Balance
-                        </Text>
+                        <HStack>
+                            <Text bg="black" color="white">
+                                Staked Balance
+                            </Text>
+                            <Tooltip
+                                label="This include direct staking and pool staking"
+                                placement="top"
+                            >
+                                <Icon />
+                            </Tooltip>
+                        </HStack>
                     </CTSIText>
                 </WrapItem>
             </Wrap>
