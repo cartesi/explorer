@@ -71,7 +71,7 @@ const PoolTable: FunctionComponent<PoolTableProps> = ({
                         {sort == 'amount' && <ArrowDownIcon />}
                     </Th>
                     {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
-                    {size == 'lg' && <Th>Commission</Th>}
+                    {size == 'lg' && <Th>Configured Commission</Th>}
                     {(size == 'lg' || size == 'md') && (
                         <Th>
                             <Link onClick={() => onSort('totalCommission')}>
