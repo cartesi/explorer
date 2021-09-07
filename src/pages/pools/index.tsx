@@ -58,7 +58,7 @@ const StakingPools: FC = () => {
     const balances = usePoolBalances(account);
 
     // dark mode support
-    const bg = useColorModeValue('white', 'gray.700');
+    const bg = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>

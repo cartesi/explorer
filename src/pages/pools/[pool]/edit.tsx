@@ -69,7 +69,8 @@ const ManagePool = () => {
             : undefined;
 
     // dark mode compatible background color
-    const bgColor = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'gray.700');
+    const bgHeader = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>
@@ -98,9 +99,10 @@ const ManagePool = () => {
 
             <Center
                 px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgColor} 50%, ${bgColor} 100%)`}
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
             >
                 <Node
+                    bg={bg}
                     chainId={chainId}
                     account={pool.address}
                     address={activeWorker}

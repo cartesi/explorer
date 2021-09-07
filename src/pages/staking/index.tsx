@@ -97,6 +97,7 @@ const Staking = () => {
 
     // dark mode support
     const bg = useColorModeValue('white', 'gray.700');
+    const headerBg = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>
@@ -108,9 +109,10 @@ const Staking = () => {
             <Balances balance={balance} stakedBalance={stakedBalance} />
             <Center
                 px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bg} 50%, ${bg} 100%)`}
+                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${headerBg} 50%, ${headerBg} 100%)`}
             >
                 <Node
+                    bg={bg}
                     chainId={chainId}
                     account={account}
                     address={activeWorker}
