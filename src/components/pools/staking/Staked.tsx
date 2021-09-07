@@ -20,7 +20,8 @@ import Title from './Title';
 import { useTimeLeft } from '../../../utils/react';
 
 export interface StakedProps {
-    balance: BigNumber;
+    balance: BigNumber; // user staked balance
+    userBalance: BigNumber; // user pool balance
     depositTimestamp: Date;
     lockTime: number;
     onStake: () => void;
@@ -29,6 +30,7 @@ export interface StakedProps {
 
 const Staked: FC<StakedProps> = ({
     balance,
+    userBalance,
     depositTimestamp,
     lockTime,
     onStake,
@@ -67,7 +69,7 @@ const Staked: FC<StakedProps> = ({
                             icon={<MdAdd />}
                             aria-label="Stake"
                             size="md"
-                            disabled={!!unlock}
+                            disabled={!!unlock || userBalance.isZero()}
                             onClick={onStake}
                         />
                     </Tooltip>

@@ -146,6 +146,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
             </Collapse>
             <Staked
                 balance={staked}
+                userBalance={userBalance}
                 depositTimestamp={depositTimestamp}
                 lockTime={lockTime}
                 onStake={stakeDisclosure.onOpen}
