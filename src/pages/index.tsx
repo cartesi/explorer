@@ -16,7 +16,6 @@ import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import {
-    Center,
     Heading,
     HStack,
     Text,
@@ -28,7 +27,7 @@ import {
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
-import Layout from '../components/Layout';
+import Layout, { PageBody, PageHeader, PagePanel } from '../components/Layout';
 import BlockMiniCard from '../components/block/BlockMiniCard';
 import Users from '../components/Users';
 
@@ -115,75 +114,73 @@ const Home = () => {
                 <title>Cartesi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <Wrap
-                bg="black"
-                color="white"
-                opacity={0.9}
-                justify="space-around"
-                align="flex-end"
-                px="6vw"
-                py={8}
-                wrap="wrap"
-            >
-                <WrapItem p={2}>
-                    <MarketInfo
-                        label="CTSI Price"
-                        value={marketInformation?.price}
-                        unit="USD"
-                    />
-                </WrapItem>
-                <WrapItem p={2}>
-                    <MarketInfo
-                        label="CTSI Market Cap"
-                        value={marketInformation?.marketCap}
-                        unit="USD"
-                    />
-                </WrapItem>
-                <WrapItem p={2}>
-                    <MarketInfo
-                        label="Circ. Supply"
-                        value={marketInformation?.circulatingSupply}
-                        unit="CTSI"
-                    />
-                </WrapItem>
-                <WrapItem p={2}>
-                    <CTSIText
-                        value={balance}
-                        icon={FaWallet}
-                        bg="black"
-                        color="white"
-                    >
-                        <Text bg="black" color="white">
-                            Wallet Balance
-                        </Text>
-                    </CTSIText>
-                </WrapItem>
-                <WrapItem p={2}>
-                    <CTSIText
-                        value={stakedBalance.add(poolBalance)}
-                        icon={FaCoins}
-                        bg="black"
-                        color="white"
-                    >
-                        <HStack>
+            <PageHeader>
+                <Wrap
+                    bg="black"
+                    color="white"
+                    opacity={0.9}
+                    justify="space-around"
+                    align="flex-end"
+                    px="6vw"
+                    py={8}
+                    wrap="wrap"
+                >
+                    <WrapItem p={2}>
+                        <MarketInfo
+                            label="CTSI Price"
+                            value={marketInformation?.price}
+                            unit="USD"
+                        />
+                    </WrapItem>
+                    <WrapItem p={2}>
+                        <MarketInfo
+                            label="CTSI Market Cap"
+                            value={marketInformation?.marketCap}
+                            unit="USD"
+                        />
+                    </WrapItem>
+                    <WrapItem p={2}>
+                        <MarketInfo
+                            label="Circ. Supply"
+                            value={marketInformation?.circulatingSupply}
+                            unit="CTSI"
+                        />
+                    </WrapItem>
+                    <WrapItem p={2}>
+                        <CTSIText
+                            value={balance}
+                            icon={FaWallet}
+                            bg="black"
+                            color="white"
+                        >
                             <Text bg="black" color="white">
-                                Staked Balance
+                                Wallet Balance
                             </Text>
-                            <Tooltip
-                                label="This include direct staking and pool staking"
-                                placement="top"
-                            >
-                                <Icon />
-                            </Tooltip>
-                        </HStack>
-                    </CTSIText>
-                </WrapItem>
-            </Wrap>
-            <Center
-                p="0 6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgColor} 50%, ${bgColor} 100%)`}
-            >
+                        </CTSIText>
+                    </WrapItem>
+                    <WrapItem p={2}>
+                        <CTSIText
+                            value={stakedBalance.add(poolBalance)}
+                            icon={FaCoins}
+                            bg="black"
+                            color="white"
+                        >
+                            <HStack>
+                                <Text bg="black" color="white">
+                                    Staked Balance
+                                </Text>
+                                <Tooltip
+                                    label="This include direct staking and pool staking"
+                                    placement="top"
+                                >
+                                    <Icon />
+                                </Tooltip>
+                            </HStack>
+                        </CTSIText>
+                    </WrapItem>
+                </Wrap>
+            </PageHeader>
+            <PagePanel>
                 <StatsPanel w="100%">
                     <StatsItem
                         label="# Active Nodes"
@@ -212,31 +209,27 @@ const Home = () => {
                         help={labels.participationRate}
                     />
                 </StatsPanel>
-            </Center>
-
-            <HStack p="0 6vw">
+            </PagePanel>
+            <PageBody>
                 <SectionHeading>Blocks</SectionHeading>
-            </HStack>
-            <Wrap p="20px 6vw" justify="space-around">
-                {blocks.slice(0, 4).map((block, index) => (
-                    <WrapItem key={index}>
-                        <BlockMiniCard
-                            chainId={chainId}
-                            block={block}
-                            key={block.id}
-                        />
-                    </WrapItem>
-                ))}
-            </Wrap>
-
-            <HStack p="20px 6vw" justify="space-between" align="flex-end">
-                <SectionHeading>Block Producers</SectionHeading>
-                <SearchInput
-                    w={[100, 200, 400, 500]}
-                    onSearchChange={(e) => setUserSearch(e.target.value)}
-                />
-            </HStack>
-            <HStack p="20px 6vw" justify="space-between">
+                <Wrap justify="space-around">
+                    {blocks.slice(0, 4).map((block, index) => (
+                        <WrapItem key={index}>
+                            <BlockMiniCard
+                                chainId={chainId}
+                                block={block}
+                                key={block.id}
+                            />
+                        </WrapItem>
+                    ))}
+                </Wrap>
+                <HStack justify="space-between" align="flex-end">
+                    <SectionHeading>Block Producers</SectionHeading>
+                    <SearchInput
+                        w={[100, 200, 400, 500]}
+                        onSearchChange={(e) => setUserSearch(e.target.value)}
+                    />
+                </HStack>
                 <Users
                     chainId={chainId}
                     account={account}
@@ -245,7 +238,7 @@ const Home = () => {
                         (summary?.totalUsers || 0) / USERS_PER_PAGE
                     )}
                 />
-            </HStack>
+            </PageBody>
         </Layout>
     );
 };

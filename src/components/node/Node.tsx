@@ -16,7 +16,6 @@ import {
     EditablePreview,
     HStack,
     Text,
-    useColorModeValue,
     VStack,
     StackProps,
 } from '@chakra-ui/react';
@@ -67,11 +66,8 @@ const Node: FC<NodeProps> = (props) => {
         ...stackProps
     } = props;
 
-    // dark mode compatible background color
-    const bg = useColorModeValue('white', 'gray.800');
-
     return (
-        <VStack bg={bg} w="100%" shadow="md" p={10} {...stackProps}>
+        <VStack {...stackProps}>
             <HStack justify="space-between" w="100%" spacing={10}>
                 <Text>Node</Text>
                 <Editable

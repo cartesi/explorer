@@ -14,21 +14,16 @@ import Head from 'next/head';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import NextLink from 'next/link';
-import {
-    Button,
-    Center,
-    HStack,
-    Text,
-    Tooltip,
-    VStack,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Text, Tooltip } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins } from 'react-icons/fa';
 
-import Layout from '../../components/Layout';
+import Layout, {
+    PageHeader,
+    PagePanel,
+    PageBody,
+} from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
-import PageHeader from '../../components/PageHeader';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import Pools from '../../containers/pool/Pools';
 import SearchInput from '../../components/SearchInput';
@@ -57,21 +52,16 @@ const StakingPools: FC = () => {
     // query user balances in all his pools
     const balances = usePoolBalances(account);
 
-    // dark mode support
-    const bg = useColorModeValue('white', 'gray.800');
-
     return (
         <Layout>
             <Head>
                 <title>Cartesi - Pools</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <PageHeader title="Staking Pools" />
-            <Center
-                px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bg} 50%, ${bg} 100%)`}
-            >
+            <PageHeader>
+                <Heading fontWeight="normal">Staking Pools</Heading>
+            </PageHeader>
+            <PagePanel>
                 <StatsPanel w="100%">
                     <BigNumberText value={summary?.totalPools}>
                         <HStack>
@@ -107,9 +97,8 @@ const StakingPools: FC = () => {
                         </HStack>
                     </CTSIText>
                 </StatsPanel>
-            </Center>
-
-            <VStack p="20px 6vw" align="stretch" spacing={5}>
+            </PagePanel>
+            <PageBody>
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
                         <NextLink href="/pools/create">
@@ -129,7 +118,7 @@ const StakingPools: FC = () => {
                     account={account}
                     search={search}
                 />
-            </VStack>
+            </PageBody>
         </Layout>
     );
 };

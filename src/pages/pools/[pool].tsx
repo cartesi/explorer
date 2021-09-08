@@ -16,18 +16,16 @@ import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
-import {
-    Center,
-    HStack,
-    Text,
-    VStack,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { FaUsers } from 'react-icons/fa';
 import { QueryResult } from '@apollo/client';
 
-import Layout from '../../components/Layout';
+import Layout, {
+    PageBody,
+    PageHeader,
+    PagePanel,
+} from '../../components/Layout';
 import { useBlockNumber } from '../../services/eth';
 import { useStakingPool } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
@@ -119,50 +117,36 @@ const Pool = () => {
         }
     };
 
-    // dark mode support
-    const bg = useColorModeValue('white', 'gray.700');
-    const bgHeader = useColorModeValue('white', 'gray.800');
-
     return (
         <Layout>
             <Head>
                 <title>Cartesi - Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <HStack
-                px="6vw"
-                py={5}
-                justify="space-between"
-                align="flex-end"
-                bg="black"
-                opacity={0.9}
-                color="white"
-            >
-                <AddressText
-                    address={stakingPool?.id}
-                    chainId={chainId}
-                    icon={FaUsers}
-                >
-                    <HStack>
-                        <Text>Staking Pool</Text>
-                        {stakingPool &&
-                            account &&
-                            stakingPool.manager == account.toLowerCase() && (
-                                <Link href={`/pools/${address}/edit`}>
-                                    <EditIcon />
-                                </Link>
-                            )}
-                    </HStack>
-                </AddressText>
-            </HStack>
-            <Center
-                px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
-            >
+            <PageHeader>
+                <HStack justify="space-between" align="flex-end">
+                    <AddressText
+                        address={stakingPool?.id}
+                        chainId={chainId}
+                        icon={FaUsers}
+                    >
+                        <HStack>
+                            <Text>Staking Pool</Text>
+                            {stakingPool &&
+                                account &&
+                                stakingPool.manager ==
+                                    account.toLowerCase() && (
+                                    <Link href={`/pools/${address}/edit`}>
+                                        <EditIcon />
+                                    </Link>
+                                )}
+                        </HStack>
+                    </AddressText>
+                </HStack>
+            </PageHeader>
+            <PagePanel>
                 <PoolStatsPanel
                     w="100%"
-                    bg={bg}
                     productionInterval={productionInterval}
                     stakedBalance={amount}
                     totalBlocks={stakingPool?.user?.totalBlocks}
@@ -171,10 +155,12 @@ const Pool = () => {
                     totalCommission={stakingPool?.totalCommission}
                     fee={stakingPool?.fee}
                 />
-            </Center>
-            <VStack px="6vw" py={5} spacing={10}>
+            </PagePanel>
+            <PageBody>
                 <BalancePanel
                     w="100%"
+                    p={10}
+                    shadow="lg"
                     amount={amount}
                     pool={poolBalance}
                     stake={amounts?.stake}
@@ -222,7 +208,7 @@ const Pool = () => {
                     staked={stakedBalance}
                     withdrawBalance={withdrawBalance}
                 />
-            </VStack>
+            </PageBody>
         </Layout>
     );
 };

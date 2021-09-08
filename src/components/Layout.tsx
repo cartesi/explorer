@@ -9,13 +9,40 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import React, { FC } from 'react';
+import { Box, Center, Flex, VStack, useColorModeValue } from '@chakra-ui/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import Header from './Header';
 import Footer from './Footer';
 
-const LayoutComponent = ({ children }) => {
+export const PageHeader: FC = ({ children }) => (
+    <Box w="100%" bg="black" opacity={0.9} color="white" px="6vw" py={5}>
+        {children}
+    </Box>
+);
+
+export const PagePanel: FC = ({ children }) => {
+    const bg = useColorModeValue('white', 'gray.700');
+    const bgHeader = useColorModeValue('white', 'gray.800');
+    return (
+        <Center
+            px="6vw"
+            bgGradient={`linear(to-b, rgba(0,0,0,.9) 0%, rgba(0,0,0,.9) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
+        >
+            <Box bg={bg} w="100%" shadow="lg" p={[5, 5, 10, 10]}>
+                {children}
+            </Box>
+        </Center>
+    );
+};
+
+export const PageBody: FC = ({ children }) => (
+    <VStack px="6vw" py={5} align="stretch" spacing={5}>
+        {children}
+    </VStack>
+);
+
+const Layout = ({ children }) => {
     const { error } = useWeb3React();
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
@@ -30,4 +57,4 @@ const LayoutComponent = ({ children }) => {
     );
 };
 
-export default LayoutComponent;
+export default Layout;

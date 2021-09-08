@@ -9,21 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Head from 'next/head';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import {
     Box,
     Button,
-    Center,
     Flex,
+    Heading,
+    Spacer,
+    Stack,
     Text,
-    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { FaCoins } from 'react-icons/fa';
+import { FaCoins, FaWallet } from 'react-icons/fa';
 import { BsClockHistory } from 'react-icons/bs';
 import { AiOutlineDollar } from 'react-icons/ai';
 
@@ -31,9 +32,12 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import useUser from '../../graphql/hooks/useUser';
-import Layout from '../../components/Layout';
+import Layout, {
+    PageBody,
+    PageHeader,
+    PagePanel,
+} from '../../components/Layout';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
-import Balances from '../../components/staking/Balances';
 import StakingTabs from '../../components/staking/Tabs';
 import TotalBalances from '../../components/staking/TotalBalances';
 import UnstakeForm from '../../components/staking/UnstakeForm';
@@ -46,7 +50,7 @@ import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useNode } from '../../services/node';
 import Node from '../../components/node/Node';
 
-const Staking = () => {
+const Staking: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
 
@@ -97,7 +101,6 @@ const Staking = () => {
 
     // dark mode support
     const bg = useColorModeValue('white', 'gray.700');
-    const headerBg = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>
@@ -105,14 +108,25 @@ const Staking = () => {
                 <title>Cartesi - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <Balances balance={balance} stakedBalance={stakedBalance} />
-            <Center
-                px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${headerBg} 50%, ${headerBg} 100%)`}
-            >
+            <PageHeader>
+                <Flex wrap="wrap">
+                    <Heading fontWeight="normal">Staking</Heading>
+                    <Spacer />
+                    <Stack
+                        direction={['column', 'column', 'row', 'row']}
+                        spacing={[5, 5, 10, 10]}
+                    >
+                        <CTSIText value={balance} icon={FaWallet}>
+                            <Text>Wallet Balance</Text>
+                        </CTSIText>
+                        <CTSIText value={stakedBalance} icon={FaCoins}>
+                            <Text>Staked Balance</Text>
+                        </CTSIText>
+                    </Stack>
+                </Flex>
+            </PageHeader>
+            <PagePanel>
                 <Node
-                    bg={bg}
                     chainId={chainId}
                     account={account}
                     address={activeWorker}
@@ -130,116 +144,111 @@ const Staking = () => {
                     onRetire={node.retire}
                     onTransfer={node.transfer}
                 />
-            </Center>
-
-            <VStack p="20px 6vw 20px 6vw">
+            </PagePanel>
+            <PageBody>
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
                 <TransactionFeedback transaction={node.transaction} />
-            </VStack>
-
-            <TotalBalances
-                p="25px 6vw 0 6vw"
-                justify="flex-start"
-                spacing={100}
-                totalReward={BigNumber.from(user?.totalReward || 0)}
-                totalBalance={totalBalance}
-            />
-
-            <Flex
-                direction={['column', 'column', 'column', 'row']}
-                p="50px 6vw 50px 6vw"
-            >
-                <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
-                    <Box
-                        mb={8}
-                        boxShadow="lg"
-                        borderLeft="10px solid black"
-                        bg={bg}
-                    >
-                        <CTSIText
-                            p={6}
-                            value={maturingBalance}
-                            icon={BsClockHistory}
-                            direction="row"
-                        >
-                            <Text>Maturing</Text>
-                            {maturingBalance.gt(0) && maturingLeft && (
-                                <Text fontSize="sm">
-                                    {maturingLeft} to mature
-                                </Text>
-                            )}
-                        </CTSIText>
-                        <CTSIText
-                            p={6}
-                            value={stakedBalance}
-                            icon={FaCoins}
-                            direction="row"
-                        >
-                            <Text>Staked</Text>
-                        </CTSIText>
-                    </Box>
-
-                    <Box
-                        mb={8}
-                        boxShadow="lg"
-                        borderLeft="10px solid black"
-                        bg={bg}
-                    >
-                        <CTSIText
-                            p={6}
-                            value={releasingBalance}
-                            icon={AiOutlineDollar}
-                            direction="row"
-                        >
-                            {releasingLeft && <Text>Releasing</Text>}
-                            {!releasingLeft && <Text>Released</Text>}
-                            {releasingBalance.gt(0) && releasingLeft && (
-                                <Text fontSize="sm">
-                                    {releasingLeft} to release
-                                </Text>
-                            )}
-                            {releasingBalance.gt(0) && !releasingLeft && (
-                                <Button
-                                    size="sm"
-                                    disabled={!account || waiting}
-                                    onClick={() => withdraw(releasingBalance)}
-                                >
-                                    Withdraw
-                                </Button>
-                            )}
-                        </CTSIText>
-                    </Box>
-                </Box>
-
-                <StakingTabs
-                    flex={2}
-                    bg={bg}
-                    Stake={
-                        <StakeForm
-                            allowance={allowance}
-                            releasing={releasingBalance}
-                            totalStaked={BigNumber.from(
-                                summary?.totalStaked || '0'
-                            )}
-                            disabled={!account || waiting}
-                            onApprove={(amount) =>
-                                approve(staking.address, amount)
-                            }
-                            onStake={stake}
-                        />
-                    }
-                    Unstake={
-                        <UnstakeForm
-                            maturing={maturingBalance}
-                            staked={stakedBalance}
-                            onUnstake={unstake}
-                            disabled={!account || waiting}
-                        />
-                    }
+                <TotalBalances
+                    justify="flex-start"
+                    spacing={100}
+                    totalReward={BigNumber.from(user?.totalReward || 0)}
+                    totalBalance={totalBalance}
                 />
-            </Flex>
+                <Flex direction={['column', 'column', 'column', 'row']}>
+                    <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
+                        <Box
+                            mb={8}
+                            boxShadow="lg"
+                            borderLeft="10px solid black"
+                            bg={bg}
+                        >
+                            <CTSIText
+                                p={6}
+                                value={maturingBalance}
+                                icon={BsClockHistory}
+                                direction="row"
+                            >
+                                <Text>Maturing</Text>
+                                {maturingBalance.gt(0) && maturingLeft && (
+                                    <Text fontSize="sm">
+                                        {maturingLeft} to mature
+                                    </Text>
+                                )}
+                            </CTSIText>
+                            <CTSIText
+                                p={6}
+                                value={stakedBalance}
+                                icon={FaCoins}
+                                direction="row"
+                            >
+                                <Text>Staked</Text>
+                            </CTSIText>
+                        </Box>
+
+                        <Box
+                            mb={8}
+                            boxShadow="lg"
+                            borderLeft="10px solid black"
+                            bg={bg}
+                        >
+                            <CTSIText
+                                p={6}
+                                value={releasingBalance}
+                                icon={AiOutlineDollar}
+                                direction="row"
+                            >
+                                {releasingLeft && <Text>Releasing</Text>}
+                                {!releasingLeft && <Text>Released</Text>}
+                                {releasingBalance.gt(0) && releasingLeft && (
+                                    <Text fontSize="sm">
+                                        {releasingLeft} to release
+                                    </Text>
+                                )}
+                                {releasingBalance.gt(0) && !releasingLeft && (
+                                    <Button
+                                        size="sm"
+                                        disabled={!account || waiting}
+                                        onClick={() =>
+                                            withdraw(releasingBalance)
+                                        }
+                                    >
+                                        Withdraw
+                                    </Button>
+                                )}
+                            </CTSIText>
+                        </Box>
+                    </Box>
+
+                    <StakingTabs
+                        flex={2}
+                        bg={bg}
+                        Stake={
+                            <StakeForm
+                                allowance={allowance}
+                                releasing={releasingBalance}
+                                totalStaked={BigNumber.from(
+                                    summary?.totalStaked || '0'
+                                )}
+                                disabled={!account || waiting}
+                                onApprove={(amount) =>
+                                    approve(staking.address, amount)
+                                }
+                                onStake={stake}
+                            />
+                        }
+                        Unstake={
+                            <UnstakeForm
+                                maturing={maturingBalance}
+                                staked={stakedBalance}
+                                onUnstake={unstake}
+                                disabled={!account || waiting}
+                            />
+                        }
+                    />
+                </Flex>
+            </PageBody>
         </Layout>
     );
 };

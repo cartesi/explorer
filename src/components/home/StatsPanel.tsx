@@ -10,23 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import {
-    Stack,
-    StackDivider,
-    StackProps,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Stack, StackDivider, StackProps } from '@chakra-ui/react';
 
 const StatsPanel: FC<StackProps> = (props) => {
-    const bg = useColorModeValue('white', 'gray.700');
     return (
         <Stack
             direction={['column', 'column', 'row', 'row']}
             divider={<StackDivider />}
-            p="40px"
             justify="space-evenly"
-            boxShadow="md"
-            bg={bg}
             {...props}
         >
             {props.children}
