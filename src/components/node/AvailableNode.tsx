@@ -55,9 +55,9 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
     return (
         <VStack align="stretch">
             <Stack
-                direction={['column', 'row']}
-                spacing={[4, 8]}
-                align={[undefined, 'center']}
+                direction={['column', 'column', 'column', 'row']}
+                spacing={[4, 4, 4, 8]}
+                align={[undefined, undefined, undefined, 'center']}
             >
                 <BigNumberText
                     value={balance}

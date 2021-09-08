@@ -34,9 +34,9 @@ const PendingNode: FC<PendingNodeProps> = ({
     return (
         <VStack align="stretch">
             <Stack
-                direction={['column', 'row']}
-                spacing={[4, 8]}
-                align={[undefined, 'center']}
+                direction={['column', 'column', 'row', 'row']}
+                spacing={[4, 4, 8, 8]}
+                align={[undefined, undefined, 'center', 'center']}
             >
                 <AddressText
                     address={user}

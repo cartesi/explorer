@@ -76,9 +76,9 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     return (
         <VStack align="stretch">
             <Stack
-                spacing={[4, 8]}
-                direction={['column', 'row']}
-                align={[undefined, 'center']}
+                spacing={[4, 4, 4, 8]}
+                direction={['column', 'column', 'column', 'row']}
+                align={[undefined, undefined, undefined, 'center']}
             >
                 <AddressText
                     address={user}

@@ -72,7 +72,7 @@ const Node: FC<NodeProps> = (props) => {
                 <Text>Node</Text>
                 <Editable
                     w="100%"
-                    fontSize="3xl"
+                    fontSize={['sm', 'md', 'xl', '3xl']}
                     textAlign="center"
                     color={address ? undefined : 'gray.300'}
                     placeholder="Click to enter your node address"
