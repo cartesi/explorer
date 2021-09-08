@@ -112,7 +112,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                         <IconLink
                             href={'/pools/' + pool.id + '/edit'}
                             icon={<EditIcon />}
-                            tooltip="Stake"
+                            tooltip="Edit"
                         />
                     )}
                     <IconLink
