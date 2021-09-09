@@ -149,6 +149,7 @@ const Staking: FC = () => {
                 />
             </PagePanel>
             <PageBody>
+                <TermsCondition />
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
