@@ -14,7 +14,15 @@ import Head from 'next/head';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import NextLink from 'next/link';
-import { Button, Heading, HStack, Text, Tooltip } from '@chakra-ui/react';
+import {
+    Button,
+    Heading,
+    HStack,
+    Text,
+    Tooltip,
+    VStack,
+    useBreakpointValue,
+} from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins } from 'react-icons/fa';
 
@@ -33,12 +41,21 @@ import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import CTSIText from '../../components/CTSIText';
 import BigNumberText from '../../components/BigNumberText';
+import UserPoolTable from '../../components/pools/UserPoolTable';
+import { useBlockNumber } from '../../services/eth';
+import { useCartesiToken } from '../../services/token';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
 
+    // ethereum block number (from metamask)
+    const blockNumber = useBlockNumber();
+
     // interact with pool factory
     const { paused, loading, ready } = useStakingPoolFactory();
+
+    // user CTSI balance
+    const { balance } = useCartesiToken(account, null, blockNumber);
 
     // query summary data
     const summary = useSummary();
@@ -110,6 +127,18 @@ const StakingPools: FC = () => {
                         onSearchChange={(e) => setSearch(e.target.value)}
                     />
                 </HStack>
+                <VStack w="100%">
+                    <Heading fontSize="lg">My Pools</Heading>
+                    <UserPoolTable
+                        chainId={chainId}
+                        account={account}
+                        walletBalance={balance}
+                        loading={balances.loading}
+                        data={balances.data?.poolBalances || []}
+                        size={useBreakpointValue(['sm', 'sm', 'md', 'lg'])}
+                    />
+                </VStack>
+
                 <Pools
                     chainId={chainId}
                     pages={Math.ceil(

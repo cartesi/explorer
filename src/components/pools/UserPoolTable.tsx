@@ -22,33 +22,32 @@ import {
     Spinner,
     Link,
 } from '@chakra-ui/react';
-import { ArrowDownIcon } from '@chakra-ui/icons';
-import PoolRow from './PoolRow';
-import { StakingPool, StakingPoolSort } from '../../graphql/models';
+import { BigNumber } from '@ethersproject/bignumber';
 
-export interface PoolTableProps {
+import UserPoolRow from './UserPoolRow';
+import { PoolBalance } from '../../graphql/models';
+
+export interface UserPoolTableProps {
     chainId: number;
     account?: string;
+    walletBalance: BigNumber;
     loading: boolean;
-    data?: StakingPool[];
+    data?: PoolBalance[];
     size?: 'lg' | 'md' | 'sm';
-    sort?: StakingPoolSort;
-    onSort: (order: StakingPoolSort) => void;
 }
 
-const PoolTable: FC<PoolTableProps> = ({
+const UserPoolTable: FC<UserPoolTableProps> = ({
     chainId,
     account,
+    walletBalance,
     data,
     loading,
     size = 'lg',
-    sort,
-    onSort,
 }) => {
     const sizes = {
-        lg: 6,
-        md: 5,
-        sm: 3,
+        lg: 5,
+        md: 4,
+        sm: 2,
     };
     const columns = sizes[size] || 6;
     return (
@@ -56,30 +55,18 @@ const PoolTable: FC<PoolTableProps> = ({
             <Thead>
                 <Tr>
                     <Th>Address</Th>
-                    {(size == 'lg' || size == 'md') && (
-                        <Th isNumeric>
-                            <Link onClick={() => onSort('totalUsers')}>
-                                Total Users
-                            </Link>
-                            {sort == 'totalUsers' && <ArrowDownIcon />}
-                        </Th>
-                    )}
                     <Th isNumeric>
-                        <Link onClick={() => onSort('amount')}>
-                            Total Staked
-                        </Link>{' '}
-                        {sort == 'amount' && <ArrowDownIcon />}
+                        <Link>Wallet</Link>
                     </Th>
-                    {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
-                    {size == 'lg' && <Th>Configured Commission</Th>}
-                    {(size == 'lg' || size == 'md') && (
-                        <Th>
-                            <Link onClick={() => onSort('totalCommission')}>
-                                Accrued Commission
-                            </Link>{' '}
-                            {sort == 'totalCommission' && <ArrowDownIcon />}
-                        </Th>
-                    )}
+                    <Th isNumeric></Th>
+                    <Th isNumeric>
+                        <Link>Unstaked</Link>
+                    </Th>
+                    <Th isNumeric></Th>
+                    <Th isNumeric>
+                        <Link>Staked</Link>
+                    </Th>
+                    {size == 'lg' && <Th isNumeric>% Pool</Th>}
                     <Th textAlign="right">Action</Th>
                 </Tr>
             </Thead>
@@ -107,11 +94,12 @@ const PoolTable: FC<PoolTableProps> = ({
                 {!loading &&
                     data &&
                     data.length > 0 &&
-                    data.map((pool) => (
-                        <PoolRow
-                            key={pool.id}
+                    data.map((balance) => (
+                        <UserPoolRow
+                            key={balance.pool.id}
                             chainId={chainId}
-                            pool={pool}
+                            walletBalance={walletBalance}
+                            balance={balance}
                             size={size}
                             account={account}
                         />
@@ -121,4 +109,4 @@ const PoolTable: FC<PoolTableProps> = ({
     );
 };
 
-export default PoolTable;
+export default UserPoolTable;
