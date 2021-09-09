@@ -18,13 +18,16 @@ import {
     Button,
     Flex,
     Heading,
+    HStack,
+    Icon,
     Spacer,
     Stack,
     Text,
+    Tooltip,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { FaCoins, FaWallet } from 'react-icons/fa';
+import { FaCoins, FaTrophy, FaWallet } from 'react-icons/fa';
 import { BsClockHistory } from 'react-icons/bs';
 import { AiOutlineDollar } from 'react-icons/ai';
 
@@ -39,7 +42,6 @@ import Layout, {
 } from '../../components/Layout';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import StakingTabs from '../../components/staking/Tabs';
-import TotalBalances from '../../components/staking/TotalBalances';
 import UnstakeForm from '../../components/staking/UnstakeForm';
 import StakeForm from '../../components/staking/StakeForm';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -50,6 +52,7 @@ import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useNode } from '../../services/node';
 import Node from '../../components/node/Node';
 import TermsCondition from '../../components/TermsCondition';
+import labels from '../../utils/labels';
 
 const Staking: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -84,10 +87,6 @@ const Staking: FC = () => {
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(releasingTimestamp?.getTime());
-
-    const totalBalance = stakedBalance
-        .add(maturingBalance)
-        .add(releasingBalance);
 
     // get most recent node hired by user (if any)
     const existingNode = useUserNode(account);
@@ -152,14 +151,31 @@ const Staking: FC = () => {
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
                 <TransactionFeedback transaction={node.transaction} />
-                <TotalBalances
-                    justify="flex-start"
-                    spacing={100}
-                    totalReward={BigNumber.from(user?.totalReward || 0)}
-                    totalBalance={totalBalance}
-                />
                 <Flex direction={['column', 'column', 'column', 'row']}>
                     <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
+                        <Box
+                            mb={8}
+                            shadow="lg"
+                            borderLeft="10px solid black"
+                            bg={bg}
+                        >
+                            <CTSIText
+                                p={6}
+                                value={BigNumber.from(user?.totalReward || 0)}
+                                icon={FaTrophy}
+                                direction="row"
+                            >
+                                <HStack>
+                                    <Text>Total Rewards</Text>
+                                    <Tooltip
+                                        label={labels.totalRewards}
+                                        placement="top"
+                                    >
+                                        <Icon />
+                                    </Tooltip>
+                                </HStack>
+                            </CTSIText>
+                        </Box>
                         <Box
                             mb={8}
                             boxShadow="lg"
