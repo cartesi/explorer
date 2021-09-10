@@ -10,10 +10,31 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Box, Center, Flex, VStack, useColorModeValue } from '@chakra-ui/react';
+import {
+    Box,
+    Center,
+    Flex,
+    Text,
+    VStack,
+    useBreakpointValue,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import Header from './Header';
 import Footer from './Footer';
+
+export const ResponsiveDebug: FC = () => {
+    const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
+    const size = useBreakpointValue(['sm', 'md', 'lg', 'xl']);
+    const index = useBreakpointValue([0, 1, 2, 3]);
+    return (
+        <Center w="100%" minH={50} bg={color}>
+            <Text>
+                {size} [{index}]
+            </Text>
+        </Center>
+    );
+};
 
 export const PageHeader: FC = ({ children }) => (
     <Box w="100%" bg="black" opacity={0.9} color="white" px="6vw" py={5}>
