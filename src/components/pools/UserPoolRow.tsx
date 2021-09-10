@@ -32,7 +32,7 @@ import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import { FaCoins } from 'react-icons/fa';
 import IconLink from '../IconLink';
-import { poolAmount, userShare } from '../../graphql/hooks/usePoolBalances';
+import { userShare } from '../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../services/pool';
 
 export interface UserPoolRowProps {
@@ -56,9 +56,6 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     // poor manager is logged user, allow edit
     const edit = account && account.toLowerCase() === balance.pool.manager;
 
-    // calculate user stake
-    const stakedBalance = poolAmount(balance);
-
     const percentFormatter = new Intl.NumberFormat('en-US', {
         style: 'percent',
     });
@@ -66,7 +63,13 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     const address = balance.pool.id;
 
     // query pool data
-    const { stake, withdraw, transaction } = useStakingPool(address, account);
+    const {
+        balance: unstakedBalance,
+        stakedBalance,
+        stake,
+        withdraw,
+        transaction,
+    } = useStakingPool(address, account);
 
     return (
         <Tr key={balance.pool.id} _hover={{ backgroundColor }}>
@@ -83,14 +86,14 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                 <Button
                     leftIcon={<ArrowBackIcon />}
                     size="sm"
-                    disabled={BigNumber.from(balance.balance).isZero()}
+                    disabled={unstakedBalance.isZero()}
                     onClick={() => withdraw(balance.balance)}
                     isLoading={transaction.submitting}
                 >
                     Withdraw
                 </Button>
             </Td>
-            <Td isNumeric>{formatCTSI(balance.balance, 2)} CTSI</Td>
+            <Td isNumeric>{formatCTSI(unstakedBalance, 2)} CTSI</Td>
             <Td isNumeric>
                 <Button
                     rightIcon={<ArrowForwardIcon />}

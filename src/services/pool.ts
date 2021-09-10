@@ -92,7 +92,7 @@ export const useStakingPool = (
     // instant when user can unstake
     const [depositTimestamp, setDepositTimestamp] = useState<Date>(null);
 
-    // amount of tokens user requested to withdraw
+    // amount of tokens user holds free
     const [balance, setBalance] = useState<BigNumber>(constants.Zero);
 
     // amount of token user can withdraw
