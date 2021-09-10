@@ -39,6 +39,7 @@ import PoolStatsPanel from '../../components/pools/PoolStatsPanel';
 import UserPool from '../../components/pools/UserPool';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
+import SectionHeading from '../../components/SectionHeading';
 
 const blockAverageInterval = (
     result: QueryResult<BlocksData, BlocksVars>
@@ -187,6 +188,7 @@ const Pool = () => {
                 />
 
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
+                <SectionHeading>Staking</SectionHeading>
                 <TransactionFeedback transaction={transaction}>
                     Sending transaction...
                 </TransactionFeedback>

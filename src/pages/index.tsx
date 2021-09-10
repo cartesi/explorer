@@ -9,21 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 
 import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import {
-    Heading,
-    HStack,
-    Text,
-    Tooltip,
-    useColorModeValue,
-    Wrap,
-    WrapItem,
-} from '@chakra-ui/react';
+import { HStack, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
@@ -49,24 +41,7 @@ import MarketInfo from '../components/MarketInfo';
 import { USERS_PER_PAGE } from '../graphql/hooks/useUsers';
 import SearchInput from '../components/SearchInput';
 import useTotalPoolBalance from '../graphql/hooks/useTotalPoolBalance';
-
-const SectionHeading: FunctionComponent = (props) => {
-    const borderLeftColor = useColorModeValue('gray.900', 'gray.200');
-    return (
-        <Heading
-            as="h5"
-            borderLeftWidth="1px"
-            borderLeftColor={borderLeftColor}
-            borderLeftStyle="solid"
-            marginTop={10}
-            paddingLeft={3}
-            size="lg"
-            fontWeight="normal"
-        >
-            {props.children}
-        </Heading>
-    );
-};
+import SectionHeading from '../components/SectionHeading';
 
 const Home = () => {
     // user account and blockchain information (from metamask)
