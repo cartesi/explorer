@@ -46,7 +46,7 @@ const PoolTable: FC<PoolTableProps> = ({
     onSort,
 }) => {
     const sizes = {
-        lg: 6,
+        lg: 7,
         md: 5,
         sm: 3,
     };
