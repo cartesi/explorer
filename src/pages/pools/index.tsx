@@ -115,16 +115,18 @@ const StakingPools: FC = () => {
                 </StatsPanel>
             </PagePanel>
             <PageBody>
-                <VStack w="100%">
-                    <Heading fontSize="lg">My Pools</Heading>
-                    <UserPoolTable
-                        chainId={chainId}
-                        account={account}
-                        walletBalance={balance}
-                        loading={balances.loading}
-                        data={balances.data?.poolBalances || []}
-                    />
-                </VStack>
+                {balances.data?.poolBalances?.length > 0 && (
+                    <VStack w="100%">
+                        <Heading fontSize="lg">My Pools</Heading>
+                        <UserPoolTable
+                            chainId={chainId}
+                            account={account}
+                            walletBalance={balance}
+                            loading={balances.loading}
+                            data={balances.data?.poolBalances || []}
+                        />
+                    </VStack>
+                )}
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
                         <NextLink href="/pools/create">
