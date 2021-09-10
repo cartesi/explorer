@@ -52,6 +52,7 @@ import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useNode } from '../../services/node';
 import Node from '../../components/node/Node';
 import labels from '../../utils/labels';
+import TermsCondition from '../../components/TermsCondition';
 
 const Staking: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -149,7 +150,7 @@ const Staking: FC = () => {
                 />
             </PagePanel>
             <PageBody>
-                <TermsCondition />
+                <TermsCondition persistanceKey="stakingTermsAccepted" />
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />

@@ -43,6 +43,7 @@ import BigNumberText from '../../components/BigNumberText';
 import UserPoolTable from '../../components/pools/UserPoolTable';
 import { useBlockNumber } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
+import TermsCondition from '../../components/TermsCondition';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -123,6 +124,7 @@ const StakingPools: FC = () => {
                 </StatsPanel>
             </PagePanel>
             <PageBody>
+                <TermsCondition persistanceKey="poolsTermsAccepted" />
                 {balances.data?.poolBalances?.length > 0 && (
                     <VStack w="100%">
                         <Heading fontSize="lg">My Pools</Heading>
