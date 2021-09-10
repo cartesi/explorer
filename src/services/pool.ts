@@ -36,11 +36,11 @@ export interface StakingPool {
     shares: BigNumber;
     amount: BigNumber;
     transaction: Transaction<any>;
-    stakedBalance: BigNumber;
     stakedShares: BigNumber;
     balance: BigNumber;
     withdrawBalance: BigNumber;
     depositTimestamp: Date;
+    stakeTimestamp: Date;
     paused: Boolean;
     amounts: Amounts;
     lockTime: BigNumber;
@@ -75,22 +75,20 @@ export const useStakingPool = (
     // user amount of shares staked
     const [stakedShares, setStakedShares] = useState<BigNumber>(constants.Zero);
 
-    // user stake converted from shares to tokens
-    const [stakedBalance, setStakedBalance] = useState<BigNumber>(
-        constants.Zero
-    );
-
     // total number of shares of the pool
     const [shares, setShares] = useState<BigNumber>(constants.Zero);
 
     // total amount of token "in" pool
     const [amount, setAmount] = useState<BigNumber>(constants.Zero);
 
-    // total amount of token "in" pool
+    // period to wait before staking
     const [lockTime, setLockTime] = useState<BigNumber>(constants.Zero);
 
-    // instant when user can unstake
+    // instant when user can deposited
     const [depositTimestamp, setDepositTimestamp] = useState<Date>(null);
+
+    // instant when user can stake
+    const [stakeTimestamp, setStakeTimestamp] = useState<Date>(null);
 
     // amount of tokens user holds free
     const [balance, setBalance] = useState<BigNumber>(constants.Zero);
@@ -121,39 +119,25 @@ export const useStakingPool = (
         amount.gt(0) ? a.mul(shares).div(amount) : BigNumber.from(0);
 
     useEffect(() => {
-        const getData = async () => {
-            // query pool total shares
-            const shares = await pool.shares();
-            setShares(shares);
-
-            // query pool token amount
-            const amount = await pool.amount();
-            setAmount(amount);
-
-            // query pool lock time
-            setLockTime(await pool.lockTime());
-
-            // query user balance
-            const balance = await pool.userBalance(account);
-
-            // user staked shares
-            setStakedShares(balance.shares);
-
-            // calculate user stake in tokens
-            setStakedBalance(sharesToAmount(balance.shares));
-
-            setDepositTimestamp(
-                new Date(balance.depositTimestamp.toNumber() * 1000)
-            );
-            setBalance(balance.balance);
-            setWithdrawBalance(await pool.getWithdrawBalance());
-            setPaused(await pool.paused());
-
-            // query rebalance amounts
-            setAmounts(await pool.amounts());
-        };
         if (pool && account) {
-            getData();
+            pool.shares().then(setShares);
+            pool.amount().then(setAmount);
+            pool.userBalance(account).then((b) => {
+                setStakedShares(b.shares);
+                setDepositTimestamp(
+                    new Date(b.depositTimestamp.toNumber() * 1000)
+                );
+                pool.lockTime().then((t) => {
+                    setLockTime(t);
+                    setStakeTimestamp(
+                        new Date(b.depositTimestamp.add(t).toNumber() * 1000)
+                    );
+                });
+                setBalance(b.balance);
+            });
+            pool.getWithdrawBalance().then(setWithdrawBalance);
+            pool.paused().then(setPaused);
+            pool.amounts().then(setAmounts);
         }
     }, [pool, account, blockNumber]);
 
@@ -228,11 +212,11 @@ export const useStakingPool = (
         shares,
         amount,
         transaction,
-        stakedBalance,
         stakedShares,
         balance,
         withdrawBalance,
         depositTimestamp,
+        stakeTimestamp,
         paused,
         amounts,
         lockTime,

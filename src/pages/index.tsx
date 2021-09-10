@@ -105,9 +105,6 @@ const Home = () => {
 
     const [userSearch, setUserSearch] = useState<string>();
 
-    // dark mode compatible background color
-    const bgColor = useColorModeValue('white', 'gray.800');
-
     return (
         <Layout>
             <Head>

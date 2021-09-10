@@ -20,7 +20,7 @@ import {
     Thead,
     HStack,
     Spinner,
-    Link,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -33,7 +33,6 @@ export interface UserPoolTableProps {
     walletBalance: BigNumber;
     loading: boolean;
     data?: PoolBalance[];
-    size?: 'lg' | 'md' | 'sm';
 }
 
 const UserPoolTable: FC<UserPoolTableProps> = ({
@@ -42,31 +41,29 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
     walletBalance,
     data,
     loading,
-    size = 'lg',
 }) => {
-    const sizes = {
-        lg: 5,
-        md: 4,
-        sm: 2,
-    };
-    const columns = sizes[size] || 6;
+    const bp = useBreakpointValue([0, 1, 2, 3]);
+
+    // number of columns at each breakpoint
+    const columns = useBreakpointValue([3, 3, 4, 8]);
+
     return (
         <Table>
             <Thead>
                 <Tr>
                     <Th>Address</Th>
-                    <Th isNumeric>
-                        <Link>Wallet</Link>
+                    <Th hidden={bp < 3} isNumeric>
+                        Wallet
                     </Th>
-                    <Th isNumeric></Th>
-                    <Th isNumeric>
-                        <Link>Unstaked</Link>
+                    <Th hidden={bp < 3} />
+                    <Th hidden={bp < 2} isNumeric>
+                        Unstaked
                     </Th>
-                    <Th isNumeric></Th>
-                    <Th isNumeric>
-                        <Link>Staked</Link>
+                    <Th hidden={bp < 3} />
+                    <Th isNumeric>Staked</Th>
+                    <Th hidden={bp < 3} isNumeric>
+                        % Pool
                     </Th>
-                    {size == 'lg' && <Th isNumeric>% Pool</Th>}
                     <Th textAlign="right">Action</Th>
                 </Tr>
             </Thead>
@@ -100,7 +97,6 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
                             chainId={chainId}
                             walletBalance={walletBalance}
                             balance={balance}
-                            size={size}
                             account={account}
                         />
                     ))}

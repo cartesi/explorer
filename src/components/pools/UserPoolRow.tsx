@@ -13,10 +13,10 @@ import React, { FC } from 'react';
 import {
     Button,
     HStack,
-    Stack,
     Td,
     Tooltip,
     Tr,
+    useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
 import {
@@ -40,7 +40,6 @@ export interface UserPoolRowProps {
     walletBalance: BigNumber;
     balance: PoolBalance;
     account?: string;
-    size?: 'lg' | 'md' | 'sm' | 'xs';
 }
 
 const UserPoolRow: FC<UserPoolRowProps> = ({
@@ -48,7 +47,6 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     walletBalance,
     account,
     balance,
-    size = 'lg',
 }) => {
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
@@ -65,11 +63,18 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     // query pool data
     const {
         balance: unstakedBalance,
-        stakedBalance,
+        stakedShares,
+        withdrawBalance,
+        stakeTimestamp,
         stake,
         withdraw,
         transaction,
+        sharesToAmount,
     } = useStakingPool(address, account);
+
+    const stakedBalance = sharesToAmount(stakedShares);
+
+    const bp = useBreakpointValue([0, 1, 2, 3]);
 
     return (
         <Tr key={balance.pool.id} _hover={{ backgroundColor }}>
@@ -81,34 +86,44 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                     truncated
                 />
             </Td>
-            <Td isNumeric>{formatCTSI(walletBalance, 2)} CTSI</Td>
-            <Td isNumeric>
+            <Td hidden={bp < 3} isNumeric>
+                {formatCTSI(walletBalance, 2)} CTSI
+            </Td>
+            <Td hidden={bp < 3} isNumeric>
                 <Button
                     leftIcon={<ArrowBackIcon />}
                     size="sm"
-                    disabled={unstakedBalance.isZero()}
-                    onClick={() => withdraw(balance.balance)}
+                    disabled={
+                        unstakedBalance.isZero() ||
+                        withdrawBalance.lt(unstakedBalance)
+                    }
+                    onClick={() => withdraw(unstakedBalance)}
                     isLoading={transaction.submitting}
                 >
                     Withdraw
                 </Button>
             </Td>
-            <Td isNumeric>{formatCTSI(unstakedBalance, 2)} CTSI</Td>
-            <Td isNumeric>
+            <Td hidden={bp < 2} isNumeric>
+                {formatCTSI(unstakedBalance, 2)} CTSI
+            </Td>
+            <Td hidden={bp < 3} isNumeric>
                 <Button
                     rightIcon={<ArrowForwardIcon />}
                     size="sm"
-                    disabled={BigNumber.from(balance.balance).isZero()}
-                    onClick={() => stake(balance.balance)}
+                    disabled={
+                        unstakedBalance.isZero() ||
+                        Date.now() < stakeTimestamp?.getTime()
+                    }
+                    onClick={() => stake(unstakedBalance)}
                     isLoading={transaction.submitting}
                 >
                     Stake
                 </Button>
             </Td>
             <Td isNumeric>{formatCTSI(stakedBalance, 2)} CTSI</Td>
-            {size == 'lg' && (
-                <Td isNumeric>{percentFormatter.format(userShare(balance))}</Td>
-            )}
+            <Td hidden={bp < 3} isNumeric>
+                {percentFormatter.format(userShare(balance))}
+            </Td>
             <Td>
                 <HStack justify="flex-end">
                     {edit && (

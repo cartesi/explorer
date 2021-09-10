@@ -65,7 +65,6 @@ const Pool = () => {
     const {
         amount,
         amounts,
-        stakedBalance,
         stakedShares,
         paused,
         balance: userBalance,
@@ -74,6 +73,7 @@ const Pool = () => {
         lockTime,
         transaction,
         amountToShares,
+        sharesToAmount,
         deposit,
         stake,
         unstake,
@@ -106,6 +106,8 @@ const Pool = () => {
     const productionInterval = blockAverageInterval(
         useBlocks({ producer: address }, 10)
     );
+
+    const stakedBalance = sharesToAmount(stakedShares);
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {

@@ -21,7 +21,6 @@ import {
     Text,
     Tooltip,
     VStack,
-    useBreakpointValue,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins } from 'react-icons/fa';
@@ -116,6 +115,16 @@ const StakingPools: FC = () => {
                 </StatsPanel>
             </PagePanel>
             <PageBody>
+                <VStack w="100%">
+                    <Heading fontSize="lg">My Pools</Heading>
+                    <UserPoolTable
+                        chainId={chainId}
+                        account={account}
+                        walletBalance={balance}
+                        loading={balances.loading}
+                        data={balances.data?.poolBalances || []}
+                    />
+                </VStack>
                 <HStack justify="space-between">
                     {!loading && !paused && ready && (
                         <NextLink href="/pools/create">
@@ -127,18 +136,6 @@ const StakingPools: FC = () => {
                         onSearchChange={(e) => setSearch(e.target.value)}
                     />
                 </HStack>
-                <VStack w="100%">
-                    <Heading fontSize="lg">My Pools</Heading>
-                    <UserPoolTable
-                        chainId={chainId}
-                        account={account}
-                        walletBalance={balance}
-                        loading={balances.loading}
-                        data={balances.data?.poolBalances || []}
-                        size={useBreakpointValue(['sm', 'sm', 'md', 'lg'])}
-                    />
-                </VStack>
-
                 <Pools
                     chainId={chainId}
                     pages={Math.ceil(

@@ -51,7 +51,6 @@ import { useTimeLeft } from '../../utils/react';
 import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useNode } from '../../services/node';
 import Node from '../../components/node/Node';
-import TermsCondition from '../../components/TermsCondition';
 import labels from '../../utils/labels';
 
 const Staking: FC = () => {

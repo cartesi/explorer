@@ -29,7 +29,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatCTSI } from '../../utils/token';
-import theme from '../../styles/theme';
 import { parseUnits } from 'ethers/lib/utils';
 
 interface UnstakeFormProps extends BoxProps {
