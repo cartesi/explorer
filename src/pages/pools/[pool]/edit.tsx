@@ -28,7 +28,11 @@ import { FaUsers } from 'react-icons/fa';
 
 import { useStakingPool } from '../../../services/pool';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-import Layout from '../../../components/Layout';
+import Layout, {
+    PageBody,
+    PageHeader,
+    PagePanel,
+} from '../../../components/Layout';
 import AddressText from '../../../components/AddressText';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import NameForm from '../../../components/pools/NameForm';
@@ -78,16 +82,7 @@ const ManagePool = () => {
                 <title>Cartesi - Edit Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <HStack
-                px="6vw"
-                py={5}
-                justify="space-between"
-                align="flex-end"
-                bg="black"
-                opacity={0.9}
-                color="white"
-            >
+            <PageHeader>
                 <AddressText
                     address={stakingPool?.id}
                     chainId={chainId}
@@ -95,12 +90,9 @@ const ManagePool = () => {
                 >
                     <Text>Staking Pool</Text>
                 </AddressText>
-            </HStack>
-
-            <Center
-                px="6vw"
-                bgGradient={`linear(to-b, rgba(0,0,0,.87) 0%, rgba(0,0,0,.87) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
-            >
+            </PageHeader>
+            <PagePanel>
+                {' '}
                 <Node
                     bg={bg}
                     chainId={chainId}
@@ -121,8 +113,8 @@ const ManagePool = () => {
                     onTransfer={(worker, amount) => node.transfer(amount)}
                     w="100%"
                 />
-            </Center>
-            <VStack px="6vw" py={10} spacing={5}>
+            </PagePanel>
+            <PageBody>
                 <TransactionFeedback transaction={pool.transaction} />
                 <TransactionFeedback transaction={node.transaction} />
                 <FormControl display="flex" alignItems="center">
@@ -146,7 +138,7 @@ const ManagePool = () => {
                     withdraw={pool.amounts?.withdraw}
                     onRebalance={pool.rebalance}
                 />
-            </VStack>
+            </PageBody>
         </Layout>
     );
 };
