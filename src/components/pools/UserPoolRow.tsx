@@ -12,7 +12,9 @@
 import React, { FC } from 'react';
 import {
     Button,
+    Flex,
     HStack,
+    Progress,
     Td,
     Tooltip,
     Tr,
@@ -65,6 +67,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
         balance: unstakedBalance,
         stakedShares,
         withdrawBalance,
+        depositTimestamp,
         stakeTimestamp,
         stake,
         withdraw,
@@ -73,6 +76,13 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     } = useStakingPool(address, account);
 
     const stakedBalance = sharesToAmount(stakedShares);
+
+    // indicator for time to stake
+    const lock = stakeTimestamp?.getTime() - depositTimestamp?.getTime();
+    const now = Date.now();
+    let percentElapsed = ((now - depositTimestamp?.getTime()) / lock) * 100;
+    percentElapsed = Math.min(percentElapsed, 100);
+    percentElapsed = Math.max(percentElapsed, 0);
 
     const bp = useBreakpointValue([0, 1, 2, 3]);
 
@@ -90,35 +100,49 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                 {formatCTSI(walletBalance, 2)} CTSI
             </Td>
             <Td hidden={bp < 3} isNumeric>
-                <Button
-                    leftIcon={<ArrowBackIcon />}
-                    size="sm"
-                    disabled={
-                        unstakedBalance.isZero() ||
-                        withdrawBalance.lt(unstakedBalance)
-                    }
-                    onClick={() => withdraw(unstakedBalance)}
-                    isLoading={transaction.submitting}
-                >
-                    Withdraw
-                </Button>
+                <Flex direction="column" align="center">
+                    <Button
+                        leftIcon={<ArrowBackIcon />}
+                        size="sm"
+                        w={100}
+                        disabled={
+                            unstakedBalance.isZero() ||
+                            withdrawBalance.lt(unstakedBalance)
+                        }
+                        onClick={() => withdraw(unstakedBalance)}
+                        isLoading={transaction.submitting}
+                    >
+                        Withdraw
+                    </Button>
+                </Flex>
             </Td>
             <Td hidden={bp < 2} isNumeric>
                 {formatCTSI(unstakedBalance, 2)} CTSI
             </Td>
             <Td hidden={bp < 3} isNumeric>
-                <Button
-                    rightIcon={<ArrowForwardIcon />}
-                    size="sm"
-                    disabled={
-                        unstakedBalance.isZero() ||
-                        Date.now() < stakeTimestamp?.getTime()
-                    }
-                    onClick={() => stake(unstakedBalance)}
-                    isLoading={transaction.submitting}
-                >
-                    Stake
-                </Button>
+                <Flex direction="column" align="center">
+                    <Button
+                        rightIcon={<ArrowForwardIcon />}
+                        size="sm"
+                        w={100}
+                        disabled={
+                            unstakedBalance.isZero() ||
+                            Date.now() < stakeTimestamp?.getTime()
+                        }
+                        onClick={() => stake(unstakedBalance)}
+                        isLoading={transaction.submitting}
+                    >
+                        Stake
+                    </Button>
+                    {percentElapsed > 0 && percentElapsed < 100 && (
+                        <Progress
+                            value={percentElapsed}
+                            size="xs"
+                            w={100}
+                            colorScheme="blue"
+                        />
+                    )}
+                </Flex>
             </Td>
             <Td isNumeric>{formatCTSI(stakedBalance, 2)} CTSI</Td>
             <Td hidden={bp < 3} isNumeric>
