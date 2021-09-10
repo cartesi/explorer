@@ -48,6 +48,10 @@ const useTotalPoolBalance = (user: string) => {
                 const poolShares = FixedNumber.from(b.pool.shares);
                 const poolAmount = FixedNumber.from(b.pool.amount);
 
+                if (poolShares.isZero()) {
+                    return FixedNumber.from(0);
+                }
+
                 // calculate user amount based on share value
                 const userAmount = userShares
                     .divUnsafe(poolShares)

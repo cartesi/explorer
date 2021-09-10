@@ -26,6 +26,9 @@ export const POOLS_PER_PAGE = 50;
 export const userShare = (b: PoolBalance): number => {
     const userShares = FixedNumber.from(b.shares);
     const poolShares = FixedNumber.from(b.pool.shares);
+    if (poolShares.isZero()) {
+        return 0;
+    }
     const share = userShares.divUnsafe(poolShares);
     return share.toUnsafeFloat();
 };
@@ -35,6 +38,10 @@ export const poolAmount = (b: PoolBalance): BigNumber => {
     const userShares = FixedNumber.from(b.shares);
     const poolShares = FixedNumber.from(b.pool.shares);
     const poolAmount = FixedNumber.from(b.pool.amount);
+
+    if (poolShares.isZero) {
+        return constants.Zero;
+    }
 
     // calculate user amount based on share value
     const userAmount = userShares.divUnsafe(poolShares).mulUnsafe(poolAmount);
