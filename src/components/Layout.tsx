@@ -22,6 +22,7 @@ import {
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import Header from './Header';
 import Footer from './Footer';
+import SyncStatus from './SyncStatus';
 
 export const ResponsiveDebug: FC = () => {
     const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
@@ -71,6 +72,7 @@ const Layout = ({ children }) => {
         <Flex direction="column" align="center" m="0 auto">
             <Header />
             <Box width="100%" paddingTop="100px">
+                <SyncStatus />
                 {children}
             </Box>
             <Footer />
