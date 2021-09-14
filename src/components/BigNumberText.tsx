@@ -67,7 +67,7 @@ const format = (
         case 'usd':
             return [numberFormat.format(parseFloat(value.toString())), 'USD'];
         case 'duration':
-            return formatDuration(BigNumber.from(value).toNumber());
+            return formatDuration(parseFloat(value.toString()));
         default:
             return [numberFormat.format(BigNumber.from(value).toNumber()), ''];
     }

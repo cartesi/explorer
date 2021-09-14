@@ -47,7 +47,8 @@ const blockAverageInterval = (
     const count = result.data?.blocks?.length;
     if (count > 0) {
         const last = result.data.blocks[count - 1];
-        return (Date.now() - last.timestamp) / count;
+        const now = Date.now();
+        return (now - last.timestamp * 1000) / count;
     }
     return 0;
 };
