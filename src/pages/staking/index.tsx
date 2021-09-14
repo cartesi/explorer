@@ -31,7 +31,7 @@ import { FaCoins, FaTrophy, FaWallet } from 'react-icons/fa';
 import { BsClockHistory } from 'react-icons/bs';
 import { AiOutlineDollar } from 'react-icons/ai';
 
-import { useBlockNumber } from '../../services/eth';
+import { useBalance, useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import useUser from '../../graphql/hooks/useUser';
@@ -56,6 +56,9 @@ import labels from '../../utils/labels';
 const Staking: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
     const blockNumber = useBlockNumber();
+
+    // user ETH balance
+    const userBalance = useBalance(account);
 
     const {
         staking,
@@ -131,17 +134,17 @@ const Staking: FC = () => {
                     address={activeWorker}
                     user={node.user}
                     balance={node.balance}
-                    userBalance={balance}
+                    userBalance={userBalance}
                     available={node.available}
                     pending={node.pending}
                     owned={node.owned}
                     retired={node.retired}
                     authorized={node.authorized}
                     onAddressChange={setWorker}
-                    onHire={node.hire}
-                    onCancelHire={node.cancelHire}
-                    onRetire={node.retire}
-                    onTransfer={node.transfer}
+                    onHire={(worker, amount) => node.hire(amount)}
+                    onCancelHire={() => node.cancelHire()}
+                    onRetire={() => node.retire()}
+                    onTransfer={(worker, amount) => node.transfer(amount)}
                 />
             </PagePanel>
             <PageBody>

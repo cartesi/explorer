@@ -15,14 +15,11 @@ import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import {
-    Center,
     FormControl,
     FormLabel,
-    HStack,
     Switch,
     Text,
     useColorModeValue,
-    VStack,
 } from '@chakra-ui/react';
 import { FaUsers } from 'react-icons/fa';
 
@@ -74,7 +71,6 @@ const ManagePool = () => {
 
     // dark mode compatible background color
     const bg = useColorModeValue('white', 'gray.700');
-    const bgHeader = useColorModeValue('white', 'gray.800');
 
     return (
         <Layout>
@@ -92,7 +88,6 @@ const ManagePool = () => {
                 </AddressText>
             </PageHeader>
             <PagePanel>
-                {' '}
                 <Node
                     bg={bg}
                     chainId={chainId}
