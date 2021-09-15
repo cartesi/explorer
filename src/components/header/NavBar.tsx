@@ -94,6 +94,7 @@ const NavBar: FC<FlexProps> = (props) => {
                     aria-label={'Open Menu'}
                     display={{ md: 'none' }}
                     onClick={isOpen ? onClose : onOpen}
+                    _hover={{ bg: 'gray.800' }}
                 />
                 <HStack spacing={8} alignItems="center">
                     <Logo />
