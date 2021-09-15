@@ -47,9 +47,9 @@ const ConnectMetamask: FC = () => {
     return (
         <Box>
             {isUnsupportedChainIdError && (
-                <Button>
+                <Button size="md" bg="red" _hover={{ bg: 'darkred' }}>
                     <HStack>
-                        <Image src="/images/metamask-fox.svg" />
+                        <Image src="/images/metamask-fox.svg" boxSize="25px" />
                         <Text>Unsupported Network</Text>
                     </HStack>
                 </Button>
@@ -62,11 +62,7 @@ const ConnectMetamask: FC = () => {
                     _hover={{ bg: '#005fc4' }}
                 >
                     <HStack>
-                        <Image
-                            src="/images/metamask-fox.svg"
-                            w="25px"
-                            h="25px"
-                        />
+                        <Image src="/images/metamask-fox.svg" boxSize="25px" />
                         <Text>
                             {hasMetaMask
                                 ? 'Connect To Wallet'
