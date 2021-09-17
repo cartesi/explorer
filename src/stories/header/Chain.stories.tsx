@@ -31,8 +31,14 @@ ExplicitMainnet.args = { chainId: 1, showMainnet: true };
 export const Ropsten = Template.bind({});
 Ropsten.args = { chainId: 3 };
 
+export const Rinkeby = Template.bind({});
+Rinkeby.args = { chainId: 4 };
+
 export const Goerli = Template.bind({});
 Goerli.args = { chainId: 5 };
+
+export const Kovan = Template.bind({});
+Kovan.args = { chainId: 42 };
 
 export const Localhost = Template.bind({});
 Localhost.args = { chainId: 31337 };
