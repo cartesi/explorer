@@ -10,13 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Box, Button, HStack, Image, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Button, HStack, Image, Text } from '@chakra-ui/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { connector, useWeb3Connection } from '../../contexts/Web3Connection';
 
-const ConnectMetamask: FC = () => {
+const ConnectMetamask: FC<BoxProps> = (props) => {
     const { activate, error, active } = useWeb3React<Web3Provider>();
 
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
@@ -29,7 +29,7 @@ const ConnectMetamask: FC = () => {
     const web3Connection = useWeb3Connection();
 
     return (
-        <Box>
+        <Box {...props}>
             {isUnsupportedChainIdError && (
                 <Button size="md" bg="red" _hover={{ bg: 'darkred' }}>
                     <HStack>

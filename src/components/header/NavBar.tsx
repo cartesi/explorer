@@ -123,18 +123,19 @@ const NavBar: FC<FlexProps> = (props) => {
                         }
                         onClick={toggleColorMode}
                     />
-                    <ConnectMetamask />
+                    <ConnectMetamask display={{ base: 'none', md: 'flex' }} />
                     <Account />
                 </Flex>
             </Flex>
             {isOpen && (
-                <Box pb={4} display={{ md: 'none' }}>
+                <Box pb={5} display={{ md: 'none' }}>
                     <Stack as="nav" spacing={4}>
                         {Links.map(({ label, key, href }) => (
                             <NavLink key={key} href={href}>
                                 {label}
                             </NavLink>
                         ))}
+                        <ConnectMetamask />
                     </Stack>
                 </Box>
             )}
