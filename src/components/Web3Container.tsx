@@ -12,6 +12,7 @@
 import React from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
+import { Web3ConnectionProvider } from '../contexts/Web3Connection';
 
 const Web3Container = ({ children }) => {
     const getLibrary = (provider: any) => {
@@ -20,7 +21,7 @@ const Web3Container = ({ children }) => {
 
     return (
         <Web3ReactProvider getLibrary={getLibrary}>
-            {children}
+            <Web3ConnectionProvider>{children}</Web3ConnectionProvider>
         </Web3ReactProvider>
     );
 };
