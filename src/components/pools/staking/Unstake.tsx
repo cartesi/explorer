@@ -55,6 +55,9 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
 
     const validate = (value: number) => {
         if (type === 'partial') {
+            if (!value) {
+                return 'Value is required';
+            }
             const bn = parseUnits(value.toString(), 18);
             if (bn.isZero()) {
                 return 'Value must be greater than 0';
@@ -84,7 +87,6 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                                 min={0}
                                 autoFocus
                                 {...register('amount', {
-                                    required: true,
                                     valueAsNumber: true,
                                     validate,
                                 })}
@@ -114,9 +116,9 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                             size="md"
                             onClick={handleSubmit((data) =>
                                 onSubmit(
-                                    type === 'full'
+                                    data.type === 'full'
                                         ? undefined
-                                        : type === 'partial'
+                                        : data.type === 'partial'
                                         ? parseUnits(data.amount.toString(), 18)
                                         : undefined
                                 )
