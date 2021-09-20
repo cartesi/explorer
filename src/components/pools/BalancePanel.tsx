@@ -77,21 +77,15 @@ const BalancePanel: FC<BalancePanelProps> = ({
 
     return (
         <StatsPanel {...stackProps}>
-            <CTSIText value={amount} icon={FaCoins}>
-                <HStack>
-                    <Text>Staked Balance</Text>
-                    <Tooltip
-                        label="Amount of tokens staked by users to the pool"
-                        placement="top"
-                    >
-                        <Icon />
-                    </Tooltip>
-                </HStack>
-            </CTSIText>
             <CTSIText
                 value={stakingMature}
                 icon={FaBolt}
                 color={needRebalance ? 'red' : undefined}
+                options={{
+                    notation: 'compact',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2,
+                }}
             >
                 <HStack>
                     <Text color={needRebalance ? 'red' : undefined}>
@@ -140,7 +134,16 @@ const BalancePanel: FC<BalancePanelProps> = ({
             ].map(
                 ({ value, label, icon, help }) =>
                     !(value?.isZero() && hideZeros) && (
-                        <CTSIText value={value} icon={icon} key={label}>
+                        <CTSIText
+                            value={value}
+                            icon={icon}
+                            key={label}
+                            options={{
+                                notation: 'compact',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 2,
+                            }}
+                        >
                             <HStack>
                                 <Text>{label}</Text>
                                 <Tooltip label={help} placement="top">

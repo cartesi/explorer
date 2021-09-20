@@ -132,6 +132,7 @@ const Staking: FC = () => {
                     chainId={chainId}
                     account={account}
                     address={activeWorker}
+                    p={[5, 5, 10, 10]}
                     user={node.user}
                     balance={node.balance}
                     userBalance={userBalance}

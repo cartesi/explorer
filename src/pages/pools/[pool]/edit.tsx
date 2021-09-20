@@ -90,6 +90,7 @@ const ManagePool = () => {
             <PagePanel>
                 <Node
                     bg={bg}
+                    p={[5, 5, 10, 10]}
                     chainId={chainId}
                     account={pool.address}
                     address={activeWorker}

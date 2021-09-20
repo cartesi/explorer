@@ -153,7 +153,7 @@ const Home = () => {
                 </Wrap>
             </PageHeader>
             <PagePanel>
-                <StatsPanel w="100%">
+                <StatsPanel w="100%" p={[5, 5, 10, 10]}>
                     <StatsItem
                         label="# Active Nodes"
                         value={summary?.totalNodes}

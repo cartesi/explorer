@@ -51,7 +51,7 @@ export const PagePanel: FC = ({ children }) => {
             px="6vw"
             bgGradient={`linear(to-b, rgba(0,0,0,.9) 0%, rgba(0,0,0,.9) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
         >
-            <Box bg={bg} w="100%" shadow="lg" p={[5, 5, 10, 10]}>
+            <Box bg={bg} w="100%" shadow="lg">
                 {children}
             </Box>
         </Center>

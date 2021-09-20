@@ -16,8 +16,22 @@ import Link from 'next/link';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
-import { HStack, Text } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+import {
+    Collapse,
+    HStack,
+    IconButton,
+    Text,
+    VStack,
+    useDisclosure,
+} from '@chakra-ui/react';
+import {
+    AddIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    EditIcon,
+    SmallAddIcon,
+    SmallCloseIcon,
+} from '@chakra-ui/icons';
 import { FaUsers } from 'react-icons/fa';
 import { QueryResult } from '@apollo/client';
 
@@ -121,6 +135,8 @@ const Pool = () => {
         }
     };
 
+    const { isOpen, onToggle } = useDisclosure();
+
     return (
         <Layout>
             <Head>
@@ -149,45 +165,60 @@ const Pool = () => {
                 </HStack>
             </PageHeader>
             <PagePanel>
-                <PoolStatsPanel
-                    w="100%"
-                    productionInterval={productionInterval}
-                    stakedBalance={amount}
-                    totalBlocks={stakingPool?.user?.totalBlocks}
-                    totalReward={stakingPool?.user?.totalReward}
-                    totalUsers={stakingPool?.totalUsers}
-                    totalCommission={stakingPool?.totalCommission}
-                    fee={stakingPool?.fee}
-                />
+                <VStack spacing={[5, 5, 10, 10]} align="stretch">
+                    <PoolStatsPanel
+                        px={[5, 5, 10, 10]}
+                        pt={[5, 5, 10, 10]}
+                        productionInterval={productionInterval}
+                        stakedBalance={amount}
+                        totalBlocks={stakingPool?.user?.totalBlocks}
+                        totalReward={stakingPool?.user?.totalReward}
+                        totalUsers={stakingPool?.totalUsers}
+                        totalCommission={stakingPool?.totalCommission}
+                        fee={stakingPool?.fee}
+                    />
+                    <Collapse in={isOpen} css={{ width: '100%' }}>
+                        <BalancePanel
+                            px={[5, 5, 10, 10]}
+                            amount={amount}
+                            pool={poolBalance}
+                            stake={amounts?.stake}
+                            unstake={amounts?.unstake}
+                            withdraw={amounts?.withdraw}
+                            stakingMature={staking?.stakedBalance}
+                            stakingMaturing={staking?.maturingBalance}
+                            stakingReleasing={
+                                staking?.releasingTimestamp?.getTime() >
+                                Date.now()
+                                    ? staking.releasingBalance
+                                    : constants.Zero
+                            }
+                            stakingReleased={
+                                staking?.releasingTimestamp?.getTime() <=
+                                Date.now()
+                                    ? staking.releasingBalance
+                                    : constants.Zero
+                            }
+                            stakingMaturingTimestamp={
+                                staking?.maturingTimestamp
+                            }
+                            stakingReleasingTimestamp={
+                                staking?.releasingTimestamp
+                            }
+                            hideZeros={true}
+                            onRebalance={rebalance}
+                        />
+                    </Collapse>
+                    <IconButton
+                        icon={isOpen ? <SmallCloseIcon /> : <SmallAddIcon />}
+                        size="xs"
+                        aria-label="Details"
+                        w="100%"
+                        onClick={onToggle}
+                    />
+                </VStack>
             </PagePanel>
             <PageBody>
-                <BalancePanel
-                    w="100%"
-                    p={10}
-                    shadow="lg"
-                    amount={amount}
-                    pool={poolBalance}
-                    stake={amounts?.stake}
-                    unstake={amounts?.unstake}
-                    withdraw={amounts?.withdraw}
-                    stakingMature={staking?.stakedBalance}
-                    stakingMaturing={staking?.maturingBalance}
-                    stakingReleasing={
-                        staking?.releasingTimestamp?.getTime() > Date.now()
-                            ? staking.releasingBalance
-                            : constants.Zero
-                    }
-                    stakingReleased={
-                        staking?.releasingTimestamp?.getTime() <= Date.now()
-                            ? staking.releasingBalance
-                            : constants.Zero
-                    }
-                    stakingMaturingTimestamp={staking?.maturingTimestamp}
-                    stakingReleasingTimestamp={staking?.releasingTimestamp}
-                    hideZeros={true}
-                    onRebalance={rebalance}
-                />
-
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <SectionHeading>Staking</SectionHeading>
                 <TransactionFeedback transaction={transaction}>

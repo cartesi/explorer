@@ -78,7 +78,7 @@ const StakingPools: FC = () => {
                 <Heading fontWeight="normal">Staking Pools</Heading>
             </PageHeader>
             <PagePanel>
-                <StatsPanel w="100%">
+                <StatsPanel w="100%" p={[5, 5, 10, 10]}>
                     <BigNumberText value={summary?.totalPools}>
                         <HStack>
                             <Text># Pools</Text>
@@ -101,7 +101,15 @@ const StakingPools: FC = () => {
                             </Tooltip>
                         </HStack>
                     </BigNumberText>
-                    <CTSIText value={poolBalance} icon={FaCoins}>
+                    <CTSIText
+                        value={poolBalance}
+                        icon={FaCoins}
+                        options={{
+                            notation: 'compact',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                        }}
+                    >
                         <HStack>
                             <Text>My Stake</Text>
                             <Tooltip
