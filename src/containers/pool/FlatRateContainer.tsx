@@ -40,7 +40,7 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
                 maxDigits={2}
                 increaseWaitPeriod={raiseTimeout?.toNumber()}
                 nextIncrease={timeoutTimestamp}
-                maxRaise={maxRaise?.toNumber()}
+                maxRaise={maxRaise?.toNumber() / 100}
                 onSubmit={(value) => changeRate(value * 100)}
                 helperText="Commission is set as a fixed percentage of every block reward (CTSI)"
             />
