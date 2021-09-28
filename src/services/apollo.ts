@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 const uris = {
-    1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos',
+    1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-staging',
     3: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-ropsten',
     4: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-rinkeby',
     5: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
@@ -46,7 +46,7 @@ const mergeUniqueSort = (fieldName: string) => {
 export const createApollo = (chainId: number): ApolloClient<any> => {
     const uri =
         uris[chainId] ||
-        'https://api.thegraph.com/subgraphs/name/cartesi/pos-ropsten';
+        'https://api.thegraph.com/subgraphs/name/cartesi/pos-staging';
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({

@@ -23,6 +23,7 @@ import {
     GasTaxCommission__factory,
 } from '@cartesi/staking-pool';
 
+import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
 import rinkeby from '@cartesi/staking-pool/export/abi/rinkeby.json';
 import ropsten from '@cartesi/staking-pool/export/abi/ropsten.json';
 import goerli from '@cartesi/staking-pool/export/abi/goerli.json';
@@ -35,6 +36,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 const abis: ChainMap = {
+    1: mainnet,
     3: ropsten,
     4: rinkeby,
     5: goerli,

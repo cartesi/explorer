@@ -1178,16 +1178,16 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/staking-pool@^1.0.0-beta.3":
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0-beta.3.tgz#8c1e84d8ad559b01f3e762d1098a257d8aac1c60"
-  integrity sha512-WMGLWajrlfcu9/bMpVJS6/GbKETFmz2PpA+aoVq+WmMnYrq+om30LrD3xgDrYZlgI9aKddtpt904v9L38lv8eg==
+"@cartesi/staking-pool@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0.tgz#d81f3b6bd70e90ee011a23d23a160d8cd772383c"
+  integrity sha512-SP4tK9n1olbn+VJeIAlcFE4UKO0aq8TUl2S6JMg5smw+fYJNexIB/rZdztKTuSb/boGTYLESVDXqvZ8yrv/Now==
   dependencies:
     "@cartesi/pos" "^1.1.2"
-    "@chainlink/contracts" "^0.2.1"
+    "@chainlink/contracts" "^0.2.2"
     "@ensdomains/ens-contracts" "^0.0.7"
-    "@openzeppelin/contracts" "^4.3.1"
-    "@openzeppelin/contracts-upgradeable" "^4.3.1"
+    "@openzeppelin/contracts" "^4.3.2"
+    "@openzeppelin/contracts-upgradeable" "^4.3.2"
 
 "@cartesi/token@^1.2.5", "@cartesi/token@^1.3.0":
   version "1.3.0"
@@ -1203,7 +1203,7 @@
   dependencies:
     "@openzeppelin/contracts" "3.2.1-solc-0.7"
 
-"@chainlink/contracts@^0.2.1":
+"@chainlink/contracts@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@chainlink/contracts/-/contracts-0.2.2.tgz#8ea2079d8b22d25807fc63b98ccd3dc0bc2a33fe"
   integrity sha512-wxXPbt7O3aZaUSG34ufFASC5amRSL6eeYCqsa+2gpqbB8Hk7B7FydEDCI5dqvAC444TlFskPHcVbizCZkRHPpw==
@@ -2949,7 +2949,7 @@
   dependencies:
     "@octokit/openapi-types" "^10.5.0"
 
-"@openzeppelin/contracts-upgradeable@^4.3.1":
+"@openzeppelin/contracts-upgradeable@^4.3.2":
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.3.2.tgz#92df481362e366c388fc02133cf793029c744cea"
   integrity sha512-i/pOaOtcqDk4UqsrOv735uYyTbn6dvfiuVu5hstsgV6c4ZKUtu88/31zT2BzkCg+3JfcwOfgg2TtRKVKKZIGkQ==
@@ -2964,7 +2964,7 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.1.tgz#c76e3fc57aa224da3718ec351812a4251289db31"
   integrity sha512-qIy6tLx8rtybEsIOAlrM4J/85s2q2nPkDqj/Rx46VakBZ0LwtFhXIVub96LXHczQX0vaqmAueDqNPXtbSXSaYQ==
 
-"@openzeppelin/contracts@^4.0.0", "@openzeppelin/contracts@^4.1.0", "@openzeppelin/contracts@^4.3.1":
+"@openzeppelin/contracts@^4.0.0", "@openzeppelin/contracts@^4.1.0", "@openzeppelin/contracts@^4.3.2":
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.2.tgz#ff80affd6d352dbe1bbc5b4e1833c41afd6283b6"
   integrity sha512-AybF1cesONZStg5kWf6ao9OlqTZuPqddvprc0ky7lrUVOjXeKpmQ2Y9FK+6ygxasb+4aic4O5pneFBfwVsRRRg==
