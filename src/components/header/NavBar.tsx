@@ -49,11 +49,6 @@ const Links = [
         label: 'Blocks',
         href: '/blocks',
     },
-    {
-        key: 'calculator',
-        label: 'Calculator',
-        href: '/calculator',
-    },
 ];
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
