@@ -32,7 +32,7 @@ const TermsCondition: FC<TermsConditionProps> = ({ persistanceKey }) => {
     const [accepted, setAccepted] = useDisclaimerState(false);
 
     // control if user scrolled to bottom of text
-    const [scrolled, setScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(true);
 
     const iframeRef = useRef(null);
 
