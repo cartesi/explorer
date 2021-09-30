@@ -33,8 +33,7 @@ Default.args = {
     totalBlocks: 18,
     totalUsers: 3,
     productionInterval: 1000 * 60 * 60 * 5.4,
-    totalReward: v((18 * 2900).toString()),
-    totalCommission: v((18 * 2900 * 0.125).toString()),
+    commissionPercentage: 0.125,
 };
 
 export const NoBlocks = Template.bind({});
@@ -43,8 +42,7 @@ NoBlocks.args = {
     totalBlocks: 0,
     totalUsers: 3,
     productionInterval: 0,
-    totalReward: constants.Zero,
-    totalCommission: constants.Zero,
+    commissionPercentage: 0.125,
     fee: {
         id: '',
         commission: 1250,
@@ -60,8 +58,7 @@ NoStake.args = {
     totalBlocks: 0,
     totalUsers: 0,
     productionInterval: 0,
-    totalReward: constants.Zero,
-    totalCommission: constants.Zero,
+    commissionPercentage: 0.125,
     fee: {
         id: '',
         commission: undefined,

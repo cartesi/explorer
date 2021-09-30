@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC } from 'react';
-import { BigNumber, BigNumberish, FixedNumber } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { HStack, Icon, StackProps, Text, Tooltip } from '@chakra-ui/react';
 import { FaCoins, FaUsers } from 'react-icons/fa';
 import { GiPieChart } from 'react-icons/gi';
@@ -27,29 +27,20 @@ export interface PoolStatsPanelProps extends StackProps {
     totalUsers: number;
     productionInterval: number; // average number of milliseconds between blocks considering the last 10 produced blocks
     totalReward: BigNumberish;
-    totalCommission: BigNumberish;
+    commissionPercentage: number;
     fee: StakingPoolFee;
 }
 
 const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
     const {
+        commissionPercentage,
         stakedBalance,
         totalBlocks,
         totalUsers,
         productionInterval,
-        totalReward,
-        totalCommission,
         fee,
         ...stackProps
     } = props;
-
-    // calculate commission percentage if there are rewards
-    const commission =
-        totalCommission && totalReward && BigNumber.from(totalReward).gt(0)
-            ? FixedNumber.from(totalCommission)
-                  .divUnsafe(FixedNumber.from(totalReward))
-                  .toUnsafeFloat()
-            : undefined;
 
     return (
         <StatsPanel {...stackProps}>
@@ -101,10 +92,10 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     </Tooltip>
                 </HStack>
             </BigNumberText>
-            {commission && (
+            {commissionPercentage && (
                 <BigNumberText
                     icon={GiPieChart}
-                    value={commission}
+                    value={commissionPercentage}
                     unit="percent"
                 >
                     <HStack>
@@ -118,7 +109,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     </HStack>
                 </BigNumberText>
             )}
-            {!commission && (
+            {!commissionPercentage && (
                 <CommissionText icon={GiPieChart} value={fee}>
                     <Text>Commission</Text>
                     <Tooltip

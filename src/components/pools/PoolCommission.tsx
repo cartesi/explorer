@@ -11,7 +11,7 @@
 
 import React, { FC } from 'react';
 import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
-import { ethers, FixedNumber } from 'ethers';
+import { ethers } from 'ethers';
 import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
 import { StakingPool } from '../../graphql/models';
@@ -25,6 +25,11 @@ export interface PoolCommissionProps extends TextProps {
     direction?: SystemProps['flexDirection'];
 }
 
+const numberFormat = new Intl.NumberFormat('en-US', {
+    style: 'percent',
+    maximumFractionDigits: 2,
+});
+
 const PoolCommission: FC<PoolCommissionProps> = (props) => {
     const { pool, direction = 'column', icon, label, ...textProps } = props;
 
@@ -33,16 +38,12 @@ const PoolCommission: FC<PoolCommissionProps> = (props) => {
     const reward = ethers.utils.parseUnits('2900', 18);
     const nextCommission = useStakingPoolCommission(pool.id, reward);
 
-    // calculate historical commission
-    const totalReward = FixedNumber.from(pool.user.totalReward);
-    const totalCommission = FixedNumber.from(pool.totalCommission);
-    const accuredCommissionLabel = totalReward.isZero()
-        ? ''
-        : `${totalCommission
-              .divUnsafe(totalReward)
-              .mulUnsafe(FixedNumber.from(100))
-              .toUnsafeFloat()
-              .toFixed(2)} %`;
+    // historical commission
+    // accured commission
+    const accuredCommissionLabel =
+        pool.commissionPercentage > 0
+            ? numberFormat.format(pool.commissionPercentage)
+            : '-';
 
     // commission label
     let commissionLabel = '';

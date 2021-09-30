@@ -15,10 +15,17 @@ import { StakingPoolsData, StakingPoolsVars, StakingPoolSort } from '../models';
 
 export const POOLS_PER_PAGE = 50;
 
+// sort directions for each criteria
+const directions = {
+    totalUsers: 'desc',
+    amount: 'desc',
+    commissionPercentage: 'asc',
+};
+
 const useStakingPools = (
     pageNumber: number,
     id: string = undefined,
-    sort: StakingPoolSort = 'totalUsers'
+    sort: StakingPoolSort = 'commissionPercentage'
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<StakingPoolsData, StakingPoolsVars>(STAKING_POOLS, {
@@ -27,7 +34,7 @@ const useStakingPools = (
             where: filter,
             skip: pageNumber * POOLS_PER_PAGE,
             orderBy: sort,
-            orderDirection: 'desc',
+            orderDirection: directions[sort],
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 600000, // Every 10 minutes

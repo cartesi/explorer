@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { FixedNumber } from 'ethers';
 import {
     HStack,
     Icon,
@@ -35,6 +34,11 @@ export interface PoolRowProps {
     size?: 'lg' | 'md' | 'sm' | 'xs';
 }
 
+const numberFormat = new Intl.NumberFormat('en-US', {
+    style: 'percent',
+    maximumFractionDigits: 2,
+});
+
 const PoolRow: FunctionComponent<PoolRowProps> = ({
     chainId,
     account,
@@ -44,16 +48,11 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
 
-    // calculate accured commission
-    const totalReward = FixedNumber.from(pool.user.totalReward);
-    const totalCommission = FixedNumber.from(pool.totalCommission);
-    const accuredCommissionLabel = totalReward.isZero()
-        ? '-'
-        : `${totalCommission
-              .divUnsafe(totalReward)
-              .mulUnsafe(FixedNumber.from(100))
-              .toUnsafeFloat()
-              .toFixed(2)} %`;
+    // accured commission
+    const accuredCommissionLabel =
+        pool.commissionPercentage > 0
+            ? numberFormat.format(pool.commissionPercentage)
+            : '-';
 
     // commission label
     let commissionLabel = '';

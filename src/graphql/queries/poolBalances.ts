@@ -42,6 +42,7 @@ export const POOL_BALANCES = gql`
                 shares
                 totalUsers
                 totalCommission
+                commissionPercentage
                 paused
                 timestamp
 

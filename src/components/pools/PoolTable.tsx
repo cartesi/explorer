@@ -74,10 +74,14 @@ const PoolTable: FC<PoolTableProps> = ({
                     {size == 'lg' && <Th>Configured Commission</Th>}
                     {(size == 'lg' || size == 'md') && (
                         <Th>
-                            <Link onClick={() => onSort('totalCommission')}>
+                            <Link
+                                onClick={() => onSort('commissionPercentage')}
+                            >
                                 Accrued Commission
                             </Link>{' '}
-                            {sort == 'totalCommission' && <ArrowDownIcon />}
+                            {sort == 'commissionPercentage' && (
+                                <ArrowDownIcon />
+                            )}
                         </Th>
                     )}
                     <Th textAlign="right">Action</Th>

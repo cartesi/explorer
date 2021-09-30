@@ -32,6 +32,7 @@ export const STAKING_POOLS = gql`
             shares
             totalUsers
             totalCommission
+            commissionPercentage
             paused
             timestamp
 

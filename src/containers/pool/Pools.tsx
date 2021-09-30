@@ -25,7 +25,7 @@ interface PoolsProps {
 }
 
 const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
-    const [sort, setSort] = useState<StakingPoolSort>('totalUsers');
+    const [sort, setSort] = useState<StakingPoolSort>('commissionPercentage');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useStakingPools(pageNumber, search, sort);
     const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);

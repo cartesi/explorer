@@ -24,14 +24,7 @@ import {
     VStack,
     useDisclosure,
 } from '@chakra-ui/react';
-import {
-    AddIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    EditIcon,
-    SmallAddIcon,
-    SmallCloseIcon,
-} from '@chakra-ui/icons';
+import { EditIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import { FaUsers } from 'react-icons/fa';
 import { QueryResult } from '@apollo/client';
 
@@ -174,7 +167,7 @@ const Pool = () => {
                         totalBlocks={stakingPool?.user?.totalBlocks}
                         totalReward={stakingPool?.user?.totalReward}
                         totalUsers={stakingPool?.totalUsers}
-                        totalCommission={stakingPool?.totalCommission}
+                        commissionPercentage={stakingPool?.commissionPercentage}
                         fee={stakingPool?.fee}
                     />
                     <Collapse in={isOpen} css={{ width: '100%' }}>

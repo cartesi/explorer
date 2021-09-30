@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export type StakingPoolSort = 'totalUsers' | 'amount' | 'totalCommission';
+export type StakingPoolSort = 'totalUsers' | 'amount' | 'commissionPercentage';
 export type UserSort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
 export type PoolBalanceSort = 'shares' | 'released';
 
@@ -63,6 +63,7 @@ export type StakingPool = {
     shares: string;
     totalUsers: number;
     totalCommission: string;
+    commissionPercentage: number;
     paused: boolean;
     timestamp: number;
 };
