@@ -72,8 +72,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                 <Text color="white">Block {id}</Text>
             </Center>
             <Flex
-                p={10}
-                align="center"
+                p={[5, 5, 7, 10]}
                 justify="space-between"
                 boxShadow="md"
                 bg={bg}
@@ -104,7 +103,9 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     </Box>
                 </Flex>
                 <Spacer minW={5} />
-                <Image src={tinyGraphUrl(block)} w="110px" h="110px" />
+                <Box marginLeft="auto" flex="0 1 100px">
+                    <Image src={tinyGraphUrl(block)} maxWidth="100%" h="auto" />
+                </Box>
             </Flex>
         </Box>
     );

@@ -15,7 +15,14 @@ import Head from 'next/head';
 import { FixedNumber } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { HStack, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+    HStack,
+    Text,
+    Tooltip,
+    Wrap,
+    WrapItem,
+    SimpleGrid,
+} from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
@@ -184,17 +191,15 @@ const Home = () => {
             </PagePanel>
             <PageBody>
                 <SectionHeading>Blocks</SectionHeading>
-                <Wrap justify="space-around">
-                    {blocks.slice(0, 4).map((block, index) => (
-                        <WrapItem key={index}>
-                            <BlockMiniCard
-                                chainId={chainId}
-                                block={block}
-                                key={block.id}
-                            />
-                        </WrapItem>
+                <SimpleGrid columns={{ md: 2, '2xl': 4 }} spacing={6}>
+                    {blocks.slice(0, 4).map((block) => (
+                        <BlockMiniCard
+                            chainId={chainId}
+                            block={block}
+                            key={block.id}
+                        />
                     ))}
-                </Wrap>
+                </SimpleGrid>
                 <HStack justify="space-between" align="flex-end">
                     <SectionHeading>Block Producers</SectionHeading>
                     <SearchInput
