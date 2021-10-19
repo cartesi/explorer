@@ -23,8 +23,14 @@ import {
     Text,
     VStack,
     useDisclosure,
+    Box,
 } from '@chakra-ui/react';
-import { EditIcon, SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import {
+    EditIcon,
+    SmallAddIcon,
+    SmallCloseIcon,
+    ArrowBackIcon,
+} from '@chakra-ui/icons';
 import { FaUsers } from 'react-icons/fa';
 import { QueryResult } from '@apollo/client';
 
@@ -137,7 +143,22 @@ const Pool = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>
-                <HStack justify="space-between" align="flex-end">
+                <HStack spacing={{ base: 3, xl: 0 }} align="flex-start">
+                    <Box display={{ xl: 'none' }}>
+                        <Link href="/pools" passHref>
+                            <IconButton
+                                bg="transparent"
+                                _hover={{ bg: 'gray.800' }}
+                                as="a"
+                                size="md"
+                                mt={-2}
+                                icon={<ArrowBackIcon />}
+                                aria-label={'Back to pools'}
+                                title={'Back to pools'}
+                            />
+                        </Link>
+                    </Box>
+
                     <AddressText
                         address={stakingPool?.id}
                         chainId={chainId}
