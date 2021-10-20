@@ -20,6 +20,7 @@ import {
     Input,
     Text,
     Tooltip,
+    Stack,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
@@ -55,7 +56,7 @@ const Stake: FC<StakeProps> = ({ balance, onCancel, onSubmit }) => {
     };
 
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Stake"
                 icon={<MdAdd />}
@@ -100,7 +101,7 @@ const Stake: FC<StakeProps> = ({ balance, onCancel, onSubmit }) => {
                     </Tooltip>
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

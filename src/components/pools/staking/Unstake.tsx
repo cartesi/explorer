@@ -23,6 +23,7 @@ import {
     RadioGroup,
     Text,
     Tooltip,
+    Stack,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
@@ -69,7 +70,10 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
     };
 
     return (
-        <HStack justify="space-between">
+        <Stack
+            direction={{ base: 'column', md: 'row' }}
+            justify="space-between"
+        >
             <Title
                 title="Unstake"
                 icon={<MdRemove />}
@@ -135,7 +139,7 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                     </Tooltip>
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

@@ -11,6 +11,7 @@
 
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
+    Stack,
     HStack,
     IconButton,
     Input,
@@ -52,7 +53,7 @@ const Allowance: FC<AllowanceProps> = ({
     );
 
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Allowance"
                 icon={<MdVerticalAlignTop />}
@@ -79,7 +80,7 @@ const Allowance: FC<AllowanceProps> = ({
                     />
                 )}
                 <Text fontSize="small">CTSI</Text>
-                <HStack minW={100}>
+                <HStack minW={{ sm: 100 }}>
                     {disclosure.isOpen || (
                         <Tooltip label="Edit" placement="top">
                             <IconButton
@@ -115,7 +116,7 @@ const Allowance: FC<AllowanceProps> = ({
                     )}
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

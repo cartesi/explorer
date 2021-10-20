@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
+import { Stack, HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaCoins } from 'react-icons/fa';
@@ -42,7 +42,7 @@ const Staked: FC<StakedProps> = ({
     const unlock = useTimeLeft(stakeUnlock);
 
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Staked"
                 icon={<FaCoins />}
@@ -63,7 +63,7 @@ const Staked: FC<StakedProps> = ({
                         CTSI
                     </Text>
                 </HStack>
-                <HStack minW={100}>
+                <HStack minW={{ sm: 100 }}>
                     <Tooltip label="Stake" placement="top">
                         <IconButton
                             icon={<MdAdd />}
@@ -86,7 +86,7 @@ const Staked: FC<StakedProps> = ({
                     </Tooltip>
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

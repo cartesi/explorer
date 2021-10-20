@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { HStack, Text } from '@chakra-ui/react';
+import { HStack, Stack, Text } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaWallet } from 'react-icons/fa';
@@ -24,7 +24,7 @@ export interface WalletProps {
 const Wallet: FC<WalletProps> = ({ balance, futureBalance }) => {
     const modified = futureBalance && !futureBalance.eq(balance);
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Wallet"
                 icon={<FaWallet />}
@@ -38,9 +38,9 @@ const Wallet: FC<WalletProps> = ({ balance, futureBalance }) => {
                     textDecoration={modified ? 'line-through' : undefined}
                 />
                 <Text fontSize="small">CTSI</Text>
-                <HStack minW={100}></HStack>
+                <HStack minW={{ sm: 100 }}></HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

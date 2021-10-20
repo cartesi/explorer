@@ -20,6 +20,7 @@ import {
     Input,
     Text,
     Tooltip,
+    Stack,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
@@ -66,7 +67,7 @@ const Deposit: FC<DepositProps> = ({
     };
 
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Deposit"
                 icon={<MdAdd />}
@@ -115,7 +116,7 @@ const Deposit: FC<DepositProps> = ({
                     </Tooltip>
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 

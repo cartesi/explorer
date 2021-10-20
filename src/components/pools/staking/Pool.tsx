@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
+import { Stack, HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaUsers } from 'react-icons/fa';
@@ -37,7 +37,7 @@ const Pool: FC<PoolProps> = ({
     onWithdraw,
 }) => {
     return (
-        <HStack justify="space-between">
+        <Stack direction={['column', 'row']} justify="space-between">
             <Title
                 title="Pool"
                 icon={<FaUsers />}
@@ -46,7 +46,7 @@ const Pool: FC<PoolProps> = ({
             <HStack align="baseline">
                 <CTSI value={userBalance} />
                 <Text fontSize="small">CTSI</Text>
-                <HStack minW={100}>
+                <HStack minW={{ sm: 100 }}>
                     <Tooltip label="Deposit" placement="top">
                         <span>
                             <IconButton
@@ -73,7 +73,7 @@ const Pool: FC<PoolProps> = ({
                     </Tooltip>
                 </HStack>
             </HStack>
-        </HStack>
+        </Stack>
     );
 };
 
