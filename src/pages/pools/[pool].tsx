@@ -143,8 +143,8 @@ const Pool = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>
-                <HStack spacing={{ base: 3, xl: 0 }} align="flex-start">
-                    <Box display={{ xl: 'none' }}>
+                <HStack spacing={3} align="flex-start">
+                    <Box>
                         <Link href="/pools" passHref>
                             <IconButton
                                 bg="transparent"
