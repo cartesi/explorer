@@ -30,7 +30,7 @@ import {
 import { formatCTSI } from '../../utils/token';
 import theme from '../../styles/theme';
 import { useForm } from 'react-hook-form';
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
 import { parseUnits } from 'ethers/lib/utils';
@@ -96,6 +96,12 @@ const StakeForm: FC<StakeFormProps> = (props) => {
 
     // convert to CTSI
     const amount_ = parseUnits(amount.toString(), 18);
+
+    const percent = totalStaked.isZero()
+        ? 0
+        : FixedNumber.from(amount_)
+              .divUnsafe(FixedNumber.from(totalStaked))
+              .toUnsafeFloat();
 
     // amount from releasing used for staking, whole or whatever is there
     const fromReleasing = releasing.gte(amount_) ? amount_ : releasing;
@@ -203,12 +209,8 @@ const StakeForm: FC<StakeFormProps> = (props) => {
 
                             <Text>
                                 This stake currently corresponds to a{' '}
-                                {amount_
-                                    .mul(100)
-                                    .div(totalStaked)
-                                    .toNumber()
-                                    .toFixed(2)}{' '}
-                                % chance of producing the current block (
+                                {(percent * 100).toFixed(4)} % chance of
+                                producing the current block (
                                 <a
                                     href="https://github.com/cartesi/noether/wiki/FAQ#whats-the-minimum-amount-of-ctsi-to-stake"
                                     target="_blank"
