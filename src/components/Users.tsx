@@ -25,7 +25,7 @@ interface UsersProps {
 
 const Users: FC<UsersProps> = (props) => {
     const { chainId, account, search, pages } = props;
-    const [sort, setSort] = useState<UserSort>('stakedBalance');
+    const [sort, setSort] = useState<UserSort>('balance');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort);
     const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);

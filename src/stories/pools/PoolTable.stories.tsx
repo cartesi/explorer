@@ -34,7 +34,7 @@ import data from './pools.json';
 export const Default = Template.bind({});
 Default.args = {
     loading: false,
-    sort: 'stakedBalance',
+    sort: 'balance',
     data: data.data.stakingPools,
     account: '0x79bdc19c6f823f2911190b005f489ed00af6246d',
 };

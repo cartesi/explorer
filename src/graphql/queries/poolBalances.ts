@@ -57,6 +57,11 @@ export const POOL_BALANCES = gql`
                 user {
                     id
                     stakedBalance
+                    maturingBalance
+                    maturingTimestamp
+                    releasingBalance
+                    releasingTimestamp
+                    balance
                     totalBlocks
                     totalReward
                 }

@@ -16,6 +16,11 @@ export const USER = gql`
         user(id: $id) {
             id
             stakedBalance
+            maturingBalance
+            maturingTimestamp
+            releasingBalance
+            releasingTimestamp
+            balance
             totalBlocks
             totalReward
         }

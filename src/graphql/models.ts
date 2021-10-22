@@ -10,7 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export type StakingPoolSort = 'totalUsers' | 'amount' | 'commissionPercentage';
-export type UserSort = 'stakedBalance' | 'totalReward' | 'totalBlocks';
+export type UserSort =
+    | 'stakedBalance'
+    | 'maturingBalance'
+    | 'maturingTimestamp'
+    | 'releasingBalance'
+    | 'releasingTimestamp'
+    | 'balance'
+    | 'totalReward'
+    | 'totalBlocks';
 export type PoolBalanceSort = 'shares' | 'released';
 
 export type Summary = {
@@ -37,6 +45,11 @@ export interface SummaryVars {
 export type User = {
     id: string;
     stakedBalance: string;
+    maturingBalance: string;
+    maturingTimestamp: number;
+    releasingBalance: string;
+    releasingTimestamp: number;
+    balance: string;
     totalBlocks: number;
     totalReward: string;
     pool?: StakingPool;

@@ -32,6 +32,7 @@ const Template: ComponentStory<typeof UserRow> = (args) => (
 const user = {
     id: '0xe6eb0a6687a658c3af15a26879ce2c9f1385dcf6',
     stakedBalance: '100000000000000000000000',
+    balance: '110000000000000000000000',
     totalBlocks: 234,
     totalReward: '29000000000000000000000',
     pool: undefined,

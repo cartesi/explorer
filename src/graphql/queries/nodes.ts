@@ -30,6 +30,11 @@ export const NODES = gql`
             owner {
                 id
                 stakedBalance
+                maturingBalance
+                maturingTimestamp
+                releasingBalance
+                releasingTimestamp
+                balance
             }
             timestamp
             status

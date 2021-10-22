@@ -47,6 +47,11 @@ export const STAKING_POOLS = gql`
             user {
                 id
                 stakedBalance
+                maturingBalance
+                maturingTimestamp
+                releasingBalance
+                releasingTimestamp
+                balance
                 totalBlocks
                 totalReward
             }

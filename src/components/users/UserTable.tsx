@@ -71,7 +71,7 @@ const UserTable: FC<UserTableProps> = ({
                 <Tr>
                     <Th>User</Th>
                     {size != 'sm' && header('#Blocks Produced', 'totalBlocks')}
-                    {header('Total Staked', 'stakedBalance')}
+                    {header('Total Staked', 'balance')}
                     {size != 'sm' && header('Total Rewards', 'totalReward')}
                     {size != 'sm' && <Th></Th>}
                 </Tr>

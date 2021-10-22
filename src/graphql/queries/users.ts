@@ -28,6 +28,11 @@ export const USERS = gql`
         ) {
             id
             stakedBalance
+            maturingBalance
+            maturingTimestamp
+            releasingBalance
+            releasingTimestamp
+            balance
             totalBlocks
             totalReward
             pool {
@@ -40,6 +45,6 @@ export const USERS = gql`
 export const usersQueryVars = {
     first: 10,
     where: {},
-    orderBy: 'stakedBalance',
+    orderBy: 'balance',
     orderDirection: 'desc',
 };
