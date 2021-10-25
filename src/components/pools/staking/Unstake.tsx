@@ -79,12 +79,15 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                 icon={<MdRemove />}
                 help="Amount of tokens to unstake from pool"
             />
-            <HStack>
+            <Stack
+                alignItems={{ md: 'center' }}
+                direction={{ base: 'column', md: 'row' }}
+            >
                 <Fade in={type === 'partial'} unmountOnExit={true}>
-                    <HStack align="baseline">
+                    <HStack align="baseline" mr={{ sm: 4 }}>
                         <FormControl isInvalid={!!errors.amount}>
                             <Input
-                                maxW={200}
+                                maxW={{ md: 200 }}
                                 fontSize="3xl"
                                 textAlign="right"
                                 type="number"
@@ -112,7 +115,7 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                         </Radio>
                     </HStack>
                 </RadioGroup>
-                <HStack minW={100}>
+                <HStack alignSelf="flex-end" minW={{ sm: 100 }}>
                     <Tooltip label="Save" placement="top">
                         <IconButton
                             icon={<CheckIcon />}
@@ -138,7 +141,7 @@ const Unstake: FC<UnstakeProps> = ({ staked, onCancel, onSubmit }) => {
                         />
                     </Tooltip>
                 </HStack>
-            </HStack>
+            </Stack>
         </Stack>
     );
 };

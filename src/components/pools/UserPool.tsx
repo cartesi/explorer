@@ -14,7 +14,7 @@ import {
     StackProps,
     useColorModeValue,
     useDisclosure,
-    VStack,
+    Stack,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
@@ -72,12 +72,13 @@ const UserPool: FC<UserPoolProps> = (props) => {
     const bg = useColorModeValue('white', 'gray.700');
 
     return (
-        <VStack
+        <Stack
             shadow="md"
             p={5}
             bg={bg}
             align="stretch"
             borderLeft="10px solid black"
+            spacing={{ base: 6, sm: 3 }}
             {...stackProps}
         >
             <Wallet balance={balance} />
@@ -152,7 +153,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 onStake={stakeDisclosure.onOpen}
                 onUnstake={unstakeDisclosure.onOpen}
             />
-        </VStack>
+        </Stack>
     );
 };
 

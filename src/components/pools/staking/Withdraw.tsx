@@ -82,7 +82,7 @@ const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
                     </FormErrorMessage>
                 </FormControl>
                 <Text fontSize="small">CTSI</Text>
-                <HStack minW={100}>
+                <HStack minW={{ sm: 100 }}>
                     <Tooltip label="Save" placement="top">
                         <IconButton
                             icon={<CheckIcon />}
