@@ -36,7 +36,7 @@ const AddressText: FC<PoolIdProps> = (props) => {
                         chainId={chainId}
                         ens
                         truncated
-                        fontSize="3xl"
+                        fontSize={props.fontSize || '3xl'}
                     />
                 )}
             </HStack>

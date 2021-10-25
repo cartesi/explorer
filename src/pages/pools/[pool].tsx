@@ -163,6 +163,7 @@ const Pool = () => {
                         address={stakingPool?.id}
                         chainId={chainId}
                         icon={FaUsers}
+                        fontSize={['xl', '3xl']}
                     >
                         <HStack>
                             <Text>Staking Pool</Text>
