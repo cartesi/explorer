@@ -23,6 +23,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import createPersistedState from 'use-persisted-state';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 export interface StakingDisclaimerProps {
     persistanceKey: string;
@@ -35,9 +36,9 @@ const StakingDisclaimer: FC<StakingDisclaimerProps> = ({ persistanceKey }) => {
 
     return (
         <Alert status="warning" hidden={acknowledged}>
-            <AlertIcon />
+            <AlertIcon alignSelf="flex-start" />
             <Box flex="1">
-                <AlertTitle>Read carefully before staking!</AlertTitle>
+                <AlertTitle mb={2}>Read carefully before staking!</AlertTitle>
                 <AlertDescription>
                     <OrderedList>
                         <ListItem>
@@ -78,6 +79,21 @@ const StakingDisclaimer: FC<StakingDisclaimerProps> = ({ persistanceKey }) => {
                         </ListItem>
                     </OrderedList>
                 </AlertDescription>
+                <Box mt={5}>
+                    <Link
+                        href="https://medium.com/cartesi/noethers-staking-delegation-mainnet-beta-is-now-live-3e8b4c712876"
+                        isExternal
+                        mt={5}
+                    >
+                        Detailed staking instructions
+                        <ExternalLinkIcon
+                            w={3}
+                            h={3}
+                            verticalAlign="top"
+                            ml={1}
+                        />
+                    </Link>
+                </Box>
             </Box>
             <CloseButton
                 position="absolute"
