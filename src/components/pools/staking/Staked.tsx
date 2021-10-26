@@ -48,22 +48,17 @@ const Staked: FC<StakedProps> = ({
                 icon={<FaCoins />}
                 help="Amount of your staked tokens in the pool. You earn rewards proportional to your percentage of the pool total stake."
             />
-            <HStack>
-                {unlock && (
-                    <HStack>
-                        <Text fontSize="sm" color="red">
-                            {unlock} to unlock staking
-                        </Text>
-                        <TimeIcon color="red" />
-                    </HStack>
-                )}
-                <HStack align="baseline">
+            <HStack
+                wrap={{ base: 'wrap', sm: 'nowrap' }}
+                justify={{ base: 'flex-start', md: 'flex-end' }}
+            >
+                <HStack align="baseline" order={{ base: 0, sm: 1 }}>
                     <CTSI value={balance} />
                     <Text fontSize="small" alignSelf="baseline">
                         CTSI
                     </Text>
                 </HStack>
-                <HStack minW={{ sm: 100 }}>
+                <HStack minW={{ sm: 100 }} order={{ base: 1, sm: 2 }}>
                     <Tooltip label="Stake" placement="top">
                         <IconButton
                             icon={<MdAdd />}
@@ -85,6 +80,19 @@ const Staked: FC<StakedProps> = ({
                         </span>
                     </Tooltip>
                 </HStack>
+                {unlock && (
+                    <HStack
+                        order={{ base: 2, sm: 0 }}
+                        pr={{ base: 0, sm: 3 }}
+                        pt={{ base: 2, sm: 0 }}
+                        flexBasis={{ base: '100%', sm: 'auto' }}
+                    >
+                        <Text fontSize="sm" color="red">
+                            {unlock} to unlock staking
+                        </Text>
+                        <TimeIcon color="red" />
+                    </HStack>
+                )}
             </HStack>
         </Stack>
     );
