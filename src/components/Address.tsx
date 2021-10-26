@@ -18,6 +18,7 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
+    Box,
 } from '@chakra-ui/react';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
@@ -84,7 +85,13 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            {ensEntry?.avatar && <Image src={ensEntry.avatar} h={10} />}
+            {ensEntry?.avatar && (
+                <Image
+                    src={ensEntry.avatar}
+                    boxSize="42px"
+                    objectFit="contain"
+                />
+            )}
             {name && <Text>{name}</Text>}
             <Text {...textProps}>{label}</Text>
             {showActions && !hasCopied && (
