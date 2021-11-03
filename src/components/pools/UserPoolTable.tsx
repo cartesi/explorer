@@ -47,8 +47,11 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
     // number of columns at each breakpoint
     const columns = useBreakpointValue([3, 3, 4, 8]);
 
+    // table size
+    const tableSize = useBreakpointValue(['sm', 'md']);
+
     return (
-        <Table>
+        <Table size={tableSize}>
             <Thead>
                 <Tr>
                     <Th>Address</Th>

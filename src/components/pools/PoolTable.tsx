@@ -21,6 +21,7 @@ import {
     HStack,
     Spinner,
     Link,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import PoolRow from './PoolRow';
@@ -51,8 +52,12 @@ const PoolTable: FC<PoolTableProps> = ({
         sm: 3,
     };
     const columns = sizes[size] || 6;
+
+    // table size
+    const tableSize = useBreakpointValue(['sm', 'md']);
+
     return (
-        <Table>
+        <Table size={tableSize}>
             <Thead>
                 <Tr>
                     <Th>Address</Th>
