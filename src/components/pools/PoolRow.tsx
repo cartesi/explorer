@@ -50,7 +50,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
 
     // accured commission
     const accuredCommissionLabel =
-        pool.commissionPercentage > 0
+        pool.commissionPercentage !== null
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
 
