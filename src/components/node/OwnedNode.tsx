@@ -145,13 +145,6 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                                 Authorize
                             </Button>
                         )}
-                        <Button
-                            onClick={onRetire}
-                            colorScheme="red"
-                            isFullWidth
-                        >
-                            Retire
-                        </Button>
                     </>
                 )}
             </HStack>
