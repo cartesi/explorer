@@ -23,7 +23,17 @@ import {
     Stack,
     Text,
     VStack,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    useDisclosure,
+    Link,
 } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
 import BigNumberText from '../BigNumberText';
@@ -72,6 +82,13 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     };
 
     const mine = account.toLowerCase() === user.toLowerCase();
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const onConfirmRetire = () => {
+        onClose();
+        onRetire();
+    };
 
     return (
         <VStack align="stretch">
@@ -145,6 +162,41 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                                 Authorize
                             </Button>
                         )}
+                        <Button onClick={onOpen} colorScheme="red" isFullWidth>
+                            Retire
+                        </Button>
+                        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Warning!</ModalHeader>
+                                <ModalBody>
+                                    <Text>
+                                        By pressing "I Confirm to Retire Node",
+                                        you'll initiate node retirement. Before
+                                        you proceed, make sure you understand{' '}
+                                        <Link
+                                            href="https://github.com/cartesi/noether/wiki/FAQ#i-have-retired-my-node-in-the-cartesi-explorer-but-the-node-funds-were-not-returned-what-is-going-on"
+                                            isExternal
+                                            textDecoration="underline"
+                                        >
+                                            how node retirement works{' '}
+                                            <ExternalLinkIcon mx="2px" />
+                                        </Link>
+                                        .
+                                    </Text>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button
+                                        onClick={onConfirmRetire}
+                                        colorScheme="red"
+                                        mr={3}
+                                    >
+                                        I Confirm to Retire Node
+                                    </Button>
+                                    <Button onClick={onClose}>Cancel</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
                     </>
                 )}
             </HStack>
