@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Button,
     FormControl,
@@ -31,6 +31,7 @@ import {
     ModalBody,
     useDisclosure,
     Link,
+    Checkbox,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
@@ -84,6 +85,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     const mine = account.toLowerCase() === user.toLowerCase();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [confirmNoehtherVersion, setConfirmNoehtherVersion] = useState(false);
 
     const onConfirmRetire = () => {
         onClose();
@@ -170,7 +172,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                             <ModalContent>
                                 <ModalHeader>Warning!</ModalHeader>
                                 <ModalBody>
-                                    <Text>
+                                    <Text mb={16} fontSize="sm">
                                         By pressing "I Confirm to Retire Node",
                                         you'll initiate node retirement. Before
                                         you proceed, make sure you understand{' '}
@@ -184,12 +186,25 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                                         </Link>
                                         .
                                     </Text>
+                                    <Checkbox
+                                        colorScheme="green"
+                                        isChecked={confirmNoehtherVersion}
+                                        onChange={(e) =>
+                                            setConfirmNoehtherVersion(
+                                                e.target.checked
+                                            )
+                                        }
+                                    >
+                                        I confirm I'm running noether &gt;=
+                                        2.0.3
+                                    </Checkbox>
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button
                                         onClick={onConfirmRetire}
                                         colorScheme="red"
                                         mr={3}
+                                        disabled={!confirmNoehtherVersion}
                                     >
                                         I Confirm to Retire Node
                                     </Button>
