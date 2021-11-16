@@ -21,7 +21,7 @@ import {
     HStack,
     Spinner,
     Link,
-    useBreakpointValue,
+    Box,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import PoolRow from './PoolRow';
@@ -53,80 +53,81 @@ const PoolTable: FC<PoolTableProps> = ({
     };
     const columns = sizes[size] || 6;
 
-    // table size
-    const tableSize = useBreakpointValue(['sm', 'md']);
-
     return (
-        <Table size={tableSize}>
-            <Thead>
-                <Tr>
-                    <Th>Address</Th>
-                    {(size == 'lg' || size == 'md') && (
-                        <Th isNumeric>
-                            <Link onClick={() => onSort('totalUsers')}>
-                                Total Users
-                            </Link>
-                            {sort == 'totalUsers' && <ArrowDownIcon />}
-                        </Th>
-                    )}
-                    <Th isNumeric>
-                        <Link onClick={() => onSort('amount')}>
-                            Total Staked
-                        </Link>{' '}
-                        {sort == 'amount' && <ArrowDownIcon />}
-                    </Th>
-                    {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
-                    {size == 'lg' && <Th>Configured Commission</Th>}
-                    {(size == 'lg' || size == 'md') && (
-                        <Th>
-                            <Link
-                                onClick={() => onSort('commissionPercentage')}
-                            >
-                                Accrued Commission
-                            </Link>{' '}
-                            {sort == 'commissionPercentage' && (
-                                <ArrowDownIcon />
-                            )}
-                        </Th>
-                    )}
-                    <Th textAlign="right">Action</Th>
-                </Tr>
-            </Thead>
-
-            <Tbody>
-                {loading && (
+        <Box overflowX={{ base: 'auto', xl: 'unset' }} w="100%">
+            <Table>
+                <Thead>
                     <Tr>
-                        <Td colSpan={columns} textAlign="center">
-                            <HStack justify="center">
-                                <Spinner />
-                                <Text>Loading</Text>
-                            </HStack>
-                        </Td>
+                        <Th>Address</Th>
+                        {(size == 'lg' || size == 'md') && (
+                            <Th isNumeric>
+                                <Link onClick={() => onSort('totalUsers')}>
+                                    Total Users
+                                </Link>
+                                {sort == 'totalUsers' && <ArrowDownIcon />}
+                            </Th>
+                        )}
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('amount')}>
+                                Total Staked
+                            </Link>{' '}
+                            {sort == 'amount' && <ArrowDownIcon />}
+                        </Th>
+                        {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
+                        {size == 'lg' && <Th>Configured Commission</Th>}
+                        {(size == 'lg' || size == 'md') && (
+                            <Th>
+                                <Link
+                                    onClick={() =>
+                                        onSort('commissionPercentage')
+                                    }
+                                >
+                                    Accrued Commission
+                                </Link>{' '}
+                                {sort == 'commissionPercentage' && (
+                                    <ArrowDownIcon />
+                                )}
+                            </Th>
+                        )}
+                        <Th textAlign="right">Action</Th>
                     </Tr>
-                )}
-                {!loading &&
-                    (!data ||
-                        (data.length === 0 && (
-                            <Tr>
-                                <Td colSpan={columns} textAlign="center">
-                                    <Text>No items</Text>
-                                </Td>
-                            </Tr>
-                        )))}
-                {!loading &&
-                    data &&
-                    data.length > 0 &&
-                    data.map((pool) => (
-                        <PoolRow
-                            key={pool.id}
-                            chainId={chainId}
-                            pool={pool}
-                            size={size}
-                            account={account}
-                        />
-                    ))}
-            </Tbody>
-        </Table>
+                </Thead>
+
+                <Tbody>
+                    {loading && (
+                        <Tr>
+                            <Td colSpan={columns} textAlign="center">
+                                <HStack justify="center">
+                                    <Spinner />
+                                    <Text>Loading</Text>
+                                </HStack>
+                            </Td>
+                        </Tr>
+                    )}
+                    {!loading &&
+                        (!data ||
+                            (data.length === 0 && (
+                                <Tr>
+                                    <Td colSpan={columns} textAlign="center">
+                                        <Text>No items</Text>
+                                    </Td>
+                                </Tr>
+                            )))}
+                    {!loading &&
+                        data &&
+                        data.length > 0 &&
+                        data.map((pool) => (
+                            <PoolRow
+                                key={pool.id}
+                                chainId={chainId}
+                                pool={pool}
+                                size={size}
+                                account={account}
+                            />
+                        ))}
+                </Tbody>
+            </Table>
+        </Box>
     );
 };
 

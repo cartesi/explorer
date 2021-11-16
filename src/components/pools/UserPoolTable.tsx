@@ -21,6 +21,7 @@ import {
     HStack,
     Spinner,
     useBreakpointValue,
+    Box,
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -47,64 +48,63 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
     // number of columns at each breakpoint
     const columns = useBreakpointValue([3, 3, 4, 8]);
 
-    // table size
-    const tableSize = useBreakpointValue(['sm', 'md']);
-
     return (
-        <Table size={tableSize}>
-            <Thead>
-                <Tr>
-                    <Th>Address</Th>
-                    <Th hidden={bp < 3} isNumeric>
-                        Wallet
-                    </Th>
-                    <Th hidden={bp < 3} />
-                    <Th hidden={bp < 2} isNumeric>
-                        Unstaked
-                    </Th>
-                    <Th hidden={bp < 3} />
-                    <Th isNumeric>Staked</Th>
-                    <Th hidden={bp < 3} isNumeric>
-                        % Pool
-                    </Th>
-                    <Th textAlign="right">Action</Th>
-                </Tr>
-            </Thead>
-
-            <Tbody>
-                {loading && (
+        <Box overflowX={{ base: 'auto', xl: 'unset' }} w="100%">
+            <Table>
+                <Thead>
                     <Tr>
-                        <Td colSpan={columns} textAlign="center">
-                            <HStack justify="center">
-                                <Spinner />
-                                <Text>Loading</Text>
-                            </HStack>
-                        </Td>
+                        <Th>Address</Th>
+                        <Th hidden={bp < 3} isNumeric>
+                            Wallet
+                        </Th>
+                        <Th hidden={bp < 3} />
+                        <Th hidden={bp < 2} isNumeric>
+                            Unstaked
+                        </Th>
+                        <Th hidden={bp < 3} />
+                        <Th isNumeric>Staked</Th>
+                        <Th hidden={bp < 3} isNumeric>
+                            % Pool
+                        </Th>
+                        <Th textAlign="right">Action</Th>
                     </Tr>
-                )}
-                {!loading &&
-                    (!data ||
-                        (data.length === 0 && (
-                            <Tr>
-                                <Td colSpan={columns} textAlign="center">
-                                    <Text>No items</Text>
-                                </Td>
-                            </Tr>
-                        )))}
-                {!loading &&
-                    data &&
-                    data.length > 0 &&
-                    data.map((balance) => (
-                        <UserPoolRow
-                            key={balance.pool.id}
-                            chainId={chainId}
-                            walletBalance={walletBalance}
-                            balance={balance}
-                            account={account}
-                        />
-                    ))}
-            </Tbody>
-        </Table>
+                </Thead>
+
+                <Tbody>
+                    {loading && (
+                        <Tr>
+                            <Td colSpan={columns} textAlign="center">
+                                <HStack justify="center">
+                                    <Spinner />
+                                    <Text>Loading</Text>
+                                </HStack>
+                            </Td>
+                        </Tr>
+                    )}
+                    {!loading &&
+                        (!data ||
+                            (data.length === 0 && (
+                                <Tr>
+                                    <Td colSpan={columns} textAlign="center">
+                                        <Text>No items</Text>
+                                    </Td>
+                                </Tr>
+                            )))}
+                    {!loading &&
+                        data &&
+                        data.length > 0 &&
+                        data.map((balance) => (
+                            <UserPoolRow
+                                key={balance.pool.id}
+                                chainId={chainId}
+                                walletBalance={walletBalance}
+                                balance={balance}
+                                account={account}
+                            />
+                        ))}
+                </Tbody>
+            </Table>
+        </Box>
     );
 };
 
