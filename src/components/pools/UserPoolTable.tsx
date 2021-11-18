@@ -21,12 +21,12 @@ import {
     HStack,
     Spinner,
     useBreakpointValue,
-    Box,
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 
 import UserPoolRow from './UserPoolRow';
 import { PoolBalance } from '../../graphql/models';
+import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
 export interface UserPoolTableProps {
     chainId: number;
@@ -49,7 +49,7 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
     const columns = useBreakpointValue([3, 3, 4, 8]);
 
     return (
-        <Box overflowX={{ base: 'auto', xl: 'unset' }} w="100%">
+        <TableResponsiveHolder>
             <Table>
                 <Thead>
                     <Tr>
@@ -104,7 +104,7 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
                         ))}
                 </Tbody>
             </Table>
-        </Box>
+        </TableResponsiveHolder>
     );
 };
 

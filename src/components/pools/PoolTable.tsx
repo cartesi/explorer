@@ -21,11 +21,11 @@ import {
     HStack,
     Spinner,
     Link,
-    Box,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import PoolRow from './PoolRow';
 import { StakingPool, StakingPoolSort } from '../../graphql/models';
+import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
 export interface PoolTableProps {
     chainId: number;
@@ -54,7 +54,7 @@ const PoolTable: FC<PoolTableProps> = ({
     const columns = sizes[size] || 6;
 
     return (
-        <Box overflowX={{ base: 'auto', xl: 'unset' }} w="100%">
+        <TableResponsiveHolder>
             <Table>
                 <Thead>
                     <Tr>
@@ -127,7 +127,7 @@ const PoolTable: FC<PoolTableProps> = ({
                         ))}
                 </Tbody>
             </Table>
-        </Box>
+        </TableResponsiveHolder>
     );
 };
 
