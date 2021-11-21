@@ -17,7 +17,7 @@ import {
     Tooltip,
     Tr,
     useColorModeValue,
-    Button
+    Button,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
@@ -81,7 +81,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                 <HStack justify="flex-start" mt="0.6em">
                     {edit && (
                         <NextLink
-                            href={'/pools/' + pool.id + '/edit'}
+                            href={`/pools/${pool.id}/edit`}
                         >
                             <Button size="sm">
                                 Manage
@@ -89,7 +89,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                         </NextLink>
                     )}
                     <NextLink
-                        href={'/pools/' + pool.id}
+                        href={`/pools/${pool.id}`}
                     >
                         <Button size="sm">
                             Stake

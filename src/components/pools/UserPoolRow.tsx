@@ -97,7 +97,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                 <HStack justify="flex-start" mt="0.6em">
                     {edit && (
                         <NextLink
-                            href={'/pools/' + balance.pool.id + '/edit'}
+                            href={`/pools/${balance.pool.id}/edit`}
 
                         >
                             <Button size="sm">
@@ -106,7 +106,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                         </NextLink>
                     )}
                     <NextLink
-                        href={'/pools/' + balance.pool.id}
+                        href={`/pools/${balance.pool.id}`}
                     >
                         <Button size="sm">
                             Stake
