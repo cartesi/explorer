@@ -80,20 +80,12 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
 
                 <HStack justify="flex-start" mt="0.6em">
                     {edit && (
-                        <NextLink
-                            href={`/pools/${pool.id}/edit`}
-                        >
-                            <Button size="sm">
-                                Manage
-                            </Button>
+                        <NextLink href={`/pools/${pool.id}/edit`}>
+                            <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink
-                        href={`/pools/${pool.id}`}
-                    >
-                        <Button size="sm">
-                            Stake
-                        </Button>
+                    <NextLink href={`/pools/${pool.id}`}>
+                        <Button size="sm">Stake</Button>
                     </NextLink>
                     {pool.paused && (
                         <Tooltip
@@ -112,7 +104,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
             <Td isNumeric>{pool.totalUsers}</Td>
 
             <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
-            
+
             <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
 
             <Td>

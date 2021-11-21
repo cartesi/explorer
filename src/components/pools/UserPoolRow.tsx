@@ -19,14 +19,10 @@ import {
     Tooltip,
     Tr,
     useBreakpointValue,
-    useColorModeValue
+    useColorModeValue,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import {
-    ArrowBackIcon,
-    ArrowForwardIcon,
-    LockIcon,
-} from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon, LockIcon } from '@chakra-ui/icons';
 import { BigNumber } from '@ethersproject/bignumber';
 
 import { PoolBalance } from '../../graphql/models';
@@ -96,21 +92,12 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
 
                 <HStack justify="flex-start" mt="0.6em">
                     {edit && (
-                        <NextLink
-                            href={`/pools/${balance.pool.id}/edit`}
-
-                        >
-                            <Button size="sm">
-                                Manage
-                            </Button>
+                        <NextLink href={`/pools/${balance.pool.id}/edit`}>
+                            <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink
-                        href={`/pools/${balance.pool.id}`}
-                    >
-                        <Button size="sm">
-                            Stake
-                        </Button>
+                    <NextLink href={`/pools/${balance.pool.id}`}>
+                        <Button size="sm">Stake</Button>
                     </NextLink>
                     {balance.pool.paused && (
                         <Tooltip
@@ -124,11 +111,8 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                         </Tooltip>
                     )}
                 </HStack>
-
             </Td>
-            <Td isNumeric>
-                {formatCTSI(walletBalance, 2)} CTSI
-            </Td>
+            <Td isNumeric>{formatCTSI(walletBalance, 2)} CTSI</Td>
             <Td hidden={bp < 3} isNumeric>
                 <Flex direction="column" align="center">
                     <Button
@@ -146,9 +130,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                     </Button>
                 </Flex>
             </Td>
-            <Td isNumeric>
-                {formatCTSI(unstakedBalance, 2)} CTSI
-            </Td>
+            <Td isNumeric>{formatCTSI(unstakedBalance, 2)} CTSI</Td>
             <Td hidden={bp < 3} isNumeric>
                 <Flex direction="column" align="center">
                     <Button
@@ -175,9 +157,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                 </Flex>
             </Td>
             <Td isNumeric>{formatCTSI(stakedBalance, 2)} CTSI</Td>
-            <Td isNumeric>
-                {percentFormatter.format(userShare(balance))}
-            </Td>
+            <Td isNumeric>{percentFormatter.format(userShare(balance))}</Td>
         </Tr>
     );
 };

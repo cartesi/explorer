@@ -54,18 +54,12 @@ const UserPoolTable: FC<UserPoolTableProps> = ({
                 <Thead>
                     <Tr>
                         <Th>Address</Th>
-                        <Th isNumeric>
-                            Wallet
-                        </Th>
+                        <Th isNumeric>Wallet</Th>
                         <Th hidden={bp < 3} />
-                        <Th isNumeric>
-                            Unstaked
-                        </Th>
+                        <Th isNumeric>Unstaked</Th>
                         <Th hidden={bp < 3} />
                         <Th isNumeric>Staked</Th>
-                        <Th isNumeric>
-                            % Pool
-                        </Th>
+                        <Th isNumeric>% Pool</Th>
                     </Tr>
                 </Thead>
 

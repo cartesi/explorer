@@ -59,7 +59,7 @@ const PoolTable: FC<PoolTableProps> = ({
                 <Thead>
                     <Tr>
                         <Th>Address</Th>
-                        
+
                         <Th isNumeric>
                             <Link onClick={() => onSort('totalUsers')}>
                                 Total Users
@@ -76,12 +76,10 @@ const PoolTable: FC<PoolTableProps> = ({
 
                         <Th isNumeric>Total Rewards</Th>
                         <Th>Configured Commission</Th>
-                        
+
                         <Th>
                             <Link
-                                onClick={() =>
-                                    onSort('commissionPercentage')
-                                }
+                                onClick={() => onSort('commissionPercentage')}
                             >
                                 Accrued Commission
                             </Link>{' '}
