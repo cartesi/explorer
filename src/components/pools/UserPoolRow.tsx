@@ -19,12 +19,12 @@ import {
     Tooltip,
     Tr,
     useBreakpointValue,
-    useColorModeValue,
+    useColorModeValue
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import {
     ArrowBackIcon,
     ArrowForwardIcon,
-    EditIcon,
     LockIcon,
 } from '@chakra-ui/icons';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -32,8 +32,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalance } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
-import { FaCoins } from 'react-icons/fa';
-import IconLink from '../IconLink';
 import { userShare } from '../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../services/pool';
 
@@ -95,8 +93,40 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                     chainId={chainId}
                     truncated
                 />
+
+                <HStack justify="flex-start" mt="0.6em">
+                    {edit && (
+                        <NextLink
+                            href={'/pools/' + balance.pool.id + '/edit'}
+
+                        >
+                            <Button size="sm">
+                                Manage
+                            </Button>
+                        </NextLink>
+                    )}
+                    <NextLink
+                        href={'/pools/' + balance.pool.id}
+                    >
+                        <Button size="sm">
+                            Stake
+                        </Button>
+                    </NextLink>
+                    {balance.pool.paused && (
+                        <Tooltip
+                            placement="top"
+                            label="This pool is not accepting stake at the moment"
+                            fontSize="small"
+                            bg="black"
+                            color="white"
+                        >
+                            <LockIcon />
+                        </Tooltip>
+                    )}
+                </HStack>
+
             </Td>
-            <Td hidden={bp < 3} isNumeric>
+            <Td isNumeric>
                 {formatCTSI(walletBalance, 2)} CTSI
             </Td>
             <Td hidden={bp < 3} isNumeric>
@@ -116,7 +146,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                     </Button>
                 </Flex>
             </Td>
-            <Td hidden={bp < 2} isNumeric>
+            <Td isNumeric>
                 {formatCTSI(unstakedBalance, 2)} CTSI
             </Td>
             <Td hidden={bp < 3} isNumeric>
@@ -145,35 +175,8 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                 </Flex>
             </Td>
             <Td isNumeric>{formatCTSI(stakedBalance, 2)} CTSI</Td>
-            <Td hidden={bp < 3} isNumeric>
+            <Td isNumeric>
                 {percentFormatter.format(userShare(balance))}
-            </Td>
-            <Td>
-                <HStack justify="flex-end">
-                    {edit && (
-                        <IconLink
-                            href={'/pools/' + balance.pool.id + '/edit'}
-                            icon={<EditIcon />}
-                            tooltip="Edit"
-                        />
-                    )}
-                    <IconLink
-                        href={'/pools/' + balance.pool.id}
-                        icon={<FaCoins />}
-                        tooltip="Stake"
-                    />
-                    {balance.pool.paused && (
-                        <Tooltip
-                            placement="top"
-                            label="This pool is not accepting stake at the moment"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
-                        >
-                            <LockIcon />
-                        </Tooltip>
-                    )}
-                </HStack>
             </Td>
         </Tr>
     );

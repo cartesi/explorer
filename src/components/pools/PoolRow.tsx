@@ -17,15 +17,15 @@ import {
     Tooltip,
     Tr,
     useColorModeValue,
+    Button
 } from '@chakra-ui/react';
-import { EditIcon, LockIcon } from '@chakra-ui/icons';
+import NextLink from 'next/link';
+import { LockIcon } from '@chakra-ui/icons';
 
 import { StakingPool } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import labels from '../../utils/labels';
-import { FaCoins } from 'react-icons/fa';
-import IconLink from '../IconLink';
 
 export interface PoolRowProps {
     chainId: number;
@@ -77,48 +77,24 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
         <Tr key={pool.id} _hover={{ backgroundColor }}>
             <Td>
                 <Address ens address={pool.id} chainId={chainId} truncated />
-            </Td>
-            {(size == 'lg' || size == 'md') && (
-                <Td isNumeric>{pool.totalUsers}</Td>
-            )}
-            <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
-            {size == 'lg' && (
-                <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
-            )}
-            {size == 'lg' && (
-                <Td>
-                    {commissionLabel}{' '}
-                    {commissionTooltip && (
-                        <Tooltip
-                            placement="top"
-                            label={commissionTooltip}
-                            fontSize="small"
-                            bg="black"
-                            color="white"
-                            size="md"
-                        >
-                            <Icon />
-                        </Tooltip>
-                    )}
-                </Td>
-            )}
-            {(size == 'lg' || size == 'md') && (
-                <Td>{accuredCommissionLabel}</Td>
-            )}
-            <Td>
-                <HStack justify="flex-end">
+
+                <HStack justify="flex-start" mt="0.6em">
                     {edit && (
-                        <IconLink
+                        <NextLink
                             href={'/pools/' + pool.id + '/edit'}
-                            icon={<EditIcon />}
-                            tooltip="Edit"
-                        />
+                        >
+                            <Button size="sm">
+                                Manage
+                            </Button>
+                        </NextLink>
                     )}
-                    <IconLink
+                    <NextLink
                         href={'/pools/' + pool.id}
-                        icon={<FaCoins />}
-                        tooltip="Stake"
-                    />
+                    >
+                        <Button size="sm">
+                            Stake
+                        </Button>
+                    </NextLink>
                     {pool.paused && (
                         <Tooltip
                             placement="top"
@@ -132,6 +108,30 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                     )}
                 </HStack>
             </Td>
+
+            <Td isNumeric>{pool.totalUsers}</Td>
+
+            <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
+            
+            <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
+
+            <Td>
+                {commissionLabel}{' '}
+                {commissionTooltip && (
+                    <Tooltip
+                        placement="top"
+                        label={commissionTooltip}
+                        fontSize="small"
+                        bg="black"
+                        color="white"
+                        size="md"
+                    >
+                        <Icon />
+                    </Tooltip>
+                )}
+            </Td>
+
+            <Td>{accuredCommissionLabel}</Td>
         </Tr>
     );
 };

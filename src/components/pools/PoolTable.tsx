@@ -59,37 +59,36 @@ const PoolTable: FC<PoolTableProps> = ({
                 <Thead>
                     <Tr>
                         <Th>Address</Th>
-                        {(size == 'lg' || size == 'md') && (
-                            <Th isNumeric>
-                                <Link onClick={() => onSort('totalUsers')}>
-                                    Total Users
-                                </Link>
-                                {sort == 'totalUsers' && <ArrowDownIcon />}
-                            </Th>
-                        )}
+                        
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('totalUsers')}>
+                                Total Users
+                            </Link>
+                            {sort == 'totalUsers' && <ArrowDownIcon />}
+                        </Th>
+
                         <Th isNumeric>
                             <Link onClick={() => onSort('amount')}>
                                 Total Staked
                             </Link>{' '}
                             {sort == 'amount' && <ArrowDownIcon />}
                         </Th>
-                        {size == 'lg' && <Th isNumeric>Total Rewards</Th>}
-                        {size == 'lg' && <Th>Configured Commission</Th>}
-                        {(size == 'lg' || size == 'md') && (
-                            <Th>
-                                <Link
-                                    onClick={() =>
-                                        onSort('commissionPercentage')
-                                    }
-                                >
-                                    Accrued Commission
-                                </Link>{' '}
-                                {sort == 'commissionPercentage' && (
-                                    <ArrowDownIcon />
-                                )}
-                            </Th>
-                        )}
-                        <Th textAlign="right">Action</Th>
+
+                        <Th isNumeric>Total Rewards</Th>
+                        <Th>Configured Commission</Th>
+                        
+                        <Th>
+                            <Link
+                                onClick={() =>
+                                    onSort('commissionPercentage')
+                                }
+                            >
+                                Accrued Commission
+                            </Link>{' '}
+                            {sort == 'commissionPercentage' && (
+                                <ArrowDownIcon />
+                            )}
+                        </Th>
                     </Tr>
                 </Thead>
 
