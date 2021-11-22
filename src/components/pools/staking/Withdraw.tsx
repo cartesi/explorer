@@ -26,6 +26,7 @@ import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import { MdRemove } from 'react-icons/md';
 import Title from './Title';
+import { formatCTSI } from '../../../utils/token';
 
 export interface WithdrawProps {
     balance: BigNumber;
@@ -50,7 +51,7 @@ const Withdraw: FC<WithdrawProps> = ({ balance, onCancel, onSubmit }) => {
         if (bn.isZero()) {
             return 'Value must be greater than 0';
         } else if (bn.gt(balance)) {
-            return 'Not enough balance';
+            return `Maximum value at this moment is ${formatCTSI(balance, 2)}`;
         }
         return true;
     };
