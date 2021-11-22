@@ -36,7 +36,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, account, size = 'lg' }) => {
     return (
         <Tr key={user.id} _hover={{ backgroundColor }}>
             <Td>
-                <Address address={user.id} chainId={chainId} responsive />
+                <Address ens address={user.id} chainId={chainId} responsive />
             </Td>
             {size != 'sm' && <Td isNumeric>{user.totalBlocks}</Td>}
             <Td isNumeric>{formatCTSI(user.balance, 0)} CTSI</Td>
