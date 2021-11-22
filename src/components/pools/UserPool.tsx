@@ -104,7 +104,7 @@ const UserPool: FC<UserPoolProps> = (props) => {
                 unmountOnExit
             >
                 <Withdraw
-                    balance={userBalance}
+                    balance={withdrawBalance}
                     onCancel={withdrawDisclosure.onClose}
                     onSubmit={(amount) => {
                         onWithdraw(amount);
