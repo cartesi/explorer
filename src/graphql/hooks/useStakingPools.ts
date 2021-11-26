@@ -12,14 +12,17 @@
 import { useQuery } from '@apollo/client';
 import { STAKING_POOLS } from '../queries/stakingPools';
 import { StakingPoolsData, StakingPoolsVars, StakingPoolSort } from '../models';
+import { useExtendedApollo } from '../../services/apollo';
 
 export const POOLS_PER_PAGE = 50;
 
 // sort directions for each criteria
-const directions = {
-    totalUsers: 'desc',
-    amount: 'desc',
-    commissionPercentage: 'asc',
+const orderBy: Record<StakingPoolSort, string> = {
+    amount: 'AMOUNT_DESC',
+    totalUsers: 'TOTAL_USERS_DESC',
+    commissionPercentage: 'COMMISSION_PERCENTAGE_ASC',
+    weekPerformance: 'WEEK_PERFORMANCE_DESC',
+    monthPerformance: 'MONTH_PERFORMANCE_DESC',
 };
 
 const useStakingPools = (
@@ -28,15 +31,17 @@ const useStakingPools = (
     sort: StakingPoolSort = 'commissionPercentage'
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
+    const order = orderBy[sort];
+    const client = useExtendedApollo(1);
     return useQuery<StakingPoolsData, StakingPoolsVars>(STAKING_POOLS, {
         variables: {
             first: POOLS_PER_PAGE,
             where: filter,
             skip: pageNumber * POOLS_PER_PAGE,
-            orderBy: sort,
-            orderDirection: directions[sort],
+            orderBy: order,
         },
         notifyOnNetworkStatusChange: true,
+        client,
         pollInterval: 600000, // Every 10 minutes
     });
 };

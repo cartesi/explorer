@@ -21,6 +21,15 @@ const uris = {
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
+const extendedUris = {
+    1: 'https://thegraph.cartesi.io/extended/mainnet/graphql',
+    3: 'https://thegraph.cartesi.io/extended/ropsten/graphql',
+    4: 'https://thegraph.cartesi.io/extended/rinkeby/graphql',
+    5: 'https://thegraph.cartesi.io/extended/goerli/graphql',
+    42: 'https://thegraph.cartesi.io/extended/kovan/graphql',
+    31337: 'http://localhost:5001/graphql',
+};
+
 const mergeUniqueSort = (fieldName: string) => {
     return (existing: any[] = [], incoming: any[], { readField }) => {
         // concatenate the data
@@ -68,6 +77,25 @@ export const createApollo = (chainId: number): ApolloClient<any> => {
     });
 };
 
+export const createExtendedApollo = (chainId: number): ApolloClient<any> => {
+    const uri =
+        extendedUris[chainId] ||
+        'https://thegraph.cartesi.io/extended/mainnet/graphql';
+    const ssrMode = typeof window === 'undefined';
+
+    return new ApolloClient({
+        ssrMode,
+        link: new HttpLink({
+            uri,
+        }),
+        cache: new InMemoryCache(),
+    });
+};
+
 export const useApollo = (chainId: number): ApolloClient<any> => {
     return useMemo(() => createApollo(chainId), [chainId]);
+};
+
+export const useExtendedApollo = (chainId: number): ApolloClient<any> => {
+    return useMemo(() => createExtendedApollo(chainId), [chainId]);
 };

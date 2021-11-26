@@ -15,45 +15,45 @@ export const STAKING_POOLS = gql`
     query stakingPools(
         $first: Int
         $skip: Int
-        $where: StakingPool_filter
-        $orderBy: StakingPool_orderBy
-        $orderDirection: OrderDirection
+        $where: StakingPoolCondition
+        $orderBy: [StakingPoolsOrderBy!]
     ) {
-        stakingPools(
+        allStakingPools(
             first: $first
-            skip: $skip
-            where: $where
+            offset: $skip
+            condition: $where
             orderBy: $orderBy
-            orderDirection: $orderDirection
         ) {
-            id
-            manager
-            amount
-            shares
-            totalUsers
-            totalCommission
-            commissionPercentage
-            paused
-            timestamp
-
-            fee {
+            nodes {
                 id
-                commission
-                gas
-                created
-                lastUpdated
-            }
-
-            user {
-                id
-                stakedBalance
-                maturingBalance
-                maturingTimestamp
-                releasingBalance
-                releasingTimestamp
-                balance
-                totalBlocks
-                totalReward
+                manager
+                amount
+                shares
+                totalUsers
+                totalCommission
+                commissionPercentage
+                paused
+                timestamp
+                feeId
+                feeCommission
+                feeGas
+                feeCreated
+                feeLastUpdated
+                userStakedBalance
+                userMaturingBalance
+                userMaturingTimestamp
+                userReleasingBalance
+                userReleasingTimestamp
+                userBalance
+                userTotalBlocks
+                userTotalReward
+                shareValue
+                weekShareValue
+                weekShareTimestamp
+                monthShareValue
+                monthShareTimestamp
+                weekPerformance
+                monthPerformance
             }
         }
     }

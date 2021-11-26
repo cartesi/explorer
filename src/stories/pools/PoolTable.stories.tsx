@@ -35,7 +35,7 @@ export const Default = Template.bind({});
 Default.args = {
     loading: false,
     sort: 'balance',
-    data: data.data.stakingPools,
+    data: data.data.allStakingPools.nodes,
     account: '0x79bdc19c6f823f2911190b005f489ed00af6246d',
 };
 

@@ -9,7 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export type StakingPoolSort = 'totalUsers' | 'amount' | 'commissionPercentage';
+interface Nodes<T> {
+    nodes: T[];
+}
+
+export type StakingPoolSort =
+    | 'totalUsers'
+    | 'amount'
+    | 'commissionPercentage'
+    | 'weekPerformance'
+    | 'monthPerformance';
+
 export type UserSort =
     | 'stakedBalance'
     | 'maturingBalance'
@@ -81,6 +91,39 @@ export type StakingPool = {
     timestamp: number;
 };
 
+export type StakingPoolFlat = {
+    id: string;
+    manager: string;
+    amount: string;
+    shares: string;
+    totalUsers: number;
+    totalCommission: string;
+    commissionPercentage: number;
+    paused: boolean;
+    timestamp: number;
+    feeId: string;
+    feeCommission: number;
+    feeGas: number;
+    feeCreated: string;
+    feeLastUpdated: string;
+    userStakedBalance: string;
+    userMaturingBalance: string;
+    userMaturingTimestamp: string;
+    userReleasingBalance: string;
+    userReleasingTimestamp: string;
+    userBalance: string;
+    userTotalBlocks: number;
+    userTotalReward: string;
+    shareValue: number;
+    weekShareValue: number;
+    weekShareTimestamp: string;
+    monthShareValue: number;
+    monthShareTimestamp: string;
+    performance: number;
+    weekPerformance: number;
+    monthPerformance: number;
+};
+
 export type StakingPoolFee = {
     id: string;
     commission: number;
@@ -98,7 +141,7 @@ export interface StakingPoolVars {
 }
 
 export interface StakingPoolsData {
-    stakingPools: StakingPool[];
+    allStakingPools: Nodes<StakingPoolFlat>;
 }
 
 export interface StakingPoolsVars {
@@ -106,7 +149,6 @@ export interface StakingPoolsVars {
     skip: number;
     where: any;
     orderBy: string;
-    orderDirection: string;
 }
 
 export type PoolUser = {

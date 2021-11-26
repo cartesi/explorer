@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useState } from 'react';
-import { useBreakpointValue, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 
 import useStakingPools from '../../graphql/hooks/useStakingPools';
 import PoolTable from '../../components/pools/PoolTable';
@@ -28,7 +28,6 @@ const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
     const [sort, setSort] = useState<StakingPoolSort>('commissionPercentage');
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useStakingPools(pageNumber, search, sort);
-    const size = useBreakpointValue(['sm', 'sm', 'md', 'lg']);
 
     return (
         <VStack w="100%">
@@ -36,8 +35,7 @@ const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
                 chainId={chainId}
                 account={account}
                 loading={loading}
-                data={data?.stakingPools || []}
-                size={size as 'lg' | 'md' | 'sm'}
+                data={data?.allStakingPools.nodes || []}
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />

@@ -22,16 +22,15 @@ import {
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
 
-import { StakingPool } from '../../graphql/models';
+import { StakingPoolFlat } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import labels from '../../utils/labels';
 
 export interface PoolRowProps {
     chainId: number;
-    pool: StakingPool;
+    pool: StakingPoolFlat;
     account?: string;
-    size?: 'lg' | 'md' | 'sm' | 'xs';
 }
 
 const numberFormat = new Intl.NumberFormat('en-US', {
@@ -39,11 +38,13 @@ const numberFormat = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
 });
 
+const apr = (value: number, days: number) =>
+    Math.pow(Math.pow(value + 1, 1 / days), 365) - 1;
+
 const PoolRow: FunctionComponent<PoolRowProps> = ({
     chainId,
     account,
     pool,
-    size = 'lg',
 }) => {
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
@@ -56,17 +57,17 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
 
     // commission label
     let commissionLabel = '';
-    if (pool.fee.commission !== undefined) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (pool.fee.gas !== undefined) {
-        commissionLabel = `${pool.fee.gas} Gas`;
+    if (pool.feeCommission !== undefined) {
+        commissionLabel = `${(pool.feeCommission / 100).toFixed(2)} %`;
+    } else if (pool.feeGas !== undefined) {
+        commissionLabel = `${pool.feeGas} Gas`;
     }
 
     // commission help tooptip
     let commissionTooltip: string = undefined;
-    if (pool.fee.commission !== undefined) {
+    if (pool.feeCommission !== undefined) {
         commissionTooltip = labels.flatRateCommission;
-    } else if (pool.fee.gas !== undefined) {
+    } else if (pool.feeGas !== undefined) {
         commissionTooltip = labels.gasTaxCommission;
     }
 
@@ -77,7 +78,6 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
         <Tr key={pool.id} _hover={{ backgroundColor }}>
             <Td>
                 <Address ens address={pool.id} chainId={chainId} truncated />
-
                 <HStack justify="flex-start" mt="0.6em">
                     {edit && (
                         <NextLink href={`/pools/${pool.id}/edit`}>
@@ -100,13 +100,17 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                     )}
                 </HStack>
             </Td>
-
             <Td isNumeric>{pool.totalUsers}</Td>
-
             <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
-
-            <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
-
+            <Td isNumeric>{formatCTSI(pool.userTotalReward, 2)} CTSI</Td>
+            <Td isNumeric>
+                {numberFormat.format(pool.weekPerformance)} (
+                {numberFormat.format(apr(pool.weekPerformance, 7))})
+            </Td>
+            <Td isNumeric>
+                {numberFormat.format(pool.monthPerformance)} (
+                {numberFormat.format(apr(pool.monthPerformance, 30))})
+            </Td>
             <Td>
                 {commissionLabel}{' '}
                 {commissionTooltip && (
@@ -122,7 +126,6 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                     </Tooltip>
                 )}
             </Td>
-
             <Td>{accuredCommissionLabel}</Td>
         </Tr>
     );

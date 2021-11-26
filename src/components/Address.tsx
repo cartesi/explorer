@@ -18,7 +18,6 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
-    Box,
 } from '@chakra-ui/react';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 

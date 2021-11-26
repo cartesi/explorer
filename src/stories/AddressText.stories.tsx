@@ -31,6 +31,6 @@ import data from './pools/pools.json';
 
 export const Default = Template.bind({});
 Default.args = {
-    address: data.data.stakingPools[0].id,
+    address: data.data.allStakingPools.nodes[0].id,
     chainId: 5,
 };

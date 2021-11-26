@@ -24,15 +24,14 @@ import {
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import PoolRow from './PoolRow';
-import { StakingPool, StakingPoolSort } from '../../graphql/models';
+import { StakingPoolFlat, StakingPoolSort } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
 export interface PoolTableProps {
     chainId: number;
     account?: string;
     loading: boolean;
-    data?: StakingPool[];
-    size?: 'lg' | 'md' | 'sm';
+    data?: StakingPoolFlat[];
     sort?: StakingPoolSort;
     onSort: (order: StakingPoolSort) => void;
 }
@@ -42,17 +41,9 @@ const PoolTable: FC<PoolTableProps> = ({
     account,
     data,
     loading,
-    size = 'lg',
     sort,
     onSort,
 }) => {
-    const sizes = {
-        lg: 7,
-        md: 5,
-        sm: 3,
-    };
-    const columns = sizes[size] || 6;
-
     return (
         <TableResponsiveHolder>
             <Table>
@@ -66,17 +57,28 @@ const PoolTable: FC<PoolTableProps> = ({
                             </Link>
                             {sort == 'totalUsers' && <ArrowDownIcon />}
                         </Th>
-
                         <Th isNumeric>
                             <Link onClick={() => onSort('amount')}>
                                 Total Staked
-                            </Link>{' '}
+                            </Link>
                             {sort == 'amount' && <ArrowDownIcon />}
                         </Th>
-
                         <Th isNumeric>Total Rewards</Th>
-                        <Th>Configured Commission</Th>
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('weekPerformance')}>
+                                7-days % (annual)
+                            </Link>
+                            {sort == 'weekPerformance' && <ArrowDownIcon />}
+                        </Th>
 
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('monthPerformance')}>
+                                30-days % (annual)
+                            </Link>
+                            {sort == 'monthPerformance' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th>Configured Commission</Th>
                         <Th>
                             <Link
                                 onClick={() => onSort('commissionPercentage')}
@@ -93,7 +95,7 @@ const PoolTable: FC<PoolTableProps> = ({
                 <Tbody>
                     {loading && (
                         <Tr>
-                            <Td colSpan={columns} textAlign="center">
+                            <Td colSpan={9} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
@@ -105,7 +107,7 @@ const PoolTable: FC<PoolTableProps> = ({
                         (!data ||
                             (data.length === 0 && (
                                 <Tr>
-                                    <Td colSpan={columns} textAlign="center">
+                                    <Td colSpan={9} textAlign="center">
                                         <Text>No items</Text>
                                     </Td>
                                 </Tr>
@@ -118,7 +120,6 @@ const PoolTable: FC<PoolTableProps> = ({
                                 key={pool.id}
                                 chainId={chainId}
                                 pool={pool}
-                                size={size}
                                 account={account}
                             />
                         ))}
