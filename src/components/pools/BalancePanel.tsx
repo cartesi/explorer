@@ -24,6 +24,7 @@ import { BsClockHistory } from 'react-icons/bs';
 import StatsPanel from '../home/StatsPanel';
 import CTSIText from '../CTSIText';
 import { formatCTSI } from '../../utils/token';
+import { useTimeLeft } from '../../utils/react';
 
 export interface BalancePanelProps extends StackProps {
     amount: BigNumber;
@@ -75,6 +76,10 @@ const BalancePanel: FC<BalancePanelProps> = ({
             `${formatCTSI(withdraw)} CTSI to withdraw, ` + rebalanceLabel;
     }
 
+    // countdown timers for maturation and release
+    const maturingLeft = useTimeLeft(stakingMaturingTimestamp?.getTime());
+    const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
+    
     return (
         <StatsPanel {...stackProps}>
             <CTSIText
