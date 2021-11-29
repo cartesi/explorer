@@ -79,7 +79,9 @@ const BalancePanel: FC<BalancePanelProps> = ({
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(stakingMaturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
-    
+    console.log(maturingLeft);
+    console.log(releasingLeft);
+
     return (
         <StatsPanel {...stackProps}>
             <CTSIText
@@ -117,12 +119,16 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     label: 'Maturing Balance',
                     icon: BsClockHistory,
                     help: 'Amount of pool tokens maturing at the Staking contract',
+                    time: maturingLeft,
+                    timeLabel: 'Staking maturing in ',
                 },
                 {
                     value: stakingReleasing,
                     label: 'Releasing Balance',
                     icon: BsClockHistory,
                     help: 'Amount of pool tokens being unstaken at the Staking contract',
+                    time: releasingLeft,
+                    timeLabel: 'Staking releasing in ',
                 },
                 {
                     value: stakingReleased,
@@ -137,7 +143,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     help: 'Amount of tokens available at the pool contract either for stake or withdraw',
                 },
             ].map(
-                ({ value, label, icon, help }) =>
+                ({ value, label, icon, help, time = 0, timeLabel = '' }) =>
                     !(value?.isZero() && hideZeros) && (
                         <CTSIText
                             value={value}
@@ -154,6 +160,14 @@ const BalancePanel: FC<BalancePanelProps> = ({
                                 <Tooltip label={help} placement="top">
                                     <Icon />
                                 </Tooltip>
+                                {time && (
+                                    <>
+                                        <Text>
+                                            {timeLabel}
+                                            {time}
+                                        </Text>
+                                    </>
+                                )}
                             </HStack>
                         </CTSIText>
                     )
