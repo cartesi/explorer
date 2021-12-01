@@ -23,20 +23,20 @@ import {
     Link,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import PoolRow from './PoolRow';
-import { StakingPool, StakingPoolSort } from '../../graphql/models';
+import PoolRowExtended from './PoolRowExtended';
+import { StakingPoolFlat, StakingPoolSortExtended } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
-export interface PoolTableProps {
+export interface PoolTableExtendedProps {
     chainId: number;
     account?: string;
     loading: boolean;
-    data?: StakingPool[];
-    sort?: StakingPoolSort;
-    onSort: (order: StakingPoolSort) => void;
+    data?: StakingPoolFlat[];
+    sort?: StakingPoolSortExtended;
+    onSort: (order: StakingPoolSortExtended) => void;
 }
 
-const PoolTable: FC<PoolTableProps> = ({
+const PoolTableExtended: FC<PoolTableExtendedProps> = ({
     chainId,
     account,
     data,
@@ -64,6 +64,19 @@ const PoolTable: FC<PoolTableProps> = ({
                             {sort == 'amount' && <ArrowDownIcon />}
                         </Th>
                         <Th isNumeric>Total Rewards</Th>
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('weekPerformance')}>
+                                7-days % (annual)
+                            </Link>
+                            {sort == 'weekPerformance' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('monthPerformance')}>
+                                30-days % (annual)
+                            </Link>
+                            {sort == 'monthPerformance' && <ArrowDownIcon />}
+                        </Th>
 
                         <Th>Configured Commission</Th>
                         <Th>
@@ -103,7 +116,7 @@ const PoolTable: FC<PoolTableProps> = ({
                         data &&
                         data.length > 0 &&
                         data.map((pool) => (
-                            <PoolRow
+                            <PoolRowExtended
                                 key={pool.id}
                                 chainId={chainId}
                                 pool={pool}
@@ -116,4 +129,4 @@ const PoolTable: FC<PoolTableProps> = ({
     );
 };
 
-export default PoolTable;
+export default PoolTableExtended;

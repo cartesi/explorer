@@ -9,14 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-interface Nodes<T> {
-    nodes: T[];
-}
-
-export type StakingPoolSort =
-    | 'totalUsers'
-    | 'amount'
-    | 'commissionPercentage'
+export type StakingPoolSort = 'totalUsers' | 'amount' | 'commissionPercentage';
+export type StakingPoolSortExtended =
+    | StakingPoolSort
     | 'weekPerformance'
     | 'monthPerformance';
 
@@ -30,6 +25,10 @@ export type UserSort =
     | 'totalReward'
     | 'totalBlocks';
 export type PoolBalanceSort = 'shares' | 'released';
+
+interface Nodes<T> {
+    nodes: T[];
+}
 
 export type Summary = {
     id: string;
@@ -141,6 +140,10 @@ export interface StakingPoolVars {
 }
 
 export interface StakingPoolsData {
+    stakingPools: StakingPool[];
+}
+
+export interface StakingPoolsExtendedData {
     allStakingPools: Nodes<StakingPoolFlat>;
 }
 
@@ -149,6 +152,7 @@ export interface StakingPoolsVars {
     skip: number;
     where: any;
     orderBy: string;
+    orderDirection?: string;
 }
 
 export type PoolUser = {

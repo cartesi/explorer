@@ -15,45 +15,45 @@ export const STAKING_POOLS = gql`
     query stakingPools(
         $first: Int
         $skip: Int
-        $where: StakingPoolCondition
-        $orderBy: [StakingPoolsOrderBy!]
+        $where: StakingPool_filter
+        $orderBy: StakingPool_orderBy
+        $orderDirection: OrderDirection
     ) {
-        allStakingPools(
+        stakingPools(
             first: $first
-            offset: $skip
-            condition: $where
+            skip: $skip
+            where: $where
             orderBy: $orderBy
+            orderDirection: $orderDirection
         ) {
-            nodes {
+            id
+            manager
+            amount
+            shares
+            totalUsers
+            totalCommission
+            commissionPercentage
+            paused
+            timestamp
+
+            fee {
                 id
-                manager
-                amount
-                shares
-                totalUsers
-                totalCommission
-                commissionPercentage
-                paused
-                timestamp
-                feeId
-                feeCommission
-                feeGas
-                feeCreated
-                feeLastUpdated
-                userStakedBalance
-                userMaturingBalance
-                userMaturingTimestamp
-                userReleasingBalance
-                userReleasingTimestamp
-                userBalance
-                userTotalBlocks
-                userTotalReward
-                shareValue
-                weekShareValue
-                weekShareTimestamp
-                monthShareValue
-                monthShareTimestamp
-                weekPerformance
-                monthPerformance
+                commission
+                gas
+                created
+                lastUpdated
+            }
+
+            user {
+                id
+                stakedBalance
+                maturingBalance
+                maturingTimestamp
+                releasingBalance
+                releasingTimestamp
+                balance
+                totalBlocks
+                totalReward
             }
         }
     }

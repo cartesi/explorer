@@ -12,30 +12,37 @@
 import React, { FC, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
 
-import useStakingPools from '../../graphql/hooks/useStakingPools';
-import PoolTable from '../../components/pools/PoolTable';
-import { StakingPoolSort } from '../../graphql/models';
+import useStakingPoolsExtended from '../../graphql/hooks/useStakingPoolsExtended';
+import PoolTableExtended from '../../components/pools/PoolTableExtended';
+import { StakingPoolSortExtended } from '../../graphql/models';
 import Pagination from '../../components/Pagination';
 
-interface PoolsProps {
+interface PoolsExtendedProps {
     chainId: number;
     account?: string;
     pages: number;
     search?: string;
 }
 
-const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
-    const [sort, setSort] = useState<StakingPoolSort>('commissionPercentage');
+const PoolsExtended: FC<PoolsExtendedProps> = ({
+    chainId,
+    account,
+    pages,
+    search,
+}) => {
+    const [sort, setSort] = useState<StakingPoolSortExtended>(
+        'commissionPercentage'
+    );
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const { data, loading } = useStakingPools(pageNumber, search, sort);
+    const { data, loading } = useStakingPoolsExtended(pageNumber, search, sort);
 
     return (
         <VStack w="100%">
-            <PoolTable
+            <PoolTableExtended
                 chainId={chainId}
                 account={account}
                 loading={loading}
-                data={data?.stakingPools || []}
+                data={data?.allStakingPools.nodes || []}
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />
@@ -50,4 +57,4 @@ const Pools: FC<PoolsProps> = ({ chainId, account, pages, search }) => {
     );
 };
 
-export default Pools;
+export default PoolsExtended;

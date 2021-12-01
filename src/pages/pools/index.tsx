@@ -44,6 +44,8 @@ import UserPoolTable from '../../components/pools/UserPoolTable';
 import { useBlockNumber } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import TermsCondition from '../../components/TermsCondition';
+import { useFlag } from '@unleash/proxy-client-react';
+import PoolsExtended from '../../containers/pool/PoolsExtended';
 
 const StakingPools: FC = () => {
     const { account, chainId } = useWeb3React<Web3Provider>();
@@ -68,6 +70,9 @@ const StakingPools: FC = () => {
 
     // query user balances in all his pools
     const balances = usePoolBalances(account);
+
+    const apr = useFlag('apr');
+    const aws = useFlag('aws');
 
     return (
         <Layout>
@@ -148,14 +153,26 @@ const StakingPools: FC = () => {
                         onSearchChange={(e) => setSearch(e.target.value)}
                     />
                 </HStack>
-                <Pools
-                    chainId={chainId}
-                    pages={Math.ceil(
-                        (summary?.totalPools || 0) / POOLS_PER_PAGE
-                    )}
-                    account={account}
-                    search={search}
-                />
+                {(!apr || !aws) && (
+                    <Pools
+                        chainId={chainId}
+                        pages={Math.ceil(
+                            (summary?.totalPools || 0) / POOLS_PER_PAGE
+                        )}
+                        account={account}
+                        search={search}
+                    />
+                )}
+                {apr && aws && (
+                    <PoolsExtended
+                        chainId={chainId}
+                        pages={Math.ceil(
+                            (summary?.totalPools || 0) / POOLS_PER_PAGE
+                        )}
+                        account={account}
+                        search={search}
+                    />
+                )}
             </PageBody>
         </Layout>
     );

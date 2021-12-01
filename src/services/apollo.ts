@@ -11,13 +11,25 @@
 
 import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { useFlag } from '@unleash/proxy-client-react';
 
-const uris = {
-    1: 'https://api.thegraph.com/subgraphs/name/cartesi/pos',
-    3: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-ropsten',
-    4: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-rinkeby',
-    5: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-goerli',
-    42: 'https://api.thegraph.com/subgraphs/name/cartesi/pos-kovan',
+const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
+const hostedUris = {
+    1: `${hostedBaseUrl}/pos`,
+    3: `${hostedBaseUrl}/pos-ropsten`,
+    4: `${hostedBaseUrl}/pos-rinkeby`,
+    5: `${hostedBaseUrl}/pos-goerli`,
+    42: `${hostedBaseUrl}/pos-kovan`,
+    31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
+};
+
+const awsBaseUrl = 'https://thegraph.cartesi.io/subgraphs/name/cartesi';
+const awsUris = {
+    1: `${awsBaseUrl}/pos`,
+    3: `${awsBaseUrl}/pos-ropsten`,
+    4: `${awsBaseUrl}/pos-rinkeby`,
+    5: `${awsBaseUrl}/pos-goerli`,
+    42: `${awsBaseUrl}/pos-kovan`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
@@ -52,9 +64,15 @@ const mergeUniqueSort = (fieldName: string) => {
     };
 };
 
-export const createApollo = (chainId: number): ApolloClient<any> => {
-    const uri =
-        uris[chainId] || 'https://api.thegraph.com/subgraphs/name/cartesi/pos';
+export const createApollo = (
+    chainId: number,
+    aws: boolean
+): ApolloClient<any> => {
+    let uri = aws ? awsUris[chainId] : hostedUris[chainId];
+
+    // default to mainnet
+    uri = uri || (aws ? awsUris[1] : hostedUris[1]);
+
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({
@@ -93,7 +111,8 @@ export const createExtendedApollo = (chainId: number): ApolloClient<any> => {
 };
 
 export const useApollo = (chainId: number): ApolloClient<any> => {
-    return useMemo(() => createApollo(chainId), [chainId]);
+    const aws = useFlag('aws');
+    return useMemo(() => createApollo(chainId, aws), [chainId, aws]);
 };
 
 export const useExtendedApollo = (chainId: number): ApolloClient<any> => {

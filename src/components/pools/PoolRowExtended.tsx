@@ -22,14 +22,14 @@ import {
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
 
-import { StakingPool } from '../../graphql/models';
+import { StakingPoolFlat } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import labels from '../../utils/labels';
 
-export interface PoolRowProps {
+export interface PoolRowExtendedProps {
     chainId: number;
-    pool: StakingPool;
+    pool: StakingPoolFlat;
     account?: string;
 }
 
@@ -38,7 +38,10 @@ const numberFormat = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
 });
 
-const PoolRow: FunctionComponent<PoolRowProps> = ({
+const apr = (value: number, days: number) =>
+    Math.pow(Math.pow(value + 1, 1 / days), 365) - 1;
+
+const PoolRowExtended: FunctionComponent<PoolRowExtendedProps> = ({
     chainId,
     account,
     pool,
@@ -54,17 +57,17 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
 
     // commission label
     let commissionLabel = '';
-    if (pool.fee.commission !== undefined) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (pool.fee.gas !== undefined) {
-        commissionLabel = `${pool.fee.gas} Gas`;
+    if (pool.feeCommission !== undefined) {
+        commissionLabel = `${(pool.feeCommission / 100).toFixed(2)} %`;
+    } else if (pool.feeGas !== undefined) {
+        commissionLabel = `${pool.feeGas} Gas`;
     }
 
     // commission help tooptip
     let commissionTooltip: string = undefined;
-    if (pool.fee.commission !== undefined) {
+    if (pool.feeCommission !== undefined) {
         commissionTooltip = labels.flatRateCommission;
-    } else if (pool.fee.gas !== undefined) {
+    } else if (pool.feeGas !== undefined) {
         commissionTooltip = labels.gasTaxCommission;
     }
 
@@ -99,7 +102,15 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
             </Td>
             <Td isNumeric>{pool.totalUsers}</Td>
             <Td isNumeric>{formatCTSI(pool.amount, 2)} CTSI</Td>
-            <Td isNumeric>{formatCTSI(pool.user.totalReward, 2)} CTSI</Td>
+            <Td isNumeric>{formatCTSI(pool.userTotalReward, 2)} CTSI</Td>
+            <Td isNumeric>
+                {numberFormat.format(pool.weekPerformance)} (
+                {numberFormat.format(apr(pool.weekPerformance, 7))})
+            </Td>
+            <Td isNumeric>
+                {numberFormat.format(pool.monthPerformance)} (
+                {numberFormat.format(apr(pool.monthPerformance, 30))})
+            </Td>
             <Td>
                 {commissionLabel}{' '}
                 {commissionTooltip && (
@@ -120,4 +131,4 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
     );
 };
 
-export default PoolRow;
+export default PoolRowExtended;

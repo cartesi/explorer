@@ -4874,6 +4874,11 @@
     "@typescript-eslint/types" "4.31.2"
     eslint-visitor-keys "^2.0.0"
 
+"@unleash/proxy-client-react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-1.0.1.tgz#fdfc69d0ff5123186ebe870ee58b5ba167482153"
+  integrity sha512-5kjA7DSm5tYVmHVqE8+LbS72cJ7sGPDUPDGW5mwt28FhkBhizKQHd0x0KAVaCeGRDNChnCc3Dnc9rCV5pgXmmg==
+
 "@use-it/event-listener@^0.1.2":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@use-it/event-listener/-/event-listener-0.1.7.tgz#443a9b6df87f2f2961b74d42997ce723a7078623"
