@@ -107,7 +107,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
     const [valueLabel, unitLabel] = value
         ? format(value, unit, options)
         : [nullLabel, ''];
-    
+
     return (
         <Flex
             direction={direction}

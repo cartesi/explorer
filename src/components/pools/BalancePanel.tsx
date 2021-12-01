@@ -9,8 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
-import { BigNumber, constants } from 'ethers';
 import {
     HStack,
     Icon,
@@ -19,12 +17,14 @@ import {
     Text,
     Tooltip,
 } from '@chakra-ui/react';
-import { FaBalanceScaleLeft, FaBolt, FaCoins, FaUsers } from 'react-icons/fa';
+import { BigNumber, constants } from 'ethers';
+import { FC } from 'react';
 import { BsClockHistory } from 'react-icons/bs';
-import StatsPanel from '../home/StatsPanel';
-import CTSIText from '../CTSIText';
-import { formatCTSI } from '../../utils/token';
+import { FaBalanceScaleLeft, FaBolt, FaCoins, FaUsers } from 'react-icons/fa';
 import { useTimeLeft } from '../../utils/react';
+import { formatCTSI } from '../../utils/token';
+import CTSIText from '../CTSIText';
+import StatsPanel from '../home/StatsPanel';
 
 export interface BalancePanelProps extends StackProps {
     amount: BigNumber;
@@ -75,7 +75,6 @@ const BalancePanel: FC<BalancePanelProps> = ({
         rebalanceLabel =
             `${formatCTSI(withdraw)} CTSI to withdraw, ` + rebalanceLabel;
     }
-
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(stakingMaturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
@@ -155,9 +154,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                             countdown={{ timeLeft: time, timeLabel: timeLabel }}
                         >
                             <HStack>
-                                <Text>
-                                    {label}
-                                </Text>
+                                <Text>{label}</Text>
                                 <Tooltip label={help} placement="top">
                                     <Icon />
                                 </Tooltip>

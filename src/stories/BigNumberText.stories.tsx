@@ -16,6 +16,7 @@ import { ImClock, ImPriceTag } from 'react-icons/im';
 import BigNumberText from '../components/BigNumberText';
 import { Text } from '@chakra-ui/react';
 import { ethers } from 'ethers';
+import { BsClockHistory } from 'react-icons/bs';
 
 export default {
     title: 'BigNumber Text',
@@ -91,5 +92,31 @@ export const ShortDuration = () => (
         unit="duration"
     >
         <Text>Production Rate</Text>
+    </BigNumberText>
+);
+export const WithCountdownMaturing = () => (
+    <BigNumberText
+        value={ethers.utils.parseUnits('10000', 18)}
+        icon={BsClockHistory}
+        unit="ctsi"
+        countdown={{
+            timeLeft: '36 minutes, 55 seconds',
+            timeLabel: 'Maturing in ',
+        }}
+    >
+        <Text>Maturing Balance</Text>
+    </BigNumberText>
+);
+export const WithCountdownReleasing = () => (
+    <BigNumberText
+        value={ethers.utils.parseUnits('10000', 18)}
+        icon={BsClockHistory}
+        unit="ctsi"
+        countdown={{
+            timeLeft: '16 hours, 55 minutes',
+            timeLabel: 'Releasing in ',
+        }}
+    >
+        <Text>Releasing Balance</Text>
     </BigNumberText>
 );
