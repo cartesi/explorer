@@ -71,6 +71,6 @@ export const useENS = (address: string): ENSEntry => {
         if (library) {
             resolve(address).then(setEntry);
         }
-    }, [address, library]);
+    }, [address, library, library?.network]);
     return entry;
 };
