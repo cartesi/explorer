@@ -79,8 +79,6 @@ const BalancePanel: FC<BalancePanelProps> = ({
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(stakingMaturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
-    console.log(maturingLeft);
-    console.log(releasingLeft);
 
     return (
         <StatsPanel {...stackProps}>
@@ -120,7 +118,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     icon: BsClockHistory,
                     help: 'Amount of pool tokens maturing at the Staking contract',
                     time: maturingLeft,
-                    timeLabel: 'Staking maturing in ',
+                    timeLabel: 'Maturing in ',
                 },
                 {
                     value: stakingReleasing,
@@ -128,7 +126,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     icon: BsClockHistory,
                     help: 'Amount of pool tokens being unstaken at the Staking contract',
                     time: releasingLeft,
-                    timeLabel: 'Staking releasing in ',
+                    timeLabel: 'Releasing in ',
                 },
                 {
                     value: stakingReleased,
@@ -143,7 +141,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     help: 'Amount of tokens available at the pool contract either for stake or withdraw',
                 },
             ].map(
-                ({ value, label, icon, help, time = 0, timeLabel = '' }) =>
+                ({ value, label, icon, help, time, timeLabel }) =>
                     !(value?.isZero() && hideZeros) && (
                         <CTSIText
                             value={value}
@@ -154,20 +152,15 @@ const BalancePanel: FC<BalancePanelProps> = ({
                                 minimumFractionDigits: 0,
                                 maximumFractionDigits: 2,
                             }}
+                            countdown={{ timeLeft: time, timeLabel: timeLabel }}
                         >
                             <HStack>
-                                <Text>{label}</Text>
+                                <Text>
+                                    {label}
+                                </Text>
                                 <Tooltip label={help} placement="top">
                                     <Icon />
                                 </Tooltip>
-                                {time && (
-                                    <>
-                                        <Text>
-                                            {timeLabel}
-                                            {time}
-                                        </Text>
-                                    </>
-                                )}
                             </HStack>
                         </CTSIText>
                     )

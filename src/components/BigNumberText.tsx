@@ -18,6 +18,10 @@ import { IconType } from 'react-icons';
 import humanizeDuration from 'humanize-duration';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
+type Countdown = {
+    timeLeft: String;
+    timeLabel: String;
+};
 
 const formatDuration = (ms: number): string[] => {
     return humanizeDuration(ms, {
@@ -80,6 +84,7 @@ export interface BigNumberTextProps extends FlexProps {
     direction?: SystemProps['flexDirection'];
     unit?: Unit;
     options?: Intl.NumberFormatOptions;
+    countdown?: Countdown;
 }
 
 const defaultOptions: Intl.NumberFormatOptions = {
@@ -96,12 +101,13 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         icon,
         unit,
         options = defaultOptions,
+        countdown,
         ...flexProps
     } = props;
     const [valueLabel, unitLabel] = value
         ? format(value, unit, options)
         : [nullLabel, ''];
-
+    
     return (
         <Flex
             direction={direction}
@@ -117,6 +123,13 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                 <Text fontSize="3xl">{valueLabel}</Text>
                 {unit && value && <Text fontSize="small">{unitLabel}</Text>}
             </HStack>
+            {countdown && countdown.timeLeft && (
+                <HStack>
+                    <Text fontSize="sm">
+                        {countdown.timeLabel} {countdown.timeLeft}
+                    </Text>
+                </HStack>
+            )}
         </Flex>
     );
 };
