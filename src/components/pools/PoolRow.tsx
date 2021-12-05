@@ -52,19 +52,27 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
 
+    let flatRate = pool.fee.commission > 0;
+    const gasTax = pool.fee.gas > 0;
+
+    // XXX: if both are zero, currently we don't which is it, for now let's assume it's flat rate
+    if (!flatRate && !gasTax) {
+        flatRate = true;
+    }
+
     // commission label
     let commissionLabel = '';
-    if (pool.fee.commission !== undefined) {
+    if (flatRate) {
         commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (pool.fee.gas !== undefined) {
+    } else if (gasTax) {
         commissionLabel = `${pool.fee.gas} Gas`;
     }
 
     // commission help tooptip
     let commissionTooltip: string = undefined;
-    if (pool.fee.commission !== undefined) {
+    if (flatRate) {
         commissionTooltip = labels.flatRateCommission;
-    } else if (pool.fee.gas !== undefined) {
+    } else if (gasTax) {
         commissionTooltip = labels.gasTaxCommission;
     }
 
