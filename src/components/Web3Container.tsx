@@ -13,6 +13,8 @@ import React from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3ConnectionProvider } from '../contexts/Web3Connection';
+import { WalletConnectionProvider } from '../contexts/wallet';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const Web3Container = ({ children }) => {
     const getLibrary = (provider: any) => {
