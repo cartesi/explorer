@@ -38,6 +38,11 @@ const Links = [
         href: '/',
     },
     {
+        key: 'staking-ui',
+        label: 'Staking',
+        href: '/staking-ui',
+    },
+    {
         key: 'staking',
         label: 'Node Runners',
         href: '/staking',
