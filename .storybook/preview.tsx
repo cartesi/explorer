@@ -14,6 +14,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { StoryContext } from '@storybook/react';
 import { withPerformance } from 'storybook-addon-performance';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { FeatureFlagProvider } from '../src/utils/featureFlags';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import withColorMode from './withColorMode';
 import Web3Container from '../src/components/Web3Container';
@@ -51,12 +52,14 @@ export const globalTypes = {
 
 const withChakra = (Story: Function, context: StoryContext) => {
     return (
-        <ChakraProvider resetCSS theme={theme}>
-            <Web3Container>
-                <SelectedChain />
-                <Story />
-            </Web3Container>
-        </ChakraProvider>
+        <FeatureFlagProvider>
+            <ChakraProvider resetCSS theme={theme}>
+                <Web3Container>
+                    <SelectedChain />
+                    <Story />
+                </Web3Container>
+            </ChakraProvider>
+        </FeatureFlagProvider>
     );
 };
 

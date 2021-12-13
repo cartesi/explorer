@@ -21,7 +21,11 @@ const Web3Container = ({ children }) => {
         return new Web3Provider(provider, 'any');
     };
 
-    return (
+    const multiWalletEnabled = useFlag('multiWalletEnabled');
+
+    return multiWalletEnabled ? (
+        <WalletConnectionProvider>{children}</WalletConnectionProvider>
+    ) : (
         <Web3ReactProvider getLibrary={getLibrary}>
             <Web3ConnectionProvider>{children}</Web3ConnectionProvider>
         </Web3ReactProvider>
