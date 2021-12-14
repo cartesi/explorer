@@ -35,12 +35,12 @@ export const Default = Template.bind({});
 Default.args = {
     loading: false,
     sort: 'balance',
-    data: data.data.allStakingPools.nodes,
+    data: data.data.stakingPools,
     account: '0x79bdc19c6f823f2911190b005f489ed00af6246d',
 };
 
-export const NoItens = Template.bind({});
-NoItens.args = {
+export const NoItems = Template.bind({});
+NoItems.args = {
     loading: false,
     data: [],
 };
