@@ -12,25 +12,35 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import AddressText from '../components/AddressText';
-import { Text } from '@chakra-ui/react';
+import PoolTableExtended from './../../components/pools/PoolTableExtended';
 
 export default {
-    title: 'Address Text',
-    component: AddressText,
+    title: 'Pools/Table Extended',
+    component: PoolTableExtended,
     argTypes: {},
-} as ComponentMeta<typeof AddressText>;
+} as ComponentMeta<typeof PoolTableExtended>;
 
-const Template: ComponentStory<typeof AddressText> = (args) => (
-    <AddressText {...args}>
-        <Text>Staking Pool</Text>
-    </AddressText>
+const Template: ComponentStory<typeof PoolTableExtended> = (args) => (
+    <PoolTableExtended {...args} />
 );
 
-import data from './pools/poolsExtended.json';
+export const Loading = Template.bind({});
+Loading.args = {
+    loading: true,
+};
+
+import data from './poolsExtended.json';
 
 export const Default = Template.bind({});
 Default.args = {
-    address: data.data.allStakingPools.nodes[0].id,
-    chainId: 5,
+    loading: false,
+    sort: 'balance',
+    data: data.data.allStakingPools.nodes,
+    account: '0x79bdc19c6f823f2911190b005f489ed00af6246d',
+};
+
+export const NoItems = Template.bind({});
+NoItems.args = {
+    loading: false,
+    data: [],
 };
