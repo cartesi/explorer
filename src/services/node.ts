@@ -12,7 +12,6 @@
 import { useState, useEffect } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
-import { useWeb3React } from '@web3-react/core';
 import { useBalance, useBlockNumber } from './eth';
 import {
     usePoSContract,
@@ -20,6 +19,7 @@ import {
     useWorkerManagerContract,
 } from './contracts';
 import { Transaction, useTransaction } from './transaction';
+import { useWallet } from '../contexts/wallet';
 
 export interface Node {
     address: string;
@@ -41,7 +41,7 @@ export interface Node {
 }
 
 export const useNode = (address: string): Node => {
-    const { library, chainId } = useWeb3React();
+    const { library, chainId } = useWallet();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
     const pos1 = usePoS1Contract();

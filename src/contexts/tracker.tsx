@@ -11,9 +11,8 @@
 
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { Router } from 'next/router';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import ReactGA from 'react-ga';
+import { useWallet } from './wallet';
 
 const TrackingID = 'UA-124332259-9';
 
@@ -29,7 +28,7 @@ const TrackingContext = createContext<TrackingProviderProps>(undefined);
 const anonymizeUser = (account: string) => account?.substring(2, 10);
 
 const TrackingProvider: FC = (props) => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account } = useWallet();
 
     // we create a default state to keep track of whether GA
     // has been initialized, if we're tracking a unique user,

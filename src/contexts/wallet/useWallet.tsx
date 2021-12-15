@@ -1,9 +1,7 @@
 import { useContext } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
-import { WalletConnectionContextProps } from './definitions';
 import { WalletConnectionContext } from './provider';
 import { useWeb3React } from '@web3-react/core';
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { useFlag } from '@unleash/proxy-client-react';
 import { WalletConnectionContextProps } from './definitions';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';

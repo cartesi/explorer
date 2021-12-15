@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWeb3React } from '@web3-react/core';
+import { useWallet } from '../contexts/wallet';
 import React, { ReactNode } from 'react';
 import {
     Box,
@@ -75,7 +75,7 @@ const SocialButton = ({
 };
 
 const Footer = () => {
-    const { chainId } = useWeb3React();
+    const { chainId } = useWallet();
 
     const pos = usePoSContract();
     const token = useCartesiTokenContract();

@@ -11,13 +11,13 @@
 
 import React, { FC } from 'react';
 import { Box, BoxProps, Button, HStack, Image, Text } from '@chakra-ui/react';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { UnsupportedChainIdError } from '@web3-react/core';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { connector, useWeb3Connection } from '../../contexts/Web3Connection';
+import { useWallet } from '../../contexts/wallet';
 
 const ConnectMetamask: FC<BoxProps> = (props) => {
-    const { activate, error, active } = useWeb3React<Web3Provider>();
+    const { activate, error, active } = useWallet();
 
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 

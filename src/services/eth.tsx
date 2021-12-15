@@ -10,13 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isAddress } from '@ethersproject/address';
+import { useWallet } from '../contexts/wallet';
 
 export const useBalance = (address: string, deps: any[] = []): BigNumber => {
-    const { library } = useWeb3React<Web3Provider>();
+    const { library } = useWallet();
     const [balance, setBalance] = useState<BigNumber>(undefined);
     useEffect(() => {
         if (library) {
@@ -31,7 +30,7 @@ export const useBalance = (address: string, deps: any[] = []): BigNumber => {
 };
 
 export const useBlockNumber = (): number => {
-    const { chainId, library } = useWeb3React<Web3Provider>();
+    const { chainId, library } = useWallet();
     const [blockNumber, setBlockNumber] = useState<number>(0);
     useEffect(() => {
         if (library) {

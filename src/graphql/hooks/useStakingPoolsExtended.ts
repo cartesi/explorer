@@ -17,7 +17,7 @@ import {
     StakingPoolSortExtended,
 } from '../models';
 import { useExtendedApollo } from '../../services/apollo';
-import { useWeb3React } from '@web3-react/core';
+import { useWallet } from '../../contexts/wallet';
 
 export const POOLS_PER_PAGE = 50;
 
@@ -35,7 +35,7 @@ const useStakingPoolsExtended = (
     id: string = undefined,
     sort: StakingPoolSortExtended = 'commissionPercentage'
 ) => {
-    const { chainId } = useWeb3React();
+    const { chainId } = useWallet();
     const filter = id ? { id: id.toLowerCase() } : {};
     const order = orderBy[sort];
     const client = useExtendedApollo(chainId);

@@ -11,8 +11,6 @@
 
 import React, { FunctionComponent } from 'react';
 import Head from 'next/head';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import {
     Alert,
     AlertIcon,
@@ -37,6 +35,7 @@ import PageHeader from '../../components/PageHeader';
 import { LockIcon } from '@chakra-ui/icons';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import { truncateString } from '../../utils/stringUtils';
+import { useWallet } from '../../contexts/wallet';
 
 type CommissionModel = 'flatRate' | 'gasTax';
 type FormData = {
@@ -46,7 +45,7 @@ type FormData = {
 };
 
 const CreatePool: FunctionComponent = () => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account } = useWallet();
     const {
         loading,
         paused,

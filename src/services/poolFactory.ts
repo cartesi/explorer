@@ -9,18 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
-import { Web3Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 import { useStakingPoolFactoryContract } from './contracts';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
+import { useWallet } from '../contexts/wallet';
 
 export const useStakingPoolFactory = () => {
     const poolFactory = useStakingPoolFactoryContract();
 
-    const { account } = useWeb3React<Web3Provider>();
+    const { account } = useWallet();
     const blockNumber = useBlockNumber();
 
     const transaction = useTransaction<string>((receipt) => {

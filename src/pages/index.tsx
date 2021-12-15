@@ -13,8 +13,6 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 
 import { FixedNumber } from 'ethers';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import {
     HStack,
     Text,
@@ -37,6 +35,7 @@ import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
+import { useWallet } from '../contexts/wallet';
 
 import { getRewardRate } from '../utils/reward';
 import { toCTSI } from '../utils/token';
@@ -52,7 +51,7 @@ import SectionHeading from '../components/SectionHeading';
 
 const Home = () => {
     // user account and blockchain information (from metamask)
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWallet();
 
     // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();

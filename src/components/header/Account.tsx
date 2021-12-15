@@ -9,16 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { HStack, Tag, TagLabel } from '@chakra-ui/react';
-import { useWeb3React } from '@web3-react/core';
+import {
+    HStack,
+    Tag,
+    TagLabel,
+    TagCloseButton,
+    IconButton,
+    Box,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
+import { useWallet } from '../../contexts/wallet';
 
 const Account: FC = () => {
-    const { account } = useWeb3React<Web3Provider>();
+    const { account } = useWallet();
     const ens = useENS(account);
 
     if (!account) {

@@ -13,8 +13,6 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import { BigNumber, constants } from 'ethers';
 import {
     Collapse,
@@ -42,6 +40,7 @@ import Layout, {
 import { useBlockNumber } from '../../services/eth';
 import { useStakingPool } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
+import { useWallet } from '../../contexts/wallet';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import StakingDisclaimer from '../../components/StakingDisclaimer';
 import { useStaking } from '../../services/staking';
@@ -67,7 +66,7 @@ const blockAverageInterval = (
 };
 
 const Pool = () => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWallet();
 
     // get pool address from path
     const router = useRouter();

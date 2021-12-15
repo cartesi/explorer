@@ -10,9 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useEffect, useState } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
+import { useWallet } from '../contexts/wallet';
 
 export interface ENSEntry {
     address: string;
@@ -28,7 +27,7 @@ export interface ENSEntry {
  * @returns ENSEntry with the address, and name if address can be resolved to a name
  */
 export const useENS = (address: string): ENSEntry => {
-    const { library } = useWeb3React<Web3Provider>();
+    const { library } = useWallet();
     const [entry, setEntry] = useState<ENSEntry>({ address, resolving: true });
     useEffect(() => {
         const resolve = async (address: string): Promise<ENSEntry> => {

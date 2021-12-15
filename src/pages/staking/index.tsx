@@ -11,8 +11,6 @@
 
 import React, { FC, useState } from 'react';
 import Head from 'next/head';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import {
     Box,
     Button,
@@ -53,9 +51,10 @@ import { useNode } from '../../services/node';
 import Node from '../../components/node/Node';
 import labels from '../../utils/labels';
 import TermsCondition from '../../components/TermsCondition';
+import { useWallet } from '../../contexts/wallet';
 
 const Staking: FC = () => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWallet();
     const blockNumber = useBlockNumber();
 
     // user ETH balance

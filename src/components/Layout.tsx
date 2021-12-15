@@ -19,7 +19,6 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import Header from './Header';
 import Footer from './Footer';
 import SyncStatus from './SyncStatus';
@@ -65,9 +64,6 @@ export const PageBody: FC = ({ children }) => (
 );
 
 const Layout = ({ children }) => {
-    const { error } = useWeb3React();
-    const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-
     return (
         <Flex direction="column" align="center" m="0 auto">
             <Header />

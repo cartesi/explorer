@@ -10,10 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
+import { useWallet } from '../../contexts/wallet';
 
 import {
     WorkerManagerAuthManagerImpl__factory,
@@ -112,7 +111,7 @@ export function useContract<C>(
     abis: ChainMap,
     name: string
 ): C {
-    const { library, chainId } = useWeb3React<Web3Provider>();
+    const { library, chainId } = useWallet();
 
     // contract is a state variable, because it's async
     const [contract, setContract] = useState<C>();
@@ -146,7 +145,7 @@ export function useContractFromAddress<C>(
     connector: (address: string, signerOrProvider: Signer | Provider) => C,
     address: string
 ): C {
-    const { library, chainId } = useWeb3React<Web3Provider>();
+    const { library, chainId } = useWallet();
 
     // contract is a state variable, because it's async
     const [contract, setContract] = useState<C>();

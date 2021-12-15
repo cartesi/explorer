@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWeb3React } from '@web3-react/core';
 import { ContractReceipt, ContractTransaction } from 'ethers';
 import { useEffect, useState } from 'react';
 import { serializeError } from 'eth-rpc-errors';
 import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
 import { confirmations } from '../utils/networks';
+import { useWallet } from '../contexts/wallet';
 
 export class Transaction<R> {
     submitting: boolean;
@@ -42,7 +42,7 @@ function extractError(error: SerializedEthereumRpcError): string {
 export function useTransaction<R>(
     resultResolver?: (receipt: ContractReceipt) => R
 ): Transaction<R> {
-    const { chainId } = useWeb3React();
+    const { chainId } = useWallet();
     const [acknowledged, setAcknowledged] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string>();

@@ -10,10 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import Chain from './Chain';
 import { TagProps } from '@chakra-ui/react';
+import { useWallet } from '../../contexts/wallet';
 
 export interface SelectedChainProps extends TagProps {
     showMainnet?: boolean;
@@ -24,7 +23,7 @@ const SelectedChain: FC<SelectedChainProps> = ({
     ...tagProps
 }) => {
     // get chain from context, undefined if not connected
-    const { chainId } = useWeb3React<Web3Provider>();
+    const { chainId } = useWallet();
 
     // render component
     return <Chain chainId={chainId} showMainnet={showMainnet} {...tagProps} />;

@@ -10,16 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { networks } from '../utils/networks';
+import { useWallet } from './wallet';
 
 const connector = new InjectedConnector({
     supportedChainIds: Object.keys(networks).map((key) => parseInt(key)),
 });
 
 const useEagerConnect = () => {
-    const { activate, active } = useWeb3React();
+    const { activate, active } = useWallet();
     const [tried, setTried] = useState(false);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const useEagerConnect = () => {
 };
 
 const useInactiveListener = (suppress = false) => {
-    const { active, error, activate, deactivate } = useWeb3React();
+    const { active, error, activate, deactivate } = useWallet();
 
     useEffect(() => {
         const { ethereum } = window as any;

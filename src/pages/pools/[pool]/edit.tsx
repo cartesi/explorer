@@ -12,8 +12,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import {
     FormControl,
     FormLabel,
@@ -40,11 +38,12 @@ import { useNode } from '../../../services/node';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import Node from '../../../components/node/Node';
 import { useBalance } from '../../../services/eth';
+import { useWallet } from '../../../contexts/wallet';
 
 const ManagePool = () => {
     const router = useRouter();
     const address = router.query.pool as string;
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWallet();
 
     const userBalance = useBalance(account);
     const pool = useStakingPool(address, account);

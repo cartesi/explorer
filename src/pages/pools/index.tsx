@@ -11,8 +11,6 @@
 
 import React, { FC, useState } from 'react';
 import Head from 'next/head';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 import NextLink from 'next/link';
 import {
     Button,
@@ -46,9 +44,10 @@ import { useCartesiToken } from '../../services/token';
 import TermsCondition from '../../components/TermsCondition';
 import { useFlag } from '@unleash/proxy-client-react';
 import PoolsExtended from '../../containers/pool/PoolsExtended';
+import { useWallet } from '../../contexts/wallet';
 
 const StakingPools: FC = () => {
-    const { account, chainId } = useWeb3React<Web3Provider>();
+    const { account, chainId } = useWallet();
 
     // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();

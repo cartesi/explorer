@@ -32,8 +32,7 @@ import kovan from '@cartesi/staking-pool/export/abi/kovan.json';
 import localhost from './localhost.json';
 
 import { ChainMap, useContract, useContractFromAddress } from '.';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWallet } from '../../contexts/wallet';
 
 const abis: ChainMap = {
     1: mainnet,
@@ -59,7 +58,7 @@ export const useStakingPoolContract = (address: string): StakingPoolImpl => {
 export const useFeeContract = (address: string): Fee => {
     const [fee, setFee] = useState<Fee>();
     const pool = useStakingPoolContract(address);
-    const { library } = useWeb3React<Web3Provider>();
+    const { library } = useWallet();
     useEffect(() => {
         if (pool && library) {
             pool.fee().then((feeAddress) => {
