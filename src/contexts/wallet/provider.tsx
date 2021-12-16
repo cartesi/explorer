@@ -6,6 +6,7 @@ import {
     WalletCheckInit,
 } from 'bnc-onboard/dist/src/interfaces';
 import { networks } from '../../utils/networks';
+import { chains } from 'eth-chains';
 import { WalletType, WalletConnectionContextProps } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { useColorMode } from '@chakra-ui/react';
@@ -77,10 +78,6 @@ export const WalletConnectionProvider: FC = (props) => {
         setState({ ...initialContextState });
     };
 
-    if (onboard) {
-        console.log(onboard.getState().wallet.provider);
-    }
-
     useEffect(() => {
         const onboardInitialized = Onboard({
             networkId: supportedNetworks[0],
@@ -91,6 +88,7 @@ export const WalletConnectionProvider: FC = (props) => {
                         const ethersProvider =
                             new ethers.providers.Web3Provider(provider, 'any');
 
+                        console.log(`Wallet selected: ${name}`);
                         window.localStorage.setItem('selectedWallet', name);
 
                         setState((state) => ({
@@ -107,6 +105,7 @@ export const WalletConnectionProvider: FC = (props) => {
                     }
                 },
                 address: (address: string) => {
+                    console.log(`Address changed to: ${address}`);
                     setState((state) => ({ ...state, account: address }));
                 },
                 network: (networkId: number) => {
@@ -119,6 +118,10 @@ export const WalletConnectionProvider: FC = (props) => {
                           )
                         : null;
 
+                    const chain = chains.getById(networkId);
+                    console.log(
+                        `Network changed to: ${chain?.name || networkId}`
+                    );
                     setState((state) => ({
                         ...state,
                         chainId: networkId,
