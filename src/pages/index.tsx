@@ -50,7 +50,7 @@ import useTotalPoolBalance from '../graphql/hooks/useTotalPoolBalance';
 import SectionHeading from '../components/SectionHeading';
 
 const Home = () => {
-    // user account and blockchain information (from metamask)
+    // user account and blockchain information (from metamask or other wallets)
     const { account, chainId } = useWallet();
 
     // ethereum block number (from metamask)

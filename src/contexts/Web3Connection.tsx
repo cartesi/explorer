@@ -13,6 +13,7 @@ import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { networks } from '../utils/networks';
 import { useWallet } from './wallet';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const connector = new InjectedConnector({
     supportedChainIds: Object.keys(networks).map((key) => parseInt(key)),
@@ -99,12 +100,13 @@ const Web3ConnectionContext = createContext<Web3ConnectionProviderProps>({
 });
 
 const Web3ConnectionProvider: FC = (props) => {
+    const multiWalletEnabled = useFlag('multiWalletEnabled');
+
     // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
     const triedEager = useEagerConnect();
-
     // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
-    useInactiveListener(!triedEager);
-
+    const suppressInactiveListeners = !triedEager || multiWalletEnabled;
+    useInactiveListener(suppressInactiveListeners);
     return (
         <Web3ConnectionContext.Provider
             value={{ tried: triedEager }}
