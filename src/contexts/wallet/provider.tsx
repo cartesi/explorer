@@ -153,7 +153,7 @@ export const WalletConnectionProvider: FC = (props) => {
             const darkMode = 'dark' === colorMode;
             onboard.config({ darkMode });
         }
-    }, [onboard]);
+    }, [colorMode]);
 
     const defaults = { activate, active, deactivate, error };
     const value = active ? { ...defaults, ...state } : defaults;
