@@ -14,20 +14,17 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3ConnectionProvider } from '../contexts/Web3Connection';
 import { WalletConnectionProvider } from '../contexts/wallet';
-import { useFlag } from '@unleash/proxy-client-react';
 
 const Web3Container = ({ children }) => {
     const getLibrary = (provider: any) => {
         return new Web3Provider(provider, 'any');
     };
 
-    const multiWalletEnabled = useFlag('multiWalletEnabled');
-
-    return multiWalletEnabled ? (
-        <WalletConnectionProvider>{children}</WalletConnectionProvider>
-    ) : (
+    return (
         <Web3ReactProvider getLibrary={getLibrary}>
-            <Web3ConnectionProvider>{children}</Web3ConnectionProvider>
+            <Web3ConnectionProvider>
+                <WalletConnectionProvider>{children}</WalletConnectionProvider>
+            </Web3ConnectionProvider>
         </Web3ReactProvider>
     );
 };
