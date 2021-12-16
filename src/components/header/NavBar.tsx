@@ -22,10 +22,12 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { useFlag } from '@unleash/proxy-client-react';
 
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
 import ConnectMetamask from './ConnectMetamask';
+import ConnectWallet from './ConnectWallet';
 import Account from './Account';
 
 const Links = [
@@ -69,6 +71,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
 const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
+    const multiWalletEnabled = useFlag('multiWalletEnabled');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -118,7 +121,16 @@ const NavBar: FC<FlexProps> = (props) => {
                         }
                         onClick={toggleColorMode}
                     />
-                    <ConnectMetamask display={{ base: 'none', md: 'flex' }} />
+                    {!multiWalletEnabled && (
+                        <ConnectMetamask
+                            display={{ base: 'none', md: 'flex' }}
+                        />
+                    )}
+
+                    {multiWalletEnabled && (
+                        <ConnectWallet display={{ base: 'none', md: 'flex' }} />
+                    )}
+
                     <Account />
                 </Flex>
             </Flex>
@@ -130,7 +142,8 @@ const NavBar: FC<FlexProps> = (props) => {
                                 {label}
                             </NavLink>
                         ))}
-                        <ConnectMetamask />
+                        {!multiWalletEnabled && <ConnectMetamask />}
+                        {multiWalletEnabled && <ConnectWallet />}
                     </Stack>
                 </Box>
             )}

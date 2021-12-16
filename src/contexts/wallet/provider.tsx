@@ -1,12 +1,11 @@
 import { createContext, FC, useEffect, useState } from 'react';
 import Onboard from 'bnc-onboard';
-import ethers from 'ethers';
+import { ethers } from 'ethers';
 import {
     WalletInitOptions,
     WalletCheckInit,
 } from 'bnc-onboard/dist/src/interfaces';
 import { networks } from '../../utils/networks';
-import { chains } from 'eth-chains';
 import { WalletType, WalletConnectionContextProps } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { useColorMode } from '@chakra-ui/react';
@@ -17,22 +16,23 @@ const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
-const rpcs = supportedNetworks.map(chains.getById).reduce((prev, network) => {
-    if (network) prev[`'${network.chainId}'`] = getRPC(network.name);
-    return prev;
-}, {});
-
 const wallets: WalletInitOptions[] = [
-    { walletName: 'metamask', preferred: true },
-    { walletName: 'coinbase', preferred: true },
+    { walletName: 'metamask' },
+    {
+        walletName: 'coinbase',
+        infuraKey: PROJECT_ID,
+    },
+    {
+        walletName: 'walletLink',
+        rpcUrl: getRPC('mainnet'),
+        appName: 'Cartesi Explorer',
+    },
     { walletName: 'gnosis' },
     { walletName: 'trust' },
     { walletName: 'ledger', rpcUrl: getRPC('mainnet') },
     {
-        walletName: 'walletconnect',
-        rpc: {
-            ...rpcs,
-        },
+        walletName: 'walletConnect',
+        infuraKey: PROJECT_ID,
     },
 ];
 
@@ -77,6 +77,10 @@ export const WalletConnectionProvider: FC = (props) => {
         setState({ ...initialContextState });
     };
 
+    if (onboard) {
+        console.log(onboard.getState().wallet.provider);
+    }
+
     useEffect(() => {
         const onboardInitialized = Onboard({
             networkId: supportedNetworks[0],
@@ -85,15 +89,15 @@ export const WalletConnectionProvider: FC = (props) => {
                     const { provider, name, type } = wallet;
                     if (provider) {
                         const ethersProvider =
-                            new ethers.providers.Web3Provider(provider);
+                            new ethers.providers.Web3Provider(provider, 'any');
+
+                        window.localStorage.setItem('selectedWallet', name);
 
                         setState((state) => ({
                             ...state,
                             library: ethersProvider,
                             isHardwareWallet: type === WalletType.HARDWARE,
                         }));
-
-                        window.localStorage.setItem('selectedWallet', name);
                     } else {
                         setState((state) => ({
                             ...state,
@@ -108,7 +112,6 @@ export const WalletConnectionProvider: FC = (props) => {
                 network: (networkId: number) => {
                     const isNetworkSupported =
                         supportedNetworks.includes(networkId);
-
                     const error = !isNetworkSupported
                         ? new UnsupportedNetworkError(
                               networkId,
@@ -133,7 +136,6 @@ export const WalletConnectionProvider: FC = (props) => {
     }, []);
 
     useEffect(() => {
-        const { onboard } = state;
         const previousWalletSelected =
             window.localStorage.getItem('selectedWallet');
 
@@ -151,13 +153,10 @@ export const WalletConnectionProvider: FC = (props) => {
             const darkMode = 'dark' === colorMode;
             onboard.config({ darkMode });
         }
-        setState((state) => ({ ...state, tried: true }));
-    }, [state.onboard]);
+    }, [onboard]);
 
-    return (
-        <WalletConnectionContext.Provider
-            value={{ ...state, active, activate, deactivate }}
-            {...props}
-        />
-    );
+    const defaults = { activate, active, deactivate, error };
+    const value = active ? { ...defaults, ...state } : defaults;
+
+    return <WalletConnectionContext.Provider value={value} {...props} />;
 };
