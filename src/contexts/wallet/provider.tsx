@@ -80,6 +80,7 @@ export const WalletConnectionProvider: FC = (props) => {
 
     useEffect(() => {
         const onboardInitialized = Onboard({
+            hideBranding: true,
             networkId: supportedNetworks[0],
             subscriptions: {
                 wallet: (wallet) => {
