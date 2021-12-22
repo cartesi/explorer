@@ -160,7 +160,7 @@ export const WalletConnectionProvider: FC = (props) => {
     }, [colorMode]);
 
     const defaults = { activate, active, deactivate, error };
-    const value = active ? { ...defaults, ...state } : defaults;
+    const value = active ? { ...state, ...defaults } : defaults;
 
     return <WalletConnectionContext.Provider value={value} {...props} />;
 };

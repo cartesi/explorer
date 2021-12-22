@@ -20,13 +20,15 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import { HiSwitchVertical } from 'react-icons/hi';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
 import { useWallet } from '../../contexts/wallet';
 
 const Account: FC = () => {
-    const { account } = useWallet();
+    const { account, library, isHardwareWallet, onboard } = useWallet();
     const ens = useENS(account);
+    const iconColor = useColorModeValue('white', 'gray.300');
 
     if (!account) {
         return null;
@@ -42,6 +44,17 @@ const Account: FC = () => {
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
                 <TagLabel>{ens.name || truncateString(ens.address)}</TagLabel>
+                {account && library && isHardwareWallet && (
+                    <IconButton
+                        onClick={onboard.accountSelect}
+                        aria-label="Switch accounts"
+                        colorScheme="transparent"
+                        size="sm"
+                        variant="ghost"
+                        color={iconColor}
+                        icon={<Box as={HiSwitchVertical} />}
+                    />
+                )}
             </HStack>
         </Tag>
     );
