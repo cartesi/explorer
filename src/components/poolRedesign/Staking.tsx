@@ -27,6 +27,7 @@ import {
     PoolBalanceIcon,
     StakedBalanceIcon,
     TimeIcon,
+    TimerIcon,
 } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
 import { StakingDeposit } from './StakingDeposit';
@@ -36,6 +37,7 @@ import { StakingWithdraw } from './StakingWithdraw';
 
 export const Staking: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
+    const infoColor = useColorModeValue('blue.500', 'blue.200');
 
     const depositDisclosure = useDisclosure();
     const withdrawDisclosure = useDisclosure();
@@ -97,6 +99,24 @@ export const Staking: FC = () => {
                 />
 
                 <InfoBanner
+                    title="500 CTSI will be ready in pool balance for staking soon."
+                    content="500 CTSI are now on the way to the pool balance. It will take 6 minutes to settle your deposited tokens before staking it. "
+                    isOpen
+                    isClosable
+                    isExpandable
+                    isExpanded
+                    status="info"
+                    icon={
+                        <VStack mr={4} spacing={1} color={infoColor}>
+                            <TimerIcon boxSize="6" />
+                            <Box fontSize="xs" fontWeight="bold">
+                                04:32
+                            </Box>
+                        </VStack>
+                    }
+                />
+
+                <InfoBanner
                     title="Depositing 15000 CTSI in pool..."
                     content="Staking is the process of locking your CTSI tokens to the network. This allows you to earn rewards for staking."
                     isOpen
@@ -107,7 +127,7 @@ export const Staking: FC = () => {
                 <InfoBanner
                     title="Staking"
                     content="Staking is the process of locking your CTSI tokens to the network. This allows you to earn rewards for staking."
-                    icon={<TimeIcon boxSize="6" color="info" mr={3} />}
+                    icon={<TimeIcon boxSize="6" color={infoColor} mr={3} />}
                     isOpen
                     isExpandable
                     status="info"
@@ -177,7 +197,7 @@ export const Staking: FC = () => {
                 <InfoBanner
                     title="Unstaking 200 CTSI to the pool balance..."
                     content="Please, wait for your 200 CTSI unstaked funds to be released in the pool balance. According to the system history, it usually takes 3 hours to arrive."
-                    icon={<TimeIcon boxSize="6" color="info" mr={3} />}
+                    icon={<TimeIcon boxSize="6" color={infoColor} mr={3} />}
                     isOpen
                     isExpandable
                     status="info"
