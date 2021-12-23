@@ -102,7 +102,6 @@ export const Staking: FC = () => {
                     title="500 CTSI will be ready in pool balance for staking soon."
                     content="500 CTSI are now on the way to the pool balance. It will take 6 minutes to settle your deposited tokens before staking it. "
                     isOpen
-                    isClosable
                     isExpandable
                     isExpanded
                     status="info"
