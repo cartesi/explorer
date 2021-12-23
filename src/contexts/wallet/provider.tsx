@@ -46,7 +46,9 @@ const walletCheck: WalletCheckInit[] = [
 
 const initialContextState = {
     active: false,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     activate: async () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     deactivate: () => {},
 };
 export const WalletConnectionContext =
@@ -79,6 +81,7 @@ export const WalletConnectionProvider: FC = (props) => {
     };
 
     useEffect(() => {
+        console.log(`Initializing onboarding.`);
         const onboardInitialized = Onboard({
             hideBranding: true,
             networkId: supportedNetworks[0],
@@ -136,14 +139,22 @@ export const WalletConnectionProvider: FC = (props) => {
             walletCheck,
         });
 
+        console.log(`Onboard initialized.`);
+
         setState((state) => ({ ...state, onboard: onboardInitialized }));
     }, []);
 
     useEffect(() => {
         const previousWalletSelected =
             window.localStorage.getItem('selectedWallet');
-
         if (onboard && multiWalletEnabled) {
+            console.log(
+                `Setting up pre-selected wallet: ${
+                    previousWalletSelected
+                        ? previousWalletSelected
+                        : 'no-wallet-selected previously'
+                }`
+            );
             if (previousWalletSelected) {
                 onboard.walletSelect(previousWalletSelected);
             }
@@ -162,5 +173,9 @@ export const WalletConnectionProvider: FC = (props) => {
     const defaults = { activate, active, deactivate, error };
     const value = active ? { ...state, ...defaults } : defaults;
 
-    return <WalletConnectionContext.Provider value={value} {...props} />;
+    return (
+        <WalletConnectionContext.Provider value={value}>
+            {props.children}
+        </WalletConnectionContext.Provider>
+    );
 };

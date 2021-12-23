@@ -29,6 +29,7 @@ import SelectedChain from './SelectedChain';
 import ConnectMetamask from './ConnectMetamask';
 import ConnectWallet from './ConnectWallet';
 import Account from './Account';
+import { useWallet } from '../../contexts/wallet';
 
 const Links = [
     {
@@ -72,6 +73,7 @@ const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
+    const wallet = useWallet();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -124,11 +126,15 @@ const NavBar: FC<FlexProps> = (props) => {
                     {!multiWalletEnabled && (
                         <ConnectMetamask
                             display={{ base: 'none', md: 'flex' }}
+                            wallet={wallet}
                         />
                     )}
 
                     {multiWalletEnabled && (
-                        <ConnectWallet display={{ base: 'none', md: 'flex' }} />
+                        <ConnectWallet
+                            display={{ base: 'none', md: 'flex' }}
+                            wallet={wallet}
+                        />
                     )}
 
                     <Account />
@@ -142,8 +148,12 @@ const NavBar: FC<FlexProps> = (props) => {
                                 {label}
                             </NavLink>
                         ))}
-                        {!multiWalletEnabled && <ConnectMetamask />}
-                        {multiWalletEnabled && <ConnectWallet />}
+                        {!multiWalletEnabled && (
+                            <ConnectMetamask wallet={wallet} />
+                        )}
+                        {multiWalletEnabled && (
+                            <ConnectWallet wallet={wallet} />
+                        )}
                     </Stack>
                 </Box>
             )}

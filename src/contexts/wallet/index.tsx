@@ -1,5 +1,4 @@
-import { useWallet } from './useWallet';
-import { WalletConnectionProvider } from './provider';
-import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
-
-export { useWallet, WalletConnectionProvider, UnsupportedNetworkError };
+export type { UseWallet } from './useWallet';
+export { useWallet } from './useWallet';
+export { WalletConnectionProvider } from './provider';
+export { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';

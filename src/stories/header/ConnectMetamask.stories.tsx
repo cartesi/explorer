@@ -25,4 +25,8 @@ const Template: ComponentStory<typeof ConnectMetamask> = (args) => (
 );
 
 export const Connect = Template.bind({});
-Connect.args = {};
+Connect.args = {
+    wallet: {
+        activate: () => {},
+    },
+};

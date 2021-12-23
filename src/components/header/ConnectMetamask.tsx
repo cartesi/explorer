@@ -14,10 +14,15 @@ import { Box, BoxProps, Button, HStack, Image, Text } from '@chakra-ui/react';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { connector, useWeb3Connection } from '../../contexts/Web3Connection';
-import { useWallet } from '../../contexts/wallet';
+import { UseWallet } from '../../contexts/wallet';
 
-const ConnectMetamask: FC<BoxProps> = (props) => {
-    const { activate, error, active } = useWallet();
+interface Props extends BoxProps {
+    wallet: UseWallet;
+}
+
+const ConnectMetamask: FC<Props> = (props) => {
+    const { wallet, ...boxProps } = props;
+    const { activate, error, active } = wallet;
 
     const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
@@ -29,7 +34,7 @@ const ConnectMetamask: FC<BoxProps> = (props) => {
     const web3Connection = useWeb3Connection();
 
     return (
-        <Box {...props}>
+        <Box {...boxProps}>
             {isUnsupportedChainIdError && (
                 <Button size="md" bg="red" _hover={{ bg: 'darkred' }}>
                     <HStack>
