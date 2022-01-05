@@ -124,14 +124,18 @@ export const WalletConnectionProvider: FC = (props) => {
                     setState((state) => ({ ...state, account: address }));
                 },
                 network: (networkId: number) => {
-                    const isNetworkSupported =
-                        supportedNetworks.includes(networkId);
-                    const error = !isNetworkSupported
-                        ? new UnsupportedNetworkError(
-                              networkId,
-                              supportedNetworks
-                          )
-                        : null;
+                    let error = null;
+                    if (networkId !== undefined) {
+                        const isNetworkSupported =
+                            supportedNetworks.includes(networkId);
+
+                        error = !isNetworkSupported
+                            ? new UnsupportedNetworkError(
+                                  networkId,
+                                  supportedNetworks
+                              )
+                            : null;
+                    }
 
                     const chain = chains.getById(networkId);
                     console.log(
