@@ -25,8 +25,8 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 
 const App = ({ Component, pageProps }: AppProps) => {
     return (
-        <FeatureFlagProvider>
-            <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme}>
+            <FeatureFlagProvider>
                 <Web3Container>
                     <TrackingProvider>
                         <ApolloContainer>
@@ -34,8 +34,8 @@ const App = ({ Component, pageProps }: AppProps) => {
                         </ApolloContainer>
                     </TrackingProvider>
                 </Web3Container>
-            </ChakraProvider>
-        </FeatureFlagProvider>
+            </FeatureFlagProvider>
+        </ChakraProvider>
     );
 };
 

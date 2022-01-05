@@ -12,6 +12,13 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
+    styles: {
+        global: {
+            'html, body, body > div': {
+                height: '100%',
+            },
+        },
+    },
     components: {
         Button: {
             baseStyle: {
