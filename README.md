@@ -67,6 +67,20 @@ $ yarn create:localhost
 $ yarn deploy:localhost
 ```
 
+### Environment variables
+
+There are two files in the explorer project the`.env.development` and `.env.production`. They set default values e.g. config for [Unleash](https://www.getunleash.io/) that is our feature-flag provider. You can create a file called `.env.development.local` that is gitignored so you can add your secrets there.
+
+The next step is to create an account on [Infura](https://infura.io/). Create a project so you can have access to a _PROJECT ID_.
+
+On your `.env.development.local` set the following var:
+
+-   NEXT_PUBLIC_PROJECT_ID=your_project_id_goes_here
+
+<br>
+
+> You can read more about **nextJS** env vars [here](https://nextjs.org/docs/basic-features/environment-variables)
+
 ### Run the application
 
 Simply run:

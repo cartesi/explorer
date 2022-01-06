@@ -16,11 +16,13 @@ import FlagProvider, {
 import { ReactNode } from 'react';
 import { Spinner, VStack } from '@chakra-ui/react';
 
+const url = process.env.NEXT_PUBLIC_UNLEASH_PROXY_HOST;
+const clientKey = process.env.NEXT_PUBLIC_UNLEASH_PROXY_CLIENT_KEY;
+
 // configuration for Unleash Proxy
 export const config: IConfig = {
-    url: 'https://unleash.cartesi.io/proxy',
-    clientKey:
-        'bc1b71da9932b90ccd788d75203fb598c3640cabed3ccccdffd024f341a79d72',
+    url,
+    clientKey,
     refreshInterval: 15,
     appName: 'explorer',
     environment: 'prod',
