@@ -88,7 +88,6 @@ export const WalletConnectionProvider: FC = (props) => {
     const deactivate = () => {
         const { onboard } = state;
         onboard?.walletReset();
-        setState({ ...initialContextState });
     };
 
     useEffect(() => {

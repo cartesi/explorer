@@ -26,7 +26,8 @@ import { truncateString } from '../../utils/stringUtils';
 import { useWallet } from '../../contexts/wallet';
 
 const Account: FC = () => {
-    const { account, library, isHardwareWallet, onboard } = useWallet();
+    const { account, library, isHardwareWallet, onboard, deactivate } =
+        useWallet();
     const ens = useENS(account);
     const iconColor = useColorModeValue('white', 'gray.300');
 
@@ -44,15 +45,24 @@ const Account: FC = () => {
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
                 <TagLabel>{ens.name || truncateString(ens.address)}</TagLabel>
-                {account && library && isHardwareWallet && (
+                {account && library && onboard && isHardwareWallet && (
                     <IconButton
                         onClick={onboard.accountSelect}
                         aria-label="Switch accounts"
+                        title="Switch accounts"
                         colorScheme="transparent"
                         size="sm"
                         variant="ghost"
                         color={iconColor}
                         icon={<Box as={HiSwitchVertical} />}
+                    />
+                )}
+
+                {account && library && (
+                    <TagCloseButton
+                        aria-label="Disconnect wallet"
+                        title="Disconnect wallet"
+                        onClick={deactivate}
                     />
                 )}
             </HStack>
