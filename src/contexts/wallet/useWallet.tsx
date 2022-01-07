@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContext } from './provider';
 import { useWeb3React } from '@web3-react/core';
@@ -22,7 +22,23 @@ export type UseWallet = WalletConnectionContextProps &
 
 export const useWallet = (): UseWallet => {
     const multiWalletEnabled = useFlag('multiWalletEnabled');
-    return multiWalletEnabled
-        ? useContext(WalletConnectionContext)
-        : useWeb3React<Web3Provider>();
+    const onboardContext = useContext(WalletConnectionContext);
+    const web3ReactContext = useWeb3React<Web3Provider>();
+    const context = multiWalletEnabled ? onboardContext : web3ReactContext;
+
+    useEffect(() => {
+        const previousWallet = multiWalletEnabled
+            ? web3ReactContext
+            : onboardContext;
+
+        if (previousWallet.active) {
+            console.info(
+                `Deactivating previous wallet/provider (${
+                    multiWalletEnabled ? 'web3ReactProvider' : 'onboardJS'
+                })`
+            );
+            previousWallet.deactivate();
+        }
+    }, [multiWalletEnabled]);
+    return context;
 };

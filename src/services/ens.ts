@@ -32,7 +32,12 @@ export const useENS = (address: string): ENSEntry => {
     useEffect(() => {
         const resolve = async (address: string): Promise<ENSEntry> => {
             // convert address to checksum address
-            address = ethers.utils.getAddress(address);
+            try {
+                address = ethers.utils.getAddress(address);
+            } catch (e) {
+                console.warn(`error resolving address ${address}`);
+                return { address, resolving: false };
+            }
 
             if (!library.network?.ensAddress) {
                 // network does not support ENS

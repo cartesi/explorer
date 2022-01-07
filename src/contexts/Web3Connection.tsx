@@ -19,21 +19,24 @@ const connector = new InjectedConnector({
     supportedChainIds: Object.keys(networks).map((key) => parseInt(key)),
 });
 
-const useEagerConnect = () => {
-    const { activate, active } = useWallet();
+const useEagerConnect = (multiWalletEnabled) => {
+    const wallet = useWallet();
+    const { activate, active } = wallet;
     const [tried, setTried] = useState(false);
 
     useEffect(() => {
-        connector.isAuthorized().then((isAuthorized: boolean) => {
-            if (isAuthorized) {
-                activate(connector, undefined, true).catch(() => {
+        if (!multiWalletEnabled) {
+            connector.isAuthorized().then((isAuthorized: boolean) => {
+                if (isAuthorized) {
+                    activate(connector, undefined, true).catch(() => {
+                        setTried(true);
+                    });
+                } else {
                     setTried(true);
-                });
-            } else {
-                setTried(true);
-            }
-        });
-    }, []); // intentionally only running on mount (make sure it's only mounted once :))
+                }
+            });
+        }
+    }, [multiWalletEnabled, activate]); // intentionally only running on mount (make sure it's only mounted once :))
 
     // if the connection worked, wait until we get confirmation of that to flip the flag
     useEffect(() => {
@@ -103,7 +106,7 @@ const Web3ConnectionProvider: FC = (props) => {
     const multiWalletEnabled = useFlag('multiWalletEnabled');
 
     // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
-    const triedEager = useEagerConnect();
+    const triedEager = useEagerConnect(multiWalletEnabled);
     // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
     const suppressInactiveListeners = !triedEager || multiWalletEnabled;
     useInactiveListener(suppressInactiveListeners);
