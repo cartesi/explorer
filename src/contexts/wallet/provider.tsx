@@ -24,6 +24,7 @@ import { useColorMode } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
 
 const supportedNetworks = Object.keys(networks).map((key) => parseInt(key));
+const SELECTED_WALLET = 'selectedWallet';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
@@ -88,6 +89,7 @@ export const WalletConnectionProvider: FC = (props) => {
     const deactivate = () => {
         const { onboard } = state;
         onboard?.walletReset();
+        window.localStorage.removeItem(SELECTED_WALLET);
     };
 
     useEffect(() => {
@@ -103,7 +105,7 @@ export const WalletConnectionProvider: FC = (props) => {
                             new ethers.providers.Web3Provider(provider, 'any');
 
                         console.log(`Wallet selected: ${name}`);
-                        window.localStorage.setItem('selectedWallet', name);
+                        window.localStorage.setItem(SELECTED_WALLET, name);
 
                         setState((state) => ({
                             ...state,
@@ -160,7 +162,7 @@ export const WalletConnectionProvider: FC = (props) => {
 
     useEffect(() => {
         const previousWalletSelected =
-            window.localStorage.getItem('selectedWallet');
+            window.localStorage.getItem(SELECTED_WALLET);
         if (onboard && multiWalletEnabled) {
             console.log(
                 `Setting up pre-selected wallet: ${
