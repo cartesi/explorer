@@ -100,7 +100,6 @@ export const StakingProvidersList: FC<StakingTabNavigationProps> = ({
                         <Button
                             w={{ base: '100%', md: 'auto' }}
                             onClick={provider.onClick}
-                            borderRadius="full"
                             colorScheme="darkGray"
                         >
                             Connect
