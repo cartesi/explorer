@@ -36,12 +36,7 @@ const ConnectMetamask: FC<Props> = (props) => {
     return (
         <Box {...boxProps}>
             {isUnsupportedChainIdError && (
-                <Button
-                    size="md"
-                    colorScheme="red"
-                    rounded="full"
-                    _hover={{ bg: 'darkred' }}
-                >
+                <Button size="md" colorScheme="red" _hover={{ bg: 'darkred' }}>
                     <HStack>
                         <Image src="/images/metamask-fox.svg" boxSize="25px" />
                         <Text>Unsupported Network</Text>
@@ -57,7 +52,6 @@ const ConnectMetamask: FC<Props> = (props) => {
                             : onboarding.startOnboarding
                     }
                     colorScheme="blue"
-                    rounded="full"
                 >
                     <HStack>
                         <Image src="/images/metamask-fox.svg" boxSize="25px" />

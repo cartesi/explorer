@@ -96,7 +96,6 @@ export const StakingStake: FC<IStakingStakeProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                     onClick={() => {
                                         onStake(amount);
@@ -107,7 +106,6 @@ export const StakingStake: FC<IStakingStakeProps> = ({
                                 </Button>
                                 <Button
                                     isFullWidth
-                                    borderRadius="full"
                                     variant="outline"
                                     colorScheme="darkGray"
                                     onClick={onClose}

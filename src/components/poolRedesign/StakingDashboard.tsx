@@ -114,7 +114,6 @@ export const StakingDashboard: FC = () => {
                                 <Button
                                     size="sm"
                                     onClick={onToggle}
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                 >
                                     Don't show again

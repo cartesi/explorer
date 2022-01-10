@@ -80,7 +80,6 @@ export const Staking: FC = () => {
                     <Box px={6}>
                         <Button
                             colorScheme="blue"
-                            borderRadius="full"
                             onClick={depositDisclosure.onOpen}
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
@@ -171,7 +170,6 @@ export const Staking: FC = () => {
                                     w={{ base: '100%', md: 'auto' }}
                                     minW="15rem"
                                     onClick={stakeDisclosure.onOpen}
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                 >
                                     Stake
@@ -183,7 +181,6 @@ export const Staking: FC = () => {
                                     w={{ base: '100%', md: 'auto' }}
                                     minW="15rem"
                                     onClick={withdrawDisclosure.onOpen}
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                 >
                                     Withdraw
@@ -244,7 +241,6 @@ export const Staking: FC = () => {
                                     w={{ base: '100%', md: 'auto' }}
                                     minW="15rem"
                                     onClick={unstakeDisclosure.onOpen}
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                 >
                                     Unstake

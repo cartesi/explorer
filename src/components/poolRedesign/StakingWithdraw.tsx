@@ -13,8 +13,9 @@ import {
     Box,
     Button,
     FormControl,
-    FormHelperText,
-    FormLabel,
+    Collapse,
+    Radio,
+    RadioGroup,
     HStack,
     Input,
     InputGroup,
@@ -29,6 +30,7 @@ import {
     Spinner,
     VStack,
     Text,
+    Stack,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
 
@@ -43,7 +45,10 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
     onClose: onClose,
     onWithdraw: onWithdraw,
 }) => {
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState<string>('');
+    const [withdrawFullAmount, setWithdrawFullAmount] =
+        useState<string>('full');
+    const inputRef = useRef<HTMLInputElement>(null);
     const inputFocusRef = useRef();
 
     return (
@@ -66,33 +71,78 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                                 Last step to receive tokens to your wallet! It
                                 usually takes a few hours to be ready.
                             </Text>
-                            <FormControl id="withdrawAmount">
-                                <FormLabel fontWeight="bold">Amount</FormLabel>
-                                <InputGroup>
-                                    <Input
-                                        type="text"
-                                        inputMode="decimal"
-                                        placeholder="0.00"
-                                        size="lg"
-                                        pr={16}
-                                        value={amount}
-                                        onChange={(e) =>
-                                            setAmount(e.target.value)
-                                        }
-                                        ref={inputFocusRef}
-                                    />
-                                    <InputRightElement
-                                        color="gray.300"
-                                        size="lg"
-                                        pointerEvents="none"
-                                        w={14}
-                                        h="100%"
-                                        children={<Box>CTSI</Box>}
-                                    />
-                                </InputGroup>
-                                <FormHelperText>
-                                    Max. available: 500 CTSI
-                                </FormHelperText>
+                            <FormControl id="amount">
+                                <RadioGroup
+                                    defaultValue={withdrawFullAmount}
+                                    name="unstakeAmmount"
+                                >
+                                    <Stack>
+                                        <Radio
+                                            size="lg"
+                                            value="full"
+                                            colorScheme="blue"
+                                            onChange={(e) =>
+                                                setWithdrawFullAmount(
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            Full amount
+                                        </Radio>
+                                        <Radio
+                                            size="lg"
+                                            value="partial"
+                                            colorScheme="blue"
+                                            onChange={(e) => {
+                                                setWithdrawFullAmount(
+                                                    e.target.value
+                                                );
+                                                inputRef.current?.focus();
+                                            }}
+                                        >
+                                            Partial amount
+                                        </Radio>
+                                        <Collapse
+                                            in={
+                                                withdrawFullAmount === 'partial'
+                                            }
+                                            animateOpacity
+                                            unmountOnExit
+                                        >
+                                            <FormControl
+                                                id="withdrawAmount"
+                                                pl={7}
+                                            >
+                                                <InputGroup>
+                                                    <Input
+                                                        type="text"
+                                                        inputMode="decimal"
+                                                        placeholder="0.00"
+                                                        size="lg"
+                                                        pr={16}
+                                                        value={amount}
+                                                        ref={inputRef}
+                                                        onChange={(e) =>
+                                                            setAmount(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                    <InputRightElement
+                                                        color="gray.300"
+                                                        size="lg"
+                                                        pointerEvents="none"
+                                                        w={14}
+                                                        h="100%"
+                                                        children={
+                                                            <Box>CTSI</Box>
+                                                        }
+                                                    />
+                                                </InputGroup>
+                                            </FormControl>
+                                        </Collapse>
+                                    </Stack>
+                                </RadioGroup>
                             </FormControl>
                             <VStack
                                 spacing={4}
@@ -132,7 +182,6 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                     onClick={() => {
                                         onWithdraw(amount);
@@ -143,7 +192,6 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                                 </Button>
                                 <Button
                                     isFullWidth
-                                    borderRadius="full"
                                     colorScheme="darkGray"
                                     variant="outline"
                                     onClick={onClose}
