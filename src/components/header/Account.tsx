@@ -44,7 +44,9 @@ const Account: FC = () => {
         >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
-                <TagLabel>{ens.name || truncateString(ens.address)}</TagLabel>
+                <TagLabel>
+                    {ens.name || truncateString(ens.address || account)}
+                </TagLabel>
                 {account && library && onboard && isHardwareWallet && (
                     <IconButton
                         onClick={onboard.accountSelect}
