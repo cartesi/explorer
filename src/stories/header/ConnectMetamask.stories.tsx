@@ -27,6 +27,7 @@ const Template: ComponentStory<typeof ConnectMetamask> = (args) => (
 export const Connect = Template.bind({});
 Connect.args = {
     wallet: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         activate: () => {},
     },
 };
