@@ -52,15 +52,26 @@ export const StakingUnstake: FC<IStakingUnstakeProps> = ({
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Unstake from your pool balance to your staked balance
+                        Unstake first from staked balance to then withdraw from
+                        pool balance
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                In order to withdraw, it requires to unstake
-                                from the to staked balance first. It might take
-                                a moment to arrive to pool balance to withdraw.
+                                In order to request a withdrawal, you need to
+                                first select the amount of tokens you desire to
+                                withdraw from the staked balance. This request
+                                will transfer the selected amount of tokens to
+                                the pool balance, from where you then can
+                                withdraw.
+                            </Text>
+                            <Text>
+                                Depending on the volume of requests, this
+                                process can take up to 96 hours. To avoid
+                                further delays, please return to complete your
+                                withdrawal at the end of the specified waiting
+                                period.
                             </Text>
                             <FormControl id="amount">
                                 <RadioGroup

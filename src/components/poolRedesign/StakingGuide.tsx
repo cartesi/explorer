@@ -31,20 +31,21 @@ export const StakingGuide: FC = () => {
         {
             title: 'Connect Wallet',
             description:
-                'Connect to your wallet, make sure there is enough CTSI & ETH for staking.',
+                'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
             icon: <WalletIcon color="blue.500" w={6} h={6} />,
             bgColor: 'blue.100',
         },
         {
             title: 'Allowance / Deposit',
             description:
-                'Allowance is the amount of CTSI or ETH you are allowed to stake. Deposit is the amount of CTSI ot ETH you owe.',
+                'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
             icon: <AllowenceIcon color="yellow.500" w={6} h={6} />,
             bgColor: 'yellow.100',
         },
         {
             title: 'Stake',
-            description: 'Stake is the amount of CTSI or ETH you are staking.',
+            description:
+                'After staking, your deposit will starts contributing to the staking power of the pool.',
             icon: <StakedBalanceIcon color="green.500" w={6} h={6} />,
             bgColor: 'green.100',
         },

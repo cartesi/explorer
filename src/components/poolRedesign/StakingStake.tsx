@@ -54,14 +54,16 @@ export const StakingStake: FC<IStakingStakeProps> = ({
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Stake from your pool balance to your staked balance
+                        Start staking by moving your tokens from the pool
+                        balance to your staked balance.
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Text explaining details about this action to
-                                inform and reassure the user.
+                                Your staked tokens contribute to the pool's
+                                staking power, which in turn will automatically
+                                generate rewards.
                             </Text>
                             <FormControl id="stakeAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>

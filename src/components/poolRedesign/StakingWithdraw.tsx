@@ -62,14 +62,18 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
-                        Withdraw from the pool balance to my wallet balance
+                        Withdraw from the pool balance to your wallet
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Last step to receive tokens to your wallet! It
-                                usually takes a few hours to be ready.
+                                Final step to receive tokens to your wallet!
+                                Depending on the volume of requests, this
+                                process can take up to 96 hours. To avoid
+                                further delays, please return to complete your
+                                withdrawal at the end of the specified waiting
+                                period.
                             </Text>
                             <FormControl id="amount">
                                 <RadioGroup
@@ -172,8 +176,10 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                                 <VStack alignItems="flex-start" spacing={0}>
                                     <Text>Available liqudity: 10 CTSI</Text>
                                     <Text color="gray.500" fontSize="sm">
-                                        Cartesi supports to rebalance the pool
-                                        liqudity to withdraw.
+                                        In the event that the pool's liquidity
+                                        is insufficient to meet your withdrawal
+                                        request, you can appoint Cartesi to make
+                                        up the shortfall by selecting Rebalance.
                                     </Text>
                                 </VStack>
                             </VStack>

@@ -58,8 +58,13 @@ export const StakingDeposit: FC<IStakingDepositProps> = ({
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Text explaining details about this action to
-                                inform and reassure the user.
+                                The Pool Balance is a transitory account where
+                                your tokens are temporarily held before they can
+                                be staked. This allows Cartesi to verify the
+                                transaction as a precautionary measure to
+                                increase security. The holding period last
+                                usually for 6 hours. However, a high volume of
+                                requests may result in a longer holding time.
                             </Text>
                             <FormControl id="depositAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>

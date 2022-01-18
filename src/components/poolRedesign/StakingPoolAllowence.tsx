@@ -58,8 +58,9 @@ export const StakingPoolAllowence: FC<IStakingPoolAllowenceProps> = ({
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Text explaining what is the pool allowance and
-                                how it can affects user experience.
+                                Additional layer of protection with a max amount
+                                of CTSI tokens that this pool can transfer from
+                                your wallet.
                             </Text>
                             <FormControl id="depositAmount">
                                 <FormLabel fontWeight="bold">
@@ -88,8 +89,9 @@ export const StakingPoolAllowence: FC<IStakingPoolAllowenceProps> = ({
                                     />
                                 </InputGroup>
                                 <FormHelperText>
-                                    Editing the Pool Allowance will cost a fee
-                                    of X.
+                                    The Pool Allowance can be edited at any
+                                    time. Each edit is charged in the form of a
+                                    gas fee like any Ethereum transaction.
                                 </FormHelperText>
                             </FormControl>
                         </VStack>

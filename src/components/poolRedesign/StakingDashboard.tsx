@@ -230,7 +230,8 @@ export const StakingDashboard: FC = () => {
                             </Box>
                         </HStack>
                         <Text fontSize="sm">
-                            Please set allowance before staking.
+                            Step 1 for newcomers: Set up an upper limit for an
+                            additional layer of protection.
                         </Text>
                     </VStack>
                 </Stack>
