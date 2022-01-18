@@ -19,7 +19,7 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import AddressText from '../../components/AddressText';
 import { StakingGuide } from '../../components/poolRedesign/StakingGuide';
 import { StakingTabNavigation } from '../../components/poolRedesign/StakingTabNavigation';
-import { StakingProvidersList } from '../../components/poolRedesign/StakingProvidersList';
+import { StakingWalletConnect } from '../../components/poolRedesign/StakingWalletConnect';
 import { useColorModeValue } from '@chakra-ui/react';
 import { StakingActivity } from '../../components/poolRedesign/StakingActivity';
 import { Staking } from '../../components/poolRedesign/Staking';
@@ -92,7 +92,7 @@ const poolRedesign = () => {
                 {isConnected ? (
                     <Staking />
                 ) : (
-                    <StakingProvidersList onConnect={onConnect} />
+                    <StakingWalletConnect onConnect={onConnect} />
                 )}
             </Box>
 
