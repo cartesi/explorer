@@ -61,13 +61,31 @@ const Links = [
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
     <Link
-        px={2}
+        px={{ base: 2, md: 0 }}
         py={1}
-        rounded={'md'}
+        position="relative"
+        bg={{
+            base: router.asPath === href && 'gray.700',
+            md: 'transparent',
+        }}
+        borderRadius={{ base: 'md', md: 'none' }}
+        _before={{
+            content: { base: 'none', md: '""' },
+            position: 'absolute',
+            width: router.asPath === href ? '100%' : '0px',
+            height: '2px',
+            bg: 'blue.500',
+            top: '100%',
+            transition: 'width .2s ease-in-out',
+        }}
         _hover={{
             textDecoration: 'none',
-            bg: 'gray.800',
+            bg: { base: 'gray.700', md: 'transparent' },
+            _before: {
+                width: '100%',
+            },
         }}
+        _focus={{ outline: 'none' }}
         href={href}
     >
         {children}

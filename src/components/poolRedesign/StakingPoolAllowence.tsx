@@ -99,7 +99,6 @@ export const StakingPoolAllowence: FC<IStakingPoolAllowenceProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    colorScheme="darkGray"
                                     onClick={() => {
                                         onSave(amount);
                                         onClose();
