@@ -36,12 +36,7 @@ const Account: FC = () => {
     }
 
     return (
-        <Tag
-            size="md"
-            borderRadius="full"
-            colorScheme="whiteAlpha"
-            color="gray.200"
-        >
+        <Tag size="md" borderRadius="full" colorScheme="gray">
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
                 <TagLabel>
