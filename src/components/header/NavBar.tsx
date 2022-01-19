@@ -38,9 +38,9 @@ const Links = [
         href: '/',
     },
     {
-        key: 'staking-ui',
-        label: 'Staking',
-        href: '/staking-ui',
+        key: 'pool-redesign',
+        label: 'Pools Redesign',
+        href: '/pool-redesign',
     },
     {
         key: 'staking',
@@ -84,11 +84,11 @@ const NavBar: FC<FlexProps> = (props) => {
 
     return (
         <Box
-            bg="black"
+            bg={isOpen ? 'gray.900' : 'header'}
+            backdropFilter="blur(5px)"
             color="white"
             px="6vw"
             position="fixed"
-            opacity={isOpen ? 1 : 0.9}
             {...props}
         >
             <Flex h="100px" alignItems="center" justifyContent="space-between">
@@ -106,7 +106,7 @@ const NavBar: FC<FlexProps> = (props) => {
                     <SelectedChain display={{ base: 'none', md: 'flex' }} />
                     <HStack
                         as="nav"
-                        spacing={4}
+                        spacing={{ base: '4', md: '6' }}
                         display={{ base: 'none', md: 'flex' }}
                     >
                         {Links.map(({ key, label, href }) => (
@@ -120,6 +120,7 @@ const NavBar: FC<FlexProps> = (props) => {
                     <IconButton
                         size="sm"
                         bg="transparent"
+                        borderRadius="full"
                         mx={2}
                         _hover={{ bg: 'gray.800' }}
                         aria-label="Toggle dark mode"

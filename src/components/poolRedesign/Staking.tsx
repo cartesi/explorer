@@ -38,7 +38,6 @@ import { StakingWithdraw } from './StakingWithdraw';
 export const Staking: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
     const infoColor = useColorModeValue('blue.500', 'blue.200');
-
     const depositDisclosure = useDisclosure();
     const withdrawDisclosure = useDisclosure();
     const stakeDisclosure = useDisclosure();
