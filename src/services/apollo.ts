@@ -12,6 +12,8 @@
 import { useMemo } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { useFlag } from '@unleash/proxy-client-react';
+import { Network } from '../utils/networks';
+import { Environment } from '../utils/environment';
 
 const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
@@ -23,22 +25,28 @@ const hostedUris = {
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
-const awsBaseUrl = 'https://thegraph.cartesi.io/subgraphs/name/cartesi';
+const AWS_URL =
+    Environment.PRODUCTION === process.env.NEXT_PUBLIC_ENVIRONMENT
+        ? 'https://thegraph.cartesi.io'
+        : 'https://thegraph.staging.cartesi.io';
+
+const subgraphBaseUrl = `${AWS_URL}/subgraphs/name/cartesi`;
 const awsUris = {
-    1: `${awsBaseUrl}/pos`,
-    3: `${awsBaseUrl}/pos-ropsten`,
-    4: `${awsBaseUrl}/pos-rinkeby`,
-    5: `${awsBaseUrl}/pos-goerli`,
-    42: `${awsBaseUrl}/pos-kovan`,
+    1: `${subgraphBaseUrl}/pos`,
+    3: `${subgraphBaseUrl}/pos-ropsten`,
+    4: `${subgraphBaseUrl}/pos-rinkeby`,
+    5: `${subgraphBaseUrl}/pos-goerli`,
+    42: `${subgraphBaseUrl}/pos-kovan`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
+const extendedBaseUrl = `${AWS_URL}/extended`;
 const extendedUris = {
-    1: 'https://thegraph.cartesi.io/extended/mainnet/graphql',
-    3: 'https://thegraph.cartesi.io/extended/ropsten/graphql',
-    4: 'https://thegraph.cartesi.io/extended/rinkeby/graphql',
-    5: 'https://thegraph.cartesi.io/extended/goerli/graphql',
-    42: 'https://thegraph.cartesi.io/extended/kovan/graphql',
+    1: `${extendedBaseUrl}/mainnet/graphql`,
+    3: `${extendedBaseUrl}/ropsten/graphql`,
+    4: `${extendedBaseUrl}/rinkeby/graphql`,
+    5: `${extendedBaseUrl}/goerli/graphql`,
+    42: `${extendedBaseUrl}/kovan/graphql`,
     31337: 'http://localhost:5001/graphql',
 };
 
@@ -71,7 +79,7 @@ export const createApollo = (
     let uri = aws ? awsUris[chainId] : hostedUris[chainId];
 
     // default to mainnet
-    uri = uri || (aws ? awsUris[1] : hostedUris[1]);
+    uri = uri || (aws ? awsUris[Network.MAINNET] : hostedUris[Network.MAINNET]);
 
     const ssrMode = typeof window === 'undefined';
 
@@ -96,9 +104,7 @@ export const createApollo = (
 };
 
 export const createExtendedApollo = (chainId: number): ApolloClient<any> => {
-    const uri =
-        extendedUris[chainId] ||
-        'https://thegraph.cartesi.io/extended/mainnet/graphql';
+    const uri = extendedUris[chainId] || extendedUris[Network.MAINNET];
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({

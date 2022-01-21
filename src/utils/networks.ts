@@ -9,6 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+export enum Network {
+    MAINNET = 1,
+    ROPSTEN = 3,
+    RINKEBY = 4,
+    GOERLI = 5,
+    KOVAN = 42,
+    LOCAL = 31337,
+}
+
 export const networks = {
     1: 'mainnet',
     3: 'ropsten',
