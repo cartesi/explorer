@@ -21,6 +21,10 @@ import { fonts } from './foundations/fonts';
 const theme = extendTheme({
     styles: {
         global: (props) => ({
+            // apply height to the root tags, e.g. allows the initial loader to be displayed in the center of the screen.
+            'html, body, body > div': {
+                height: '100%',
+            },
             'html, body': {
                 color: props.colorMode === 'dark' ? 'white' : 'gray.800',
             },

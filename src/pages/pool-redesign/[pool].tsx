@@ -19,7 +19,6 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import AddressText from '../../components/AddressText';
 import { StakingGuide } from '../../components/poolRedesign/StakingGuide';
 import { StakingTabNavigation } from '../../components/poolRedesign/StakingTabNavigation';
-import { StakingWalletConnect } from '../../components/poolRedesign/StakingWalletConnect';
 import { useColorModeValue } from '@chakra-ui/react';
 import { StakingActivity } from '../../components/poolRedesign/StakingActivity';
 import { Staking } from '../../components/poolRedesign/Staking';
@@ -33,7 +32,7 @@ import TransactionFeedback from '../../components/TransactionFeedback';
 import BigNumberText from '../../components/BigNumberText';
 
 const poolRedesign = () => {
-    const { account, chainId } = useWallet();
+    const { account, chainId, active: isConnected } = useWallet();
 
     // get pool address from path
     const router = useRouter();
@@ -72,13 +71,6 @@ const poolRedesign = () => {
     } = useCartesiToken(account, address, blockNumber);
 
     const bg = useColorModeValue('gray.50', 'header');
-
-    const [isConnected, setIsConnected] = useState(true);
-
-    const onConnect = (value) => {
-        console.log('onConnect', value);
-        setIsConnected(true);
-    };
 
     return (
         <Layout>
@@ -149,7 +141,7 @@ const poolRedesign = () => {
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 8, sm: 12, lg: 16 }}
             >
-                {isConnected ? (
+                {isConnected && (
                     <Staking
                         balance={balance}
                         allowance={allowance}
@@ -162,8 +154,6 @@ const poolRedesign = () => {
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
                     />
-                ) : (
-                    <StakingWalletConnect onConnect={onConnect} />
                 )}
             </Box>
 
