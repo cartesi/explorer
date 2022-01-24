@@ -13,10 +13,12 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
+    Flex,
     Heading,
     HStack,
     Link,
     Stack,
+    StackProps,
     Text,
     useColorModeValue,
     useDisclosure,
@@ -30,12 +32,47 @@ import {
     TimerIcon,
 } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
-import { StakingDeposit } from './StakingDeposit';
-import { StakingStake } from './StakingStake';
+import { StakingDepositModal } from './StakingDepositModal';
+import { StakingStakeModal } from './StakingStakeModal';
 import { StakingUnstake } from './StakingUnstake';
 import { StakingWithdraw } from './StakingWithdraw';
+import { BigNumber, BigNumberish } from 'ethers';
+import { useTimeLeft } from '../../utils/react';
+import CTSI from '../pools/staking/CTSI';
 
-export const Staking: FC = () => {
+export interface StakingProps extends StackProps {
+    balance: BigNumber; // wallet balance
+    allowance: BigNumber; // ERC20 allowance
+    userBalance: BigNumber; // user pool balance
+    // shares: BigNumber; // user shares
+    staked: BigNumber; // user stake
+    // withdrawBalance: BigNumber; // amount of token user can actually withdraw
+    // paused: boolean;
+    depositTimestamp: Date;
+    lockTime: number;
+    // onApprove: (amount: BigNumberish) => void;
+    onDeposit: (amount: BigNumberish) => void;
+    // onWithdraw: (amount: BigNumberish) => void;
+    onStake: (amount: BigNumberish) => void;
+    // onUnstake: (amount?: BigNumberish) => void;
+}
+
+export const Staking: FC<StakingProps> = ({
+    balance,
+    userBalance,
+    staked,
+    allowance,
+    depositTimestamp,
+    lockTime,
+    onDeposit,
+    onStake,
+}) => {
+    const stakeUnlock = depositTimestamp
+        ? depositTimestamp.getTime() + lockTime * 1000
+        : 0;
+    const unlock = useTimeLeft(stakeUnlock, 2, false);
+    const unlockHumanized = useTimeLeft(stakeUnlock, 2, true);
+
     const bg = useColorModeValue('white', 'gray.800');
     const infoColor = useColorModeValue('blue.500', 'blue.200');
 
@@ -52,13 +89,13 @@ export const Staking: FC = () => {
         console.log('onUnstake', amount);
     };
 
-    const onStake = (amount: string) => {
-        console.log('onStake', amount);
-    };
+    // const onStake = (amount: BigNumber) => {
+    //     console.log('onStake', amount);
+    // };
 
-    const onDeposit = (amount: string) => {
-        console.log('onDeposit', amount);
-    };
+    // const onDeposit = (amount: string) => {
+    //     console.log('onDeposit', amount);
+    // };
 
     return (
         <>
@@ -89,29 +126,31 @@ export const Staking: FC = () => {
                     </Box>
                 </Stack>
 
+                {unlock && (
+                    <InfoBanner
+                        title="XXX CTSI will be ready in pool balance for staking soon."
+                        content={`XXX CTSI are now on the way to the pool balance. It will take ${
+                            unlockHumanized || 'unknown?'
+                        } to settle your deposited tokens before staking it. `}
+                        isOpen
+                        status="info"
+                        icon={
+                            <VStack mr={4} spacing={1} color={infoColor}>
+                                <TimerIcon boxSize="6" />
+                                <Box fontSize="xs" fontWeight="bold">
+                                    {unlock}
+                                </Box>
+                            </VStack>
+                        }
+                    />
+                )}
+
                 <InfoBanner
                     title="Withdrawing 15000 CTSI in pool..."
                     content="Staking is the process of locking your CTSI tokens to the network. This allows you to earn rewards for staking."
                     isOpen
                     isClosable
                     status="success"
-                />
-
-                <InfoBanner
-                    title="500 CTSI will be ready in pool balance for staking soon."
-                    content="500 CTSI are now on the way to the pool balance. It will take 6 minutes to settle your deposited tokens before staking it. "
-                    isOpen
-                    isExpandable
-                    isExpanded
-                    status="info"
-                    icon={
-                        <VStack mr={4} spacing={1} color={infoColor}>
-                            <TimerIcon boxSize="6" />
-                            <Box fontSize="xs" fontWeight="bold">
-                                04:32
-                            </Box>
-                        </VStack>
-                    }
                 />
 
                 <InfoBanner
@@ -156,7 +195,10 @@ export const Staking: FC = () => {
                             <Box>
                                 <Text color="gray.400">Your pool balance</Text>
                                 <Heading m={0} size="lg">
-                                    500 CTSI
+                                    <Flex align="baseline">
+                                        <CTSI value={userBalance} />
+                                        <Text ml={1}>CTSI</Text>
+                                    </Flex>
                                 </Heading>
                             </Box>
                         </HStack>
@@ -226,7 +268,10 @@ export const Staking: FC = () => {
                                     Your staked balance
                                 </Text>
                                 <Heading m={0} size="lg">
-                                    0 CTSI
+                                    <Flex align="baseline">
+                                        <CTSI value={staked} />
+                                        <Text ml={1}>CTSI</Text>
+                                    </Flex>
                                 </Heading>
                             </Box>
                         </HStack>
@@ -251,16 +296,22 @@ export const Staking: FC = () => {
                 </Box>
             </VStack>
 
-            <StakingDeposit
+            <StakingDepositModal
                 isOpen={depositDisclosure.isOpen}
                 onClose={depositDisclosure.onClose}
-                onDeposit={onDeposit}
+                allowance={allowance}
+                balance={balance}
+                onSave={onDeposit}
+                disclosure={depositDisclosure}
             />
 
-            <StakingStake
+            <StakingStakeModal
                 isOpen={stakeDisclosure.isOpen}
                 onClose={stakeDisclosure.onClose}
-                onStake={onStake}
+                allowance={allowance}
+                balance={balance}
+                onSave={onStake}
+                disclosure={stakeDisclosure}
             />
 
             <StakingUnstake

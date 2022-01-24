@@ -27,21 +27,53 @@ import {
     Text,
     FormHelperText,
     FormLabel,
+    UseDisclosureProps,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 
-interface IStakingDepositProps {
+interface IStakingPoolAllowenceModalProps {
+    allowance: BigNumber;
+    balance: BigNumber;
+    disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onDeposit: (amount: string) => void;
+    onSave: (newAllowance: BigNumber) => void;
 }
 
-export const StakingDeposit: FC<IStakingDepositProps> = ({
+export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
+    allowance,
+    balance,
+    disclosure,
     isOpen: isOpen,
     onClose: onClose,
-    onDeposit: onDeposit,
+    onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState('');
+    // formatter for CTSI values
+    const numberFormat = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    });
+
+    // initialize allowance to current allowance
+    const [newAllowance, setNewAllowance] = useState<string>(
+        numberFormat.format(parseFloat(formatUnits(allowance, 18)))
+    );
+
+    const toCTSI_string = (value: BigNumber) => {
+        return numberFormat.format(parseFloat(formatUnits(value, 18)));
+    };
+
+    const toCTSI = (value: BigNumber) => {
+        return parseFloat(formatUnits(value, 18));
+    };
+
     const inputFocusRef = useRef();
     return (
         <>
@@ -53,45 +85,46 @@ export const StakingDeposit: FC<IStakingDepositProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Deposit in pool balance</ModalHeader>
+                    <ModalHeader>Edit pool allowance</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                The Pool Balance is a transitory account where
-                                your tokens are temporarily held before they can
-                                be staked. This allows Cartesi to verify the
-                                transaction as a precautionary measure to
-                                increase security. The holding period last
-                                usually for 6 hours. However, a high volume of
-                                requests may result in a longer holding time.
+                                Additional layer of protection with a max amount
+                                of CTSI tokens that this pool can transfer from
+                                your wallet.
                             </Text>
                             <FormControl id="depositAmount">
-                                <FormLabel fontWeight="bold">Amount</FormLabel>
-                                <InputGroup>
-                                    <Input
-                                        type="text"
-                                        inputMode="decimal"
-                                        placeholder="0.00"
-                                        size="lg"
-                                        pr={16}
-                                        ref={inputFocusRef}
-                                        value={amount}
-                                        onChange={(e) =>
-                                            setAmount(e.target.value)
-                                        }
-                                    />
+                                <FormLabel fontWeight="bold">
+                                    Pool allowance
+                                </FormLabel>
+                                <NumberInput
+                                    defaultValue={toCTSI_string(allowance)}
+                                    min={1}
+                                    max={toCTSI(balance)}
+                                    ref={inputFocusRef}
+                                    onChange={(value) => {
+                                        setNewAllowance(value);
+                                    }}
+                                >
+                                    <NumberInputField />
                                     <InputRightElement
                                         color="gray.300"
                                         size="lg"
                                         pointerEvents="none"
-                                        w={14}
+                                        w={24}
                                         h="100%"
                                         children={<Box>CTSI</Box>}
                                     />
-                                </InputGroup>
+                                    <NumberInputStepper>
+                                        <NumberIncrementStepper />
+                                        <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                </NumberInput>
                                 <FormHelperText>
-                                    Max. available/allowance: 2,000,000 CTSI
+                                    The Pool Allowance can be edited at any
+                                    time. Each edit is charged in the form of a
+                                    gas fee like any Ethereum transaction.
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
@@ -101,16 +134,17 @@ export const StakingDeposit: FC<IStakingDepositProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onDeposit(amount);
+                                        onSave(parseUnits(newAllowance, 18));
+                                        disclosure.onClose();
                                         onClose();
                                     }}
                                 >
-                                    Deposit
+                                    Save
                                 </Button>
                                 <Button
                                     isFullWidth
-                                    variant="outline"
                                     colorScheme="darkGray"
+                                    variant="outline"
                                     onClick={onClose}
                                 >
                                     Cancel

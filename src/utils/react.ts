@@ -26,7 +26,11 @@ export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
  * Returns a label representing the time left until the given date, or undefined if the given date is in the past.
  * Label updates every second, until it reaches the given date, where it becomes undefined.
  **/
-export const useTimeLeft = (timestamp: number, fields = 2) => {
+export const useTimeLeft = (
+    timestamp: number,
+    fields = 2,
+    humanizeOutput = true
+) => {
     const [timeLeft, setTimeLeft] = useState<string>(undefined);
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -35,12 +39,20 @@ export const useTimeLeft = (timestamp: number, fields = 2) => {
                 setTimeLeft(undefined);
                 clearInterval(intervalId);
             } else {
-                setTimeLeft(
-                    humanizeDuration(timestamp - Date.now(), {
-                        largest: fields,
-                        round: true,
-                    })
-                );
+                const duration = timestamp - Date.now();
+                const outputHumanized = humanizeDuration(duration, {
+                    largest: fields,
+                    round: true,
+                });
+
+                const output = outputHumanized
+                    .replaceAll('minutes', '')
+                    .replaceAll('hours', '')
+                    .replaceAll(',', ':')
+                    .replaceAll(' ', '')
+                    .trim(); // TODO: fix
+
+                setTimeLeft(humanizeOutput ? outputHumanized : output);
             }
         }, 1000);
         return () => clearInterval(intervalId);

@@ -26,26 +26,51 @@ import {
     VStack,
     IconButton,
     useColorModeValue,
+    StackProps,
+    Flex,
 } from '@chakra-ui/react';
+import { BigNumber, BigNumberish } from 'ethers';
 import React, { FC } from 'react';
 import { AllowenceIcon, WalletIcon } from '../../components/Icons';
+import CTSI from '../pools/staking/CTSI';
 import { InfoBanner } from './InfoBanner';
-import { StakingPoolAllowence } from './StakingPoolAllowence';
+import { StakingPoolAllowenceModal } from './StakingPoolAllowenceModal';
 
-export const StakingDashboard: FC = () => {
+export interface StakingDashboardProps extends StackProps {
+    balance: BigNumber; // wallet balance
+    allowance: BigNumber; // ERC20 allowance
+    userBalance: BigNumber; // user pool balance
+    // shares: BigNumber; // user shares
+    // staked: BigNumber; // user stake
+    // withdrawBalance: BigNumber; // amount of token user can actually withdraw
+    // paused: boolean;
+    // depositTimestamp: Date;
+    // lockTime: number;
+    onApprove: (amount: BigNumberish) => void;
+    // onDeposit: (amount: BigNumberish) => void;
+    // onWithdraw: (amount: BigNumberish) => void;
+    // onStake: (amount: BigNumberish) => void;
+    // onUnstake: (amount?: BigNumberish) => void;
+}
+
+export const StakingDashboard: FC<StakingDashboardProps> = ({
+    userBalance,
+    allowance,
+    balance,
+    onApprove,
+    // onStake,
+}) => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: true,
     });
-
-    const onSave = (amount: string) => {
-        console.log('onSave', amount);
-    };
 
     const {
         isOpen: isOpenStakingPoolAllowenceModal,
         onOpen: onOpenStakingPoolAllowenceModal,
         onClose: onCloseStakingPoolAllowenceModal,
     } = useDisclosure();
+
+    const disclosure = useDisclosure();
 
     const borderColor = useColorModeValue('gray.100', 'transparent');
 
@@ -167,14 +192,17 @@ export const StakingDashboard: FC = () => {
                                     </Tooltip>
                                 </HStack>
                                 <Heading m={0} size="lg">
-                                    1,800,000 CTSI
+                                    <Flex align="baseline">
+                                        <CTSI value={balance} />
+                                        <Text ml={1}>CTSI</Text>
+                                    </Flex>
                                 </Heading>
                             </Box>
                         </HStack>
                         <HStack spacing={2} alignItems="flex-start">
                             <WarningIcon color="orange.500" />
                             <Text fontSize="sm">
-                                You don’t have enough ETH in your wallet for the
+                                You don't have enough ETH in your wallet for the
                                 transaction fee, please deposit first.
                             </Text>
                         </HStack>
@@ -216,7 +244,10 @@ export const StakingDashboard: FC = () => {
                                     </Tooltip>
                                 </HStack>
                                 <Heading m={0} size="lg">
-                                    0 CTSI
+                                    <Flex align="baseline">
+                                        <CTSI value={allowance} />
+                                        <Text ml={1}>CTSI</Text>
+                                    </Flex>
                                 </Heading>
                             </Box>
                             <Box alignSelf="flex-end">
@@ -237,10 +268,13 @@ export const StakingDashboard: FC = () => {
                 </Stack>
             </VStack>
 
-            <StakingPoolAllowence
+            <StakingPoolAllowenceModal
                 isOpen={isOpenStakingPoolAllowenceModal}
+                disclosure={disclosure}
+                allowance={allowance}
+                balance={balance}
                 onClose={onCloseStakingPoolAllowenceModal}
-                onSave={onSave}
+                onSave={onApprove}
             />
         </>
     );

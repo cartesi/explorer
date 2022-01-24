@@ -27,21 +27,52 @@ import {
     Text,
     FormHelperText,
     FormLabel,
+    UseDisclosureProps,
+    NumberInputField,
+    NumberInput,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 
-interface IStakingStakeProps {
+interface IStakingStakeModalProps {
+    allowance: BigNumber;
+    balance: BigNumber;
+    disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onStake: (amount: string) => void;
+    onSave: (newStake: BigNumber) => void;
 }
 
-export const StakingStake: FC<IStakingStakeProps> = ({
+export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
+    allowance,
+    disclosure,
     isOpen: isOpen,
     onClose: onClose,
-    onStake: onStake,
+    onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState<string>('');
+    // formatter for CTSI values
+    const numberFormat = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    });
+
+    // initialize allowance to current allowance
+    const [newStake, setNewStake] = useState<string>(
+        numberFormat.format(parseFloat(formatUnits(allowance, 18)))
+    );
+
+    const toCTSI_string = (value: BigNumber) => {
+        return numberFormat.format(parseFloat(formatUnits(value, 18)));
+    };
+
+    const toCTSI = (value: BigNumber) => {
+        return parseFloat(formatUnits(value, 18));
+    };
+
     const inputFocusRef = useRef();
     return (
         <>
@@ -67,28 +98,30 @@ export const StakingStake: FC<IStakingStakeProps> = ({
                             </Text>
                             <FormControl id="stakeAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
-                                <InputGroup>
-                                    <Input
-                                        type="text"
-                                        inputMode="decimal"
-                                        placeholder="0.00"
-                                        size="lg"
-                                        pr={16}
-                                        value={amount}
-                                        onChange={(e) =>
-                                            setAmount(e.target.value)
-                                        }
-                                        ref={inputFocusRef}
-                                    />
+                                <NumberInput
+                                    // defaultValue={toCTSI_string(allowance)}
+                                    defaultValue={1}
+                                    in={1}
+                                    max={toCTSI(allowance)}
+                                    ref={inputFocusRef}
+                                    onChange={(value) => {
+                                        setNewStake(value);
+                                    }}
+                                >
+                                    <NumberInputField />
                                     <InputRightElement
                                         color="gray.300"
                                         size="lg"
                                         pointerEvents="none"
-                                        w={14}
+                                        w={24}
                                         h="100%"
                                         children={<Box>CTSI</Box>}
                                     />
-                                </InputGroup>
+                                    <NumberInputStepper>
+                                        <NumberIncrementStepper />
+                                        <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                </NumberInput>
                                 <FormHelperText>
                                     Max. available: 500 CTSI
                                 </FormHelperText>
@@ -100,7 +133,8 @@ export const StakingStake: FC<IStakingStakeProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onStake(amount);
+                                        onSave(parseUnits(newStake, 18));
+                                        disclosure.onClose();
                                         onClose();
                                     }}
                                 >
