@@ -31,6 +31,7 @@ import ConnectWallet from './ConnectWallet';
 import Account from './Account';
 import { useWallet } from '../../contexts/wallet';
 
+const POOL_REDESIGN_KEY = 'pool-redesign';
 const Links = [
     {
         key: 'home',
@@ -38,7 +39,7 @@ const Links = [
         href: '/',
     },
     {
-        key: 'pool-redesign',
+        key: POOL_REDESIGN_KEY,
         label: 'Pools Redesign',
         href: '/pool-redesign',
     },
@@ -78,6 +79,7 @@ const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const wallet = useWallet();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -109,11 +111,19 @@ const NavBar: FC<FlexProps> = (props) => {
                         spacing={{ base: '4', md: '6' }}
                         display={{ base: 'none', md: 'flex' }}
                     >
-                        {Links.map(({ key, label, href }) => (
-                            <NavLink key={key} href={href}>
-                                {label}
-                            </NavLink>
-                        ))}
+                        {Links.map(({ key, label, href }) => {
+                            if (
+                                key === POOL_REDESIGN_KEY &&
+                                !newPoolPageEnabled
+                            )
+                                return null;
+
+                            return (
+                                <NavLink key={key} href={href}>
+                                    {label}
+                                </NavLink>
+                            );
+                        })}
                     </HStack>
                 </HStack>
                 <Flex alignItems="center">
