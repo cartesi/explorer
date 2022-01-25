@@ -12,9 +12,7 @@
 import { PoS__factory, PoS } from '@cartesi/pos-1.0';
 
 import mainnet from '@cartesi/pos-1.0/export/abi/mainnet.json';
-import rinkeby from '@cartesi/pos-1.0/export/abi/rinkeby.json';
 import goerli from '@cartesi/pos-1.0/export/abi/goerli.json';
-import kovan from '@cartesi/pos-1.0/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 
@@ -22,9 +20,7 @@ import { ChainMap, useContract } from '.';
 
 const abis: ChainMap = {
     1: mainnet,
-    4: rinkeby,
     5: goerli,
-    42: kovan,
     31337: localhost,
 };
 

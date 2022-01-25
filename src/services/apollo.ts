@@ -19,9 +19,7 @@ const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
     1: `${hostedBaseUrl}/pos`,
     3: `${hostedBaseUrl}/pos-ropsten`,
-    4: `${hostedBaseUrl}/pos-rinkeby`,
     5: `${hostedBaseUrl}/pos-goerli`,
-    42: `${hostedBaseUrl}/pos-kovan`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
@@ -34,9 +32,7 @@ const subgraphBaseUrl = `${AWS_URL}/subgraphs/name/cartesi`;
 const awsUris = {
     1: `${subgraphBaseUrl}/pos`,
     3: `${subgraphBaseUrl}/pos-ropsten`,
-    4: `${subgraphBaseUrl}/pos-rinkeby`,
     5: `${subgraphBaseUrl}/pos-goerli`,
-    42: `${subgraphBaseUrl}/pos-kovan`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
@@ -44,9 +40,7 @@ const extendedBaseUrl = `${AWS_URL}/extended`;
 const extendedUris = {
     1: `${extendedBaseUrl}/mainnet/graphql`,
     3: `${extendedBaseUrl}/ropsten/graphql`,
-    4: `${extendedBaseUrl}/rinkeby/graphql`,
     5: `${extendedBaseUrl}/goerli/graphql`,
-    42: `${extendedBaseUrl}/kovan/graphql`,
     31337: 'http://localhost:5001/graphql',
 };
 

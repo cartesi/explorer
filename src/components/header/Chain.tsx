@@ -34,8 +34,6 @@ const Chain: FC<ChainProps> = (props) => {
     const colorSchemes = {
         1: 'teal', // mainnet
         3: 'pink', // ropsten
-        42: 'purple', // kovan
-        4: 'yellow', // rinkeby
         5: 'blue', // goerli
     };
 

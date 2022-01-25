@@ -26,16 +26,12 @@ import {
 } from '@cartesi/token';
 
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
-import util_rinkeby from '@cartesi/util/export/abi/rinkeby.json';
 import util_ropsten from '@cartesi/util/export/abi/ropsten.json';
 import util_goerli from '@cartesi/util/export/abi/goerli.json';
-import util_kovan from '@cartesi/util/export/abi/kovan.json';
 
 import token_mainnet from '@cartesi/token/export/abi/mainnet.json';
-import token_rinkeby from '@cartesi/token/export/abi/rinkeby.json';
 import token_ropsten from '@cartesi/token/export/abi/ropsten.json';
 import token_goerli from '@cartesi/token/export/abi/goerli.json';
-import token_kovan from '@cartesi/token/export/abi/kovan.json';
 
 import localhost from './localhost.json';
 
@@ -65,18 +61,14 @@ export interface ChainMap {
 const utilAbis: ChainMap = {
     1: util_mainnet,
     3: util_ropsten,
-    4: util_rinkeby,
     5: util_goerli,
-    42: util_kovan,
     31337: localhost,
 };
 
 const tokenAbis: ChainMap = {
     1: token_mainnet,
     3: token_ropsten,
-    4: token_rinkeby,
     5: token_goerli,
-    42: token_kovan,
     31337: localhost,
 };
 
