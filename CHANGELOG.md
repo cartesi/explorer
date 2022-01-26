@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2022-01-27
+
+### Changed
+
+- Support to new wallets added.
+  - [Metamask](https://metamask.io/)
+  - [Coinbase Wallet](https://www.coinbase.com/wallet)
+  - [Trust](https://trustwallet.com/)
+  - [Ledger](https://www.ledger.com/)
+  - [Gnosis Safe](https://gnosis-safe.io/)
+  - [Wallet Connect](https://walletconnect.com/)
+- Testnets `kovan` and `rinkeby` were removed.
+
 ## [2.1.0] - 2021-12-10
 
 ### Changed
