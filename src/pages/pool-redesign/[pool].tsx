@@ -25,11 +25,12 @@ import { StakingActivity } from '../../components/poolRedesign/StakingActivity';
 import { Staking } from '../../components/poolRedesign/Staking';
 import { StakingDashboard } from '../../components/poolRedesign/StakingDashboard';
 import { useStakingPool } from '../../services/pool';
-import { useBlockNumber } from '../../services/eth';
+import { useBalance, useBlockNumber } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../contexts/wallet';
 import TransactionFeedback from '../../components/TransactionFeedback';
+import BigNumberText from '../../components/BigNumberText';
 
 const poolRedesign = () => {
     const { account, chainId } = useWallet();
@@ -61,6 +62,7 @@ const poolRedesign = () => {
         rebalance,
     } = useStakingPool(address, account);
 
+    const userETHBalance = useBalance(account);
     // query user balance and allowance
     const {
         balance,
@@ -84,7 +86,11 @@ const poolRedesign = () => {
                 <title>Cartesi - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <BigNumberText
+                value={userETHBalance}
+                unit="eth"
+                alignSelf="flex-start"
+            />
             <Box
                 bg="header"
                 color="white"
@@ -127,6 +133,7 @@ const poolRedesign = () => {
                 {isConnected ? (
                     <StakingDashboard
                         userBalance={userBalance}
+                        userETHBalance={userETHBalance}
                         balance={balance}
                         allowance={allowance}
                         onApprove={(amount) => approve(address, amount)}

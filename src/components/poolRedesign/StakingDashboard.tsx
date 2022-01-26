@@ -40,6 +40,8 @@ export interface StakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
     userBalance: BigNumber; // user pool balance
+    userETHBalance: BigNumber; // user ETH balance
+
     // shares: BigNumber; // user shares
     // staked: BigNumber; // user stake
     // withdrawBalance: BigNumber; // amount of token user can actually withdraw
@@ -55,6 +57,7 @@ export interface StakingDashboardProps extends StackProps {
 
 export const StakingDashboard: FC<StakingDashboardProps> = ({
     userBalance,
+    userETHBalance,
     allowance,
     balance,
     onApprove,
@@ -199,13 +202,15 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                                 </Heading>
                             </Box>
                         </HStack>
-                        <HStack spacing={2} alignItems="flex-start">
-                            <WarningIcon color="orange.500" />
-                            <Text fontSize="sm">
-                                You don't have enough ETH in your wallet for the
-                                transaction fee, please deposit first.
-                            </Text>
-                        </HStack>
+                        {userETHBalance && userETHBalance.isZero() && (
+                            <HStack spacing={2} alignItems="flex-start">
+                                <WarningIcon color="orange.500" />
+                                <Text fontSize="sm">
+                                    You don't have enough ETH in your wallet for
+                                    the transaction fee, please deposit first.
+                                </Text>
+                            </HStack>
+                        )}
                     </VStack>
                     <VStack
                         alignItems="flex-start"
