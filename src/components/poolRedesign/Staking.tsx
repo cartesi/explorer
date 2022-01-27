@@ -32,10 +32,10 @@ import {
     TimerIcon,
 } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
-import { StakingDepositModal } from './StakingDepositModal';
-import { StakingStakeModal } from './StakingStakeModal';
-import { StakingUnstake } from './StakingUnstake';
-import { StakingWithdraw } from './StakingWithdraw';
+import { StakingDepositModal } from './modals/StakingDepositModal';
+import { StakingStakeModal } from './modals/StakingStakeModal';
+import { StakingUnstakeModal } from './modals/StakingUnstakeModal';
+import { StakingWithdrawModal } from './modals/StakingWithdrawModal';
 import { BigNumber, BigNumberish } from 'ethers';
 import { useTimeLeft } from '../../utils/react';
 import CTSI from '../pools/staking/CTSI';
@@ -52,9 +52,9 @@ export interface StakingProps extends StackProps {
     lockTime: number;
     // onApprove: (amount: BigNumberish) => void;
     onDeposit: (amount: BigNumberish) => void;
-    // onWithdraw: (amount: BigNumberish) => void;
+    onWithdraw: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
-    // onUnstake: (amount?: BigNumberish) => void;
+    onUnstake: (amount?: BigNumberish) => void;
 }
 
 export const Staking: FC<StakingProps> = ({
@@ -64,8 +64,10 @@ export const Staking: FC<StakingProps> = ({
     allowance,
     depositTimestamp,
     lockTime,
+    onWithdraw,
     onDeposit,
     onStake,
+    onUnstake,
 }) => {
     const stakeUnlock = depositTimestamp
         ? depositTimestamp.getTime() + lockTime * 1000
@@ -80,22 +82,6 @@ export const Staking: FC<StakingProps> = ({
     const withdrawDisclosure = useDisclosure();
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
-
-    const onWithdraw = (amount: string) => {
-        console.log('onWithdraw', amount);
-    };
-
-    const onUnstake = (amount: string) => {
-        console.log('onUnstake', amount);
-    };
-
-    // const onStake = (amount: BigNumber) => {
-    //     console.log('onStake', amount);
-    // };
-
-    // const onDeposit = (amount: string) => {
-    //     console.log('onDeposit', amount);
-    // };
 
     return (
         <>
@@ -314,16 +300,16 @@ export const Staking: FC<StakingProps> = ({
                 disclosure={stakeDisclosure}
             />
 
-            <StakingUnstake
+            <StakingUnstakeModal
                 isOpen={unstakeDisclosure.isOpen}
                 onClose={unstakeDisclosure.onClose}
-                onUnstake={onUnstake}
+                onSave={onUnstake}
             />
 
-            <StakingWithdraw
+            <StakingWithdrawModal
                 isOpen={withdrawDisclosure.isOpen}
                 onClose={withdrawDisclosure.onClose}
-                onWithdraw={onWithdraw}
+                onSave={onWithdraw}
             />
         </>
     );

@@ -34,16 +34,16 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
 
-interface IStakingWithdrawProps {
+interface IStakingWithdrawModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onWithdraw: (amount: string) => void;
+    onSave: (amount: string) => void;
 }
 
-export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
+export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     isOpen: isOpen,
     onClose: onClose,
-    onWithdraw: onWithdraw,
+    onSave: onSave,
 }) => {
     const [amount, setAmount] = useState<string>('');
     const [withdrawFullAmount, setWithdrawFullAmount] =
@@ -190,7 +190,7 @@ export const StakingWithdraw: FC<IStakingWithdrawProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onWithdraw(amount);
+                                        onSave(amount);
                                         onClose();
                                     }}
                                 >

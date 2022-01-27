@@ -86,11 +86,6 @@ const poolRedesign = () => {
                 <title>Cartesi - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <BigNumberText
-                value={userETHBalance}
-                unit="eth"
-                alignSelf="flex-start"
-            />
             <Box
                 bg="header"
                 color="white"
@@ -160,8 +155,10 @@ const poolRedesign = () => {
                         allowance={allowance}
                         userBalance={userBalance}
                         staked={stakedShares}
+                        onWithdraw={withdraw}
                         onDeposit={deposit}
                         onStake={stake}
+                        onUnstake={unstake}
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
                     />

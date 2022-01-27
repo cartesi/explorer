@@ -32,16 +32,16 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, useState, useRef } from 'react';
 
-interface IStakingUnstakeProps {
+interface IStakingUnstakeModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onUnstake: (amount: string) => void;
+    onSave: (amount: string) => void;
 }
 
-export const StakingUnstake: FC<IStakingUnstakeProps> = ({
+export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     isOpen: isOpen,
     onClose: onClose,
-    onUnstake: onUnstake,
+    onSave: onSave,
 }) => {
     const [amount, setAmount] = useState<string>('');
     const [unstakeFullAmount, setUnstakeFullAmount] = useState<string>('full');
@@ -151,7 +151,7 @@ export const StakingUnstake: FC<IStakingUnstakeProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onUnstake(amount);
+                                        onSave(amount);
                                         onClose();
                                     }}
                                 >

@@ -34,7 +34,7 @@ import React, { FC } from 'react';
 import { AllowenceIcon, WalletIcon } from '../../components/Icons';
 import CTSI from '../pools/staking/CTSI';
 import { InfoBanner } from './InfoBanner';
-import { StakingPoolAllowenceModal } from './StakingPoolAllowenceModal';
+import { StakingPoolAllowenceModal } from './modals/StakingPoolAllowenceModal';
 
 export interface StakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance

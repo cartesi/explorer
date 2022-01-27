@@ -111,8 +111,11 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </NumberInputStepper>
                                 </NumberInput>
                                 <FormHelperText>
-                                    Max. available/allowance: {toCTSI(balance)}{' '}
-                                    / {toCTSI(allowance)} CTSI
+                                    Max. available/allowance:{' '}
+                                    {allowance.gte(balance)
+                                        ? toCTSI(balance)
+                                        : toCTSI(allowance)}{' '}
+                                    CTSI
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
