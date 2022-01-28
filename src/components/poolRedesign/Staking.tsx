@@ -24,7 +24,7 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     PoolBalanceIcon,
     StakedBalanceIcon,
@@ -37,8 +37,11 @@ import { StakingStakeModal } from './modals/StakingStakeModal';
 import { StakingUnstakeModal } from './modals/StakingUnstakeModal';
 import { StakingWithdrawModal } from './modals/StakingWithdrawModal';
 import { BigNumber, BigNumberish } from 'ethers';
+import { Transaction } from '../../services/transaction';
+
 import { useTimeLeft } from '../../utils/react';
 import CTSI from '../pools/staking/CTSI';
+import { TransactionInfoBanner } from './TransactionInfoBanner';
 
 export interface StakingProps extends StackProps {
     balance: BigNumber; // wallet balance
@@ -55,6 +58,8 @@ export interface StakingProps extends StackProps {
     onWithdraw: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
     onUnstake: (amount?: BigNumberish) => void;
+    poolTransaction: Transaction<void>;
+    tokenTransaction: Transaction<any>;
 }
 
 export const Staking: FC<StakingProps> = ({
@@ -68,6 +73,8 @@ export const Staking: FC<StakingProps> = ({
     onDeposit,
     onStake,
     onUnstake,
+    poolTransaction,
+    tokenTransaction,
 }) => {
     const stakeUnlock = depositTimestamp
         ? depositTimestamp.getTime() + lockTime * 1000
@@ -112,6 +119,13 @@ export const Staking: FC<StakingProps> = ({
                     </Box>
                 </Stack>
 
+                <TransactionInfoBanner
+                    title="Setting allowance..."
+                    failTitle="Error setting allowance!"
+                    successDescription="New allowance set sucessfully."
+                    transaction={tokenTransaction}
+                />
+
                 {unlock && (
                     <InfoBanner
                         title="XXX CTSI will be ready in pool balance for staking soon."
@@ -130,6 +144,11 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
+
+                <TransactionInfoBanner
+                    title="Sending transaction... (pool)..."
+                    transaction={poolTransaction}
+                />
 
                 <InfoBanner
                     title="Withdrawing 15000 CTSI in pool..."

@@ -30,6 +30,7 @@ import { useRouter } from 'next/router';
 import { useWallet } from '../../contexts/wallet';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BigNumberText from '../../components/BigNumberText';
+import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
 
 const poolRedesign = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -152,6 +153,8 @@ const poolRedesign = () => {
                         onUnstake={unstake}
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
+                        tokenTransaction={tokenTransaction}
+                        poolTransaction={transaction}
                     />
                 )}
             </Box>
