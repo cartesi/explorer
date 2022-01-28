@@ -124,7 +124,6 @@ const poolRedesign = () => {
                         balance={balance}
                         allowance={allowance}
                         onApprove={(amount) => approve(address, amount)}
-                        // onStake={(amount) => stake(amount)}
                     />
                 ) : (
                     <StakingGuide />
