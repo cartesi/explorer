@@ -42,19 +42,18 @@ export const useTimeLeft = (
                 const duration = timestamp - Date.now();
                 const outputHumanized = humanizeDuration(duration, {
                     largest: fields,
-                    round: true,
+                    round: false,
                 });
 
-                const output = outputHumanized
-                    .replaceAll('minutes', '')
-                    .replaceAll('hours', '')
-                    .replaceAll('minute', '')
-                    .replaceAll('hour', '')
-                    .replaceAll(',', ':')
-                    .replaceAll(' ', '')
-                    .trim(); // TODO: remove and use proper way to display time
+                const durationToShortDate = (duration: number) => {
+                    return new Date(duration).toISOString().substring(11, 16);
+                };
 
-                setTimeLeft(humanizeOutput ? outputHumanized : output);
+                setTimeLeft(
+                    humanizeOutput
+                        ? outputHumanized
+                        : durationToShortDate(duration)
+                );
             }
         }, 1000);
         return () => clearInterval(intervalId);

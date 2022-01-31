@@ -128,10 +128,10 @@ export const Staking: FC<StakingProps> = ({
 
                 {unlock && (
                     <InfoBanner
-                        title="XXX CTSI will be ready in pool balance for staking soon."
-                        content={`XXX CTSI are now on the way to the pool balance. It will take ${
-                            unlockHumanized || 'unknown?'
-                        } to settle your deposited tokens before staking it. `}
+                        title={`${userBalance} CTSI will be ready for staking soon`}
+                        content={`It will take ${
+                            unlockHumanized || 'unknown'
+                        } to unlock your deposited tokens before staking them.`}
                         isOpen
                         status="info"
                         icon={
