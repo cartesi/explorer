@@ -148,7 +148,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     </Stack>
                                 </RadioGroup>
                             </FormControl>
-                            <VStack
+                            {/* <VStack
                                 spacing={4}
                                 w="full"
                                 alignItems="flex-start"
@@ -182,7 +182,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         up the shortfall by selecting Rebalance.
                                     </Text>
                                 </VStack>
-                            </VStack>
+                            </VStack> */}
                         </VStack>
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>

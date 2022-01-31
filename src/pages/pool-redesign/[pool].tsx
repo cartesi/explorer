@@ -130,12 +130,12 @@ const poolRedesign = () => {
                     <StakingGuide />
                 )}
             </Box>
-            <TransactionFeedback transaction={transaction}>
+            {/* <TransactionFeedback transaction={transaction}>
                 Sending transaction...
             </TransactionFeedback>
             <TransactionFeedback transaction={tokenTransaction}>
                 Sending transaction...
-            </TransactionFeedback>
+            </TransactionFeedback> */}
             <Box
                 bg={bg}
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
@@ -149,7 +149,10 @@ const poolRedesign = () => {
                         staked={stakedShares}
                         onWithdraw={withdraw}
                         onDeposit={deposit}
-                        onStake={stake}
+                        onStake={(e) => {
+                            console.log('ONSTAKE', e);
+                            stake(e);
+                        }}
                         onUnstake={unstake}
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}

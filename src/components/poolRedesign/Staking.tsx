@@ -121,7 +121,7 @@ export const Staking: FC<StakingProps> = ({
 
                 <TransactionInfoBanner
                     title="Setting allowance..."
-                    failTitle="Error setting allowance!"
+                    failTitle="Error setting allowance"
                     successDescription="New allowance set sucessfully."
                     transaction={tokenTransaction}
                 />
@@ -146,11 +146,18 @@ export const Staking: FC<StakingProps> = ({
                 )}
 
                 <TransactionInfoBanner
-                    title="Sending transaction... (pool)..."
+                    title="Setting deposit..."
+                    failTitle="Error setting deposit"
+                    successDescription="New deposit set sucessfully."
                     transaction={poolTransaction}
                 />
 
-                <InfoBanner
+                {/* <TransactionInfoBanner
+                    title="Sending transaction... (pool)..."
+                    transaction={poolTransaction}
+                /> */}
+
+                {/* <InfoBanner
                     title="Withdrawing 15000 CTSI in pool..."
                     content="Staking is the process of locking your CTSI tokens to the network. This allows you to earn rewards for staking."
                     isOpen
@@ -173,7 +180,7 @@ export const Staking: FC<StakingProps> = ({
                     isOpen
                     isExpandable
                     status="info"
-                />
+                /> */}
 
                 <Box
                     bg={bg}
@@ -237,14 +244,14 @@ export const Staking: FC<StakingProps> = ({
                     </Stack>
                 </Box>
 
-                <InfoBanner
+                {/* <InfoBanner
                     title="Unstaking 200 CTSI to the pool balance..."
                     content="Please, wait for your 200 CTSI unstaked funds to be released in the pool balance. According to the system history, it usually takes 3 hours to arrive."
                     icon={<TimeIcon boxSize="6" color={infoColor} mr={3} />}
                     isOpen
                     isExpandable
                     status="info"
-                />
+                /> */}
 
                 <Box
                     bg={bg}

@@ -44,7 +44,7 @@ interface IStakingStakeModalProps {
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newStake: BigNumber) => void;
+    onSave: (newStake: string) => void;
 }
 
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
@@ -54,20 +54,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     onClose: onClose,
     onSave: onSave,
 }) => {
-    // formatter for CTSI values
-    const numberFormat = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-    });
-
-    // initialize allowance to current allowance
-    const [newStake, setNewStake] = useState<string>(
-        numberFormat.format(parseFloat(formatUnits(allowance, 18)))
-    );
-
-    const toCTSI_string = (value: BigNumber) => {
-        return numberFormat.format(parseFloat(formatUnits(value, 18)));
-    };
+    const [amount, setAmount] = useState('');
 
     const toCTSI = (value: BigNumber) => {
         return parseFloat(formatUnits(value, 18));
@@ -99,13 +86,12 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <FormControl id="stakeAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
                                 <NumberInput
-                                    // defaultValue={toCTSI_string(allowance)}
                                     defaultValue={1}
                                     in={1}
                                     max={toCTSI(allowance)}
                                     ref={inputFocusRef}
                                     onChange={(value) => {
-                                        setNewStake(value);
+                                        setAmount(value);
                                     }}
                                 >
                                     <NumberInputField />
@@ -133,7 +119,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(parseUnits(newStake, 18));
+                                        onSave(amount);
                                         disclosure.onClose();
                                         onClose();
                                     }}

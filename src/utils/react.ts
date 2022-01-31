@@ -48,9 +48,11 @@ export const useTimeLeft = (
                 const output = outputHumanized
                     .replaceAll('minutes', '')
                     .replaceAll('hours', '')
+                    .replaceAll('minute', '')
+                    .replaceAll('hour', '')
                     .replaceAll(',', ':')
                     .replaceAll(' ', '')
-                    .trim(); // TODO: fix
+                    .trim(); // TODO: remove and use proper way to display time
 
                 setTimeLeft(humanizeOutput ? outputHumanized : output);
             }
