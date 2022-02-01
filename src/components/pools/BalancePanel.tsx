@@ -90,6 +90,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 2,
                 }}
+                justifyContent="flex-start"
             >
                 <HStack>
                     <Text color={needRebalance ? 'red' : undefined}>
@@ -152,6 +153,7 @@ const BalancePanel: FC<BalancePanelProps> = ({
                                 maximumFractionDigits: 2,
                             }}
                             countdown={{ timeLeft: time, timeLabel: timeLabel }}
+                            justifyContent="flex-start"
                         >
                             <HStack>
                                 <Text>{label}</Text>
