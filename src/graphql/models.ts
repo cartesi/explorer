@@ -131,8 +131,34 @@ export type StakingPoolFee = {
     lastUpdated: number;
 };
 
+export type PoolUserActivity = {
+    id: string;
+    amount: string;
+    pool: {
+        id: string;
+    };
+    timestamp: string;
+};
+
+export interface PoolUserActivityData {
+    poolDeposits: PoolUserActivity[];
+    poolStakes: PoolUserActivity[];
+    poolUnstakes: PoolUserActivity[];
+    poolWithdraws: PoolUserActivity[];
+}
 export interface StakingPoolData {
     stakingPool: StakingPool;
+}
+
+export interface PoolUserActivityFilter {
+    user: string;
+    pool?: string;
+}
+export interface PoolUserActivityVars {
+    stakeFilter: PoolUserActivityFilter;
+    unstakeFilter: PoolUserActivityFilter;
+    depositFilter: PoolUserActivityFilter;
+    withdrawFilter: PoolUserActivityFilter;
 }
 
 export interface StakingPoolVars {
