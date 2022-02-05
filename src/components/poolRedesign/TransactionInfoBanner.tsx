@@ -21,7 +21,7 @@ import {
     Spinner,
     useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Address from '../Address';
 import { Transaction } from '../../services/transaction';
 
@@ -30,6 +30,10 @@ interface ITransactionInfoBannerProps extends AlertProps {
     failTitle?: string;
     successDescription?: string;
     transaction: Transaction<any>;
+    onBeginTransaction?: () => void;
+    onEndTransaction?: () => void;
+    onSuccess?: () => void;
+    onError?: () => void;
 }
 
 export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
@@ -37,6 +41,10 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     failTitle,
     successDescription,
     transaction,
+    onSuccess,
+    onError,
+    onBeginTransaction,
+    onEndTransaction,
     ...props
 }) => {
     // TODO: take into account a higher number of confirmations
@@ -51,6 +59,26 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
 
     const isSuccess = status === 'success';
     const isError = status === 'error';
+
+    const [transactionStarted, setTransactionStarted] = useState(false);
+    const [transactionEnded, setTransactionEnded] = useState(false);
+
+    useEffect(() => {
+        if (onSuccess && isSuccess) onSuccess();
+        if (onError && isError) onError();
+
+        if (onBeginTransaction && !transactionStarted) {
+            setTransactionStarted(true);
+            onBeginTransaction();
+        }
+
+        if (onEndTransaction && !transactionEnded) {
+            if (!isSuccess && !isError) return;
+
+            setTransactionEnded(true);
+            onEndTransaction();
+        }
+    }, [isSuccess, isError]);
 
     const hash = transaction?.transaction?.hash;
     const chainId = transaction?.transaction?.chainId;
@@ -88,12 +116,14 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     {transaction?.error}
                 </AlertDescription>
             </Box>
-            <CloseButton
-                position="absolute"
-                right="8px"
-                top="8px"
-                onClick={() => transaction?.ack()}
-            />
+            {transactionEnded && (
+                <CloseButton
+                    position="absolute"
+                    right="8px"
+                    top="8px"
+                    onClick={() => transaction?.ack()}
+                />
+            )}
         </Alert>
     ) : (
         <></>

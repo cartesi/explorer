@@ -30,7 +30,7 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { AllowenceIcon, WalletIcon } from '../../components/Icons';
 import CTSI from '../pools/staking/CTSI';
 import { InfoBanner } from './InfoBanner';
@@ -76,6 +76,7 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     const disclosure = useDisclosure();
 
     const borderColor = useColorModeValue('gray.100', 'transparent');
+    const [showAllowanceTransaction, setAllowanceTransaction] = useState(false);
 
     return (
         <>
@@ -202,7 +203,7 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                                 </Heading>
                             </Box>
                         </HStack>
-                        {userETHBalance && userETHBalance.isZero() && (
+                        {userETHBalance?.isZero() && (
                             <HStack spacing={2} alignItems="flex-start">
                                 <WarningIcon color="orange.500" />
                                 <Text fontSize="sm">
@@ -279,7 +280,10 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                 allowance={allowance}
                 balance={balance}
                 onClose={onCloseStakingPoolAllowenceModal}
-                onSave={onApprove}
+                onSave={(amount) => {
+                    setAllowanceTransaction(true);
+                    onApprove(amount);
+                }}
             />
         </>
     );

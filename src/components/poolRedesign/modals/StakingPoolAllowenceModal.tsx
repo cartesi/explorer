@@ -100,7 +100,7 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
                                 </FormLabel>
                                 <NumberInput
                                     defaultValue={toCTSI_string(allowance)}
-                                    min={1}
+                                    min={0}
                                     max={toCTSI(balance)}
                                     ref={inputFocusRef}
                                     onChange={(value) => {

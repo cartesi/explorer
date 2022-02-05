@@ -42,11 +42,27 @@ import { Transaction } from '../../services/transaction';
 import { useTimeLeft } from '../../utils/react';
 import CTSI from '../pools/staking/CTSI';
 import { TransactionInfoBanner } from './TransactionInfoBanner';
+import { formatUnits } from 'ethers/lib/utils';
+
+const toCTSI = (value: BigNumber) => {
+    return parseFloat(formatUnits(value, 18));
+};
+
+// formatter for CTSI values
+const numberFormat = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+});
+
+const toCTSI_string = (value: BigNumber) => {
+    return numberFormat.format(parseFloat(formatUnits(value, 18)));
+};
 
 export interface StakingProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
     userBalance: BigNumber; // user pool balance
+    userETHBalance: BigNumber; // user ETH balance
     // shares: BigNumber; // user shares
     staked: BigNumber; // user stake
     // withdrawBalance: BigNumber; // amount of token user can actually withdraw
@@ -65,6 +81,7 @@ export interface StakingProps extends StackProps {
 export const Staking: FC<StakingProps> = ({
     balance,
     userBalance,
+    userETHBalance,
     staked,
     allowance,
     depositTimestamp,
@@ -90,6 +107,9 @@ export const Staking: FC<StakingProps> = ({
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
+    const [showDepositTransaction, setShowDepositTransaction] = useState(false);
+    const [showStakeTransaction, setShowStakeTransaction] = useState(false);
+
     return (
         <>
             <VStack spacing={6} alignItems="stretch">
@@ -113,18 +133,25 @@ export const Staking: FC<StakingProps> = ({
                             onClick={depositDisclosure.onOpen}
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
+                            disabled={
+                                allowance.isZero() ||
+                                balance.isZero() ||
+                                userETHBalance.isZero()
+                            }
                         >
                             Deposit
                         </Button>
                     </Box>
                 </Stack>
 
-                <TransactionInfoBanner
-                    title="Setting allowance..."
-                    failTitle="Error setting allowance"
-                    successDescription="New allowance set sucessfully."
-                    transaction={tokenTransaction}
-                />
+                {showAllowanceTransaction && (
+                    <TransactionInfoBanner
+                        title="Setting allowance..."
+                        failTitle="Error setting allowance"
+                        successDescription="New allowance set sucessfully."
+                        transaction={tokenTransaction}
+                    />
+                )}
 
                 {unlock && (
                     <InfoBanner
@@ -145,12 +172,24 @@ export const Staking: FC<StakingProps> = ({
                     />
                 )}
 
-                <TransactionInfoBanner
-                    title="Setting deposit..."
-                    failTitle="Error setting deposit"
-                    successDescription="New deposit set sucessfully."
-                    transaction={poolTransaction}
-                />
+                {showDepositTransaction && (
+                    <TransactionInfoBanner
+                        title="Setting deposit..."
+                        failTitle="Error setting deposit"
+                        successDescription="New deposit set sucessfully."
+                        transaction={poolTransaction}
+                        onBeginTransaction={() => {
+                            console.log('transaction started...');
+
+                            // setShowDepositTransaction(false);
+                        }}
+                        onEndTransaction={() => {
+                            console.log('transaction ended...');
+
+                            // setShowDepositTransaction(false);
+                        }}
+                    />
+                )}
 
                 {/* <TransactionInfoBanner
                     title="Sending transaction... (pool)..."
@@ -205,11 +244,20 @@ export const Staking: FC<StakingProps> = ({
                                 <PoolBalanceIcon color="purple" w={6} h={6} />
                             </Box>
                             <Box>
-                                <Text color="gray.400">Your pool balance</Text>
+                                {unlock ? (
+                                    <Text color="gray.400">
+                                        Your pool balance (currently locked)
+                                    </Text>
+                                ) : (
+                                    <Text color="gray.400">
+                                        Your pool balance
+                                    </Text>
+                                )}
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={userBalance} />
-                                        <Text ml={1}>CTSI</Text>
+                                        <Text ml={1}>
+                                            {userBalance.toNumber()} CTSI
+                                        </Text>
                                     </Flex>
                                 </Heading>
                             </Box>
@@ -225,6 +273,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={stakeDisclosure.onOpen}
                                     colorScheme="darkGray"
+                                    disabled={userBalance.isZero()}
                                 >
                                     Stake
                                 </Button>
@@ -236,6 +285,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={withdrawDisclosure.onOpen}
                                     colorScheme="darkGray"
+                                    disabled={userBalance.isZero()}
                                 >
                                     Withdraw
                                 </Button>
@@ -252,7 +302,24 @@ export const Staking: FC<StakingProps> = ({
                     isExpandable
                     status="info"
                 /> */}
+                {showStakeTransaction && (
+                    <TransactionInfoBanner
+                        title="Staking..."
+                        failTitle="Error staking..."
+                        successDescription="Stake set sucessfully."
+                        transaction={poolTransaction}
+                        onBeginTransaction={() => {
+                            console.log('transaction started...');
 
+                            // setShowDepositTransaction(false);
+                        }}
+                        onEndTransaction={() => {
+                            console.log('transaction ended...');
+
+                            // setShowDepositTransaction(false);
+                        }}
+                    />
+                )}
                 <Box
                     bg={bg}
                     borderRadius="lg"
@@ -281,12 +348,15 @@ export const Staking: FC<StakingProps> = ({
                                 </Text>
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={staked} />
-                                        <Text ml={1}>CTSI</Text>
+                                        {/* <CTSI value={staked} /> */}
+                                        <Text ml={1}>
+                                            {staked.toNumber()} CTSI
+                                        </Text>
                                     </Flex>
                                 </Heading>
                             </Box>
                         </HStack>
+
                         <VStack
                             spacing={4}
                             alignItems="stretch"
@@ -313,7 +383,10 @@ export const Staking: FC<StakingProps> = ({
                 onClose={depositDisclosure.onClose}
                 allowance={allowance}
                 balance={balance}
-                onSave={onDeposit}
+                onSave={(amount) => {
+                    setShowDepositTransaction(true);
+                    onDeposit(amount);
+                }}
                 disclosure={depositDisclosure}
             />
 
@@ -322,7 +395,10 @@ export const Staking: FC<StakingProps> = ({
                 onClose={stakeDisclosure.onClose}
                 allowance={allowance}
                 balance={balance}
-                onSave={onStake}
+                onSave={(amount) => {
+                    setShowStakeTransaction(true);
+                    onStake(amount);
+                }}
                 disclosure={stakeDisclosure}
             />
 

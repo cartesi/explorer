@@ -146,13 +146,11 @@ const poolRedesign = () => {
                         balance={balance}
                         allowance={allowance}
                         userBalance={userBalance}
+                        userETHBalance={userETHBalance}
                         staked={stakedShares}
                         onWithdraw={withdraw}
                         onDeposit={deposit}
-                        onStake={(e) => {
-                            console.log('ONSTAKE', e);
-                            stake(e);
-                        }}
+                        onStake={stake}
                         onUnstake={unstake}
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
