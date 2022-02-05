@@ -144,14 +144,12 @@ export const Staking: FC<StakingProps> = ({
                     </Box>
                 </Stack>
 
-                {showAllowanceTransaction && (
-                    <TransactionInfoBanner
-                        title="Setting allowance..."
-                        failTitle="Error setting allowance"
-                        successDescription="New allowance set sucessfully."
-                        transaction={tokenTransaction}
-                    />
-                )}
+                <TransactionInfoBanner
+                    title="Setting allowance..."
+                    failTitle="Error setting allowance"
+                    successDescription="New allowance set sucessfully."
+                    transaction={tokenTransaction}
+                />
 
                 {unlock && (
                     <InfoBanner
