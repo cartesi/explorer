@@ -7,18 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2022-02-07
+
+### Changed
+
+-   Display of pool maturing and release countdown
+-   Fix information about average pool production interval
+
 ## [2.2.0] - 2022-01-27
 
 ### Changed
 
-- Support to new wallets added.
-  - [Metamask](https://metamask.io/)
-  - [Coinbase Wallet](https://www.coinbase.com/wallet)
-  - [Trust](https://trustwallet.com/)
-  - [Ledger](https://www.ledger.com/)
-  - [Gnosis Safe](https://gnosis-safe.io/)
-  - [Wallet Connect](https://walletconnect.com/)
-- Testnets `kovan` and `rinkeby` were removed.
+-   Support to new wallets added.
+    -   [Metamask](https://metamask.io/)
+    -   [Coinbase Wallet](https://www.coinbase.com/wallet)
+    -   [Trust](https://trustwallet.com/)
+    -   [Ledger](https://www.ledger.com/)
+    -   [Gnosis Safe](https://gnosis-safe.io/)
+    -   [Wallet Connect](https://walletconnect.com/)
+-   Testnets `kovan` and `rinkeby` were removed.
 
 ## [2.1.0] - 2021-12-10
 
@@ -89,7 +96,9 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.1.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/cartesi-corp/explorer/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/cartesi-corp/explorer/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/cartesi-corp/explorer/v2.0.5...v2.1.0
 [2.0.5]: https://github.com/cartesi-corp/explorer/v2.0.4...v2.0.5
 [2.0.4]: https://github.com/cartesi-corp/explorer/v2.0.3...v2.0.4
