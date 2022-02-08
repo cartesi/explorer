@@ -168,7 +168,10 @@ const poolRedesign = () => {
                     px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                     py={{ base: 8, sm: 12, lg: 16 }}
                 >
-                    <StakingActivity />
+                    <StakingActivity
+                        userAccount={account}
+                        poolAddress={address}
+                    />
                 </Box>
             )}
         </Layout>
