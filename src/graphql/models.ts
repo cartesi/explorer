@@ -255,6 +255,8 @@ export interface BlocksWhere {
 
 export interface BlocksVars {
     where: BlocksWhere;
+    count: number;
+    skip: number;
 }
 
 export interface BlockData {

@@ -18,7 +18,7 @@ const useBlocks = (where: BlocksWhere = {}, count = 100) => {
     where.node = where.node ? where.node.toLowerCase() : undefined;
     where.producer = where.producer ? where.producer.toLowerCase() : undefined;
 
-    const variables = {
+    const variables: BlocksVars = {
         where,
         count,
         skip: 0,

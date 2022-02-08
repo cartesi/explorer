@@ -12,7 +12,7 @@
 import gql from 'graphql-tag';
 
 export const BLOCKS = gql`
-    query blocks($where: Block_filter, $skip: Int) {
+    query blocks($where: Block_filter, $skip: Int, $count: Int) {
         blocks(
             first: $count
             where: $where
