@@ -390,7 +390,6 @@ export const Staking: FC<StakingProps> = ({
             <StakingStakeModal
                 isOpen={stakeDisclosure.isOpen}
                 onClose={stakeDisclosure.onClose}
-                allowance={allowance}
                 balance={balance}
                 userBalance={userBalance}
                 onSave={(amount) => {
