@@ -44,20 +44,6 @@ import CTSI from '../pools/staking/CTSI';
 import { TransactionInfoBanner } from './TransactionInfoBanner';
 import { formatUnits } from 'ethers/lib/utils';
 
-const toCTSI = (value: BigNumber) => {
-    return parseFloat(formatUnits(value, 18));
-};
-
-// formatter for CTSI values
-const numberFormat = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-});
-
-const toCTSI_string = (value: BigNumber) => {
-    return numberFormat.format(parseFloat(formatUnits(value, 18)));
-};
-
 export interface StakingProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
@@ -107,8 +93,8 @@ export const Staking: FC<StakingProps> = ({
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
-    const [showDepositTransaction, setShowDepositTransaction] = useState(false);
-    const [showStakeTransaction, setShowStakeTransaction] = useState(false);
+    const [currentTransaction, setCurrentTransaction] = useState<any>(null);
+    const [transactionBanners, setTransactionBanners] = useState<any>({});
 
     return (
         <>
@@ -151,6 +137,18 @@ export const Staking: FC<StakingProps> = ({
                     transaction={tokenTransaction}
                 />
 
+                {transactionBanners?.deposit && (
+                    <TransactionInfoBanner
+                        title="Setting deposit..."
+                        failTitle="Error setting deposit"
+                        successDescription="New deposit set sucessfully."
+                        transaction={
+                            currentTransaction === 'deposit'
+                                ? poolTransaction
+                                : null
+                        }
+                    />
+                )}
                 {unlock && (
                     <InfoBanner
                         title={`${userBalance} CTSI will be ready for staking soon`}
@@ -167,25 +165,6 @@ export const Staking: FC<StakingProps> = ({
                                 </Box>
                             </VStack>
                         }
-                    />
-                )}
-
-                {showDepositTransaction && (
-                    <TransactionInfoBanner
-                        title="Setting deposit..."
-                        failTitle="Error setting deposit"
-                        successDescription="New deposit set sucessfully."
-                        transaction={poolTransaction}
-                        onBeginTransaction={() => {
-                            console.log('transaction started...');
-
-                            // setShowDepositTransaction(false);
-                        }}
-                        onEndTransaction={() => {
-                            console.log('transaction ended...');
-
-                            // setShowDepositTransaction(false);
-                        }}
                     />
                 )}
 
@@ -253,9 +232,8 @@ export const Staking: FC<StakingProps> = ({
                                 )}
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <Text ml={1}>
-                                            {userBalance.toNumber()} CTSI
-                                        </Text>
+                                        <CTSI value={userBalance} />
+                                        <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>
                             </Box>
@@ -291,7 +269,6 @@ export const Staking: FC<StakingProps> = ({
                         </VStack>
                     </Stack>
                 </Box>
-
                 {/* <InfoBanner
                     title="Unstaking 200 CTSI to the pool balance..."
                     content="Please, wait for your 200 CTSI unstaked funds to be released in the pool balance. According to the system history, it usually takes 3 hours to arrive."
@@ -300,22 +277,29 @@ export const Staking: FC<StakingProps> = ({
                     isExpandable
                     status="info"
                 /> */}
-                {showStakeTransaction && (
+                {transactionBanners?.stake && (
                     <TransactionInfoBanner
                         title="Staking..."
-                        failTitle="Error staking..."
+                        failTitle="Error staking"
                         successDescription="Stake set sucessfully."
-                        transaction={poolTransaction}
-                        onBeginTransaction={() => {
-                            console.log('transaction started...');
+                        transaction={
+                            currentTransaction === 'stake'
+                                ? poolTransaction
+                                : null
+                        }
+                    />
+                )}
 
-                            // setShowDepositTransaction(false);
-                        }}
-                        onEndTransaction={() => {
-                            console.log('transaction ended...');
-
-                            // setShowDepositTransaction(false);
-                        }}
+                {transactionBanners?.withdraw && (
+                    <TransactionInfoBanner
+                        title="Withdrawing..."
+                        failTitle="Error withdrawing"
+                        successDescription="Withdrawed sucessfully."
+                        transaction={
+                            currentTransaction === 'withdraw'
+                                ? poolTransaction
+                                : null
+                        }
                     />
                 )}
                 <Box
@@ -346,10 +330,8 @@ export const Staking: FC<StakingProps> = ({
                                 </Text>
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        {/* <CTSI value={staked} /> */}
-                                        <Text ml={1}>
-                                            {staked.toNumber()} CTSI
-                                        </Text>
+                                        <CTSI value={staked} />
+                                        <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>
                             </Box>
@@ -375,14 +357,30 @@ export const Staking: FC<StakingProps> = ({
                     </Stack>
                 </Box>
             </VStack>
-
+            {transactionBanners?.unstake && (
+                <TransactionInfoBanner
+                    title="Unstaking..."
+                    failTitle="Error unstaking"
+                    successDescription="Unstaked sucessfully."
+                    transaction={
+                        currentTransaction === 'unstake'
+                            ? poolTransaction
+                            : null
+                    }
+                />
+            )}
             <StakingDepositModal
                 isOpen={depositDisclosure.isOpen}
                 onClose={depositDisclosure.onClose}
                 allowance={allowance}
                 balance={balance}
                 onSave={(amount) => {
-                    setShowDepositTransaction(true);
+                    console.log('deposit transaction', poolTransaction);
+                    setCurrentTransaction('deposit');
+                    setTransactionBanners({
+                        ...transactionBanners,
+                        deposit: true,
+                    });
                     onDeposit(amount);
                 }}
                 disclosure={depositDisclosure}
@@ -393,23 +391,47 @@ export const Staking: FC<StakingProps> = ({
                 onClose={stakeDisclosure.onClose}
                 allowance={allowance}
                 balance={balance}
+                userBalance={userBalance}
                 onSave={(amount) => {
-                    setShowStakeTransaction(true);
+                    console.log('stake transaction', amount, poolTransaction);
+                    setCurrentTransaction('stake');
+                    setTransactionBanners({
+                        ...transactionBanners,
+                        stake: true,
+                    });
                     onStake(amount);
                 }}
                 disclosure={stakeDisclosure}
             />
 
-            <StakingUnstakeModal
-                isOpen={unstakeDisclosure.isOpen}
-                onClose={unstakeDisclosure.onClose}
-                onSave={onUnstake}
-            />
-
             <StakingWithdrawModal
                 isOpen={withdrawDisclosure.isOpen}
                 onClose={withdrawDisclosure.onClose}
-                onSave={onWithdraw}
+                userBalance={userBalance}
+                onSave={(amount) => {
+                    console.log('withdraw transaction', amount);
+                    setCurrentTransaction('withdraw');
+                    setTransactionBanners({
+                        ...transactionBanners,
+                        withdraw: true,
+                    });
+                    onWithdraw(amount);
+                }}
+            />
+
+            <StakingUnstakeModal
+                isOpen={unstakeDisclosure.isOpen}
+                onClose={unstakeDisclosure.onClose}
+                userBalance={userBalance}
+                onSave={(amount) => {
+                    console.log('unstake transaction', amount);
+                    setCurrentTransaction('unstake');
+                    setTransactionBanners({
+                        ...transactionBanners,
+                        unstake: true,
+                    });
+                    onUnstake(amount);
+                }}
             />
         </>
     );

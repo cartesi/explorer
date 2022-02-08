@@ -35,30 +35,25 @@ import {
     NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 
 interface IStakingStakeModalProps {
-    allowance: BigNumber;
     balance: BigNumber;
+    userBalance: BigNumber;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newStake: string) => void;
+    onSave: (amount: string) => void;
 }
 
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
-    allowance,
+    userBalance,
     disclosure,
     isOpen: isOpen,
     onClose: onClose,
     onSave: onSave,
 }) => {
     const [amount, setAmount] = useState('');
-
-    const toCTSI = (value: BigNumber) => {
-        return parseFloat(formatUnits(value, 18));
-    };
 
     const inputFocusRef = useRef();
     return (
@@ -88,7 +83,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <NumberInput
                                     defaultValue={1}
                                     in={1}
-                                    max={toCTSI(allowance)}
+                                    min={1}
+                                    max={userBalance.toNumber()}
                                     ref={inputFocusRef}
                                     onChange={(value) => {
                                         setAmount(value);
@@ -109,7 +105,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     </NumberInputStepper>
                                 </NumberInput>
                                 <FormHelperText>
-                                    Max. available: 500 CTSI
+                                    Max. available: {userBalance.toNumber()}{' '}
+                                    CTSI
                                 </FormHelperText>
                             </FormControl>
                         </VStack>

@@ -47,11 +47,17 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     onEndTransaction,
     ...props
 }) => {
+    const [innerTransaction, setInnerTransacation] = useState(transaction);
+
+    useEffect(() => {
+        if (transaction) setInnerTransacation(transaction);
+    }, [transaction]);
+
     // TODO: take into account a higher number of confirmations
     // and calculate a percentage
-    const progress = transaction?.receipt?.confirmations || 0;
+    const progress = innerTransaction?.receipt?.confirmations || 0;
 
-    const status = transaction?.error
+    const status = innerTransaction?.error
         ? 'error'
         : progress >= 1
         ? 'success'
@@ -62,29 +68,39 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
 
     const [transactionStarted, setTransactionStarted] = useState(false);
     const [transactionEnded, setTransactionEnded] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        if (onSuccess && isSuccess) onSuccess();
-        if (onError && isError) onError();
-
-        if (onBeginTransaction && !transactionStarted) {
+        if (!transactionStarted) {
             setTransactionStarted(true);
-            onBeginTransaction();
+            setError('');
+            if (onBeginTransaction) onBeginTransaction();
         }
 
-        if (onEndTransaction && !transactionEnded) {
-            if (!isSuccess && !isError) return;
+        if (isSuccess) {
+            setError('');
+            if (onSuccess) onSuccess();
+        }
 
+        if (isError) {
+            const errMessage = innerTransaction?.error;
+            if (!error) {
+                setError(errMessage); // only the first time
+                if (onError) onError();
+            }
+        }
+
+        if (!transactionEnded) {
             setTransactionEnded(true);
-            onEndTransaction();
+            if (onEndTransaction) onEndTransaction();
         }
     }, [isSuccess, isError]);
 
-    const hash = transaction?.transaction?.hash;
-    const chainId = transaction?.transaction?.chainId;
+    const hash = innerTransaction?.transaction?.hash;
+    const chainId = innerTransaction?.transaction?.chainId;
     const bg = useColorModeValue('white', 'gray.700');
 
-    return !transaction?.acknowledged ? (
+    return !innerTransaction?.acknowledged ? (
         <Alert
             variant="left-accent"
             alignItems="flex-start"
@@ -112,8 +128,8 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                 </HStack>
 
                 <AlertDescription display="block">
-                    {isSuccess && successDescription ? successDescription : ''}
-                    {transaction?.error}
+                    {isError && error ? error : ''}
+                    {isSuccess && !isError ? successDescription : ''}
                 </AlertDescription>
             </Box>
             {transactionEnded && (
@@ -121,7 +137,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     position="absolute"
                     right="8px"
                     top="8px"
-                    onClick={() => transaction?.ack()}
+                    onClick={() => innerTransaction?.ack()}
                 />
             )}
         </Alert>

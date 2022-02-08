@@ -30,16 +30,19 @@ import {
     RadioGroup,
     Stack,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
 import React, { FC, useState, useRef } from 'react';
 
 interface IStakingUnstakeModalProps {
     isOpen: boolean;
+    userBalance: BigNumber;
     onClose: () => void;
     onSave: (amount: string) => void;
 }
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     isOpen: isOpen,
+    userBalance,
     onClose: onClose,
     onSave: onSave,
 }) => {
@@ -151,7 +154,16 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(amount);
+                                        if (unstakeFullAmount === 'full') {
+                                            onSave(
+                                                userBalance
+                                                    .toNumber()
+                                                    .toString()
+                                            );
+                                        } else {
+                                            onSave(amount);
+                                        }
+
                                         onClose();
                                     }}
                                 >

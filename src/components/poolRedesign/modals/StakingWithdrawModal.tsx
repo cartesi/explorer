@@ -32,16 +32,19 @@ import {
     Text,
     Stack,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
 import React, { FC, useRef, useState } from 'react';
 
 interface IStakingWithdrawModalProps {
     isOpen: boolean;
+    userBalance: BigNumber;
     onClose: () => void;
     onSave: (amount: string) => void;
 }
 
 export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     isOpen: isOpen,
+    userBalance,
     onClose: onClose,
     onSave: onSave,
 }) => {
@@ -190,7 +193,16 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(amount);
+                                        if (withdrawFullAmount === 'full') {
+                                            onSave(
+                                                userBalance
+                                                    .toNumber()
+                                                    .toString()
+                                            );
+                                        } else {
+                                            onSave(amount);
+                                        }
+
                                         onClose();
                                     }}
                                 >
