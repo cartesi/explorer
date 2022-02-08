@@ -349,6 +349,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={unstakeDisclosure.onOpen}
                                     colorScheme="darkGray"
+                                    disabled={userBalance.isZero()}
                                 >
                                     Unstake
                                 </Button>
