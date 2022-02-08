@@ -132,6 +132,7 @@ export type StakingPoolFee = {
 };
 
 export type PoolUserActivity = {
+    __typename: string;
     id: string;
     amount: string;
     pool: {
