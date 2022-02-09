@@ -55,6 +55,8 @@ export interface StakingDashboardProps extends StackProps {
     // onUnstake: (amount?: BigNumberish) => void;
 }
 
+const SHOW_STAKING_INSTRUCTIONS = 'showStakingInstructions';
+
 export const StakingDashboard: FC<StakingDashboardProps> = ({
     userBalance,
     userETHBalance,
@@ -63,8 +65,11 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     onApprove,
     // onStake,
 }) => {
+    const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
+    const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
+
     const { isOpen, onToggle } = useDisclosure({
-        defaultIsOpen: true,
+        defaultIsOpen: showInstructions,
     });
 
     const {
@@ -78,89 +83,100 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     const borderColor = useColorModeValue('gray.100', 'transparent');
     const [showAllowanceTransaction, setAllowanceTransaction] = useState(false);
 
+    const handleDontShowAgainClick = () => {
+        localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
+        onToggle();
+    };
+
     return (
         <>
             <VStack spacing={8}>
-                <InfoBanner
-                    title="Read carefully before staking!"
-                    content={
-                        <>
-                            <OrderedList fontSize="sm" mt={2}>
-                                <ListItem>
-                                    This is a PoS system and thus,
-                                    probabilistic. It can take a much longer
-                                    time for you to produce blocks than the
-                                    estimated average.
-                                </ListItem>
-                                <ListItem>
-                                    Estimated rewards can be highly variable,
-                                    depending on chance and on the total amount
-                                    of CTSI staked by everyone in the network.
-                                </ListItem>
-                                <ListItem>
-                                    Whenever your node is unavailable, you miss
-                                    the chance of producing blocks. Cartesi's
-                                    node depends on the availability of the
-                                    configured Ethereum node.
-                                </ListItem>
-                                <ListItem>
-                                    This is a PoS system and thus,
-                                    probabilistic. It can take a much longer
-                                    time for you to produce blocks than the
-                                    estimated average.
-                                </ListItem>
-                                <ListItem>
-                                    Estimated rewards can be highly variable,
-                                    depending on chance and on the total amount
-                                    of CTSI staked by everyone in the network.
-                                </ListItem>
-                                <ListItem>
-                                    Whenever your node is unavailable, you miss
-                                    the chance of producing blocks. Cartesi's
-                                    node depends on the availability of the
-                                    configured Ethereum node.
-                                </ListItem>
-                            </OrderedList>
-                            <Stack
-                                spacing={4}
-                                direction={{ base: 'column', md: 'row' }}
-                                justifyContent="space-between"
-                                mt={6}
-                                w="full"
-                            >
-                                <Link
-                                    href="#"
-                                    isExternal
-                                    fontSize="sm"
-                                    color="orange.500"
-                                    _hover={{
-                                        color: 'orange.600',
-                                    }}
+                {showInstructions && (
+                    <InfoBanner
+                        title="Read carefully before staking!"
+                        content={
+                            <>
+                                <OrderedList fontSize="sm" mt={2}>
+                                    <ListItem>
+                                        This is a PoS system and thus,
+                                        probabilistic. It can take a much longer
+                                        time for you to produce blocks than the
+                                        estimated average.
+                                    </ListItem>
+                                    <ListItem>
+                                        Estimated rewards can be highly
+                                        variable, depending on chance and on the
+                                        total amount of CTSI staked by everyone
+                                        in the network.
+                                    </ListItem>
+                                    <ListItem>
+                                        Whenever your node is unavailable, you
+                                        miss the chance of producing blocks.
+                                        Cartesi's node depends on the
+                                        availability of the configured Ethereum
+                                        node.
+                                    </ListItem>
+                                    <ListItem>
+                                        This is a PoS system and thus,
+                                        probabilistic. It can take a much longer
+                                        time for you to produce blocks than the
+                                        estimated average.
+                                    </ListItem>
+                                    <ListItem>
+                                        Estimated rewards can be highly
+                                        variable, depending on chance and on the
+                                        total amount of CTSI staked by everyone
+                                        in the network.
+                                    </ListItem>
+                                    <ListItem>
+                                        Whenever your node is unavailable, you
+                                        miss the chance of producing blocks.
+                                        Cartesi's node depends on the
+                                        availability of the configured Ethereum
+                                        node.
+                                    </ListItem>
+                                </OrderedList>
+                                <Stack
+                                    spacing={4}
+                                    direction={{ base: 'column', md: 'row' }}
+                                    justifyContent="space-between"
+                                    mt={6}
+                                    w="full"
                                 >
-                                    Learn detailed staking instructions{' '}
-                                    <ExternalLinkIcon />
-                                </Link>
-                                <Button
-                                    size="sm"
-                                    onClick={onToggle}
-                                    colorScheme="darkGray"
-                                >
-                                    Don't show again
-                                </Button>
-                            </Stack>
-                        </>
-                    }
-                    isOpen={isOpen}
-                    isClosable
-                    borderTop="1px solid"
-                    borderRight="1px solid"
-                    borderBottom="1px solid"
-                    borderTopColor={borderColor}
-                    borderRightColor={borderColor}
-                    borderBottomColor={borderColor}
-                    status="warning"
-                    onToggle={onToggle}
-                />
+                                    <Link
+                                        href="#"
+                                        isExternal
+                                        fontSize="sm"
+                                        color="orange.500"
+                                        _hover={{
+                                            color: 'orange.600',
+                                        }}
+                                    >
+                                        Learn detailed staking instructions{' '}
+                                        <ExternalLinkIcon />
+                                    </Link>
+                                    <Button
+                                        size="sm"
+                                        onClick={handleDontShowAgainClick}
+                                        colorScheme="darkGray"
+                                    >
+                                        Don't show again
+                                    </Button>
+                                </Stack>
+                            </>
+                        }
+                        isOpen={isOpen}
+                        isClosable
+                        borderTop="1px solid"
+                        borderRight="1px solid"
+                        borderBottom="1px solid"
+                        borderTopColor={borderColor}
+                        borderRightColor={borderColor}
+                        borderBottomColor={borderColor}
+                        status="warning"
+                        onToggle={onToggle}
+                    />
+                )}
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
                     spacing={8}
