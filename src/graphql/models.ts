@@ -135,9 +135,6 @@ export type PoolUserActivity = {
     __typename: string;
     id: string;
     amount: string;
-    pool: {
-        id: string;
-    };
     timestamp: string;
 };
 
@@ -152,14 +149,21 @@ export interface StakingPoolData {
 }
 
 export interface PoolUserActivityFilter {
-    user: string;
+    user?: string;
     pool?: string;
+    timestamp_lt?: number;
 }
 export interface PoolUserActivityVars {
     stakeFilter: PoolUserActivityFilter;
     unstakeFilter: PoolUserActivityFilter;
     depositFilter: PoolUserActivityFilter;
     withdrawFilter: PoolUserActivityFilter;
+    stakeOrderBy: string;
+    unstakeOrderBy: string;
+    depositOrderBy: string;
+    withdrawOrderBy: string;
+    orderDirection: 'desc' | 'asc';
+    first: number;
 }
 
 export interface StakingPoolVars {
