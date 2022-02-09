@@ -51,6 +51,7 @@ export const GET_POOL_USER_ACTIVITY = gql`
             orderDirection: $orderDirection
             first: $first
         ) {
+            id
             timestamp
             amount
         }
