@@ -17,41 +17,53 @@ export const GET_POOL_USER_ACTIVITY = gql`
         $stakeFilter: PoolStake_filter
         $depositFilter: PoolDeposit_filter
         $withdrawFilter: PoolWithdraw_filter
+        $unstakeOrderBy: PoolUnstake_orderBy
+        $stakeOrderBy: PoolStake_orderBy
+        $depositOrderBy: PoolDeposit_orderBy
+        $withdrawOrderBy: PoolWithdraw_orderBy
+        $orderDirection: OrderDirection
+        $first: Int
     ) {
-        poolStakes(where: $stakeFilter) {
+        poolStakes(
+            where: $stakeFilter
+            orderBy: $stakeOrderBy
+            orderDirection: $orderDirection
+            first: $first
+        ) {
             id
             timestamp
             amount
-            pool {
-                id
-            }
+        }
+        poolDeposits(
+            where: $depositFilter
+            orderBy: $depositOrderBy
+            orderDirection: $orderDirection
+            first: $first
+        ) {
+            id
+            timestamp
+            amount
         }
 
-        poolDeposits(where: $depositFilter) {
-            id
+        poolUnstakes(
+            where: $unstakeFilter
+            orderBy: $unstakeOrderBy
+            orderDirection: $orderDirection
+            first: $first
+        ) {
             timestamp
             amount
-            pool {
-                id
-            }
         }
 
-        poolUnstakes(where: $unstakeFilter) {
+        poolWithdraws(
+            where: $withdrawFilter
+            orderBy: $withdrawOrderBy
+            orderDirection: $orderDirection
+            first: $first
+        ) {
             id
             timestamp
             amount
-            pool {
-                id
-            }
-        }
-
-        poolWithdraws(where: $withdrawFilter) {
-            id
-            timestamp
-            amount
-            pool {
-                id
-            }
         }
     }
 `;
