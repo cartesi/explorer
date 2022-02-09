@@ -27,6 +27,11 @@ interface Activity extends Omit<PoolUserActivity, 'timestamp'> {
     timestamp: number;
 }
 
+interface UsePoolUserActivityProps {
+    user?: string;
+    pool?: string;
+    beforeInMillis?: number;
+}
 interface UsePoolUserActivity {
     activities: Activity[] | null;
     loading: boolean;
@@ -61,21 +66,31 @@ const orderByLatestActivity = (val: Activity[]): Activity[] =>
 const aggregate = pipe(getAndFlattenValues, normalize, orderByLatestActivity);
 
 /**
- * Return withdrawals, deposits, stakes and unstakes of a user on a specific pool or
- * not passing a pool will return all activities related to that user in different pools
- * @param user user Account
- * @param pool pool Address
- * @returns { UsePoolUserActivity }
+ * Converts the time in milisseconds to seconds (unix timestamp).
+ * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#get_the_number_of_seconds_since_the_ecmascript_epoch
+ * @param numberInMillis
+ * @returns
  */
-const usePoolUserActivity = (
-    user: string,
-    pool?: string
-): UsePoolUserActivity => {
-    if (!user) {
-        return { loading: false, activities: null };
-    }
-
-    const filter = { user, pool };
+const milliToUnixTimestamp = (numberInMillis: number): number =>
+    Math.floor(numberInMillis / 1000);
+/**
+ * Hook retrieves withdrawals, deposits, stakes and unstakes based on a user, pool or
+ * a combination of both. It gets the first five entries of each action
+ * ordered and filtered by the timestamp passed as argument (i.e. beforeInMillis) or
+ * it use the current timestamp i.e. Date.now() as the default entry.
+ * @param {UsePoolUserActivityProps}
+ * @returns {UsePoolUserActivity}
+ */
+const usePoolUserActivity = ({
+    beforeInMillis,
+    user,
+    pool,
+}: UsePoolUserActivityProps): UsePoolUserActivity => {
+    const timestamp_lt = milliToUnixTimestamp(beforeInMillis || Date.now());
+    const filter = { user, pool, timestamp_lt };
+    const orderBy = 'timestamp';
+    const orderDirection = 'desc';
+    const first = 5;
     const [activities, setActivities] = useState(null);
     const { data, loading, error } = useQuery<
         PoolUserActivityData,
@@ -86,6 +101,12 @@ const usePoolUserActivity = (
             unstakeFilter: filter,
             stakeFilter: filter,
             withdrawFilter: filter,
+            stakeOrderBy: orderBy,
+            unstakeOrderBy: orderBy,
+            depositOrderBy: orderBy,
+            withdrawOrderBy: orderBy,
+            orderDirection,
+            first,
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 600000,
