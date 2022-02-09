@@ -78,52 +78,58 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
     );
 });
 
-export const StakingActivity: FC<Props> = ({ userAccount, poolAddress }) => {
-    const { activities, loading } = usePoolUserActivity(
-        userAccount,
-        poolAddress
-    );
+export const StakingActivity: FC<Props> = memo(
+    ({ userAccount, poolAddress }) => {
+        const { activities, loading } = usePoolUserActivity({
+            pool: poolAddress,
+            user: userAccount,
+        });
 
-    return (
-        <>
-            <Heading as="h2" size="md" mb={10}>
-                My staking activities
-            </Heading>
-            <VStack spacing={8} alignItems="flex-start">
-                <Loader isLoading={loading} />
-                {activities?.length > 0 &&
-                    activities.map((activity, index) => (
-                        <HStack
-                            key={index}
-                            justifyContent="flex-start"
+        return (
+            <>
+                <Heading as="h2" size="md" mb={10}>
+                    My staking activities
+                </Heading>
+                <VStack spacing={8} alignItems="flex-start">
+                    <Loader isLoading={loading} />
+                    {activities?.length > 0 &&
+                        activities.map((activity, index) => (
+                            <HStack
+                                key={index}
+                                justifyContent="flex-start"
+                                spacing={4}
+                                alignItems="flex-start"
+                            >
+                                <CheckCircleIcon
+                                    w={6}
+                                    h={6}
+                                    color="green.500"
+                                />
+                                <Activity
+                                    key={activity.id}
+                                    amount={activity.amount}
+                                    timestamp={activity.timestamp}
+                                    type={activity.type}
+                                />
+                            </HStack>
+                        ))}
+                    {activities?.length === 0 && (
+                        <VStack
+                            alignItems="center"
                             spacing={4}
-                            alignItems="flex-start"
+                            w="full"
+                            textAlign="center"
+                            fontSize="sm"
                         >
-                            <CheckCircleIcon w={6} h={6} color="green.500" />
-                            <Activity
-                                key={activity.id}
-                                amount={activity.amount}
-                                timestamp={activity.timestamp}
-                                type={activity.type}
-                            />
-                        </HStack>
-                    ))}
-                {activities?.length === 0 && (
-                    <VStack
-                        alignItems="center"
-                        spacing={4}
-                        w="full"
-                        textAlign="center"
-                        fontSize="sm"
-                    >
-                        <Image src="/images/empty-activity.svg" />
-                        <Text>
-                            You haven’t had any transaction yet. Start
-                            delegation by depositing.
-                        </Text>
-                    </VStack>
-                )}
-            </VStack>
-        </>
-    );
-};
+                            <Image src="/images/empty-activity.svg" />
+                            <Text>
+                                You haven’t had any transaction yet. Start
+                                delegation by depositing.
+                            </Text>
+                        </VStack>
+                    )}
+                </VStack>
+            </>
+        );
+    }
+);
