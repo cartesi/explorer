@@ -10,12 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
     FormControl,
-    Input,
-    InputGroup,
-    InputRightElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -29,26 +25,34 @@ import {
     Radio,
     RadioGroup,
     Stack,
+    UseDisclosureProps,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useState, useRef } from 'react';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingUnstakeModalProps {
     isOpen: boolean;
     userBalance: BigNumber;
+    disclosure: UseDisclosureProps;
     onClose: () => void;
-    onSave: (amount: string) => void;
+    onSave: (newUnstake: BigNumber) => void;
 }
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     isOpen: isOpen,
     userBalance,
+    disclosure,
     onClose: onClose,
     onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState<string>('');
     const [unstakeFullAmount, setUnstakeFullAmount] = useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
+    const [outputUnstake, setOutputUnstake] = useState<BigNumber>();
+
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -116,32 +120,18 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                                 id="unstakeAmount"
                                                 pl={7}
                                             >
-                                                <InputGroup>
-                                                    <Input
-                                                        type="text"
-                                                        inputMode="decimal"
-                                                        placeholder="0.00"
-                                                        size="lg"
-                                                        pr={16}
-                                                        value={amount}
-                                                        ref={inputRef}
-                                                        onChange={(e) =>
-                                                            setAmount(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                    <InputRightElement
-                                                        color="gray.300"
-                                                        size="lg"
-                                                        pointerEvents="none"
-                                                        w={14}
-                                                        h="100%"
-                                                        children={
-                                                            <Box>CTSI</Box>
-                                                        }
-                                                    />
-                                                </InputGroup>
+                                                <CTSINumberInput
+                                                    min={0}
+                                                    max={userBalanceFormatted}
+                                                    // ref={inputFocusRef}
+                                                    onChange={(
+                                                        bigNumberValue
+                                                    ) => {
+                                                        setOutputUnstake(
+                                                            bigNumberValue
+                                                        );
+                                                    }}
+                                                />
                                             </FormControl>
                                         </Collapse>
                                     </Stack>
@@ -155,15 +145,12 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     colorScheme="darkGray"
                                     onClick={() => {
                                         if (unstakeFullAmount === 'full') {
-                                            onSave(
-                                                userBalance
-                                                    .toNumber()
-                                                    .toString()
-                                            );
+                                            onSave(userBalance);
                                         } else {
-                                            onSave(amount);
+                                            onSave(outputUnstake);
                                         }
 
+                                        disclosure.onClose();
                                         onClose();
                                     }}
                                 >

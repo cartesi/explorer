@@ -10,12 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
     FormControl,
-    Input,
-    InputGroup,
-    InputRightElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -28,14 +24,9 @@ import {
     FormHelperText,
     FormLabel,
     UseDisclosureProps,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 
@@ -59,11 +50,11 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
 
-    // initialize allowance to current allowance
-    const [newAllowance, setNewAllowance] =
-        useState<number>(allowanceFormatted);
+    const [outputAllowance, setOutputAllowance] =
+        useState<BigNumber>(allowance);
 
     const inputFocusRef = useRef();
+
     return (
         <>
             <Modal
@@ -92,64 +83,10 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
                                     min={0}
                                     max={balanceFormatted}
                                     // ref={inputFocusRef}
-                                    onChange={(
-                                        newValue,
-                                        bigNumberValue,
-                                        value
-                                    ) => {
-                                        console.log('----');
-                                        console.log('number value', newValue);
-                                        console.log(
-                                            'bigNumberValue value',
-                                            bigNumberValue
-                                        );
-                                        console.log('text value', value);
+                                    onChange={(bigNumberValue) => {
+                                        setOutputAllowance(bigNumberValue);
                                     }}
                                 />
-                                {/* <NumberInput
-                                    defaultValue={allowanceFormatted}
-                                    min={0}
-                                    max={balanceFormatted}
-                                    ref={inputFocusRef}
-                                    onBeforeInput={(e) => {
-                                        if (e.data === '-' || e.data === '+')
-                                            e.preventDefault();
-
-                                        // if (
-                                        //     e.data === '.' &&
-                                        //     newAllowance.endsWith('.')
-                                        // )
-                                        //     e.preventDefault();
-                                    }}
-                                    onChange={(value) => {
-                                        const allowanceValue =
-                                            parseFloat(value);
-
-                                        if (allowanceValue < 0) return;
-
-                                        console.log('value', value);
-                                        console.log(
-                                            'new value',
-                                            allowanceValue
-                                        );
-
-                                        setNewAllowance(allowanceValue);
-                                    }}
-                                >
-                                    <NumberInputField />
-                                    <InputRightElement
-                                        color="gray.300"
-                                        size="lg"
-                                        pointerEvents="none"
-                                        w={24}
-                                        h="100%"
-                                        children={<Box>CTSI</Box>}
-                                    />
-                                    <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
-                                    </NumberInputStepper>
-                                </NumberInput> */}
                                 <FormHelperText>
                                     The Pool Allowance can be edited at any
                                     time. Each edit is charged in the form of a
@@ -163,7 +100,7 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(parseUnits(newAllowance, 18));
+                                        onSave(outputAllowance);
                                         disclosure.onClose();
                                         onClose();
                                     }}

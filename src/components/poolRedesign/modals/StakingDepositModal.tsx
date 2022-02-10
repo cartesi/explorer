@@ -10,12 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
     FormControl,
-    Input,
-    InputGroup,
-    InputRightElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -28,15 +24,11 @@ import {
     FormHelperText,
     FormLabel,
     UseDisclosureProps,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
 } from '@chakra-ui/react';
+import React, { FC, useRef, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useRef, useState } from 'react';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingDepositModalProps {
     allowance: BigNumber;
@@ -44,7 +36,7 @@ interface IStakingDepositModalProps {
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (amount: string) => void;
+    onSave: (newDeposit: BigNumber) => void;
 }
 
 const toCTSI = (value: BigNumber) => {
@@ -59,7 +51,9 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     onClose: onClose,
     onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState('');
+    const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
+    const [outputDeposit, setOutputDeposit] = useState<BigNumber>();
+
     const inputFocusRef = useRef();
     return (
         <>
@@ -86,30 +80,15 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             </Text>
                             <FormControl id="depositAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
-                                <NumberInput
-                                    // defaultValue={toCTSI_string(allowance)}
+                                <CTSINumberInput
                                     defaultValue={1}
                                     min={1}
-                                    max={toCTSI(allowance)}
-                                    ref={inputFocusRef}
-                                    onChange={(value) => {
-                                        setAmount(value);
+                                    max={allowanceFormatted}
+                                    // ref={inputFocusRef}
+                                    onChange={(bigNumberValue) => {
+                                        setOutputDeposit(bigNumberValue);
                                     }}
-                                >
-                                    <NumberInputField />
-                                    <InputRightElement
-                                        color="gray.300"
-                                        size="lg"
-                                        pointerEvents="none"
-                                        w={24}
-                                        h="100%"
-                                        children={<Box>CTSI</Box>}
-                                    />
-                                    <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
-                                    </NumberInputStepper>
-                                </NumberInput>
+                                />
                                 <FormHelperText>
                                     Max. available/allowance:{' '}
                                     {allowance.gte(balance)
@@ -125,7 +104,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(amount);
+                                        onSave(outputDeposit);
+                                        disclosure.onClose();
                                         onClose();
                                     }}
                                 >

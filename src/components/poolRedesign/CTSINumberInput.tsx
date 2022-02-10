@@ -30,9 +30,10 @@ interface ICTSINumberInputProps {
     ref?: LegacyRef<HTMLDivElement>;
     maxPrecision?: number;
     hasNumberSteppers?: boolean;
+    setMaxOnOverflow?: boolean;
     onChange?: (
-        numberValue: number,
         bigNumberValue: BigNumber,
+        numberValue: number,
         value: string
     ) => void;
 }
@@ -43,10 +44,11 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     max,
     maxPrecision = 18,
     hasNumberSteppers = true,
+    setMaxOnOverflow = false,
     onChange,
 }) => {
     const [innerValue, setInnerValue] = useState<string>(
-        defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') // remove trailing zeroes. i.e: 123.00
+        defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0' // remove trailing zeroes. i.e: 123.00
     );
 
     return (
@@ -55,7 +57,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
             min={min}
             max={max}
             onBeforeInputCapture={(e) => {
-                const inputText = (e as any)?.data;
+                const inputText: string = (e as any)?.data;
 
                 // no -/+ e7 allowed
                 if (
@@ -90,6 +92,15 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                     e.preventDefault();
                     return;
                 }
+
+                if (
+                    parseFloat(innerValue) > max ||
+                    parseFloat(inputText) > max // ||
+                    // parseFloat(innerValue + inputText) > max
+                ) {
+                    e.preventDefault();
+                    if (setMaxOnOverflow) setInnerValue(max.toString());
+                }
             }}
             onChange={(value) => {
                 const numberValue = parseFloat(value);
@@ -101,8 +112,8 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
 
                     if (onChange) {
                         onChange(
-                            min,
                             parseUnits(min.toString(), maxPrecision),
+                            min,
                             min.toString()
                         );
                     }
@@ -110,6 +121,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                     return;
                 }
 
+                // remove trailing zero. ex: 0123
                 if (value.startsWith('0') && value.length > 1) {
                     value = value.substring(1);
                 }
@@ -118,8 +130,8 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
 
                 if (onChange) {
                     onChange(
-                        numberValue,
                         parseUnits(value, maxPrecision),
+                        numberValue,
                         value
                     );
                 }

@@ -10,16 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
     FormControl,
     Collapse,
     Radio,
     RadioGroup,
-    HStack,
-    Input,
-    InputGroup,
-    InputRightElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -27,32 +22,38 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Spinner,
     VStack,
     Text,
     Stack,
+    UseDisclosureProps,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingWithdrawModalProps {
     isOpen: boolean;
     userBalance: BigNumber;
+    disclosure: UseDisclosureProps;
     onClose: () => void;
-    onSave: (amount: string) => void;
+    onSave: (newWithdraw: BigNumber) => void;
 }
 
 export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     isOpen: isOpen,
     userBalance,
+    disclosure,
     onClose: onClose,
     onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState<string>('');
     const [withdrawFullAmount, setWithdrawFullAmount] =
         useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
     const inputFocusRef = useRef();
+
+    const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
+    const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>();
 
     return (
         <>
@@ -120,32 +121,18 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                                 id="withdrawAmount"
                                                 pl={7}
                                             >
-                                                <InputGroup>
-                                                    <Input
-                                                        type="text"
-                                                        inputMode="decimal"
-                                                        placeholder="0.00"
-                                                        size="lg"
-                                                        pr={16}
-                                                        value={amount}
-                                                        ref={inputRef}
-                                                        onChange={(e) =>
-                                                            setAmount(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                    <InputRightElement
-                                                        color="gray.300"
-                                                        size="lg"
-                                                        pointerEvents="none"
-                                                        w={14}
-                                                        h="100%"
-                                                        children={
-                                                            <Box>CTSI</Box>
-                                                        }
-                                                    />
-                                                </InputGroup>
+                                                <CTSINumberInput
+                                                    min={0}
+                                                    max={userBalanceFormatted}
+                                                    // ref={inputFocusRef}
+                                                    onChange={(
+                                                        bigNumberValue
+                                                    ) => {
+                                                        setOutputWithdraw(
+                                                            bigNumberValue
+                                                        );
+                                                    }}
+                                                />
                                             </FormControl>
                                         </Collapse>
                                     </Stack>
@@ -194,15 +181,12 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     colorScheme="darkGray"
                                     onClick={() => {
                                         if (withdrawFullAmount === 'full') {
-                                            onSave(
-                                                userBalance
-                                                    .toNumber()
-                                                    .toString()
-                                            );
+                                            onSave(userBalance);
                                         } else {
-                                            onSave(amount);
+                                            onSave(outputWithdraw);
                                         }
 
+                                        disclosure.onClose();
                                         onClose();
                                     }}
                                 >

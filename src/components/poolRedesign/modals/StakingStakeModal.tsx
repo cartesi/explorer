@@ -10,12 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
     FormControl,
-    Input,
-    InputGroup,
-    InputRightElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -28,14 +24,11 @@ import {
     FormHelperText,
     FormLabel,
     UseDisclosureProps,
-    NumberInputField,
-    NumberInput,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingStakeModalProps {
     balance: BigNumber;
@@ -43,7 +36,7 @@ interface IStakingStakeModalProps {
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (amount: string) => void;
+    onSave: (newStake: BigNumber) => void;
 }
 
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
@@ -53,7 +46,18 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     onClose: onClose,
     onSave: onSave,
 }) => {
-    const [amount, setAmount] = useState('');
+    const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
+    const [outputStake, setOutputStake] = useState<BigNumber>(userBalance);
+
+    const toCTSI = (value: BigNumber) => {
+        // formatter for CTSI values
+        const numberFormat = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
+
+        return numberFormat.format(parseFloat(formatUnits(value, 18)));
+    };
 
     const inputFocusRef = useRef();
     return (
@@ -80,33 +84,17 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             </Text>
                             <FormControl id="stakeAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
-                                <NumberInput
+                                <CTSINumberInput
                                     defaultValue={1}
-                                    in={1}
                                     min={1}
-                                    max={userBalance.toNumber()}
-                                    ref={inputFocusRef}
-                                    onChange={(value) => {
-                                        setAmount(value);
+                                    max={userBalanceFormatted}
+                                    // ref={inputFocusRef}
+                                    onChange={(bigNumberValue) => {
+                                        setOutputStake(bigNumberValue);
                                     }}
-                                >
-                                    <NumberInputField />
-                                    <InputRightElement
-                                        color="gray.300"
-                                        size="lg"
-                                        pointerEvents="none"
-                                        w={24}
-                                        h="100%"
-                                        children={<Box>CTSI</Box>}
-                                    />
-                                    <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
-                                    </NumberInputStepper>
-                                </NumberInput>
+                                />
                                 <FormHelperText>
-                                    Max. available: {userBalance.toNumber()}{' '}
-                                    CTSI
+                                    Max. available: {toCTSI(userBalance)} CTSI
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
@@ -116,7 +104,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     isFullWidth
                                     colorScheme="darkGray"
                                     onClick={() => {
-                                        onSave(amount);
+                                        console.log(toCTSI(outputStake));
+                                        onSave(outputStake);
                                         disclosure.onClose();
                                         onClose();
                                     }}
