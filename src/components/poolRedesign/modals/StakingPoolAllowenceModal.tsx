@@ -37,6 +37,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingPoolAllowenceModalProps {
     allowance: BigNumber;
@@ -55,24 +56,12 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
     onClose: onClose,
     onSave: onSave,
 }) => {
-    // formatter for CTSI values
-    const numberFormat = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-    });
+    const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
+    const balanceFormatted = parseFloat(formatUnits(balance, 18));
 
     // initialize allowance to current allowance
-    const [newAllowance, setNewAllowance] = useState<string>(
-        numberFormat.format(parseFloat(formatUnits(allowance, 18)))
-    );
-
-    const toCTSI_string = (value: BigNumber) => {
-        return numberFormat.format(parseFloat(formatUnits(value, 18)));
-    };
-
-    const toCTSI = (value: BigNumber) => {
-        return parseFloat(formatUnits(value, 18));
-    };
+    const [newAllowance, setNewAllowance] =
+        useState<number>(allowanceFormatted);
 
     const inputFocusRef = useRef();
     return (
@@ -98,13 +87,53 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
                                 <FormLabel fontWeight="bold">
                                     Pool allowance
                                 </FormLabel>
-                                <NumberInput
-                                    defaultValue={toCTSI_string(allowance)}
+                                <CTSINumberInput
+                                    defaultValue={allowanceFormatted}
                                     min={0}
-                                    max={toCTSI(balance)}
+                                    max={balanceFormatted}
+                                    // ref={inputFocusRef}
+                                    onChange={(
+                                        newValue,
+                                        bigNumberValue,
+                                        value
+                                    ) => {
+                                        console.log('----');
+                                        console.log('number value', newValue);
+                                        console.log(
+                                            'bigNumberValue value',
+                                            bigNumberValue
+                                        );
+                                        console.log('text value', value);
+                                    }}
+                                />
+                                {/* <NumberInput
+                                    defaultValue={allowanceFormatted}
+                                    min={0}
+                                    max={balanceFormatted}
                                     ref={inputFocusRef}
+                                    onBeforeInput={(e) => {
+                                        if (e.data === '-' || e.data === '+')
+                                            e.preventDefault();
+
+                                        // if (
+                                        //     e.data === '.' &&
+                                        //     newAllowance.endsWith('.')
+                                        // )
+                                        //     e.preventDefault();
+                                    }}
                                     onChange={(value) => {
-                                        setNewAllowance(value);
+                                        const allowanceValue =
+                                            parseFloat(value);
+
+                                        if (allowanceValue < 0) return;
+
+                                        console.log('value', value);
+                                        console.log(
+                                            'new value',
+                                            allowanceValue
+                                        );
+
+                                        setNewAllowance(allowanceValue);
                                     }}
                                 >
                                     <NumberInputField />
@@ -120,7 +149,7 @@ export const StakingPoolAllowenceModal: FC<IStakingPoolAllowenceModalProps> = ({
                                         <NumberIncrementStepper />
                                         <NumberDecrementStepper />
                                     </NumberInputStepper>
-                                </NumberInput>
+                                </NumberInput> */}
                                 <FormHelperText>
                                     The Pool Allowance can be edited at any
                                     time. Each edit is charged in the form of a
