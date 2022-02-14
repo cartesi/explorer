@@ -228,7 +228,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={stakeDisclosure.onOpen}
                                     colorScheme="darkGray"
-                                    disabled={userBalance.isZero()}
+                                    disabled={!!unlock || userBalance.isZero()}
                                 >
                                     Stake
                                 </Button>
@@ -320,7 +320,9 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={unstakeDisclosure.onOpen}
                                     colorScheme="darkGray"
-                                    disabled={userBalance.isZero()}
+                                    disabled={
+                                        staked.isZero() || userBalance.isZero()
+                                    }
                                 >
                                     Unstake
                                 </Button>

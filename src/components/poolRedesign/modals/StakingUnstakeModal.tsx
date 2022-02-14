@@ -27,7 +27,7 @@ import {
     Stack,
     UseDisclosureProps,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useState, useRef } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
@@ -51,7 +51,9 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
-    const [outputUnstake, setOutputUnstake] = useState<BigNumber>();
+    const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
+        constants.Zero
+    );
 
     return (
         <>
@@ -90,11 +92,15 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                             size="lg"
                                             value="full"
                                             colorScheme="blue"
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setUnstakeFullAmount(
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+
+                                                setOutputUnstake(
+                                                    constants.Zero
+                                                );
+                                            }}
                                         >
                                             Full amount
                                         </Radio>
@@ -143,6 +149,10 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
+                                    disabled={
+                                        outputUnstake.isZero() &&
+                                        unstakeFullAmount !== 'full'
+                                    }
                                     onClick={() => {
                                         if (unstakeFullAmount === 'full') {
                                             onSave(userBalance);

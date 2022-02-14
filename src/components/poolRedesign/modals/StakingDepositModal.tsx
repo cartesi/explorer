@@ -26,7 +26,7 @@ import {
     UseDisclosureProps,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 
@@ -52,7 +52,9 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     onSave: onSave,
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
-    const [outputDeposit, setOutputDeposit] = useState<BigNumber>();
+    const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
+        constants.Zero
+    );
 
     const inputFocusRef = useRef();
     return (
@@ -81,8 +83,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             <FormControl id="depositAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
                                 <CTSINumberInput
-                                    defaultValue={1}
-                                    min={1}
+                                    defaultValue={0}
+                                    min={0}
                                     max={allowanceFormatted}
                                     // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
@@ -103,6 +105,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
+                                    disabled={outputDeposit.isZero()}
                                     onClick={() => {
                                         onSave(outputDeposit);
                                         disclosure.onClose();

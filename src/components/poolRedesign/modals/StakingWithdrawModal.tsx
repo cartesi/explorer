@@ -27,7 +27,7 @@ import {
     Stack,
     UseDisclosureProps,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
@@ -53,7 +53,9 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const inputFocusRef = useRef();
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
-    const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>();
+    const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
+        constants.Zero
+    );
 
     return (
         <>
@@ -104,6 +106,10 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                             onChange={(e) => {
                                                 setWithdrawFullAmount(
                                                     e.target.value
+                                                );
+
+                                                setOutputWithdraw(
+                                                    constants.Zero
                                                 );
                                                 inputRef.current?.focus();
                                             }}
@@ -179,6 +185,10 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
+                                    disabled={
+                                        outputWithdraw.isZero() &&
+                                        withdrawFullAmount !== 'full'
+                                    }
                                     onClick={() => {
                                         if (withdrawFullAmount === 'full') {
                                             onSave(userBalance);
