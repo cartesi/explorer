@@ -177,6 +177,18 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
+                {transactionBanners?.withdraw && (
+                    <TransactionInfoBanner
+                        title="Withdrawing..."
+                        failTitle="Error withdrawing"
+                        successDescription="Withdrawed sucessfully."
+                        transaction={
+                            currentTransaction === 'withdraw'
+                                ? poolTransaction
+                                : null
+                        }
+                    />
+                )}
                 <Box
                     bg={bg}
                     borderRadius="lg"
@@ -261,18 +273,6 @@ export const Staking: FC<StakingProps> = ({
                     />
                 )}
 
-                {transactionBanners?.withdraw && (
-                    <TransactionInfoBanner
-                        title="Withdrawing..."
-                        failTitle="Error withdrawing"
-                        successDescription="Withdrawed sucessfully."
-                        transaction={
-                            currentTransaction === 'withdraw'
-                                ? poolTransaction
-                                : null
-                        }
-                    />
-                )}
                 <Box
                     bg={bg}
                     borderRadius="lg"
