@@ -34,7 +34,7 @@ import { CTSINumberInput } from '../CTSINumberInput';
 
 interface IStakingUnstakeModalProps {
     isOpen: boolean;
-    userBalance: BigNumber;
+    stakedBalance: BigNumber;
     disclosure: UseDisclosureProps;
     onClose: () => void;
     onSave: (newUnstake: BigNumber) => void;
@@ -42,7 +42,7 @@ interface IStakingUnstakeModalProps {
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     isOpen: isOpen,
-    userBalance,
+    stakedBalance,
     disclosure,
     onClose: onClose,
     onSave: onSave,
@@ -50,7 +50,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     const [unstakeFullAmount, setUnstakeFullAmount] = useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
+    const stakeBalanceFormatted = parseFloat(formatUnits(stakedBalance, 18));
     const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
         constants.Zero
     );
@@ -128,7 +128,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                             >
                                                 <CTSINumberInput
                                                     min={0}
-                                                    max={userBalanceFormatted}
+                                                    max={stakeBalanceFormatted}
                                                     // ref={inputFocusRef}
                                                     onChange={(
                                                         bigNumberValue
@@ -155,7 +155,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     }
                                     onClick={() => {
                                         if (unstakeFullAmount === 'full') {
-                                            onSave(userBalance);
+                                            onSave(stakedBalance);
                                         } else {
                                             onSave(outputUnstake);
                                         }
