@@ -159,7 +159,8 @@ const poolRedesign = () => {
                         allowance={allowance}
                         userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
-                        staked={stakedBalance}
+                        stakedBalance={stakedBalance}
+                        staked={stakedShares}
                         onWithdraw={withdraw}
                         onDeposit={deposit}
                         onStake={stake}

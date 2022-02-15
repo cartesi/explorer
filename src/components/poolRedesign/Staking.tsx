@@ -49,6 +49,7 @@ export interface StakingProps extends StackProps {
     userETHBalance: BigNumber; // user ETH balance
     // shares: BigNumber; // user shares
     staked: BigNumber; // user stake
+    stakedBalance: BigNumber; // user stake balance
     // withdrawBalance: BigNumber; // amount of token user can actually withdraw
     // paused: boolean;
     depositTimestamp: Date;
@@ -67,6 +68,7 @@ export const Staking: FC<StakingProps> = ({
     userPoolBalance,
     userETHBalance,
     staked,
+    stakedBalance,
     allowance,
     depositTimestamp,
     lockTime,
@@ -314,7 +316,7 @@ export const Staking: FC<StakingProps> = ({
                                 </Text>
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={staked} />
+                                        <CTSI value={stakedBalance} />
                                         <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>
