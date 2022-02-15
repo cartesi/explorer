@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, memo } from 'react';
 import { CheckCircleIcon } from '../../components/Icons';
-import usePoolUserActivity from '../../graphql/hooks/usePoolUserActivity';
+import usePoolActivities from '../../graphql/hooks/usePoolActivities';
 import { formatValue } from '../../utils/numberFormatter';
 
 interface Props {
@@ -80,7 +80,7 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 
 export const StakingActivity: FC<Props> = memo(
     ({ userAccount, poolAddress }) => {
-        const { activities, loading } = usePoolUserActivity({
+        const { activities, loading } = usePoolActivities({
             pool: poolAddress,
             user: userAccount,
         });
