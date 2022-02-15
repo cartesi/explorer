@@ -39,8 +39,8 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { Transaction } from '../../services/transaction';
 import { useTimeLeft } from '../../utils/react';
 import { TransactionInfoBanner } from './TransactionInfoBanner';
-import CTSI from '../pools/staking/CTSI';
 import { formatUnits } from 'ethers/lib/utils';
+import CTSI from '../pools/staking/CTSI';
 
 export interface StakingProps extends StackProps {
     userWalletBalance: BigNumber; // wallet balance
@@ -314,7 +314,7 @@ export const Staking: FC<StakingProps> = ({
                                 </Text>
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={staked} />
+                                        <CTSI value={stakedBalance} />
                                         <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>

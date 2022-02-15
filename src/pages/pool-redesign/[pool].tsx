@@ -31,6 +31,7 @@ import { useWallet } from '../../contexts/wallet';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import BigNumberText from '../../components/BigNumberText';
 import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
+import { BigNumber } from 'ethers';
 
 const poolRedesign = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -62,6 +63,7 @@ const poolRedesign = () => {
         rebalance,
     } = useStakingPool(address, account);
 
+    const stakedBalance = sharesToAmount(stakedShares);
     const userETHBalance = useBalance(account);
     // query user balance and allowance
     const {
@@ -72,6 +74,16 @@ const poolRedesign = () => {
     } = useCartesiToken(account, address, blockNumber);
 
     const bg = useColorModeValue('gray.50', 'header');
+
+    const onUnstake = (amount?: BigNumber) => {
+        if (amount) {
+            // convert CTSI to shares
+            unstake(amountToShares(amount));
+        } else {
+            // full unstake
+            unstake(stakedShares);
+        }
+    };
 
     return (
         <Layout>
@@ -147,11 +159,11 @@ const poolRedesign = () => {
                         allowance={allowance}
                         userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
-                        staked={stakedShares}
+                        staked={stakedBalance}
                         onWithdraw={withdraw}
                         onDeposit={deposit}
                         onStake={stake}
-                        onUnstake={unstake}
+                        onUnstake={onUnstake}
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
                         tokenTransaction={tokenTransaction}
