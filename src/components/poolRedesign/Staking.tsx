@@ -132,7 +132,7 @@ export const Staking: FC<StakingProps> = ({
                             disabled={
                                 allowance.isZero() ||
                                 userWalletBalance.isZero() ||
-                                userETHBalance.isZero()
+                                userETHBalance?.isZero()
                             }
                         >
                             Deposit
@@ -335,10 +335,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={unstakeDisclosure.onOpen}
                                     colorScheme="darkGray"
-                                    disabled={
-                                        staked.isZero() ||
-                                        userPoolBalance.isZero()
-                                    }
+                                    disabled={stakedBalance.isZero()}
                                 >
                                     Unstake
                                 </Button>
