@@ -314,7 +314,7 @@ export const Staking: FC<StakingProps> = ({
                                 </Text>
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={stakedBalance} />
+                                        <CTSI value={staked} />
                                         <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>
