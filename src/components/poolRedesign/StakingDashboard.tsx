@@ -29,41 +29,30 @@ import {
     StackProps,
     Flex,
 } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
 import React, { FC, useState } from 'react';
+import { BigNumber, BigNumberish } from 'ethers';
 import { AllowenceIcon, WalletIcon } from '../../components/Icons';
-import CTSI from '../pools/staking/CTSI';
 import { InfoBanner } from './InfoBanner';
 import { StakingPoolAllowenceModal } from './modals/StakingPoolAllowenceModal';
+import CTSI from '../pools/staking/CTSI';
+import { WalletBalanceSection } from './components/WalletBalanceSection';
+import { AllowanceSection } from './components/AllowanceSection';
 
 export interface StakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
     userBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
-
-    // shares: BigNumber; // user shares
-    // staked: BigNumber; // user stake
-    // withdrawBalance: BigNumber; // amount of token user can actually withdraw
-    // paused: boolean;
-    // depositTimestamp: Date;
-    // lockTime: number;
     onApprove: (amount: BigNumberish) => void;
-    // onDeposit: (amount: BigNumberish) => void;
-    // onWithdraw: (amount: BigNumberish) => void;
-    // onStake: (amount: BigNumberish) => void;
-    // onUnstake: (amount?: BigNumberish) => void;
 }
 
 const SHOW_STAKING_INSTRUCTIONS = 'showStakingInstructions';
 
 export const StakingDashboard: FC<StakingDashboardProps> = ({
-    userBalance,
     userETHBalance,
     allowance,
     balance,
     onApprove,
-    // onStake,
 }) => {
     const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
@@ -81,7 +70,7 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     const disclosure = useDisclosure();
 
     const borderColor = useColorModeValue('gray.100', 'transparent');
-    const [showAllowanceTransaction, setAllowanceTransaction] = useState(false);
+    const [allowanceTransaction, setAllowanceTransaction] = useState(false);
 
     const handleDontShowAgainClick = () => {
         localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
@@ -183,110 +172,14 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                     w="full"
                     justifyContent="space-between"
                 >
-                    <VStack
-                        alignItems="flex-start"
-                        flexBasis={{ base: '100%', lg: '50%' }}
-                    >
-                        <HStack spacing={4} alignItems="center" py={4} mb="2px">
-                            <Box
-                                bg="blue.100"
-                                w={14}
-                                h={14}
-                                borderRadius="full"
-                                display="grid"
-                                placeContent="center"
-                            >
-                                <WalletIcon color="blue.500" w={6} h={6} />
-                            </Box>
-                            <Box>
-                                <HStack>
-                                    <Text color="gray.400">Wallet balance</Text>
-                                    <Tooltip
-                                        placement="top"
-                                        label="Here you can see your current wallet balance."
-                                        fontSize="small"
-                                        bg="black"
-                                        color="white"
-                                    >
-                                        <Icon color="gray.400" />
-                                    </Tooltip>
-                                </HStack>
-                                <Heading m={0} size="lg">
-                                    <Flex align="baseline">
-                                        <CTSI value={balance} />
-                                        <Text ml={1}>CTSI</Text>
-                                    </Flex>
-                                </Heading>
-                            </Box>
-                        </HStack>
-                        {userETHBalance?.isZero() && (
-                            <HStack spacing={2} alignItems="flex-start">
-                                <WarningIcon color="orange.500" />
-                                <Text fontSize="sm">
-                                    You don't have enough ETH in your wallet for
-                                    the transaction fee, please deposit first.
-                                </Text>
-                            </HStack>
-                        )}
-                    </VStack>
-                    <VStack
-                        alignItems="flex-start"
-                        flexBasis={{ base: '100%', lg: '50%' }}
-                    >
-                        <HStack
-                            w="full"
-                            spacing={4}
-                            alignItems="center"
-                            p={4}
-                            border="1px dotted"
-                            borderRadius={6}
-                            borderColor="yellow.300"
-                        >
-                            <Box
-                                bg="yellow.100"
-                                w={14}
-                                h={14}
-                                borderRadius="full"
-                                display="grid"
-                                placeContent="center"
-                            >
-                                <AllowenceIcon color="yellow.500" w={6} h={6} />
-                            </Box>
-                            <Box flexGrow="1">
-                                <HStack>
-                                    <Text color="gray.400">Pool allowance</Text>
-                                    <Tooltip
-                                        placement="top"
-                                        label="Here you can see your current pool allowance."
-                                        fontSize="small"
-                                        bg="black"
-                                        color="white"
-                                    >
-                                        <Icon color="gray.400" />
-                                    </Tooltip>
-                                </HStack>
-                                <Heading m={0} size="lg">
-                                    <Flex align="baseline">
-                                        <CTSI value={allowance} />
-                                        <Text ml={1}>CTSI</Text>
-                                    </Flex>
-                                </Heading>
-                            </Box>
-                            <Box alignSelf="flex-end">
-                                <IconButton
-                                    aria-label="Edit"
-                                    size="sm"
-                                    icon={<EditIcon />}
-                                    variant="ghost"
-                                    onClick={onOpenStakingPoolAllowenceModal}
-                                />
-                            </Box>
-                        </HStack>
-                        <Text fontSize="sm">
-                            Step 1 for newcomers: Set up an upper limit for an
-                            additional layer of protection.
-                        </Text>
-                    </VStack>
+                    <WalletBalanceSection
+                        userCTSIBalance={balance}
+                        userETHBalance={userETHBalance}
+                    />
+                    <AllowanceSection
+                        allowance={allowance}
+                        onAllowanceClick={onOpenStakingPoolAllowenceModal}
+                    />
                 </Stack>
             </VStack>
 

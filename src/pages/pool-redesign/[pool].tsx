@@ -13,10 +13,10 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 
 import Layout from '../../components/Layout';
+import AddressText from '../../components/AddressText';
 import { Box, Stack, VStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import AddressText from '../../components/AddressText';
 import { StakingGuide } from '../../components/poolRedesign/StakingGuide';
 import { StakingTabNavigation } from '../../components/poolRedesign/StakingTabNavigation';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -28,9 +28,6 @@ import { useBalance, useBlockNumber } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../contexts/wallet';
-import TransactionFeedback from '../../components/TransactionFeedback';
-import BigNumberText from '../../components/BigNumberText';
-import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
 import { BigNumber } from 'ethers';
 
 const poolRedesign = () => {
@@ -45,12 +42,12 @@ const poolRedesign = () => {
 
     // query pool data
     const {
-        amount,
-        amounts,
+        // amount,
+        // amounts,
         stakedShares,
-        paused,
+        // paused,
         balance: userBalance,
-        withdrawBalance,
+        // withdrawBalance,
         depositTimestamp,
         lockTime,
         transaction,
@@ -60,7 +57,7 @@ const poolRedesign = () => {
         stake,
         unstake,
         withdraw,
-        rebalance,
+        // rebalance,
     } = useStakingPool(address, account);
 
     const stakedBalance = sharesToAmount(stakedShares);
@@ -142,12 +139,6 @@ const poolRedesign = () => {
                     <StakingGuide />
                 )}
             </Box>
-            {/* <TransactionFeedback transaction={transaction}>
-                Sending transaction...
-            </TransactionFeedback>
-            <TransactionFeedback transaction={tokenTransaction}>
-                Sending transaction...
-            </TransactionFeedback> */}
             <Box
                 bg={bg}
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
@@ -160,7 +151,6 @@ const poolRedesign = () => {
                         userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
                         stakedBalance={stakedBalance}
-                        staked={stakedShares}
                         onWithdraw={withdraw}
                         onDeposit={deposit}
                         onStake={stake}

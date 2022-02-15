@@ -1,0 +1,117 @@
+// Copyright (C) 2021 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import {
+    Box,
+    Text,
+    Button,
+    Flex,
+    HStack,
+    Stack,
+    useColorModeValue,
+    VStack,
+    Heading,
+} from '@chakra-ui/react';
+
+import { BigNumber } from 'ethers';
+import { FC } from 'react';
+import { PoolBalanceIcon } from '../../Icons';
+import CTSI from '../../pools/staking/CTSI';
+
+export interface IPoolBalanceSectionProps {
+    userPoolBalance: BigNumber;
+    isPoolBalanceLocked: boolean;
+    onStakeClick: () => void;
+    onWithdrawClick: () => void;
+}
+
+export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
+    userPoolBalance,
+    isPoolBalanceLocked,
+    onStakeClick,
+    onWithdrawClick,
+}) => {
+    const bg = useColorModeValue('white', 'gray.800');
+
+    return (
+        <Box
+            bg={bg}
+            borderRadius="lg"
+            shadow="sm"
+            p={6}
+            pl={{ base: 6, md: 8 }}
+        >
+            <Stack
+                flexDirection={{ base: 'column', md: 'row' }}
+                justifyContent="space-between"
+            >
+                <HStack spacing={4} alignItems="center">
+                    <Box
+                        bg="purple.100"
+                        w={14}
+                        h={14}
+                        borderRadius="full"
+                        display="grid"
+                        placeContent="center"
+                    >
+                        <PoolBalanceIcon color="purple" w={6} h={6} />
+                    </Box>
+                    <Box>
+                        {isPoolBalanceLocked ? (
+                            <Text color="gray.400">
+                                Your pool balance (currently locked)
+                            </Text>
+                        ) : (
+                            <Text color="gray.400">Your pool balance</Text>
+                        )}
+                        <Heading m={0} size="lg">
+                            <Flex align="baseline">
+                                <CTSI value={userPoolBalance} />
+                                <Text ml={1}>CTSI</Text>
+                            </Flex>
+                        </Heading>
+                    </Box>
+                </HStack>
+                <VStack
+                    spacing={4}
+                    alignItems="stretch"
+                    pt={{ base: 6, md: 0 }}
+                >
+                    <Box>
+                        <Button
+                            w={{ base: '100%', md: 'auto' }}
+                            minW="15rem"
+                            onClick={onStakeClick}
+                            colorScheme="darkGray"
+                            disabled={
+                                isPoolBalanceLocked || userPoolBalance.isZero()
+                            }
+                        >
+                            Stake
+                        </Button>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="outline"
+                            w={{ base: '100%', md: 'auto' }}
+                            minW="15rem"
+                            onClick={onWithdrawClick}
+                            colorScheme="darkGray"
+                            disabled={userPoolBalance.isZero()}
+                        >
+                            Withdraw
+                        </Button>
+                    </Box>
+                </VStack>
+            </Stack>
+        </Box>
+    );
+};

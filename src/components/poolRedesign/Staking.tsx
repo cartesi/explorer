@@ -9,27 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    Link,
-    Stack,
     StackProps,
-    Text,
     useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
-import {
-    PoolBalanceIcon,
-    StakedBalanceIcon,
-    TimerIcon,
-} from '../../components/Icons';
+import { TimerIcon } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
 import { StakingDepositModal } from './modals/StakingDepositModal';
 import { StakingStakeModal } from './modals/StakingStakeModal';
@@ -40,21 +28,22 @@ import { Transaction } from '../../services/transaction';
 import { useTimeLeft } from '../../utils/react';
 import { TransactionInfoBanner } from './TransactionInfoBanner';
 import { formatUnits } from 'ethers/lib/utils';
-import CTSI from '../pools/staking/CTSI';
+import { PoolBalanceSection } from './components/PoolBalanceSection';
+import { StakedBalanceSection } from './components/StakedBalanceSection';
+import { DepositSection } from './components/DepositSection';
 
 export interface StakingProps extends StackProps {
     userWalletBalance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
     userPoolBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
-    // shares: BigNumber; // user shares
-    staked: BigNumber; // user stake
     stakedBalance: BigNumber; // user stake balance
+    // shares: BigNumber; // user shares
+    // staked: BigNumber; // user stake
     // withdrawBalance: BigNumber; // amount of token user can actually withdraw
     // paused: boolean;
     depositTimestamp: Date;
     lockTime: number;
-    // onApprove: (amount: BigNumberish) => void;
     onDeposit: (amount: BigNumberish) => void;
     onWithdraw: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
@@ -67,7 +56,6 @@ export const Staking: FC<StakingProps> = ({
     userWalletBalance,
     userPoolBalance,
     userETHBalance,
-    staked,
     stakedBalance,
     allowance,
     depositTimestamp,
@@ -85,7 +73,6 @@ export const Staking: FC<StakingProps> = ({
     const unlock = useTimeLeft(stakeUnlock, 2, false);
     const unlockHumanized = useTimeLeft(stakeUnlock, 2, true);
 
-    const bg = useColorModeValue('white', 'gray.800');
     const infoColor = useColorModeValue('blue.500', 'blue.200');
 
     const depositDisclosure = useDisclosure();
@@ -109,36 +96,12 @@ export const Staking: FC<StakingProps> = ({
     return (
         <>
             <VStack spacing={6} alignItems="stretch">
-                <Stack
-                    spacing={4}
-                    justifyContent="space-between"
-                    alignContent="flex-start"
-                    direction={{ base: 'column', md: 'row' }}
-                >
-                    <Box>
-                        <Heading as="h2" size="lg" mb={0}>
-                            Staking
-                        </Heading>
-                        <Link href="#" isExternal fontSize="xs">
-                            Learn more <ExternalLinkIcon />
-                        </Link>
-                    </Box>
-                    <Box px={6}>
-                        <Button
-                            colorScheme="blue"
-                            onClick={depositDisclosure.onOpen}
-                            w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
-                            disabled={
-                                allowance.isZero() ||
-                                userWalletBalance.isZero() ||
-                                userETHBalance?.isZero()
-                            }
-                        >
-                            Deposit
-                        </Button>
-                    </Box>
-                </Stack>
+                <DepositSection
+                    allowance={allowance}
+                    userWalletBalance={userWalletBalance}
+                    userETHBalance={userETHBalance}
+                    onDepositClick={depositDisclosure.onOpen}
+                />
 
                 <TransactionInfoBanner
                     title="Setting allowance..."
@@ -191,79 +154,14 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
-                <Box
-                    bg={bg}
-                    borderRadius="lg"
-                    shadow="sm"
-                    p={6}
-                    pl={{ base: 6, md: 8 }}
-                >
-                    <Stack
-                        flexDirection={{ base: 'column', md: 'row' }}
-                        justifyContent="space-between"
-                    >
-                        <HStack spacing={4} alignItems="center">
-                            <Box
-                                bg="purple.100"
-                                w={14}
-                                h={14}
-                                borderRadius="full"
-                                display="grid"
-                                placeContent="center"
-                            >
-                                <PoolBalanceIcon color="purple" w={6} h={6} />
-                            </Box>
-                            <Box>
-                                {unlock ? (
-                                    <Text color="gray.400">
-                                        Your pool balance (currently locked)
-                                    </Text>
-                                ) : (
-                                    <Text color="gray.400">
-                                        Your pool balance
-                                    </Text>
-                                )}
-                                <Heading m={0} size="lg">
-                                    <Flex align="baseline">
-                                        <CTSI value={userPoolBalance} />
-                                        <Text ml={1}>CTSI</Text>
-                                    </Flex>
-                                </Heading>
-                            </Box>
-                        </HStack>
-                        <VStack
-                            spacing={4}
-                            alignItems="stretch"
-                            pt={{ base: 6, md: 0 }}
-                        >
-                            <Box>
-                                <Button
-                                    w={{ base: '100%', md: 'auto' }}
-                                    minW="15rem"
-                                    onClick={stakeDisclosure.onOpen}
-                                    colorScheme="darkGray"
-                                    disabled={
-                                        !!unlock || userPoolBalance.isZero()
-                                    }
-                                >
-                                    Stake
-                                </Button>
-                            </Box>
-                            <Box>
-                                <Button
-                                    variant="outline"
-                                    w={{ base: '100%', md: 'auto' }}
-                                    minW="15rem"
-                                    onClick={withdrawDisclosure.onOpen}
-                                    colorScheme="darkGray"
-                                    disabled={userPoolBalance.isZero()}
-                                >
-                                    Withdraw
-                                </Button>
-                            </Box>
-                        </VStack>
-                    </Stack>
-                </Box>
+
+                <PoolBalanceSection
+                    userPoolBalance={userPoolBalance}
+                    isPoolBalanceLocked={!!unlock}
+                    onStakeClick={stakeDisclosure.onOpen}
+                    onWithdrawClick={withdrawDisclosure.onOpen}
+                />
+
                 {transactionBanners?.stake && (
                     <TransactionInfoBanner
                         title="Staking..."
@@ -288,61 +186,10 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
-                <Box
-                    bg={bg}
-                    borderRadius="lg"
-                    shadow="sm"
-                    p={6}
-                    pl={{ base: 6, md: 8 }}
-                >
-                    <Stack
-                        flexDirection={{ base: 'column', md: 'row' }}
-                        justifyContent="space-between"
-                    >
-                        <HStack spacing={4} alignItems="center">
-                            <Box
-                                bg={'green.100'}
-                                w={14}
-                                h={14}
-                                borderRadius="full"
-                                display="grid"
-                                placeContent="center"
-                            >
-                                <StakedBalanceIcon color="green" w={6} h={6} />
-                            </Box>
-                            <Box>
-                                <Text color="gray.400">
-                                    Your staked balance
-                                </Text>
-                                <Heading m={0} size="lg">
-                                    <Flex align="baseline">
-                                        <CTSI value={stakedBalance} />
-                                        <Text ml={1}>CTSI</Text>
-                                    </Flex>
-                                </Heading>
-                            </Box>
-                        </HStack>
-
-                        <VStack
-                            spacing={4}
-                            alignItems="stretch"
-                            pt={{ base: 6, md: 0 }}
-                        >
-                            <Box>
-                                <Button
-                                    variant="outline"
-                                    w={{ base: '100%', md: 'auto' }}
-                                    minW="15rem"
-                                    onClick={unstakeDisclosure.onOpen}
-                                    colorScheme="darkGray"
-                                    disabled={stakedBalance.isZero()}
-                                >
-                                    Unstake
-                                </Button>
-                            </Box>
-                        </VStack>
-                    </Stack>
-                </Box>
+                <StakedBalanceSection
+                    stakedBalance={stakedBalance}
+                    onUnstakeClick={unstakeDisclosure.onOpen}
+                />
             </VStack>
 
             <StakingDepositModal
