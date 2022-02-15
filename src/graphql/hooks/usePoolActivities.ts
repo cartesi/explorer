@@ -11,59 +11,46 @@
 
 import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { PoolUserActivityVars, PoolUserActivityData } from '../models';
-import { GET_POOL_USER_ACTIVITY } from '../queries/poolUserActivity';
-import { PoolUserActivity } from '../models';
-import { values, flatten, pipe, orderBy, map } from 'lodash/fp';
+import { PoolActivitiesVars, PoolActivitiesData } from '../models';
+import { GET_POOL_ACTIVITIES } from '../queries/poolActivities';
+import { PoolActivity } from '../models';
+import { pipe, map, getOr, capitalize } from 'lodash/fp';
 
-enum ActivityType {
-    'PoolWithdraw' = 'Withdraw',
-    'PoolDeposit' = 'Deposit',
-    'PoolStake' = 'Stake',
-    'PoolUnstake' = 'Unstake',
-}
-interface Activity extends Omit<PoolUserActivity, 'timestamp'> {
-    type: ActivityType;
+interface Activity extends Omit<PoolActivity, 'timestamp' | 'type'> {
     timestamp: number;
+    type: string;
 }
-
-interface UsePoolUserActivityProps {
+interface UsePoolActivitiesProps {
     user?: string;
     pool?: string;
     beforeInMillis?: number;
 }
-interface UsePoolUserActivity {
+interface UsePoolActivities {
     activities: Activity[] | null;
     loading: boolean;
     error?: Error;
 }
 
-const getAndFlattenValues = (val: PoolUserActivityData): PoolUserActivity[] =>
-    flatten(values(val));
+const getPoolActivities = (val: PoolActivitiesData): PoolActivity[] =>
+    getOr([], 'poolActivities', val);
 
-const normalize = map((val: PoolUserActivity): Activity => {
-    const { __typename, timestamp: timestampAsString, ...rest } = val;
+const normalize = map((val: PoolActivity): Activity => {
+    const { type, timestamp: timestampAsString, ...rest } = val;
     const timestamp = parseInt(timestampAsString) * 1000;
     return {
         ...rest,
-        __typename,
         timestamp,
-        type: ActivityType[__typename] || __typename,
+        type: capitalize(type),
     };
 });
 
-const orderByLatestActivity = (val: Activity[]): Activity[] =>
-    orderBy(['timestamp'], ['desc'], val);
-
 /**
- * Receive the graphQL response and transform it to a single list with some
- * transformation applied, also order by the most recent activity.
- *
+ * Receive the graphQL response and apply a small transformation to the timestamp from string to number
+ * and from unix timestamp to milliseconds.
  *  PS: There is no fail-safe against strings been passed down since
  *  that will never happen in this context.
- *
  */
-const aggregate = pipe(getAndFlattenValues, normalize, orderByLatestActivity);
+const transform = pipe(getPoolActivities, normalize);
 
 /**
  * Converts the time in milisseconds to seconds (unix timestamp).
@@ -75,36 +62,30 @@ const milliToUnixTimestamp = (numberInMillis: number): number =>
     Math.floor(numberInMillis / 1000);
 /**
  * Hook retrieves withdrawals, deposits, stakes and unstakes based on a user, pool or
- * a combination of both. It gets the first five entries of each action
- * ordered and filtered by the timestamp passed as argument (i.e. beforeInMillis) or
+ * a combination of both. It gets the first twenty entries ordered and filtered
+ * by the timestamp passed as argument (i.e. beforeInMillis) or
  * it use the current timestamp i.e. Date.now() as the default entry.
- * @param {UsePoolUserActivityProps}
- * @returns {UsePoolUserActivity}
+ * @param {UsePoolActivitiesProps}
+ * @returns {UsePoolActivities}
  */
-const usePoolUserActivity = ({
+const usePoolActivities = ({
     beforeInMillis,
     user,
     pool,
-}: UsePoolUserActivityProps): UsePoolUserActivity => {
+}: UsePoolActivitiesProps): UsePoolActivities => {
     const timestamp_lt = milliToUnixTimestamp(beforeInMillis || Date.now());
-    const filter = { user, pool, timestamp_lt };
+    const where = { user, pool, timestamp_lt };
     const orderBy = 'timestamp';
     const orderDirection = 'desc';
-    const first = 5;
+    const first = 20;
     const [activities, setActivities] = useState(null);
     const { data, loading, error } = useQuery<
-        PoolUserActivityData,
-        PoolUserActivityVars
-    >(GET_POOL_USER_ACTIVITY, {
+        PoolActivitiesData,
+        PoolActivitiesVars
+    >(GET_POOL_ACTIVITIES, {
         variables: {
-            depositFilter: filter,
-            unstakeFilter: filter,
-            stakeFilter: filter,
-            withdrawFilter: filter,
-            stakeOrderBy: orderBy,
-            unstakeOrderBy: orderBy,
-            depositOrderBy: orderBy,
-            withdrawOrderBy: orderBy,
+            where,
+            orderBy,
             orderDirection,
             first,
         },
@@ -113,10 +94,10 @@ const usePoolUserActivity = ({
     });
 
     useEffect(() => {
-        data && setActivities(aggregate(data));
+        data && setActivities(transform(data));
     }, [data]);
 
     return { activities, loading, error };
 };
 
-export default usePoolUserActivity;
+export default usePoolActivities;
