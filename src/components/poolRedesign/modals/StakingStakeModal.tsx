@@ -60,6 +60,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     };
 
     const inputFocusRef = useRef();
+
     return (
         <>
             <Modal
@@ -85,8 +86,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <FormControl id="stakeAmount">
                                 <FormLabel fontWeight="bold">Amount</FormLabel>
                                 <CTSINumberInput
-                                    defaultValue={1}
-                                    min={1}
+                                    defaultValue={0}
+                                    min={0}
                                     max={userBalanceFormatted}
                                     // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
@@ -103,8 +104,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
+                                    disabled={outputStake.isZero()}
                                     onClick={() => {
-                                        console.log(toCTSI(outputStake));
                                         onSave(outputStake);
                                         disclosure.onClose();
                                         onClose();

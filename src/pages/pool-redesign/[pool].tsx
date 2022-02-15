@@ -143,9 +143,9 @@ const poolRedesign = () => {
             >
                 {isConnected && (
                     <Staking
-                        balance={balance}
+                        userWalletBalance={balance}
                         allowance={allowance}
-                        userBalance={userBalance}
+                        userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
                         staked={stakedShares}
                         onWithdraw={withdraw}

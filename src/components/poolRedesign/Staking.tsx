@@ -43,9 +43,9 @@ import CTSI from '../pools/staking/CTSI';
 import { formatUnits } from 'ethers/lib/utils';
 
 export interface StakingProps extends StackProps {
-    balance: BigNumber; // wallet balance
+    userWalletBalance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
-    userBalance: BigNumber; // user pool balance
+    userPoolBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
     // shares: BigNumber; // user shares
     staked: BigNumber; // user stake
@@ -63,8 +63,8 @@ export interface StakingProps extends StackProps {
 }
 
 export const Staking: FC<StakingProps> = ({
-    balance,
-    userBalance,
+    userWalletBalance,
+    userPoolBalance,
     userETHBalance,
     staked,
     allowance,
@@ -129,7 +129,7 @@ export const Staking: FC<StakingProps> = ({
                             minW="15rem"
                             disabled={
                                 allowance.isZero() ||
-                                balance.isZero() ||
+                                userWalletBalance.isZero() ||
                                 userETHBalance.isZero()
                             }
                         >
@@ -160,7 +160,7 @@ export const Staking: FC<StakingProps> = ({
                 {unlock && (
                     <InfoBanner
                         title={`${toCTSI(
-                            userBalance
+                            userPoolBalance
                         )} CTSI will be ready for staking soon`}
                         content={`It will take ${
                             unlockHumanized || 'unknown'
@@ -223,7 +223,7 @@ export const Staking: FC<StakingProps> = ({
                                 )}
                                 <Heading m={0} size="lg">
                                     <Flex align="baseline">
-                                        <CTSI value={userBalance} />
+                                        <CTSI value={userPoolBalance} />
                                         <Text ml={1}>CTSI</Text>
                                     </Flex>
                                 </Heading>
@@ -240,7 +240,9 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={stakeDisclosure.onOpen}
                                     colorScheme="darkGray"
-                                    disabled={!!unlock || userBalance.isZero()}
+                                    disabled={
+                                        !!unlock || userPoolBalance.isZero()
+                                    }
                                 >
                                     Stake
                                 </Button>
@@ -252,7 +254,7 @@ export const Staking: FC<StakingProps> = ({
                                     minW="15rem"
                                     onClick={withdrawDisclosure.onOpen}
                                     colorScheme="darkGray"
-                                    disabled={userBalance.isZero()}
+                                    disabled={userPoolBalance.isZero()}
                                 >
                                     Withdraw
                                 </Button>
@@ -272,7 +274,18 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
-
+                {transactionBanners?.unstake && (
+                    <TransactionInfoBanner
+                        title="Unstaking..."
+                        failTitle="Error unstaking"
+                        successDescription="Unstaked sucessfully."
+                        transaction={
+                            currentTransaction === 'unstake'
+                                ? poolTransaction
+                                : null
+                        }
+                    />
+                )}
                 <Box
                     bg={bg}
                     borderRadius="lg"
@@ -321,7 +334,8 @@ export const Staking: FC<StakingProps> = ({
                                     onClick={unstakeDisclosure.onOpen}
                                     colorScheme="darkGray"
                                     disabled={
-                                        staked.isZero() || userBalance.isZero()
+                                        staked.isZero() ||
+                                        userPoolBalance.isZero()
                                     }
                                 >
                                     Unstake
@@ -331,23 +345,12 @@ export const Staking: FC<StakingProps> = ({
                     </Stack>
                 </Box>
             </VStack>
-            {transactionBanners?.unstake && (
-                <TransactionInfoBanner
-                    title="Unstaking..."
-                    failTitle="Error unstaking"
-                    successDescription="Unstaked sucessfully."
-                    transaction={
-                        currentTransaction === 'unstake'
-                            ? poolTransaction
-                            : null
-                    }
-                />
-            )}
+
             <StakingDepositModal
                 isOpen={depositDisclosure.isOpen}
                 onClose={depositDisclosure.onClose}
                 allowance={allowance}
-                balance={balance}
+                balance={userWalletBalance}
                 disclosure={depositDisclosure}
                 onSave={(amount) => {
                     console.log('deposit transaction', toCTSI(amount));
@@ -363,8 +366,8 @@ export const Staking: FC<StakingProps> = ({
             <StakingStakeModal
                 isOpen={stakeDisclosure.isOpen}
                 onClose={stakeDisclosure.onClose}
-                balance={balance}
-                userBalance={userBalance}
+                balance={userWalletBalance}
+                userBalance={userPoolBalance}
                 disclosure={stakeDisclosure}
                 onSave={(amount) => {
                     console.log('stake transaction', toCTSI(amount));
@@ -380,7 +383,7 @@ export const Staking: FC<StakingProps> = ({
             <StakingWithdrawModal
                 isOpen={withdrawDisclosure.isOpen}
                 onClose={withdrawDisclosure.onClose}
-                userBalance={userBalance}
+                userBalance={userPoolBalance}
                 disclosure={withdrawDisclosure}
                 onSave={(amount) => {
                     console.log('withdraw transaction', toCTSI(amount));
@@ -396,7 +399,7 @@ export const Staking: FC<StakingProps> = ({
             <StakingUnstakeModal
                 isOpen={unstakeDisclosure.isOpen}
                 onClose={unstakeDisclosure.onClose}
-                userBalance={userBalance}
+                userBalance={userPoolBalance}
                 disclosure={unstakeDisclosure}
                 onSave={(amount) => {
                     console.log('unstake transaction', toCTSI(amount));
