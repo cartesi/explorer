@@ -395,21 +395,23 @@ export const Staking: FC<StakingProps> = ({
                 }}
             />
 
-            <StakingUnstakeModal
-                isOpen={unstakeDisclosure.isOpen}
-                onClose={unstakeDisclosure.onClose}
-                userBalance={userPoolBalance}
-                disclosure={unstakeDisclosure}
-                onSave={(amount) => {
-                    console.log('unstake transaction', toCTSI(amount));
-                    setCurrentTransaction('unstake');
-                    setTransactionBanners({
-                        ...transactionBanners,
-                        unstake: true,
-                    });
-                    onUnstake(amount);
-                }}
-            />
+            {stakedBalance && (
+                <StakingUnstakeModal
+                    isOpen={unstakeDisclosure.isOpen}
+                    onClose={unstakeDisclosure.onClose}
+                    stakedBalance={stakedBalance}
+                    disclosure={unstakeDisclosure}
+                    onSave={(amount) => {
+                        console.log('unstake transaction', toCTSI(amount));
+                        setCurrentTransaction('unstake');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            unstake: true,
+                        });
+                        onUnstake(amount);
+                    }}
+                />
+            )}
         </>
     );
 };
