@@ -14,9 +14,9 @@ import {
     Heading,
     HStack,
     Image,
+    Spinner,
     Text,
     VStack,
-    Spinner,
 } from '@chakra-ui/react';
 import React, { FC, memo } from 'react';
 import { CheckCircleIcon } from '../../components/Icons';
@@ -34,6 +34,7 @@ const ctsiFormatOptions: Intl.NumberFormatOptions = {
 };
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+    hourCycle: 'h23',
     dateStyle: 'medium',
     timeStyle: 'short',
 });
