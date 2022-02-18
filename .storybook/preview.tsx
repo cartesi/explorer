@@ -9,12 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
-import { StoryContext } from '@storybook/react';
-import { withPerformance } from 'storybook-addon-performance';
+import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { StoryContext } from '@storybook/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
+import React from 'react';
+import { withPerformance } from 'storybook-addon-performance';
 import withColorMode from './withColorMode';
 import withFeatureFlags from './withFeatureFlags';
 import Web3Container from '../src/components/Web3Container';
@@ -35,6 +37,9 @@ export const parameters = {
     },
     viewport: {
         viewports: MINIMAL_VIEWPORTS,
+    },
+    apolloClient: {
+        MockedProvider,
     },
 };
 

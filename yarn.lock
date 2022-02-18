@@ -20781,6 +20781,13 @@ store@2.0.12:
   resolved "https://registry.yarnpkg.com/store/-/store-2.0.12.tgz#8c534e2a0b831f72b75fc5f1119857c44ef5d593"
   integrity sha1-jFNOKguDH3K3X8XxEZhXxE711ZM=
 
+storybook-addon-apollo-client@^4.0.11:
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/storybook-addon-apollo-client/-/storybook-addon-apollo-client-4.0.11.tgz#3f46cb2d62fc6e34f6183bde8decf2787c1a3ee6"
+  integrity sha512-8vDK+egG2WzlXiLELY3mVuSKUCI8FfuJ7PMz5SbwnCcmP1s3GLpzDl5xr7nJitnk7UCMQeQQh327J8IphaS5PA==
+  dependencies:
+    tslib "^2.3.0"
+
 storybook-addon-next-router@^3.0.8:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/storybook-addon-next-router/-/storybook-addon-next-router-3.0.8.tgz#6bed3eba168bbba238b2f3c636db64d41d148edc"
