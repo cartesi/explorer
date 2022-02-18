@@ -10,11 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
+import { capitalize, getOr, map, pipe } from 'lodash/fp';
 import { useEffect, useState } from 'react';
-import { PoolActivitiesVars, PoolActivitiesData } from '../models';
+import {
+    PoolActivitiesData,
+    PoolActivitiesVars,
+    PoolActivity,
+} from '../models';
 import { GET_POOL_ACTIVITIES } from '../queries/poolActivities';
-import { PoolActivity } from '../models';
-import { pipe, map, getOr, capitalize } from 'lodash/fp';
 
 interface Activity extends Omit<PoolActivity, 'timestamp' | 'type'> {
     timestamp: number;
@@ -63,8 +66,7 @@ const milliToUnixTimestamp = (numberInMillis: number): number =>
 /**
  * Hook retrieves withdrawals, deposits, stakes and unstakes based on a user, pool or
  * a combination of both. It gets the first twenty entries ordered and filtered
- * by the timestamp passed as argument (i.e. beforeInMillis) or
- * it use the current timestamp i.e. Date.now() as the default entry.
+ * by the timestamp passed as argument (i.e. beforeInMillis).
  * @param {UsePoolActivitiesProps}
  * @returns {UsePoolActivities}
  */
@@ -73,8 +75,10 @@ const usePoolActivities = ({
     user,
     pool,
 }: UsePoolActivitiesProps): UsePoolActivities => {
-    const timestamp_lt = milliToUnixTimestamp(beforeInMillis || Date.now());
-    const where = { user, pool, timestamp_lt };
+    const where: any = { user, pool };
+    if (beforeInMillis) {
+        where.timestamp_lt = milliToUnixTimestamp(beforeInMillis);
+    }
     const orderBy = 'timestamp';
     const orderDirection = 'desc';
     const first = 20;
