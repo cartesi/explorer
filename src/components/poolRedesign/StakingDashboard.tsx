@@ -31,9 +31,9 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
-import { AllowenceIcon, WalletIcon } from '../../components/Icons';
+import { AllowanceIcon, WalletIcon } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
-import { StakingPoolAllowenceModal } from './modals/StakingPoolAllowenceModal';
+import { StakingPoolAllowanceModal } from './modals/StakingPoolAllowanceModal';
 import CTSI from '../pools/staking/CTSI';
 import { WalletBalanceSection } from './components/WalletBalanceSection';
 import { AllowanceSection } from './components/AllowanceSection';
@@ -62,9 +62,9 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     });
 
     const {
-        isOpen: isOpenStakingPoolAllowenceModal,
-        onOpen: onOpenStakingPoolAllowenceModal,
-        onClose: onCloseStakingPoolAllowenceModal,
+        isOpen: isOpenStakingPoolAllowanceModal,
+        onOpen: onOpenStakingPoolAllowanceModal,
+        onClose: onCloseStakingPoolAllowanceModal,
     } = useDisclosure();
 
     const disclosure = useDisclosure();
@@ -178,17 +178,17 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                     />
                     <AllowanceSection
                         allowance={allowance}
-                        onAllowanceClick={onOpenStakingPoolAllowenceModal}
+                        onAllowanceClick={onOpenStakingPoolAllowanceModal}
                     />
                 </Stack>
             </VStack>
 
-            <StakingPoolAllowenceModal
-                isOpen={isOpenStakingPoolAllowenceModal}
+            <StakingPoolAllowanceModal
+                isOpen={isOpenStakingPoolAllowanceModal}
                 disclosure={disclosure}
                 allowance={allowance}
                 balance={balance}
-                onClose={onCloseStakingPoolAllowenceModal}
+                onClose={onCloseStakingPoolAllowanceModal}
                 onSave={(amount) => {
                     setAllowanceTransaction(true);
                     onApprove(amount);

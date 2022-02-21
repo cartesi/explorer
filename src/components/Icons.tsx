@@ -94,8 +94,8 @@ export const StakedBalanceIcon = createIcon({
     ),
 });
 
-export const AllowenceIcon = createIcon({
-    displayName: 'AllowenceIcon',
+export const AllowanceIcon = createIcon({
+    displayName: 'AllowanceIcon',
     viewBox: '0 0 21 21',
     path: (
         <g>

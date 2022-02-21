@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import {
-    AllowenceIcon,
+    AllowanceIcon,
     StakedBalanceIcon,
     WalletIcon,
 } from '../../components/Icons';
@@ -39,7 +39,7 @@ export const StakingGuide: FC = () => {
             title: 'Allowance / Deposit',
             description:
                 'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
-            icon: <AllowenceIcon color="yellow.500" w={6} h={6} />,
+            icon: <AllowanceIcon color="yellow.500" w={6} h={6} />,
             bgColor: 'yellow.100',
         },
         {
