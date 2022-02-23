@@ -13,7 +13,6 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import { StakingActivity } from '../../components/poolRedesign/StakingActivity';
 import { GET_POOL_ACTIVITIES } from '../../graphql/queries/poolActivities';
-
 export default {
     title: 'Pool Redesign/Staking Activity',
     component: StakingActivity,
@@ -23,13 +22,12 @@ export default {
 const Template: ComponentStory<typeof StakingActivity> = (args) => (
     <StakingActivity {...args} />
 );
-
 const componentParams = {
     userAccount: '0xa074683b5be015f053b5dceb064c41fc9d11b6e5',
     poolAddress: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
 };
 const queryVariables = {
-    first: 20,
+    first: 1,
     orderDirection: 'desc',
     orderBy: 'timestamp',
     where: {
@@ -51,25 +49,27 @@ Loading10Seconds.parameters = {
                     query: GET_POOL_ACTIVITIES,
                     variables: queryVariables,
                 },
-                result: {
-                    data: {
-                        poolActivities: [
-                            {
-                                amount: '150000000000000000000',
-                                id: '0xf008c00ae062476fd02772fa08469033dbeedbdd4937727eb725d5aa3d921982',
-                                shares: '150000000000000000000000000000',
-                                timestamp: '1643612997',
-                                type: 'STAKE',
-                            },
-                            {
-                                amount: '150000000000000000000',
-                                id: '0x5316176a7262ab6cd401a212c6cd892662ea43b67537c4af22bcbc4e8cd996de',
-                                shares: null,
-                                timestamp: '1643576268',
-                                type: 'DEPOSIT',
-                            },
-                        ],
-                    },
+                result: () => {
+                    return {
+                        data: {
+                            poolActivities: [
+                                {
+                                    amount: '150000000000000000000',
+                                    id: '0xf008c00ae062476fd02772fa08469033dbeedbdd4937727eb725d5aa3d921982',
+                                    shares: '150000000000000000000000000000',
+                                    timestamp: '1643612997',
+                                    type: 'STAKE',
+                                },
+                                {
+                                    amount: '150000000000000000000',
+                                    id: '0x5316176a7262ab6cd401a212c6cd892662ea43b67537c4af22bcbc4e8cd996de',
+                                    shares: null,
+                                    timestamp: '1643576268',
+                                    type: 'DEPOSIT',
+                                },
+                            ],
+                        },
+                    };
                 },
             },
         ],
@@ -82,6 +82,12 @@ ListOfActivities.args = {
     userAccount: '0x0bf9b7f1305839ce936c59bf099550e8e708c09c',
     poolAddress: '0xaede3f736596a2367a5e2ebde47d69b469ef0edb',
 };
+
+const whereClause = {
+    user: '0x0bf9b7f1305839ce936c59bf099550e8e708c09c',
+    pool: '0xaede3f736596a2367a5e2ebde47d69b469ef0edb',
+};
+
 ListOfActivities.parameters = {
     apolloClient: {
         mocks: [
@@ -90,10 +96,7 @@ ListOfActivities.parameters = {
                     query: GET_POOL_ACTIVITIES,
                     variables: {
                         ...queryVariables,
-                        where: {
-                            user: '0x0bf9b7f1305839ce936c59bf099550e8e708c09c',
-                            pool: '0xaede3f736596a2367a5e2ebde47d69b469ef0edb',
-                        },
+                        where: whereClause,
                     },
                 },
                 result: {
@@ -111,6 +114,24 @@ ListOfActivities.parameters = {
                                 timestamp: '1644943087',
                                 type: 'WITHDRAW',
                             },
+                        ],
+                    },
+                },
+            },
+            {
+                request: {
+                    query: GET_POOL_ACTIVITIES,
+                    variables: {
+                        ...queryVariables,
+                        where: {
+                            ...whereClause,
+                            timestamp_lt: 1644943087,
+                        },
+                    },
+                },
+                result: {
+                    data: {
+                        poolActivities: [
                             {
                                 amount: '10000000000000000000',
                                 id: '0x62814c57466ad25bdf98133e5f978add5c0c8fa49a53108ee579d56943833ce2',

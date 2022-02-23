@@ -85,7 +85,7 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 
 export const StakingActivity: FC<Props> = memo(
     ({ userAccount, poolAddress }) => {
-        const [timestamp, setTimestamp] = useState(Date.now());
+        const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
         const { activities, loading } = usePoolActivities({
             pool: poolAddress,
@@ -93,7 +93,7 @@ export const StakingActivity: FC<Props> = memo(
             beforeInMillis: timestamp,
         });
         const oldestActivityTime =
-            (list && last<ActivityType>(list).timestamp) || timestamp;
+            (list && last<ActivityType>(list)?.timestamp) || timestamp;
 
         const isAllActivitiesLoaded =
             timestamp === oldestActivityTime && !loading;
