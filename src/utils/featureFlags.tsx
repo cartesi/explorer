@@ -36,7 +36,12 @@ const WhenReady = ({ children }: Props) => {
     const { flagsReady } = useFlagsStatus();
     if (!flagsReady) {
         return (
-            <VStack h="100%" w="100%" justifyContent="center">
+            <VStack
+                h="100%"
+                w="100%"
+                justifyContent="center"
+                style={{ position: 'fixed' }}
+            >
                 <Spinner size="xl" />
             </VStack>
         );
