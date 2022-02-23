@@ -17,10 +17,14 @@ import {
     Spinner,
     Text,
     VStack,
+    Button,
 } from '@chakra-ui/react';
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
+import { last } from 'lodash/fp';
 import { CheckCircleIcon } from '../../components/Icons';
-import usePoolActivities from '../../graphql/hooks/usePoolActivities';
+import usePoolActivities, {
+    Activity as ActivityType,
+} from '../../graphql/hooks/usePoolActivities';
 import { formatValue } from '../../utils/numberFormatter';
 
 interface Props {
@@ -81,10 +85,26 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 
 export const StakingActivity: FC<Props> = memo(
     ({ userAccount, poolAddress }) => {
+        const [timestamp, setTimestamp] = useState(Date.now());
+        const [list, updateList] = useState(null);
         const { activities, loading } = usePoolActivities({
             pool: poolAddress,
             user: userAccount,
+            beforeInMillis: timestamp,
         });
+        const oldestActivityTime =
+            (list && last<ActivityType>(list).timestamp) || timestamp;
+
+        const isAllActivitiesLoaded =
+            timestamp === oldestActivityTime && !loading;
+
+        useEffect(() => {
+            if (null !== activities) {
+                updateList((list) =>
+                    null !== list ? [...list, ...activities] : activities
+                );
+            }
+        }, [activities]);
 
         return (
             <>
@@ -92,29 +112,57 @@ export const StakingActivity: FC<Props> = memo(
                     My staking activities
                 </Heading>
                 <VStack spacing={8} alignItems="flex-start">
-                    <Loader isLoading={loading} />
-                    {activities?.length > 0 &&
-                        activities.map((activity, index) => (
+                    {!list && <Loader isLoading={loading} />}
+                    {list?.length > 0 && (
+                        <>
+                            {list.map((activity, index) => (
+                                <HStack
+                                    key={index}
+                                    justifyContent="flex-start"
+                                    spacing={4}
+                                    alignItems="flex-start"
+                                    minW={167}
+                                >
+                                    <CheckCircleIcon
+                                        w={6}
+                                        h={6}
+                                        color="green.500"
+                                    />
+                                    <Activity
+                                        key={activity.id}
+                                        amount={activity.amount}
+                                        timestamp={activity.timestamp}
+                                        type={activity.type}
+                                    />
+                                </HStack>
+                            ))}
                             <HStack
-                                key={index}
-                                justifyContent="flex-start"
-                                spacing={4}
-                                alignItems="flex-start"
+                                justifyContent="flex-end"
+                                alignItems="flex-end"
+                                minW={167}
                             >
-                                <CheckCircleIcon
-                                    w={6}
-                                    h={6}
-                                    color="green.500"
-                                />
-                                <Activity
-                                    key={activity.id}
-                                    amount={activity.amount}
-                                    timestamp={activity.timestamp}
-                                    type={activity.type}
-                                />
+                                {!isAllActivitiesLoaded && (
+                                    <Button
+                                        variant="link"
+                                        colorScheme="blue"
+                                        isLoading={loading}
+                                        loadingText="Loading..."
+                                        onClick={() =>
+                                            setTimestamp(oldestActivityTime)
+                                        }
+                                    >
+                                        <Text>Load more...</Text>
+                                    </Button>
+                                )}
+                                {isAllActivitiesLoaded && (
+                                    <Text as="sub" color="gray.500">
+                                        All activities loaded
+                                    </Text>
+                                )}
                             </HStack>
-                        ))}
-                    {activities?.length === 0 && (
+                        </>
+                    )}
+                    {!loading && list?.length === 0 && (
                         <VStack
                             alignItems="center"
                             spacing={4}

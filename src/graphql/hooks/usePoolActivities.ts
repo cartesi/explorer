@@ -19,7 +19,7 @@ import {
 } from '../models';
 import { GET_POOL_ACTIVITIES } from '../queries/poolActivities';
 
-interface Activity extends Omit<PoolActivity, 'timestamp' | 'type'> {
+export interface Activity extends Omit<PoolActivity, 'timestamp' | 'type'> {
     timestamp: number;
     type: string;
 }
