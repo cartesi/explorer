@@ -77,7 +77,8 @@ const UserPool: FC<UserPoolProps> = (props) => {
             p={5}
             bg={bg}
             align="stretch"
-            borderLeft="10px solid black"
+            borderLeftWidth={10}
+            borderLeftColor="gray.900"
             spacing={{ base: 6, sm: 3 }}
             {...stackProps}
         >

@@ -131,7 +131,7 @@ const Footer = () => {
     ];
 
     return (
-        <Box bg="black" color="white" opacity={0.9} w="100%" p="0 6vw">
+        <Box bg="gray.900" color="white" w="100%" p="0 6vw">
             <Container as={Stack} maxW={'100%'} py={10}>
                 <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
                     <Stack align="flex-start">

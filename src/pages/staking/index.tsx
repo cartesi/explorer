@@ -159,7 +159,8 @@ const Staking: FC = () => {
                         <Box
                             mb={8}
                             shadow="lg"
-                            borderLeft="10px solid black"
+                            borderLeftWidth={10}
+                            borderLeftColor="gray.900"
                             bg={bg}
                         >
                             <CTSIText
@@ -182,7 +183,8 @@ const Staking: FC = () => {
                         <Box
                             mb={8}
                             boxShadow="lg"
-                            borderLeft="10px solid black"
+                            borderLeftWidth={10}
+                            borderLeftColor="gray.900"
                             bg={bg}
                         >
                             <CTSIText
@@ -211,7 +213,8 @@ const Staking: FC = () => {
                         <Box
                             mb={8}
                             boxShadow="lg"
-                            borderLeft="10px solid black"
+                            borderLeftWidth={10}
+                            borderLeftColor="gray.900"
                             bg={bg}
                         >
                             <CTSIText

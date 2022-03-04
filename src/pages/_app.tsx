@@ -17,7 +17,7 @@ import { FeatureFlagProvider } from '../utils/featureFlags';
 import dynamic from 'next/dynamic';
 import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
-import '@fontsource/rubik';
+import { Fonts } from '../components/Fonts';
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
@@ -26,6 +26,7 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 const App = ({ Component, pageProps }: AppProps) => {
     return (
         <ChakraProvider theme={theme}>
+            <Fonts />
             <FeatureFlagProvider>
                 <Web3Container>
                     <TrackingProvider>

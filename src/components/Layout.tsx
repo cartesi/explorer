@@ -37,7 +37,7 @@ export const ResponsiveDebug: FC = () => {
 };
 
 export const PageHeader: FC = ({ children }) => (
-    <Box w="100%" bg="black" opacity={0.9} color="white" px="6vw" py={5}>
+    <Box w="100%" bg="gray.900" color="white" px="6vw" py={5}>
         {children}
     </Box>
 );
@@ -48,7 +48,7 @@ export const PagePanel: FC = ({ children }) => {
     return (
         <Center
             px="6vw"
-            bgGradient={`linear(to-b, rgba(0,0,0,.9) 0%, rgba(0,0,0,.9) 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
+            bgGradient={`linear(to-b, gray.900 0%, gray.900 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
         >
             <Box bg={bg} w="100%" shadow="lg">
                 {children}

@@ -68,7 +68,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     </Text>
                 </HStack>
             </Center>
-            <Center bg="black" p={2}>
+            <Center bg="gray.900" p={2}>
                 <Text color="white">Block {id}</Text>
             </Center>
             <Flex

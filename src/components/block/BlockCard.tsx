@@ -36,7 +36,8 @@ const BlockCard: FC<BlockCardProps> = (props) => {
             shadow="md"
             p={4}
             bg={bg}
-            borderLeft="15px solid black"
+            borderLeftWidth={10}
+            borderLeftColor="gray.900"
             align="flex-start"
             {...stackProps}
         >

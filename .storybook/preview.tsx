@@ -20,7 +20,7 @@ import withFeatureFlags from './withFeatureFlags';
 import Web3Container from '../src/components/Web3Container';
 import SelectedChain from '../src/components/header/SelectedChain';
 import theme from '../src/styles/theme';
-import '@fontsource/rubik';
+import { Fonts } from '../src/components/Fonts';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -53,6 +53,7 @@ export const globalTypes = {
 const withChakra = (Story: Function, context: StoryContext) => {
     return (
         <ChakraProvider resetCSS theme={theme}>
+            <Fonts />
             <Web3Container>
                 <SelectedChain />
                 <Story />

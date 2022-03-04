@@ -85,14 +85,7 @@ const NavBar: FC<FlexProps> = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
-        <Box
-            bg={isOpen ? 'gray.900' : 'header'}
-            backdropFilter="blur(5px)"
-            color="white"
-            px="6vw"
-            position="fixed"
-            {...props}
-        >
+        <Box bg="gray.900" color="white" px="6vw" position="fixed" {...props}>
             <Flex h="100px" alignItems="center" justifyContent="space-between">
                 <IconButton
                     size="md"
@@ -104,7 +97,7 @@ const NavBar: FC<FlexProps> = (props) => {
                     _hover={{ bg: 'gray.800' }}
                 />
                 <HStack spacing={8} alignItems="center">
-                    <Logo />
+                    <Logo mr={{ base: 0, sm: 2 }} />
                     <SelectedChain display={{ base: 'none', md: 'flex' }} />
                     <HStack
                         as="nav"

@@ -40,7 +40,7 @@ const SyncStatus = () => {
     const delay = blockNumber - meta?.block?.number;
 
     return issues ? (
-        <Box px="6vw" bg="black" opacity={0.9}>
+        <Box px="6vw" bg="gray.900">
             <Alert status="error">
                 <AlertIcon />
                 <AlertTitle mr={2}>{title}</AlertTitle>

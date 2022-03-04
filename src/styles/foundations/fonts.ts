@@ -10,6 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const fonts = {
-    body: 'Rubik',
-    heading: 'Rubik',
+    body: '"FK Grotesk", sans-serif',
+    heading: '"FK Grotesk", sans-serif',
 };

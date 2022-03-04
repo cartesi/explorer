@@ -67,11 +67,11 @@ export const Button = {
 
             if (props.colorScheme === 'blue') {
                 return {
-                    bg: 'blue.500',
-                    color: 'white',
+                    bg: 'blue.200',
+                    color: 'gray.900',
                     _hover: {
-                        bg: 'blue.600',
-                        color: 'white',
+                        bg: 'blue.300',
+                        color: 'gray.900',
                     },
                 };
             }

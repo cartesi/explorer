@@ -20,6 +20,7 @@ import {
     TabPanel,
 } from '@chakra-ui/react';
 import theme from '../../styles/theme';
+import { FaRegAngry } from 'react-icons/fa';
 
 interface TabsProps extends BoxProps {
     Stake: React.ReactNode;
@@ -57,15 +58,11 @@ export const Tabs: FC<TabsProps> = (props) => {
                             key={tab.name}
                             py={4}
                             color="white"
-                            bg={
-                                tabIndex === index
-                                    ? 'black'
-                                    : theme.colors.secondary
-                            }
+                            bg={tabIndex === index ? 'gray.900' : 'gray.500'}
                             _selected={{
                                 color: 'white',
                                 borderBottomWidth: 5,
-                                borderBottomColor: theme.colors.info,
+                                borderBottomColor: 'blue.300',
                                 boxShadow: 'md',
                             }}
                             _hover={{

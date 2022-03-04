@@ -94,9 +94,7 @@ const Home = () => {
             </Head>
             <PageHeader>
                 <Wrap
-                    bg="black"
                     color="white"
-                    opacity={0.9}
                     justify="space-around"
                     align="flex-end"
                     px="6vw"
@@ -125,28 +123,17 @@ const Home = () => {
                         />
                     </WrapItem>
                     <WrapItem p={2}>
-                        <CTSIText
-                            value={balance}
-                            icon={FaWallet}
-                            bg="black"
-                            color="white"
-                        >
-                            <Text bg="black" color="white">
-                                Wallet Balance
-                            </Text>
+                        <CTSIText value={balance} icon={FaWallet}>
+                            <Text color="white">Wallet Balance</Text>
                         </CTSIText>
                     </WrapItem>
                     <WrapItem p={2}>
                         <CTSIText
                             value={stakedBalance.add(poolBalance)}
                             icon={FaCoins}
-                            bg="black"
-                            color="white"
                         >
                             <HStack>
-                                <Text bg="black" color="white">
-                                    Staked Balance
-                                </Text>
+                                <Text color="white">Staked Balance</Text>
                                 <Tooltip
                                     label="This include direct staking and pool staking"
                                     placement="top"
