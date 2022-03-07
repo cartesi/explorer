@@ -28,6 +28,13 @@ const theme = extendTheme({
             'html, body': {
                 color: props.colorMode === 'dark' ? 'white' : 'gray.800',
             },
+            '.bn-onboard-custom.bn-onboard-modal': {
+                fontFamily: fonts.body,
+            },
+            '.bn-onboard-custom.bn-onboard-modal-content.bn-onboard-dark-mode':
+                {
+                    background: colors.gray[800],
+                },
         }),
     },
     config: {
