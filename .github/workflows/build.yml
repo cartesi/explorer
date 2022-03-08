@@ -1,10 +1,19 @@
 name: Docker
 on: [push]
 jobs:
-  build:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-      - name: Code format check
-        run: npx prettier --check src/**/*.ts
+            - name: Code format check
+              run: npx prettier --check src/**/*.ts
+
+            - name: Install Dependencies
+              run: yarn
+
+            - name: Linting
+              run: yarn lint
+
+            - name: Run Tests
+              run: yarn test:ci
