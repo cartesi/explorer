@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2022-03-09
+
+### Changed
+
+-   Visual identity updated following the new branding.
+
 ## [2.3.0] - 2022-02-07
 
 ### Changed
@@ -96,7 +102,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.3.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.4.0...HEAD
+[2.4.0]: https://github.com/cartesi-corp/explorer/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/cartesi-corp/explorer/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/cartesi-corp/explorer/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/cartesi-corp/explorer/compare/v2.0.5...v2.1.0
