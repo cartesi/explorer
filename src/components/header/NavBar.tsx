@@ -152,11 +152,19 @@ const NavBar: FC<FlexProps> = (props) => {
             {isOpen && (
                 <Box pb={5} display={{ md: 'none' }}>
                     <Stack as="nav" spacing={4}>
-                        {Links.map(({ label, key, href }) => (
-                            <NavLink key={key} href={href}>
-                                {label}
-                            </NavLink>
-                        ))}
+                        {Links.map(({ label, key, href }) => {
+                            if (
+                                key === POOL_REDESIGN_KEY &&
+                                !newPoolPageEnabled
+                            )
+                                return null;
+
+                            return (
+                                <NavLink key={key} href={href}>
+                                    {label}
+                                </NavLink>
+                            );
+                        })}
                         {!multiWalletEnabled && (
                             <ConnectMetamask wallet={wallet} />
                         )}
