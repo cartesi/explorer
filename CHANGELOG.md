@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.1] - 2022-03-10
+
+### Changed
+
+-   UX improvement when clicking the connect wallet button. The menu closes automatically
+
 ## [2.4.0] - 2022-03-09
 
 ### Changed
