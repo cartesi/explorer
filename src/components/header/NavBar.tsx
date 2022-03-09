@@ -166,10 +166,16 @@ const NavBar: FC<FlexProps> = (props) => {
                             );
                         })}
                         {!multiWalletEnabled && (
-                            <ConnectMetamask wallet={wallet} />
+                            <ConnectMetamask
+                                wallet={wallet}
+                                onClick={isOpen ? onClose : onOpen}
+                            />
                         )}
                         {multiWalletEnabled && (
-                            <ConnectWallet wallet={wallet} />
+                            <ConnectWallet
+                                wallet={wallet}
+                                onClick={isOpen ? onClose : onOpen}
+                            />
                         )}
                     </Stack>
                 </Box>
