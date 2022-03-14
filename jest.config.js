@@ -8,7 +8,7 @@ module.exports = {
         '!**/*.d.ts',
         '!**/node_modules/**',
     ],
-    coverageReporters: [['lcov', { defaultSummarizer: 'nested' }], 'text'],
+    coverageReporters: ['lcov', 'text-summary'],
     coverageDirectory: '<rootDir>/coverage',
     moduleNameMapper: {
         // Handle CSS imports (with CSS modules)
