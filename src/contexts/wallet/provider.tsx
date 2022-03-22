@@ -29,25 +29,34 @@ const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
-const wallets: WalletInitOptions[] = [
-    { walletName: 'metamask' },
-    {
-        walletName: 'coinbase',
-        infuraKey: PROJECT_ID,
-    },
-    {
-        walletName: 'walletLink',
-        rpcUrl: getRPC('mainnet'),
-        appName: 'Cartesi Explorer',
-    },
-    { walletName: 'gnosis' },
-    { walletName: 'trust' },
-    { walletName: 'ledger', rpcUrl: getRPC('mainnet') },
-    {
-        walletName: 'walletConnect',
-        infuraKey: PROJECT_ID,
-    },
-];
+const buildWalletOptions = (useAnkr: boolean): WalletInitOptions[] => {
+    const mainnetRpcUrl = useAnkr
+        ? 'https://rpc.ankr.com/eth'
+        : getRPC('mainnet');
+    return [
+        { walletName: 'metamask' },
+        {
+            walletName: 'coinbase',
+            infuraKey: PROJECT_ID,
+        },
+        {
+            walletName: 'walletLink',
+            rpcUrl: mainnetRpcUrl,
+            appName: 'Cartesi Explorer',
+        },
+        { walletName: 'gnosis' },
+        { walletName: 'trust' },
+        { walletName: 'ledger', rpcUrl: mainnetRpcUrl },
+        {
+            walletName: 'walletConnect',
+            rpc: {
+                '1': mainnetRpcUrl,
+                '3': getRPC('ropsten'),
+                '5': getRPC('goerli'),
+            },
+        },
+    ];
+};
 
 const walletCheck: WalletCheckInit[] = [
     { checkName: 'derivationPath' },
@@ -73,6 +82,8 @@ export const WalletConnectionProvider: FC = (props) => {
     const { library, account, chainId, error, onboard } = state;
     const { colorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
+    const ankrEnabled = useFlag('ankrEnabled');
+
     const active =
         library !== undefined &&
         account !== undefined &&
@@ -93,10 +104,12 @@ export const WalletConnectionProvider: FC = (props) => {
     };
 
     useEffect(() => {
-        console.log(`Initializing onboarding.`);
+        console.log(`Initializing onboarding. is ankr enabled: ${ankrEnabled}`);
+        const wallets = buildWalletOptions(ankrEnabled);
         const onboardInitialized = Onboard({
             hideBranding: true,
             networkId: supportedNetworks[0],
+            blockPollingInterval: 1200000,
             subscriptions: {
                 wallet: (wallet) => {
                     const { provider, name, type } = wallet;
@@ -172,7 +185,11 @@ export const WalletConnectionProvider: FC = (props) => {
                 }`
             );
             if (previousWalletSelected) {
-                onboard.walletSelect(previousWalletSelected);
+                onboard
+                    .walletSelect(previousWalletSelected)
+                    .then((selected) => {
+                        if (selected) onboard.walletCheck();
+                    });
             }
             setState((state) => ({ ...state, tried: true }));
         }
