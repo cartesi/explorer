@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.4.1] - 2022-03-10
+## [2.4.1] - 2022-03-24
 
 ### Changed
 
--   UX improvement when clicking the connect wallet button. The menu closes automatically
+-   UX improvement when clicking the connect wallet button. The menu closes automatically.
+-   [Ankr](https://www.ankr.com/) service added as an blockchain infra provider.
 
 ## [2.4.0] - 2022-03-09
 
