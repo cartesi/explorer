@@ -105,7 +105,9 @@ export const WalletConnectionProvider: FC = (props) => {
     };
 
     useEffect(() => {
-        console.log(`Initializing onboarding. is ankr enabled: ${ankrEnabled}`);
+        console.log(
+            `Initializing onboarding.\nIs ankr enabled: ${ankrEnabled}`
+        );
         const wallets = buildWalletOptions(ankrEnabled);
         const onboardInitialized = Onboard({
             hideBranding: true,
@@ -191,7 +193,7 @@ export const WalletConnectionProvider: FC = (props) => {
                 }
             } else {
                 console.log(
-                    `info: skipping reload since is not walletconnect. ${selectedWallet}`
+                    `Skipping the page reload since is not WalletConnect. The selected one is ${selectedWallet}`
                 );
             }
         }
@@ -211,8 +213,14 @@ export const WalletConnectionProvider: FC = (props) => {
             if (previousWalletSelected) {
                 onboard
                     .walletSelect(previousWalletSelected)
-                    .then((selected) => {
-                        if (selected) onboard.walletCheck();
+                    .then(async (selected) => {
+                        if (selected) {
+                            const switchedChain = await onboard.walletCheck();
+                            if (!switchedChain)
+                                console.log(
+                                    `User rejected the request to switch to mainnet`
+                                );
+                        }
                     });
             }
             setState((state) => ({ ...state, tried: true }));
