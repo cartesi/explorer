@@ -79,6 +79,7 @@ export const WalletConnectionProvider: FC = (props) => {
     const [state, setState] = useState<WalletConnectionContextProps>({
         ...initialContextState,
     });
+    const [isFirstNetworkChange, setFirstNetworkChange] = useState(true);
     const { library, account, chainId, error, onboard } = state;
     const { colorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
@@ -172,6 +173,29 @@ export const WalletConnectionProvider: FC = (props) => {
 
         setState((state) => ({ ...state, onboard: onboardInitialized }));
     }, []);
+
+    useEffect(() => {
+        if (chainId !== undefined) {
+            const selectedWallet = window.localStorage.getItem(SELECTED_WALLET);
+            if (selectedWallet?.toLowerCase() === 'walletconnect') {
+                console.log(`Network changed using ${selectedWallet}`);
+                if (!isFirstNetworkChange) {
+                    // Just in case the network is changed,
+                    // The provider will come clean when is the WalletConnect protocol.
+                    window.location.reload();
+                } else {
+                    console.info(
+                        'Skipping reload because it was the first network change'
+                    );
+                    setFirstNetworkChange(false);
+                }
+            } else {
+                console.log(
+                    `info: skipping reload since is not walletconnect. ${selectedWallet}`
+                );
+            }
+        }
+    }, [chainId]);
 
     useEffect(() => {
         const previousWalletSelected =
