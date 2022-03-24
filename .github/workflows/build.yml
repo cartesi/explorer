@@ -10,7 +10,7 @@ jobs:
               run: npx prettier --check "src/**/*.{ts,tsx}"
 
             - name: Install Dependencies
-              run: yarn
+              run: yarn install --frozen-lockfile
 
             - name: Linting
               run: yarn lint
