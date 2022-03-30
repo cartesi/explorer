@@ -82,7 +82,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
         return true;
     };
 
-    const mine = account.toLowerCase() === user.toLowerCase();
+    const mine = account?.toLowerCase() === user.toLowerCase();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [confirmNoehtherVersion, setConfirmNoehtherVersion] = useState(false);
