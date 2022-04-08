@@ -15,6 +15,9 @@ import ReactGA from 'react-ga';
 import { useWallet } from './wallet';
 
 const TrackingID = 'UA-124332259-9';
+const CustomDimensions = {
+    WalletName: 'dimension1',
+};
 
 interface TrackingProviderProps {
     addTracker: (trackerId: string, trackerName: string) => void;
@@ -28,7 +31,7 @@ const TrackingContext = createContext<TrackingProviderProps>(undefined);
 const anonymizeUser = (account: string) => account?.substring(2, 10);
 
 const TrackingProvider: FC = (props) => {
-    const { account } = useWallet();
+    const { account, walletName } = useWallet();
 
     // we create a default state to keep track of whether GA
     // has been initialized, if we're tracking a unique user,
@@ -98,6 +101,7 @@ const TrackingProvider: FC = (props) => {
         if (!isInitialized) {
             ReactGA.initialize(TrackingID, {
                 gaOptions: {
+                    name: 'explorer',
                     userId: anonymizeUser(account),
                 },
             });
@@ -127,6 +131,14 @@ const TrackingProvider: FC = (props) => {
             Router.events.off('routeChangeComplete', handleRouteChange);
         };
     }, [account]);
+
+    useEffect(() => {
+        const { isInitialized, trackers } = analytics;
+        if (isInitialized && walletName) {
+            const data = { [CustomDimensions.WalletName]: walletName };
+            ReactGA.set(data, trackers);
+        }
+    }, [walletName]);
 
     return (
         <TrackingContext.Provider
