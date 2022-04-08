@@ -29,4 +29,5 @@ export interface WalletConnectionContextProps {
     deactivate: () => void;
     tried?: boolean;
     isHardwareWallet?: boolean;
+    walletName?: string;
 }

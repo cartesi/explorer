@@ -22,6 +22,7 @@ import { WalletType, WalletConnectionContextProps } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { useColorMode } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
+import { omit } from 'lodash/fp';
 
 const supportedNetworks = Object.keys(networks).map((key) => parseInt(key));
 const SELECTED_WALLET = 'selectedWallet';
@@ -127,12 +128,14 @@ export const WalletConnectionProvider: FC = (props) => {
                             ...state,
                             library: ethersProvider,
                             isHardwareWallet: type === WalletType.HARDWARE,
+                            walletName: name,
                         }));
                     } else {
                         setState((state) => ({
-                            ...state,
-                            library: null,
-                            isHardwareWallet: false,
+                            ...omit(
+                                ['library', 'isHardwareWallet', 'walletName'],
+                                state
+                            ),
                         }));
                     }
                 },
