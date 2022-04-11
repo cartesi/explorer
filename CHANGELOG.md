@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Fix error after disconnecting from wallet on node runners page.
+-   Added analytics to track what kind of wallets are used.
 
 ## [2.4.1] - 2022-03-24
 
