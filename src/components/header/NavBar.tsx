@@ -58,6 +58,11 @@ const Links = [
         label: 'Blocks',
         href: '/blocks',
     },
+    {
+        key: 'newStaking',
+        label: 'New Node Runners',
+        href: '/newStaking',
+    },
 ];
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
