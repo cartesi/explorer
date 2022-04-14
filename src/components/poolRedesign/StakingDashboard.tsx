@@ -9,32 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon, ExternalLinkIcon, WarningIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     OrderedList,
     ListItem,
     Stack,
     Link,
     Button,
-    Text,
     useDisclosure,
-    Box,
-    Heading,
-    HStack,
-    Icon,
-    Tooltip,
     VStack,
-    IconButton,
     useColorModeValue,
     StackProps,
-    Flex,
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
-import { AllowanceIcon, WalletIcon } from '../../components/Icons';
 import { InfoBanner } from './InfoBanner';
 import { StakingPoolAllowanceModal } from './modals/StakingPoolAllowanceModal';
-import CTSI from '../pools/staking/CTSI';
 import { WalletBalanceSection } from './components/WalletBalanceSection';
 import { AllowanceSection } from './components/AllowanceSection';
 
