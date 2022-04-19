@@ -20,7 +20,10 @@ import {
     Text,
     useColorModeValue,
     Avatar,
+    Alert,
+    Icon,
 } from '@chakra-ui/react';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import Layout from '../../components/Layout';
 import { WalletIcon, AllowanceIcon } from '../../components/Icons';
 
@@ -160,6 +163,16 @@ const NewStaking: FC = () => {
                             }}
                         />
                     </Stack>
+                    <Alert bg="transparent" px={0} py={6}>
+                        <Icon
+                            as={AiOutlineExclamationCircle}
+                            h={5}
+                            w={5}
+                            mr={2}
+                        />
+                        Please connect your wallet if you have created your own
+                        node and pool already
+                    </Alert>
                 </VStack>
             </Box>
         </Layout>
