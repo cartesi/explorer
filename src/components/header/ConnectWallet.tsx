@@ -33,12 +33,7 @@ const ConnectWallet: FC<ConnectWallet> = (props) => {
                 </Button>
             )}
             {!active && !isUnsupportNetworkError && (
-                <Button
-                    size="md"
-                    onClick={() => activate()}
-                    bg="#007bff"
-                    _hover={{ bg: '#005fc4' }}
-                >
+                <Button size="md" colorScheme="blue" onClick={() => activate()}>
                     <HStack>
                         <Text>Connect To Wallet</Text>
                     </HStack>
