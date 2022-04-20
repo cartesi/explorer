@@ -10,72 +10,24 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Head from 'next/head';
 import {
     Box,
-    Button,
     Heading,
     VStack,
     Stack,
     Text,
     useColorModeValue,
-    Avatar,
     Alert,
     Icon,
 } from '@chakra-ui/react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import Layout from '../../components/Layout';
 import { WalletIcon, AllowanceIcon } from '../../components/Icons';
-
-const Card = ({
-    id,
-    buttonText,
-    onButtonClick,
-    icon,
-    iconBg,
-    subtitle,
-    title,
-}) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    return (
-        <VStack
-            id={id}
-            bg={bg}
-            borderRadius={6}
-            spacing={10}
-            h="15rem"
-            w={{ base: '100%' }}
-            display="grid"
-            placeContent="center"
-        >
-            <Stack
-                direction={{ base: 'column', md: 'row' }}
-                alignItems={['center']}
-                px={4}
-            >
-                <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={1} />
-                <Box>
-                    <Heading as="h3" size="sm" mb={0}>
-                        {title}
-                    </Heading>
-                    <Text>{subtitle}</Text>
-                </Box>
-            </Stack>
-            <Box px={6}>
-                <Button
-                    ml={{ base: 0, md: 2 }}
-                    colorScheme="blue"
-                    onClick={onButtonClick}
-                    fontWeight={500}
-                    isFullWidth
-                    h={{ base: 12, md: 14 }}
-                >
-                    {buttonText}
-                </Button>
-            </Box>
-        </VStack>
-    );
-};
+import { Card } from '../../components/Card';
+import { SlideInOut } from '../../components/animation/SlideInOut';
+import { useWallet } from '../../contexts/wallet';
 
 const CustomText = ({ firstLine, secondLine }) => (
     <Stack
@@ -92,6 +44,8 @@ const CustomText = ({ firstLine, secondLine }) => (
 
 const NewStaking: FC = () => {
     const bg = useColorModeValue('gray.80', 'header');
+    const { active } = useWallet();
+
     return (
         <Layout>
             <Head>
@@ -163,16 +117,18 @@ const NewStaking: FC = () => {
                             }}
                         />
                     </Stack>
-                    <Alert bg="transparent" px={0} py={6}>
-                        <Icon
-                            as={AiOutlineExclamationCircle}
-                            h={5}
-                            w={5}
-                            mr={2}
-                        />
-                        Please connect your wallet if you have created your own
-                        node and pool already
-                    </Alert>
+                    <SlideInOut display={!active}>
+                        <Alert bg="transparent" px={0} py={6}>
+                            <Icon
+                                as={AiOutlineExclamationCircle}
+                                h={5}
+                                w={5}
+                                mr={2}
+                            />
+                            Please connect your wallet if you have created your
+                            own node and pool already
+                        </Alert>
+                    </SlideInOut>
                 </VStack>
             </Box>
         </Layout>
