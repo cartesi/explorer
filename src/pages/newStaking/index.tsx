@@ -10,8 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import {
     Box,
     Heading,
@@ -45,6 +45,7 @@ const CustomText = ({ firstLine, secondLine }) => (
 const NewStaking: FC = () => {
     const bg = useColorModeValue('gray.80', 'header');
     const { active } = useWallet();
+    const router = useRouter();
 
     return (
         <Layout>
@@ -94,7 +95,7 @@ const NewStaking: FC = () => {
                                 />
                             }
                             onButtonClick={() => {
-                                console.log('new-private-node');
+                                router.push('/node/new');
                             }}
                         />
 
@@ -113,7 +114,7 @@ const NewStaking: FC = () => {
                                 />
                             }
                             onButtonClick={() => {
-                                console.log('new-public-pool');
+                                router.push('/pools/new');
                             }}
                         />
                     </Stack>
