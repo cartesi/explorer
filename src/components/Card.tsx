@@ -9,20 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { MouseEventHandler, ReactElement } from 'react';
 import {
-    VStack,
-    Stack,
     Avatar,
     Box,
-    Heading,
-    Text,
     Button,
-    useColorModeValue,
+    Heading,
+    Stack,
     StackProps,
+    Text,
+    useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
+import { MouseEventHandler, ReactElement } from 'react';
 
-export interface Props extends StackProps {
+export interface CardProps extends StackProps {
     id?: string;
     buttonText?: string | ReactElement;
     icon?: ReactElement;
@@ -41,7 +41,7 @@ export const Card = ({
     subtitle,
     title,
     ...stackProps
-}: Props) => {
+}: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
     return (
         <VStack
