@@ -27,7 +27,7 @@ const componentParams = {
     poolAddress: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
 };
 const queryVariables = {
-    first: 1,
+    first: 20,
     orderDirection: 'desc',
     orderBy: 'timestamp',
     where: {
