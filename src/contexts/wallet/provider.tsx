@@ -9,20 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { createContext, FC, useEffect, useState } from 'react';
-import Onboard from 'bnc-onboard';
-import { ethers } from 'ethers';
-import {
-    WalletInitOptions,
-    WalletCheckInit,
-} from 'bnc-onboard/dist/src/interfaces';
-import { networks } from '../../utils/networks';
-import { chains } from 'eth-chains';
-import { WalletType, WalletConnectionContextProps } from './definitions';
-import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { useColorMode } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
+import { useFlag, useUnleashContext } from '@unleash/proxy-client-react';
+import Onboard from 'bnc-onboard';
+import {
+    WalletCheckInit,
+    WalletInitOptions,
+} from 'bnc-onboard/dist/src/interfaces';
+import { chains } from 'eth-chains';
+import { ethers } from 'ethers';
 import { omit } from 'lodash/fp';
+import { createContext, FC, useEffect, useState } from 'react';
+import { networks } from '../../utils/networks';
+import { WalletConnectionContextProps, WalletType } from './definitions';
+import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
 const supportedNetworks = Object.keys(networks).map((key) => parseInt(key));
 const SELECTED_WALLET = 'selectedWallet';
@@ -85,6 +85,7 @@ export const WalletConnectionProvider: FC = (props) => {
     const { colorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
     const ankrEnabled = useFlag('ankrEnabled');
+    const updateUnleashCtx = useUnleashContext();
 
     const active =
         library !== undefined &&
@@ -237,6 +238,10 @@ export const WalletConnectionProvider: FC = (props) => {
             onboard.config({ darkMode });
         }
     }, [colorMode]);
+
+    useEffect(() => {
+        updateUnleashCtx({ userId: account || '' });
+    }, [active]);
 
     const defaults = { activate, active, deactivate, error };
     const value = active ? { ...state, ...defaults } : defaults;
