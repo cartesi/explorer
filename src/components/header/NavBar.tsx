@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, ReactNode } from 'react';
+import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
     Flex,
@@ -21,17 +21,17 @@ import {
     useColorMode,
     useDisclosure,
 } from '@chakra-ui/react';
-import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useFlag } from '@unleash/proxy-client-react';
-
-import Logo from './Logo';
-import SelectedChain from './SelectedChain';
+import { FC, ReactNode } from 'react';
+import { useWallet } from '../../contexts/wallet';
+import Account from './Account';
 import ConnectMetamask from './ConnectMetamask';
 import ConnectWallet from './ConnectWallet';
-import Account from './Account';
-import { useWallet } from '../../contexts/wallet';
+import Logo from './Logo';
+import SelectedChain from './SelectedChain';
 
 const POOL_REDESIGN_KEY = 'pool-redesign';
+const NEW_STAKING_KEY = 'newStaking';
 const Links = [
     {
         key: 'home',
@@ -59,7 +59,7 @@ const Links = [
         href: '/blocks',
     },
     {
-        key: 'newStaking',
+        key: NEW_STAKING_KEY,
         label: 'New Node Runners',
         href: '/newStaking',
     },
@@ -85,6 +85,7 @@ const NavBar: FC<FlexProps> = (props) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+    const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
     const wallet = useWallet();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -111,8 +112,10 @@ const NavBar: FC<FlexProps> = (props) => {
                     >
                         {Links.map(({ key, label, href }) => {
                             if (
-                                key === POOL_REDESIGN_KEY &&
-                                !newPoolPageEnabled
+                                (key === POOL_REDESIGN_KEY &&
+                                    !newPoolPageEnabled) ||
+                                (key === NEW_STAKING_KEY &&
+                                    !newNodeRunnersEnabled)
                             )
                                 return null;
 
