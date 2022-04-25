@@ -105,10 +105,6 @@ const TrackingProvider: FC = (props) => {
                     userId: anonymizeUser(account),
                 },
             });
-
-            // Handle all route changes
-            Router.events.on('routeChangeComplete', handleRouteChange);
-
             setAnalytics((prev) => ({
                 ...prev,
                 isInitialized: true,
@@ -126,6 +122,9 @@ const TrackingProvider: FC = (props) => {
             }));
         }
 
+        // Handle all route changes
+        Router.events.on('routeChangeComplete', handleRouteChange);
+
         return () => {
             // clean up
             Router.events.off('routeChangeComplete', handleRouteChange);
@@ -136,7 +135,14 @@ const TrackingProvider: FC = (props) => {
         const { isInitialized, trackers } = analytics;
         if (isInitialized && walletName) {
             const data = { [CustomDimensions.WalletName]: walletName };
-            ReactGA.set(data, trackers);
+            ReactGA.event(
+                {
+                    category: 'Wallet',
+                    action: 'Selection',
+                    ...data,
+                },
+                trackers
+            );
         }
     }, [walletName]);
 

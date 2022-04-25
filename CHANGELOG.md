@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.3] - 2022-04-26
+
+### Changed
+
+-   Fix google analytics not collecting data from trackers.
+
 ## [2.4.2] - 2022-03-30
 
 ### Changed
