@@ -60,27 +60,20 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>
-                        Unstake first from staked balance to then withdraw from
-                        pool balance
-                    </ModalHeader>
+                    <ModalHeader>Unstake to withdraw</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                In order to request a withdrawal, you need to
-                                first select the amount of tokens you desire to
-                                withdraw from the staked balance. This request
-                                will transfer the selected amount of tokens to
-                                the pool balance, from where you then can
-                                withdraw.
+                                Unstaked tokens will be transferred to the pool
+                                balance for your withdrawal. Depending on the
+                                volume of requests, this process can take up to
+                                96 hours.
                             </Text>
                             <Text>
-                                Depending on the volume of requests, this
-                                process can take up to 96 hours. To avoid
-                                further delays, please return to complete your
-                                withdrawal at the end of the specified waiting
-                                period.
+                                Kindly return to complete your withdrawal at the
+                                end of the specified waiting period to avoid
+                                further delays.
                             </Text>
                             <FormControl id="amount">
                                 <RadioGroup

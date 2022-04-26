@@ -30,6 +30,7 @@ import { TransactionInfoBanner } from './TransactionInfoBanner';
 import { formatUnits } from 'ethers/lib/utils';
 import { PoolBalanceSection } from './components/PoolBalanceSection';
 import { StakedBalanceSection } from './components/StakedBalanceSection';
+import { StakingInstructions } from './components/StakingInstructions';
 import { DepositSection } from './components/DepositSection';
 
 export interface StakingProps extends StackProps {
@@ -44,6 +45,7 @@ export interface StakingProps extends StackProps {
     // paused: boolean;
     depositTimestamp: Date;
     lockTime: number;
+    onApprove: (amount: BigNumberish) => void;
     onDeposit: (amount: BigNumberish) => void;
     onWithdraw: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
@@ -60,8 +62,9 @@ export const Staking: FC<StakingProps> = ({
     allowance,
     depositTimestamp,
     lockTime,
-    onWithdraw,
+    onApprove,
     onDeposit,
+    onWithdraw,
     onStake,
     onUnstake,
     poolTransaction,
@@ -93,11 +96,14 @@ export const Staking: FC<StakingProps> = ({
         return numberFormat.format(parseFloat(formatUnits(value, 18)));
     };
 
+    const [allowanceTransaction, setAllowanceTransaction] = useState(false);
+
     return (
         <>
+            <StakingInstructions />
+
             <VStack spacing={6} alignItems="stretch">
                 <DepositSection
-                    allowance={allowance}
                     userWalletBalance={userWalletBalance}
                     userETHBalance={userETHBalance}
                     onDepositClick={depositDisclosure.onOpen}
@@ -198,14 +204,19 @@ export const Staking: FC<StakingProps> = ({
                 allowance={allowance}
                 balance={userWalletBalance}
                 disclosure={depositDisclosure}
-                onSave={(amount) => {
-                    console.log('deposit transaction', toCTSI(amount));
-                    setCurrentTransaction('deposit');
-                    setTransactionBanners({
-                        ...transactionBanners,
-                        deposit: true,
-                    });
-                    onDeposit(amount);
+                onSave={(amount, where) => {
+                    if (where === 'allowance') {
+                        setAllowanceTransaction(true);
+                        onApprove(amount);
+                    } else {
+                        console.log('deposit transaction', toCTSI(amount));
+                        setCurrentTransaction('deposit');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            deposit: true,
+                        });
+                        onDeposit(amount);
+                    }
                 }}
             />
 

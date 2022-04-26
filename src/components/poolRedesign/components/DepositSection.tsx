@@ -10,20 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Stack, Heading, Link } from '@chakra-ui/react';
+import {
+    Box,
+    Flex,
+    Button,
+    Stack,
+    Heading,
+    Link,
+    Text,
+} from '@chakra-ui/react';
+import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 
 export interface IDepositSection {
-    allowance: BigNumber;
     userWalletBalance: BigNumber;
     userETHBalance: BigNumber;
     onDepositClick: () => void;
 }
 
 export const DepositSection: FC<IDepositSection> = ({
-    allowance,
     userWalletBalance,
     userETHBalance,
     onDepositClick,
@@ -36,28 +43,46 @@ export const DepositSection: FC<IDepositSection> = ({
             direction={{ base: 'column', md: 'row' }}
         >
             <Box>
-                <Heading as="h2" size="lg" mb={0}>
+                <Heading as="h2" size="lg" py={2} mb={0}>
                     Staking
                 </Heading>
                 <Link href="#" isExternal fontSize="xs">
-                    Learn more <ExternalLinkIcon />
+                    Learn more with the tutorial <ExternalLinkIcon />
                 </Link>
             </Box>
-            <Box px={6}>
+            <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
                     colorScheme="blue"
                     onClick={onDepositClick}
                     w={{ base: '100%', md: 'auto' }}
                     minW="15rem"
                     disabled={
-                        allowance.isZero() ||
-                        userWalletBalance.isZero() ||
-                        userETHBalance?.isZero()
+                        userWalletBalance.isZero() || userETHBalance?.isZero()
                     }
                 >
                     Deposit
                 </Button>
-            </Box>
+                <Box pt={2}>
+                    <Text
+                        fontSize="xs"
+                        textAlign={{ base: 'left', sm: 'left', md: 'right' }}
+                    >
+                        {userWalletBalance.isZero() ? (
+                            <>
+                                <WarningIcon color="orange.500" /> You have 0
+                                CTSI. Plase, add CTSI to deposit.
+                            </>
+                        ) : userETHBalance?.isZero() ? (
+                            <>
+                                <WarningIcon color="orange.500" /> You have 0
+                                ETH. You'll need ETH for transaction fees.
+                            </>
+                        ) : (
+                            <>Let's deposit your tokens to the pool!</>
+                        )}
+                    </Text>
+                </Box>
+            </Flex>
         </Stack>
     );
 };

@@ -74,12 +74,15 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Final step to receive tokens to your wallet!
-                                Depending on the volume of requests, this
-                                process can take up to 96 hours. To avoid
-                                further delays, please return to complete your
-                                withdrawal at the end of the specified waiting
-                                period.
+                                Last step to receive tokens in your
+                                wallet!Depending on the volume of requests, this
+                                process can take up to 96 hours.
+                            </Text>
+
+                            <Text>
+                                Please return to complete your withdrawal at the
+                                end of the specified waiting period to avoid
+                                further delays.
                             </Text>
                             <FormControl id="amount">
                                 <RadioGroup

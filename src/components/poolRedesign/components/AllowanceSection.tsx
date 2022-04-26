@@ -36,26 +36,8 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
     onAllowanceClick,
 }) => {
     return (
-        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '50%' }}>
-            <HStack
-                w="full"
-                spacing={4}
-                alignItems="center"
-                p={4}
-                border="1px dotted"
-                borderRadius={6}
-                borderColor="yellow.300"
-            >
-                <Box
-                    bg="yellow.100"
-                    w={14}
-                    h={14}
-                    borderRadius="full"
-                    display="grid"
-                    placeContent="center"
-                >
-                    <AllowanceIcon color="yellow.500" w={6} h={6} />
-                </Box>
+        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '30%' }}>
+            <HStack w="full" spacing={4} alignItems="center" p={4}>
                 <Box flexGrow="1">
                     <HStack>
                         <Text color="gray.400">Pool allowance</Text>
@@ -86,10 +68,6 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                     />
                 </Box>
             </HStack>
-            <Text fontSize="sm">
-                Step 1 for newcomers: Set up an upper limit for an additional
-                layer of protection.
-            </Text>
         </VStack>
     );
 };

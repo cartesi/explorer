@@ -34,7 +34,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     userETHBalance,
     userCTSIBalance,
 }) => (
-    <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '50%' }}>
+    <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
         <HStack spacing={4} alignItems="center" py={4} mb="2px">
             <Box
                 bg="blue.100"
@@ -72,7 +72,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                 <WarningIcon color="orange.500" />
                 <Text fontSize="sm">
                     You don't have enough ETH in your wallet for the transaction
-                    fee, please deposit first.
+                    fee.
                 </Text>
             </HStack>
         )}

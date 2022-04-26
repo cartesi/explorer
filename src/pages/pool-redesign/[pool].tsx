@@ -125,7 +125,7 @@ const poolRedesign = () => {
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 4, sm: 6, lg: 6 }}
             >
                 {isConnected ? (
                     <StakingDashboard
@@ -142,7 +142,7 @@ const poolRedesign = () => {
             <Box
                 bg={bg}
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 6, sm: 8, lg: 8 }}
             >
                 {isConnected && (
                     <Staking
@@ -152,6 +152,7 @@ const poolRedesign = () => {
                         userETHBalance={userETHBalance}
                         stakedBalance={stakedBalance}
                         onWithdraw={withdraw}
+                        onApprove={(amount) => approve(address, amount)}
                         onDeposit={deposit}
                         onStake={stake}
                         onUnstake={onUnstake}

@@ -71,20 +71,21 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>
-                        Start staking by moving your tokens from the pool
-                        balance to your staked balance.
-                    </ModalHeader>
+                    <ModalHeader>Stake</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Your staked tokens contribute to the pool's
-                                staking power, which in turn will automatically
-                                generate rewards.
+                                By moving your tokens from the pool balance to
+                                your staked balance. Your staked tokens
+                                contribute to the pool's staking power, which in
+                                turn will automatically generate rewards. Learn
+                                more
                             </Text>
                             <FormControl id="stakeAmount">
-                                <FormLabel fontWeight="bold">Amount</FormLabel>
+                                <FormLabel fontWeight="bold">
+                                    Stake Amount
+                                </FormLabel>
                                 <CTSINumberInput
                                     defaultValue={0}
                                     min={0}
@@ -95,7 +96,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     }}
                                 />
                                 <FormHelperText>
-                                    Max. available: {toCTSI(userBalance)} CTSI
+                                    Your Pool Balance: {toCTSI(userBalance)}{' '}
+                                    CTSI
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
