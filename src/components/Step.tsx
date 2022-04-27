@@ -19,6 +19,7 @@ import {
     Heading,
     Divider,
     FlexProps,
+    Collapse,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 
@@ -165,19 +166,17 @@ export const Step = ({
                     <Text size="sm">{subtitle}</Text>
                 </Box>
             </Flex>
-            {state.showBodyActions && (
-                <>
-                    <Divider w="full" />
-                    {res.StepBody &&
-                        React.cloneElement(res.StepBody, {
-                            className: 'step-body',
-                        })}
-                    {res.StepActions &&
-                        React.cloneElement(res.StepActions, {
-                            className: 'step-actions',
-                        })}
-                </>
-            )}
+            <Collapse in={state.showBodyActions} animateOpacity>
+                <Divider w="full" />
+                {res.StepBody &&
+                    React.cloneElement(res.StepBody, {
+                        className: 'step-body',
+                    })}
+                {res.StepActions &&
+                    React.cloneElement(res.StepActions, {
+                        className: 'step-actions',
+                    })}
+            </Collapse>
         </VStack>
     );
 };
