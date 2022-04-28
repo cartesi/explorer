@@ -12,15 +12,15 @@
 import { Stack } from '@chakra-ui/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import SetUpNode from '../../components/node/steps/SetUpNode';
+import HireNode from '../../components/node/steps/HireNode';
 
 export default {
-    title: 'Private Node/Set up Node',
-    component: SetUpNode,
+    title: 'Private Node/Hire Node',
+    component: HireNode,
     argTypes: {},
-} as ComponentMeta<typeof SetUpNode>;
+} as ComponentMeta<typeof HireNode>;
 
-const Template: ComponentStory<typeof SetUpNode> = (args) => {
+const Template: ComponentStory<typeof HireNode> = (args) => {
     return (
         <Stack
             bg="gray.80"
@@ -30,7 +30,7 @@ const Template: ComponentStory<typeof SetUpNode> = (args) => {
             direction="column"
             alignItems="stretch"
         >
-            <SetUpNode stepNumber={2} />
+            <HireNode stepNumber={3} />
         </Stack>
     );
 };
