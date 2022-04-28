@@ -132,10 +132,26 @@ const Template: ComponentStory<typeof Step> = (args) => {
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const Active = Template.bind({});
+Active.args = {
     stepNumber: 1,
     title: 'Customizing your Ethereum Node',
     subtitle: 'There are a few steps to prepare for your setting',
     status: StepStatus.ACTIVE,
+} as StepProps;
+
+export const Complete = Template.bind({});
+Complete.args = {
+    stepNumber: 1,
+    title: 'Customizing your Ethereum Node',
+    subtitle: 'There are a few steps to prepare for your setting',
+    status: StepStatus.COMPLETED,
+} as StepProps;
+
+export const Inactive = Template.bind({});
+Inactive.args = {
+    stepNumber: 1,
+    title: 'Customizing your Ethereum Node',
+    subtitle: 'There are a few steps to prepare for your setting',
+    status: StepStatus.NOT_ACTIVE,
 } as StepProps;
