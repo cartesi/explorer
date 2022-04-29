@@ -18,18 +18,20 @@ import {
     FormLabel,
     FormHelperText,
     FormErrorMessage,
+    Stack,
 } from '@chakra-ui/react';
-import { Step, StepActions, StepBody, StepProps, StepStatus } from '../../Step';
+import { Step, StepActions, StepBody, StepStatus } from '../../Step';
+import { CommonStepProps } from './interfaces';
 
-type Props = Pick<StepProps, 'stepNumber'>;
+const { ACTIVE, NOT_ACTIVE } = StepStatus;
 
-const HireNode = ({ stepNumber }: Props) => {
+const HireNode = ({ stepNumber, inFocus }: CommonStepProps) => {
     return (
         <Step
             title="Set Allowance"
             subtitle="Final steps to run your node."
             stepNumber={stepNumber}
-            status={StepStatus.ACTIVE}
+            status={inFocus ? ACTIVE : NOT_ACTIVE}
         >
             <StepBody>
                 <FormControl pr={{ base: 0, md: '20vw' }} my={4}>
@@ -55,7 +57,15 @@ const HireNode = ({ stepNumber }: Props) => {
                 </FormControl>
             </StepBody>
             <StepActions>
-                <Button colorScheme="blue">RUN YOUR NODE</Button>
+                <Stack direction={{ base: 'column', md: 'row' }}>
+                    <Button
+                        minWidth={{ base: '100%', md: '10rem' }}
+                        colorScheme="blue"
+                        onClick={() => console.log('go somewhere')}
+                    >
+                        RUN YOUR NODE
+                    </Button>
+                </Stack>
             </StepActions>
         </Step>
     );
