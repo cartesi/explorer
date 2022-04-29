@@ -13,7 +13,6 @@ import {
     Button,
     Text,
     Box,
-    ButtonGroup,
     InputGroup,
     Input,
     InputRightElement,
@@ -21,20 +20,39 @@ import {
     FormLabel,
     FormHelperText,
     FormErrorMessage,
+    Stack,
 } from '@chakra-ui/react';
-import { Step, StepActions, StepBody, StepProps, StepStatus } from '../../Step';
+import { useEffect, useState } from 'react';
+import { Step, StepActions, StepBody, StepStatus } from '../../Step';
+import { CommonStepProps } from './interfaces';
 
-type Props = Pick<StepProps, 'stepNumber'>;
+const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
-const HireNode = ({ stepNumber }: Props) => {
+const HireNode = ({
+    stepNumber,
+    onComplete,
+    onPrevious,
+    inFocus,
+}: CommonStepProps) => {
     // temporary value. It will be dynamic
     const ethBalance = 126.23;
+    const [state, setState] = useState({
+        status: inFocus ? ACTIVE : NOT_ACTIVE,
+    });
+
+    useEffect(() => {
+        if (!inFocus && state.status === COMPLETED) return;
+
+        const status = inFocus ? ACTIVE : NOT_ACTIVE;
+        setState((state) => ({ ...state, status }));
+    }, [inFocus]);
+
     return (
         <Step
             title="Hire Node"
             subtitle="At this point, stake your funds using Cartesi Explorer."
             stepNumber={stepNumber}
-            status={StepStatus.ACTIVE}
+            status={state.status}
         >
             <StepBody>
                 <FormControl pr={{ base: 0, md: '20vw' }} mb={6} mt={4}>
@@ -80,14 +98,34 @@ const HireNode = ({ stepNumber }: Props) => {
                 </Box>
             </StepBody>
             <StepActions>
-                <ButtonGroup spacing={{ base: 0, sm: 3 }}>
-                    <Button variant="ghost" minW="10rem">
+                <Stack direction={{ base: 'column', md: 'row' }} spacing={3}>
+                    <Button
+                        variant="ghost"
+                        minWidth={{ base: '100%', md: '10rem' }}
+                        onClick={(e) => {
+                            setState((state) => ({
+                                ...state,
+                                status: NOT_ACTIVE,
+                            }));
+                            onPrevious(e);
+                        }}
+                    >
                         PREVIOUS
                     </Button>
-                    <Button colorScheme="blue" minW="10rem">
+                    <Button
+                        colorScheme="blue"
+                        minWidth={{ base: '100%', md: '10rem' }}
+                        onClick={(e) => {
+                            setState((state) => ({
+                                ...state,
+                                status: COMPLETED,
+                            }));
+                            onComplete(e);
+                        }}
+                    >
                         NEXT
                     </Button>
-                </ButtonGroup>
+                </Stack>
             </StepActions>
         </Step>
     );
