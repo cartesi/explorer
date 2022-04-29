@@ -30,7 +30,7 @@ const Template: ComponentStory<typeof SetAllowance> = (args) => {
             direction="column"
             alignItems="stretch"
         >
-            <SetAllowance stepNumber={4} />
+            <SetAllowance stepNumber={4} inFocus />
         </Stack>
     );
 };

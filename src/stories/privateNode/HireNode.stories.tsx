@@ -30,7 +30,7 @@ const Template: ComponentStory<typeof HireNode> = (args) => {
             direction="column"
             alignItems="stretch"
         >
-            <HireNode stepNumber={3} />
+            <HireNode stepNumber={3} inFocus />
         </Stack>
     );
 };

@@ -30,7 +30,7 @@ const Template: ComponentStory<typeof SetUpNode> = (args) => {
             direction="column"
             alignItems="stretch"
         >
-            <SetUpNode stepNumber={2} />
+            <SetUpNode stepNumber={2} inFocus />
         </Stack>
     );
 };
