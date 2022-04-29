@@ -18,19 +18,28 @@ import {
     Flex,
     Box,
     useClipboard,
-    ButtonGroup,
+    Stack,
 } from '@chakra-ui/react';
-// import { CopyIcon } from '@chakra-ui/icons';
+import { useEffect, useState } from 'react';
 import { MdContentCopy } from 'react-icons/md';
-import { Step, StepActions, StepBody, StepProps, StepStatus } from '../../Step';
+import { Step, StepActions, StepBody, StepStatus } from '../../Step';
+import { CommonStepProps } from './interfaces';
 
-type Props = Pick<StepProps, 'stepNumber'>;
+const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
     return (
-        <Flex p={6} bgColor="gray.80" rounded="sm" mt={3} alignItems="center">
-            <Box>{children}</Box>{' '}
+        <Flex
+            p={{ base: 3, md: 6 }}
+            bgColor="gray.80"
+            rounded="sm"
+            mt={3}
+            alignItems="center"
+            justifyContent={{ base: 'space-between', md: 'flex-start' }}
+            wrap="nowrap"
+        >
+            <Box maxWidth={{ base: '75%', md: '90%' }}>{children}</Box>{' '}
             {!hasCopied && (
                 <Box minH={6} alignSelf="flex-start" ml={2}>
                     <Box
@@ -50,7 +59,12 @@ const CopyBoard = ({ command, children }) => {
     );
 };
 
-const SetUpNode = ({ stepNumber }: Props) => {
+const SetUpNode = ({
+    stepNumber,
+    onComplete,
+    onPrevious,
+    inFocus,
+}: CommonStepProps) => {
     const dockerPullTxt = 'docker pull cartesi/noether';
     const dockerRunTxt = (
         <>
@@ -63,12 +77,23 @@ const SetUpNode = ({ stepNumber }: Props) => {
         </>
     );
 
+    const [state, setState] = useState({
+        status: inFocus ? ACTIVE : NOT_ACTIVE,
+    });
+
+    useEffect(() => {
+        if (!inFocus && state.status === COMPLETED) return;
+
+        const status = inFocus ? ACTIVE : NOT_ACTIVE;
+        setState((state) => ({ ...state, status }));
+    }, [inFocus]);
+
     return (
         <Step
             title="Set up Node"
             subtitle="There are a few steps to prepare on your computer"
             stepNumber={stepNumber}
-            status={StepStatus.ACTIVE}
+            status={state.status}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
@@ -118,14 +143,34 @@ const SetUpNode = ({ stepNumber }: Props) => {
                 </UnorderedList>
             </StepBody>
             <StepActions>
-                <ButtonGroup spacing={3}>
-                    <Button variant="ghost" minW="10rem">
+                <Stack direction={{ base: 'column', md: 'row' }} spacing={3}>
+                    <Button
+                        variant="ghost"
+                        minWidth={{ base: '100%', md: '10rem' }}
+                        onClick={(e) => {
+                            setState((state) => ({
+                                ...state,
+                                status: NOT_ACTIVE,
+                            }));
+                            onPrevious(e);
+                        }}
+                    >
                         PREVIOUS
                     </Button>
-                    <Button colorScheme="blue" minW="10rem">
+                    <Button
+                        colorScheme="blue"
+                        minWidth={{ base: '100%', md: '10rem' }}
+                        onClick={(e) => {
+                            setState((state) => ({
+                                ...state,
+                                status: COMPLETED,
+                            }));
+                            onComplete(e);
+                        }}
+                    >
                         NEXT
                     </Button>
-                </ButtonGroup>
+                </Stack>
             </StepActions>
         </Step>
     );
