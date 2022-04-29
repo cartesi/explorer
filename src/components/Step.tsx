@@ -59,7 +59,7 @@ export const StepBody = (props: FlexProps) => {
 export const StepActions = (props: FlexProps) => {
     const { children, ...boxProps } = props;
     return (
-        <Flex px={{ base: 6, md: 12 }} py={6} {...boxProps}>
+        <Flex px={{ base: 6, md: 12 }} py={6} direction="column" {...boxProps}>
             {children}
         </Flex>
     );
@@ -140,7 +140,7 @@ export const Step = ({
             align="stretch"
         >
             <Flex
-                px={{ base: 6, md: 12 }}
+                px={{ base: 3, md: 12 }}
                 py={6}
                 pb={4}
                 className="step-header"
@@ -149,7 +149,7 @@ export const Step = ({
                 {stepNumber && (
                     <Box
                         h={8}
-                        w={8}
+                        minWidth={8}
                         rounded="full"
                         bgColor={state.stepNumberBgColor}
                         display="grid"
