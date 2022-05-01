@@ -22,6 +22,7 @@ import {
     Collapse,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
+import { StepInfo } from './node/steps/interfaces';
 
 interface State {
     stepNumberBgColor: string;
@@ -45,6 +46,7 @@ export interface StepProps extends StackProps {
     title: string;
     subtitle: string;
     status: StepStatus;
+    onActive?: (meta: StepInfo) => void;
 }
 
 export const StepBody = (props: FlexProps) => {
@@ -116,6 +118,7 @@ export const Step = ({
     title,
     subtitle,
     status,
+    onActive,
 }: StepProps) => {
     const res = React.Children.toArray(children).reduce(
         (prev: any, cur: any) => {
@@ -129,6 +132,9 @@ export const Step = ({
 
     useEffect(() => {
         dispatch({ type: status });
+
+        if (status === StepStatus.ACTIVE)
+            onActive && onActive({ title, subtitle });
     }, [status]);
 
     return (
