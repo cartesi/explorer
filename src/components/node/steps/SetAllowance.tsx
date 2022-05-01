@@ -25,13 +25,18 @@ import { CommonStepProps } from './interfaces';
 
 const { ACTIVE, NOT_ACTIVE } = StepStatus;
 
-const HireNode = ({ stepNumber, inFocus }: CommonStepProps) => {
+const SetAllowance = ({
+    stepNumber,
+    inFocus,
+    onStepActive,
+}: CommonStepProps) => {
     return (
         <Step
             title="Set Allowance"
             subtitle="Final steps to run your node."
             stepNumber={stepNumber}
             status={inFocus ? ACTIVE : NOT_ACTIVE}
+            onActive={onStepActive}
         >
             <StepBody>
                 <FormControl pr={{ base: 0, md: '20vw' }} my={4}>
@@ -71,4 +76,4 @@ const HireNode = ({ stepNumber, inFocus }: CommonStepProps) => {
     );
 };
 
-export default HireNode;
+export default SetAllowance;

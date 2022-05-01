@@ -63,6 +63,7 @@ const SetUpNode = ({
     stepNumber,
     onComplete,
     onPrevious,
+    onStepActive,
     inFocus,
 }: CommonStepProps) => {
     const dockerPullTxt = 'docker pull cartesi/noether';
@@ -94,6 +95,7 @@ const SetUpNode = ({
             subtitle="There are a few steps to prepare on your computer"
             stepNumber={stepNumber}
             status={state.status}
+            onActive={onStepActive}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>

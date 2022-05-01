@@ -30,6 +30,7 @@ const CustomizeEthereumNode = ({
     stepNumber,
     inFocus,
     onComplete,
+    onStepActive,
 }: CommonStepProps) => {
     const [state, setState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
@@ -48,6 +49,7 @@ const CustomizeEthereumNode = ({
             subtitle="There are a few steps to prepare for your setting"
             stepNumber={stepNumber}
             status={state.status}
+            onActive={onStepActive}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>

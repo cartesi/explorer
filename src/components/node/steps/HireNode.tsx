@@ -32,6 +32,7 @@ const HireNode = ({
     stepNumber,
     onComplete,
     onPrevious,
+    onStepActive,
     inFocus,
 }: CommonStepProps) => {
     // temporary value. It will be dynamic
@@ -53,6 +54,7 @@ const HireNode = ({
             subtitle="At this point, stake your funds using Cartesi Explorer."
             stepNumber={stepNumber}
             status={state.status}
+            onActive={onStepActive}
         >
             <StepBody>
                 <FormControl pr={{ base: 0, md: '20vw' }} mb={6} mt={4}>
