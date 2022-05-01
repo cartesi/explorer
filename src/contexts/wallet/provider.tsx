@@ -241,7 +241,7 @@ export const WalletConnectionProvider: FC = (props) => {
 
     useEffect(() => {
         updateUnleashCtx({ userId: account || '' });
-    }, [active]);
+    }, [active, account]);
 
     const defaults = { activate, active, deactivate, error };
     const value = active ? { ...state, ...defaults } : defaults;

@@ -32,38 +32,48 @@ import SelectedChain from './SelectedChain';
 
 const POOL_REDESIGN_KEY = 'pool-redesign';
 const NEW_STAKING_KEY = 'newStaking';
-const Links = [
-    {
-        key: 'home',
-        label: 'Home',
-        href: '/',
-    },
-    {
-        key: POOL_REDESIGN_KEY,
-        label: 'Pools Redesign',
-        href: '/pool-redesign',
-    },
-    {
-        key: 'staking',
-        label: 'Node Runners',
-        href: '/staking',
-    },
-    {
-        key: 'pools',
-        label: 'Pools',
-        href: '/pools',
-    },
-    {
-        key: 'blocks',
-        label: 'Blocks',
-        href: '/blocks',
-    },
-    {
-        key: NEW_STAKING_KEY,
-        label: 'New Node Runners',
-        href: '/newStaking',
-    },
-];
+
+const buildLinks = ({ newPoolPageEnabled, newNodeRunnersEnabled }) => {
+    const Links = [
+        {
+            key: 'home',
+            label: 'Home',
+            href: '/',
+        },
+        {
+            key: 'staking',
+            label: 'Node Runners',
+            href: '/staking',
+        },
+        {
+            key: 'pools',
+            label: 'Pools',
+            href: '/pools',
+        },
+        {
+            key: 'blocks',
+            label: 'Blocks',
+            href: '/blocks',
+        },
+    ];
+
+    if (newPoolPageEnabled) {
+        Links.push({
+            key: POOL_REDESIGN_KEY,
+            label: 'Pools Redesign',
+            href: '/pool-redesign',
+        });
+    }
+
+    if (newNodeRunnersEnabled)
+        Links.push({
+            key: NEW_STAKING_KEY,
+            label: 'New Node Runners',
+            href: '/newStaking',
+        });
+
+    return Links;
+};
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
     <Link
@@ -86,6 +96,7 @@ const NavBar: FC<FlexProps> = (props) => {
     const multiWalletEnabled = useFlag('multiWalletEnabled');
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
+    const Links = buildLinks({ newPoolPageEnabled, newNodeRunnersEnabled });
     const wallet = useWallet();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -111,14 +122,6 @@ const NavBar: FC<FlexProps> = (props) => {
                         display={{ base: 'none', md: 'flex' }}
                     >
                         {Links.map(({ key, label, href }) => {
-                            if (
-                                (key === POOL_REDESIGN_KEY &&
-                                    !newPoolPageEnabled) ||
-                                (key === NEW_STAKING_KEY &&
-                                    !newNodeRunnersEnabled)
-                            )
-                                return null;
-
                             return (
                                 <NavLink key={key} href={href}>
                                     {label}
@@ -161,12 +164,6 @@ const NavBar: FC<FlexProps> = (props) => {
                 <Box pb={5} display={{ md: 'none' }}>
                     <Stack as="nav" spacing={4}>
                         {Links.map(({ label, key, href }) => {
-                            if (
-                                key === POOL_REDESIGN_KEY &&
-                                !newPoolPageEnabled
-                            )
-                                return null;
-
                             return (
                                 <NavLink key={key} href={href}>
                                     {label}

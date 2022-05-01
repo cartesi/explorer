@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.4] - 2022-05-02
+
+-   Fix for unleash feature flag not hydrating the context when switching accounts.
+-   Fix feature flag evaluation for header menu on both big and small screens.
+
 ## [2.4.3] - 2022-04-26
 
 ### Changed
