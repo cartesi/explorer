@@ -133,9 +133,12 @@ const CustomizeEthereumNode = ({
                 </Flex>
             </StepBody>
             <StepActions>
-                <Stack direction={{ base: 'column', md: 'row' }}>
+                <Stack
+                    direction={{ base: 'row' }}
+                    justifyContent={{ base: 'flex-end', md: 'flex-start' }}
+                >
                     <Button
-                        minWidth={{ base: '100%', md: '10rem' }}
+                        minWidth={{ base: '10rem' }}
                         colorScheme="blue"
                         onClick={(evt) => {
                             setState((state) => ({

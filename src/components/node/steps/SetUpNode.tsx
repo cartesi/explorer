@@ -145,10 +145,13 @@ const SetUpNode = ({
                 </UnorderedList>
             </StepBody>
             <StepActions>
-                <Stack direction={{ base: 'column', md: 'row' }} spacing={3}>
+                <Stack
+                    direction={{ base: 'row' }}
+                    justifyContent={{ base: 'space-between', md: 'flex-start' }}
+                >
                     <Button
                         variant="ghost"
-                        minWidth={{ base: '100%', md: '10rem' }}
+                        minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState((state) => ({
                                 ...state,
@@ -161,7 +164,7 @@ const SetUpNode = ({
                     </Button>
                     <Button
                         colorScheme="blue"
-                        minWidth={{ base: '100%', md: '10rem' }}
+                        minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState((state) => ({
                                 ...state,
