@@ -20,9 +20,11 @@ import {
     Divider,
     FlexProps,
     Collapse,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { StepInfo } from './node/steps/interfaces';
+import theme from '../styles/theme';
 
 interface State {
     stepNumberBgColor: string;
@@ -52,7 +54,7 @@ export interface StepProps extends StackProps {
 export const StepBody = (props: FlexProps) => {
     const { children, ...boxProps } = props;
     return (
-        <Flex direction="column" px={{ base: 6, md: 12 }} py={3} {...boxProps}>
+        <Flex direction="column" px={{ base: 3, md: 12 }} py={3} {...boxProps}>
             {children}
         </Flex>
     );
@@ -61,10 +63,17 @@ export const StepBody = (props: FlexProps) => {
 export const StepActions = (props: FlexProps) => {
     const { children, ...boxProps } = props;
     return (
-        <Flex px={{ base: 6, md: 12 }} py={6} direction="column" {...boxProps}>
+        <Flex px={{ base: 3, md: 12 }} py={6} direction="column" {...boxProps}>
             {children}
         </Flex>
     );
+};
+
+const activeProps = {
+    stepNumberBgColor: 'blue.500',
+    stepBoxBg: 'white',
+    stepBoxShadow: 'base',
+    showBodyActions: true,
 };
 
 const inactiveProps = {
@@ -78,13 +87,6 @@ const inactiveProps = {
 const defaultState: State = {
     status: StepStatus.NOT_ACTIVE,
     ...inactiveProps,
-};
-
-const activeProps = {
-    stepNumberBgColor: 'blue.500',
-    stepBoxBg: 'white',
-    stepBoxShadow: 'base',
-    showBodyActions: true,
 };
 
 const reducer = (state = defaultState, { type }): State => {
@@ -119,7 +121,18 @@ export const Step = ({
     subtitle,
     status,
     onActive,
+    ...stackProps
 }: StepProps) => {
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const stepActionProps: FlexProps = isSmallScreen
+        ? {
+              position: 'sticky',
+              bottom: 0,
+              bgColor: 'white',
+              boxShadow: '0px -4px 8px rgb(47 32 27 / 4%)',
+              zIndex: theme.zIndices.xxl,
+          }
+        : {};
     const res = React.Children.toArray(children).reduce(
         (prev: any, cur: any) => {
             prev[cur.type.name] = cur;
@@ -144,36 +157,40 @@ export const Step = ({
             rounded="sm"
             className="step-box"
             align="stretch"
+            mt={isSmallScreen ? '0px !important' : null}
+            {...stackProps}
         >
-            <Flex
-                px={{ base: 3, md: 12 }}
-                py={6}
-                pb={4}
-                className="step-header"
-                alignItems="baseline"
-            >
-                {stepNumber && (
-                    <Box
-                        h={8}
-                        minWidth={8}
-                        rounded="full"
-                        bgColor={state.stepNumberBgColor}
-                        display="grid"
-                        placeContent="center"
-                        color="white"
-                    >
-                        {state.StepChecked || stepNumber}
+            {!isSmallScreen && (
+                <Flex
+                    px={{ base: 3, md: 12 }}
+                    py={6}
+                    pb={4}
+                    className="step-header"
+                    alignItems="baseline"
+                >
+                    {stepNumber && (
+                        <Box
+                            h={8}
+                            minWidth={8}
+                            rounded="full"
+                            bgColor={state.stepNumberBgColor}
+                            display="grid"
+                            placeContent="center"
+                            color="white"
+                        >
+                            {state.StepChecked || stepNumber}
+                        </Box>
+                    )}
+                    <Box ml={3} color={state.headerColor}>
+                        <Heading as="h2" fontSize={['2xl']}>
+                            {title}
+                        </Heading>
+                        <Text size="sm">{subtitle}</Text>
                     </Box>
-                )}
-                <Box ml={3} color={state.headerColor}>
-                    <Heading as="h2" fontSize={['2xl']}>
-                        {title}
-                    </Heading>
-                    <Text size="sm">{subtitle}</Text>
-                </Box>
-            </Flex>
+                </Flex>
+            )}
             <Collapse in={state.showBodyActions} animateOpacity>
-                <Divider w="full" />
+                {!isSmallScreen && <Divider w="full" />}
                 {res.StepBody &&
                     React.cloneElement(res.StepBody, {
                         className: 'step-body',
@@ -181,6 +198,7 @@ export const Step = ({
                 {res.StepActions &&
                     React.cloneElement(res.StepActions, {
                         className: 'step-actions',
+                        ...stepActionProps,
                     })}
             </Collapse>
         </VStack>
