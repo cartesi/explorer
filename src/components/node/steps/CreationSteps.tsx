@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
-import { VStack, Divider, Box, BoxProps } from '@chakra-ui/react';
+import React, { useState, Fragment } from 'react';
+import {
+    VStack,
+    Divider,
+    Box,
+    BoxProps,
+    Heading,
+    Text,
+    Flex,
+    useBreakpointValue,
+} from '@chakra-ui/react';
+import { range } from 'lodash/fp';
+import { CheckIcon } from '@chakra-ui/icons';
 
 import CustomizeEthereumNode from './CustomizeEthereumNode';
 import SetUpNode from './SetUpNode';
 import HireNode from './HireNode';
 import SetAllowance from './SetAllowance';
 import { StepInfo } from './interfaces';
+import theme from '../../../styles/theme';
 
 type SeparatorProps = {
     active: boolean;
     boxProps?: BoxProps;
-    orientation?: 'horizontal' | 'vertical';
 };
 
-const Separator = (props: SeparatorProps) => {
-    const orientation = props.orientation || 'vertical';
+const HSeparator = (props: SeparatorProps) => {
+    const dividerProps = props.active ? { borderColor: 'black' } : {};
+    return (
+        <Box
+            m="0px !important"
+            h={8}
+            w={12}
+            display="flex"
+            alignItems="center"
+            px={1}
+            {...props.boxProps}
+        >
+            <Divider w="full" {...dividerProps} />
+        </Box>
+    );
+};
+
+const VSeparator = (props: SeparatorProps) => {
     const dividerProps = props.active
         ? { borderColor: 'black', h: 8 }
         : { marginTop: '-2rem' };
@@ -26,30 +53,106 @@ const Separator = (props: SeparatorProps) => {
             h={props.active ? 6 : '0.5rem'}
             {...props.boxProps}
         >
-            <Divider orientation={orientation} h="3.5rem" {...dividerProps} />
+            <Divider orientation="vertical" h="3.5rem" {...dividerProps} />
         </Box>
     );
 };
 
 const steps = [CustomizeEthereumNode, SetUpNode, HireNode, SetAllowance];
 
+type HeaderType = {
+    currentStep: number;
+    totalSteps: number;
+    title: string;
+    subtitle: string;
+} & BoxProps;
+
+const Header = ({
+    currentStep,
+    totalSteps,
+    title,
+    subtitle,
+    ...boxProps
+}: HeaderType) => {
+    return (
+        <Box
+            boxShadow="base"
+            rounded="sm"
+            bgColor="white"
+            position="sticky"
+            zIndex={theme.zIndices.xxl}
+            top={0}
+            px={{ base: 3, md: 12 }}
+            py={6}
+            pb={4}
+            {...boxProps}
+        >
+            <Box pl={1}>
+                <Heading as="h3" size="md">
+                    {title}
+                </Heading>
+                <Text fontSize="1rem">{subtitle}</Text>
+            </Box>
+
+            <Flex justifyContent="space-between" mt={5}>
+                {range(0, totalSteps).map((val) => {
+                    const number = val + 1;
+                    const isLast = number === totalSteps;
+                    const isPast = number < currentStep;
+                    const isAhead = number > currentStep;
+                    const bgColor = isAhead ? 'gray' : 'blue.500';
+                    const StepChecked = isPast ? <CheckIcon /> : null;
+
+                    return (
+                        <Fragment key={number}>
+                            <Box
+                                h={8}
+                                minW={8}
+                                rounded="full"
+                                bgColor={bgColor}
+                                display="grid"
+                                placeContent="center"
+                                color="white"
+                                fontSize={14}
+                            >
+                                {StepChecked || number}
+                            </Box>
+                            {!isLast && (
+                                <HSeparator active={currentStep >= number} />
+                            )}
+                        </Fragment>
+                    );
+                })}
+            </Flex>
+        </Box>
+    );
+};
+
 const CreationSteps = () => {
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [stepMeta, setStepMeta] = useState<StepInfo>();
     const [currentStep, setCurrentStep] = useState(1);
     const onComplete = () => setCurrentStep(currentStep + 1);
     const onPrevious = () => setCurrentStep(currentStep - 1);
     const onStepActive = (stepInfo: StepInfo) => setStepMeta(stepInfo);
 
-    console.log(stepMeta);
-
     return (
         <VStack alignItems="stretch">
+            {isSmallScreen && (
+                <Header
+                    currentStep={currentStep}
+                    totalSteps={steps.length}
+                    title={stepMeta?.title}
+                    subtitle={stepMeta?.subtitle}
+                    display={{ md: 'none' }}
+                />
+            )}
             {steps.map((Step, i) => {
                 const stepNumber = i + 1;
                 const inFocus = currentStep === stepNumber;
                 const isLast = steps.length === stepNumber;
                 return (
-                    <>
+                    <Fragment key={i}>
                         <Step
                             inFocus={inFocus}
                             stepNumber={stepNumber}
@@ -58,10 +161,10 @@ const CreationSteps = () => {
                             onPrevious={onPrevious}
                             onStepActive={onStepActive}
                         />
-                        {!isLast && (
-                            <Separator active={currentStep >= stepNumber} />
+                        {!isSmallScreen && !isLast && (
+                            <VSeparator active={currentStep >= stepNumber} />
                         )}
-                    </>
+                    </Fragment>
                 );
             })}
         </VStack>
