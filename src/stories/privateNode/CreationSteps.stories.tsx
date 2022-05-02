@@ -18,6 +18,9 @@ export default {
     title: 'Private Node/Creation Steps',
     component: CreationSteps,
     argTypes: {},
+    parameters: {
+        layout: 'fullscreen',
+    },
 } as ComponentMeta<typeof CreationSteps>;
 
 const Template: ComponentStory<typeof CreationSteps> = (args) => {
@@ -25,8 +28,8 @@ const Template: ComponentStory<typeof CreationSteps> = (args) => {
         <Stack
             bg="gray.80"
             spacing={8}
-            px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
-            py={{ base: 8, sm: 'yvw' }}
+            px={{ base: 0, lg: '12vw', xl: '18vw' }}
+            py={{ base: 0, sm: '5vw' }}
             direction="column"
             alignItems="stretch"
         >
@@ -35,4 +38,4 @@ const Template: ComponentStory<typeof CreationSteps> = (args) => {
     );
 };
 
-export const Default = Template.bind({});
+export const MobileAndDesktop = Template.bind({});
