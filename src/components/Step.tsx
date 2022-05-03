@@ -19,8 +19,8 @@ import {
     Heading,
     Divider,
     FlexProps,
-    Collapse,
     useBreakpointValue,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { StepInfo } from './node/steps/interfaces';
@@ -28,6 +28,7 @@ import theme from '../styles/theme';
 
 interface State {
     stepNumberBgColor: string;
+    stepNumberColor?: string;
     stepBoxBg: string;
     stepBoxShadow: string;
     status: StepStatus;
@@ -69,48 +70,24 @@ export const StepActions = (props: FlexProps) => {
     );
 };
 
-const activeProps = {
-    stepNumberBgColor: 'blue.500',
-    stepBoxBg: 'white',
-    stepBoxShadow: 'base',
-    showBodyActions: true,
-};
-
-const inactiveProps = {
-    stepNumberBgColor: 'gray',
-    stepBoxBg: 'trasparent',
-    stepBoxShadow: 'none',
-    headerColor: '#939393',
-    showBodyActions: false,
-};
-
-const defaultState: State = {
-    status: StepStatus.NOT_ACTIVE,
-    ...inactiveProps,
-};
-
-const reducer = (state = defaultState, { type }): State => {
+const reducer = (state, { type, payload }): State => {
     const status = type;
     switch (type) {
         case StepStatus.ACTIVE:
             return {
-                ...activeProps,
+                ...payload.activeProps,
                 status,
             };
         case StepStatus.COMPLETED:
             return {
-                ...activeProps,
+                ...payload.activeProps,
                 StepChecked: <CheckIcon />,
                 showBodyActions: false,
                 status,
             };
-        case StepStatus.SKIPPED:
-            return {
-                ...activeProps,
-                status,
-            };
+        case StepStatus.NOT_ACTIVE:
         default:
-            return { ...defaultState };
+            return { ...payload.inactiveProps };
     }
 };
 
@@ -124,13 +101,32 @@ export const Step = ({
     ...stackProps
 }: StepProps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const stepBoxBg = useColorModeValue('white', 'gray.700');
+    const stepNumberBgColor = useColorModeValue('blue.500', 'blue.200');
+    const stepNumberColor = useColorModeValue('white', 'black');
+    const activeProps = {
+        stepBoxShadow: 'base',
+        showBodyActions: true,
+        stepBoxBg,
+        stepNumberBgColor,
+        stepNumberColor,
+    };
+
+    const inactiveProps = {
+        stepNumberBgColor: 'gray',
+        stepNumberColor: 'white',
+        stepBoxBg: 'trasparent',
+        stepBoxShadow: 'none',
+        headerColor: '#939393',
+        showBodyActions: false,
+    };
     const stepActionProps: FlexProps = isSmallScreen
         ? {
               position: 'sticky',
               bottom: 0,
-              bgColor: 'white',
+              bgColor: stepBoxBg,
               boxShadow: '0px -4px 8px rgb(47 32 27 / 4%)',
-              zIndex: theme.zIndices.xxl,
+              zIndex: theme.zIndices.sm,
           }
         : {};
     const res = React.Children.toArray(children).reduce(
@@ -141,14 +137,25 @@ export const Step = ({
         {}
     );
 
-    const [state, dispatch] = useReducer(reducer, defaultState);
+    const [state, dispatch] = useReducer(reducer, {
+        ...inactiveProps,
+        status: StepStatus.NOT_ACTIVE,
+    });
 
     useEffect(() => {
-        dispatch({ type: status });
-
         if (status === StepStatus.ACTIVE)
             onActive && onActive({ title, subtitle });
     }, [status]);
+
+    useEffect(() => {
+        dispatch({
+            type: status,
+            payload: {
+                activeProps,
+                inactiveProps,
+            },
+        });
+    }, [stepBoxBg, status]);
 
     return (
         <VStack
@@ -176,7 +183,7 @@ export const Step = ({
                             bgColor={state.stepNumberBgColor}
                             display="grid"
                             placeContent="center"
-                            color="white"
+                            color={state.stepNumberColor}
                         >
                             {state.StepChecked || stepNumber}
                         </Box>
@@ -189,18 +196,20 @@ export const Step = ({
                     </Box>
                 </Flex>
             )}
-            <Collapse in={state.showBodyActions} animateOpacity>
-                {!isSmallScreen && <Divider w="full" />}
-                {res.StepBody &&
-                    React.cloneElement(res.StepBody, {
-                        className: 'step-body',
-                    })}
-                {res.StepActions &&
-                    React.cloneElement(res.StepActions, {
-                        className: 'step-actions',
-                        ...stepActionProps,
-                    })}
-            </Collapse>
+            {state.showBodyActions && (
+                <Box>
+                    {!isSmallScreen && <Divider w="full" />}
+                    {res.StepBody &&
+                        React.cloneElement(res.StepBody, {
+                            className: 'step-body',
+                        })}
+                    {res.StepActions &&
+                        React.cloneElement(res.StepActions, {
+                            className: 'step-actions',
+                            ...stepActionProps,
+                        })}
+                </Box>
+            )}
         </VStack>
     );
 };
