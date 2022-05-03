@@ -21,6 +21,7 @@ import {
     FormHelperText,
     FormErrorMessage,
     Stack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -36,6 +37,8 @@ const HireNode = ({
     inFocus,
 }: CommonStepProps) => {
     // temporary value. It will be dynamic
+    const helperTxtColor = useColorModeValue('gray', 'gray.100');
+    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
     const ethBalance = 126.23;
     const [state, setState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
@@ -64,7 +67,7 @@ const HireNode = ({
                     <InputGroup>
                         <Input id="node_address" type="text" size="lg" />
                     </InputGroup>
-                    <FormHelperText fontSize={14}>
+                    <FormHelperText fontSize={14} color={helperTxtColor}>
                         You may find from the docker configuration
                     </FormHelperText>
                     <FormErrorMessage></FormErrorMessage>
@@ -83,12 +86,12 @@ const HireNode = ({
                             fontSize={12}
                         />
                     </InputGroup>
-                    <FormHelperText color="gray" fontSize={14}>
+                    <FormHelperText color={helperTxtColor} fontSize={14}>
                         Your balance: {ethBalance} ETH
                     </FormHelperText>
                     <FormErrorMessage></FormErrorMessage>
                 </FormControl>
-                <Box px={6} py={4} bgColor="gray.80" mt={6}>
+                <Box px={6} py={4} bgColor={tipsBgColor} mt={6}>
                     <Text>
                         You need to specify the amount of ETH you want to give
                         to your node. The node holds a separate Ethereum account
