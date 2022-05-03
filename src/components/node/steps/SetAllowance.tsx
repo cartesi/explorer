@@ -19,6 +19,7 @@ import {
     FormHelperText,
     FormErrorMessage,
     Stack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { CommonStepProps } from './interfaces';
@@ -30,6 +31,7 @@ const SetAllowance = ({
     inFocus,
     onStepActive,
 }: CommonStepProps) => {
+    const helperTxtColor = useColorModeValue('gray', 'gray.100');
     return (
         <Step
             title="Set Allowance"
@@ -53,7 +55,7 @@ const SetAllowance = ({
                             fontSize={12}
                         />
                     </InputGroup>
-                    <FormHelperText color="gray" fontSize={14}>
+                    <FormHelperText color={helperTxtColor} fontSize={14}>
                         This is going to be the maximum amount of CTSI that
                         Cartesi’s staking contract will be able to receive from
                         your personal account.
