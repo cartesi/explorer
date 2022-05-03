@@ -19,6 +19,7 @@ import {
     Flex,
     Box,
     Stack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -35,6 +36,7 @@ const CustomizeEthereumNode = ({
     const [state, setState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
     });
+    const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
 
     useEffect(() => {
         if (!inFocus && state.status === COMPLETED) return;
@@ -98,7 +100,7 @@ const CustomizeEthereumNode = ({
                             <Link
                                 href="https://infura.io/"
                                 target="_blank"
-                                color="blue.500"
+                                color={thirdPartyColor}
                                 fontWeight="medium"
                                 textDecorationLine="underline"
                                 fontSize="md"
@@ -109,7 +111,7 @@ const CustomizeEthereumNode = ({
                             <Link
                                 href="https://www.alchemy.com/"
                                 target="_blank"
-                                color="blue.500"
+                                color={thirdPartyColor}
                                 fontWeight="medium"
                                 textDecorationLine="underline"
                                 fontSize="md"
