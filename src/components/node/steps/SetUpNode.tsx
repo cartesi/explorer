@@ -19,6 +19,7 @@ import {
     Box,
     useClipboard,
     Stack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { MdContentCopy } from 'react-icons/md';
@@ -29,10 +30,11 @@ const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
+    const bgColor = useColorModeValue('gray.80', 'gray.800');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
-            bgColor="gray.80"
+            bgColor={bgColor}
             rounded="sm"
             mt={3}
             alignItems="center"
