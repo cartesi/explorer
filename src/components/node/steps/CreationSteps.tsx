@@ -8,6 +8,8 @@ import {
     Text,
     Flex,
     useBreakpointValue,
+    useColorModeValue,
+    Link,
 } from '@chakra-ui/react';
 import { range } from 'lodash/fp';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -74,27 +76,43 @@ const Header = ({
     subtitle,
     ...boxProps
 }: HeaderType) => {
+    const bgColor = useColorModeValue('white', 'gray.700');
+    const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Box
             boxShadow="base"
             rounded="sm"
-            bgColor="white"
+            bgColor={bgColor}
             position="sticky"
-            zIndex={theme.zIndices.xxl}
+            zIndex={theme.zIndices.lg}
             top={0}
             px={{ base: 3, md: 12 }}
-            py={6}
-            pb={4}
+            py={4}
+            pb={3}
             {...boxProps}
         >
-            <Box pl={1}>
+            <Flex pl={1} direction="column">
+                <Link
+                    // TODO: Replace with new upcoming tutorial
+                    href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
+                    target="_blank"
+                    color={linkColor}
+                    fontWeight="medium"
+                    textDecorationLine="underline"
+                    fontSize="sm"
+                    alignSelf="flex-end"
+                    pr={1}
+                    pb={2}
+                >
+                    Learn from tutorial
+                </Link>
                 <Heading as="h3" size="md">
                     {title}
                 </Heading>
                 <Text fontSize="1rem">{subtitle}</Text>
-            </Box>
+            </Flex>
 
-            <Flex justifyContent="space-between" mt={5}>
+            <Flex justifyContent="space-between" mt={3}>
                 {range(0, totalSteps).map((val) => {
                     const number = val + 1;
                     const isLast = number === totalSteps;
@@ -128,7 +146,12 @@ const Header = ({
     );
 };
 
-const CreationSteps = () => {
+interface ICreationSteps {
+    mobileHeaderProps?: BoxProps;
+}
+
+// TODO: Refactor that component with a more generic name e.g. StepGroup to be reused i.e. Pool creation.
+const CreationSteps = ({ mobileHeaderProps }: ICreationSteps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [stepMeta, setStepMeta] = useState<StepInfo>();
     const [currentStep, setCurrentStep] = useState(1);
@@ -145,6 +168,7 @@ const CreationSteps = () => {
                     title={stepMeta?.title}
                     subtitle={stepMeta?.subtitle}
                     display={{ md: 'none' }}
+                    {...mobileHeaderProps}
                 />
             )}
             {steps.map((Step, i) => {
