@@ -23,7 +23,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import { StepInfo } from './node/steps/interfaces';
+import { IStepMeta } from './StepGroup';
 import theme from '../styles/theme';
 
 interface State {
@@ -40,7 +40,6 @@ interface State {
 export enum StepStatus {
     NOT_ACTIVE = 'NOT_ACTIVE',
     ACTIVE = 'ACTIVE',
-    SKIPPED = 'SKIPPED',
     COMPLETED = 'COMPLETED',
 }
 
@@ -49,7 +48,7 @@ export interface StepProps extends StackProps {
     title: string;
     subtitle: string;
     status: StepStatus;
-    onActive?: (meta: StepInfo) => void;
+    onActive?: (meta: IStepMeta) => void;
 }
 
 export const StepBody = (props: FlexProps) => {

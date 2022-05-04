@@ -1,4 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, {
+    useState,
+    Fragment,
+    MouseEventHandler,
+    FunctionComponent,
+} from 'react';
 import {
     VStack,
     Divider,
@@ -13,18 +18,42 @@ import {
 } from '@chakra-ui/react';
 import { range } from 'lodash/fp';
 import { CheckIcon } from '@chakra-ui/icons';
-
-import CustomizeEthereumNode from './CustomizeEthereumNode';
-import SetUpNode from './SetUpNode';
-import HireNode from './HireNode';
-import SetAllowance from './SetAllowance';
-import { StepInfo } from './interfaces';
-import theme from '../../../styles/theme';
+import theme from '../styles/theme';
 
 type SeparatorProps = {
     active: boolean;
     boxProps?: BoxProps;
 };
+
+type HeaderType = {
+    currentStep: number;
+    totalSteps: number;
+    title: string;
+    subtitle: string;
+} & BoxProps;
+
+interface StepGroupProps {
+    mobileHeaderProps?: BoxProps;
+    steps: FunctionComponent<IStep>[];
+}
+
+export interface IStepMeta {
+    title: string;
+    subtitle: string;
+}
+
+/**
+ * API expected by the StepGroup for each Step component so the StepGroup knows
+ * how to move around and present it's own header when rendering on small screens using expected data
+ * from onStepActive callback. That is based in duck typing.
+ */
+export interface IStep {
+    stepNumber: number;
+    inFocus?: boolean;
+    onComplete?: MouseEventHandler<HTMLButtonElement>;
+    onPrevious?: MouseEventHandler<HTMLButtonElement>;
+    onStepActive?: (stepInfo: IStepMeta) => void;
+}
 
 const HSeparator = (props: SeparatorProps) => {
     const dividerProps = props.active ? { borderColor: 'black' } : {};
@@ -59,15 +88,6 @@ const VSeparator = (props: SeparatorProps) => {
         </Box>
     );
 };
-
-const steps = [CustomizeEthereumNode, SetUpNode, HireNode, SetAllowance];
-
-type HeaderType = {
-    currentStep: number;
-    totalSteps: number;
-    title: string;
-    subtitle: string;
-} & BoxProps;
 
 const Header = ({
     currentStep,
@@ -146,18 +166,13 @@ const Header = ({
     );
 };
 
-interface ICreationSteps {
-    mobileHeaderProps?: BoxProps;
-}
-
-// TODO: Refactor that component with a more generic name e.g. StepGroup to be reused i.e. Pool creation.
-const CreationSteps = ({ mobileHeaderProps }: ICreationSteps) => {
+export const StepGroup = ({ mobileHeaderProps, steps }: StepGroupProps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const [stepMeta, setStepMeta] = useState<StepInfo>();
+    const [stepMeta, setStepMeta] = useState<IStepMeta>();
     const [currentStep, setCurrentStep] = useState(1);
     const onComplete = () => setCurrentStep(currentStep + 1);
     const onPrevious = () => setCurrentStep(currentStep - 1);
-    const onStepActive = (stepInfo: StepInfo) => setStepMeta(stepInfo);
+    const onStepActive = (data: IStepMeta) => setStepMeta(data);
 
     return (
         <VStack alignItems="stretch">
@@ -171,7 +186,7 @@ const CreationSteps = ({ mobileHeaderProps }: ICreationSteps) => {
                     {...mobileHeaderProps}
                 />
             )}
-            {steps.map((Step, i) => {
+            {steps?.map((Step, i) => {
                 const stepNumber = i + 1;
                 const inFocus = currentStep === stepNumber;
                 const isLast = steps.length === stepNumber;
@@ -194,5 +209,3 @@ const CreationSteps = ({ mobileHeaderProps }: ICreationSteps) => {
         </VStack>
     );
 };
-
-export default CreationSteps;
