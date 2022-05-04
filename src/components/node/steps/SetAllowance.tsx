@@ -22,15 +22,11 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { CommonStepProps } from './interfaces';
+import { IStep } from '../../StepGroup';
 
 const { ACTIVE, NOT_ACTIVE } = StepStatus;
 
-const SetAllowance = ({
-    stepNumber,
-    inFocus,
-    onStepActive,
-}: CommonStepProps) => {
+const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
     return (
         <Step

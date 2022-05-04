@@ -24,7 +24,7 @@ import {
 import { useEffect, useState } from 'react';
 import { MdContentCopy } from 'react-icons/md';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { CommonStepProps } from './interfaces';
+import { IStep } from '../../StepGroup';
 
 const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
@@ -67,7 +67,7 @@ const SetUpNode = ({
     onPrevious,
     onStepActive,
     inFocus,
-}: CommonStepProps) => {
+}: IStep) => {
     const dockerPullTxt = 'docker pull cartesi/noether';
     const dockerRunTxt = (
         <>

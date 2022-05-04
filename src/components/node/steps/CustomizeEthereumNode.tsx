@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { CommonStepProps } from './interfaces';
+import { IStep } from '../../StepGroup';
 
 const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
@@ -32,7 +32,7 @@ const CustomizeEthereumNode = ({
     inFocus,
     onComplete,
     onStepActive,
-}: CommonStepProps) => {
+}: IStep) => {
     const [state, setState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
     });
