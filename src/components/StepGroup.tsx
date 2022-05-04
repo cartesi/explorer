@@ -109,6 +109,7 @@ const Header = ({
             px={{ base: 3, md: 12 }}
             py={4}
             pb={3}
+            className="step-group-mob-header"
             {...boxProps}
         >
             <Flex pl={1} direction="column">
@@ -171,7 +172,8 @@ export const StepGroup = ({ mobileHeaderProps, steps }: StepGroupProps) => {
     const [stepMeta, setStepMeta] = useState<IStepMeta>();
     const [currentStep, setCurrentStep] = useState(1);
     const onComplete = () => setCurrentStep(currentStep + 1);
-    const onPrevious = () => setCurrentStep(currentStep - 1);
+    const onPrevious = () =>
+        setCurrentStep(currentStep > 1 ? currentStep - 1 : currentStep);
     const onStepActive = (data: IStepMeta) => setStepMeta(data);
 
     return (
