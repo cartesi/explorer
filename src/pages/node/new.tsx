@@ -23,7 +23,11 @@ import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import CreationSteps from '../../components/node/steps/CreationSteps';
+import CustomizeEthereumNode from '../../components/node/steps/CustomizeEthereumNode';
+import SetUpNode from '../../components/node/steps/SetUpNode';
+import HireNode from '../../components/node/steps/HireNode';
+import SetAllowance from '../../components/node/steps/SetAllowance';
+import { StepGroup } from '../../components/StepGroup';
 
 const NewNode: FC = () => {
     const bg = useColorModeValue('gray.80', 'gray.800');
@@ -85,7 +89,15 @@ const NewNode: FC = () => {
                         Learn from tutorial
                     </ChakraLink>
                 </Stack>
-                <CreationSteps mobileHeaderProps={{ top: '100px' }} />
+                <StepGroup
+                    mobileHeaderProps={{ top: '100px' }}
+                    steps={[
+                        CustomizeEthereumNode,
+                        SetUpNode,
+                        HireNode,
+                        SetAllowance,
+                    ]}
+                />
             </Box>
         </Layout>
     );
