@@ -12,18 +12,22 @@
 import { Stack } from '@chakra-ui/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import CreationSteps from '../../components/node/steps/CreationSteps';
+import CustomizeEthereumNode from '../../components/node/steps/CustomizeEthereumNode';
+import SetUpNode from '../../components/node/steps/SetUpNode';
+import HireNode from '../../components/node/steps/HireNode';
+import SetAllowance from '../../components/node/steps/SetAllowance';
+import { StepGroup } from '../../components/StepGroup';
 
 export default {
     title: 'Private Node/Creation Steps',
-    component: CreationSteps,
+    component: StepGroup,
     argTypes: {},
     parameters: {
         layout: 'fullscreen',
     },
-} as ComponentMeta<typeof CreationSteps>;
+} as ComponentMeta<typeof StepGroup>;
 
-const Template: ComponentStory<typeof CreationSteps> = (args) => {
+const Template: ComponentStory<typeof StepGroup> = (args) => {
     return (
         <Stack
             bg="gray.80"
@@ -33,7 +37,14 @@ const Template: ComponentStory<typeof CreationSteps> = (args) => {
             direction="column"
             alignItems="stretch"
         >
-            <CreationSteps />
+            <StepGroup
+                steps={[
+                    CustomizeEthereumNode,
+                    SetUpNode,
+                    HireNode,
+                    SetAllowance,
+                ]}
+            />
         </Stack>
     );
 };
