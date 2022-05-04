@@ -60,6 +60,8 @@ export const StepBody = (props: FlexProps) => {
     );
 };
 
+StepBody.displayName = 'StepBody';
+
 export const StepActions = (props: FlexProps) => {
     const { children, ...boxProps } = props;
     return (
@@ -68,6 +70,8 @@ export const StepActions = (props: FlexProps) => {
         </Flex>
     );
 };
+
+StepActions.displayName = 'StepActions';
 
 const reducer = (state, { type, payload }): State => {
     const status = type;
@@ -119,6 +123,7 @@ export const Step = ({
         headerColor: '#939393',
         showBodyActions: false,
     };
+
     const stepActionProps: FlexProps = isSmallScreen
         ? {
               position: 'sticky',
@@ -128,9 +133,10 @@ export const Step = ({
               zIndex: theme.zIndices.sm,
           }
         : {};
+
     const res = React.Children.toArray(children).reduce(
         (prev: any, cur: any) => {
-            prev[cur.type.name] = cur;
+            prev[cur.type.displayName] = cur;
             return prev;
         },
         {}
