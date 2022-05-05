@@ -109,6 +109,8 @@ const Header = ({
 }: HeaderType) => {
     const bgColor = useColorModeValue('white', 'gray.700');
     const linkColor = useColorModeValue('gray', 'gray.100');
+    const stepNumberBg = useColorModeValue('blue.500', 'blue.200');
+    const stepNumberColor = useColorModeValue('white', 'black');
     return (
         <Box
             boxShadow="base"
@@ -150,7 +152,8 @@ const Header = ({
                     const isLast = number === totalSteps;
                     const isPast = number < currentStep;
                     const isAhead = number > currentStep;
-                    const bgColor = isAhead ? 'gray' : 'blue.500';
+                    const bgColor = isAhead ? 'gray' : stepNumberBg;
+                    const color = isAhead ? 'white' : stepNumberColor;
                     const StepChecked = isPast ? <CheckIcon /> : null;
 
                     return (
@@ -162,7 +165,7 @@ const Header = ({
                                 bgColor={bgColor}
                                 display="grid"
                                 placeContent="center"
-                                color="white"
+                                color={color}
                                 fontSize={14}
                             >
                                 {StepChecked || number}
