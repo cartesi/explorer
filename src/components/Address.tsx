@@ -36,6 +36,7 @@ export interface AddressProps extends TextProps {
     truncated?: boolean;
     responsive?: boolean;
     hideActions?: boolean;
+    noActions?: boolean;
 }
 
 const Address: FunctionComponent<AddressProps> = (props) => {
@@ -48,6 +49,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         truncated = false,
         responsive = false,
         hideActions = false,
+        noActions = false,
         ...textProps
     } = props;
 
@@ -72,7 +74,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             : address);
 
     // hide or show action buttons
-    const showActions = !hideActions || hover;
+    const showActions = (!hideActions || hover) && !noActions;
 
     // build etherscan link
     const externalLink = etherscanLinks[chainId]
