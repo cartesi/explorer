@@ -20,6 +20,7 @@ import {
     Spacer,
     Stack,
     useColorModeValue,
+    useDisclosure,
     VStack,
 } from '@chakra-ui/react';
 
@@ -42,6 +43,11 @@ import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 
 import { useRouter } from 'next/router';
 import { NodeStakedBalanceSection } from '../../components/node/NodeStakedBalanceSection';
+import { NodeUnstakeModal } from '../../components/node/NodeUnstakeModal';
+import { NodeStakeModal } from '../../components/node/NodeStakeModal';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
+import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
 
 const ManageNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -97,6 +103,22 @@ const ManageNode: FC = () => {
 
     // dark mode support
     const bg = useColorModeValue('gray.50', 'header');
+
+    const stakeDisclosure = useDisclosure();
+    const unstakeDisclosure = useDisclosure();
+
+    const [currentTransaction, setCurrentTransaction] = useState<any>(null);
+    const [transactionBanners, setTransactionBanners] = useState<any>({});
+
+    const toCTSI = (value: BigNumber) => {
+        // formatter for CTSI values
+        const numberFormat = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
+
+        return numberFormat.format(parseFloat(formatUnits(value, 18)));
+    };
 
     return (
         <Layout>
@@ -219,6 +241,7 @@ const ManageNode: FC = () => {
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             me={2}
+                            onClick={unstakeDisclosure.onOpen}
                         >
                             UNSTAKE
                         </Button>
@@ -226,11 +249,19 @@ const ManageNode: FC = () => {
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
+                            onClick={stakeDisclosure.onOpen}
                         >
                             STAKE
                         </Button>
                     </Box>
                 </Stack>
+
+                <TransactionInfoBanner
+                    title="Setting allowance..."
+                    failTitle="Error setting allowance"
+                    successDescription="New allowance set sucessfully."
+                    transaction={tokenTransaction}
+                />
 
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
@@ -248,6 +279,40 @@ const ManageNode: FC = () => {
                         />
                     </Box>
                 </Flex>
+
+                <NodeStakeModal
+                    isOpen={stakeDisclosure.isOpen}
+                    onClose={stakeDisclosure.onClose}
+                    allowance={allowance}
+                    disclosure={stakeDisclosure}
+                    onSave={(amount) => {
+                        console.log('stake transaction', toCTSI(amount));
+                        setCurrentTransaction('stake');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            stake: true,
+                        });
+                        stake(amount);
+                    }}
+                />
+
+                {stakedBalance && (
+                    <NodeUnstakeModal
+                        isOpen={unstakeDisclosure.isOpen}
+                        onClose={unstakeDisclosure.onClose}
+                        stakedBalance={stakedBalance}
+                        disclosure={unstakeDisclosure}
+                        onSave={(amount) => {
+                            console.log('unstake transaction', toCTSI(amount));
+                            setCurrentTransaction('unstake');
+                            setTransactionBanners({
+                                ...transactionBanners,
+                                unstake: true,
+                            });
+                            unstake(amount);
+                        }}
+                    />
+                )}
             </Box>
         </Layout>
     );

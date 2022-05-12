@@ -42,6 +42,7 @@ const poolRedesign = () => {
 
     // query pool data
     const {
+        balance: userPoolBalance,
         // amount,
         // amounts,
         stakedShares,

@@ -21,7 +21,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { FC, LegacyRef, useState } from 'react';
+import { FC, LegacyRef, useEffect, useState } from 'react';
 
 interface ICTSINumberInputProps {
     defaultValue?: number;
@@ -48,8 +48,55 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     onChange,
 }) => {
     const [innerValue, setInnerValue] = useState<string>(
-        defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0' // remove trailing zeroes. i.e: 123.00
+        '0' // defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0' // remove trailing zeroes. i.e: 123.00
     );
+
+    const handleOnChange = (value) => {
+        console.log('onchange called');
+        const numberValue = parseFloat(value);
+
+        if (isNaN(numberValue) || numberValue < min) {
+            // on bad input, set the min allowed
+
+            setInnerValue(min.toString());
+
+            if (onChange) {
+                onChange(
+                    parseUnits(min.toString(), maxPrecision),
+                    min,
+                    min.toString()
+                );
+            }
+
+            return;
+        }
+
+        // remove trailing zero. ex: 0123
+        if (value.startsWith('0') && value.length > 1) {
+            value = value.substring(1);
+        }
+
+        setInnerValue(value);
+
+        if (onChange) {
+            onChange(parseUnits(value, maxPrecision), numberValue, value);
+        }
+    };
+
+    useEffect(() => {
+        if (!defaultValue) return;
+
+        console.log('changed default value', defaultValue);
+
+        const value =
+            defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0';
+
+        setInnerValue(value);
+    }, [defaultValue]);
+
+    // useEffect(() => {
+    //     handleOnChange(innerValue);
+    // }, [innerValue, handleOnChange]);
 
     return (
         <NumberInput
@@ -102,40 +149,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                     if (setMaxOnOverflow) setInnerValue(max.toString());
                 }
             }}
-            onChange={(value) => {
-                const numberValue = parseFloat(value);
-
-                if (isNaN(numberValue) || numberValue < min) {
-                    // on bad input, set the min allowed
-
-                    setInnerValue(min.toString());
-
-                    if (onChange) {
-                        onChange(
-                            parseUnits(min.toString(), maxPrecision),
-                            min,
-                            min.toString()
-                        );
-                    }
-
-                    return;
-                }
-
-                // remove trailing zero. ex: 0123
-                if (value.startsWith('0') && value.length > 1) {
-                    value = value.substring(1);
-                }
-
-                setInnerValue(value);
-
-                if (onChange) {
-                    onChange(
-                        parseUnits(value, maxPrecision),
-                        numberValue,
-                        value
-                    );
-                }
-            }}
+            onChange={handleOnChange}
         >
             <NumberInputField />
             <InputRightElement
