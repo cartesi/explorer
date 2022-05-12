@@ -20,6 +20,7 @@ import {
     useClipboard,
     Stack,
     useColorModeValue,
+    Link,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { MdContentCopy } from 'react-icons/md';
@@ -100,6 +101,29 @@ const SetUpNode = ({
             onActive={onStepActive}
         >
             <StepBody>
+                <Heading as="h3" size="sm" my={4}>
+                    Start By installing Docker Enginer
+                </Heading>
+                <UnorderedList pl={2}>
+                    <ListItem>
+                        <Link
+                            color="blue.300"
+                            href="https://docs.docker.com/desktop/mac/install/"
+                            target="_blank"
+                        >
+                            Download for Mac (macOS)
+                        </Link>
+                    </ListItem>
+                    <ListItem>
+                        <Link
+                            color="blue.300"
+                            href="https://docs.docker.com/desktop/windows/install/"
+                            target="_blank"
+                        >
+                            Download for Windows
+                        </Link>
+                    </ListItem>
+                </UnorderedList>
                 <Heading as="h3" size="sm" my={4}>
                     Run Cartesi's node
                 </Heading>

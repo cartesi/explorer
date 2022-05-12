@@ -47,43 +47,19 @@ const CustomizeEthereumNode = ({
 
     return (
         <Step
-            title="Customizing your Ethereum Node"
-            subtitle="There are a few steps to prepare for your setting"
+            title="Set up Ethereum Node"
+            subtitle="Cartesi node connects to the Ethereum network through a standard gateway"
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
-                    Start By installing Docker Enginer
-                </Heading>
-                <UnorderedList pl={2}>
-                    <ListItem>
-                        <Link
-                            color="blue.300"
-                            href="https://docs.docker.com/desktop/mac/install/"
-                            target="_blank"
-                        >
-                            Download for Mac (macOS)
-                        </Link>
-                    </ListItem>
-                    <ListItem>
-                        <Link
-                            color="blue.300"
-                            href="https://docs.docker.com/desktop/windows/install/"
-                            target="_blank"
-                        >
-                            Download for Windows
-                        </Link>
-                    </ListItem>
-                </UnorderedList>
-                <Heading as="h3" size="sm" my={4}>
-                    Customizing Ethereum node
+                    Ethereum node
                 </Heading>
                 <Text>
-                    You can customize your Ethereum node by a third-party, and
-                    you have to register with the third-party software before
-                    next step.
+                    The node works with any standard JSON-RPC Ethereum provider.
+                    It's important to use a stable and reliable provider.
                 </Text>
 
                 <Heading as="h3" size="sm" my={4}>

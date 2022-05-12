@@ -67,7 +67,8 @@ export interface IStep {
 }
 
 const HSeparator = (props: SeparatorProps) => {
-    const dividerProps = props.active ? { borderColor: 'black' } : {};
+    const borderColor = useColorModeValue('black', 'white');
+    const dividerProps = props.active ? { borderColor } : {};
     return (
         <Box
             m="0px !important"
@@ -84,8 +85,9 @@ const HSeparator = (props: SeparatorProps) => {
 };
 
 const VSeparator = (props: SeparatorProps) => {
+    const borderColor = useColorModeValue('black', 'white');
     const dividerProps = props.active
-        ? { borderColor: 'black', h: 8 }
+        ? { borderColor, h: 8 }
         : { marginTop: '-2rem' };
 
     return (
