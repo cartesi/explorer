@@ -17,11 +17,12 @@ import {
     Stack,
     useColorModeValue,
     Heading,
+    Icon,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { WalletIcon } from '../Icons';
+import { AiOutlineDollar } from 'react-icons/ai';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
@@ -39,8 +40,12 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
             borderRadius="lg"
             shadow="sm"
             p={6}
+            pl={5}
             mt={6}
-            pl={{ base: 6, md: 8 }}
+            borderLeftWidth={14}
+            borderLeftColor={
+                releasingBalance.isZero() ? 'gray.200' : 'yellow.400'
+            }
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
@@ -48,18 +53,29 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg={'yellow.100'}
                         w={14}
                         h={14}
+                        minW={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <WalletIcon color="yellow.500" w={6} h={6} />
+                        <Icon
+                            as={AiOutlineDollar}
+                            color={
+                                releasingBalance.isZero()
+                                    ? 'gray.200'
+                                    : 'yellow.400'
+                            }
+                            w={9}
+                            h={9}
+                        />
                     </Box>
                     <Box>
                         <Text pb={1} color="gray.400">
-                            Releasing
+                            {releasingBalance.isZero()
+                                ? 'Released'
+                                : 'Releasing'}
                         </Text>
                         <Text pb={1} fontSize={'sm'} color="gray.400">
                             Your funds take 48 hours to become unblocked.

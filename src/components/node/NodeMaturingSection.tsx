@@ -17,6 +17,7 @@ import {
     Stack,
     useColorModeValue,
     Heading,
+    AspectRatio,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -39,7 +40,9 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
             borderTopRadius="lg"
             shadow="sm"
             p={6}
-            pl={{ base: 6, md: 8 }}
+            pl={5}
+            borderLeftWidth={14}
+            borderLeftColor={maturingBalance.isZero() ? 'gray.200' : 'blue.200'}
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
@@ -47,15 +50,24 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg={'blue.100'}
                         w={14}
                         h={14}
+                        minW={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <TimeIcon color="blue.500" w={6} h={6} />
+                        <TimeIcon
+                            color={
+                                maturingBalance.isZero()
+                                    ? 'gray.200'
+                                    : 'blue.200'
+                            }
+                            w={9}
+                            h={9}
+                        />
                     </Box>
+
                     <Box>
                         <Text pb={1} color="gray.400">
                             Maturing

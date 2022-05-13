@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { EditIcon, WarningIcon } from '@chakra-ui/icons';
 import {
     Box,
     Text,
@@ -19,51 +19,52 @@ import {
     useColorModeValue,
     Button,
     IconButton,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    Link,
-    Checkbox,
-    ModalFooter,
     useDisclosure,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC, useState } from 'react';
-import Address from '../Address';
+import { FC } from 'react';
+import { NodeBalanceModal } from './modals/NodeBalanceModal';
+import { NodeRetireModal } from './modals/NodeRetireModal';
 
 export interface INodeInfoSection {
     address: string;
+    userBalance: BigNumber;
     nodeBalance: BigNumber;
     onRetire: () => void;
+    onDeposit: (funds: BigNumber) => void;
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
     address,
+    userBalance,
     nodeBalance,
     onRetire,
+    onDeposit,
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [confirmNoehtherVersion, setConfirmNoehtherVersion] = useState(false);
+    const retireModal = useDisclosure();
+    const depositModal = useDisclosure();
 
-    const options: Intl.NumberFormatOptions = {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 4,
+    const toETH = (value: BigNumber) => {
+        const options: Intl.NumberFormatOptions = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4,
+        };
+
+        const numberFormat = new Intl.NumberFormat('en-US', options);
+        const valueFormatted = numberFormat.format(
+            value ? parseFloat(formatUnits(value, 18)) : 0
+        );
+
+        return valueFormatted;
     };
 
-    const numberFormat = new Intl.NumberFormat('en-US', options);
-    const nodeBalanceFormatted = numberFormat.format(
-        nodeBalance ? parseFloat(formatUnits(nodeBalance, 18)) : 0
-    );
-
     const onConfirmRetire = () => {
-        onClose();
+        retireModal.onClose();
         onRetire();
     };
 
@@ -85,7 +86,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     p={2}
                 >
                     <Text>Address</Text>
-                    <Address noActions={true} address={address}></Address>
+                    <Text isTruncated>{address}</Text>
                 </Stack>
                 <Stack
                     spacing={4}
@@ -98,7 +99,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     <HStack spacing={4} alignItems="flex-end">
                         <Box>
                             <Flex align="baseline">
-                                <Text>{nodeBalanceFormatted}</Text>
+                                <Text>{toETH(nodeBalance)}</Text>
                                 <Text pl={1}>ETH</Text>
                             </Flex>
                         </Box>
@@ -108,14 +109,14 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                 size="sm"
                                 icon={<EditIcon />}
                                 variant="ghost"
-                                // onClick={onAllowanceClick}
+                                onClick={depositModal.onOpen}
                             />
                         </Box>
                     </HStack>
                 </Stack>
             </Box>
             <Button
-                onClick={onOpen}
+                onClick={retireModal.onOpen}
                 bgColor={bg}
                 w={{ base: '100%', md: 'auto' }}
                 minW="15rem"
@@ -123,48 +124,18 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
             >
                 RETIRE NODE
             </Button>
-            <Modal onClose={onClose} isOpen={isOpen} isCentered>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Warning!</ModalHeader>
-                    <ModalBody>
-                        <Text mb={16} fontSize="sm">
-                            By pressing "I Confirm to Retire Node", you'll
-                            initiate node retirement. Before you proceed, make
-                            sure you understand{' '}
-                            <Link
-                                href="https://github.com/cartesi/noether/wiki/FAQ#i-have-retired-my-node-in-the-cartesi-explorer-but-the-node-funds-were-not-returned-what-is-going-on"
-                                isExternal
-                                textDecoration="underline"
-                            >
-                                how node retirement works{' '}
-                                <ExternalLinkIcon mx="2px" />
-                            </Link>
-                            .
-                        </Text>
-                        <Checkbox
-                            colorScheme="green"
-                            isChecked={confirmNoehtherVersion}
-                            onChange={(e) =>
-                                setConfirmNoehtherVersion(e.target.checked)
-                            }
-                        >
-                            I confirm I'm running noether &gt;= 2.0.3
-                        </Checkbox>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            onClick={onConfirmRetire}
-                            colorScheme="red"
-                            mr={3}
-                            disabled={!confirmNoehtherVersion}
-                        >
-                            I Confirm to Retire Node
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+
+            <NodeRetireModal
+                address={address}
+                disclosure={retireModal}
+                onConfirmRetire={onConfirmRetire}
+            />
+
+            <NodeBalanceModal
+                disclosure={depositModal}
+                userBalance={userBalance}
+                onDepositFunds={onDeposit}
+            />
         </>
     );
 };

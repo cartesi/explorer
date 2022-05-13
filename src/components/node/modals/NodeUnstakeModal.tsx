@@ -17,7 +17,6 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalFooter,
-    ModalHeader,
     ModalOverlay,
     VStack,
     Text,
@@ -28,11 +27,12 @@ import {
     Box,
     useColorModeValue,
     Link,
+    Divider,
 } from '@chakra-ui/react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { CTSINumberInput } from '../poolRedesign/CTSINumberInput';
+import { CTSINumberInput } from '../../poolRedesign/CTSINumberInput';
 
 interface INodeUnstakeModalProps {
     stakedBalance: BigNumber;
@@ -90,8 +90,23 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Unstake</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Unstake
+                            </Box>
+
+                            <ModalCloseButton pt={2} mt={5} />
+                        </HStack>
+                        <Divider />
+                    </Box>
+
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
@@ -116,8 +131,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                     </Link>
                                 </HStack>
                                 <CTSINumberInput
-                                    defaultValue={stakedValue}
-                                    min={0}
+                                    value={stakedValue}
                                     max={maxUnstakeFormatted}
                                     onChange={(bigNumberValue) => {
                                         setOutputStake(bigNumberValue);
@@ -140,10 +154,10 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                         onClose();
                                     }}
                                 >
-                                    Unstake
+                                    UNSTAKE
                                 </Button>
                                 <Button isFullWidth bg={bg} onClick={onClose}>
-                                    Cancel
+                                    CANCEL
                                 </Button>
                             </VStack>
                         </ModalFooter>

@@ -24,30 +24,30 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import { useBalance, useBlockNumber } from '../../services/eth';
-import { useStaking } from '../../services/staking';
-import { useCartesiToken } from '../../services/token';
-import useUser from '../../graphql/hooks/useUser';
-import Layout from '../../components/Layout';
-import useSummary from '../../graphql/hooks/useSummary';
-import TransactionFeedback from '../../components/TransactionFeedback';
-import { useTimeLeft } from '../../utils/react';
-import { useUserNode } from '../../graphql/hooks/useNodes';
-import { useNode } from '../../services/node';
-import { useWallet } from '../../contexts/wallet';
+import { useBalance, useBlockNumber } from '../../../services/eth';
+import { useStaking } from '../../../services/staking';
+import { useCartesiToken } from '../../../services/token';
+import useUser from '../../../graphql/hooks/useUser';
+import Layout from '../../../components/Layout';
+import useSummary from '../../../graphql/hooks/useSummary';
+import TransactionFeedback from '../../../components/TransactionFeedback';
+import { useTimeLeft } from '../../../utils/react';
+import { useUserNode } from '../../../graphql/hooks/useNodes';
+import { useNode } from '../../../services/node';
+import { useWallet } from '../../../contexts/wallet';
 import { ArrowBackIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { NodeStakingDashboard } from '../../components/node/NodeStakingDashboard';
-import { NodeMaturingSection } from '../../components/node/NodeMaturingSection';
-import { NodeReleasingSection } from '../../components/node/NodeReleasingSection';
-import { NodeInfoSection } from '../../components/node/NodeInfoSection';
+import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
+import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
+import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';
+import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
 
 import { useRouter } from 'next/router';
-import { NodeStakedBalanceSection } from '../../components/node/NodeStakedBalanceSection';
-import { NodeUnstakeModal } from '../../components/node/NodeUnstakeModal';
-import { NodeStakeModal } from '../../components/node/NodeStakeModal';
+import { NodeStakedBalanceSection } from '../../../components/node/NodeStakedBalanceSection';
+import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
+import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
+import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
 
 const ManageNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -215,8 +215,10 @@ const ManageNode: FC = () => {
 
                 <NodeInfoSection
                     address={address}
+                    userBalance={userBalance}
                     nodeBalance={node.balance}
                     onRetire={() => node.retire()}
+                    onDeposit={(amount) => node.transfer(amount)}
                 />
 
                 <Stack
@@ -266,6 +268,7 @@ const ManageNode: FC = () => {
                 <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
                 <TransactionFeedback transaction={node.transaction} />
+
                 <Flex pb={12} direction={['column', 'column', 'column', 'row']}>
                     <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
                         <NodeMaturingSection

@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { WalletIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
 
 interface INodeAllowanceSectionProps {
@@ -36,7 +37,8 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
 }) => {
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '30%' }}>
-            <HStack w="full" spacing={4} alignItems="center" p={4}>
+            <HStack w="full" spacing={4} alignItems="center" pt={4}>
+                <Box w={14} h={14} display="grid" placeContent="center"></Box>
                 <Box flexGrow="1">
                     <HStack>
                         <Text color="gray.400">Allowance</Text>

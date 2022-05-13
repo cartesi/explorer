@@ -79,7 +79,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                     Pool allowance
                                 </FormLabel>
                                 <CTSINumberInput
-                                    defaultValue={allowanceFormatted}
+                                    value={allowanceFormatted}
                                     min={0}
                                     max={balanceFormatted}
                                     // ref={inputFocusRef}

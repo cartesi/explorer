@@ -24,7 +24,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { FC, LegacyRef, useEffect, useState } from 'react';
 
 interface ICTSINumberInputProps {
-    defaultValue?: number;
+    value?: number;
     min?: number;
     max?: number;
     ref?: LegacyRef<HTMLDivElement>;
@@ -39,7 +39,7 @@ interface ICTSINumberInputProps {
 }
 
 export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
-    defaultValue,
+    value,
     min = 0,
     max,
     maxPrecision = 18,
@@ -47,12 +47,9 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     setMaxOnOverflow = false,
     onChange,
 }) => {
-    const [innerValue, setInnerValue] = useState<string>(
-        '0' // defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0' // remove trailing zeroes. i.e: 123.00
-    );
+    const [innerValue, setInnerValue] = useState<string>('0');
 
     const handleOnChange = (value) => {
-        console.log('onchange called');
         const numberValue = parseFloat(value);
 
         if (isNaN(numberValue) || numberValue < min) {
@@ -84,19 +81,13 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     };
 
     useEffect(() => {
-        if (!defaultValue) return;
+        if (!value) return;
 
-        console.log('changed default value', defaultValue);
+        const trimmedValue =
+            value?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0';
 
-        const value =
-            defaultValue?.toFixed(4)?.toString()?.replace(/\.0+$/, '') || '0';
-
-        setInnerValue(value);
-    }, [defaultValue]);
-
-    // useEffect(() => {
-    //     handleOnChange(innerValue);
-    // }, [innerValue, handleOnChange]);
+        setInnerValue(trimmedValue);
+    }, [value]);
 
     return (
         <NumberInput

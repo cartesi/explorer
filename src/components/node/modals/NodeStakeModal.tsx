@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Cartesi Pte. Ltd.
+// Copyright (C) 2021-2022 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,6 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalFooter,
-    ModalHeader,
     ModalOverlay,
     VStack,
     Text,
@@ -28,11 +27,12 @@ import {
     Box,
     useColorModeValue,
     Link,
+    Divider,
 } from '@chakra-ui/react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { CTSINumberInput } from '../poolRedesign/CTSINumberInput';
+import { CTSINumberInput } from '../../poolRedesign/CTSINumberInput';
 
 interface INodeStakeModalProps {
     allowance: BigNumber;
@@ -90,8 +90,22 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Stake</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Stake
+                            </Box>
+
+                            <ModalCloseButton pt={2} mt={5} />
+                        </HStack>
+                        <Divider />
+                    </Box>
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
@@ -114,7 +128,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                     </Link>
                                 </HStack>
                                 <CTSINumberInput
-                                    defaultValue={stakedValue}
+                                    value={stakedValue}
                                     min={0}
                                     max={maxAllowanceFormatted}
                                     onChange={(bigNumberValue) => {
@@ -138,10 +152,10 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                         onClose();
                                     }}
                                 >
-                                    Stake
+                                    STAKE
                                 </Button>
                                 <Button isFullWidth bg={bg} onClick={onClose}>
-                                    Cancel
+                                    CANCEL
                                 </Button>
                             </VStack>
                         </ModalFooter>

@@ -47,14 +47,15 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg={'blue.100'}
+                        bg={'blue.50'}
                         w={14}
                         h={14}
+                        minW={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon color="blue.500" w={6} h={6} />
+                        <StakedBalanceIcon color="blue.400" w={6} h={6} />
                     </Box>
                     <Box>
                         <Text color="gray.400">Your staked balance</Text>

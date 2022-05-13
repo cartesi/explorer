@@ -158,7 +158,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                 )}
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
-                    spacing={8}
+                    // spacing={8}
                     w="full"
                     justifyContent="space-between"
                 >
