@@ -36,15 +36,39 @@ const messages = {
 };
 
 /**
+ * Conditional types (ref: https://github.com/microsoft/TypeScript/pull/40002)
+ * and variadic tuple types (ref: https://github.com/microsoft/TypeScript/pull/39094)
+ * To turn an object type into a union of tuples of keys where the matching value is a function.
+ */
+type PropsPath<T> = T extends (...a: any) => string
+    ? []
+    : {
+          [K in Extract<keyof T, string>]: [K, ...PropsPath<T[K]>];
+      }[Extract<keyof T, string>];
+
+/**
+ * Using template string types to join a tuple of string literal with delimiter type D (e.g '.' or '-' or '_')
+ */
+type Join<T extends string[], D extends string> = T extends []
+    ? never
+    : T extends [infer F]
+    ? F
+    : T extends [infer F, ...infer R]
+    ? F extends string
+        ? `${F}${D}${Join<Extract<R, string[]>, D>}`
+        : never
+    : string;
+
+type MessageArrayPath = PropsPath<typeof messages>;
+type MessagePath = Join<MessageArrayPath, '.'>;
+
+/**
  *
- * @param key 'a.b.0.d' || ['a', 'b', '0', 'd']
- * @param params rest parameter in case the message has any kind of parameter(s)
+ * @param path { MessagePath } key to the message (dotted when nested e.g node.owned.mine)
+ * @param params rest parameter in case the message is parameterized
  * @returns { String }
  */
-export const useMessages = (
-    key: string | string[],
-    ...params: any[]
-): string => {
-    const messFunc = pathOr(() => '', key, messages);
+export const useMessages = (path: MessagePath, ...params: any[]): string => {
+    const messFunc = pathOr(() => '', path, messages);
     return messFunc(...params);
 };
