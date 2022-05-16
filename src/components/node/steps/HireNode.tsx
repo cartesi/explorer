@@ -33,6 +33,8 @@ import {
     isNil,
     isEmpty,
     capitalize,
+    isFunction,
+    omit,
 } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 import { useWallet } from '../../../contexts/wallet';
@@ -103,15 +105,20 @@ const evaluateNode = (account: string, node: Node) => {
     }
 };
 
-interface InputError {
-    name: string;
-    message: string;
-    type: string;
+type ErrorContent = { message: string; type: string };
+interface ValidationResult {
+    name: 'nodeAddress' | 'deposit';
+    error?: ErrorContent;
+    isValid: boolean;
 }
+
+type Errors = {
+    [key: string | undefined]: ValidationResult;
+};
 interface BaseInput {
     onChange: (address: string) => void;
     helperText?: string;
-    onError?: (error: InputError) => void;
+    onValidationChange?: (validationResult: ValidationResult) => void;
 }
 
 interface NodeInput extends BaseInput {
@@ -129,7 +136,7 @@ const NodeInput = ({
     node,
     account,
     helperText,
-    onError,
+    onValidationChange,
 }: NodeInput) => {
     const { helperTxtColor } = useStyle();
     const [value, setValue] = useState<string>('');
@@ -138,14 +145,21 @@ const NodeInput = ({
     const isAvailable = value && status === 'available';
 
     useEffect(() => {
+        if (!isFunction(onValidationChange)) return;
+
+        const validation: ValidationResult = {
+            name: 'nodeAddress',
+            isValid: !isInvalid,
+        };
+
         if (isInvalid) {
-            onError &&
-                onError({
-                    message: errorMessage,
-                    type: `node${capitalize(status)}`,
-                    name: 'nodeAddress',
-                });
+            validation.error = {
+                message: errorMessage,
+                type: `node${capitalize(status)}`,
+            };
         }
+
+        onValidationChange(validation);
     }, [isInvalid]);
 
     return (
@@ -198,7 +212,7 @@ const InitialFundsInput = ({
     onChange,
     min,
     max,
-    onError,
+    onValidationChange,
 }: InitialFundsInput) => {
     const { helperTxtColor } = useStyle();
     const { account } = useWallet();
@@ -245,10 +259,18 @@ const InitialFundsInput = ({
     const { deposit: depositErrors } = errors;
 
     useEffect(() => {
+        if (!isFunction(onValidationChange)) return;
+
+        const validation: ValidationResult = {
+            name: 'deposit',
+            isValid: isEmpty(depositErrors),
+        };
         if (!isEmpty(depositErrors)) {
             const { type, message } = depositErrors;
-            onError && onError({ message, type, name: 'deposit' });
+            validation.error = { message, type };
         }
+
+        onValidationChange(validation);
     }, [depositErrors]);
 
     return (
@@ -289,6 +311,14 @@ const InitialFundsInput = ({
     );
 };
 
+const enableNextWhen = (
+    funds: string,
+    nodeStatus: NodeStatus,
+    errors: Errors
+): boolean => {
+    return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
+};
+
 const HireNode = ({
     stepNumber,
     onComplete,
@@ -297,13 +327,25 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const { tipsBgColor } = useStyle();
-    const { account } = useWallet();
-    const [nodeAddress, setNodeAddress] = useState<string>('');
-    const node = useNode(nodeAddress);
-
     const [stepState, setStepState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
     });
+    const [nodeAddress, setNodeAddress] = useState<string | null>();
+    const [initialFunds, setInitialFunds] = useState<string | null>();
+    const [errors, setErrors] = useState<Errors>({});
+    const { account } = useWallet();
+    const node = useNode(nodeAddress);
+    const { status } = evaluateNode(account, node);
+    const enableNext = enableNextWhen(initialFunds, status, errors);
+
+    const handleValidation = (validation: ValidationResult) => {
+        const { name, isValid } = validation;
+        setErrors((state) => {
+            return isValid
+                ? omit([name], state)
+                : { ...state, [name]: validation };
+        });
+    };
 
     useEffect(() => {
         if (!inFocus && stepState.status === COMPLETED) return;
@@ -322,15 +364,15 @@ const HireNode = ({
         >
             <StepBody>
                 <NodeInput
+                    onValidationChange={handleValidation}
                     onChange={setNodeAddress}
                     helperText="You may find from the docker configuration"
                     account={account}
                     node={node}
                 />
                 <InitialFundsInput
-                    onChange={(value) => {
-                        console.log(`initial funds value: ${value}`);
-                    }}
+                    onValidationChange={handleValidation}
+                    onChange={setInitialFunds}
                     max={3}
                     min={0.001}
                 />
@@ -364,6 +406,7 @@ const HireNode = ({
                         PREVIOUS
                     </Button>
                     <Button
+                        disabled={!enableNext}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
