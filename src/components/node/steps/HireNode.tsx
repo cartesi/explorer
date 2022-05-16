@@ -334,8 +334,6 @@ const withErrorAsWarning = (
         }>({});
 
         useEffect(() => {
-            if (transaction.submitting) return;
-
             const newProps: { status?: AlertStatus } = transaction.error
                 ? transaction.acknowledged
                     ? {}
@@ -444,6 +442,7 @@ const HireNode = ({
                     </Button>
                     <Button
                         disabled={!enableNext}
+                        isLoading={node.transaction.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
