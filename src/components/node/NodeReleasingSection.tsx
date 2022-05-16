@@ -18,6 +18,7 @@ import {
     useColorModeValue,
     Heading,
     Icon,
+    Button,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -27,10 +28,14 @@ import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
     releasingBalance: BigNumber;
+    releasingLeftShort?: string;
+    onWithdraw: () => void;
 }
 
 export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     releasingBalance,
+    releasingLeftShort,
+    onWithdraw,
 }) => {
     const bg = useColorModeValue('white', 'gray.800');
 
@@ -87,6 +92,13 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                             </Flex>
                         </Heading>
                     </Box>
+                </HStack>
+                <HStack spacing={4} alignItems="center">
+                    {!releasingBalance.isZero() && (
+                        <Button bg={bg} onClick={onWithdraw}>
+                            WITHDRAW ({releasingLeftShort})
+                        </Button>
+                    )}
                 </HStack>
             </Stack>
         </Box>

@@ -14,11 +14,16 @@ import Head from 'next/head';
 import {
     Box,
     Button,
+    chakra,
+    CloseButton,
     Flex,
     Heading,
+    HStack,
     Link,
     Spacer,
     Stack,
+    Tag,
+    Text,
     useColorModeValue,
     useDisclosure,
     VStack,
@@ -35,7 +40,12 @@ import { useTimeLeft } from '../../../utils/react';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useNode } from '../../../services/node';
 import { useWallet } from '../../../contexts/wallet';
-import { ArrowBackIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import {
+    ArrowBackIcon,
+    CheckCircleIcon,
+    ExternalLinkIcon,
+    WarningIcon,
+} from '@chakra-ui/icons';
 import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
 import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
 import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';
@@ -48,6 +58,8 @@ import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
+import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
+import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 
 const ManageNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -88,7 +100,11 @@ const ManageNode: FC = () => {
 
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
-    const releasingLeft = useTimeLeft(releasingTimestamp?.getTime());
+    const releasingLeftShort = useTimeLeft(
+        releasingTimestamp?.getTime(),
+        2,
+        true
+    );
 
     // get most recent node hired by user (if any)
     const existingNode = useUserNode(account);
@@ -273,12 +289,15 @@ const ManageNode: FC = () => {
                     <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
                         <NodeMaturingSection
                             maturingBalance={maturingBalance}
+                            maturingLeft={maturingLeft}
                         />
                         <NodeStakedBalanceSection
                             stakedBalance={stakedBalance}
                         />
                         <NodeReleasingSection
                             releasingBalance={releasingBalance}
+                            releasingLeftShort={releasingLeftShort}
+                            onWithdraw={() => withdraw(releasingBalance)}
                         />
                     </Box>
                 </Flex>
@@ -316,6 +335,9 @@ const ManageNode: FC = () => {
                         }}
                     />
                 )}
+
+                <NodeHiredBanner />
+                <NodeRetiredBanner />
             </Box>
         </Layout>
     );

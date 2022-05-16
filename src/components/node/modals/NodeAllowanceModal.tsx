@@ -24,11 +24,15 @@ import {
     FormHelperText,
     FormLabel,
     UseDisclosureProps,
+    Box,
+    HStack,
+    Divider,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
-import { CTSINumberInput } from '../poolRedesign/CTSINumberInput';
+import { CTSINumberInput } from '../../poolRedesign/CTSINumberInput';
 
 interface INodeAllowanceModalProps {
     allowance: BigNumber;
@@ -49,6 +53,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
+    const bg = useColorModeValue('gray.50', 'header');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
@@ -65,21 +70,37 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Edit node allowance</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Set allowance
+                            </Box>
+
+                            <ModalCloseButton pt={2} mt={5} />
+                        </HStack>
+                        <Divider />
+                    </Box>
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Additional layer of protection with a max amount
-                                of CTSI tokens that this pool can transfer from
-                                your wallet.
+                                This is going to be the maximum amount of CTSI
+                                that Cartesi’s staking contract will be able to
+                                receive from your personal account. Please enter
+                                the total value you wish to allow the CTSI
+                                staking contract to hold.
                             </Text>
                             <FormControl id="depositAmount">
                                 <FormLabel fontWeight="bold">
-                                    Pool allowance
+                                    Allowance amount
                                 </FormLabel>
                                 <CTSINumberInput
-                                    defaultValue={allowanceFormatted}
+                                    value={allowanceFormatted}
                                     min={0}
                                     max={balanceFormatted}
                                     // ref={inputFocusRef}
@@ -88,9 +109,8 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                     }}
                                 />
                                 <FormHelperText>
-                                    The Node Allowance can be edited at any
-                                    time. Each edit is charged in the form of a
-                                    gas fee like any Ethereum transaction.
+                                    In this case, each edit will cost your ETH
+                                    gas fee.
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
@@ -98,22 +118,17 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    colorScheme="darkGray"
+                                    colorScheme="blue"
                                     onClick={() => {
                                         onSave(outputAllowance);
                                         disclosure.onClose();
                                         onClose();
                                     }}
                                 >
-                                    Save
+                                    APPROVE
                                 </Button>
-                                <Button
-                                    isFullWidth
-                                    colorScheme="darkGray"
-                                    variant="outline"
-                                    onClick={onClose}
-                                >
-                                    Cancel
+                                <Button isFullWidth bg={bg} onClick={onClose}>
+                                    CANCEL
                                 </Button>
                             </VStack>
                         </ModalFooter>

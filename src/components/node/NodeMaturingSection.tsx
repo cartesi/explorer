@@ -27,10 +27,12 @@ import CTSI from '../pools/staking/CTSI';
 
 export interface INodeMaturingSection {
     maturingBalance: BigNumber;
+    maturingLeft?: string;
 }
 
 export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     maturingBalance,
+    maturingLeft = '6 hours',
 }) => {
     const bg = useColorModeValue('white', 'gray.800');
 
@@ -73,8 +75,12 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                             Maturing
                         </Text>
                         <Text pb={1} fontSize={'sm'} color="gray.400">
-                            The staking will take 6 hours to be ready. Each new
-                            stake will restart the waiting time.
+                            The staking will take{' '}
+                            {maturingBalance.isZero()
+                                ? '6 hours'
+                                : maturingLeft}{' '}
+                            to be ready. Each new stake will restart the waiting
+                            time.
                         </Text>
                         <Heading m={0} size="lg">
                             <Flex align="baseline">

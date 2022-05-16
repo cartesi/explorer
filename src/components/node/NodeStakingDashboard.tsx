@@ -26,7 +26,7 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { InfoBanner } from '../poolRedesign/InfoBanner';
 import { WalletBalanceSection } from '../poolRedesign/components/WalletBalanceSection';
 import { NodeAllowanceSection } from './NodeAllowanceSection';
-import { NodeAllowanceModal } from './NodeAllowanceModal';
+import { NodeAllowanceModal } from './modals/NodeAllowanceModal';
 
 export interface NodeStakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance
