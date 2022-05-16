@@ -25,7 +25,15 @@ import {
     useColorModeValue,
     Spinner,
 } from '@chakra-ui/react';
-import { constant, matches, cond, stubTrue, isNil } from 'lodash/fp';
+import {
+    constant,
+    matches,
+    cond,
+    stubTrue,
+    isNil,
+    isEmpty,
+    capitalize,
+} from 'lodash/fp';
 import { useEffect, useState } from 'react';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
@@ -116,12 +124,29 @@ interface InitialFundsInput extends BaseInput {
     max: number;
 }
 
-const NodeInput = ({ onChange, node, account, helperText }: NodeInput) => {
+const NodeInput = ({
+    onChange,
+    node,
+    account,
+    helperText,
+    onError,
+}: NodeInput) => {
+    const { helperTxtColor } = useStyle();
     const [value, setValue] = useState<string>('');
     const { isInvalid, errorMessage, status } = evaluateNode(account, node);
     const displayLoader = value && node.loading && status === 'none';
-    const { helperTxtColor } = useStyle();
-    const isAvailable = status === 'available';
+    const isAvailable = value && status === 'available';
+
+    useEffect(() => {
+        if (isInvalid) {
+            onError &&
+                onError({
+                    message: errorMessage,
+                    type: `node${capitalize(status)}`,
+                    name: 'nodeAddress',
+                });
+        }
+    }, [isInvalid]);
 
     return (
         <FormControl
@@ -150,7 +175,12 @@ const NodeInput = ({ onChange, node, account, helperText }: NodeInput) => {
                 {isAvailable && (
                     <InputRightElement
                         h="100%"
-                        children={<CheckIcon color="green.500" />}
+                        children={
+                            <CheckIcon
+                                id="node-available-check"
+                                color="green.500"
+                            />
+                        }
                     />
                 )}
             </InputGroup>
@@ -215,8 +245,10 @@ const InitialFundsInput = ({
     const { deposit: depositErrors } = errors;
 
     useEffect(() => {
-        console.log('changed!');
-        console.log(depositErrors);
+        if (!isEmpty(depositErrors)) {
+            const { type, message } = depositErrors;
+            onError && onError({ message, type, name: 'deposit' });
+        }
     }, [depositErrors]);
 
     return (
@@ -232,10 +264,12 @@ const InitialFundsInput = ({
                     size="lg"
                     ref={ref}
                     name={name}
+                    type="number"
                     onBlur={onBlur}
                     onChange={(evt) => {
                         onChangeValidate(evt);
                         onChange(evt?.target?.value);
+                        //trigger validations for registered field called deposit
                         trigger('deposit');
                     }}
                 />
