@@ -25,7 +25,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Address from '../Address';
 import { Transaction } from '../../services/transaction';
 
-interface ITransactionInfoBannerProps extends AlertProps {
+export interface ITransactionInfoBannerProps extends AlertProps {
     title?: string;
     failTitle?: string;
     successDescription?: string;
