@@ -24,6 +24,7 @@ import {
     Stack,
     useColorModeValue,
     Spinner,
+    AlertStatus,
 } from '@chakra-ui/react';
 import {
     constant,
@@ -36,7 +37,7 @@ import {
     isFunction,
     omit,
 } from 'lodash/fp';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, FunctionComponent } from 'react';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
 import { useNode, Node } from '../../../services/node';
@@ -46,6 +47,10 @@ import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep } from '../../StepGroup';
 import { useForm } from 'react-hook-form';
+import {
+    TransactionInfoBanner,
+    ITransactionInfoBannerProps,
+} from '../../poolRedesign/TransactionInfoBanner';
 
 const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
 
@@ -319,6 +324,33 @@ const enableNextWhen = (
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };
 
+const withErrorAsWarning = (
+    Component: FunctionComponent<ITransactionInfoBannerProps>
+) => {
+    return (props: ITransactionInfoBannerProps) => {
+        const { transaction } = props;
+        const [bannerProps, setBannerProps] = useState<{
+            status?: AlertStatus;
+        }>({});
+
+        useEffect(() => {
+            if (transaction.submitting) return;
+
+            const newProps: { status?: AlertStatus } = transaction.error
+                ? transaction.acknowledged
+                    ? {}
+                    : { status: 'warning' }
+                : {};
+
+            setBannerProps(newProps);
+        }, [transaction]);
+
+        return <Component {...props} {...bannerProps} />;
+    };
+};
+
+const TransactionBanner = withErrorAsWarning(TransactionInfoBanner);
+
 const HireNode = ({
     stepNumber,
     onComplete,
@@ -363,6 +395,11 @@ const HireNode = ({
             onActive={onStepActive}
         >
             <StepBody>
+                <TransactionBanner
+                    title="Hiring the node..."
+                    failTitle="Hiring the node failed"
+                    transaction={node.transaction}
+                />
                 <NodeInput
                     onValidationChange={handleValidation}
                     onChange={setNodeAddress}
@@ -410,11 +447,12 @@ const HireNode = ({
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
-                            setStepState((state) => ({
-                                ...state,
-                                status: COMPLETED,
-                            }));
-                            onComplete(e);
+                            node.hire(toBigNumber(initialFunds));
+                            // setStepState((state) => ({
+                            //     ...state,
+                            //     status: COMPLETED,
+                            // }));
+                            // onComplete(e);
                         }}
                     >
                         NEXT
