@@ -63,6 +63,16 @@ export const useNode = (address: string): Node => {
     const block = useBlockNumber();
     const balance = useBalance(address, [user, block]);
 
+    const resetState = (address: string) => {
+        setUser(address);
+        setAvailable(false);
+        setPending(false);
+        setOwned(false);
+        setRetired(false);
+        setAuthorized(false);
+        setAuthorized1(false);
+    };
+
     const updateState = async (address: string) => {
         try {
             const user = await workerManager.getUser(address);
@@ -85,15 +95,14 @@ export const useNode = (address: string): Node => {
             setAuthorized(authorized);
             setAuthorized1(authorized1);
         } catch (e) {
-            setUser('');
-            setAvailable(false);
-            setPending(false);
-            setOwned(false);
-            setRetired(false);
-            setAuthorized(false);
-            setAuthorized1(false);
+            resetState('');
         }
     };
+
+    useEffect(() => {
+        // when the address changes clean the state.
+        address ? resetState(address) : resetState('');
+    }, [address]);
 
     useEffect(() => {
         if (workerManager) {
