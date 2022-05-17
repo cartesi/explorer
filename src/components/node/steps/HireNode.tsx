@@ -25,6 +25,7 @@ import {
     useColorModeValue,
     Spinner,
     AlertStatus,
+    VisuallyHidden,
 } from '@chakra-ui/react';
 import {
     constant,
@@ -190,18 +191,25 @@ const NodeInput = ({
                     }}
                 />
                 {displayLoader && (
-                    <InputRightElement h="100%" children={<Spinner />} />
-                )}
-                {isAvailable && (
                     <InputRightElement
                         h="100%"
                         children={
+                            <Spinner label="Checking node availability" />
+                        }
+                    />
+                )}
+                {isAvailable && (
+                    <InputRightElement h="100%">
+                        <>
+                            <VisuallyHidden>
+                                This node is available
+                            </VisuallyHidden>
                             <CheckIcon
                                 id="node-available-check"
                                 color="green.500"
                             />
-                        }
-                    />
+                        </>
+                    </InputRightElement>
                 )}
             </InputGroup>
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
@@ -291,6 +299,7 @@ const InitialFundsInput = ({
                 <Input
                     size="lg"
                     ref={ref}
+                    id="initial_funds"
                     name={name}
                     type="number"
                     onBlur={onBlur}
@@ -397,8 +406,6 @@ const HireNode = ({
                 status: COMPLETED,
             }));
             onComplete && onComplete();
-        } else {
-            console.log(`Step no completed yet`);
         }
     }, [isStepCompleted]);
 
@@ -460,7 +467,7 @@ const HireNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        disabled={!enableNext}
+                        disabled={!enableNext || node.transaction?.submitting}
                         isLoading={node.transaction?.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
