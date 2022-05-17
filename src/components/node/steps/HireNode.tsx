@@ -42,7 +42,7 @@ import { useEffect, useState, FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
-import { useNode, Node } from '../../../services/node';
+import { useNode, Node, NodeStatus } from '../../../services/node';
 import { Transaction } from '../../../services/transaction';
 import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';
@@ -55,8 +55,6 @@ import {
 } from '../../poolRedesign/TransactionInfoBanner';
 
 const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
-
-type NodeStatus = 'available' | 'owned' | 'pending' | 'retired' | 'none';
 
 const numberFormatOpts: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,

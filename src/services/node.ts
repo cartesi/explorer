@@ -21,6 +21,7 @@ import {
 import { Transaction, useTransaction } from './transaction';
 import { useWallet } from '../contexts/wallet';
 
+export type NodeStatus = 'available' | 'owned' | 'retired' | 'pending' | 'none';
 export interface Node {
     address: string;
     balance: BigNumber;

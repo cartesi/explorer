@@ -9,7 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Node } from '../../../src/services/node';
+import { cond, isEqual, constant, stubTrue } from 'lodash/fp';
+import { Node, NodeStatus } from '../../../src/services/node';
+
+const buildTransaction = () => ({
+    ack: jest.fn(),
+    acknowledged: true,
+    error: undefined,
+    receipt: undefined,
+    result: undefined,
+    set: jest.fn(),
+    submitting: false,
+    transaction: undefined,
+});
 
 const initialNodeState: Node = {
     address: undefined,
@@ -25,16 +37,7 @@ const initialNodeState: Node = {
     pending: false,
     retire: jest.fn(),
     retired: false,
-    transaction: {
-        ack: jest.fn(),
-        acknowledged: true,
-        error: undefined,
-        receipt: undefined,
-        result: undefined,
-        set: jest.fn(),
-        submitting: false,
-        transaction: undefined,
-    },
+    transaction: buildTransaction(),
     transfer: jest.fn(),
     user: '',
 };
@@ -59,32 +62,18 @@ const pendingNode: Node = {
     pending: true,
 };
 
-type NodeStatus = 'available' | 'owned' | 'retired' | 'pending';
+const getNode = cond<NodeStatus, Node>([
+    [isEqual('available'), constant(availableNode)],
+    [isEqual('owned'), constant(ownedNode)],
+    [isEqual('pending'), constant(pendingNode)],
+    [isEqual('retired'), constant(retiredNode)],
+    [stubTrue, constant(initialNodeState)],
+]);
 
 export const buildNodeObj = (nodeStatus?: NodeStatus, address?: string) => {
     const user = address || '';
-    switch (nodeStatus) {
-        case 'available':
-            return {
-                ...availableNode,
-                user,
-            };
-        case 'pending':
-            return {
-                ...pendingNode,
-                user,
-            };
-        case 'owned':
-            return {
-                ...ownedNode,
-                user,
-            };
-        case 'retired':
-            return {
-                ...retiredNode,
-                user,
-            };
-        default:
-            return { ...initialNodeState, user };
-    }
+    const transaction = buildTransaction();
+    const nodeToCopy = getNode(nodeStatus);
+
+    return { ...nodeToCopy, user, transaction };
 };
