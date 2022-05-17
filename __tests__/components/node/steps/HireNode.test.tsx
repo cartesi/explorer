@@ -251,6 +251,38 @@ describe('HireNode Step', () => {
         });
     });
 
+    describe('Notifications', () => {
+        it('should display an informative notification when the transaction is in course', async () => {
+            const node = buildNodeObj('available', '0x00');
+            node.transaction.acknowledged = false;
+            node.transaction.submitting = true;
+            mockUseNode.mockReturnValue(node);
+            render(<HireNode inFocus stepNumber={1} />);
+
+            const alert = screen.getByRole('alert');
+            expect(
+                await findByText(alert, 'Hiring the node...')
+            ).toBeInTheDocument();
+            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+        });
+
+        it('should display an error notification when the transaction failed', () => {
+            const node = buildNodeObj('available', '0x00');
+            node.transaction.acknowledged = false;
+            node.transaction.error =
+                'Tx metamask: user rejected the transaction';
+            mockUseNode.mockReturnValue(node);
+            render(<HireNode inFocus stepNumber={1} />);
+
+            expect(
+                screen.getByText('Hiring the node failed')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText('Tx metamask: user rejected the transaction')
+            ).toBeInTheDocument();
+        });
+    });
+
     describe('Actions', () => {
         describe('PREVIOUS button', () => {
             it('should call onPrevious callback when clicked', () => {
@@ -289,47 +321,45 @@ describe('HireNode Step', () => {
                 expect(node.hire).toHaveBeenCalledWith(toBigNumber('2'));
             });
 
-            describe('Visual feedback', () => {
-                it('Should display spinner when clicked and block any futher click to have effect while transaction in course', async () => {
-                    const node = buildNodeObj('available', '0x00');
-                    mockUseNode.mockReturnValue(node);
-                    mockUseBalance.mockReturnValue(toBigNumber('6'));
-                    // First render
-                    const { rerender } = render(
-                        <HireNode inFocus stepNumber={1} />
-                    );
+            it('Should display spinner when clicked and block any futher click to have effect while transaction in course', async () => {
+                const node = buildNodeObj('available', '0x00');
+                mockUseNode.mockReturnValue(node);
+                mockUseBalance.mockReturnValue(toBigNumber('6'));
+                // First render
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
 
-                    const addressInput = screen.getByLabelText('Node Address');
-                    const fundsInput = screen.getByLabelText('Initial Funds');
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
 
-                    act(() => {
-                        fireEvent.change(addressInput, {
-                            target: { value: account },
-                        });
-                        fireEvent.change(fundsInput, { target: { value: 2 } });
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
                     });
-
-                    await screen.findByText('This node is available');
-
-                    const button = screen.getByText('NEXT');
-                    fireEvent.click(button);
-
-                    // Emulating hooks changing node / transaction state.
-                    node.transaction.submitting = true;
-                    node.transaction.acknowledged = false;
-                    // Then we render the component again to get fresh values
-                    rerender(<HireNode inFocus stepNumber={1} />);
-
-                    expect(
-                        await findByText(button, 'Loading...')
-                    ).toBeInTheDocument();
-
-                    // trying to mess with hire() method call.
-                    fireEvent.click(button);
-                    fireEvent.click(button);
-
-                    expect(node.hire).toHaveBeenCalledTimes(1);
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
                 });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                // Emulating hooks changing node / transaction state.
+                node.transaction.submitting = true;
+                node.transaction.acknowledged = false;
+                // Then we render the component again to get fresh values
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                expect(
+                    await findByText(button, 'Loading...')
+                ).toBeInTheDocument();
+
+                // trying to mess with hire() method call.
+                fireEvent.click(button);
+                fireEvent.click(button);
+
+                expect(node.hire).toHaveBeenCalledTimes(1);
             });
         });
     });
