@@ -10,30 +10,41 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { CheckCircleIcon } from '@chakra-ui/icons';
-import { Text, Box, HStack, chakra, CloseButton } from '@chakra-ui/react';
+import {
+    Text,
+    Box,
+    HStack,
+    chakra,
+    CloseButton,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
-export const NodeHiredBanner = () => (
-    <Box
-        bg={'white'}
-        shadow="sm"
-        p={3}
-        pl={5}
-        mt={6}
-        mb={6}
-        borderLeftWidth={14}
-        borderLeftColor={'green.400'}
-    >
-        <HStack spacing={2} justifyContent="space-between">
-            <HStack spacing={2} mb={1}>
-                <CheckCircleIcon color="green.400" mr={2} />
-                <Text fontSize="sm">
-                    <chakra.span fontWeight="bold" fontSize="sm">
-                        Congratulations!{' '}
-                    </chakra.span>
-                    You hired a new node for your pool successfully.
-                </Text>
+export const NodeHiredBanner = () => {
+    const bg = useColorModeValue('white', 'gray.800');
+
+    return (
+        <Box
+            bg={bg}
+            shadow="sm"
+            p={3}
+            pl={5}
+            mt={6}
+            mb={6}
+            borderLeftWidth={14}
+            borderLeftColor={'green.400'}
+        >
+            <HStack spacing={2} justifyContent="space-between">
+                <HStack spacing={2} mb={1}>
+                    <CheckCircleIcon color="green.400" mr={2} />
+                    <Text fontSize="sm">
+                        <chakra.span fontWeight="bold" fontSize="sm">
+                            Congratulations!{' '}
+                        </chakra.span>
+                        You hired a new node for your pool successfully.
+                    </Text>
+                </HStack>
+                <CloseButton />
             </HStack>
-            <CloseButton />
-        </HStack>
-    </Box>
-);
+        </Box>
+    );
+};

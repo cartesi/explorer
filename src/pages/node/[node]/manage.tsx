@@ -14,16 +14,11 @@ import Head from 'next/head';
 import {
     Box,
     Button,
-    chakra,
-    CloseButton,
     Flex,
     Heading,
-    HStack,
     Link,
     Spacer,
     Stack,
-    Tag,
-    Text,
     useColorModeValue,
     useDisclosure,
     VStack,
@@ -43,6 +38,7 @@ import { useWallet } from '../../../contexts/wallet';
 import {
     ArrowBackIcon,
     CheckCircleIcon,
+    EditIcon,
     ExternalLinkIcon,
     WarningIcon,
 } from '@chakra-ui/icons';
@@ -60,6 +56,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
 import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
+import { NodeHireNodeSection } from '../../../components/node/NodeHireNodeSection';
 
 const ManageNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -338,6 +335,7 @@ const ManageNode: FC = () => {
 
                 <NodeHiredBanner />
                 <NodeRetiredBanner />
+                <NodeHireNodeSection />
             </Box>
         </Layout>
     );

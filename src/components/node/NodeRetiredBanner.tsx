@@ -10,30 +10,41 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { WarningIcon } from '@chakra-ui/icons';
-import { Text, Box, HStack, chakra, CloseButton } from '@chakra-ui/react';
+import {
+    Text,
+    Box,
+    HStack,
+    chakra,
+    CloseButton,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
-export const NodeRetiredBanner = () => (
-    <Box
-        bg={'white'}
-        shadow="sm"
-        p={3}
-        pl={5}
-        mt={6}
-        mb={6}
-        borderLeftWidth={14}
-        borderLeftColor={'orange'}
-    >
-        <HStack spacing={2} justifyContent="space-between">
-            <HStack spacing={2} mb={1}>
-                <WarningIcon color="orange.500" mr={2} />
-                <Text fontSize="sm">
-                    <chakra.span fontWeight="bold" fontSize="sm">
-                        Your node has been retired
-                    </chakra.span>
-                    , you will need to hire a new node.
-                </Text>
+export const NodeRetiredBanner = () => {
+    const bg = useColorModeValue('white', 'gray.800');
+
+    return (
+        <Box
+            bg={bg}
+            shadow="sm"
+            p={3}
+            pl={5}
+            mt={6}
+            mb={6}
+            borderLeftWidth={14}
+            borderLeftColor={'orange'}
+        >
+            <HStack spacing={2} justifyContent="space-between">
+                <HStack spacing={2} mb={1}>
+                    <WarningIcon color="orange.500" mr={2} />
+                    <Text fontSize="sm">
+                        <chakra.span fontWeight="bold" fontSize="sm">
+                            Your node has been retired
+                        </chakra.span>
+                        , you will need to hire a new node.
+                    </Text>
+                </HStack>
+                <CloseButton />
             </HStack>
-            <CloseButton />
-        </HStack>
-    </Box>
-);
+        </Box>
+    );
+};

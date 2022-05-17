@@ -17,7 +17,6 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalFooter,
-    ModalHeader,
     ModalOverlay,
     VStack,
     Text,
