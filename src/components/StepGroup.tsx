@@ -9,12 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, {
-    useState,
-    Fragment,
-    MouseEventHandler,
-    FunctionComponent,
-} from 'react';
+import React, { useState, Fragment, FunctionComponent } from 'react';
 import {
     VStack,
     Divider,
@@ -61,8 +56,8 @@ export interface IStepMeta {
 export interface IStep {
     stepNumber: number;
     inFocus?: boolean;
-    onComplete?: MouseEventHandler<HTMLButtonElement>;
-    onPrevious?: MouseEventHandler<HTMLButtonElement>;
+    onComplete?: (...a: any) => void;
+    onPrevious?: (...a: any) => void;
     onStepActive?: (stepInfo: IStepMeta) => void;
 }
 
