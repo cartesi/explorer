@@ -38,15 +38,16 @@ import {
     omit,
 } from 'lodash/fp';
 import { useEffect, useState, FunctionComponent } from 'react';
+import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
 import { useNode, Node } from '../../../services/node';
+import { Transaction } from '../../../services/transaction';
 import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep } from '../../StepGroup';
-import { useForm } from 'react-hook-form';
 import {
     TransactionInfoBanner,
     ITransactionInfoBannerProps,
@@ -347,6 +348,9 @@ const withErrorAsWarning = (
     };
 };
 
+const isNodeHiringCompleted = (transaction: Transaction<any>) =>
+    transaction.receipt?.confirmations >= 1;
+
 const TransactionBanner = withErrorAsWarning(TransactionInfoBanner);
 
 const HireNode = ({
@@ -360,13 +364,15 @@ const HireNode = ({
     const [stepState, setStepState] = useState({
         status: inFocus ? ACTIVE : NOT_ACTIVE,
     });
+    const { account } = useWallet();
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [initialFunds, setInitialFunds] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
-    const { account } = useWallet();
     const node = useNode(nodeAddress);
     const { status } = evaluateNode(account, node);
     const enableNext = enableNextWhen(initialFunds, status, errors);
+    const { transaction } = node;
+    const isStepCompleted = isNodeHiringCompleted(transaction);
 
     const handleValidation = (validation: ValidationResult) => {
         const { name, isValid } = validation;
@@ -384,6 +390,18 @@ const HireNode = ({
         setStepState((stepState) => ({ ...stepState, status }));
     }, [inFocus]);
 
+    useEffect(() => {
+        if (isStepCompleted) {
+            setStepState((state) => ({
+                ...state,
+                status: COMPLETED,
+            }));
+            onComplete && onComplete();
+        } else {
+            console.log(`Step no completed yet`);
+        }
+    }, [isStepCompleted]);
+
     return (
         <Step
             title="Hire Node"
@@ -396,6 +414,7 @@ const HireNode = ({
                 <TransactionBanner
                     title="Hiring the node..."
                     failTitle="Hiring the node failed"
+                    successDescription="Node hired! moving to the next step..."
                     transaction={node.transaction}
                 />
                 <NodeInput
@@ -430,29 +449,22 @@ const HireNode = ({
                     <Button
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
-                        onClick={(e) => {
+                        onClick={() => {
                             setStepState((state) => ({
                                 ...state,
                                 status: NOT_ACTIVE,
                             }));
-                            onPrevious(e);
+                            onPrevious && onPrevious();
                         }}
                     >
                         PREVIOUS
                     </Button>
                     <Button
                         disabled={!enableNext}
-                        isLoading={node.transaction.submitting}
+                        isLoading={node.transaction?.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
-                        onClick={(e) => {
-                            node.hire(toBigNumber(initialFunds));
-                            // setStepState((state) => ({
-                            //     ...state,
-                            //     status: COMPLETED,
-                            // }));
-                            // onComplete(e);
-                        }}
+                        onClick={() => node.hire(toBigNumber(initialFunds))}
                     >
                         NEXT
                     </Button>
