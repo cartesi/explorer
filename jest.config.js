@@ -25,6 +25,10 @@ module.exports = {
         // Handle module aliases
         '^@/components/(.*)$': '<rootDir>/components/$1',
     },
+    testMatch: [
+        '**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)',
+        '**/?(*.)+(spec|test).[jt]s?(x)',
+    ],
     testPathIgnorePatterns: [
         '<rootDir>/node_modules/',
         '<rootDir>/.next/',
