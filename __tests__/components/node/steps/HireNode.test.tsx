@@ -22,7 +22,7 @@ import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/node/steps/HireNode';
 import { toBigNumber } from '../../../../src/utils/numberParser';
-import { buildNodeObj } from '../mocks';
+import { buildContractReceipt, buildNodeObj } from '../mocks';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
@@ -361,6 +361,23 @@ describe('HireNode Step', () => {
 
                 expect(node.hire).toHaveBeenCalledTimes(1);
             });
+        });
+    });
+
+    describe('When node is hired', () => {
+        it('should call onComplete callback to notify the step is finalized and transition to completed state', () => {
+            const node = buildNodeObj('available', '0x00');
+            node.transaction.acknowledged = false;
+            node.transaction.receipt = buildContractReceipt();
+            mockUseNode.mockReturnValue(node);
+            const onComplete = jest.fn();
+            render(<HireNode inFocus stepNumber={1} onComplete={onComplete} />);
+
+            expect(onComplete).toHaveBeenCalledTimes(1);
+            expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
+            expect(screen.queryByText('Initial Funds')).not.toBeInTheDocument();
+            expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
+            expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
         });
     });
 });
