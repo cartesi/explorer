@@ -177,6 +177,14 @@ describe('HireNode Step', () => {
                     screen.getByText('Looks like that node is already owned.')
                 ).toBeInTheDocument();
             });
+
+            it('Should display message when node-address is in a retired state', () => {
+                mockUseNode.mockReturnValue(buildNodeObj('retired', account));
+                render(<HireNode inFocus stepNumber={1} />);
+                expect(
+                    screen.getByText('This node is already retired.')
+                ).toBeInTheDocument();
+            });
         });
 
         describe('Visual feedback', () => {
