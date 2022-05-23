@@ -12,7 +12,6 @@
 import React, { useState, Fragment, FunctionComponent } from 'react';
 import {
     VStack,
-    Divider,
     Box,
     BoxProps,
     Heading,
@@ -22,14 +21,11 @@ import {
     useColorModeValue,
     Link,
 } from '@chakra-ui/react';
+import { VSeparator, HSeparator } from './Separator';
+import { IStepMeta, IStep } from './interfaces';
 import { range } from 'lodash/fp';
 import { CheckIcon } from '@chakra-ui/icons';
-import theme from '../styles/theme';
-
-type SeparatorProps = {
-    active: boolean;
-    boxProps?: BoxProps;
-};
+import theme from '../../styles/theme';
 
 type HeaderType = {
     currentStep: number;
@@ -42,60 +38,6 @@ interface StepGroupProps {
     mobileHeaderProps?: BoxProps;
     steps: FunctionComponent<IStep>[];
 }
-
-export interface IStepMeta {
-    title: string;
-    subtitle: string;
-}
-
-/**
- * API expected by the StepGroup for each Step component so the StepGroup knows
- * how to move around and present it's own header when rendering on small screens using expected data
- * from onStepActive callback. That is based in duck typing.
- */
-export interface IStep {
-    stepNumber: number;
-    inFocus?: boolean;
-    onComplete?: (...a: any) => void;
-    onPrevious?: (...a: any) => void;
-    onStepActive?: (stepInfo: IStepMeta) => void;
-}
-
-const HSeparator = (props: SeparatorProps) => {
-    const borderColor = useColorModeValue('black', 'white');
-    const dividerProps = props.active ? { borderColor } : {};
-    return (
-        <Box
-            m="0px !important"
-            h={8}
-            w={12}
-            display="flex"
-            alignItems="center"
-            px={1}
-            {...props.boxProps}
-        >
-            <Divider w="full" {...dividerProps} />
-        </Box>
-    );
-};
-
-const VSeparator = (props: SeparatorProps) => {
-    const borderColor = useColorModeValue('black', 'white');
-    const dividerProps = props.active
-        ? { borderColor, h: 8 }
-        : { marginTop: '-2rem' };
-
-    return (
-        <Box
-            px={{ base: 7, md: 16 }}
-            m="0px !important"
-            h={props.active ? 6 : '0.5rem'}
-            {...props.boxProps}
-        >
-            <Divider orientation="vertical" h="3.5rem" {...dividerProps} />
-        </Box>
-    );
-};
 
 const Header = ({
     currentStep,

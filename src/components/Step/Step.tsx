@@ -12,7 +12,6 @@
 import React, { useReducer, useEffect, ReactElement } from 'react';
 import {
     VStack,
-    StackProps,
     Box,
     Text,
     Flex,
@@ -23,8 +22,9 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import { IStepMeta } from './StepGroup';
-import theme from '../styles/theme';
+import { StepStatus } from './enums';
+import { StepProps } from './interfaces';
+import theme from '../../styles/theme';
 
 interface State {
     stepNumberBgColor: string;
@@ -36,42 +36,6 @@ interface State {
     showBodyActions?: boolean;
     StepChecked?: ReactElement;
 }
-
-export enum StepStatus {
-    NOT_ACTIVE = 'NOT_ACTIVE',
-    ACTIVE = 'ACTIVE',
-    COMPLETED = 'COMPLETED',
-}
-
-export interface StepProps extends StackProps {
-    stepNumber?: number;
-    title: string;
-    subtitle: string;
-    status: StepStatus;
-    onActive?: (meta: IStepMeta) => void;
-}
-
-export const StepBody = (props: FlexProps) => {
-    const { children, ...boxProps } = props;
-    return (
-        <Flex direction="column" px={{ base: 3, md: 12 }} py={3} {...boxProps}>
-            {children}
-        </Flex>
-    );
-};
-
-StepBody.displayName = 'StepBody';
-
-export const StepActions = (props: FlexProps) => {
-    const { children, ...boxProps } = props;
-    return (
-        <Flex px={{ base: 3, md: 12 }} py={6} direction="column" {...boxProps}>
-            {children}
-        </Flex>
-    );
-};
-
-StepActions.displayName = 'StepActions';
 
 const reducer = (state, { type, payload }): State => {
     const status = type;
