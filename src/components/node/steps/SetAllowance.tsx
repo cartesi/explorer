@@ -21,19 +21,18 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { IStep } from '../../StepGroup';
-
-const { ACTIVE, NOT_ACTIVE } = StepStatus;
+import { Step, StepActions, StepBody } from '../../Step';
+import { IStep, useStepState } from '../../StepGroup';
 
 const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
+    const [state] = useStepState({ inFocus });
     return (
         <Step
             title="Set Allowance"
             subtitle="Final steps to run your node."
             stepNumber={stepNumber}
-            status={inFocus ? ACTIVE : NOT_ACTIVE}
+            status={state.status}
             onActive={onStepActive}
         >
             <StepBody>

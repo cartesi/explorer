@@ -21,11 +21,10 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { IStep } from '../../StepGroup';
+import { IStep, useStepState } from '../../StepGroup';
 
-const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
+const { COMPLETED } = StepStatus;
 
 const CustomizeEthereumNode = ({
     stepNumber,
@@ -33,17 +32,8 @@ const CustomizeEthereumNode = ({
     onComplete,
     onStepActive,
 }: IStep) => {
-    const [state, setState] = useState({
-        status: inFocus ? ACTIVE : NOT_ACTIVE,
-    });
+    const [state, setState] = useStepState({ inFocus });
     const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
-
-    useEffect(() => {
-        if (!inFocus && state.status === COMPLETED) return;
-
-        const status = inFocus ? ACTIVE : NOT_ACTIVE;
-        setState((state) => ({ ...state, status }));
-    }, [inFocus]);
 
     return (
         <Step
@@ -119,10 +109,7 @@ const CustomizeEthereumNode = ({
                         minWidth={{ base: '10rem' }}
                         colorScheme="blue"
                         onClick={(evt) => {
-                            setState((state) => ({
-                                ...state,
-                                status: COMPLETED,
-                            }));
+                            setState(COMPLETED);
                             onComplete(evt);
                         }}
                     >

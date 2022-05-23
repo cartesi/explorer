@@ -48,13 +48,13 @@ import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { IStep } from '../../StepGroup';
+import { IStep, useStepState } from '../../StepGroup';
 import {
     TransactionInfoBanner,
     ITransactionInfoBannerProps,
 } from '../../poolRedesign/TransactionInfoBanner';
 
-const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
+const { COMPLETED } = StepStatus;
 
 const numberFormatOpts: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,
@@ -368,9 +368,7 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const { tipsBgColor } = useStyle();
-    const [stepState, setStepState] = useState({
-        status: inFocus ? ACTIVE : NOT_ACTIVE,
-    });
+    const [stepState, setStepState] = useStepState({ inFocus });
     const { account } = useWallet();
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [initialFunds, setInitialFunds] = useState<string | null>();
@@ -391,18 +389,8 @@ const HireNode = ({
     };
 
     useEffect(() => {
-        if (!inFocus && stepState.status === COMPLETED) return;
-
-        const status = inFocus ? ACTIVE : NOT_ACTIVE;
-        setStepState((stepState) => ({ ...stepState, status }));
-    }, [inFocus]);
-
-    useEffect(() => {
         if (isStepCompleted) {
-            setStepState((state) => ({
-                ...state,
-                status: COMPLETED,
-            }));
+            setStepState(COMPLETED);
             onComplete && onComplete();
         }
     }, [isStepCompleted]);
@@ -455,10 +443,6 @@ const HireNode = ({
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
-                            setStepState((state) => ({
-                                ...state,
-                                status: NOT_ACTIVE,
-                            }));
                             onPrevious && onPrevious();
                         }}
                     >

@@ -22,12 +22,11 @@ import {
     useColorModeValue,
     Link,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { MdContentCopy } from 'react-icons/md';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { IStep } from '../../StepGroup';
+import { IStep, useStepState } from '../../StepGroup';
 
-const { ACTIVE, NOT_ACTIVE, COMPLETED } = StepStatus;
+const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
@@ -81,16 +80,7 @@ const SetUpNode = ({
         </>
     );
 
-    const [state, setState] = useState({
-        status: inFocus ? ACTIVE : NOT_ACTIVE,
-    });
-
-    useEffect(() => {
-        if (!inFocus && state.status === COMPLETED) return;
-
-        const status = inFocus ? ACTIVE : NOT_ACTIVE;
-        setState((state) => ({ ...state, status }));
-    }, [inFocus]);
+    const [state, setState] = useStepState({ inFocus });
 
     return (
         <Step
@@ -179,10 +169,6 @@ const SetUpNode = ({
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
-                            setState((state) => ({
-                                ...state,
-                                status: NOT_ACTIVE,
-                            }));
                             onPrevious(e);
                         }}
                     >
@@ -192,10 +178,7 @@ const SetUpNode = ({
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
-                            setState((state) => ({
-                                ...state,
-                                status: COMPLETED,
-                            }));
+                            setState(COMPLETED);
                             onComplete(e);
                         }}
                     >
