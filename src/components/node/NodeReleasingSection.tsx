@@ -78,9 +78,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     </Box>
                     <Box>
                         <Text pb={1} color="gray.400">
-                            {releasingBalance.isZero()
-                                ? 'Released'
-                                : 'Releasing'}
+                            {releasingLeftShort ? 'Releasing' : 'Released'}
                         </Text>
                         <Text pb={1} fontSize={'sm'} color="gray.400">
                             Your funds take 48 hours to become unblocked.
@@ -94,9 +92,14 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     </Box>
                 </HStack>
                 <HStack spacing={4} alignItems="center">
-                    {!releasingBalance.isZero() && (
-                        <Button bg={bg} onClick={onWithdraw}>
+                    {releasingBalance.gt(0) && releasingLeftShort && (
+                        <Button bg={bg} disabled={true}>
                             WITHDRAW ({releasingLeftShort})
+                        </Button>
+                    )}
+                    {releasingBalance.gt(0) && !releasingLeftShort && (
+                        <Button bg={bg} onClick={onWithdraw}>
+                            WITHDRAW
                         </Button>
                     )}
                 </HStack>

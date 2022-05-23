@@ -37,7 +37,14 @@ export const NodeHireNodeSection = () => {
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
         >
-            <VStack py={6} px={60} spacing={5}>
+            <Stack
+                spacing={4}
+                py={[4, 4, 6]}
+                px={[4, 4, 60]}
+                justifySelf="flex-end"
+                justifyContent="flex-end"
+                alignItems="flex-end"
+            >
                 <FormControl>
                     <HStack justify="space-between">
                         <FormLabel fontWeight="bold">Node address</FormLabel>
@@ -63,15 +70,6 @@ export const NodeHireNodeSection = () => {
                     </InputGroup>
                     <FormHelperText>Your balance: 123123 ETH</FormHelperText>
                 </FormControl>
-            </VStack>
-            <Stack
-                spacing={4}
-                mb={8}
-                pe={60}
-                justifySelf="flex-end"
-                justifyContent="flex-end"
-                alignItems="flex-end"
-            >
                 <Button
                     colorScheme="blue"
                     w={{ base: '100%', md: 'auto' }}
