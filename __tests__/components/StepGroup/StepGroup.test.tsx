@@ -15,8 +15,8 @@ import {
     StepActions,
     StepBody,
     StepStatus,
-} from '../../src/components/Step';
-import { StepGroup, IStep } from '../../src/components/StepGroup';
+} from '../../../src/components/Step';
+import { StepGroup, IStep } from '../../../src/components/StepGroup';
 import { Button, useBreakpointValue } from '@chakra-ui/react';
 
 jest.mock('@chakra-ui/react', () => {

@@ -16,7 +16,7 @@ import {
     StepBody,
     StepActions,
     StepStatus,
-} from '../../src/components/Step';
+} from '../../../src/components/Step';
 import { Button, Heading } from '@chakra-ui/react';
 
 describe('Step component', () => {
