@@ -65,7 +65,7 @@ export const DepositSection: FC<IDepositSection> = ({
                 <Box pt={2}>
                     <Text
                         fontSize="xs"
-                        textAlign={{ base: 'left', sm: 'left', md: 'right' }}
+                        textAlign={{ base: 'left', md: 'right' }}
                     >
                         {userWalletBalance.isZero() ? (
                             <>
