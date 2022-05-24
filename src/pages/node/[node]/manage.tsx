@@ -16,11 +16,9 @@ import {
     Button,
     Flex,
     Heading,
-    HStack,
     Link,
     Spacer,
     Stack,
-    useBreakpointValue,
     useColorModeValue,
     useDisclosure,
     VStack,
@@ -59,13 +57,10 @@ import { TransactionInfoBanner } from '../../../components/poolRedesign/Transact
 import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import { NodeHireNodeSection } from '../../../components/node/NodeHireNodeSection';
-import theme from '../../../styles/theme';
 
 const ManageNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
     const blockNumber = useBlockNumber();
-    const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const stepBoxBg = useColorModeValue('white', 'gray.700');
 
     const router = useRouter();
     const address = router.query.node as string;
@@ -94,11 +89,11 @@ const ManageNode: FC = () => {
         transaction: tokenTransaction,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    // const summary = useSummary();
-    // const user = useUser(account);
+    const summary = useSummary();
+    const user = useUser(account);
 
-    // const waiting =
-    //     stakingTransaction.submitting || tokenTransaction.submitting;
+    const waiting =
+        stakingTransaction.submitting || tokenTransaction.submitting;
 
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
@@ -186,6 +181,28 @@ const ManageNode: FC = () => {
                     />
                 )}
             </Box>
+            {/* <PagePanel>
+                <Node
+                    chainId={chainId}
+                    account={account}
+                    address={activeWorker}
+                    p={[5, 5, 10, 10]}
+                    user={node.user}
+                    balance={node.balance}
+                    userBalance={userBalance}
+                    available={node.available}
+                    pending={node.pending}
+                    owned={node.owned}
+                    retired={node.retired}
+                    authorized={node.authorized}
+                    onAddressChange={setWorker}
+                    onHire={(worker, amount) => node.hire(amount)}
+                    onCancelHire={() => node.cancelHire()}
+                    onRetire={() => node.retire()}
+                    onTransfer={(worker, amount) => node.transfer(amount)}
+                />
+            </PagePanel> */}
+
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 8, sm: 12, lg: 16 }}
@@ -233,27 +250,25 @@ const ManageNode: FC = () => {
                             Learn with this tutorial <ExternalLinkIcon />
                         </Link>
                     </Box>
-                    {!isSmallScreen && (
-                        <Box>
-                            <Button
-                                bgColor={bg}
-                                w={{ base: '100%', md: 'auto' }}
-                                minW="15rem"
-                                me={2}
-                                onClick={unstakeDisclosure.onOpen}
-                            >
-                                UNSTAKE
-                            </Button>
-                            <Button
-                                colorScheme="blue"
-                                w={{ base: '100%', md: 'auto' }}
-                                minW="15rem"
-                                onClick={stakeDisclosure.onOpen}
-                            >
-                                STAKE
-                            </Button>
-                        </Box>
-                    )}
+                    <Box>
+                        <Button
+                            bgColor={bg}
+                            w={{ base: '100%', md: 'auto' }}
+                            minW="15rem"
+                            me={2}
+                            onClick={unstakeDisclosure.onOpen}
+                        >
+                            UNSTAKE
+                        </Button>
+                        <Button
+                            colorScheme="blue"
+                            w={{ base: '100%', md: 'auto' }}
+                            minW="15rem"
+                            onClick={stakeDisclosure.onOpen}
+                        >
+                            STAKE
+                        </Button>
+                    </Box>
                 </Stack>
 
                 <TransactionInfoBanner
@@ -322,39 +337,6 @@ const ManageNode: FC = () => {
                 <NodeRetiredBanner />
                 <NodeHireNodeSection />
             </Box>
-            {isSmallScreen && (
-                <Box
-                    position={'sticky'}
-                    bottom={0}
-                    boxShadow="0px -4px 8px rgb(47 32 27 / 4%)"
-                    bgColor={stepBoxBg}
-                    zIndex={theme.zIndices.sm}
-                >
-                    <Stack
-                        py={4}
-                        px={4}
-                        spacing={4}
-                        justifyContent="space-between"
-                        direction="row"
-                    >
-                        <Button
-                            bgColor={bg}
-                            w={{ base: '100%', md: 'auto' }}
-                            me={2}
-                            onClick={unstakeDisclosure.onOpen}
-                        >
-                            UNSTAKE
-                        </Button>
-                        <Button
-                            colorScheme="blue"
-                            w={{ base: '100%', md: 'auto' }}
-                            onClick={stakeDisclosure.onOpen}
-                        >
-                            STAKE
-                        </Button>
-                    </Stack>
-                </Box>
-            )}
         </Layout>
     );
 };
