@@ -16,4 +16,4 @@ export const Heading = {
     defaultProps: {
         size: 'xl',
     },
-};  
+};

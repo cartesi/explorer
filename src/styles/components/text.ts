@@ -14,7 +14,7 @@ export const Text = {
         fontWeight: 'normal',
     },
     variants: {
-        'label' : {
+        label: {
             fontSize: 'md',
             fontWeight: 'normal',
             lineHeight: '190%',
