@@ -186,9 +186,27 @@ const ManageNode: FC = () => {
                     />
                 )}
             </Box>
+
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 6, sm: 8, lg: 8 }}
+                pt={{ base: 6 }}
+                bg={bg}
+            >
+                <VStack spacing={4} alignItems="stretch">
+                    <TransactionInfoBanner
+                        title="Setting allowance..."
+                        failTitle="Error setting allowance"
+                        successDescription="New allowance set sucessfully."
+                        transaction={tokenTransaction}
+                    />
+
+                    <TransactionFeedback transaction={tokenTransaction} />
+                </VStack>
+            </Box>
+
+            <Box
+                px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
+                pb={{ base: 6, sm: 8, lg: 8 }}
                 bg={bg}
                 fontSize={'xl'}
             >
@@ -256,14 +274,6 @@ const ManageNode: FC = () => {
                     )}
                 </Stack>
 
-                <TransactionInfoBanner
-                    title="Setting allowance..."
-                    failTitle="Error setting allowance"
-                    successDescription="New allowance set sucessfully."
-                    transaction={tokenTransaction}
-                />
-
-                <TransactionFeedback transaction={tokenTransaction} />
                 <TransactionFeedback transaction={stakingTransaction} />
                 <TransactionFeedback transaction={node.transaction} />
 
