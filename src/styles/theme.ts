@@ -10,6 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { extendTheme } from '@chakra-ui/react';
+import { Heading } from './components/heading';
+import { Text } from './components/text';
 import { Button } from './components/button';
 import { Link } from './components/link';
 import { Modal } from './components/modal';
@@ -35,6 +37,8 @@ const theme = extendTheme({
         useSystemColorMode: false,
     },
     components: {
+        Heading,
+        Text,
         Button,
         Link,
         Modal,

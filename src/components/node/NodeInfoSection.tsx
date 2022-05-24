@@ -76,41 +76,46 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                 bg={bg}
                 borderRadius="lg"
                 shadow="sm"
-                px={{ base: 2, lg: 4, xl: 8 }}
-                py={{ base: 2, sm: 4, lg: 8 }}
+                p={{ base: 2, lg: 6 }}
                 mb={6}
             >
                 <Stack
                     spacing={4}
-                    // justifyContent="space-between"
                     alignContent="flex-start"
                     direction={{ base: 'column', md: 'row' }}
                     p={2}
                 >
-                    <Text>Node address</Text>
+                    <Box w={{ base: '100%', md: '140px' }}>
+                        <Text variant="label">Node address</Text>
+                    </Box>
                     <Text isTruncated>{address}</Text>
                 </Stack>
                 <Stack
                     spacing={4}
-                    // justifyContent="space-between"
                     alignContent="flex-start"
                     direction={{ base: 'column', md: 'row' }}
                     p={2}
                 >
-                    <HStack>
-                        <Text>Node balance</Text>
-                        <Box>
-                            <Tooltip
-                                placement="bottom"
-                                label="SAMPLE TEXT"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
-                            >
-                                <Icon width={4} height={4} color="gray.600" />
-                            </Tooltip>
-                        </Box>
-                    </HStack>
+                    <Box w={{ base: '100%', md: '140px' }}>
+                        <HStack>
+                            <Text variant="label">Node balance</Text>
+                            <Box>
+                                <Tooltip
+                                    placement="bottom"
+                                    label="SAMPLE TEXT"
+                                    fontSize="small"
+                                    bg="black"
+                                    color="white"
+                                >
+                                    <Icon
+                                        width={4}
+                                        height={4}
+                                        color="gray.600"
+                                    />
+                                </Tooltip>
+                            </Box>
+                        </HStack>
+                    </Box>
 
                     <HStack spacing={4} alignItems="flex-end">
                         <Box>
@@ -132,25 +137,30 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                 </Stack>
                 <Stack
                     spacing={4}
-                    // justifyContent="space-between"
                     alignContent="flex-start"
                     direction={{ base: 'column', md: 'row' }}
                     p={2}
                 >
-                    <HStack>
-                        <Text>Node status</Text>
-                        <Box>
-                            <Tooltip
-                                placement="bottom"
-                                label="SAMPLE TEXT"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
-                            >
-                                <Icon width={4} height={4} color="gray.600" />
-                            </Tooltip>
-                        </Box>
-                    </HStack>
+                    <Box w={{ base: '100%', md: '140px' }}>
+                        <HStack>
+                            <Text variant="label">Node status</Text>
+                            <Box>
+                                <Tooltip
+                                    placement="bottom"
+                                    label="SAMPLE TEXT"
+                                    fontSize="small"
+                                    bg="black"
+                                    color="white"
+                                >
+                                    <Icon
+                                        width={4}
+                                        height={4}
+                                        color="gray.600"
+                                    />
+                                </Tooltip>
+                            </Box>
+                        </HStack>
+                    </Box>
                     <HStack spacing={4} alignItems="flex-end">
                         <Box>
                             <Text>Running</Text>

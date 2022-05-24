@@ -59,7 +59,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                     </Box>
                     <Box>
                         <Text color="gray.400">Your staked balance</Text>
-                        <Heading m={0} size="lg">
+                        <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={stakedBalance} />
                                 <Text ml={1}>CTSI</Text>

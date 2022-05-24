@@ -77,13 +77,13 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                         />
                     </Box>
                     <Box>
-                        <Text pb={1} color="gray.400">
+                        <Text pb={1} color="gray.400" fontWeight="semibold">
                             {releasingLeftShort ? 'Releasing' : 'Released'}
                         </Text>
                         <Text pb={1} fontSize={'sm'} color="gray.400">
                             Your funds take 48 hours to become unblocked.
                         </Text>
-                        <Heading m={0} size="lg">
+                        <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={releasingBalance} />
                                 <Text ml={1}>CTSI</Text>

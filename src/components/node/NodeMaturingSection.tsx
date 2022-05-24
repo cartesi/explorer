@@ -71,7 +71,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                     </Box>
 
                     <Box>
-                        <Text pb={1} color="gray.400">
+                        <Text pb={1} color="gray.400" fontWeight="semibold">
                             Maturing
                         </Text>
                         <Text pb={1} fontSize={'sm'} color="gray.400">
@@ -82,7 +82,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                             to be ready. Each new stake will restart the waiting
                             time.
                         </Text>
-                        <Heading m={0} size="lg">
+                        <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={maturingBalance} />
                                 <Text ml={1}>CTSI</Text>

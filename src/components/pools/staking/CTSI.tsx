@@ -25,7 +25,7 @@ const CTSI: FC<CTSIProps> = ({ value, ...textProps }) => {
         maximumFractionDigits: 2,
     });
     return (
-        <Text fontSize="3xl" {...textProps}>
+        <Text fontSize="2xl" fontWeight="bold" {...textProps}>
             {numberFormat.format(parseFloat(formatUnits(value, 18)))}
         </Text>
     );

@@ -166,14 +166,14 @@ const ManageNode: FC = () => {
                         >
                             Back
                         </Button>
-                        <Heading fontWeight="normal">Run your own node</Heading>
+                        <Heading fontWeight="bold">Run your own node</Heading>
                         <Spacer />
                     </VStack>
                 </Stack>
             </Box>
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 4, sm: 6, lg: 8 }}
                 shadow="md"
             >
                 {isConnected && (
@@ -188,7 +188,7 @@ const ManageNode: FC = () => {
             </Box>
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 6, sm: 8, lg: 8 }}
                 bg={bg}
                 fontSize={'xl'}
             >
@@ -196,11 +196,11 @@ const ManageNode: FC = () => {
                     spacing={4}
                     justifyContent="space-between"
                     alignContent="flex-start"
-                    mb={8}
+                    mb={4}
                     direction={{ base: 'column', md: 'row' }}
                 >
                     <Box>
-                        <Heading as="h2" size="lg" mb={0}>
+                        <Heading as="h2" mb={0}>
                             Your Node
                         </Heading>
                         <Link href="#" isExternal fontSize="xs">
@@ -222,11 +222,11 @@ const ManageNode: FC = () => {
                     justifyContent="space-between"
                     alignContent="flex-start"
                     mt={16}
-                    mb={8}
+                    mb={4}
                     direction={{ base: 'column', md: 'row' }}
                 >
                     <Box>
-                        <Heading as="h2" size="lg" mb={0}>
+                        <Heading as="h2" mb={0}>
                             Staking
                         </Heading>
                         <Link href="#" isExternal fontSize="xs">

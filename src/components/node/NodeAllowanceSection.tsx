@@ -36,9 +36,13 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
     onAllowanceClick,
 }) => {
     return (
-        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '30%' }}>
-            <HStack w="full" spacing={4} alignItems="center" pt={4}>
-                <Box w={14} h={14} display="grid" placeContent="center"></Box>
+        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '20%' }}>
+            <HStack
+                w="full"
+                spacing={4}
+                alignItems="center"
+                pt={{ base: 4, lg: 0 }}
+            >
                 <Box flexGrow="1">
                     <HStack>
                         <Text color="gray.400">Allowance</Text>
@@ -52,7 +56,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             <Icon color="gray.400" />
                         </Tooltip>
                     </HStack>
-                    <Heading m={0} size="lg">
+                    <Heading m={0} size="sm">
                         <Flex align="baseline">
                             <CTSI value={allowance} />
                             <Text ml={1}>CTSI</Text>
