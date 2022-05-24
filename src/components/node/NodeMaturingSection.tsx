@@ -17,7 +17,6 @@ import {
     Stack,
     useColorModeValue,
     Heading,
-    AspectRatio,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
