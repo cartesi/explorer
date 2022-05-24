@@ -159,7 +159,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         the pool as far as you have the tokens
                                         amount is lower than the set allowance.
                                         As a safety precaution, the average
-                                        waiting time is 6 hours.
+                                        waiting time is 6 hours.
                                     </Text>
 
                                     <HStack
