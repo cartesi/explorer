@@ -53,6 +53,22 @@ import {
     TransactionInfoBanner,
     ITransactionInfoBannerProps,
 } from '../../poolRedesign/TransactionInfoBanner';
+import { BaseInput, ValidationResult, MappedErrors } from '../../BaseInput';
+
+type NodeField = 'nodeAddress';
+type DepositField = 'deposit';
+interface NodeInput extends BaseInput<NodeField> {
+    node: Node;
+    account: string;
+}
+
+interface InitialFundsInput extends BaseInput<DepositField> {
+    min: number;
+    max: number;
+}
+
+type Validation = ValidationResult<NodeField | DepositField>;
+type Errors = Partial<MappedErrors<Validation>>;
 
 const { COMPLETED } = StepStatus;
 
@@ -110,32 +126,6 @@ const evaluateNode = (account: string, node: Node) => {
     }
 };
 
-type ErrorContent = { message: string; type: string };
-interface ValidationResult {
-    name: 'nodeAddress' | 'deposit';
-    error?: ErrorContent;
-    isValid: boolean;
-}
-
-type Errors = {
-    [key: string | undefined]: ValidationResult;
-};
-interface BaseInput {
-    onChange: (address: string) => void;
-    helperText?: string;
-    onValidationChange?: (validationResult: ValidationResult) => void;
-}
-
-interface NodeInput extends BaseInput {
-    node: Node;
-    account: string;
-}
-
-interface InitialFundsInput extends BaseInput {
-    min: number;
-    max: number;
-}
-
 const NodeInput = ({
     onChange,
     node,
@@ -152,7 +142,7 @@ const NodeInput = ({
     useEffect(() => {
         if (!isFunction(onValidationChange)) return;
 
-        const validation: ValidationResult = {
+        const validation: Validation = {
             name: 'nodeAddress',
             isValid: !isInvalid,
         };
@@ -273,7 +263,7 @@ const InitialFundsInput = ({
     useEffect(() => {
         if (!isFunction(onValidationChange)) return;
 
-        const validation: ValidationResult = {
+        const validation: Validation = {
             name: 'deposit',
             isValid: isEmpty(depositErrors),
         };
@@ -379,7 +369,7 @@ const HireNode = ({
     const { transaction } = node;
     const isStepCompleted = isNodeHiringCompleted(transaction);
 
-    const handleValidation = (validation: ValidationResult) => {
+    const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
         setErrors((state) => {
             return isValid
