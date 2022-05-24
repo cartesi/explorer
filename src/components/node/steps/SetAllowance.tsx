@@ -21,42 +21,87 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { isEmpty, omit } from 'lodash/fp';
+import { useState } from 'react';
+import {
+    BaseInput,
+    ValidationResult,
+    OptionalMappedErrors,
+} from '../../BaseInput';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 
-const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
+const useStyle = () => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
-    const [state] = useStepState({ inFocus });
+    return { helperTxtColor };
+};
+
+type Validation = ValidationResult<'allowance'>;
+type AllowanceInput = BaseInput<'allowance'>;
+type Errors = OptionalMappedErrors<Validation>;
+
+const SetAllowanceInput = ({
+    onChange,
+    onValidationChange,
+}: AllowanceInput) => {
+    const { helperTxtColor } = useStyle();
+    return (
+        <FormControl pr={{ base: 0, md: '20vw' }} my={4}>
+            <FormLabel htmlFor="allowance_amount" fontWeight="medium">
+                Enter the allowance
+            </FormLabel>
+            <InputGroup>
+                <Input
+                    id="allowance_amount"
+                    type="number"
+                    size="lg"
+                    onChange={(evt) => onChange(evt?.target?.value)}
+                />
+                <InputRightElement
+                    children="CTSI"
+                    m={1}
+                    mr={2}
+                    color="gray"
+                    fontSize={12}
+                />
+            </InputGroup>
+            <FormHelperText color={helperTxtColor} fontSize={14}>
+                This is going to be the maximum amount of CTSI that Cartesi’s
+                staking contract will be able to receive from your personal
+                account.
+            </FormHelperText>
+            <FormErrorMessage></FormErrorMessage>
+        </FormControl>
+    );
+};
+
+const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
+    const [stepState] = useStepState({ inFocus });
+    const [allowanceAmount, setAllowance] = useState<string | null>();
+    const [errors, setErrors] = useState<Errors>({});
+
+    const handleValidation = (validation: Validation) => {
+        const { name, isValid } = validation;
+        setErrors((state) => {
+            return isValid
+                ? omit([name], state)
+                : { ...state, [name]: validation };
+        });
+    };
+
     return (
         <Step
             title="Set Allowance"
             subtitle="Final steps to run your node."
             stepNumber={stepNumber}
-            status={state.status}
+            status={stepState.status}
             onActive={onStepActive}
         >
             <StepBody>
-                <FormControl pr={{ base: 0, md: '20vw' }} my={4}>
-                    <FormLabel htmlFor="allowance_amount" fontWeight="medium">
-                        Enter the allowance
-                    </FormLabel>
-                    <InputGroup>
-                        <Input id="allowance_amount" type="number" size="lg" />
-                        <InputRightElement
-                            children="CTSI"
-                            m={1}
-                            mr={2}
-                            color="gray"
-                            fontSize={12}
-                        />
-                    </InputGroup>
-                    <FormHelperText color={helperTxtColor} fontSize={14}>
-                        This is going to be the maximum amount of CTSI that
-                        Cartesi’s staking contract will be able to receive from
-                        your personal account.
-                    </FormHelperText>
-                    <FormErrorMessage></FormErrorMessage>
-                </FormControl>
+                <SetAllowanceInput
+                    onChange={setAllowance}
+                    onValidationChange={handleValidation}
+                />
             </StepBody>
             <StepActions>
                 <Stack
@@ -64,6 +109,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
+                        disabled={isEmpty(allowanceAmount)}
                         minWidth={{ base: '10rem' }}
                         colorScheme="blue"
                         onClick={() => console.log('go somewhere')}
