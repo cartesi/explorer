@@ -11,9 +11,9 @@
 
 export const Heading = {
   baseStyle: {
-      fontWeight: 'normal',
+    fontWeight: 'normal',
   },
   defaultProps: {
-      size: 'xl',
+    size: 'xl',
   },
 };

@@ -11,7 +11,7 @@
 
 export const Text = {
   baseStyle: {
-      fontWeight: 'normal',
+    fontWeight: 'normal',
   },
   variants: {
     'label' : {
