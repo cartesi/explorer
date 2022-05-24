@@ -35,7 +35,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     userCTSIBalance,
 }) => (
     <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
-        <HStack spacing={4} alignItems="center" py={4} mb="2px">
+        <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
             <Box
                 bg="blue.100"
                 w={14}
@@ -59,7 +59,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                         <Icon color="gray.400" />
                     </Tooltip>
                 </HStack>
-                <Heading m={0} size="lg">
+                <Heading m={0} size="sm">
                     <Flex align="baseline">
                         <CTSI value={userCTSIBalance} />
                         <Text ml={1}>CTSI</Text>

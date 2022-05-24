@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon, CheckIcon, CheckCircleIcon } from '@chakra-ui/icons';
+import { EditIcon } from '@chakra-ui/icons';
 import {
     Button,
     HStack,
@@ -47,10 +47,6 @@ interface IStakingDepositModalProps {
     onClose: () => void;
     onSave: (amount: BigNumber, where: String) => void;
 }
-
-const toCTSI = (value: BigNumber) => {
-    return parseFloat(formatUnits(value, 18));
-};
 
 export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     allowance,
@@ -105,7 +101,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             Allowance Amount
                                         </FormLabel>
                                         <CTSINumberInput
-                                            defaultValue={allowanceFormatted}
                                             min={0}
                                             max={balanceFormatted}
                                             // ref={inputFocusRef}
@@ -226,7 +221,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             Deposit Amount
                                         </FormLabel>
                                         <CTSINumberInput
-                                            defaultValue={0}
                                             min={0}
                                             max={allowanceFormatted}
                                             // ref={inputFocusRef}

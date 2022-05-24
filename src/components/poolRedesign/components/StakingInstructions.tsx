@@ -25,7 +25,7 @@ import { InfoBanner } from '../InfoBanner';
 
 const SHOW_STAKING_INSTRUCTIONS = 'showStakingInstructions';
 
-export const StakingInstructions: FC = ({}) => {
+export const StakingInstructions: FC = () => {
     const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
 

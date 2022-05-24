@@ -23,7 +23,6 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { AllowanceIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
 interface IAllowanceSectionProps {
@@ -36,8 +35,13 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
     onAllowanceClick,
 }) => {
     return (
-        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '30%' }}>
-            <HStack w="full" spacing={4} alignItems="center" p={4}>
+        <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '25%' }}>
+            <HStack
+                w="full"
+                spacing={4}
+                alignItems="center"
+                pt={{ base: 4, lg: 0 }}
+            >
                 <Box flexGrow="1">
                     <HStack>
                         <Text color="gray.400">Pool allowance</Text>
@@ -51,7 +55,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             <Icon color="gray.400" />
                         </Tooltip>
                     </HStack>
-                    <Heading m={0} size="lg">
+                    <Heading m={0} size="sm">
                         <Flex align="baseline">
                             <CTSI value={allowance} />
                             <Text ml={1}>CTSI</Text>

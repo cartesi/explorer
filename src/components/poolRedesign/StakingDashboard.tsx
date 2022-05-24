@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Stack, useDisclosure, VStack, StackProps } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
@@ -46,7 +45,6 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
             <VStack spacing={8}>
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
-                    spacing={8}
                     w="full"
                     justifyContent="space-between"
                 >
