@@ -20,8 +20,6 @@ import {
     Button,
     IconButton,
     useDisclosure,
-    Tooltip,
-    Icon,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -82,36 +80,22 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
             >
                 <Stack
                     spacing={4}
-                    // justifyContent="space-between"
+                    justifyContent="space-between"
                     alignContent="flex-start"
                     direction={{ base: 'column', md: 'row' }}
                     p={2}
                 >
-                    <Text>Node address</Text>
+                    <Text>Address</Text>
                     <Text isTruncated>{address}</Text>
                 </Stack>
                 <Stack
                     spacing={4}
-                    // justifyContent="space-between"
+                    justifyContent="space-between"
                     alignContent="flex-start"
                     direction={{ base: 'column', md: 'row' }}
                     p={2}
                 >
-                    <HStack>
-                        <Text>Node balance</Text>
-                        <Box>
-                            <Tooltip
-                                placement="bottom"
-                                label="SAMPLE TEXT"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
-                            >
-                                <Icon width={4} height={4} color="gray.600" />
-                            </Tooltip>
-                        </Box>
-                    </HStack>
-
+                    <Text>Deposit Funds</Text>
                     <HStack spacing={4} alignItems="flex-end">
                         <Box>
                             <Flex align="baseline">
@@ -127,33 +111,6 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                 variant="ghost"
                                 onClick={depositModal.onOpen}
                             />
-                        </Box>
-                    </HStack>
-                </Stack>
-                <Stack
-                    spacing={4}
-                    // justifyContent="space-between"
-                    alignContent="flex-start"
-                    direction={{ base: 'column', md: 'row' }}
-                    p={2}
-                >
-                    <HStack>
-                        <Text>Node status</Text>
-                        <Box>
-                            <Tooltip
-                                placement="bottom"
-                                label="SAMPLE TEXT"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
-                            >
-                                <Icon width={4} height={4} color="gray.600" />
-                            </Tooltip>
-                        </Box>
-                    </HStack>
-                    <HStack spacing={4} alignItems="flex-end">
-                        <Box>
-                            <Text>Running</Text>
                         </Box>
                     </HStack>
                 </Stack>

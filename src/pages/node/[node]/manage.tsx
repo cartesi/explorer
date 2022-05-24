@@ -283,7 +283,7 @@ const ManageNode: FC = () => {
                 <TransactionFeedback transaction={node.transaction} />
 
                 <Flex pb={12} direction={['column', 'column', 'column', 'row']}>
-                    <Box flex="3">
+                    <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>
                         <NodeMaturingSection
                             maturingBalance={maturingBalance}
                             maturingLeft={maturingLeft}
