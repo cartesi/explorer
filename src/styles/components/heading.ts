@@ -13,8 +13,6 @@ export const Heading = {
   baseStyle: {
       fontWeight: 'normal',
   },
-  variants: {
-  },
   defaultProps: {
       size: 'xl',
   },

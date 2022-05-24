@@ -20,6 +20,4 @@ export const Text = {
       lineHeight: '190%',
     },
   },
-  defaultProps: {
-  },
 };
