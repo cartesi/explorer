@@ -10,10 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const Heading = {
-  baseStyle: {
-    fontWeight: 'normal',
-  },
-  defaultProps: {
-    size: 'xl',
-  },
-};
+    baseStyle: {
+        fontWeight: 'normal',
+    },
+    defaultProps: {
+        size: 'xl',
+    },
+};  

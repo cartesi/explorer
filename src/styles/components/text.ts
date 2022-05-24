@@ -10,14 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const Text = {
-  baseStyle: {
-    fontWeight: 'normal',
-  },
-  variants: {
-    'label' : {
-      fontSize: 'md',
-      fontWeight: 'normal',
-      lineHeight: '190%',
+    baseStyle: {
+        fontWeight: 'normal',
     },
-  },
+    variants: {
+        'label' : {
+            fontSize: 'md',
+            fontWeight: 'normal',
+            lineHeight: '190%',
+        },
+    },
 };
