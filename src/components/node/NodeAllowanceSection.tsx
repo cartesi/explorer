@@ -23,7 +23,6 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { WalletIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
 
 interface INodeAllowanceSectionProps {

@@ -87,7 +87,6 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     Stake Amount
                                 </FormLabel>
                                 <CTSINumberInput
-                                    defaultValue={0}
                                     min={0}
                                     max={userBalanceFormatted}
                                     // ref={inputFocusRef}
