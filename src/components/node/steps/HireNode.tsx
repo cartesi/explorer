@@ -246,7 +246,7 @@ const InitialFundsInput = ({
         validate,
         required: {
             value: true,
-            message: useMessages('required.field'),
+            message: useMessages('field.isRequired'),
         },
         max: {
             value: max,
