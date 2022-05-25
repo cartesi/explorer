@@ -182,7 +182,7 @@ const ManageNode: FC = () => {
                         userETHBalance={userETHBalance}
                         balance={balance}
                         allowance={allowance}
-                        onApprove={(amount) => approve(address, amount)}
+                        onApprove={(amount) => approve(staking.address, amount)}
                     />
                 )}
             </Box>
