@@ -30,8 +30,14 @@ const messages = {
         minAllowed: (amount: number, token = 'ETH') =>
             `Min amount of ${token} allowed to deposit is ${amount}`,
     },
-    required: {
-        field: () => 'This field is required.',
+    field: {
+        isRequired: () => 'This field is required.',
+        value: {
+            should: {
+                beGreaterThan: (val = 0, label = 'Value') =>
+                    `${label} should be greater than ${val}`,
+            },
+        },
     },
 };
 

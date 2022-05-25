@@ -96,10 +96,36 @@ describe('useMessages hook', () => {
         });
     });
 
-    describe('Messages on a required context', () => {
+    describe('Messages on a field context', () => {
         it('should return message for a required field', () => {
-            const { result } = renderHook(() => useMessages('required.field'));
+            const { result } = renderHook(() =>
+                useMessages('field.isRequired')
+            );
             expect(result.current).toEqual('This field is required.');
+        });
+
+        describe('for greater than', () => {
+            it('should return a default message for a field where value should be greater than', () => {
+                const { result } = renderHook(() =>
+                    useMessages('field.value.should.beGreaterThan')
+                );
+                expect(result.current).toEqual(
+                    'Value should be greater than 0'
+                );
+            });
+
+            it('should return a message with params for the value and the label (e.g. Allowance)', () => {
+                const { result } = renderHook(() =>
+                    useMessages(
+                        'field.value.should.beGreaterThan',
+                        100,
+                        'Allowance'
+                    )
+                );
+                expect(result.current).toEqual(
+                    'Allowance should be greater than 100'
+                );
+            });
         });
     });
 });
