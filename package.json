@@ -91,6 +91,7 @@
         "eslint-plugin-prettier": "4.0.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^27.5.1",
+        "jest-mock-extended": "^2.0.6",
         "prettier": "^2.4.1",
         "storybook-addon-apollo-client": "^4.0.11",
         "typechain": "^5.0.0",
