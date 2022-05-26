@@ -21,8 +21,14 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { isEmpty, omit } from 'lodash/fp';
-import { useState } from 'react';
+import { isEmpty, isFunction, omit, isNil } from 'lodash/fp';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useWallet } from '../../../contexts/wallet';
+import { useStaking } from '../../../services/staking';
+import { useCartesiToken } from '../../../services/token';
+import { useMessages } from '../../../utils/messages';
+import { toBigNumber } from '../../../utils/numberParser';
 import {
     BaseInput,
     ValidationResult,
@@ -39,14 +45,60 @@ const useStyle = () => {
 type Validation = ValidationResult<'allowance'>;
 type AllowanceInput = BaseInput<'allowance'>;
 type Errors = OptionalMappedErrors<Validation>;
+type AllowanceField = { allowance?: number };
+
+const validate = (allowance: number) => {
+    if (allowance <= 0)
+        return useMessages('field.value.should.beGreaterThan', 0, 'Allowance');
+    return true;
+};
 
 const SetAllowanceInput = ({
     onChange,
     onValidationChange,
 }: AllowanceInput) => {
     const { helperTxtColor } = useStyle();
+    const {
+        register,
+        trigger,
+        formState: { errors },
+    } = useForm<AllowanceField>();
+
+    const { onChange: onChangeValidate, ...registerProps } = register(
+        'allowance',
+        {
+            valueAsNumber: true,
+            required: {
+                value: true,
+                message: useMessages('field.isRequired'),
+            },
+            validate,
+        }
+    );
+
+    const { allowance: allowanceErrors } = errors;
+
+    useEffect(() => {
+        if (!isFunction(onValidationChange)) return;
+
+        const validation: Validation = {
+            name: 'allowance',
+            isValid: isEmpty(allowanceErrors),
+        };
+        if (!isEmpty(allowanceErrors)) {
+            const { type, message } = allowanceErrors;
+            validation.error = { message, type };
+        }
+
+        onValidationChange(validation);
+    }, [allowanceErrors]);
+
     return (
-        <FormControl pr={{ base: 0, md: '20vw' }} my={4}>
+        <FormControl
+            pr={{ base: 0, md: '20vw' }}
+            my={4}
+            isInvalid={!isNil(allowanceErrors)}
+        >
             <FormLabel htmlFor="allowance_amount" fontWeight="medium">
                 Enter the allowance
             </FormLabel>
@@ -55,7 +107,12 @@ const SetAllowanceInput = ({
                     id="allowance_amount"
                     type="number"
                     size="lg"
-                    onChange={(evt) => onChange(evt?.target?.value)}
+                    {...registerProps}
+                    onChange={(evt) => {
+                        onChangeValidate(evt);
+                        onChange(evt?.target.value);
+                        trigger('allowance');
+                    }}
                 />
                 <InputRightElement
                     children="CTSI"
@@ -65,17 +122,27 @@ const SetAllowanceInput = ({
                     fontSize={12}
                 />
             </InputGroup>
+            <FormErrorMessage>{allowanceErrors?.message}</FormErrorMessage>
             <FormHelperText color={helperTxtColor} fontSize={14}>
                 This is going to be the maximum amount of CTSI that Cartesi’s
                 staking contract will be able to receive from your personal
                 account.
             </FormHelperText>
-            <FormErrorMessage></FormErrorMessage>
         </FormControl>
     );
 };
 
+const enableBtnWhen = (
+    allowance: string,
+    submitting: boolean,
+    errors: Errors
+) => !isEmpty(allowance) && !submitting && isEmpty(errors);
+
 const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
+    const { account } = useWallet();
+    const { staking } = useStaking(account);
+    const { approve, transaction } = useCartesiToken(account, staking?.address);
+
     const [stepState] = useStepState({ inFocus });
     const [allowanceAmount, setAllowance] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
@@ -88,6 +155,12 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                 : { ...state, [name]: validation };
         });
     };
+
+    const enableBtn = enableBtnWhen(
+        allowanceAmount,
+        transaction.submitting,
+        errors
+    );
 
     return (
         <Step
@@ -109,10 +182,16 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
-                        disabled={isEmpty(allowanceAmount)}
+                        disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
                         colorScheme="blue"
-                        onClick={() => console.log('go somewhere')}
+                        isLoading={transaction.submitting}
+                        onClick={() =>
+                            approve(
+                                staking.address,
+                                toBigNumber(allowanceAmount)
+                            )
+                        }
                     >
                         RUN YOUR NODE
                     </Button>
