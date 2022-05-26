@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // Copyright (C) 2022 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
@@ -9,11 +10,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { mock } from 'jest-mock-extended';
 import { ContractReceipt } from 'ethers';
-import { cond, isEqual, constant, stubTrue, cloneDeep } from 'lodash/fp';
+import { cond, isEqual, constant, stubTrue, cloneDeep, set } from 'lodash/fp';
 import { Node, NodeStatus } from '../../../src/services/node';
 import { Transaction } from '../../../src/services/transaction';
 import { toBigNumber } from '../../../src/utils/numberParser';
+import { useStaking } from '../../../src/services/staking';
+import { useCartesiToken } from '../../../src/services/token';
 
 /**
  * Don't use this directly. Use the build function exported below
@@ -142,3 +146,21 @@ export const buildNodeObj = (nodeStatus?: NodeStatus, address?: string) => {
 };
 
 export const buildContractReceipt = () => cloneDeep(stubReceipt);
+
+type ReturnOf<T> = T extends (...a: any) => infer R ? R : any;
+
+type UseStakingReturn = ReturnOf<typeof useStaking>;
+type UseCartesiTokenReturn = ReturnOf<typeof useCartesiToken>;
+
+type BuildStakingReturn = { staking?: { address: string } };
+
+const buildMockStaking = () => mock<UseStakingReturn>();
+
+export const buildUseStakingReturn = (props: BuildStakingReturn) => {
+    const mock = buildMockStaking();
+    //@ts-ignore
+    mock.staking.address = props?.staking?.address;
+    return mock;
+};
+
+export const buildUseCartesiTokenReturn = () => mock<UseCartesiTokenReturn>();
