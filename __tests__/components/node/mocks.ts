@@ -155,6 +155,7 @@ type UseCartesiTokenReturn = ReturnOf<typeof useCartesiToken>;
 type BuildStakingReturn = { staking?: { address: string } };
 
 const buildMockStaking = () => mock<UseStakingReturn>();
+const buildMockToken = () => mock<UseCartesiTokenReturn>();
 
 export const buildUseStakingReturn = (props: BuildStakingReturn) => {
     const mock = buildMockStaking();
@@ -163,4 +164,8 @@ export const buildUseStakingReturn = (props: BuildStakingReturn) => {
     return mock;
 };
 
-export const buildUseCartesiTokenReturn = () => mock<UseCartesiTokenReturn>();
+export const buildUseCartesiTokenReturn = () => {
+    const mock = buildMockToken();
+    mock.transaction = buildTransaction();
+    return mock;
+};

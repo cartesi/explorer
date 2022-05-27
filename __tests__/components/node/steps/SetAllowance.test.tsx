@@ -140,8 +140,37 @@ describe('SetAllowance Step', () => {
         });
     });
 
-    describe.skip('Notifications', () => {
-        expect(true).toBeTruthy();
+    describe('Notifications', () => {
+        it('should display an informative notification when the transaction is in course', async () => {
+            const tokenMock = buildUseCartesiTokenReturn();
+            tokenMock.transaction.acknowledged = false;
+            tokenMock.transaction.submitting = true;
+            mockUseCartesiToken.mockReturnValue(tokenMock);
+            render(<SetAllowance stepNumber={1} inFocus />);
+
+            const alert = screen.getByRole('alert');
+            expect(
+                await findByText(alert, 'Setting the allowance...')
+            ).toBeInTheDocument();
+            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+        });
+
+        it('should display an error notification when the transaction failed', async () => {
+            const tokenMock = buildUseCartesiTokenReturn();
+            tokenMock.transaction.acknowledged = false;
+            tokenMock.transaction.error = 'Allowance transaction error message';
+            mockUseCartesiToken.mockReturnValue(tokenMock);
+            render(<SetAllowance stepNumber={1} inFocus />);
+
+            const alert = screen.getByRole('alert');
+
+            expect(
+                await findByText(alert, 'Setting the allowance failed')
+            ).toBeInTheDocument();
+            expect(
+                await findByText(alert, 'Allowance transaction error message')
+            ).toBeInTheDocument();
+        });
     });
 
     describe('Actions', () => {
