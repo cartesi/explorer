@@ -36,6 +36,7 @@ import {
 } from '../../BaseInput';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
+import TransactionBanner from '../TransactionBanner';
 
 const useStyle = () => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
@@ -64,17 +65,18 @@ const SetAllowanceInput = ({
         formState: { errors },
     } = useForm<AllowanceField>();
 
-    const { onChange: onChangeValidate, ...registerProps } = register(
-        'allowance',
-        {
-            valueAsNumber: true,
-            required: {
-                value: true,
-                message: useMessages('field.isRequired'),
-            },
-            validate,
-        }
-    );
+    const {
+        onChange: onChangeValidate,
+        name,
+        ref,
+    } = register('allowance', {
+        valueAsNumber: true,
+        required: {
+            value: true,
+            message: useMessages('field.isRequired'),
+        },
+        validate,
+    });
 
     const { allowance: allowanceErrors } = errors;
 
@@ -107,7 +109,9 @@ const SetAllowanceInput = ({
                     id="allowance_amount"
                     type="number"
                     size="lg"
-                    {...registerProps}
+                    onBlur={() => trigger('allowance')}
+                    ref={ref}
+                    name={name}
                     onChange={(evt) => {
                         onChangeValidate(evt);
                         onChange(evt?.target.value);
@@ -171,6 +175,12 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
             onActive={onStepActive}
         >
             <StepBody>
+                <TransactionBanner
+                    title="Setting the allowance..."
+                    failTitle="Setting the allowance failed"
+                    successDescription="Allowance set!"
+                    transaction={transaction}
+                />
                 <SetAllowanceInput
                     onChange={setAllowance}
                     onValidationChange={handleValidation}

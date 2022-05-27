@@ -24,7 +24,6 @@ import {
     Stack,
     useColorModeValue,
     Spinner,
-    AlertStatus,
     VisuallyHidden,
 } from '@chakra-ui/react';
 import {
@@ -38,7 +37,7 @@ import {
     isFunction,
     omit,
 } from 'lodash/fp';
-import { useEffect, useState, FunctionComponent } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
@@ -49,11 +48,8 @@ import { formatValue } from '../../../utils/numberFormatter';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import {
-    TransactionInfoBanner,
-    ITransactionInfoBannerProps,
-} from '../../poolRedesign/TransactionInfoBanner';
 import { BaseInput, ValidationResult, MappedErrors } from '../../BaseInput';
+import TransactionBanner from '../TransactionBanner';
 
 type NodeField = 'nodeAddress';
 type DepositField = 'deposit';
@@ -322,33 +318,8 @@ const enableNextWhen = (
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };
 
-const withErrorAsWarning = (
-    Component: FunctionComponent<ITransactionInfoBannerProps>
-) => {
-    return (props: ITransactionInfoBannerProps) => {
-        const { transaction } = props;
-        const [bannerProps, setBannerProps] = useState<{
-            status?: AlertStatus;
-        }>({});
-
-        useEffect(() => {
-            const newProps: { status?: AlertStatus } = transaction.error
-                ? transaction.acknowledged
-                    ? {}
-                    : { status: 'warning' }
-                : {};
-
-            setBannerProps(newProps);
-        }, [transaction]);
-
-        return <Component {...props} {...bannerProps} />;
-    };
-};
-
 const isNodeHiringCompleted = (transaction: Transaction<any>) =>
     transaction.receipt?.confirmations >= 1;
-
-const TransactionBanner = withErrorAsWarning(TransactionInfoBanner);
 
 const HireNode = ({
     stepNumber,
