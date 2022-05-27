@@ -104,7 +104,6 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     placement="bottom"
                                     label="SAMPLE TEXT"
                                     fontSize="small"
-                                    bg="black"
                                     color="white"
                                 >
                                     <Icon
@@ -149,7 +148,6 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     placement="bottom"
                                     label="SAMPLE TEXT"
                                     fontSize="small"
-                                    bg="black"
                                     color="white"
                                 >
                                     <Icon
