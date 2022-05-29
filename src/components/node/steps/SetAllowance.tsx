@@ -21,14 +21,19 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { isEmpty, isFunction, omit, isNil } from 'lodash/fp';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useStaking } from '../../../services/staking';
+import { Transaction } from '../../../services/transaction';
 import { useCartesiToken } from '../../../services/token';
 import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
+import { hiredNodeAddressAtom } from './HireNode.atoms';
+
 import {
     BaseInput,
     ValidationResult,
@@ -142,7 +147,14 @@ const enableBtnWhen = (
     errors: Errors
 ) => !isEmpty(allowance) && !submitting && isEmpty(errors);
 
+const isTransactionConfirmed = (transaction: Transaction<any>) =>
+    transaction.receipt?.confirmations >= 1;
+const buildURL = (nodeAddress: string) =>
+    !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/newStaking';
+
 const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
+    const [hiredNodeAddress] = useAtom(hiredNodeAddressAtom);
+    const router = useRouter();
     const { account } = useWallet();
     const { staking } = useStaking(account);
     const { approve, transaction } = useCartesiToken(account, staking?.address);
@@ -165,6 +177,14 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
         transaction.submitting,
         errors
     );
+
+    const transactionConfirmed = isTransactionConfirmed(transaction);
+
+    useEffect(() => {
+        if (transactionConfirmed) {
+            router.push(buildURL(hiredNodeAddress));
+        }
+    }, [transactionConfirmed]);
 
     return (
         <Step

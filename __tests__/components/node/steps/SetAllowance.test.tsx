@@ -13,7 +13,13 @@ import { useWallet } from '../../../../src/contexts/wallet';
 import { useStaking } from '../../../../src/services/staking';
 import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
-import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
+import {
+    buildContractReceipt,
+    buildUseCartesiTokenReturn,
+    buildUseStakingReturn,
+} from '../mocks';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesStakingMod = `../../../../src/services/staking`;
@@ -46,15 +52,37 @@ jest.mock(servicesTokenMod, () => {
     };
 });
 
+jest.mock('jotai', () => {
+    const originalModule = jest.requireActual('jotai');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useAtom: jest.fn(),
+    };
+});
+
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseStaking = useStaking as jest.MockedFunction<typeof useStaking>;
 const mockUseCartesiToken = useCartesiToken as jest.MockedFunction<
     typeof useCartesiToken
 >;
+const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
+const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 describe('SetAllowance Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
     const stakingAddress = '0x329f000E4195823418ff2eCC7cb6f4ca1530Ca4f';
+    const hiredNodeAddress = '0xBB0d5E9bba2606D01683605cc09eB5561740f623';
+    const routerPushStub = jest.fn();
 
     beforeEach(() => {
         // Partial filled Happy returns
@@ -68,6 +96,10 @@ describe('SetAllowance Step', () => {
 
         mockUseStaking.mockReturnValue(buildUseStakingReturn({}));
         mockUseCartesiToken.mockReturnValue(buildUseCartesiTokenReturn());
+        // @ts-ignore
+        mockUseAtom.mockImplementation(() => [hiredNodeAddress, jest.fn()]);
+        // @ts-ignore
+        mockUseRouter.mockImplementation(() => ({ push: routerPushStub }));
     });
 
     afterEach(() => {
@@ -241,6 +273,40 @@ describe('SetAllowance Step', () => {
             fireEvent.click(button);
 
             expect(tokenMock.approve).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('When allowance is set', () => {
+        it('Should go to the node manage page when node-address is available', () => {
+            const stakingMock = buildUseStakingReturn({
+                staking: { address: stakingAddress },
+            });
+            const tokenMock = buildUseCartesiTokenReturn();
+            tokenMock.transaction.acknowledged = false;
+            tokenMock.transaction.receipt = buildContractReceipt();
+            mockUseStaking.mockReturnValue(stakingMock);
+            mockUseCartesiToken.mockReturnValue(tokenMock);
+            render(<SetAllowance inFocus stepNumber={1} />);
+
+            expect(routerPushStub).toHaveBeenCalledWith(
+                `/node/${hiredNodeAddress}/manage`
+            );
+        });
+
+        it('Should go to the landing page page when node-address is not available', () => {
+            const stakingMock = buildUseStakingReturn({
+                staking: { address: stakingAddress },
+            });
+            const tokenMock = buildUseCartesiTokenReturn();
+            tokenMock.transaction.acknowledged = false;
+            tokenMock.transaction.receipt = buildContractReceipt();
+            mockUseStaking.mockReturnValue(stakingMock);
+            mockUseCartesiToken.mockReturnValue(tokenMock);
+            // @ts-ignore
+            mockUseAtom.mockImplementation(() => ['', jest.fn()]);
+            render(<SetAllowance inFocus stepNumber={1} />);
+
+            expect(routerPushStub).toHaveBeenCalledWith('/newStaking');
         });
     });
 });
