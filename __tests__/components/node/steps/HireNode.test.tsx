@@ -23,6 +23,7 @@ import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/node/steps/HireNode';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildContractReceipt, buildNodeObj } from '../mocks';
+import { useAtom } from 'jotai';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
@@ -59,12 +60,23 @@ jest.mock(servicesNodeMod, () => {
     };
 });
 
+jest.mock('jotai', () => {
+    const originalModule = jest.requireActual('jotai');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useAtom: jest.fn(),
+    };
+});
+
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseNode = useNode as jest.MockedFunction<typeof useNode>;
 const mockUseBalance = useBalance as jest.MockedFunction<typeof useBalance>;
+const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
 
 describe('HireNode Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+    const atomSetterStub = jest.fn();
 
     beforeEach(() => {
         // Partial filled Happy returns
@@ -78,6 +90,9 @@ describe('HireNode Step', () => {
 
         mockUseBalance.mockReturnValue(toBigNumber('1'));
         mockUseNode.mockReturnValue(buildNodeObj());
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        mockUseAtom.mockImplementation((...a: any) => ['', atomSetterStub]);
     });
 
     afterEach(() => {
@@ -373,15 +388,35 @@ describe('HireNode Step', () => {
     });
 
     describe('When node is hired', () => {
-        it('should call onComplete callback to notify the step is finalized and transition to completed state', () => {
+        it('should call onComplete callback, transition the step to a completed state and update hired-node-address atom', async () => {
+            const Component = () => (
+                <HireNode inFocus stepNumber={1} onComplete={onComplete} />
+            );
+            const nodeAddress = '0xBB0d5E9bba2606D01683605cc09eB5561740f623';
             const node = buildNodeObj('available', '0x00');
             node.transaction.acknowledged = false;
-            node.transaction.receipt = buildContractReceipt();
             mockUseNode.mockReturnValue(node);
             const onComplete = jest.fn();
-            render(<HireNode inFocus stepNumber={1} onComplete={onComplete} />);
+            const { rerender } = render(<Component />);
+
+            const addressInput = screen.getByLabelText('Node Address');
+            const fundsInput = screen.getByLabelText('Initial Funds');
+
+            act(() => {
+                fireEvent.change(addressInput, {
+                    target: { value: nodeAddress },
+                });
+                fireEvent.change(fundsInput, { target: { value: 2 } });
+            });
+
+            await screen.findByText('This node is available');
+
+            //Adding transaction confirmation
+            node.transaction.receipt = buildContractReceipt();
+            rerender(<Component />);
 
             expect(onComplete).toHaveBeenCalledTimes(1);
+            expect(atomSetterStub).toHaveBeenCalledWith(nodeAddress);
             expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
             expect(screen.queryByText('Initial Funds')).not.toBeInTheDocument();
             expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();

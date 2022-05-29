@@ -37,6 +37,7 @@ import {
     isFunction,
     omit,
 } from 'lodash/fp';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
@@ -50,9 +51,11 @@ import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { BaseInput, ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../TransactionBanner';
+import { hiredNodeAddressAtom } from './HireNode.atoms';
 
 type NodeField = 'nodeAddress';
 type DepositField = 'deposit';
+
 interface NodeInput extends BaseInput<NodeField> {
     node: Node;
     account: string;
@@ -328,6 +331,7 @@ const HireNode = ({
     onStepActive,
     inFocus,
 }: IStep) => {
+    const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
     const { tipsBgColor } = useStyle();
     const [stepState, setStepState] = useStepState({ inFocus });
     const { account } = useWallet();
@@ -351,6 +355,7 @@ const HireNode = ({
 
     useEffect(() => {
         if (isStepCompleted) {
+            setNodeAddressAtom(nodeAddress);
             setStepState(COMPLETED);
             onComplete && onComplete();
         }
