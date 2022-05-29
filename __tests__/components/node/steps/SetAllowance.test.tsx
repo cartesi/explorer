@@ -169,6 +169,21 @@ describe('SetAllowance Step', () => {
                     )
                 ).toBeInTheDocument();
             });
+
+            it('Should display message the field is required when the field lost its focus', async () => {
+                render(<SetAllowance stepNumber={1} inFocus />);
+
+                const input = screen.getByLabelText('Enter the allowance');
+
+                act(() => {
+                    // In theory that means the user left the field i.e. removed the focus
+                    fireEvent.blur(input);
+                });
+
+                expect(
+                    await screen.findByText('This field is required.')
+                ).toBeInTheDocument();
+            });
         });
     });
 
