@@ -44,6 +44,7 @@
         "framer-motion": "^4",
         "graphql": "^15.6.0",
         "humanize-duration": "^3.27.0",
+        "jotai": "1.7.0",
         "jquery": "^3.6.0",
         "lodash": "^4.17.21",
         "luxon": "^2.0.2",
