@@ -271,6 +271,18 @@ describe('HireNode Step', () => {
                     )
                 ).toBeInTheDocument();
             });
+
+            it('should display field required message on blur event and the field is empty', async () => {
+                render(<HireNode inFocus stepNumber={1} />);
+                const input = screen.getByLabelText('Initial Funds');
+                act(() => {
+                    fireEvent.blur(input);
+                });
+
+                expect(
+                    await screen.findByText('This field is required.')
+                ).toBeInTheDocument();
+            });
         });
     });
 

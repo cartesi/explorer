@@ -236,7 +236,6 @@ const InitialFundsInput = ({
 
     const {
         name,
-        onBlur,
         onChange: onChangeValidate,
         ref,
     } = register('deposit', {
@@ -289,7 +288,7 @@ const InitialFundsInput = ({
                     id="initial_funds"
                     name={name}
                     type="number"
-                    onBlur={onBlur}
+                    onBlur={() => trigger('deposit')}
                     onChange={(evt) => {
                         onChangeValidate(evt);
                         onChange(evt?.target?.value);
