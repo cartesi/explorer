@@ -21,6 +21,7 @@ import {
     useColorMode,
     useDisclosure,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useFlag } from '@unleash/proxy-client-react';
 import { FC, ReactNode } from 'react';
 import { useWallet } from '../../contexts/wallet';
@@ -76,18 +77,19 @@ const buildLinks = ({ newPoolPageEnabled, newNodeRunnersEnabled }) => {
 };
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: 'gray.800',
-        }}
-        href={href}
-    >
-        {children}
-    </Link>
+    <NextLink href={href} passHref>
+        <Link
+            px={2}
+            py={1}
+            rounded={'md'}
+            _hover={{
+                textDecoration: 'none',
+                bg: 'gray.800',
+            }}
+        >
+            {children}
+        </Link>
+    </NextLink>
 );
 
 const NavBar: FC<FlexProps> = (props) => {
