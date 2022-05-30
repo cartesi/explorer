@@ -15,6 +15,7 @@ import { BigNumber } from 'ethers';
 
 const TEST_MATURING_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
 const TEST_MATURING_BALANCE_CTSI = '87';
+const TEST_MATURING_TIME = '1 hour, 20 minutes';
 
 describe('NodeMaturingSection component', () => {
     afterEach(() => cleanup());
@@ -31,11 +32,11 @@ describe('NodeMaturingSection component', () => {
         expect(screen.getByText('0')).toBeInTheDocument();
     });
 
-    it('Should be with 87 CTSI, 1 hour, 20 minutes', () => {
+    it(`Should be with ${TEST_MATURING_BALANCE_CTSI} CTSI, ${TEST_MATURING_TIME}`, () => {
         render(
             <NodeMaturingSection
                 maturingBalance={TEST_MATURING_BALANCE}
-                maturingLeft={'1 hour, 20 minutes'}
+                maturingLeft={TEST_MATURING_TIME}
             />
         );
 
