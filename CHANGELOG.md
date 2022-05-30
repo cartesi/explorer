@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2022-05-31
+
+-   Improved visual experience for hardware wallet's account selection (Ledger). Button that loads more accounts is not compressed.
+-   Improved experience for hardware wallet users. When navigating through the menu links a wallet reconnection is not necessary.
+
 ## [2.4.4] - 2022-05-02
 
 -   Fix for unleash feature flag not hydrating the context when switching accounts.
