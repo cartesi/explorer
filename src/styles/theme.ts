@@ -17,21 +17,18 @@ import { Table } from './components/table';
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 import { fonts } from './foundations/fonts';
+import { buildOnboardTheme } from './onboardTheme';
 
 const theme = extendTheme({
     styles: {
-        global: (props) => ({
-            'html, body': {
-                color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-            },
-            '.bn-onboard-custom.bn-onboard-modal': {
-                fontFamily: fonts.body,
-            },
-            '.bn-onboard-custom.bn-onboard-modal-content.bn-onboard-dark-mode':
-                {
-                    background: colors.gray[800],
+        global: (props) => {
+            return {
+                'html, body': {
+                    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
                 },
-        }),
+                ...buildOnboardTheme(props),
+            };
+        },
     },
     config: {
         initialColorMode: 'light',
