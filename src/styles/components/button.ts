@@ -15,6 +15,11 @@ export const Button = {
         fontWeight: 'normal',
         // textTransform: 'uppercase',
     },
+    sizes: {
+        lg: {
+            fontSize: 'md',
+        },
+    },
     variants: {
         outline: (props) => {
             if (props.colorScheme === 'darkGray') {

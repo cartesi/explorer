@@ -107,7 +107,7 @@ const SetUpNode = ({
                 <UnorderedList pl={2}>
                     <ListItem>
                         <Link
-                            color="blue.300"
+                            color="blue.500"
                             href="https://docs.docker.com/desktop/mac/install/"
                             target="_blank"
                         >
@@ -116,7 +116,7 @@ const SetUpNode = ({
                     </ListItem>
                     <ListItem>
                         <Link
-                            color="blue.300"
+                            color="blue.500"
                             href="https://docs.docker.com/desktop/windows/install/"
                             target="_blank"
                         >
