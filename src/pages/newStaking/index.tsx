@@ -21,12 +21,14 @@ import {
     useColorModeValue,
     Alert,
     Icon,
+    Button,
 } from '@chakra-ui/react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import Layout from '../../components/Layout';
 import { WalletIcon, AllowanceIcon } from '../../components/Icons';
 import { Card } from '../../components/Card';
 import { SlideInOut } from '../../components/animation/SlideInOut';
+import { SlideDown } from '../../components/animation/SlideDown';
 import { useWallet } from '../../contexts/wallet';
 
 const CustomText = ({ firstLine, secondLine }) => (
@@ -44,7 +46,7 @@ const CustomText = ({ firstLine, secondLine }) => (
 
 const NewStaking: FC = () => {
     const bg = useColorModeValue('gray.80', 'header');
-    const { active } = useWallet();
+    const { active, activate } = useWallet();
     const router = useRouter();
 
     return (
@@ -59,67 +61,29 @@ const NewStaking: FC = () => {
                 px={{ base: '6vw', xl: '12vw' }}
                 py={5}
             >
-                <Stack alignItems={'flex-start'} direction={'row'}>
+                <Stack alignItems={'flex-start'} direction={'column'}>
                     <Heading as="h1" fontSize={['4xl', '5xl']}>
                         Node Runners
                     </Heading>
+                    <Text fontSize="md" fontWeight="400">
+                        This area is for the node runner users including public
+                        pool manager or private node runner.{' '}
+                    </Text>
                 </Stack>
             </Box>
 
-            <Box
-                bg={bg}
-                px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
-                pt={{ base: 8, sm: '3vw' }}
-                pb={{ base: 8, sm: '5vw' }}
-            >
-                <VStack align="stretch" px={{ base: '3vw', md: '9vw' }}>
-                    <Heading fontSize={{ base: 'lg', md: '2xl' }} mb="3vw">
-                        Create a node or pool in steps
-                    </Heading>
-                    <Stack
-                        spacing={8}
-                        direction={{ base: 'column', md: 'row' }}
-                        alignItems={{ base: 'flex-start', md: 'center' }}
-                        justifyContent={['flex-start', 'center']}
-                    >
-                        <Card
-                            id="private-node-creation-card"
-                            title="Run a private node"
-                            subtitle="explanation UI copy"
-                            iconBg="yellow.100"
-                            icon={<WalletIcon color="yellow.500" w={6} h={6} />}
-                            buttonText={
-                                <CustomText
-                                    firstLine={'create my'}
-                                    secondLine={'node'}
-                                />
-                            }
-                            onButtonClick={() => {
-                                router.push('/node/new');
-                            }}
-                        />
-
-                        <Card
-                            id="pool-creation-card"
-                            title="Create a public pool"
-                            subtitle="explanation UI copy"
-                            iconBg="yellow.100"
-                            icon={
-                                <AllowanceIcon color="yellow.500" w={6} h={6} />
-                            }
-                            buttonText={
-                                <CustomText
-                                    firstLine={'create'}
-                                    secondLine={'public pool'}
-                                />
-                            }
-                            onButtonClick={() => {
-                                router.push('/pools/new');
-                            }}
-                        />
-                    </Stack>
-                    <SlideInOut display={!active}>
-                        <Alert bg="transparent" px={0} py={6}>
+            <SlideDown display={!active}>
+                <Box
+                    bg="white"
+                    id="alert-and-wallet-connection-box"
+                    alignItems="center"
+                    display="flex"
+                    flexDirection="column"
+                    pt={12}
+                    pb={6}
+                >
+                    <Box>
+                        <Alert bg="transparent">
                             <Icon
                                 as={AiOutlineExclamationCircle}
                                 h={5}
@@ -129,7 +93,46 @@ const NewStaking: FC = () => {
                             Please connect your wallet if you have created your
                             own node and pool already
                         </Alert>
-                    </SlideInOut>
+                    </Box>
+                    <Button colorScheme="blue" mt={7} onClick={activate}>
+                        CONNECT WALLET
+                    </Button>
+                </Box>
+            </SlideDown>
+
+            <Box
+                bg={bg}
+                px={{ base: '3vw', xl: '12vw' }}
+                pt={{ base: 8, sm: '3vw' }}
+                pb={{ base: 8, sm: '5vw' }}
+            >
+                <Heading fontSize={{ base: 'lg', md: '2xl' }} mb="3vw">
+                    Create a node or pool in steps
+                </Heading>
+                <VStack align="stretch" px={{ base: '3vw', md: '9vw' }}>
+                    <Card
+                        id="pool-creation-card"
+                        title="Create a public pool"
+                        subtitle="explanation UI copy"
+                        iconBg="yellow.100"
+                        icon={<AllowanceIcon color="yellow.500" w={6} h={6} />}
+                        buttonText={'CREATE PUBLIC POOL'}
+                        onButtonClick={() => {
+                            router.push('/pools/new');
+                        }}
+                    />
+
+                    <Card
+                        id="private-node-creation-card"
+                        title="Run a private node"
+                        subtitle="explanation UI copy"
+                        iconBg="yellow.100"
+                        icon={<WalletIcon color="yellow.500" w={6} h={6} />}
+                        buttonText={'CREATE MY NODE'}
+                        onButtonClick={() => {
+                            router.push('/node/new');
+                        }}
+                    />
                 </VStack>
             </Box>
         </Layout>
