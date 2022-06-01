@@ -52,18 +52,18 @@ export const Card = ({
             py={8}
             px={8}
             w={{ base: '100%' }}
-            direction={{ base: 'column', md: 'row' }}
-            justifyContent={{ base: 'flex-start', md: 'space-between' }}
-            alignItems={{ base: 'center', md: 'flex-start' }}
+            direction={{ base: 'column', lg: 'row' }}
+            justifyContent={{ base: 'flex-start', lg: 'space-between' }}
+            alignItems={{ base: 'center', lg: 'flex-start' }}
             {...stackProps}
         >
             <Stack
-                direction={{ base: 'column', md: 'row' }}
+                direction={{ base: 'column', lg: 'row' }}
                 alignItems={['center']}
                 px={4}
             >
                 <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={1} />
-                <Box>
+                <Box textAlign={{ base: 'center', lg: 'left' }}>
                     <Heading as="h3" size="sm" mb={0}>
                         {title}
                     </Heading>
@@ -72,12 +72,12 @@ export const Card = ({
             </Stack>
             <Box px={1}>
                 <Button
-                    ml={{ base: 0, md: 2 }}
+                    ml={{ base: 0, lg: 2 }}
                     colorScheme="blue"
                     onClick={onButtonClick}
                     fontWeight={500}
                     isFullWidth
-                    h={{ base: 12, md: 14 }}
+                    h={{ base: 12, lg: 14 }}
                     w="16rem"
                 >
                     {buttonText}
