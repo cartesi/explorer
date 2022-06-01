@@ -102,11 +102,17 @@ const NewStaking: FC = () => {
 
             <Box
                 bg={bg}
-                px={{ base: '3vw', xl: '12vw' }}
+                px={{ base: '6vw', xl: '12vw' }}
                 pt={{ base: 8, sm: '3vw' }}
                 pb={{ base: 8, sm: '5vw' }}
             >
-                <Heading fontSize={{ base: 'lg', md: '2xl' }} mb="3vw">
+                <Heading
+                    fontSize="2xl"
+                    mt={5}
+                    mb={{ base: 4, md: 8 }}
+                    fontWeight="medium"
+                    lineHeight={6}
+                >
                     Create a node or pool in steps
                 </Heading>
                 <VStack align="stretch" px={{ base: '3vw', md: '9vw' }}>

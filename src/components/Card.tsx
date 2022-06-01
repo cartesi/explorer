@@ -44,15 +44,17 @@ export const Card = ({
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
     return (
-        <VStack
+        <Stack
             id={id}
             bg={bg}
             borderRadius={6}
             spacing={10}
-            h="15rem"
+            py={8}
+            px={8}
             w={{ base: '100%' }}
-            display="grid"
-            placeContent="center"
+            direction={{ base: 'column', md: 'row' }}
+            justifyContent={{ base: 'flex-start', md: 'space-between' }}
+            alignItems={{ base: 'center', md: 'flex-start' }}
             {...stackProps}
         >
             <Stack
@@ -68,7 +70,7 @@ export const Card = ({
                     <Text>{subtitle}</Text>
                 </Box>
             </Stack>
-            <Box px={6}>
+            <Box px={1}>
                 <Button
                     ml={{ base: 0, md: 2 }}
                     colorScheme="blue"
@@ -76,10 +78,11 @@ export const Card = ({
                     fontWeight={500}
                     isFullWidth
                     h={{ base: 12, md: 14 }}
+                    w="16rem"
                 >
                     {buttonText}
                 </Button>
             </Box>
-        </VStack>
+        </Stack>
     );
 };
