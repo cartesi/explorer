@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
-import { NodeInfoSection } from './NodeInfoSection';
+import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { BigNumber } from 'ethers';
 
 const TEST_ADDRESS = '0xb00299b573a9deee20e6a242416188d1033e325f';

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
-import { NodeStakedBalanceSection } from './NodeStakedBalanceSection';
+import { NodeStakedBalanceSection } from '../../../src/components/node/NodeStakedBalanceSection';
 import { BigNumber } from 'ethers';
 
 const TEST_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
