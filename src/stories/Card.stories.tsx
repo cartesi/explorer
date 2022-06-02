@@ -9,10 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Stack } from '@chakra-ui/react';
+import { Stack, VStack, Box } from '@chakra-ui/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import { Card, CardProps } from '../components/Card';
+import { OrderedContent } from '../components/OrderedContent';
 import { WalletIcon } from '../components/Icons';
 
 export default {
@@ -29,12 +30,16 @@ const Template: ComponentStory<typeof Card> = (args) => {
             px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
             pt={{ base: 8, sm: '3vw' }}
             pb={{ base: 8, sm: '5vw' }}
-            direction={{ base: 'column', md: 'row' }}
+            direction={{ base: 'column' }}
             alignItems={{ base: 'flex-start', md: 'center' }}
             justifyContent={['flex-start', 'center']}
         >
             <Card id="card-1" {...args} />;
-            <Card id="card-2" {...args} />;
+            {/* <Card id="card-2" {...args} />;
+            <Card id="card-3" {...args} />;
+            <Card id="card-4" {...args} />;
+            <Card id="card-5" {...args} />;
+            <Card id="card-6" {...args} />; */}
         </Stack>
     );
 };
@@ -43,6 +48,38 @@ export const Default = Template.bind({});
 Default.args = {
     title: 'Run a private node',
     subtitle: 'explanation UI copy',
+    buttonText: 'CREATE A NODE',
+    icon: <WalletIcon color="yellow.500" w={6} h={6} />,
+    iconBg: 'yellow.100',
+} as CardProps;
+
+export const WithSimpleTooltipContent = Template.bind({});
+
+WithSimpleTooltipContent.args = {
+    title: 'Simple title',
+    tooltip: 'Simple tooltip string content.',
+    subtitle: 'A simple subtitle',
+    buttonText: 'create simple stuff',
+    icon: <WalletIcon color="blue.500" w={6} h={6} />,
+    iconBg: 'blue.100',
+} as CardProps;
+
+export const WithOrderedTooltipContent = Template.bind({});
+
+const orderedText = [
+    'Make sure the Noether node is online and works properly 24x7.',
+    'Pay the Ethereum fees that are necessary for block production and also maintenance operations.',
+];
+
+WithOrderedTooltipContent.args = {
+    title: 'Run a private node',
+    tooltip: (
+        <OrderedContent
+            title="Main responsabilities:"
+            orderedItems={orderedText}
+        />
+    ),
+    subtitle: 'Run your own node',
     buttonText: 'CREATE A NODE',
     icon: <WalletIcon color="yellow.500" w={6} h={6} />,
     iconBg: 'yellow.100',
