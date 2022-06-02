@@ -22,6 +22,7 @@ import {
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { SlideDown } from '../../components/animation/SlideDown';
 import { Card } from '../../components/Card';
+import { OrderedContent } from '../../components/OrderedContent';
 import { AllowanceIcon, WalletIcon } from '../../components/Icons';
 import { UseWallet } from '../../contexts/wallet';
 import { NextRouter } from 'next/router';
@@ -71,6 +72,17 @@ const AlertAndConnect = ({ display, connect }: AlertAndConnectT) => (
     </SlideDown>
 );
 
+const mainResponsability = 'Main responsabilities:';
+const privateNodeResponsabilities = [
+    'Make sure the Noether node is online and works properly 24x7.',
+    'Pay the Ethereum fees that are necessary for block production and also maintenance operations.',
+];
+
+const publicPoolResponsabilities = [
+    'Make sure the Noether node is online and works properly 24x7.',
+    'Have a relatively large amount of CTSI to stake.',
+];
+
 type CreationPathT = { router: NextRouter };
 const CreationPath = ({ router }: CreationPathT) => {
     const bg = useColorModeValue('gray.80', 'header');
@@ -101,6 +113,12 @@ const CreationPath = ({ router }: CreationPathT) => {
                     onButtonClick={() => {
                         router.push('/pools/new');
                     }}
+                    tooltip={
+                        <OrderedContent
+                            title={mainResponsability}
+                            orderedItems={publicPoolResponsabilities}
+                        />
+                    }
                 />
 
                 <Card
@@ -113,6 +131,12 @@ const CreationPath = ({ router }: CreationPathT) => {
                     onButtonClick={() => {
                         router.push('/node/new');
                     }}
+                    tooltip={
+                        <OrderedContent
+                            title={mainResponsability}
+                            orderedItems={privateNodeResponsabilities}
+                        />
+                    }
                 />
             </VStack>
         </Box>
