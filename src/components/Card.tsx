@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import {
     Avatar,
     Box,
@@ -18,9 +19,9 @@ import {
     StackProps,
     Text,
     useColorModeValue,
-    VStack,
+    Tooltip,
 } from '@chakra-ui/react';
-import { MouseEventHandler, ReactElement } from 'react';
+import { MouseEventHandler, ReactElement, ReactNode } from 'react';
 
 export interface CardProps extends StackProps {
     id?: string;
@@ -28,6 +29,7 @@ export interface CardProps extends StackProps {
     icon?: ReactElement;
     iconBg?: string | (string & {});
     subtitle?: string;
+    tooltip?: string | ReactNode;
     title: string;
     onButtonClick?: MouseEventHandler<HTMLButtonElement>;
 }
@@ -40,6 +42,7 @@ export const Card = ({
     iconBg,
     subtitle,
     title,
+    tooltip,
     ...stackProps
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
@@ -64,24 +67,51 @@ export const Card = ({
             >
                 <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={1} />
                 <Box textAlign={{ base: 'center', lg: 'left' }}>
-                    <Heading as="h3" size="sm" mb={0}>
-                        {title}
+                    <Heading
+                        as="h3"
+                        size="sm"
+                        mb={0}
+                        display="flex"
+                        alignItems="end"
+                    >
+                        {title}{' '}
+                        {tooltip && (
+                            <Tooltip
+                                label={tooltip}
+                                placement="top-end"
+                                fontSize="md"
+                                bg="grey.support"
+                                opacity={0.9}
+                                color="white"
+                                maxW={{ base: '95vw', md: '37rem' }}
+                            >
+                                <QuestionOutlineIcon
+                                    ml={2}
+                                    role="tooltip-icon"
+                                />
+                            </Tooltip>
+                        )}
                     </Heading>
-                    <Text>{subtitle}</Text>
+                    {subtitle && (
+                        <Text data-testid="card-subtitle">{subtitle}</Text>
+                    )}
                 </Box>
             </Stack>
             <Box px={1}>
-                <Button
-                    ml={{ base: 0, lg: 2 }}
-                    colorScheme="blue"
-                    onClick={onButtonClick}
-                    fontWeight={500}
-                    isFullWidth
-                    h={{ base: 12, lg: 14 }}
-                    w="16rem"
-                >
-                    {buttonText}
-                </Button>
+                {buttonText && (
+                    <Button
+                        data-testid="card-action-button"
+                        ml={{ base: 0, lg: 2 }}
+                        colorScheme="blue"
+                        onClick={onButtonClick}
+                        fontWeight={500}
+                        isFullWidth
+                        h={{ base: 12, lg: 14 }}
+                        w="16rem"
+                    >
+                        {buttonText}
+                    </Button>
+                )}
             </Box>
         </Stack>
     );
