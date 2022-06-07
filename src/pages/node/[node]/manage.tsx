@@ -16,7 +16,6 @@ import {
     Button,
     Flex,
     Heading,
-    HStack,
     Link,
     Spacer,
     Stack,
@@ -182,7 +181,9 @@ const ManageNode: FC = () => {
                         userETHBalance={userETHBalance}
                         balance={balance}
                         allowance={allowance}
-                        onApprove={(amount) => approve(staking.address, amount)}
+                        onApprove={(amount) => {
+                            approve(staking.address, amount);
+                        }}
                     />
                 )}
             </Box>
@@ -199,7 +200,54 @@ const ManageNode: FC = () => {
                         successDescription="New allowance set sucessfully."
                         transaction={tokenTransaction}
                     />
-
+                    {transactionBanners?.deposit && (
+                        <TransactionInfoBanner
+                            title="Setting deposit..."
+                            failTitle="Error setting deposit"
+                            successDescription="New deposit set sucessfully."
+                            transaction={
+                                currentTransaction === 'deposit'
+                                    ? node.transaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {transactionBanners?.withdraw && (
+                        <TransactionInfoBanner
+                            title="Withdrawing..."
+                            failTitle="Error withdrawing"
+                            successDescription="Withdrawed sucessfully."
+                            transaction={
+                                currentTransaction === 'withdraw'
+                                    ? node.transaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {transactionBanners?.stake && (
+                        <TransactionInfoBanner
+                            title="Staking..."
+                            failTitle="Error staking"
+                            successDescription="Stake set sucessfully."
+                            transaction={
+                                currentTransaction === 'stake'
+                                    ? stakingTransaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {transactionBanners?.unstake && (
+                        <TransactionInfoBanner
+                            title="Unstaking..."
+                            failTitle="Error unstaking"
+                            successDescription="Unstaked sucessfully."
+                            transaction={
+                                currentTransaction === 'unstake'
+                                    ? stakingTransaction
+                                    : null
+                            }
+                        />
+                    )}
                     <TransactionFeedback transaction={tokenTransaction} />
                 </VStack>
             </Box>
@@ -232,7 +280,15 @@ const ManageNode: FC = () => {
                     userBalance={userBalance}
                     nodeBalance={node.balance}
                     onRetire={() => node.retire()}
-                    onDeposit={(amount) => node.transfer(amount)}
+                    onDeposit={(amount) => {
+                        console.log('deposit...');
+                        setCurrentTransaction('deposit');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            deposit: true,
+                        });
+                        node.transfer(amount);
+                    }}
                 />
 
                 <Stack
@@ -289,7 +345,14 @@ const ManageNode: FC = () => {
                         <NodeReleasingSection
                             releasingBalance={releasingBalance}
                             releasingLeftShort={releasingLeftShort}
-                            onWithdraw={() => withdraw(releasingBalance)}
+                            onWithdraw={() => {
+                                setCurrentTransaction('withdraw');
+                                setTransactionBanners({
+                                    ...transactionBanners,
+                                    withdraw: true,
+                                });
+                                withdraw(releasingBalance);
+                            }}
                         />
                     </Box>
                 </Flex>
