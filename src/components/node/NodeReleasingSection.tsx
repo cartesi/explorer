@@ -93,12 +93,12 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                 </HStack>
                 <HStack spacing={4} alignItems="center">
                     {releasingBalance.gt(0) && releasingLeftShort && (
-                        <Button bg={bg} disabled={true}>
+                        <Button ms={12} bg={bg} disabled={true}>
                             WITHDRAW ({releasingLeftShort})
                         </Button>
                     )}
                     {releasingBalance.gt(0) && !releasingLeftShort && (
-                        <Button bg={bg} onClick={onWithdraw}>
+                        <Button ms={12} bg={bg} onClick={onWithdraw}>
                             WITHDRAW
                         </Button>
                     )}
