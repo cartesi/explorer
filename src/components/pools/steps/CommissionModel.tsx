@@ -79,7 +79,7 @@ type FlatRateModel = 'flatRateCommission';
 type GasBasedModel = 'gasBasedCommission';
 type FlatRateCommisionProps = BaseInput<FlatRateModel>;
 type GasBasedCommissionProps = BaseInput<GasBasedModel>;
-type CommissionModel = FlatRateModel | GasBasedModel;
+type CommissionModels = FlatRateModel | GasBasedModel;
 
 const useStyle = () => {
     const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
@@ -144,11 +144,9 @@ const CommissionModel = ({
     onStepActive,
 }: IStep) => {
     const [stepState, setStepState] = useStepState({ inFocus });
-    const [modelType, setModelType] = useState<CommissionModel>();
+    const [modelType, setModelType] = useState<CommissionModels>();
     const [commissionValue, setCommissionValue] = useState<string | null>();
-    const radioHandler = (v: CommissionModel) => setModelType(v);
-
-    console.log(`model-type: ${modelType}`);
+    const radioHandler = (v: CommissionModels) => setModelType(v);
 
     return (
         <Step
