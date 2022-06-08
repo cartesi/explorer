@@ -10,13 +10,25 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    Stack,
+    HStack,
+    Text,
+    useColorModeValue,
+    Link as ChakraLink,
+} from '@chakra-ui/react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
+import { StepGroup } from '../../components/StepGroup';
+import CommissionModel from '../../components/pools/steps/CommissionModel';
 
 const NewNode: FC = () => {
+    const bg = useColorModeValue('gray.80', 'gray.800');
+    const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Layout>
             <Head>
@@ -51,13 +63,33 @@ const NewNode: FC = () => {
                 </Stack>
             </Box>
             <Box
-                px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
-                pt={{ base: 8, sm: '3vw' }}
-                pb={{ base: 8, sm: '5vw' }}
+                bg={bg}
+                px={{ base: 0, md: '12vw', xl: '18vw' }}
+                pb={{ base: 0, sm: '5vw' }}
             >
-                <Heading as="h1" py="10%">
-                    New Pool Wizzard Goes Here
-                </Heading>
+                <Stack
+                    py={4}
+                    direction="column"
+                    alignItems="stretch"
+                    display={{ base: 'none', md: 'flex' }}
+                >
+                    <ChakraLink
+                        // TODO: Replace with new upcoming tutorial
+                        href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
+                        target="_blank"
+                        color={linkColor}
+                        fontWeight="medium"
+                        textDecorationLine="underline"
+                        fontSize="sm"
+                        alignSelf="flex-end"
+                    >
+                        Learn from tutorial
+                    </ChakraLink>
+                </Stack>
+                <StepGroup
+                    mobileHeaderProps={{ top: '100px' }}
+                    steps={[CommissionModel]}
+                />
             </Box>
         </Layout>
     );
