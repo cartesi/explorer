@@ -9,12 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 
 import Layout from '../../../components/Layout';
-import { Box } from '@chakra-ui/layout';
+import AddressText from '../../../components/AddressText';
+import { Box, Stack, VStack } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/button';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import { StakingGuide } from '../../../components/poolRedesign/StakingGuide';
+import { StakingTabNavigation } from '../../../components/poolRedesign/StakingTabNavigation';
 import { useColorModeValue } from '@chakra-ui/react';
 import { StakingActivity } from '../../../components/poolRedesign/StakingActivity';
 import { Staking } from '../../../components/poolRedesign/Staking';
@@ -25,7 +29,7 @@ import { useCartesiToken } from '../../../services/token';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
-import { PoolHeader } from '../../../components/poolRedesign/PoolHeader';
+import { PoolHeader } from '../../../components/poolRedesign/poolHeader';
 import { PoolBreadcrumbs } from '../../../components/poolRedesign/PoolBreadcrumbs';
 
 const PoolRedesignStake = () => {
@@ -92,7 +96,7 @@ const PoolRedesignStake = () => {
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 4, sm: 6, lg: 8 }}
+                py={{ base: 8, sm: 12, lg: 16 }}
             >
                 {isConnected ? (
                     <StakingDashboard
@@ -118,9 +122,8 @@ const PoolRedesignStake = () => {
                         userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
                         stakedBalance={stakedBalance}
-                        onApprove={(amount) => approve(address, amount)}
-                        onDeposit={deposit}
                         onWithdraw={withdraw}
+                        onDeposit={deposit}
                         onStake={stake}
                         onUnstake={onUnstake}
                         depositTimestamp={depositTimestamp}

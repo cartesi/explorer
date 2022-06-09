@@ -14,8 +14,6 @@ import {
     Box,
     Button,
     Checkbox,
-    Radio,
-    RadioGroup,
     Flex,
     Heading,
     HStack,
@@ -33,19 +31,15 @@ import { FC, Fragment } from 'react';
 import { FilterIcon } from '../Icons';
 
 interface IPoolFiltersProps {
+    onChange: (value: string) => void;
     filters: any;
-    selectedPeriod: string;
-    onSelectedPeriodChange: (value: string) => void;
-    selectedTypes: any;
-    onSelectedTypesChange: (value: string) => void;
+    selectedFilters: any;
 }
 
 export const PoolFilters: FC<IPoolFiltersProps> = ({
     filters,
-    selectedPeriod,
-    onSelectedPeriodChange,
-    selectedTypes,
-    onSelectedTypesChange,
+    selectedFilters,
+    onChange,
 }) => {
     const checkedBg = useColorModeValue('gray.50', 'gray.600');
     const badgeBg = useColorModeValue('blue.500', 'blue.300');
@@ -55,7 +49,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
             spacing={2}
             align="center"
             direction="row"
-            zIndex={'lg'}
+            zIndex={'xxl'}
             position="relative"
         >
             <Box>
@@ -68,7 +62,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     >
                         <HStack justifyContent="space-between" align="center">
                             <FilterIcon />
-                            {selectedTypes.length === 0 && (
+                            {selectedFilters.length === 0 && (
                                 <Text fontSize="md" as="span">
                                     Add Filter
                                 </Text>
@@ -83,85 +77,38 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                     <Heading as="h5" size="sm" mb={2}>
                                         {filter.title}
                                     </Heading>
-                                    {filter.type === 'checkbox' && (
-                                        <VStack spacing={2} align="stretch">
-                                            {filter.options.map(
-                                                (option, index) => (
-                                                    <Box
-                                                        key={index}
-                                                        style={{
-                                                            margin: '0 calc(var(--chakra-space-4) * -1)',
-                                                        }}
-                                                        mx={-4}
-                                                    >
-                                                        <Checkbox
-                                                            _checked={{
-                                                                bgColor:
-                                                                    checkedBg,
-                                                            }}
-                                                            spacing={0}
-                                                            py={2}
-                                                            px={4}
-                                                            w="100%"
-                                                            flexDirection="row-reverse"
-                                                            justifyContent="space-between"
-                                                            value={option.value}
-                                                            onChange={() =>
-                                                                onSelectedTypesChange(
-                                                                    option.value
-                                                                )
-                                                            }
-                                                            isChecked={selectedTypes.includes(
-                                                                option.value
-                                                            )}
-                                                        >
-                                                            {option.label}
-                                                        </Checkbox>
-                                                    </Box>
-                                                )
-                                            )}
-                                        </VStack>
-                                    )}
-                                    {filter.type === 'radio' && (
-                                        <RadioGroup
-                                            onChange={(value) =>
-                                                onSelectedPeriodChange(value)
-                                            }
-                                            defaultValue={
-                                                filter.options.find(
-                                                    (el) => el.default === true
-                                                ).value
-                                            }
-                                        >
-                                            <VStack spacing={2} align="stretch">
-                                                {filter.options.map(
-                                                    (option, index) => (
-                                                        <Box
-                                                            key={index}
-                                                            style={{
-                                                                margin: '0 calc(var(--chakra-space-4) * -1)',
-                                                            }}
-                                                            mx={-4}
-                                                        >
-                                                            <Radio
-                                                                spacing={0}
-                                                                py={2}
-                                                                px={4}
-                                                                w="100%"
-                                                                flexDirection="row-reverse"
-                                                                justifyContent="space-between"
-                                                                value={
-                                                                    option.value
-                                                                }
-                                                            >
-                                                                {option.label}
-                                                            </Radio>
-                                                        </Box>
-                                                    )
-                                                )}
-                                            </VStack>
-                                        </RadioGroup>
-                                    )}
+                                    <VStack spacing={2} align="stretch">
+                                        {filter.options.map((option, index) => (
+                                            <Box
+                                                key={index}
+                                                style={{
+                                                    margin: '0 calc(var(--chakra-space-4) * -1)',
+                                                }}
+                                                mx={-4}
+                                            >
+                                                <Checkbox
+                                                    _checked={{
+                                                        bgColor: checkedBg,
+                                                    }}
+                                                    spacing={0}
+                                                    py={2}
+                                                    px={4}
+                                                    w="100%"
+                                                    flexDirection="row-reverse"
+                                                    justifyContent="space-between"
+                                                    value={option.value}
+                                                    onChange={() =>
+                                                        onChange(option.value)
+                                                    }
+                                                    isChecked={selectedFilters.includes(
+                                                        option.value
+                                                    )}
+                                                >
+                                                    {option.label}
+                                                </Checkbox>
+                                            </Box>
+                                        ))}
+                                    </VStack>
                                 </MenuGroup>
                                 {index !== filters.length - 1 && (
                                     <MenuDivider my={4} />
@@ -172,31 +119,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                 </Menu>
             </Box>
             <Flex mb={4} direction="row" wrap="wrap">
-                {selectedPeriod && (
-                    <Box p={'1px'}>
-                        <HStack
-                            bg={badgeBg}
-                            color="white"
-                            px={3}
-                            py={1.5}
-                            borderRadius="full"
-                            display="inline-flex"
-                            align="center"
-                            spacing={2}
-                        >
-                            <Text fontSize="sm">
-                                {
-                                    filters
-                                        .find((el) => el.key === 'time')
-                                        .options.find(
-                                            (el) => el.value === selectedPeriod
-                                        ).label
-                                }
-                            </Text>
-                        </HStack>
-                    </Box>
-                )}
-                {selectedTypes.map((type, index) => (
+                {selectedFilters.map((filter, index) => (
                     <Box p={'1px'} key={index}>
                         <HStack
                             bg={badgeBg}
@@ -208,21 +131,14 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             align="center"
                             spacing={2}
                         >
-                            <Text fontSize="sm">
-                                {
-                                    filters
-                                        .find((el) => el.key === 'type')
-                                        .options.find((el) => el.value === type)
-                                        .label
-                                }
-                            </Text>
+                            <Text fontSize="sm">{filter}</Text>
                             <Button
                                 variant="unstyled"
                                 size="xs"
                                 px={2}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    onSelectedTypesChange(type);
+                                    onChange(filter);
                                 }}
                             >
                                 <CloseIcon w={3} h={3} />
