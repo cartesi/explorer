@@ -89,7 +89,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                             <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink href={`/pools/${pool.id}`}>
+                    <NextLink href={`/pool-redesign/${pool.id}`}>
                         <Button size="sm">Stake</Button>
                     </NextLink>
                     {pool.paused && (

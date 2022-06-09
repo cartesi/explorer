@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Cartesi Pte. Ltd.
+// Copyright (C) 2022 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,14 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export * from './block';
-export * from './blocks';
-export * from './meta';
-export * from './nodes';
-export * from './poolBalances';
-export * from './stakingPool';
-export * from './stakingPools';
-export * from './poolShareInfoExtended';
-export * from './summary';
-export * from './user';
-export * from './users';
+import { FC } from 'react';
+
+export interface ConditionalWrapperProps {
+    condition: any;
+    wrapper: any;
+    children: any;
+}
+
+const ConditionalWrapper: FC<ConditionalWrapperProps> = (props) => {
+    const { condition, wrapper, children } = props;
+    return condition ? wrapper(children) : children;
+};
+
+export default ConditionalWrapper;

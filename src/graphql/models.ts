@@ -25,6 +25,7 @@ export type UserSort =
     | 'totalReward'
     | 'totalBlocks';
 export type PoolBalanceSort = 'shares' | 'released';
+export type PoolShareValueSort = 'timestamp';
 
 interface Nodes<T> {
     nodes: T[];
@@ -205,6 +206,35 @@ export type PoolBalancesData = {
 export type PoolBalancesVars = {
     first: number;
     skip: number;
+    where: any;
+    orderBy: string;
+    orderDirection: string;
+};
+
+export type PoolShareValue = {
+    id: string;
+    pool?: StakingPool;
+    timestamp: number;
+    value: string;
+};
+
+export type PoolShareInfoExtended = {
+    id: string;
+    weekPerformance: number;
+    monthPerformance: number;
+    shareValue: number;
+};
+
+export type PoolShareInfoExtendedData = {
+    allStakingPools: Nodes<PoolShareInfoExtended>;
+};
+
+export type PoolShareValuesData = {
+    poolShareValues: PoolShareValue[];
+};
+
+export type PoolShareValuesVars = {
+    first: number;
     where: any;
     orderBy: string;
     orderDirection: string;

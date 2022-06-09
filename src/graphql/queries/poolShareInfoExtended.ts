@@ -9,14 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export * from './block';
-export * from './blocks';
-export * from './meta';
-export * from './nodes';
-export * from './poolBalances';
-export * from './stakingPool';
-export * from './stakingPools';
-export * from './poolShareInfoExtended';
-export * from './summary';
-export * from './user';
-export * from './users';
+import gql from 'graphql-tag';
+
+export const POOL_SHARE_INFO_EXTENDED = gql`
+    query stakingPools($where: StakingPoolCondition) {
+        allStakingPools(condition: $where) {
+            nodes {
+                id
+                weekPerformance
+                monthPerformance
+                shareValue
+            }
+        }
+    }
+`;
