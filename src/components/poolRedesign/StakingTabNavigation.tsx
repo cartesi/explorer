@@ -11,41 +11,63 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { DashboardIcon, DelegateIcon } from '../../components/Icons';
+import { DashboardIcon, StakeIcon } from '../../components/Icons';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
     const color = useColorModeValue('gray.900', 'white');
+    const router = useRouter();
+    const address = router.query.pool as string;
 
     return (
         <>
             <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
-                <Button
-                    borderTopRadius="6px"
-                    py={{ lg: 7 }}
-                    leftIcon={<DashboardIcon />}
-                    outline="none"
-                    variant="ghost"
-                    _hover={{ bg: 'transparent' }}
-                    _active={{
-                        bg: bg,
-                        color: color,
-                    }}
-                >
-                    Pool Info
-                </Button>
-                <Button
-                    isActive
-                    borderTopRadius="6px"
-                    py={{ lg: 7 }}
-                    leftIcon={<DelegateIcon />}
-                    _active={{
-                        bg: bg,
-                        color: color,
-                    }}
-                >
-                    Stake
-                </Button>
+                <NextLink href={`/pool-redesign/${address}`}>
+                    <Button
+                        borderTopRadius="6px"
+                        py={{ lg: 7 }}
+                        leftIcon={<DashboardIcon />}
+                        outline="none"
+                        isActive={router.pathname === `/pool-redesign/[pool]`}
+                        variant={
+                            router.pathname === `/pool-redesign/[pool]`
+                                ? 'solid'
+                                : 'ghost'
+                        }
+                        _hover={{ bg: 'transparent' }}
+                        _active={{
+                            bg: bg,
+                            color: color,
+                        }}
+                    >
+                        Pool Info
+                    </Button>
+                </NextLink>
+                <NextLink href={`/pool-redesign/${address}/stake`}>
+                    <Button
+                        borderTopRadius="6px"
+                        py={{ lg: 7 }}
+                        leftIcon={<StakeIcon />}
+                        outline="none"
+                        isActive={
+                            router.pathname === `/pool-redesign/[pool]/stake`
+                        }
+                        variant={
+                            router.pathname === `/pool-redesign/[pool]/stake`
+                                ? 'solid'
+                                : 'ghost'
+                        }
+                        _hover={{ bg: 'transparent' }}
+                        _active={{
+                            bg: bg,
+                            color: color,
+                        }}
+                    >
+                        Stake
+                    </Button>
+                </NextLink>
             </HStack>
         </>
     );

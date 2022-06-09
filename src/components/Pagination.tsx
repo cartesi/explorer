@@ -10,17 +10,47 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { HStack, Link, Text } from '@chakra-ui/react';
+import { HStack, Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 export interface PaginationProps {
     currentPage: number;
     pages: number;
+    showPageNumbers?: boolean;
+    maxPageNumbers?: number;
     onPageClick: (page: number) => void;
 }
 
 const Pagination: FunctionComponent<PaginationProps> = (props) => {
-    const { currentPage, pages, onPageClick } = props;
+    const {
+        currentPage,
+        pages,
+        showPageNumbers = false,
+        maxPageNumbers = 5,
+        onPageClick,
+    } = props;
+
+    const pagination = React.useMemo(() => {
+        const pageNumbers = Array.from({ length: pages })
+            .fill(0)
+            .map((_, i) => i);
+
+        const start =
+            currentPage < maxPageNumbers
+                ? 0
+                : currentPage > pages - maxPageNumbers
+                ? pages - maxPageNumbers
+                : currentPage - maxPageNumbers / 2;
+
+        const end =
+            currentPage < maxPageNumbers
+                ? maxPageNumbers
+                : currentPage > pages - maxPageNumbers
+                ? pages
+                : currentPage + maxPageNumbers / 2;
+
+        return pageNumbers.slice(start, end);
+    }, [currentPage, pages, maxPageNumbers]);
 
     return (
         <HStack>
@@ -31,7 +61,54 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
                     />
                 </Link>
             )}
-            {pages > 1 && <Text>{`Page ${currentPage + 1} of ${pages}`}</Text>}
+            {showPageNumbers ? (
+                <>
+                    {pages > 1 && currentPage > maxPageNumbers - 1 && (
+                        <>
+                            <PageLink
+                                currentPage={currentPage}
+                                index={0}
+                                onPageClick={onPageClick}
+                            />
+                            <Text as="span" fontSize="sm">
+                                &hellip;
+                            </Text>
+                        </>
+                    )}
+
+                    {pages > 1 &&
+                        pagination.map((page) => {
+                            {
+                                return (
+                                    <PageLink
+                                        key={page}
+                                        currentPage={currentPage}
+                                        index={page}
+                                        onPageClick={onPageClick}
+                                    />
+                                );
+                            }
+                        })}
+
+                    {pages > 1 && currentPage <= pages - maxPageNumbers && (
+                        <>
+                            <Text as="span" fontSize="sm">
+                                &hellip;
+                            </Text>
+                            <PageLink
+                                currentPage={currentPage}
+                                index={pages - 1}
+                                onPageClick={onPageClick}
+                            />
+                        </>
+                    )}
+                </>
+            ) : (
+                pages > 1 && (
+                    <Text>{`Page ${currentPage + 1} of ${pages}`}</Text>
+                )
+            )}
+
             {currentPage < pages - 1 && (
                 <Link>
                     <ChevronRightIcon
@@ -40,6 +117,31 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
                 </Link>
             )}
         </HStack>
+    );
+};
+
+const PageLink = ({ currentPage, index, onPageClick }) => {
+    const bg = useColorModeValue('gray.100', 'gray.700');
+
+    return (
+        <Link
+            onClick={() => onPageClick(index)}
+            borderRadius="full"
+            minW={10}
+            h={10}
+            alignItems="center"
+            justifyContent="center"
+            display="flex"
+            userSelect="none"
+            _hover={{
+                textDecoration: 'none',
+                cursor: 'pointer',
+                backgroundColor: bg,
+            }}
+            backgroundColor={currentPage === index ? bg : 'transparent'}
+        >
+            <Text>{index + 1}</Text>
+        </Link>
     );
 };
 

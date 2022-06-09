@@ -15,11 +15,11 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
-import PoolTabNavigation from './PoolTabNavigation';
+import { StakingTabNavigation } from './StakingTabNavigation';
 
-export const NodePoolHeader: FC = () => {
+export const PoolHeader: FC = () => {
     const router = useRouter();
-    const address = router.query.node as string;
+    const address = router.query.pool as string;
     const { chainId } = useWallet();
 
     return (
@@ -49,10 +49,8 @@ export const NodePoolHeader: FC = () => {
                     />
                 </VStack>
 
-                <PoolTabNavigation />
+                <StakingTabNavigation />
             </Stack>
         </Box>
     );
 };
-
-export default NodePoolHeader;
