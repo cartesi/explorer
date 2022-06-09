@@ -10,10 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const Modal = {
-    baseStyle: () => ({
+    baseStyle: {
         dialog: {
             marginLeft: 3,
             marginRight: 3,
+            minHeight: '610px',
         },
         body: {
             display: 'flex',
@@ -23,9 +24,6 @@ export const Modal = {
             paddingInlineStart: [6, 8],
             paddingInlineEnd: [6, 8],
         },
-        content: {
-            minHeight: 610,
-        },
         header: {
             paddingInlineStart: [6, 8],
             paddingInlineEnd: 8,
@@ -34,5 +32,5 @@ export const Modal = {
         footer: {
             paddingBottom: [6, 10],
         },
-    }),
+    },
 };

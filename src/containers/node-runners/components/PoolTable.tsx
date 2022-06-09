@@ -29,8 +29,8 @@ import {
     BoxProps,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { PencilIcon } from '../../../components/Icons';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
+import { PencilIcon } from '../../../components/Icons';
 import { useCartesiToken } from '../../../services/token';
 import { formatCTSI } from '../../../utils/token';
 import { PoolInfo } from '../interfaces';
@@ -162,7 +162,10 @@ const PoolTable = ({ data }: Props) => {
                                                 <VisuallyHidden>
                                                     Manage pool {pool.id}
                                                 </VisuallyHidden>
-                                                <PencilIcon color="white" />
+                                                <PencilIcon
+                                                    color="white"
+                                                    data-testid={`pencil-svg-${pool.id}`}
+                                                />
                                             </Button>
                                         </NextLink>
                                     </Td>

@@ -33,7 +33,6 @@ import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
-import AttentionIcon from '../../AttentionIcon';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -88,13 +87,17 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4} w="full">
-                <AttentionIcon>
-                    <EffectiveBalanceIcon
-                        color="light.support.attention"
-                        w={7}
-                        h={7}
-                    />
-                </AttentionIcon>
+                <Box
+                    bg="yellow.100"
+                    w={14}
+                    h={14}
+                    borderRadius="full"
+                    display="grid"
+                    placeContent="center"
+                    flexShrink={0}
+                >
+                    <EffectiveBalanceIcon color="yellow.500" w={7} h={7} />
+                </Box>
                 <BigNumberTextV2
                     unit="ctsi"
                     value={stakingMature}
@@ -116,12 +119,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon
-                                role="balance-icon"
-                                ml="10px"
-                                w="11px"
-                                h="11px"
-                            />
+                            <Icon role="balance-icon" />
                         </Tooltip>
                         {needRebalance && (
                             <Tooltip

@@ -15,6 +15,7 @@ import {
     findByText,
     fireEvent,
     getByRole,
+    getByTestId,
     getByText,
     render,
     screen,
@@ -548,6 +549,13 @@ describe('NodeRunners container (Landing Page)', () => {
                     )
                 ).toBeInTheDocument();
 
+                expect(
+                    getByTestId(
+                        poolFirstRowEl,
+                        'pencil-svg-0xe584cd6dd071f532e9598e96589663e69330731b'
+                    )
+                ).toBeInTheDocument();
+
                 expect(getByText(poolFirstRowEl, '50,000')).toBeInTheDocument();
 
                 expect(getByText(poolFirstRowEl, 'Hired')).toBeInTheDocument();
@@ -560,6 +568,13 @@ describe('NodeRunners container (Landing Page)', () => {
                     getByText(
                         nodeRowEl,
                         'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c'
+                    )
+                ).toBeInTheDocument();
+
+                expect(
+                    getByTestId(
+                        nodeRowEl,
+                        'pencil-svg-0x68a42decd906f86a893ec91d04468bc2a869e56c'
                     )
                 ).toBeInTheDocument();
             });

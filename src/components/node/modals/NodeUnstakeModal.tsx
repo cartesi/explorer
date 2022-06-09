@@ -115,7 +115,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 unstake more funds while you have a non-zero
                                 “Releasing” balance. In that case, the timer
                                 restarts with the new unstaking funds added to
-                                the previously “Releasing” balance.Learn more
+                                the previously “Releasing” balance. Learn more
                             </Text>
                             <FormControl id="stakeAmount">
                                 <HStack justify="space-between">

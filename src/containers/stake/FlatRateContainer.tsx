@@ -10,7 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect, useState } from 'react';
-import { Alert, CloseButton, Spinner } from '@chakra-ui/react';
+import {
+    Alert,
+    AlertDescription,
+    Box,
+    CloseButton,
+    Spinner,
+} from '@chakra-ui/react';
 import { ContractTransaction } from 'ethers';
 import CommissionForm from '../../components/stake/CommissionForm';
 import { useFlatRateCommission } from '../../services/pool';
@@ -67,6 +73,11 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
                 progress === 0 && (
                     <Alert status="info" variant="left-accent" mt={2}>
                         <Spinner mx={2} />
+                        <Box flex="1">
+                            <AlertDescription display="block">
+                                Updating pool commission...
+                            </AlertDescription>
+                        </Box>
                         <CloseButton
                             position="absolute"
                             right="8px"

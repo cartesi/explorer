@@ -24,7 +24,6 @@ import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance'
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
 import { useStakingPoolFactory } from '../../../src/services/poolFactory';
 import { withChakraTheme } from '../../test-utilities';
-import { WalletConnectionContextProps } from '../../../src/contexts/wallet/definitions';
 import { buildUseStakingPoolFactoryReturn } from '../pools/mocks';
 import { BigNumber } from 'ethers';
 
@@ -80,7 +79,7 @@ describe('PoolSetting', () => {
             activate: jest.fn(),
             deactivate: jest.fn(),
             chainId: 3,
-        } as unknown as WalletConnectionContextProps);
+        });
 
         mockUseStakingPoolFactory.mockReturnValue(
             buildUseStakingPoolFactoryReturn()

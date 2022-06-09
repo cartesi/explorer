@@ -19,13 +19,15 @@ import {
     Text,
     Stack,
     Modal,
-    ModalHeader,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
     UseDisclosureProps,
+    Box,
+    HStack,
+    Divider,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -67,15 +69,28 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>
-                        Withdraw from the pool balance to your wallet
-                    </ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                                mr={10}
+                            >
+                                Withdraw from the pool balance to your wallet
+                            </Box>
+
+                            <ModalCloseButton mt="8px !important" />
+                        </HStack>
+                        <Divider />
+                    </Box>
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
-                                Last step to receive tokens in your
-                                wallet!Depending on the volume of requests, this
+                                Last step to receive tokens in your wallet!
+                                Depending on the volume of requests, this
                                 process can take up to 96 hours.
                             </Text>
 

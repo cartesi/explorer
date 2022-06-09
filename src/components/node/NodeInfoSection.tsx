@@ -26,24 +26,31 @@ import {
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
+import { NodeHireNodeSection } from './NodeHireNodeSection';
 
 export interface INodeInfoSection {
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
-    onRetire: () => void;
+    isRetired?: boolean;
+    isHiring?: boolean;
+    onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
+    onHire: (nodeAddress: string, funds: BigNumber) => void;
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
     address,
     userBalance,
     nodeBalance,
+    isRetired = false,
+    isHiring = false,
     onRetire,
     onDeposit,
+    onHire,
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
@@ -67,120 +74,120 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
     const onConfirmRetire = () => {
         retireModal.onClose();
-        onRetire();
+        onRetire(address);
     };
 
     return (
         <>
-            <Box bg={bg} shadow="sm" p={{ base: 2, lg: 6 }} mb={6}>
-                <Stack
-                    spacing={4}
-                    alignContent="flex-start"
-                    direction={{ base: 'column', md: 'row' }}
-                    p={2}
-                >
-                    <Box w={{ base: '100%', md: '140px' }}>
-                        <Text variant="label">Node address</Text>
-                    </Box>
-                    <Text isTruncated>{address}</Text>
-                </Stack>
-                <Stack
-                    spacing={4}
-                    alignContent="flex-start"
-                    direction={{ base: 'column', md: 'row' }}
-                    p={2}
-                >
-                    <Box w={{ base: '100%', md: '140px' }}>
-                        <HStack>
-                            <Text variant="label">Node balance</Text>
-                            <Box>
-                                <Tooltip
-                                    placement="bottom"
-                                    label="SAMPLE TEXT"
-                                    fontSize="small"
-                                    color="white"
-                                >
-                                    <Icon
-                                        width={4}
-                                        height={4}
-                                        color="gray.600"
-                                    />
-                                </Tooltip>
+            {isRetired ? (
+                <>
+                    <NodeHireNodeSection isHiring={isHiring} onHire={onHire} />
+                </>
+            ) : (
+                <>
+                    <Box
+                        bg={bg}
+                        borderRadius="lg"
+                        shadow="sm"
+                        p={{ base: 2, lg: 6 }}
+                        mb={6}
+                    >
+                        <Stack
+                            spacing={4}
+                            alignContent="flex-start"
+                            direction={{ base: 'column', md: 'row' }}
+                            p={2}
+                        >
+                            <Box w={{ base: '100%', md: '140px' }}>
+                                <Text variant="label">Node address</Text>
                             </Box>
-                        </HStack>
-                    </Box>
-
-                    <HStack spacing={4} alignItems="flex-end">
-                        <Box>
-                            <Flex align="baseline">
-                                <Text>{toETH(nodeBalance)}</Text>
-                                <Text pl={1}>ETH</Text>
-                            </Flex>
-                        </Box>
-                        <Box alignSelf="flex-end">
-                            <IconButton
-                                aria-label="Edit"
-                                size="sm"
-                                icon={<EditIcon />}
-                                variant="ghost"
-                                onClick={depositModal.onOpen}
-                            />
-                        </Box>
-                    </HStack>
-                </Stack>
-                <Stack
-                    spacing={4}
-                    alignContent="flex-start"
-                    direction={{ base: 'column', md: 'row' }}
-                    p={2}
-                >
-                    <Box w={{ base: '100%', md: '140px' }}>
-                        <HStack>
-                            <Text variant="label">Node status</Text>
-                            <Box>
-                                <Tooltip
-                                    placement="bottom"
-                                    label="SAMPLE TEXT"
-                                    fontSize="small"
-                                    color="white"
-                                >
-                                    <Icon
-                                        width={4}
-                                        height={4}
-                                        color="gray.600"
-                                    />
-                                </Tooltip>
+                            <Text isTruncated>{address}</Text>
+                        </Stack>
+                        <Stack
+                            spacing={4}
+                            alignContent="flex-start"
+                            direction={{ base: 'column', md: 'row' }}
+                            p={2}
+                        >
+                            <Box w={{ base: '100%', md: '140px' }}>
+                                <HStack>
+                                    <Text variant="label">Node balance</Text>
+                                    <Box>
+                                        <Tooltip
+                                            placement="bottom"
+                                            label="The node balance is the amount of ETH available in the node’s wallet."
+                                            fontSize="small"
+                                            color="white"
+                                        >
+                                            <Icon
+                                                width={4}
+                                                height={4}
+                                                color="gray.600"
+                                            />
+                                        </Tooltip>
+                                    </Box>
+                                </HStack>
                             </Box>
-                        </HStack>
+
+                            <HStack spacing={4} alignItems="flex-end">
+                                <Box>
+                                    <Flex align="baseline">
+                                        <Text>{toETH(nodeBalance)}</Text>
+                                        <Text pl={1}>ETH</Text>
+                                    </Flex>
+                                </Box>
+                                <Box alignSelf="flex-end">
+                                    <IconButton
+                                        aria-label="Edit"
+                                        size="sm"
+                                        icon={<EditIcon />}
+                                        variant="ghost"
+                                        onClick={depositModal.onOpen}
+                                    />
+                                </Box>
+                            </HStack>
+                        </Stack>
+                        <Stack
+                            spacing={4}
+                            alignContent="flex-start"
+                            direction={{ base: 'column', md: 'row' }}
+                            p={2}
+                        >
+                            <Box w={{ base: '100%', md: '140px' }}>
+                                <HStack>
+                                    <Text variant="label">Node status</Text>
+                                </HStack>
+                            </Box>
+                            <HStack spacing={4} alignItems="flex-end">
+                                <Box>
+                                    <Text>Running</Text>
+                                </Box>
+                            </HStack>
+                        </Stack>
                     </Box>
-                    <HStack spacing={4} alignItems="flex-end">
-                        <Box>
-                            <Text>Running</Text>
-                        </Box>
-                    </HStack>
-                </Stack>
-            </Box>
-            <Button
-                onClick={retireModal.onOpen}
-                bgColor={bg}
-                w={{ base: '100%', md: 'auto' }}
-                minW="15rem"
-                me={2}
-            >
-                RETIRE NODE
-            </Button>
+                    <Button
+                        onClick={retireModal.onOpen}
+                        bgColor={bg}
+                        w={{ base: '100%', md: 'auto' }}
+                        minW="15rem"
+                        me={2}
+                    >
+                        RETIRE NODE
+                    </Button>
 
-            <NodeRetireModal
-                address={address}
-                disclosure={retireModal}
-                onConfirmRetire={onConfirmRetire}
-            />
+                    <NodeRetireModal
+                        address={address}
+                        disclosure={retireModal}
+                        onConfirmRetire={onConfirmRetire}
+                    />
 
-            <NodeBalanceModal
-                disclosure={depositModal}
-                userBalance={userBalance}
-                onDepositFunds={onDeposit}
-            />
+                    <NodeBalanceModal
+                        disclosure={depositModal}
+                        userBalance={userBalance}
+                        onDepositFunds={onDeposit}
+                    />
+                </>
+            )}
         </>
     );
 };

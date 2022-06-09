@@ -26,6 +26,8 @@ import {
     Heading,
     HStack,
     Icon,
+    Input,
+    InputGroup,
     Link,
     Spinner,
     Stack,
@@ -33,8 +35,6 @@ import {
     Text,
     Tooltip,
     VStack,
-    Input,
-    InputGroup,
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useWallet } from '../../contexts/wallet';
@@ -65,12 +65,12 @@ const wordingFor = {
     rebalance: {
         title: 'Rebalancing pool...',
         failTitle: 'Rebalancing the pool failed',
-        successDescription: 'Pool rebalanced!',
+        successDescription: 'Pool rebalanced! Moving to the next step...',
     },
     changeEns: {
         title: 'Changing ENS name...',
         failTitle: 'Changing ENS name failed',
-        successDescription: 'ENS name changed!',
+        successDescription: 'ENS name changed! Moving to the next step...',
     },
 };
 

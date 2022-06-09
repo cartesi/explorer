@@ -26,6 +26,9 @@ import {
     ModalFooter,
     ModalOverlay,
     UseDisclosureProps,
+    Box,
+    HStack,
+    Divider,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -60,8 +63,22 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Unstake to withdraw</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Unstake to withdraw
+                            </Box>
+
+                            <ModalCloseButton mt="8px !important" />
+                        </HStack>
+                        <Divider />
+                    </Box>
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>

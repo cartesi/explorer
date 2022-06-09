@@ -39,6 +39,7 @@ type NodeField = 'nodeAddress';
 interface NodeInputProps extends BaseInput<NodeField> {
     node: Node;
     account: string;
+    styleProps?: Record<string, unknown>;
 }
 
 const useStyle = () => {
@@ -94,6 +95,7 @@ const NodeInput = ({
     account,
     helperText,
     onValidationChange,
+    styleProps,
 }: NodeInputProps) => {
     const { helperTxtColor } = useStyle();
     const [value, setValue] = useState<string>('');
@@ -125,6 +127,7 @@ const NodeInput = ({
             mb={6}
             mt={4}
             isInvalid={isInvalid}
+            {...styleProps}
         >
             <FormLabel htmlFor="node_address" fontWeight="medium">
                 Node Address

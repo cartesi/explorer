@@ -99,7 +99,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         value,
         nullLabel = '-',
         direction = 'column',
-        fontSize = '3x1',
+        fontSize = '3xl',
         icon,
         unit,
         options = defaultOptions,

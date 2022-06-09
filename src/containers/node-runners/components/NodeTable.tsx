@@ -29,8 +29,8 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import Address from './Address';
-import { PencilIcon } from '../../../components/Icons';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
+import { PencilIcon } from '../../../components/Icons';
 import Block from './Block';
 import { useAtom } from 'jotai';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
@@ -105,7 +105,10 @@ const NodeTable = () => {
                                                 <VisuallyHidden>
                                                     Manage node {node.id}
                                                 </VisuallyHidden>
-                                                <PencilIcon color="white" />
+                                                <PencilIcon
+                                                    color="white"
+                                                    data-testid={`pencil-svg-${node.id}`}
+                                                />
                                             </Button>
                                         </NextLink>
                                     </Td>

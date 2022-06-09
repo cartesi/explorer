@@ -11,7 +11,13 @@
 
 import React, { FC, useEffect, useState } from 'react';
 import { ContractTransaction } from 'ethers';
-import { Alert, CloseButton, Spinner } from '@chakra-ui/react';
+import {
+    Alert,
+    AlertDescription,
+    Box,
+    CloseButton,
+    Spinner,
+} from '@chakra-ui/react';
 import CommissionForm from '../../components/pools/fee/CommissionForm';
 import { useGasTaxCommission } from '../../services/pool';
 
@@ -65,6 +71,11 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
                 progress === 0 && (
                     <Alert status="info" variant="left-accent" mt={2}>
                         <Spinner mx={2} />
+                        <Box flex="1">
+                            <AlertDescription display="block">
+                                Updating pool commission...
+                            </AlertDescription>
+                        </Box>
                         <CloseButton
                             position="absolute"
                             right="8px"

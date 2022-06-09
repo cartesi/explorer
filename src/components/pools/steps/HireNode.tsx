@@ -40,10 +40,10 @@ import {
 } from '../../node/inputs/InitialFundsInput';
 import { poolAddressAtom } from './CommissionModel';
 import { useStakingPool } from '../../../services/pool';
+import { TransactionType } from '../../../types/pool';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
-type TransactionType = 'pause' | 'unpause' | 'hire';
 
 const { COMPLETED } = StepStatus;
 

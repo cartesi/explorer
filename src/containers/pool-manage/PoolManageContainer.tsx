@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Box,
     Stack,
@@ -17,30 +17,35 @@ import {
     VStack,
     useColorModeValue,
     Link,
+    chakra,
+    Text,
 } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { useStaking } from '../../services/staking';
 import { useBalance } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import { useNode } from '../../services/node';
 import { useUserNode } from '../../graphql/hooks/useNodes';
 import { TransactionInfoBanner } from '../../components/stake/TransactionInfoBanner';
-import TransactionFeedback from '../../components/TransactionFeedback';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import PoolSetting from '../../components/stake/PoolSetting';
 import { useWallet } from '../../contexts/wallet';
+import TransactionBanner from '../../components/node/TransactionBanner';
+import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
+import { useStakingPool } from '../../services/pool';
 
 export interface NodeContainerProps {
     address: string;
     blockNumber: number;
 }
 
-export const NodeManageContainer: FC<NodeContainerProps> = ({
+export const PoolManageContainer: FC<NodeContainerProps> = ({
     address,
     blockNumber,
 }) => {
     const { account, active } = useWallet();
     const userBalance = useBalance(account);
+    const pool = useStakingPool(address, account);
 
     const { staking, transaction: stakingTransaction } = useStaking(account);
 
@@ -50,8 +55,8 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
         blockNumber
     );
 
-    // get most recent node hired by user (if any)
-    const existingNode = useUserNode(account);
+    // get most recent node hired by user (i.e. the Pool)
+    const existingNode = useUserNode(address);
 
     // use a state variable for the typed node address
     const [worker, setWorker] = useState<string>();
@@ -75,17 +80,18 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                 bg={bg}
             >
                 <VStack spacing={4} alignItems="stretch">
-                    <TransactionInfoBanner
+                    <TransactionBanner
                         title="Setting allowance..."
                         failTitle="Error setting allowance"
-                        successDescription="New allowance set sucessfully."
+                        successDescription="New allowance set successfully."
                         transaction={tokenTransaction}
                     />
+
                     {transactionBanners?.deposit && (
                         <TransactionInfoBanner
                             title="Setting deposit..."
                             failTitle="Error setting deposit"
-                            successDescription="New deposit set sucessfully."
+                            successDescription="New deposit set successfully."
                             transaction={
                                 currentTransaction === 'deposit'
                                     ? node.transaction
@@ -97,7 +103,7 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                         <TransactionInfoBanner
                             title="Withdrawing..."
                             failTitle="Error withdrawing"
-                            successDescription="Withdrawed sucessfully."
+                            successDescription="Withdrawing was successful."
                             transaction={
                                 currentTransaction === 'withdraw'
                                     ? node.transaction
@@ -109,7 +115,7 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                         <TransactionInfoBanner
                             title="Staking..."
                             failTitle="Error staking"
-                            successDescription="Stake set sucessfully."
+                            successDescription="Stake set successfully."
                             transaction={
                                 currentTransaction === 'stake'
                                     ? stakingTransaction
@@ -121,7 +127,7 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                         <TransactionInfoBanner
                             title="Unstaking..."
                             failTitle="Error unstaking"
-                            successDescription="Unstaked sucessfully."
+                            successDescription="Unstaked successfully."
                             transaction={
                                 currentTransaction === 'unstake'
                                     ? stakingTransaction
@@ -129,7 +135,32 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                             }
                         />
                     )}
-                    <TransactionFeedback transaction={tokenTransaction} />
+                    {transactionBanners?.hire && (
+                        <TransactionInfoBanner
+                            title="Hiring node..."
+                            failTitle="Error hiring node"
+                            successDescription={
+                                <>
+                                    <Text fontSize="sm">
+                                        <chakra.span
+                                            fontWeight="bold"
+                                            fontSize="sm"
+                                        >
+                                            Congratulations!
+                                        </chakra.span>{' '}
+                                        You hire a new node for your pool
+                                        successfully.
+                                    </Text>
+                                </>
+                            }
+                            transaction={
+                                currentTransaction === 'hire'
+                                    ? node.transaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {node.retired && <NodeRetiredBanner />}
                 </VStack>
             </Box>
             <Box
@@ -149,25 +180,31 @@ export const NodeManageContainer: FC<NodeContainerProps> = ({
                         <Heading as="h2" mb={0}>
                             Pool Node
                         </Heading>
-                        <Link href="#" isExternal fontSize="xs">
-                            Learn with this tutorial <ExternalLinkIcon />
-                        </Link>
                     </Box>
                 </Stack>
 
                 <NodeInfoSection
-                    address={address}
+                    address={activeWorker}
                     userBalance={userBalance}
                     nodeBalance={node.balance}
-                    onRetire={() => node.retire()}
+                    isRetired={node.retired}
+                    isHiring={node.transaction?.isOngoing}
+                    onRetire={pool.retire}
                     onDeposit={(amount) => {
-                        console.log('deposit...');
                         setCurrentTransaction('deposit');
                         setTransactionBanners({
                             ...transactionBanners,
                             deposit: true,
                         });
                         node.transfer(amount);
+                    }}
+                    onHire={(nodeAddress, funds) => {
+                        setCurrentTransaction('hire');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            hire: true,
+                        });
+                        pool.hire(nodeAddress, funds);
                     }}
                 />
             </Box>

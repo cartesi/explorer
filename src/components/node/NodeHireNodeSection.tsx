@@ -9,27 +9,50 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Text,
-    FormControl,
-    FormHelperText,
-    FormLabel,
-    HStack,
-    Stack,
-    Button,
-    Input,
-    InputGroup,
-    InputRightElement,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import React, { FC, useState } from 'react';
+import { Box, Text, Stack, Button, useColorModeValue } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { toBigNumber } from '../../utils/numberParser';
+import { NodeInput, NodeField, evaluateNode } from './inputs/NodeInput';
+import { MappedErrors, ValidationResult } from '../BaseInput';
+import { DepositField, InitialFundsInput } from './inputs/InitialFundsInput';
+import { isEmpty, omit } from 'lodash/fp';
+import { useNode } from '../../services/node';
+import { useWallet } from '../../contexts/wallet';
 
-export const NodeHireNodeSection = () => {
+type Validation = ValidationResult<NodeField | DepositField>;
+type Errors = Partial<MappedErrors<Validation>>;
+
+export interface NodeHireNodeSectionProps {
+    isHiring?: boolean;
+    onHire: (nodeAddress: string, funds: BigNumber) => void;
+}
+
+export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
+    const { isHiring = false, onHire } = props;
+    const { account } = useWallet();
     const bg = useColorModeValue('white', 'gray.800');
+    const [initialFunds, setInitialFunds] = useState('');
+    const [nodeAddress, setNodeAddress] = useState<string | null>();
+    const [errors, setErrors] = useState<Errors>({});
+    const node = useNode(nodeAddress);
+    const { status } = evaluateNode(account, node);
+    const isEnabled =
+        status === 'available' && isEmpty(errors) && !isEmpty(initialFunds);
+
+    const handleValidation = (validation: Validation) => {
+        const { name, isValid } = validation;
+        setErrors((state) => {
+            return isValid
+                ? omit([name], state)
+                : { ...state, [name]: validation };
+        });
+    };
 
     return (
         <Box
             bg={bg}
+            borderRadius="lg"
             shadow="sm"
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}
@@ -43,39 +66,44 @@ export const NodeHireNodeSection = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <FormControl>
-                    <HStack justify="space-between">
-                        <FormLabel fontWeight="bold">Node address</FormLabel>
-                    </HStack>
-                    <InputGroup>
-                        <Input placeholder="Please, enter new node address" />
-                    </InputGroup>
-                </FormControl>
-                <FormControl>
-                    <HStack justify="space-between">
-                        <FormLabel fontWeight="bold">Initial funds</FormLabel>
-                    </HStack>
-                    <InputGroup>
-                        <Input />
-                        <InputRightElement
-                            color="gray.300"
-                            size="lg"
-                            pointerEvents="none"
-                            w={14}
-                            h="100%"
-                            children={<Box>ETH</Box>}
-                        />
-                    </InputGroup>
-                    <FormHelperText>Your balance: 123123 ETH</FormHelperText>
-                </FormControl>
+                <NodeInput
+                    onValidationChange={handleValidation}
+                    onChange={setNodeAddress}
+                    helperText={
+                        errors.nodeAddress?.error
+                            ? null
+                            : 'Please, enter new node address'
+                    }
+                    account={account}
+                    node={node}
+                    styleProps={{
+                        pr: 0,
+                    }}
+                />
+                <InitialFundsInput
+                    onValidationChange={handleValidation}
+                    onChange={setInitialFunds}
+                    max={3}
+                    min={0.001}
+                    styleProps={{
+                        pr: 0,
+                    }}
+                />
                 <Button
                     colorScheme="blue"
                     w={{ base: '100%', md: 'auto' }}
                     minW="15rem"
+                    disabled={!isEnabled}
+                    isLoading={isHiring}
+                    onClick={() =>
+                        onHire(nodeAddress, toBigNumber(initialFunds))
+                    }
                 >
                     HIRE NODE
                 </Button>
-                <Text fontSize="sm">Approve by wallet transaction</Text>
+                <Text fontSize="sm" mt="0 !important">
+                    Approve by wallet transaction
+                </Text>
             </Stack>
         </Box>
     );

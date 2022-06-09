@@ -112,7 +112,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 Node balance
                             </Box>
 
-                            <ModalCloseButton pt={2} mt={5} />
+                            <ModalCloseButton mt="8px !important" />
                         </HStack>
                         <Divider />
                     </Box>
@@ -156,7 +156,10 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="blue"
-                                    disabled={output.isZero()}
+                                    disabled={
+                                        output.isZero() ||
+                                        output.gt(userBalance)
+                                    }
                                     onClick={() => {
                                         onDepositFunds(output);
                                         disclosure.onClose();

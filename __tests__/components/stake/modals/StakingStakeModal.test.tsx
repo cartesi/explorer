@@ -74,7 +74,7 @@ describe('Staking Stake Modal', () => {
 
     it('Should invoke onSave callback', () => {
         let isSavedTriggered = false;
-        const { getByRole } = render(
+        const { getByTestId } = render(
             <EStakingStakeModal
                 {...defaultProps}
                 onSave={() => {
@@ -83,27 +83,27 @@ describe('Staking Stake Modal', () => {
             />
         );
 
-        const button = getByRole('stake-button');
-
-        fireEvent.click(button);
+        fireEvent.click(getByTestId('max-stake-button'));
+        fireEvent.click(getByTestId('stake-button'));
 
         expect(isSavedTriggered).toBe(true);
     });
 
     it('Should disable stake button when stake is zero', () => {
-        const { getByRole } = render(
+        const { getByTestId } = render(
             <EStakingStakeModal
                 {...defaultProps}
                 userBalance={BigNumber.from(0)}
             />
         );
 
-        expect(getByRole('stake-button')).toBeDisabled();
+        expect(getByTestId('stake-button')).toBeDisabled();
     });
 
     it('Should enable stake button when stake is above zero', () => {
-        const { getByRole } = renderComponent();
+        const { getByTestId } = renderComponent();
 
-        expect(getByRole('stake-button')).toBeEnabled();
+        fireEvent.click(getByTestId('max-stake-button'));
+        expect(getByTestId('stake-button')).toBeEnabled();
     });
 });

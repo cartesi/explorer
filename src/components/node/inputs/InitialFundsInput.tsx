@@ -34,6 +34,7 @@ type DepositField = 'deposit';
 interface InitialFundsInputProps extends BaseInput<DepositField> {
     min: number;
     max: number;
+    styleProps?: Record<string, unknown>;
 }
 
 const numberFormatOpts: Intl.NumberFormatOptions = {
@@ -46,6 +47,7 @@ const InitialFundsInput = ({
     min,
     max,
     onValidationChange,
+    styleProps,
 }: InitialFundsInputProps) => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
     const { account } = useWallet();
@@ -109,6 +111,7 @@ const InitialFundsInput = ({
         <FormControl
             pr={{ base: 0, md: '20vw' }}
             isInvalid={!isNil(depositErrors)}
+            {...styleProps}
         >
             <FormLabel htmlFor="initial_funds" fontWeight="medium">
                 Initial Funds

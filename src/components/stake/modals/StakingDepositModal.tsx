@@ -25,13 +25,13 @@ import {
     FormHelperText,
     FormLabel,
     Modal,
-    ModalHeader,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
     UseDisclosureProps,
+    Divider,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
@@ -84,8 +84,22 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
             <ModalContent>
                 {allowance.isZero() || allowanceStep ? (
                     <>
-                        <ModalHeader>Set Allowance and Deposit</ModalHeader>
-                        <ModalCloseButton />
+                        <Box pb={6}>
+                            <HStack justify="space-between">
+                                <Box
+                                    fontSize="xl"
+                                    fontWeight="bold"
+                                    p={4}
+                                    pl={8}
+                                    pb={4}
+                                >
+                                    Set Allowance and Deposit
+                                </Box>
+
+                                <ModalCloseButton mt="8px !important" />
+                            </HStack>
+                            <Divider />
+                        </Box>
                         <ModalBody>
                             <VStack spacing={5}>
                                 <Text>
@@ -147,8 +161,22 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                     </>
                 ) : (
                     <>
-                        <ModalHeader>Deposit</ModalHeader>
-                        <ModalCloseButton />
+                        <Box pb={6}>
+                            <HStack justify="space-between">
+                                <Box
+                                    fontSize="xl"
+                                    fontWeight="bold"
+                                    p={4}
+                                    pl={8}
+                                    pb={4}
+                                >
+                                    Deposit
+                                </Box>
+
+                                <ModalCloseButton mt="8px !important" />
+                            </HStack>
+                            <Divider />
+                        </Box>
                         <ModalBody>
                             <VStack spacing={5}>
                                 <Text>

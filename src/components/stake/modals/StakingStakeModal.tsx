@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import React, { FC, useEffect, useRef, useState } from 'react';
 import {
     Button,
     FormControl,
@@ -17,17 +18,19 @@ import {
     FormHelperText,
     FormLabel,
     Modal,
-    ModalHeader,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
+    Stack,
     UseDisclosureProps,
+    Box,
+    HStack,
+    Divider,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 
 export interface IStakingStakeModalProps {
@@ -39,6 +42,9 @@ export interface IStakingStakeModalProps {
     onSave: (newStake: BigNumber) => void;
 }
 
+const formatBigNumber = (value: BigNumber) =>
+    parseFloat(formatUnits(value, 18));
+
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     userBalance,
     disclosure,
@@ -46,8 +52,12 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     onClose,
     onSave,
 }) => {
-    const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
-    const [outputStake, setOutputStake] = useState<BigNumber>(userBalance);
+    const userBalanceFormatted = formatBigNumber(userBalance);
+    const [stakedValue, setStakedValue] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
+    const formattedStakedValue = formatBigNumber(stakedValue);
+    const inputFocusRef = useRef();
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -56,10 +66,14 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
             maximumFractionDigits: 2,
         });
 
-        return numberFormat.format(parseFloat(formatUnits(value, 18)));
+        return numberFormat.format(formatBigNumber(value));
     };
 
-    const inputFocusRef = useRef();
+    useEffect(() => {
+        if (isOpen) {
+            setStakedValue(BigNumber.from(0));
+        }
+    }, [isOpen]);
 
     return (
         <>
@@ -71,8 +85,22 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Stake</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Stake
+                            </Box>
+
+                            <ModalCloseButton mt="8px !important" />
+                        </HStack>
+                        <Divider />
+                    </Box>
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
@@ -83,19 +111,40 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 more
                             </Text>
                             <FormControl id="stakeAmount">
-                                <FormLabel fontWeight="bold">
-                                    Stake Amount
+                                <FormLabel mr={0}>
+                                    <Stack
+                                        direction="row"
+                                        justify="space-between"
+                                        alignItems="center"
+                                    >
+                                        <span>Stake Amount</span>
+                                        <Button
+                                            variant="text"
+                                            size="md"
+                                            height="auto"
+                                            color="blue.400"
+                                            textTransform="uppercase"
+                                            p={0}
+                                            data-testid="max-stake-button"
+                                            disabled={stakedValue.eq(
+                                                userBalance
+                                            )}
+                                            onClick={() => {
+                                                setStakedValue(userBalance);
+                                            }}
+                                        >
+                                            Max stake
+                                        </Button>
+                                    </Stack>
                                 </FormLabel>
                                 <CTSINumberInput
+                                    value={formattedStakedValue}
                                     min={0}
                                     max={userBalanceFormatted}
-                                    onChange={(bigNumberValue) => {
-                                        setOutputStake(bigNumberValue);
-                                    }}
+                                    onChange={setStakedValue}
                                 />
                                 <FormHelperText>
-                                    Your Pool Balance: {toCTSI(userBalance)}{' '}
-                                    CTSI
+                                    Allowance: {toCTSI(userBalance)} CTSI
                                 </FormHelperText>
                             </FormControl>
                         </VStack>
@@ -104,10 +153,10 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="blue"
-                                    disabled={outputStake.isZero()}
-                                    role="stake-button"
+                                    disabled={stakedValue.isZero()}
+                                    data-testid="stake-button"
                                     onClick={() => {
-                                        onSave(outputStake);
+                                        onSave(stakedValue);
                                         disclosure.onClose();
                                         onClose();
                                     }}

@@ -15,13 +15,13 @@ import { PoolBalanceIcon } from '../../Icons';
 import {
     HStack,
     VStack,
+    Box,
     StackProps,
     Icon,
     Tooltip,
     Text,
 } from '@chakra-ui/react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
-import AttentionIcon from '../../AttentionIcon';
 
 export interface PoolBalanceStatProps extends StackProps {
     pool: BigNumber;
@@ -33,13 +33,17 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4}>
-                <AttentionIcon>
-                    <PoolBalanceIcon
-                        color="light.support.attention"
-                        w={6}
-                        h={6}
-                    />
-                </AttentionIcon>
+                <Box
+                    bg="yellow.100"
+                    w={14}
+                    h={14}
+                    borderRadius="full"
+                    display="grid"
+                    placeContent="center"
+                    flexShrink={0}
+                >
+                    <PoolBalanceIcon color="yellow.500" w={7} h={7} />
+                </Box>
                 <BigNumberTextV2
                     unit="ctsi"
                     value={pool}
@@ -58,12 +62,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon
-                                role="balance-icon"
-                                ml="10px"
-                                w="11px"
-                                h="11px"
-                            />
+                            <Icon role="balance-icon" />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

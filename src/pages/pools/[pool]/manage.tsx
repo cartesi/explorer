@@ -18,7 +18,7 @@ import { useBlockNumber } from '../../../services/eth';
 import Layout from '../../../components/Layout';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
-import { NodeManageContainer } from '../../../containers/node-manage/NodeManageContainer';
+import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import Address from '../../../components/Address';
 
 const PoolNode: FC = () => {
@@ -69,7 +69,7 @@ const PoolNode: FC = () => {
                 </Stack>
             </Box>
 
-            <NodeManageContainer blockNumber={blockNumber} address={address} />
+            <PoolManageContainer blockNumber={blockNumber} address={address} />
         </Layout>
     );
 };

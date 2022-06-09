@@ -14,11 +14,13 @@ import Head from 'next/head';
 import {
     Box,
     Button,
+    chakra,
     Flex,
     Heading,
     Link,
     Spacer,
     Stack,
+    Text,
     useBreakpointValue,
     useColorModeValue,
     useDisclosure,
@@ -28,21 +30,13 @@ import {
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
-import useUser from '../../../graphql/hooks/useUser';
 import Layout from '../../../components/Layout';
-import useSummary from '../../../graphql/hooks/useSummary';
 import TransactionFeedback from '../../../components/TransactionFeedback';
 import { useTimeLeft } from '../../../utils/react';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useNode } from '../../../services/node';
 import { useWallet } from '../../../contexts/wallet';
-import {
-    ArrowBackIcon,
-    CheckCircleIcon,
-    EditIcon,
-    ExternalLinkIcon,
-    WarningIcon,
-} from '@chakra-ui/icons';
+import { ArrowBackIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
 import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
 import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';
@@ -59,9 +53,10 @@ import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import { NodeHireNodeSection } from '../../../components/node/NodeHireNodeSection';
 import theme from '../../../styles/theme';
+import { useStakingPool } from '../../../services/pool';
 
 const ManageNode: FC = () => {
-    const { account, chainId, active: isConnected } = useWallet();
+    const { account, active: isConnected } = useWallet();
     const blockNumber = useBlockNumber();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const stepBoxBg = useColorModeValue('white', 'gray.700');
@@ -72,6 +67,7 @@ const ManageNode: FC = () => {
     // user ETH balance
     const userBalance = useBalance(account);
     const userETHBalance = useBalance(account);
+    const pool = useStakingPool(address, account);
 
     const {
         staking,
@@ -248,6 +244,32 @@ const ManageNode: FC = () => {
                             }
                         />
                     )}
+                    {transactionBanners?.hire && (
+                        <TransactionInfoBanner
+                            title="Hiring node..."
+                            failTitle="Error hiring node"
+                            successDescription={
+                                <>
+                                    <Text fontSize="sm">
+                                        <chakra.span
+                                            fontWeight="bold"
+                                            fontSize="sm"
+                                        >
+                                            Congratulations!
+                                        </chakra.span>{' '}
+                                        You hire a new node for your pool
+                                        successfully.
+                                    </Text>
+                                </>
+                            }
+                            transaction={
+                                currentTransaction === 'hire'
+                                    ? node.transaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {node.retired && <NodeRetiredBanner />}
                     <TransactionFeedback transaction={tokenTransaction} />
                 </VStack>
             </Box>
@@ -279,6 +301,8 @@ const ManageNode: FC = () => {
                     address={address}
                     userBalance={userBalance}
                     nodeBalance={node.balance}
+                    isRetired={node.retired}
+                    isHiring={node.transaction?.isOngoing}
                     onRetire={() => node.retire()}
                     onDeposit={(amount) => {
                         console.log('deposit...');
@@ -288,6 +312,14 @@ const ManageNode: FC = () => {
                             deposit: true,
                         });
                         node.transfer(amount);
+                    }}
+                    onHire={(nodeAddress, funds) => {
+                        setCurrentTransaction('hire');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            hire: true,
+                        });
+                        pool.hire(nodeAddress, funds);
                     }}
                 />
 
@@ -393,7 +425,10 @@ const ManageNode: FC = () => {
 
                 <NodeHiredBanner />
                 <NodeRetiredBanner />
-                <NodeHireNodeSection />
+                <NodeHireNodeSection
+                    isHiring={node.transaction?.isOngoing}
+                    onHire={(funds) => node.hire(funds)}
+                />
             </Box>
             {isSmallScreen && (
                 <Box

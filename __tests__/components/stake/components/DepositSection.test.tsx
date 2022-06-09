@@ -59,14 +59,6 @@ describe('Deposit Section', () => {
         expect(screen.getByText('Staking')).toBeInTheDocument();
     });
 
-    // Will be back when we have the tutorial link
-    it.skip('Should display learn more label', () => {
-        renderComponent();
-        expect(
-            screen.getByText('Learn more with the tutorial')
-        ).toBeInTheDocument();
-    });
-
     it('Should display deposit button', () => {
         renderComponent();
         expect(screen.getByText('Deposit')).toBeInTheDocument();

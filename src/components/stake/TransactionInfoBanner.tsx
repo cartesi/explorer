@@ -28,7 +28,7 @@ import { Transaction } from '../../services/transaction';
 export interface ITransactionInfoBannerProps extends AlertProps {
     title?: string;
     failTitle?: string;
-    successDescription?: string;
+    successDescription?: React.ReactNode;
     transaction: Transaction<any>;
     onBeginTransaction?: () => void;
     onEndTransaction?: () => void;

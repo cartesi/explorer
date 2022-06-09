@@ -54,7 +54,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     return (
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
             <ModalOverlay />
-            <ModalContent minHeight={610}>
+            <ModalContent>
                 <Box pb={6}>
                     <HStack justify="space-between">
                         <Box
@@ -67,14 +67,14 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             Retire node
                         </Box>
 
-                        <ModalCloseButton pt={2} mt={5} />
+                        <ModalCloseButton mt="8px !important" />
                     </HStack>
                     <Divider />
                 </Box>
                 <ModalBody>
                     <Text mb={8}>
-                        After retire node all remaining ETH funds held by the
-                        node will be transferred to your personal Ethereum
+                        After retiring the node all remaining ETH funds held by
+                        the node will be transferred to your personal Ethereum
                         account. If you want to participate in the system,
                         please hire a new node with a new address.
                     </Text>
@@ -85,7 +85,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             onChange={(e) => setAddressValue(e.target.value)}
                         />
                         <FormHelperText>
-                            Please entering your address to verify your action.
+                            Please enter your address to verify your action.
                         </FormHelperText>
                     </FormControl>
                 </ModalBody>
@@ -98,7 +98,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         <HStack spacing={2} mb={1}>
                             <WarningIcon color="orange.500" />
                             <Text fontSize="sm">
-                                Once that node is retired, you cannot reuse it
+                                Once that node is retired, you cannot reuse it.
                             </Text>
                         </HStack>
                         <Button

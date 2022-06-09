@@ -15,21 +15,11 @@ import {
     PoolActivity,
     IPoolActivityProps,
 } from '../../../src/components/stake/PoolActivity';
-import { useWallet } from '../../../src/contexts/wallet';
 import { withChakraTheme } from '../../test-utilities';
+import { useWallet } from '../../../src/contexts/wallet';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
-
-const walletMod = `../../../src/contexts/wallet`;
-jest.mock(walletMod, () => {
-    const originalModule = jest.requireActual(walletMod);
-    return {
-        __esModule: true,
-        ...originalModule,
-        useWallet: jest.fn(),
-    };
-});
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
 const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
@@ -37,14 +27,14 @@ const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
 >;
 const POOL_ADDRESS = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const defaultTimestamp = 1643576268000;
+const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
 const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
-
-const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
-
+jest.mock('../../../src/contexts/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
+
 const EPoolActivity = withChakraTheme<IPoolActivityProps>(PoolActivity);
 
 describe('Pool Activity', () => {
