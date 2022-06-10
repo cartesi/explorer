@@ -9,166 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Button,
-    Text,
-    Box,
-    InputGroup,
-    Input,
-    InputRightElement,
-    FormControl,
-    FormLabel,
-    FormHelperText,
-    FormErrorMessage,
-    Stack,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import { isNil, isEmpty, isFunction, omit } from 'lodash/fp';
+import { Button, Text, Box, Stack, useColorModeValue } from '@chakra-ui/react';
+import { isEmpty, omit } from 'lodash/fp';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { useWallet } from '../../../contexts/wallet';
-import { useBalance } from '../../../services/eth';
+
 import { useNode, NodeStatus } from '../../../services/node';
 import { Transaction } from '../../../services/transaction';
-import { useMessages } from '../../../utils/messages';
-import { formatValue } from '../../../utils/numberFormatter';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { BaseInput, ValidationResult, MappedErrors } from '../../BaseInput';
+import { ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../TransactionBanner';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
-
-type DepositField = 'deposit';
-
-interface InitialFundsInput extends BaseInput<DepositField> {
-    min: number;
-    max: number;
-}
+import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
 
 const { COMPLETED } = StepStatus;
-
-const numberFormatOpts: Intl.NumberFormatOptions = {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-};
-
-const useStyle = () => {
-    const helperTxtColor = useColorModeValue('gray', 'gray.100');
-    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
-    return {
-        helperTxtColor,
-        tipsBgColor,
-    };
-};
-
-const InitialFundsInput = ({
-    onChange,
-    min,
-    max,
-    onValidationChange,
-}: InitialFundsInput) => {
-    const { helperTxtColor } = useStyle();
-    const { account } = useWallet();
-    const userBalance = useBalance(account);
-    const ethBalance = userBalance
-        ? formatValue(userBalance, 'eth', numberFormatOpts)
-        : '0.00';
-    const {
-        register,
-        formState: { errors },
-        trigger,
-    } = useForm<{ deposit: number }>();
-
-    const validate = (value: number) => {
-        if (toBigNumber(value.toString()).gt(userBalance)) {
-            return 'Insufficient ETH balance';
-        }
-        return true;
-    };
-
-    const {
-        name,
-        onChange: onChangeValidate,
-        ref,
-    } = register('deposit', {
-        shouldUnregister: true,
-        valueAsNumber: true,
-        validate,
-        required: {
-            value: true,
-            message: useMessages('field.isRequired'),
-        },
-        max: {
-            value: max,
-            message: useMessages('deposit.maxAllowed', max),
-        },
-        min: {
-            value: min,
-            message: useMessages('deposit.minAllowed', min),
-        },
-    });
-
-    const { deposit: depositErrors } = errors;
-
-    useEffect(() => {
-        if (!isFunction(onValidationChange)) return;
-
-        const validation: Validation = {
-            name: 'deposit',
-            isValid: isEmpty(depositErrors),
-        };
-        if (!isEmpty(depositErrors)) {
-            const { type, message } = depositErrors;
-            validation.error = { message, type };
-        }
-
-        onValidationChange(validation);
-    }, [depositErrors]);
-
-    return (
-        <FormControl
-            pr={{ base: 0, md: '20vw' }}
-            isInvalid={!isNil(depositErrors)}
-        >
-            <FormLabel htmlFor="initial_funds" fontWeight="medium">
-                Initial Funds
-            </FormLabel>
-            <InputGroup>
-                <Input
-                    size="lg"
-                    ref={ref}
-                    id="initial_funds"
-                    name={name}
-                    type="number"
-                    onBlur={() => trigger('deposit')}
-                    onChange={(evt) => {
-                        onChangeValidate(evt);
-                        onChange(evt?.target?.value);
-                        //trigger validations for registered field called deposit
-                        trigger('deposit');
-                    }}
-                />
-                <InputRightElement
-                    children="ETH"
-                    m={1}
-                    mr={2}
-                    color="gray"
-                    fontSize={12}
-                />
-            </InputGroup>
-            <FormErrorMessage>{depositErrors?.message}</FormErrorMessage>
-            <FormHelperText color={helperTxtColor} fontSize={14}>
-                Your balance: {ethBalance} ETH
-            </FormHelperText>
-        </FormControl>
-    );
-};
 
 const enableNextWhen = (
     funds: string,
@@ -189,7 +51,7 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
-    const { tipsBgColor } = useStyle();
+    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
     const [stepState, setStepState] = useStepState({ inFocus });
     const { account } = useWallet();
     const [nodeAddress, setNodeAddress] = useState<string | null>();
