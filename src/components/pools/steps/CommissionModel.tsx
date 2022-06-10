@@ -204,7 +204,10 @@ const CommissionModel = ({
                     <Button
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
-                        onClick={(evt) => onComplete && onComplete(evt)}
+                        onClick={(evt) => {
+                            onComplete();
+                            setStepState('COMPLETED');
+                        }}
                     >
                         CREATE POOL
                     </Button>

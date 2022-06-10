@@ -141,7 +141,10 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
                         // onClick={() => node.hire(toBigNumber(initialFunds))}
-                        onClick={() => onComplete && onComplete()}
+                        onClick={() => {
+                            onComplete();
+                            setStepState(COMPLETED);
+                        }}
                     >
                         NEXT
                     </Button>
