@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CheckIcon } from '@chakra-ui/icons';
 import {
     Button,
     Text,
@@ -23,26 +22,14 @@ import {
     FormErrorMessage,
     Stack,
     useColorModeValue,
-    Spinner,
-    VisuallyHidden,
 } from '@chakra-ui/react';
-import {
-    constant,
-    matches,
-    cond,
-    stubTrue,
-    isNil,
-    isEmpty,
-    capitalize,
-    isFunction,
-    omit,
-} from 'lodash/fp';
+import { isNil, isEmpty, isFunction, omit } from 'lodash/fp';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useBalance } from '../../../services/eth';
-import { useNode, Node, NodeStatus } from '../../../services/node';
+import { useNode, NodeStatus } from '../../../services/node';
 import { Transaction } from '../../../services/transaction';
 import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';
@@ -52,14 +39,9 @@ import { IStep, useStepState } from '../../StepGroup';
 import { BaseInput, ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../TransactionBanner';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
+import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
 
-type NodeField = 'nodeAddress';
 type DepositField = 'deposit';
-
-interface NodeInput extends BaseInput<NodeField> {
-    node: Node;
-    account: string;
-}
 
 interface InitialFundsInput extends BaseInput<DepositField> {
     min: number;
@@ -83,130 +65,6 @@ const useStyle = () => {
         helperTxtColor,
         tipsBgColor,
     };
-};
-
-const evaluateNodeStatus = cond<Node, NodeStatus>([
-    [matches({ available: true }), constant('available')],
-    [matches({ retired: true }), constant('retired')],
-    [matches({ pending: true }), constant('pending')],
-    [matches({ owned: true }), constant('owned')],
-    [stubTrue, constant('none')],
-]);
-
-const evaluateNode = (account: string, node: Node) => {
-    const status = evaluateNodeStatus(node);
-    const state = { isInvalid: false, errorMessage: '', status };
-    const mine = account?.toLowerCase() === node?.user.toLowerCase();
-    switch (status) {
-        case 'owned':
-            return {
-                ...state,
-                isInvalid: true,
-                errorMessage: mine
-                    ? useMessages('node.owned.mine')
-                    : useMessages('node.owned.notMine'),
-            };
-        case 'pending':
-            return {
-                ...state,
-                isInvalid: true,
-                errorMessage: mine
-                    ? useMessages('node.pending.mine')
-                    : useMessages('node.pending.notMine'),
-            };
-        case 'retired':
-            return {
-                ...state,
-                isInvalid: true,
-                errorMessage: useMessages('node.retired'),
-            };
-        default:
-            return state;
-    }
-};
-
-const NodeInput = ({
-    onChange,
-    node,
-    account,
-    helperText,
-    onValidationChange,
-}: NodeInput) => {
-    const { helperTxtColor } = useStyle();
-    const [value, setValue] = useState<string>('');
-    const { isInvalid, errorMessage, status } = evaluateNode(account, node);
-    const displayLoader = value && node.loading && status === 'none';
-    const isAvailable = value && status === 'available';
-
-    useEffect(() => {
-        if (!isFunction(onValidationChange)) return;
-
-        const validation: Validation = {
-            name: 'nodeAddress',
-            isValid: !isInvalid,
-        };
-
-        if (isInvalid) {
-            validation.error = {
-                message: errorMessage,
-                type: `node${capitalize(status)}`,
-            };
-        }
-
-        onValidationChange(validation);
-    }, [isInvalid]);
-
-    return (
-        <FormControl
-            pr={{ base: 0, md: '20vw' }}
-            mb={6}
-            mt={4}
-            isInvalid={isInvalid}
-        >
-            <FormLabel htmlFor="node_address" fontWeight="medium">
-                Node Address
-            </FormLabel>
-            <InputGroup>
-                <Input
-                    id="node_address"
-                    type="text"
-                    size="lg"
-                    onChange={(evt) => {
-                        const value = evt?.target?.value || '';
-                        setValue(value);
-                        onChange(value);
-                    }}
-                />
-                {displayLoader && (
-                    <InputRightElement
-                        h="100%"
-                        children={
-                            <Spinner label="Checking node availability" />
-                        }
-                    />
-                )}
-                {isAvailable && (
-                    <InputRightElement h="100%">
-                        <>
-                            <VisuallyHidden>
-                                This node is available
-                            </VisuallyHidden>
-                            <CheckIcon
-                                id="node-available-check"
-                                color="green.500"
-                            />
-                        </>
-                    </InputRightElement>
-                )}
-            </InputGroup>
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-            {helperText && (
-                <FormHelperText fontSize={14} color={helperTxtColor}>
-                    {helperText}
-                </FormHelperText>
-            )}
-        </FormControl>
-    );
 };
 
 const InitialFundsInput = ({
