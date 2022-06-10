@@ -128,4 +128,26 @@ describe('useMessages hook', () => {
             });
         });
     });
+
+    describe('Messages on commission context', () => {
+        describe('Models', () => {
+            it('should return a message of how flat-rate works', () => {
+                const { result } = renderHook(() =>
+                    useMessages('commission.model.flatRate.howItWorks')
+                );
+                expect(result.current).toEqual(
+                    'This model calculates the commission as a fixed percentage of the block CTSI reward before distributing the remaining amount to the pool users.'
+                );
+            });
+
+            it('should return a message of how gas-based works', () => {
+                const { result } = renderHook(() =>
+                    useMessages('commission.model.gasBased.howItWorks')
+                );
+                expect(result.current).toEqual(
+                    'This model calculates the commission considering the current network gas price, Ethereum price and CTSI price. The configured amount of gas above is multiplied by the gas price provided by a ChainLink oracle, then converted from ETH to CTSI using an Uniswap V2 price oracle.'
+                );
+            });
+        });
+    });
 });
