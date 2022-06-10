@@ -26,7 +26,7 @@ import {
     Stack,
     Button,
 } from '@chakra-ui/react';
-import { Step, StepActions, StepBody } from '../../Step';
+import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { ChangeEvent, ReactNode, useState } from 'react';
 import { BaseInput } from '../../BaseInput';
@@ -136,6 +136,8 @@ const GasBasedCommission = ({
     );
 };
 
+const { COMPLETED } = StepStatus;
+
 const CommissionModel = ({
     stepNumber,
     inFocus,
@@ -206,7 +208,7 @@ const CommissionModel = ({
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => {
                             onComplete();
-                            setStepState('COMPLETED');
+                            setStepState(COMPLETED);
                         }}
                     >
                         CREATE POOL
