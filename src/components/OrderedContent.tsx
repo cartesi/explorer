@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 import { VStack, Box, StackProps } from '@chakra-ui/react';
 
 export type OrderedContentProps = {
-    title: string;
-    orderedItems: string[];
+    title: string | ReactNode;
+    orderedItems: string[] | ReactNode[];
     stackProps?: StackProps;
 };
 
