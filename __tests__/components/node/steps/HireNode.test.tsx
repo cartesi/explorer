@@ -157,63 +157,6 @@ describe('HireNode Step', () => {
         });
     });
 
-    describe('Initial Funds input', () => {
-        describe('validations', () => {
-            it('Should display message when funds set is smaller than established minimum (i.e. 0.001)', async () => {
-                render(<HireNode inFocus stepNumber={1} />);
-                const input = screen.getByLabelText('Initial Funds');
-                act(() => {
-                    fireEvent.change(input, { target: { value: 0 } });
-                });
-
-                expect(
-                    await screen.findByText(
-                        'Min amount of ETH allowed to deposit is 0.001'
-                    )
-                ).toBeInTheDocument();
-            });
-
-            it(`Should display message when deposit set is bigger than user's ETH balance`, async () => {
-                render(<HireNode inFocus stepNumber={1} />);
-                const input = screen.getByLabelText('Initial Funds');
-                act(() => {
-                    fireEvent.change(input, { target: { value: 2 } });
-                });
-
-                expect(
-                    await screen.findByText('Insufficient ETH balance')
-                ).toBeInTheDocument();
-            });
-
-            it(`Should display message when deposit set is bigger then maximum allowed (i.e. 3)`, async () => {
-                mockUseBalance.mockReturnValue(toBigNumber('10'));
-                render(<HireNode inFocus stepNumber={1} />);
-                const input = screen.getByLabelText('Initial Funds');
-                act(() => {
-                    fireEvent.change(input, { target: { value: 5 } });
-                });
-
-                expect(
-                    await screen.findByText(
-                        'Max amount of ETH allowed to deposit is 3'
-                    )
-                ).toBeInTheDocument();
-            });
-
-            it('should display field required message on blur event and the field is empty', async () => {
-                render(<HireNode inFocus stepNumber={1} />);
-                const input = screen.getByLabelText('Initial Funds');
-                act(() => {
-                    fireEvent.blur(input);
-                });
-
-                expect(
-                    await screen.findByText('This field is required.')
-                ).toBeInTheDocument();
-            });
-        });
-    });
-
     describe('Notifications', () => {
         it('should display an informative notification when the transaction is in course', async () => {
             const node = buildNodeObj('available', '0x00');
