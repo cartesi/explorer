@@ -28,6 +28,7 @@ import CommissionModel from '../../components/pools/steps/CommissionModel';
 import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereumNode';
 import SetUpNode from '../../components/pools/steps/SetUpNode';
 import HireNode from '../../components/pools/steps/HireNode';
+import EthereumNameServer from '../../components/pools/steps/ENS';
 
 const NewNode: FC = () => {
     const bg = useColorModeValue('gray.80', 'gray.800');
@@ -96,6 +97,7 @@ const NewNode: FC = () => {
                         SetUpNode,
                         CommissionModel,
                         HireNode,
+                        EthereumNameServer,
                     ]}
                 />
             </Box>
