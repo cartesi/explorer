@@ -96,6 +96,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     stakingReleased={stakingReleased}
                     stakingMaturingTimestamp={stakingMaturingTimestamp}
                     stakingReleasingTimestamp={stakingReleasingTimestamp}
+                    onRebalance={onRebalance}
                 />
                 <PoolBalanceStat pool={pool} />
             </SimpleGrid>

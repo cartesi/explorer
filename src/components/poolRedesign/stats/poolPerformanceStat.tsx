@@ -32,14 +32,13 @@ export interface PoolPerformanceStatProps {
 
 const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
     ({ address, location }: PoolPerformanceStatProps) => {
+        const bgBlocks = useColorModeValue('blue.50', 'gray.900');
         const { data, loading } = usePoolShareInfoExtended(address);
         if (loading) return null;
 
         const { weekPerformance } = data.allStakingPools?.nodes[0] || {
             weekPerformance: 0,
         };
-
-        const bgBlocks = useColorModeValue('blue.50', 'gray.900');
 
         return (
             <ConditionalWrapper
