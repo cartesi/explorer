@@ -27,6 +27,7 @@ import { StepGroup } from '../../components/StepGroup';
 import CommissionModel from '../../components/pools/steps/CommissionModel';
 import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereumNode';
 import SetUpNode from '../../components/pools/steps/SetUpNode';
+import HireNode from '../../components/pools/steps/HireNode';
 
 const NewNode: FC = () => {
     const bg = useColorModeValue('gray.80', 'gray.800');
@@ -90,7 +91,12 @@ const NewNode: FC = () => {
                 </Stack>
                 <StepGroup
                     mobileHeaderProps={{ top: '100px' }}
-                    steps={[CustomizeEthereumNode, SetUpNode, CommissionModel]}
+                    steps={[
+                        CustomizeEthereumNode,
+                        SetUpNode,
+                        CommissionModel,
+                        HireNode,
+                    ]}
                 />
             </Box>
         </Layout>
