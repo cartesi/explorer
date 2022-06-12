@@ -9,16 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 
 import Layout from '../../../components/Layout';
-import AddressText from '../../../components/AddressText';
-import { Box, Stack, VStack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/button';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box } from '@chakra-ui/layout';
 import { StakingGuide } from '../../../components/poolRedesign/StakingGuide';
-import { StakingTabNavigation } from '../../../components/poolRedesign/StakingTabNavigation';
 import { useColorModeValue } from '@chakra-ui/react';
 import { StakingActivity } from '../../../components/poolRedesign/StakingActivity';
 import { Staking } from '../../../components/poolRedesign/Staking';
@@ -29,7 +25,7 @@ import { useCartesiToken } from '../../../services/token';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
-import { PoolHeader } from '../../../components/poolRedesign/poolHeader';
+import { PoolHeader } from '../../../components/poolRedesign/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/poolRedesign/PoolBreadcrumbs';
 
 const PoolRedesignStake = () => {
@@ -122,8 +118,9 @@ const PoolRedesignStake = () => {
                         userPoolBalance={userBalance}
                         userETHBalance={userETHBalance}
                         stakedBalance={stakedBalance}
-                        onWithdraw={withdraw}
+                        onApprove={(amount) => approve(address, amount)}
                         onDeposit={deposit}
+                        onWithdraw={withdraw}
                         onStake={stake}
                         onUnstake={onUnstake}
                         depositTimestamp={depositTimestamp}

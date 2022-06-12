@@ -86,13 +86,6 @@ const poolRedesign = () => {
     const bgPageDevider = useColorModeValue('gray.100', 'gray.900');
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
-    const activity = Array.from({ length: 10 }, (_, i) => ({
-        id: i,
-        from: '0xf83...0af4',
-        since: 'Nov, 2021',
-        deposit: '0.00',
-    }));
-
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: true,
     });
@@ -194,7 +187,7 @@ const poolRedesign = () => {
                     Pool Activity
                 </Heading>
 
-                <PoolActivity activity={activity} />
+                <PoolActivity poolAddress={address} />
             </Box>
         </Layout>
     );
