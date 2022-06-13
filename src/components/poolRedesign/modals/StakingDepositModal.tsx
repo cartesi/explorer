@@ -122,7 +122,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     <VStack w="full" spacing={4}>
                                         <Button
                                             isFullWidth
-                                            colorScheme="darkGray"
+                                            colorScheme="blue"
                                             onClick={() => {
                                                 onSave(
                                                     outputAllowance,
@@ -136,7 +136,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         <Button
                                             isFullWidth
                                             colorScheme="darkGray"
-                                            variant="outline"
+                                            variant="ghost"
                                             onClick={() => {
                                                 onClose();
                                                 setAllowanceStep(false);
@@ -250,7 +250,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     <VStack w="full" spacing={4}>
                                         <Button
                                             isFullWidth
-                                            colorScheme="darkGray"
+                                            colorScheme="blue"
                                             disabled={outputDeposit.isZero()}
                                             onClick={() => {
                                                 onSave(
@@ -265,7 +265,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         </Button>
                                         <Button
                                             isFullWidth
-                                            variant="outline"
+                                            variant="ghost"
                                             colorScheme="darkGray"
                                             onClick={onClose}
                                         >

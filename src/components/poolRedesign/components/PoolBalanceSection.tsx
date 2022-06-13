@@ -55,14 +55,14 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg="purple.100"
+                        bg="blue.50"
                         w={14}
                         h={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <PoolBalanceIcon color="purple" w={6} h={6} />
+                        <PoolBalanceIcon color="blue.500" w={6} h={6} />
                     </Box>
                     <Box>
                         {isPoolBalanceLocked ? (
@@ -90,7 +90,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             onClick={onStakeClick}
-                            colorScheme="darkGray"
+                            colorScheme="blue"
                             disabled={
                                 isPoolBalanceLocked || userPoolBalance.isZero()
                             }
@@ -100,7 +100,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                     </Box>
                     <Box>
                         <Button
-                            variant="outline"
+                            variant="ghost"
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             onClick={onWithdrawClick}

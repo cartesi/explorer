@@ -51,14 +51,14 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg={'green.100'}
+                        bg={'yellow.100'}
                         w={14}
                         h={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon color="green" w={6} h={6} />
+                        <StakedBalanceIcon color="yellow.500" w={7} h={7} />
                     </Box>
                     <Box>
                         <Text color="gray.400">Your staked balance</Text>
@@ -78,7 +78,7 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                 >
                     <Box>
                         <Button
-                            variant="outline"
+                            variant="ghost"
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             onClick={onUnstakeClick}

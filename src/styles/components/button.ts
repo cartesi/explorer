@@ -13,7 +13,7 @@ export const Button = {
     baseStyle: {
         borderRadius: 0,
         fontWeight: 'normal',
-        // textTransform: 'uppercase',
+        textTransform: 'uppercase',
     },
     sizes: {
         lg: {

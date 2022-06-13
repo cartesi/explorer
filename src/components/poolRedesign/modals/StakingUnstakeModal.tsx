@@ -141,7 +141,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    colorScheme="darkGray"
+                                    colorScheme="blue"
                                     disabled={
                                         outputUnstake.isZero() &&
                                         unstakeFullAmount !== 'full'
@@ -162,7 +162,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
-                                    variant="outline"
+                                    variant="ghost"
                                     onClick={onClose}
                                 >
                                     Cancel

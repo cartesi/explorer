@@ -104,7 +104,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    colorScheme="darkGray"
+                                    colorScheme="blue"
                                     disabled={outputStake.isZero()}
                                     onClick={() => {
                                         onSave(outputStake);
@@ -116,7 +116,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 </Button>
                                 <Button
                                     isFullWidth
-                                    variant="outline"
+                                    variant="ghost"
                                     colorScheme="darkGray"
                                     onClick={onClose}
                                 >

@@ -187,7 +187,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     isFullWidth
-                                    colorScheme="darkGray"
+                                    colorScheme="blue"
                                     disabled={
                                         outputWithdraw.isZero() &&
                                         withdrawFullAmount !== 'full'
@@ -208,7 +208,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="darkGray"
-                                    variant="outline"
+                                    variant="ghost"
                                     onClick={onClose}
                                 >
                                     Cancel
