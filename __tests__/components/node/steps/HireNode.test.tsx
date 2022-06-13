@@ -155,6 +155,49 @@ describe('HireNode Step', () => {
             const button = screen.getByText('NEXT');
             expect(button.hasAttribute('disabled')).toBe(true);
         });
+
+        it('should keep the NEXT button disabled when step goes out of focus and then goes back to focus', async () => {
+            const node = buildNodeObj('available', '0x00');
+            mockUseNode.mockReturnValue(node);
+            mockUseBalance.mockReturnValue(toBigNumber('6'));
+            const { rerender } = render(<HireNode inFocus stepNumber={1} />);
+            const addressInput = screen.getByLabelText('Node Address');
+            const fundsInput = screen.getByLabelText('Initial Funds');
+
+            expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
+                true
+            );
+
+            // Fill the required fields
+            act(() => {
+                fireEvent.change(addressInput, {
+                    target: { value: account },
+                });
+                fireEvent.change(fundsInput, { target: { value: 2 } });
+            });
+
+            await screen.findByText('This node is available');
+            expect(screen.queryByDisplayValue(account)).toBeInTheDocument();
+            expect(screen.queryByDisplayValue(2)).toBeInTheDocument();
+            expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
+                false
+            );
+
+            //removing the focus of it i.e. user clicked PREVIOUS
+            rerender(<HireNode stepNumber={1} />);
+
+            expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
+
+            // user goes back to the HireNode step
+            rerender(<HireNode inFocus stepNumber={1} />);
+
+            expect(screen.queryByDisplayValue(account)).not.toBeInTheDocument();
+            expect(screen.queryByDisplayValue(2)).not.toBeInTheDocument();
+
+            expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
+                true
+            );
+        });
     });
 
     describe('Notifications', () => {

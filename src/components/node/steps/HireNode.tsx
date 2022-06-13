@@ -73,6 +73,13 @@ const HireNode = ({
     };
 
     useEffect(() => {
+        if (inFocus) return;
+
+        setNodeAddress(null);
+        setInitialFunds(null);
+    }, [inFocus]);
+
+    useEffect(() => {
         if (isStepCompleted) {
             setNodeAddressAtom(nodeAddress);
             setStepState(COMPLETED);
