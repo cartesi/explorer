@@ -55,7 +55,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
             spacing={2}
             align="center"
             direction="row"
-            zIndex={'xxl'}
+            zIndex={'lg'}
             position="relative"
         >
             <Box>
