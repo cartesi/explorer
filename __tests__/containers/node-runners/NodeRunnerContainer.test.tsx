@@ -10,7 +10,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+    cleanup,
+    fireEvent,
+    prettyDOM,
+    render,
+    screen,
+} from '@testing-library/react';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { UseWallet } from '../../../src/contexts/wallet';
 import { NextRouter } from 'next/router';
@@ -92,6 +98,54 @@ describe('NodeRunners container (Landing Page)', () => {
             fireEvent.click(screen.getByText('CREATE PUBLIC POOL'));
 
             expect(router.push).toHaveBeenCalledWith('/pools/new');
+        });
+
+        it('should display tooltip for private node creation banner', async () => {
+            render(<ENodeRunnerContainer wallet={wallet} router={router} />);
+
+            const tooltipIcon = screen.getByTestId(
+                'private-node-creation-card-tooltip-icon'
+            );
+
+            fireEvent.click(tooltipIcon);
+
+            expect(
+                await screen.findByText('Main responsabilities:')
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Make sure the Noether node is online and works properly 24x7.'
+                )
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Pay the Ethereum fees that are necessary for block production and also maintenance operations.'
+                )
+            ).toBeInTheDocument();
+        });
+
+        it('should display tooltip for public pool creation banner', async () => {
+            render(<ENodeRunnerContainer wallet={wallet} router={router} />);
+
+            const tooltipIcon = screen.getByTestId(
+                'pool-creation-card-tooltip-icon'
+            );
+
+            fireEvent.click(tooltipIcon);
+
+            expect(
+                await screen.findByText('Main responsabilities:')
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Make sure the Noether node is online and works properly 24x7.'
+                )
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Have a relatively large amount of CTSI to stake.'
+                )
+            ).toBeInTheDocument();
         });
     });
 
