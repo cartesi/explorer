@@ -47,30 +47,38 @@ const Header = () => (
 );
 
 type AlertAndConnectT = { display: boolean; connect: () => void };
-const AlertAndConnect = ({ display, connect }: AlertAndConnectT) => (
-    <SlideDown display={display}>
-        <Box
-            bg="white"
-            id="alert-and-wallet-connection-box"
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-            pt={12}
-            pb={6}
-        >
-            <Box>
-                <Alert bg="transparent">
-                    <Icon as={AiOutlineExclamationCircle} h={5} w={5} mr={2} />
-                    Please connect your wallet if you have created your own node
-                    and pool already
-                </Alert>
+const AlertAndConnect = ({ display, connect }: AlertAndConnectT) => {
+    const bg = useColorModeValue('white', 'gray.800');
+    return (
+        <SlideDown display={display}>
+            <Box
+                bg={bg}
+                id="alert-and-wallet-connection-box"
+                alignItems="center"
+                display="flex"
+                flexDirection="column"
+                pt={12}
+                pb={6}
+            >
+                <Box>
+                    <Alert bg="transparent">
+                        <Icon
+                            as={AiOutlineExclamationCircle}
+                            h={5}
+                            w={5}
+                            mr={2}
+                        />
+                        Please connect your wallet if you have created your own
+                        node and pool already
+                    </Alert>
+                </Box>
+                <Button colorScheme="blue" mt={7} onClick={connect}>
+                    CONNECT WALLET
+                </Button>
             </Box>
-            <Button colorScheme="blue" mt={7} onClick={connect}>
-                CONNECT WALLET
-            </Button>
-        </Box>
-    </SlideDown>
-);
+        </SlideDown>
+    );
+};
 
 const mainResponsability = 'Main responsabilities:';
 const privateNodeResponsabilities = [
