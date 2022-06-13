@@ -88,7 +88,7 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
                     onSelectedTypesChange={onSelectedTypesChange}
                 />
                 <SearchInput
-                    w={[100, 200, 400, 500]}
+                    w={['100%', 200, 400]}
                     placeholder="Search User Address"
                     onSearchChange={(e) => {
                         setUserSearch(e.target.value.toLowerCase());
