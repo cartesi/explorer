@@ -53,7 +53,7 @@ describe('Card component', () => {
             />
         );
 
-        fireEvent.mouseOver(screen.getByRole('tooltip-icon'));
+        fireEvent.click(screen.getByRole('tooltip-icon'));
 
         expect(
             await screen.findByText(

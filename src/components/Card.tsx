@@ -19,6 +19,7 @@ import {
     StackProps,
     Text,
     useColorModeValue,
+    useDisclosure,
     Tooltip,
 } from '@chakra-ui/react';
 import { MouseEventHandler, ReactElement, ReactNode } from 'react';
@@ -46,6 +47,7 @@ export const Card = ({
     ...stackProps
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
+    const { isOpen, onToggle } = useDisclosure();
     return (
         <Stack
             id={id}
@@ -72,22 +74,25 @@ export const Card = ({
                         size="sm"
                         mb={0}
                         display="flex"
-                        alignItems="end"
+                        justifyContent={{ base: 'center', lg: 'flex-start' }}
                     >
                         {title}{' '}
                         {tooltip && (
                             <Tooltip
                                 label={tooltip}
-                                placement="top-end"
+                                placement="auto"
                                 fontSize="md"
                                 bg="grey.support"
                                 opacity={0.9}
                                 color="white"
                                 maxW={{ base: '95vw', md: '37rem' }}
+                                isOpen={isOpen}
                             >
                                 <QuestionOutlineIcon
+                                    data-testid={`${id}-tooltip-icon`}
                                     ml={2}
                                     role="tooltip-icon"
+                                    onClick={() => onToggle()}
                                 />
                             </Tooltip>
                         )}
