@@ -92,7 +92,7 @@ const PoolRedesignStake = () => {
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 4, sm: 6, lg: 8 }}
             >
                 {isConnected ? (
                     <StakingDashboard

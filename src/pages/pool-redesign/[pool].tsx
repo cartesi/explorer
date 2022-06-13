@@ -100,7 +100,7 @@ const poolRedesign = () => {
             <PoolBreadcrumbs currentPage="Overview" />
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
+                py={{ base: 4, sm: 6, lg: 8 }}
             >
                 <HStack
                     spacing={4}

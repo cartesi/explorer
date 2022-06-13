@@ -209,7 +209,6 @@ export const Staking: FC<StakingProps> = ({
                         setAllowanceTransaction(true);
                         onApprove(amount);
                     } else {
-                        console.log('deposit transaction', toCTSI(amount));
                         setCurrentTransaction('deposit');
                         setTransactionBanners({
                             ...transactionBanners,
@@ -227,7 +226,6 @@ export const Staking: FC<StakingProps> = ({
                 userBalance={userPoolBalance}
                 disclosure={stakeDisclosure}
                 onSave={(amount) => {
-                    console.log('stake transaction', toCTSI(amount));
                     setCurrentTransaction('stake');
                     setTransactionBanners({
                         ...transactionBanners,
@@ -243,7 +241,6 @@ export const Staking: FC<StakingProps> = ({
                 userBalance={userPoolBalance}
                 disclosure={withdrawDisclosure}
                 onSave={(amount) => {
-                    console.log('withdraw transaction', toCTSI(amount));
                     setCurrentTransaction('withdraw');
                     setTransactionBanners({
                         ...transactionBanners,
@@ -260,7 +257,6 @@ export const Staking: FC<StakingProps> = ({
                     stakedBalance={stakedBalance}
                     disclosure={unstakeDisclosure}
                     onSave={(amount) => {
-                        console.log('unstake transaction', toCTSI(amount));
                         setCurrentTransaction('unstake');
                         setTransactionBanners({
                             ...transactionBanners,
