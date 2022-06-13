@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Stack } from '@chakra-ui/react';
-import { FC, memo, useState } from 'react';
+import { FC, useState } from 'react';
 import { PoolFilters } from './PoolFilters';
 import SearchInput from '../SearchInput';
 import { PoolActivityList } from './PoolActivityList';
@@ -20,46 +20,52 @@ interface IPoolActivityProps {
 }
 
 export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
-    const [selected, setSelected] = useState<string[]>([]);
-    const [userSearch, setUserSearch] = useState<string>();
-
     const poolFilters = [
         {
+            key: 'type',
             title: 'Types:',
+            type: 'checkbox',
             options: [
-                { label: 'Stake', value: 'Stake' },
-                { label: 'Unstake', value: 'Unstake' },
                 { label: 'Deposit', value: 'Deposit' },
                 { label: 'Withdraw', value: 'Withdraw' },
-                { label: 'Blockes Produced', value: 'Block' },
-                { label: 'Pool Activity', value: 'Pool' },
+                { label: 'Stake', value: 'Stake' },
+                { label: 'Unstake', value: 'Unstake' },
             ],
         },
         {
-            title: 'Time Duration:',
+            key: 'time',
+            title: 'Time period:',
+            type: 'radio',
             options: [
-                { label: 'This Week', value: 'Week' },
-                { label: 'This Month', value: 'Month' },
-            ],
-        },
-        {
-            title: 'User Types:',
-            options: [
-                { label: 'From', value: 'From' },
-                { label: 'To', value: 'To' },
-                { label: 'By', value: 'By' },
+                { label: 'All-time', value: 'AllTime', default: true },
+                { label: 'This Week', value: 'ThisWeek' },
+                { label: 'Last Week', value: 'LastWeek' },
+                { label: 'This Month', value: 'ThisMonth' },
+                { label: 'Last Month', value: 'LastMonth' },
             ],
         },
     ];
 
-    const onFilterChange = (value: string) => {
-        const isSelected = selected.includes(value);
+    const defaultTimePeriod = poolFilters
+        .find((el) => el.key === 'time')
+        .options.find((el) => el.default === true).value;
+
+    const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+    const [selectedPeriod, setSelectedPeriod] =
+        useState<string>(defaultTimePeriod);
+    const [userSearch, setUserSearch] = useState<string>();
+
+    const onSelectedPeriodChange = (value: string) => {
+        setSelectedPeriod(value);
+    };
+
+    const onSelectedTypesChange = (value: string) => {
+        const isSelected = selectedTypes.includes(value);
         if (isSelected) {
-            setSelected(selected.filter((s) => s !== value));
+            setSelectedTypes(selectedTypes.filter((s) => s !== value));
         } else {
-            setSelected([...selected, value]);
+            setSelectedTypes([...selectedTypes, value]);
         }
-        //console.log(value);
     };
 
     return (
@@ -75,9 +81,11 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
                 direction={{ base: 'column', lg: 'row' }}
             >
                 <PoolFilters
-                    onChange={onFilterChange}
                     filters={poolFilters}
-                    selectedFilters={selected}
+                    selectedPeriod={selectedPeriod}
+                    onSelectedPeriodChange={onSelectedPeriodChange}
+                    selectedTypes={selectedTypes}
+                    onSelectedTypesChange={onSelectedTypesChange}
                 />
                 <SearchInput
                     w={[100, 200, 400, 500]}
@@ -91,6 +99,8 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
             <PoolActivityList
                 poolAddress={poolAddress}
                 userSearch={userSearch}
+                selectedTypes={selectedTypes}
+                selectedPeriod={selectedPeriod}
             />
         </>
     );
