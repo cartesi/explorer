@@ -138,6 +138,7 @@ export interface StakingPoolData {
 export interface PoolActivity {
     type: ActivityType;
     id: string;
+    user: string;
     amount: string;
     timestamp: string;
 }

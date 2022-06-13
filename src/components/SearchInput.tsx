@@ -19,15 +19,16 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 
 export interface SearchInputProps extends InputGroupProps {
+    placeholder?: string;
     onSearchChange?: ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
 const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
-    const { onSearchChange, ...rest } = props;
+    const { placeholder = 'Search', onSearchChange, ...rest } = props;
     return (
         <InputGroup {...rest}>
             <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
-            <Input placeholder="Search" onChange={onSearchChange} />
+            <Input placeholder={placeholder} onChange={onSearchChange} />
         </InputGroup>
     );
 };

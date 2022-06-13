@@ -25,6 +25,9 @@ export const GET_POOL_ACTIVITIES = gql`
             orderDirection: $orderDirection
         ) {
             id
+            user {
+                id
+            }
             type
             amount
             timestamp
