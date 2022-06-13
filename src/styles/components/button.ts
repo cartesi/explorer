@@ -13,7 +13,6 @@ export const Button = {
     baseStyle: {
         borderRadius: 0,
         fontWeight: 'normal',
-        textTransform: 'uppercase',
     },
     sizes: {
         lg: {
@@ -74,6 +73,7 @@ export const Button = {
                 return {
                     bg: 'blue.200',
                     color: 'gray.900',
+                    textTransform: 'uppercase',
                     _hover: {
                         bg: 'blue.300',
                         color: 'gray.900',
@@ -82,6 +82,11 @@ export const Button = {
             }
 
             return;
+        },
+        ghost: (props) => {
+            return {
+                textTransform: 'uppercase',
+            };
         },
     },
     defaultProps: {

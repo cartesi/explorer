@@ -30,6 +30,7 @@ export const StakingTabNavigation: FC = () => {
                         py={{ lg: 7 }}
                         leftIcon={<DashboardIcon />}
                         outline="none"
+                        textTransform="none"
                         isActive={router.pathname === `/pool-redesign/[pool]`}
                         variant={
                             router.pathname === `/pool-redesign/[pool]`
@@ -51,6 +52,7 @@ export const StakingTabNavigation: FC = () => {
                         py={{ lg: 7 }}
                         leftIcon={<StakeIcon />}
                         outline="none"
+                        textTransform="none"
                         isActive={
                             router.pathname === `/pool-redesign/[pool]/stake`
                         }
