@@ -94,10 +94,12 @@ const Activity: FC<ActivityProps> = memo(
 interface IPoolActivityListProps {
     poolAddress: string;
     userSearch?: string;
+    selectedTypes?: any;
+    selectedPeriod?: string;
 }
 
 export const PoolActivityList: FC<IPoolActivityListProps> = memo(
-    ({ poolAddress, userSearch }) => {
+    ({ poolAddress, userSearch, selectedTypes, selectedPeriod }) => {
         //const [pageNumber, setPageNumber] = useState<number>(0);
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
@@ -129,8 +131,6 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             }
         }, [activities]);
 
-        console.log(activities);
-
         return (
             <>
                 {list?.length > 0 && (
@@ -139,7 +139,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                             <Thead>
                                 <Tr key="0">
                                     <Th>From</Th>
-                                    <Th>Since</Th>
+                                    <Th>Time</Th>
                                     <Th>Type</Th>
                                     <Th>Amount</Th>
                                 </Tr>
