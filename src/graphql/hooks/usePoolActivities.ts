@@ -79,15 +79,15 @@ const usePoolActivities = ({
 }: UsePoolActivitiesProps): UsePoolActivities => {
     const where: any = { user, pool };
     if (beforeInMillis) {
-        where.timestamp_lte = toUnixTimestamp(beforeInMillis);
+        where.timestamp_lt = toUnixTimestamp(beforeInMillis);
     }
 
     if (from) {
-        where.timestamp_gte = toUnixTimestamp(from);
+        where.timestamp_gt = toUnixTimestamp(from);
     }
 
     if (to) {
-        where.timestamp_lte = toUnixTimestamp(to);
+        where.timestamp_lt = toUnixTimestamp(to);
     }
 
     if (!isEmpty(types)) {
