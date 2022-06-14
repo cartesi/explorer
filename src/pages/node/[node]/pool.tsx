@@ -54,6 +54,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import theme from '../../../styles/theme';
+import { NodePoolHeader } from './PoolHeader';
 
 const PoolNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
@@ -101,32 +102,7 @@ const PoolNode: FC = () => {
                 <title>Cartesi - Manage Node</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Box
-                bg="header"
-                color="white"
-                px={{ base: '6vw', xl: '12vw' }}
-                pt={5}
-            >
-                <Stack
-                    justify="space-between"
-                    alignItems={{ base: 'flex-start', lg: 'flex-end' }}
-                    direction={{ base: 'column', lg: 'row' }}
-                >
-                    <VStack alignItems="flex-start" pb="5">
-                        <Button
-                            href="/staking"
-                            as="a"
-                            leftIcon={<ArrowBackIcon />}
-                            variant="text"
-                            size="sm"
-                            pl="0"
-                        >
-                            Back
-                        </Button>
-                        <Spacer />
-                    </VStack>
-                </Stack>
-            </Box>
+            <NodePoolHeader />
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
