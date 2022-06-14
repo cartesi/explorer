@@ -10,9 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { capitalize, getOr, map, pipe } from 'lodash/fp';
+import { capitalize, getOr, isEmpty, map, pipe } from 'lodash/fp';
 import { useEffect, useState } from 'react';
+import { toUnixTimestamp } from '../../utils/dateParser';
 import {
+    ActivityType,
     PoolActivitiesData,
     PoolActivitiesVars,
     PoolActivity,
@@ -23,10 +25,15 @@ export interface Activity extends Omit<PoolActivity, 'timestamp' | 'type'> {
     timestamp: number;
     type: string;
 }
+
+export type Types = `${ActivityType}`;
 interface UsePoolActivitiesProps {
     user?: string;
     pool?: string;
     beforeInMillis?: number;
+    from?: Date | number;
+    to?: Date | number;
+    types?: Types[];
 }
 interface UsePoolActivities {
     activities: Activity[] | null;
@@ -56,17 +63,9 @@ const normalize = map((val: PoolActivity): Activity => {
 const transform = pipe(getPoolActivities, normalize);
 
 /**
- * Converts the time in milisseconds to seconds (unix timestamp).
- * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#get_the_number_of_seconds_since_the_ecmascript_epoch
- * @param numberInMillis
- * @returns
- */
-const milliToUnixTimestamp = (numberInMillis: number): number =>
-    Math.floor(numberInMillis / 1000);
-/**
- * Hook retrieves withdrawals, deposits, stakes and unstakes based on a user, pool or
- * a combination of both. It gets the first twenty entries ordered and filtered
- * by the timestamp passed as argument (i.e. beforeInMillis).
+ * Hook retrieves withdrawals, deposits, stakes and unstakes based
+ * on a few component API properties. Note. from prop has precedence over
+ * beforeInMillis props so choose one or the other.
  * @param {UsePoolActivitiesProps}
  * @returns {UsePoolActivities}
  */
@@ -74,11 +73,27 @@ const usePoolActivities = ({
     beforeInMillis,
     user,
     pool,
+    from,
+    to,
+    types,
 }: UsePoolActivitiesProps): UsePoolActivities => {
     const where: any = { user, pool };
     if (beforeInMillis) {
-        where.timestamp_lt = milliToUnixTimestamp(beforeInMillis);
+        where.timestamp_lt = toUnixTimestamp(beforeInMillis);
     }
+
+    if (from) {
+        where.timestamp_gt = toUnixTimestamp(from);
+    }
+
+    if (to) {
+        where.timestamp_lt = toUnixTimestamp(to);
+    }
+
+    if (!isEmpty(types)) {
+        where.type_in = types;
+    }
+
     const orderBy = 'timestamp';
     const orderDirection = 'desc';
     const first = 20;
