@@ -14,6 +14,7 @@ import { FC, useState } from 'react';
 import { PoolFilters } from './PoolFilters';
 import SearchInput from '../SearchInput';
 import { PoolActivityList } from './PoolActivityList';
+import { ActivityType } from '../../graphql/models';
 
 interface IPoolActivityProps {
     poolAddress: string;
@@ -26,10 +27,10 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
             title: 'Types:',
             type: 'checkbox',
             options: [
-                { label: 'Deposit', value: 'Deposit' },
-                { label: 'Withdraw', value: 'Withdraw' },
-                { label: 'Stake', value: 'Stake' },
-                { label: 'Unstake', value: 'Unstake' },
+                { label: 'Deposit', value: ActivityType.DEPOSIT },
+                { label: 'Withdraw', value: ActivityType.WITHDRAW },
+                { label: 'Stake', value: ActivityType.STAKE },
+                { label: 'Unstake', value: ActivityType.UNSTAKE },
             ],
         },
         {
