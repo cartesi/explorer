@@ -31,6 +31,7 @@ import { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
 import usePoolActivities, {
     Activity as ActivityType,
+    Types,
 } from '../../graphql/hooks/usePoolActivities';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 //import Pagination from '../Pagination';
@@ -94,7 +95,7 @@ const Activity: FC<ActivityProps> = memo(
 interface IPoolActivityListProps {
     poolAddress: string;
     userSearch?: string;
-    selectedTypes?: any;
+    selectedTypes?: string[];
     selectedPeriod?: string;
 }
 
@@ -103,13 +104,13 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
         //const [pageNumber, setPageNumber] = useState<number>(0);
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
-
         userSearch = userSearch === '' ? undefined : userSearch;
 
         const { activities, loading } = usePoolActivities({
             user: userSearch,
             pool: poolAddress,
             beforeInMillis: timestamp,
+            types: selectedTypes as Types[],
         });
 
         useEffect(() => {
