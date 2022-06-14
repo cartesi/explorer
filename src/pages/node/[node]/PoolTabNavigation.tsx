@@ -11,9 +11,10 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { DashboardIcon /*, StakeIcon*/ } from '../../../components/Icons';
+import { DashboardIcon, StakeIcon } from '../../../components/Icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { SettingsIcon } from '@chakra-ui/icons';
 
 export const PoolTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
@@ -50,7 +51,7 @@ export const PoolTabNavigation: FC = () => {
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
-                        leftIcon={<DashboardIcon />}
+                        leftIcon={<StakeIcon />}
                         outline="none"
                         textTransform="none"
                         isActive={router.pathname === `/node/[node]/stake`}
@@ -72,7 +73,7 @@ export const PoolTabNavigation: FC = () => {
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
-                        leftIcon={<DashboardIcon />}
+                        leftIcon={<SettingsIcon />}
                         outline="none"
                         textTransform="none"
                         isActive={router.pathname === `/node/[node]/manage`}

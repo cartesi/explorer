@@ -19,7 +19,7 @@ import { PoolTabNavigation } from './PoolTabNavigation';
 
 export const NodePoolHeader: FC = () => {
     const router = useRouter();
-    const address = router.query.pool as string;
+    const address = router.query.node as string;
     const { chainId } = useWallet();
 
     return (
