@@ -96,11 +96,11 @@ interface IPoolActivityListProps {
     poolAddress: string;
     userSearch?: string;
     selectedTypes?: string[];
-    selectedPeriod?: string;
+    selectedTimePeriod?: any;
 }
 
 export const PoolActivityList: FC<IPoolActivityListProps> = memo(
-    ({ poolAddress, userSearch, selectedTypes, selectedPeriod }) => {
+    ({ poolAddress, userSearch, selectedTypes, selectedTimePeriod }) => {
         //const [pageNumber, setPageNumber] = useState<number>(0);
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
@@ -110,13 +110,15 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             user: userSearch,
             pool: poolAddress,
             beforeInMillis: timestamp,
+            from: selectedTimePeriod?.from,
+            to: selectedTimePeriod?.to,
             types: selectedTypes as Types[],
         });
 
         useEffect(() => {
             setTimestamp(null);
             updateList(null);
-        }, [userSearch]);
+        }, [userSearch, selectedTypes, selectedTimePeriod]);
 
         const oldestActivityTime =
             (list && last<ActivityType>(list)?.timestamp) || timestamp;

@@ -15,22 +15,47 @@ import { PoolFilters } from './PoolFilters';
 import SearchInput from '../SearchInput';
 import { PoolActivityList } from './PoolActivityList';
 import { ActivityType } from '../../graphql/models';
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
 interface IPoolActivityProps {
     poolAddress: string;
 }
 
 export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
+    const today = new Date();
+    const previousWeekDay = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - 7
+    );
+    const previousMonthDay = new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        1
+    );
+
     const poolFilters = [
         {
             key: 'type',
             title: 'Types:',
             type: 'checkbox',
             options: [
-                { label: 'Deposit', value: ActivityType.DEPOSIT },
-                { label: 'Withdraw', value: ActivityType.WITHDRAW },
-                { label: 'Stake', value: ActivityType.STAKE },
-                { label: 'Unstake', value: ActivityType.UNSTAKE },
+                {
+                    label: 'Deposit',
+                    value: ActivityType.DEPOSIT,
+                },
+                {
+                    label: 'Withdraw',
+                    value: ActivityType.WITHDRAW,
+                },
+                {
+                    label: 'Stake',
+                    value: ActivityType.STAKE,
+                },
+                {
+                    label: 'Unstake',
+                    value: ActivityType.UNSTAKE,
+                },
             ],
         },
         {
@@ -38,26 +63,72 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
             title: 'Time period:',
             type: 'radio',
             options: [
-                { label: 'All-time', value: 'AllTime', default: true },
-                { label: 'This Week', value: 'ThisWeek' },
-                { label: 'Last Week', value: 'LastWeek' },
-                { label: 'This Month', value: 'ThisMonth' },
-                { label: 'Last Month', value: 'LastMonth' },
+                {
+                    label: 'All-time',
+                    value: 'allTime',
+                    default: true,
+                },
+                {
+                    label: 'This Week',
+                    value: 'thisWeek',
+                },
+                {
+                    label: 'Last Week',
+                    value: 'lastWeek',
+                },
+                {
+                    label: 'This Month',
+                    value: 'thisMonth',
+                },
+                {
+                    label: 'Last Month',
+                    value: 'lastMonth',
+                },
             ],
         },
     ];
+
+    const timePeriods = {
+        thisWeek: {
+            from: startOfWeek(today, { weekStartsOn: 1 }),
+            to: endOfWeek(today, { weekStartsOn: 1 }),
+        },
+        lastWeek: {
+            from: startOfWeek(previousWeekDay, { weekStartsOn: 1 }),
+            to: endOfWeek(previousWeekDay, { weekStartsOn: 1 }),
+        },
+        thisMonth: {
+            from: startOfMonth(today),
+            to: endOfMonth(today),
+        },
+        lastMonth: {
+            from: startOfMonth(previousMonthDay),
+            to: endOfMonth(previousMonthDay),
+        },
+    };
 
     const defaultTimePeriod = poolFilters
         .find((el) => el.key === 'time')
         .options.find((el) => el.default === true).value;
 
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
     const [selectedPeriod, setSelectedPeriod] =
         useState<string>(defaultTimePeriod);
+
+    const [selectedTimePeriod, setSelectedTimePeriod] = useState<{
+        from: Date;
+        to: Date;
+    }>({
+        from: null,
+        to: null,
+    });
+
     const [userSearch, setUserSearch] = useState<string>();
 
     const onSelectedPeriodChange = (value: string) => {
         setSelectedPeriod(value);
+        setSelectedTimePeriod(timePeriods[value]);
     };
 
     const onSelectedTypesChange = (value: string) => {
@@ -101,7 +172,7 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
                 poolAddress={poolAddress}
                 userSearch={userSearch}
                 selectedTypes={selectedTypes}
-                selectedPeriod={selectedPeriod}
+                selectedTimePeriod={selectedTimePeriod}
             />
         </>
     );
