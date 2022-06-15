@@ -18,10 +18,12 @@ export interface ValidationResult<TName = string> {
 }
 export interface BaseInput<TValidation = string> {
     onChange: (value: string) => void;
+    onFocus?: (value: string) => void;
     helperText?: string;
     onValidationChange?: (
         validationResult: ValidationResult<TValidation>
     ) => void;
+    isDisabled?: boolean;
 }
 
 /**
