@@ -11,53 +11,79 @@
 
 import React from 'react';
 import Head from 'next/head';
-
+import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-
+import { constants } from 'ethers';
 import { PoolHeader } from '../../components/poolRedesign/PoolHeader';
 import { PoolBreadcrumbs } from '../../components/poolRedesign/PoolBreadcrumbs';
-import {
-    EffectiveBalanceIcon,
-    EyeIcon,
-    PoolBalanceIcon,
-    PoolCommisionIcon,
-    PoolPerformanceIcon,
-    PoolProductionIntervalIcon,
-    PoolUsersIcon,
-    StakedBalanceIcon,
-} from '../../components/Icons';
+
 import {
     Collapse,
-    Icon,
-    Popover,
-    PopoverBody,
-    PopoverContent,
-    PopoverTrigger,
-    Button,
     useDisclosure,
     VStack,
     useColorModeValue,
     HStack,
     Heading,
-    Tooltip,
-    Text,
-    StackDivider,
     Box,
-    SimpleGrid,
 } from '@chakra-ui/react';
 
-import NextLink from 'next/link';
-import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { QueryResult } from '@apollo/client';
+import { useBlockNumber } from '../../services/eth';
+import { useCartesiToken } from '../../services/token';
+import { useStaking } from '../../services/staking';
+import { useStakingPool } from '../../services/pool';
+import { useWallet } from '../../contexts/wallet';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import PoolStatsPanel from '../../components/poolRedesign/PoolStatsPanel';
 import { PoolActivity } from '../../components/poolRedesign/PoolActivity';
+import useBlocks from '../../graphql/hooks/useBlocks';
+import { BlocksData, BlocksVars } from '../../graphql/models';
+
+const blockAverageInterval = (
+    result: QueryResult<BlocksData, BlocksVars>
+): number => {
+    const count = result.data?.blocks?.length;
+    if (count > 0) {
+        const last = result.data.blocks[count - 1];
+        const now = Date.now();
+        return (now - last.timestamp * 1000) / count;
+    }
+    return 0;
+};
 
 const poolRedesign = () => {
-    const { isOpen, onToggle } = useDisclosure({
-        defaultIsOpen: true,
-    });
+    const { account, chainId } = useWallet();
 
-    const bgBlocks = useColorModeValue('blue.50', 'gray.900');
+    // get pool address from path
+    const router = useRouter();
+    const address = router.query.pool as string;
+
+    // query block number (continuouly)
+    const blockNumber = useBlockNumber();
+
+    // query pool data
+    const { amount, amounts, rebalance } = useStakingPool(address, account);
+
+    // query pool contract ERC20 balance
+    const { balance: poolBalance } = useCartesiToken(
+        address,
+        null,
+        blockNumber
+    );
+
+    // query staking contract with pool address
+    const staking = useStaking(address);
+
+    // query thegraph pool data
+    const stakingPool = useStakingPoolQuery(address);
+
+    // query 10 latest blocks for average interval
+    const productionInterval = blockAverageInterval(
+        useBlocks({ producer: address }, 10)
+    );
+
     const bgPageDevider = useColorModeValue('gray.100', 'gray.900');
-    const bgDevider = useColorModeValue('gray.100', 'gray.600');
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
     const activity = Array.from({ length: 10 }, (_, i) => ({
@@ -66,6 +92,10 @@ const poolRedesign = () => {
         since: 'Nov, 2021',
         deposit: '0.00',
     }));
+
+    const { isOpen, onToggle } = useDisclosure({
+        defaultIsOpen: true,
+    });
 
     return (
         <Layout>
@@ -106,555 +136,45 @@ const poolRedesign = () => {
 
                 <Collapse in={isOpen}>
                     <VStack spacing={8}>
-                        <SimpleGrid
-                            columns={{
-                                base: 1,
-                                lg: 3,
-                            }}
-                            w="full"
-                            spacing={4}
-                        >
-                            <VStack
-                                align="flex-start"
-                                flexBasis={{ base: '100%', lg: '33.33%' }}
-                                flexShrink={0}
-                            >
-                                <HStack spacing={4} align="center" p={4}>
-                                    <Box
-                                        bg="yellow.100"
-                                        w={14}
-                                        h={14}
-                                        borderRadius="full"
-                                        display="grid"
-                                        placeContent="center"
-                                        flexShrink={0}
-                                    >
-                                        <StakedBalanceIcon
-                                            color="yellow.500"
-                                            w={7}
-                                            h={7}
-                                        />
-                                    </Box>
-                                    <Box>
-                                        <HStack>
-                                            <Text>Staked Balance</Text>
-                                            <Tooltip
-                                                placement="top"
-                                                label="Here you can see your current staked balance."
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
-                                            >
-                                                <Icon color="gray.500" />
-                                            </Tooltip>
-                                        </HStack>
-                                        <HStack align="baseline">
-                                            <Heading as="h2" m={0} size="lg">
-                                                20.6M
-                                            </Heading>
-                                            <Text
-                                                size={'base'}
-                                                color="gray.500"
-                                            >
-                                                CTSI
-                                            </Text>
-                                        </HStack>
-                                    </Box>
-                                </HStack>
-                            </VStack>
-                            <VStack
-                                align="flex-start"
-                                flexBasis={{ base: '100%', lg: '33.33%' }}
-                            >
-                                <HStack
-                                    spacing={4}
-                                    align="center"
-                                    p={4}
-                                    w="full"
-                                >
-                                    <Box
-                                        bg="yellow.100"
-                                        w={14}
-                                        h={14}
-                                        borderRadius="full"
-                                        display="grid"
-                                        placeContent="center"
-                                        flexShrink={0}
-                                    >
-                                        <EffectiveBalanceIcon
-                                            color="yellow.500"
-                                            w={7}
-                                            h={7}
-                                        />
-                                    </Box>
-                                    <Box>
-                                        <HStack>
-                                            <Text>Effective Balance</Text>
-                                            <Tooltip
-                                                placement="top"
-                                                label="Here you can see your current Effective Balance."
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
-                                            >
-                                                <Icon color="gray.500" />
-                                            </Tooltip>
-                                        </HStack>
-                                        <HStack align="baseline">
-                                            <Heading as="h2" m={0} size="lg">
-                                                30.6M
-                                            </Heading>
-                                            <Text
-                                                size={'base'}
-                                                color="gray.500"
-                                            >
-                                                CTSI
-                                            </Text>
-                                        </HStack>
-                                    </Box>
-                                    <Box>
-                                        <Popover
-                                            placement="bottom"
-                                            autoFocus={false}
-                                        >
-                                            <PopoverTrigger>
-                                                <Button
-                                                    variant="ghost"
-                                                    bg="rgba(0, 0, 0, 0.1)"
-                                                    rounded="full"
-                                                    p={2}
-                                                    h="auto"
-                                                    w="auto"
-                                                    minW="auto"
-                                                >
-                                                    <EyeIcon />
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent>
-                                                <PopoverBody>
-                                                    <VStack
-                                                        align="stretch"
-                                                        divider={
-                                                            <StackDivider
-                                                                borderColor={
-                                                                    bgDevider
-                                                                }
-                                                            />
-                                                        }
-                                                    >
-                                                        <Box px={4} py={2}>
-                                                            <HStack justify="space-between">
-                                                                <Text>
-                                                                    Maturing
-                                                                    Balance
-                                                                </Text>
-                                                                <Tooltip
-                                                                    placement="top"
-                                                                    label="Here you can see your Maturing Balance"
-                                                                    fontSize="small"
-                                                                    bg="black"
-                                                                    color="white"
-                                                                >
-                                                                    <Icon color="gray.500" />
-                                                                </Tooltip>
-                                                            </HStack>
-                                                            <HStack align="baseline">
-                                                                <Heading
-                                                                    as="h3"
-                                                                    m={0}
-                                                                    size="md"
-                                                                >
-                                                                    20.6M
-                                                                </Heading>
-                                                                <Text
-                                                                    size={
-                                                                        'base'
-                                                                    }
-                                                                    color="gray.500"
-                                                                >
-                                                                    CTSI
-                                                                </Text>
-                                                            </HStack>
-                                                        </Box>
-                                                        <Box px={4} py={2}>
-                                                            <HStack justify="space-between">
-                                                                <Text>
-                                                                    Releasing
-                                                                    Balance
-                                                                </Text>
-                                                                <Tooltip
-                                                                    placement="top"
-                                                                    label="Here you can see your Releasing Balance"
-                                                                    fontSize="small"
-                                                                    bg="black"
-                                                                    color="white"
-                                                                >
-                                                                    <Icon color="gray.500" />
-                                                                </Tooltip>
-                                                            </HStack>
-                                                            <HStack align="baseline">
-                                                                <Heading
-                                                                    as="h3"
-                                                                    m={0}
-                                                                    size="md"
-                                                                >
-                                                                    20.6M
-                                                                </Heading>
-                                                                <Text
-                                                                    size={
-                                                                        'base'
-                                                                    }
-                                                                    color="gray.500"
-                                                                >
-                                                                    CTSI
-                                                                </Text>
-                                                            </HStack>
-                                                            <Text
-                                                                fontSize="sm"
-                                                                color="orange.500"
-                                                            >
-                                                                Releasing in 1
-                                                                day, 14 hours
-                                                            </Text>
-                                                        </Box>
-                                                        <Box px={4} py={2}>
-                                                            <HStack justify="space-between">
-                                                                <Text>
-                                                                    Released
-                                                                    Balance
-                                                                </Text>
-                                                                <Tooltip
-                                                                    placement="top"
-                                                                    label="Here you can see your Released Balance"
-                                                                    fontSize="small"
-                                                                    bg="black"
-                                                                    color="white"
-                                                                    ml="auto"
-                                                                >
-                                                                    <Icon color="gray.500" />
-                                                                </Tooltip>
-                                                            </HStack>
-                                                            <HStack align="baseline">
-                                                                <Heading
-                                                                    as="h3"
-                                                                    m={0}
-                                                                    size="md"
-                                                                >
-                                                                    317.27K
-                                                                </Heading>
-                                                                <Text
-                                                                    size={
-                                                                        'base'
-                                                                    }
-                                                                    color="gray.500"
-                                                                >
-                                                                    CTSI
-                                                                </Text>
-                                                            </HStack>
-                                                        </Box>
-                                                    </VStack>
-                                                </PopoverBody>
-                                            </PopoverContent>
-                                        </Popover>
-                                    </Box>
-                                </HStack>
-                            </VStack>
-                            <VStack
-                                align="flex-start"
-                                flexBasis={{ base: '100%', lg: '33.33%' }}
-                            >
-                                <HStack spacing={4} align="center" p={4}>
-                                    <Box
-                                        bg="yellow.100"
-                                        w={14}
-                                        h={14}
-                                        borderRadius="full"
-                                        display="grid"
-                                        placeContent="center"
-                                        flexShrink={0}
-                                    >
-                                        <PoolBalanceIcon
-                                            color="yellow.500"
-                                            w={7}
-                                            h={7}
-                                        />
-                                    </Box>
-                                    <Box>
-                                        <HStack>
-                                            <Text>Pool Balance</Text>
-                                            <Tooltip
-                                                placement="top"
-                                                label="Here you can see your current Pool Balance."
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
-                                            >
-                                                <Icon color="gray.500" />
-                                            </Tooltip>
-                                        </HStack>
-                                        <HStack align="baseline">
-                                            <Heading m={0} size="lg">
-                                                20.6M
-                                            </Heading>
-                                            <Text
-                                                size={'base'}
-                                                color="gray.500"
-                                            >
-                                                CTSI
-                                            </Text>
-                                        </HStack>
-                                    </Box>
-                                </HStack>
-                            </VStack>
-                        </SimpleGrid>
-
-                        <SimpleGrid
-                            columns={{
-                                base: 1,
-                                lg: 3,
-                            }}
-                            w="full"
-                            spacing={4}
-                        >
-                            <NextLink href="#">
-                                <Box
-                                    flexBasis={{ base: '100%', lg: '33.33%' }}
-                                    flexShrink={0}
-                                    bgColor={bgBlocks}
-                                    borderRadius={4}
-                                    cursor="pointer"
-                                >
-                                    <HStack
-                                        spacing={4}
-                                        align="center"
-                                        p={4}
-                                        w="full"
-                                    >
-                                        <Box
-                                            w={14}
-                                            h={14}
-                                            borderRadius="full"
-                                            display="grid"
-                                            placeContent="center"
-                                            flexShrink={0}
-                                        >
-                                            <PoolUsersIcon w={7} h={7} />
-                                        </Box>
-                                        <Box flexGrow="1">
-                                            <HStack>
-                                                <Text>Users</Text>
-                                                <Tooltip
-                                                    placement="top"
-                                                    label="Here you can see your Users."
-                                                    fontSize="small"
-                                                    bg="black"
-                                                    color="white"
-                                                >
-                                                    <Icon color="gray.500" />
-                                                </Tooltip>
-                                            </HStack>
-                                            <HStack align="baseline">
-                                                <Heading
-                                                    as="h2"
-                                                    m={0}
-                                                    size="lg"
-                                                >
-                                                    221
-                                                </Heading>
-                                                <Text
-                                                    size={'base'}
-                                                    color="gray.500"
-                                                >
-                                                    CTSI
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                        <ChevronRightIcon w={5} h={5} />
-                                    </HStack>
-                                </Box>
-                            </NextLink>
-                            <NextLink href="#">
-                                <Box
-                                    flexBasis={{ base: '100%', lg: '33.33%' }}
-                                    flexShrink={0}
-                                    bgColor={bgBlocks}
-                                    borderRadius={4}
-                                    cursor="pointer"
-                                >
-                                    <HStack
-                                        spacing={4}
-                                        align="center"
-                                        p={4}
-                                        w="full"
-                                    >
-                                        <Box
-                                            w={14}
-                                            h={14}
-                                            borderRadius="full"
-                                            display="grid"
-                                            placeContent="center"
-                                            flexShrink={0}
-                                        >
-                                            <PoolProductionIntervalIcon
-                                                w={7}
-                                                h={7}
-                                            />
-                                        </Box>
-                                        <Box flexGrow="1">
-                                            <HStack>
-                                                <Text>Production Interval</Text>
-                                                <Tooltip
-                                                    placement="top"
-                                                    label="Here you can see your Production Interval."
-                                                    fontSize="small"
-                                                    bg="black"
-                                                    color="white"
-                                                >
-                                                    <Icon color="gray.500" />
-                                                </Tooltip>
-                                            </HStack>
-                                            <HStack align="baseline">
-                                                <Heading
-                                                    as="h2"
-                                                    m={0}
-                                                    size="lg"
-                                                >
-                                                    5
-                                                </Heading>
-                                                <Text
-                                                    size={'base'}
-                                                    color="gray.500"
-                                                >
-                                                    hours
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                        <ChevronRightIcon w={5} h={5} />
-                                    </HStack>
-                                </Box>
-                            </NextLink>
-                            <NextLink href="#">
-                                <Box
-                                    flexBasis={{ base: '100%', lg: '33.33%' }}
-                                    flexShrink={0}
-                                    bgColor={bgBlocks}
-                                    borderRadius={4}
-                                    cursor="pointer"
-                                >
-                                    <HStack
-                                        spacing={4}
-                                        align="center"
-                                        p={4}
-                                        w="full"
-                                    >
-                                        <Box
-                                            w={14}
-                                            h={14}
-                                            borderRadius="full"
-                                            display="grid"
-                                            placeContent="center"
-                                            flexShrink={0}
-                                        >
-                                            <PoolCommisionIcon w={7} h={7} />
-                                        </Box>
-                                        <Box flexGrow="1">
-                                            <HStack>
-                                                <Text>Commision</Text>
-                                                <Tooltip
-                                                    placement="top"
-                                                    label="Here you can see your Commision."
-                                                    fontSize="small"
-                                                    bg="black"
-                                                    color="white"
-                                                >
-                                                    <Icon color="gray.500" />
-                                                </Tooltip>
-                                            </HStack>
-                                            <HStack align="baseline">
-                                                <Heading
-                                                    as="h2"
-                                                    m={0}
-                                                    size="lg"
-                                                >
-                                                    3.5
-                                                </Heading>
-                                                <Text
-                                                    size={'base'}
-                                                    color="gray.500"
-                                                >
-                                                    %
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                        <ChevronRightIcon w={5} h={5} />
-                                    </HStack>
-                                </Box>
-                            </NextLink>
-                            <NextLink href="#">
-                                <Box
-                                    flexBasis={{ base: '100%', lg: '33.33%' }}
-                                    flexShrink={0}
-                                    bgColor={bgBlocks}
-                                    borderRadius={4}
-                                    cursor="pointer"
-                                >
-                                    <HStack
-                                        spacing={4}
-                                        align="center"
-                                        p={4}
-                                        w="full"
-                                    >
-                                        <Box
-                                            w={14}
-                                            h={14}
-                                            borderRadius="full"
-                                            display="grid"
-                                            placeContent="center"
-                                            flexShrink={0}
-                                        >
-                                            <PoolPerformanceIcon w={7} h={7} />
-                                        </Box>
-                                        <Box flexGrow="1">
-                                            <HStack>
-                                                <Text>Pool Performance</Text>
-                                                <Tooltip
-                                                    placement="top"
-                                                    label="Here you can see your Pool Performance."
-                                                    fontSize="small"
-                                                    bg="black"
-                                                    color="white"
-                                                >
-                                                    <Icon color="gray.500" />
-                                                </Tooltip>
-                                            </HStack>
-                                            <HStack align="baseline">
-                                                <Heading
-                                                    as="h2"
-                                                    m={0}
-                                                    size="lg"
-                                                >
-                                                    89.20
-                                                </Heading>
-                                                <Text
-                                                    size={'base'}
-                                                    color="gray.500"
-                                                >
-                                                    %
-                                                </Text>
-                                                <Text
-                                                    size={'base'}
-                                                    color="gray.500"
-                                                    paddingLeft={4}
-                                                >
-                                                    7 Days
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                        <ChevronRightIcon w={5} h={5} />
-                                    </HStack>
-                                </Box>
-                            </NextLink>
-                        </SimpleGrid>
+                        <PoolStatsPanel
+                            address={address}
+                            productionInterval={productionInterval}
+                            stakedBalance={amount}
+                            totalBlocks={stakingPool?.user?.totalBlocks}
+                            totalReward={stakingPool?.user?.totalReward}
+                            totalUsers={stakingPool?.totalUsers}
+                            commissionPercentage={
+                                stakingPool?.commissionPercentage
+                            }
+                            fee={stakingPool?.fee}
+                            amount={amount}
+                            pool={poolBalance}
+                            stake={amounts?.stake}
+                            unstake={amounts?.unstake}
+                            withdraw={amounts?.withdraw}
+                            stakingMature={staking?.stakedBalance}
+                            stakingMaturing={staking?.maturingBalance}
+                            stakingReleasing={
+                                staking?.releasingTimestamp?.getTime() >
+                                Date.now()
+                                    ? staking.releasingBalance
+                                    : constants.Zero
+                            }
+                            stakingReleased={
+                                staking?.releasingTimestamp?.getTime() <=
+                                Date.now()
+                                    ? staking.releasingBalance
+                                    : constants.Zero
+                            }
+                            stakingMaturingTimestamp={
+                                staking?.maturingTimestamp
+                            }
+                            stakingReleasingTimestamp={
+                                staking?.releasingTimestamp
+                            }
+                            hideZeros={true}
+                            onRebalance={rebalance}
+                        />
                     </VStack>
                 </Collapse>
             </Box>
