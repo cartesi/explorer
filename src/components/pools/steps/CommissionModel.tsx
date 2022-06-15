@@ -28,27 +28,45 @@ import {
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { ChangeEvent, ReactNode, useState } from 'react';
-import { BaseInput } from '../../BaseInput';
+import { ChangeEvent, ReactNode, useState, useEffect } from 'react';
+import {
+    BaseInput,
+    OptionalMappedErrors,
+    ValidationResult,
+} from '../../BaseInput';
 import { useMessages } from '../../../utils/messages';
+import { Path, RegisterOptions, useForm } from 'react-hook-form';
+import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
 
-interface SimpleInput {
+interface SimpleInputProps {
     label: string;
     id: string;
     isDisabled?: boolean;
     isInvalid?: boolean;
     inputRightElement?: ReactNode;
-    onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (evt: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (evt: ChangeEvent<HTMLInputElement>) => void;
+    onFocus?: (evt: ChangeEvent<HTMLInputElement>) => void;
+    errorMessage?: string;
+    type?: string;
+    reference?: any;
+    name?: string;
 }
 
 const SimpleInput = ({
     onChange,
+    onBlur,
+    onFocus,
     label,
-    isDisabled,
-    isInvalid,
     id,
     inputRightElement,
-}: SimpleInput) => {
+    isDisabled,
+    isInvalid,
+    errorMessage,
+    type,
+    reference,
+    name,
+}: SimpleInputProps) => {
     return (
         <FormControl
             pr={{ base: 0, md: '20vw' }}
@@ -59,7 +77,16 @@ const SimpleInput = ({
                 {label}
             </FormLabel>
             <InputGroup>
-                <Input id={id} size="lg" onChange={onChange} />
+                <Input
+                    name={name}
+                    type={type || 'text'}
+                    ref={reference}
+                    id={id}
+                    size="lg"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    onFocus={onFocus}
+                />
                 {inputRightElement && (
                     <InputRightElement
                         children={inputRightElement}
@@ -70,7 +97,7 @@ const SimpleInput = ({
                     />
                 )}
             </InputGroup>
-            <FormErrorMessage>{}</FormErrorMessage>
+            <FormErrorMessage>{errorMessage}</FormErrorMessage>
         </FormControl>
     );
 };
@@ -99,19 +126,117 @@ const Message = ({ content, boxProps }: MessageProps) => {
     );
 };
 
+type UseFieldValidatorProps<T, V> = {
+    fieldName: Path<T>;
+    options?: RegisterOptions<T>;
+    onValidationChange?: (vr: ValidationResult<V>) => void;
+};
+
+const useFieldValidator = <FormValidatorType, ValidationResultType>({
+    fieldName,
+    options,
+    onValidationChange,
+}: UseFieldValidatorProps<FormValidatorType, ValidationResultType>) => {
+    const {
+        register,
+        formState: { errors, isDirty },
+        getValues,
+        trigger,
+        reset,
+        clearErrors,
+    } = useForm<FormValidatorType>();
+
+    const registerReturn = register(fieldName, {
+        shouldUnregister: true,
+        valueAsNumber: true,
+        required: {
+            value: true,
+            message: useMessages('field.isRequired'),
+        },
+        ...options,
+    });
+
+    const inputErrors = errors[fieldName as string];
+
+    useEffect(() => {
+        if (!isFunction(onValidationChange)) return;
+
+        const validation: ValidationResult = {
+            name: fieldName as string,
+            isValid: isEmpty(inputErrors),
+        };
+        if (!isEmpty(inputErrors)) {
+            const { type, message } = inputErrors;
+            validation.error = { message, type };
+        }
+
+        onValidationChange(validation);
+    }, [inputErrors]);
+
+    return {
+        registerReturn,
+        trigger,
+        errors,
+        reset,
+        clearErrors,
+        isDirty,
+        getValue: () => getValues(fieldName),
+    };
+};
+
+const options = {
+    max: {
+        value: 100,
+        message: useMessages('field.value.max.allowed', 100),
+    },
+    min: {
+        value: 0,
+        message: useMessages('field.value.min.allowed', 0),
+    },
+};
 const FlatRateCommission = ({
     onChange,
     onValidationChange,
+    isDisabled,
 }: FlatRateCommisionProps) => {
+    type FormField = { [k in FlatRateModel]: number };
     const howItWorks = useMessages('commission.model.flatRate.howItWorks');
+    const validator = useFieldValidator<FormField, FlatRateModel>({
+        fieldName: 'flatRateCommission',
+        options,
+        onValidationChange,
+    });
+    const { trigger, registerReturn, errors, clearErrors, isDirty } = validator;
+    const { name, onChange: onChangeValidate, ref } = registerReturn;
+
+    useEffect(() => {
+        if (isDisabled) {
+            clearErrors();
+            return;
+        }
+
+        if (isDirty) trigger('flatRateCommission');
+    }, [isDisabled]);
 
     return (
         <VStack spacing={3}>
             <SimpleInput
-                onChange={(e) => onChange(e.currentTarget?.value)}
+                name={name}
+                type="number"
+                reference={ref}
+                onChange={(e) => {
+                    onChange(e.currentTarget?.value);
+                    onChangeValidate(e);
+                    trigger('flatRateCommission');
+                }}
+                onBlur={(e) => trigger('flatRateCommission')}
+                onFocus={(e) => onChange(e.currentTarget?.value)}
                 label="Flat-rate commission (%)"
                 id="flatRateCommission"
                 inputRightElement="%"
+                isDisabled={isDisabled}
+                isInvalid={!isNil(errors.flatRateCommission)}
+                errorMessage={errors.flatRateCommission?.message}
             />
             <Message content={howItWorks} />
         </VStack>
@@ -121,15 +246,47 @@ const FlatRateCommission = ({
 const GasBasedCommission = ({
     onChange,
     onValidationChange,
+    isDisabled,
 }: GasBasedCommissionProps) => {
+    type FormField = { [k in GasBasedModel]: number };
     const howItWorks = useMessages('commission.model.gasBased.howItWorks');
+    const validator = useFieldValidator<FormField, GasBasedModel>({
+        fieldName: 'gasBasedCommission',
+        onValidationChange,
+    });
+
+    const { trigger, registerReturn, errors, clearErrors, isDirty } = validator;
+    const { name, onChange: onChangeValidate, ref } = registerReturn;
+    const { gasBasedCommission: inputErrors } = errors;
+
+    useEffect(() => {
+        if (isDisabled) {
+            clearErrors();
+            return;
+        }
+
+        if (isDirty) trigger('gasBasedCommission');
+    }, [isDisabled]);
+
     return (
         <VStack spacing={3}>
             <SimpleInput
-                onChange={(e) => onChange(e.currentTarget?.value)}
+                name={name}
+                type="number"
+                reference={ref}
+                onChange={(e) => {
+                    onChange(e.currentTarget?.value);
+                    onChangeValidate(e);
+                    trigger('gasBasedCommission');
+                }}
+                onBlur={(e) => trigger('gasBasedCommission')}
+                onFocus={(e) => onChange(e.currentTarget?.value)}
                 label="Gas-based commission (Gas)"
                 id="gasBasedCommission"
                 inputRightElement="ETH"
+                isDisabled={isDisabled}
+                isInvalid={!isNil(inputErrors)}
+                errorMessage={inputErrors?.message}
             />
             <Message content={howItWorks} />
         </VStack>
@@ -137,6 +294,8 @@ const GasBasedCommission = ({
 };
 
 const { COMPLETED } = StepStatus;
+type Validation = ValidationResult<FlatRateModel | GasBasedModel>;
+type Errors = OptionalMappedErrors<Validation>;
 
 const CommissionModel = ({
     stepNumber,
@@ -146,10 +305,22 @@ const CommissionModel = ({
     onStepActive,
 }: IStep) => {
     const [stepState, setStepState] = useStepState({ inFocus });
-    const [modelType, setModelType] = useState<CommissionModels>();
+    const [modelType, setModelType] =
+        useState<CommissionModels>('flatRateCommission');
     const [commissionValue, setCommissionValue] = useState<string | null>();
+    const [errors, setErrors] = useState<Errors>({});
     const radioHandler = (v: CommissionModels) => setModelType(v);
 
+    const handleValidation = (validation: Validation) => {
+        const { name, isValid } = validation;
+        setErrors((state) => {
+            return isValid
+                ? omit([name], state)
+                : { ...state, [name]: validation };
+        });
+    };
+
+    console.log(errors);
     return (
         <Step
             title="Commission Model"
@@ -174,7 +345,11 @@ const CommissionModel = ({
                             isChecked={modelType === 'flatRateCommission'}
                         />
                     </RadioGroup>
-                    <FlatRateCommission onChange={setCommissionValue} />
+                    <FlatRateCommission
+                        onChange={setCommissionValue}
+                        isDisabled={modelType !== 'flatRateCommission'}
+                        onValidationChange={handleValidation}
+                    />
                 </Stack>
 
                 <Stack direction="row" spacing={{ base: 3, md: 7 }} mt={8}>
@@ -188,7 +363,11 @@ const CommissionModel = ({
                             isChecked={modelType === 'gasBasedCommission'}
                         />
                     </RadioGroup>
-                    <GasBasedCommission onChange={setCommissionValue} />
+                    <GasBasedCommission
+                        onChange={setCommissionValue}
+                        isDisabled={modelType !== 'gasBasedCommission'}
+                        onValidationChange={handleValidation}
+                    />
                 </Stack>
             </StepBody>
             <StepActions>
