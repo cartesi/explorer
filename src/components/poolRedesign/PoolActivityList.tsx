@@ -31,7 +31,6 @@ import { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
 import usePoolActivities, {
     Activity as ActivityType,
-    Types,
 } from '../../graphql/hooks/usePoolActivities';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 //import Pagination from '../Pagination';
@@ -95,30 +94,26 @@ const Activity: FC<ActivityProps> = memo(
 interface IPoolActivityListProps {
     poolAddress: string;
     userSearch?: string;
-    selectedTypes?: string[];
-    selectedTimePeriod?: any;
 }
 
 export const PoolActivityList: FC<IPoolActivityListProps> = memo(
-    ({ poolAddress, userSearch, selectedTypes, selectedTimePeriod }) => {
+    ({ poolAddress, userSearch }) => {
         //const [pageNumber, setPageNumber] = useState<number>(0);
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
+
         userSearch = userSearch === '' ? undefined : userSearch;
 
         const { activities, loading } = usePoolActivities({
             user: userSearch,
             pool: poolAddress,
             beforeInMillis: timestamp,
-            from: selectedTimePeriod?.from,
-            to: selectedTimePeriod?.to,
-            types: selectedTypes as Types[],
         });
 
         useEffect(() => {
             setTimestamp(null);
             updateList(null);
-        }, [userSearch, selectedTypes, selectedTimePeriod]);
+        }, [userSearch]);
 
         const oldestActivityTime =
             (list && last<ActivityType>(list)?.timestamp) || timestamp;
@@ -134,6 +129,8 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             }
         }, [activities]);
 
+        console.log(activities);
+
         return (
             <>
                 {list?.length > 0 && (
@@ -142,7 +139,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                             <Thead>
                                 <Tr key="0">
                                     <Th>From</Th>
-                                    <Th>Time</Th>
+                                    <Th>Since</Th>
                                     <Th>Type</Th>
                                     <Th>Amount</Th>
                                 </Tr>
