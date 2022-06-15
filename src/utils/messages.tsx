@@ -37,6 +37,14 @@ const messages = {
                 beGreaterThan: (val = 0, label = 'Value') =>
                     `${label} should be greater than ${val}`,
             },
+            max: {
+                allowed: (val = 0, label = 'value') =>
+                    `Maximum ${label} allowed is ${val}`,
+            },
+            min: {
+                allowed: (val = 0, label = 'value') =>
+                    `Minimum ${label} allowed is ${val}`,
+            },
         },
     },
     commission: {
