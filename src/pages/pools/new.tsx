@@ -79,7 +79,7 @@ const NewNode: FC = () => {
                 >
                     <ChakraLink
                         // TODO: Replace with new upcoming tutorial
-                        href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
+                        href="https://medium.com/cartesi/staking-delegation-guide-pool-management-3cfe357a66c2"
                         target="_blank"
                         color={linkColor}
                         fontWeight="medium"
