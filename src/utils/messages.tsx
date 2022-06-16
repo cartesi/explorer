@@ -59,6 +59,20 @@ const messages = {
             },
         },
     },
+    pool: {
+        factory: {
+            not: {
+                initialised: () =>
+                    'The pool factory is not initialised properly.',
+            },
+        },
+        creation: {
+            paused: () => `Creation of new pools is currently disabled.`,
+        },
+    },
+    notice: {
+        problem: (suffix = '') => `We notice a problem${suffix}`,
+    },
 };
 
 /**
