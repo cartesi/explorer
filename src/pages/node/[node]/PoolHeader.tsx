@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useWallet } from '../../../contexts/wallet';
 import AddressText from '../../../components/AddressText';
-import { PoolTabNavigation } from './PoolTabNavigation';
+import PoolTabNavigation from './PoolTabNavigation';
 
 export const NodePoolHeader: FC = () => {
     const router = useRouter();

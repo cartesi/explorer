@@ -95,3 +95,5 @@ export const PoolTabNavigation: FC = () => {
         </>
     );
 };
+
+export default PoolTabNavigation;
