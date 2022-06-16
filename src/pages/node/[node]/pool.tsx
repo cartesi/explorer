@@ -54,7 +54,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import theme from '../../../styles/theme';
-import { NodePoolHeader } from './PoolHeader';
+import NodePoolHeader from './PoolHeader';
 import PoolSetting from './PoolSetting';
 
 const PoolNode: FC = () => {

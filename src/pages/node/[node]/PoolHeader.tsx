@@ -54,3 +54,5 @@ export const NodePoolHeader: FC = () => {
         </Box>
     );
 };
+
+export default NodePoolHeader;
