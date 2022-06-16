@@ -55,7 +55,7 @@ import { TransactionInfoBanner } from '../../../components/poolRedesign/Transact
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import theme from '../../../styles/theme';
 import { NodePoolHeader } from './PoolHeader';
-import { PoolSetting } from './PoolSetting';
+import PoolSetting from './PoolSetting';
 
 const PoolNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();

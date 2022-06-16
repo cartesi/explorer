@@ -11,6 +11,7 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import PoolSetting from '../../pages/node/[node]/PoolSetting';
 
 export default {
     title: 'Pools/Setting',
@@ -21,8 +22,6 @@ export default {
 const Template: ComponentStory<typeof PoolSetting> = (args) => (
     <PoolSetting {...args} />
 );
-
-import { PoolSetting } from '../../pages/node/[node]/PoolSetting';
 
 export const Default = Template.bind({});
 Default.args = {};

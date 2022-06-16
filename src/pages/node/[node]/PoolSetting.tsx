@@ -237,3 +237,5 @@ export const PoolSetting: React.FC = () => {
         </Box>
     );
 };
+
+export default PoolSetting;
