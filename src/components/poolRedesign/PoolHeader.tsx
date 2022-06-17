@@ -13,8 +13,8 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, VStack, Stack, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { useWallet } from '../../../contexts/wallet';
-import AddressText from '../../../components/AddressText';
+import { useWallet } from '../../contexts/wallet';
+import AddressText from '../AddressText';
 import PoolTabNavigation from './PoolTabNavigation';
 
 export const NodePoolHeader: FC = () => {

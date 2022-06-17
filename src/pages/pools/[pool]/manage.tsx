@@ -44,7 +44,6 @@ import TransactionFeedback from '../../../components/TransactionFeedback';
 import { useTimeLeft } from '../../../utils/react';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useNode } from '../../../services/node';
-import { useWallet } from '../../../contexts/wallet';
 import { ArrowBackIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
 
@@ -54,8 +53,9 @@ import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import theme from '../../../styles/theme';
-import NodePoolHeader from './PoolHeader';
-import PoolSetting from './PoolSetting';
+import NodePoolHeader from '../../../components/poolRedesign/PoolHeader';
+import PoolSetting from '../../../components/poolRedesign/PoolSetting';
+import { useWallet } from '../../../contexts/wallet';
 
 const PoolNode: FC = () => {
     const { account, chainId, active: isConnected } = useWallet();
