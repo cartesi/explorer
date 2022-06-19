@@ -17,8 +17,39 @@ import {
     screen,
 } from '@testing-library/react';
 import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
+import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
+import { buildUseStakingPoolFactoryReturn } from '../mocks';
+
+const poolFactoryPath = '../../../../src/services/poolFactory';
+
+jest.mock(poolFactoryPath, () => {
+    const originalModule = jest.requireActual(poolFactoryPath);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useStakingPoolFactory: jest.fn(),
+    };
+});
+
+const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
+    typeof useStakingPoolFactory
+>;
 
 describe('CommissionModel step component', () => {
+    beforeEach(() => {
+        // default happy setup.
+        mockUseStakingPoolFactory.mockReturnValue({
+            ...buildUseStakingPoolFactoryReturn(),
+            loading: false,
+            ready: true,
+            paused: false,
+        });
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
+
     describe('when not on focus', () => {
         it('Should only display the number, the title and the subtitle.', () => {
             render(<CommissionModel stepNumber={1} />);

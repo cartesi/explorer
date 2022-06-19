@@ -18,7 +18,7 @@ import TransactionBanner from '../../../node/TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
 import { omit } from 'lodash/fp';
-import { useTransaction, Transaction } from '../../../../services/transaction';
+import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
 
 type CommissionModels = FlatRateModel | GasBasedModel;
