@@ -18,7 +18,7 @@ import theme from '../src/styles/theme';
  * @param Component A functional component
  * @returns
  */
-export const withChakraTheme =
+const withChakraTheme =
     <T,>(Component: FunctionComponent<T>): FunctionComponent<T> =>
     (props: T) =>
         (
@@ -26,3 +26,11 @@ export const withChakraTheme =
                 <Component {...props} />
             </ChakraProvider>
         );
+/**
+ * Type definition so return mocks can be manipulated at ease e.g. useStaking or useCartesiToken
+ */
+type ReturnOf<T> = T extends (...a: any) => infer R ? R : any;
+
+export type { ReturnOf };
+
+export { withChakraTheme };

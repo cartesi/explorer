@@ -12,12 +12,13 @@
 
 import { mock } from 'jest-mock-extended';
 import { ContractReceipt } from 'ethers';
-import { cond, isEqual, constant, stubTrue, cloneDeep, set } from 'lodash/fp';
+import { cond, isEqual, constant, stubTrue, cloneDeep } from 'lodash/fp';
 import { Node, NodeStatus } from '../../../src/services/node';
 import { Transaction } from '../../../src/services/transaction';
 import { toBigNumber } from '../../../src/utils/numberParser';
 import { useStaking } from '../../../src/services/staking';
 import { useCartesiToken } from '../../../src/services/token';
+import { ReturnOf } from '../../test-utilities';
 
 /**
  * Don't use this directly. Use the build function exported below
@@ -79,17 +80,6 @@ const stubReceipt: ContractReceipt = {
     type: 0,
 };
 
-const buildTransaction = (): Transaction<any> => ({
-    ack: jest.fn(),
-    acknowledged: true,
-    error: undefined,
-    receipt: undefined,
-    result: undefined,
-    set: jest.fn(),
-    submitting: false,
-    transaction: undefined,
-});
-
 const initialNodeState: Node = {
     address: undefined,
     authorize: jest.fn(),
@@ -137,35 +127,62 @@ const getNode = cond<NodeStatus, Node>([
     [stubTrue, constant(initialNodeState)],
 ]);
 
-export const buildNodeObj = (nodeStatus?: NodeStatus, address?: string) => {
-    const user = address || '';
-    const transaction = buildTransaction();
-    const nodeToCopy = getNode(nodeStatus);
-
-    return { ...nodeToCopy, user, transaction };
-};
-
-export const buildContractReceipt = () => cloneDeep(stubReceipt);
-
-type ReturnOf<T> = T extends (...a: any) => infer R ? R : any;
-
 type UseStakingReturn = ReturnOf<typeof useStaking>;
 type UseCartesiTokenReturn = ReturnOf<typeof useCartesiToken>;
 
 type BuildStakingReturn = { staking?: { address: string } };
 
-const buildMockStaking = () => mock<UseStakingReturn>();
-const buildMockToken = () => mock<UseCartesiTokenReturn>();
+// Good old function to be hoisted.
+function buildTransaction(): Transaction<any> {
+    return {
+        ack: jest.fn(),
+        acknowledged: true,
+        error: undefined,
+        receipt: undefined,
+        result: undefined,
+        set: jest.fn(),
+        submitting: false,
+        transaction: undefined,
+    };
+}
 
-export const buildUseStakingReturn = (props: BuildStakingReturn) => {
+function buildNodeObj(nodeStatus?: NodeStatus, address?: string) {
+    const user = address || '';
+    const transaction = buildTransaction();
+    const nodeToCopy = getNode(nodeStatus);
+
+    return { ...nodeToCopy, user, transaction };
+}
+
+function buildContractReceipt() {
+    return cloneDeep(stubReceipt);
+}
+
+function buildMockStaking() {
+    return mock<UseStakingReturn>();
+}
+
+function buildMockToken() {
+    return mock<UseCartesiTokenReturn>();
+}
+
+function buildUseStakingReturn(props: BuildStakingReturn) {
     const mock = buildMockStaking();
     //@ts-ignore
     mock.staking.address = props?.staking?.address;
     return mock;
-};
+}
 
-export const buildUseCartesiTokenReturn = () => {
+function buildUseCartesiTokenReturn() {
     const mock = buildMockToken();
     mock.transaction = buildTransaction();
     return mock;
+}
+
+export {
+    buildUseCartesiTokenReturn,
+    buildUseStakingReturn,
+    buildTransaction,
+    buildContractReceipt,
+    buildNodeObj,
 };
