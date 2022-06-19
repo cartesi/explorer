@@ -38,16 +38,14 @@ const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
 describe('CommissionModel step component', () => {
     beforeEach(() => {
         // default happy setup.
-        mockUseStakingPoolFactory.mockReturnValue({
-            ...buildUseStakingPoolFactoryReturn(),
-            loading: false,
-            ready: true,
-            paused: false,
-        });
+        mockUseStakingPoolFactory.mockReturnValue(
+            buildUseStakingPoolFactoryReturn()
+        );
     });
 
     afterEach(() => {
         cleanup();
+        jest.clearAllMocks();
     });
 
     describe('when not on focus', () => {
@@ -102,6 +100,50 @@ describe('CommissionModel step component', () => {
             ).toBeInTheDocument();
             expect(screen.getByText('PREVIOUS')).toBeInTheDocument();
             expect(screen.getByText('CREATE POOL')).toBeInTheDocument();
+        });
+
+        it('should initialised with CREATE-POOL button disabled while a model required field are not filled', () => {
+            render(<CommissionModel stepNumber={1} inFocus />);
+            const btn = screen.getByText('CREATE POOL');
+            expect(btn.hasAttribute('disabled')).toBe(true);
+        });
+    });
+
+    describe('Notifications', () => {
+        it('should display notification and lock the CREATE-POOL when pool factory is loaded and is paused', () => {
+            const returned = buildUseStakingPoolFactoryReturn();
+            returned.paused = true;
+            mockUseStakingPoolFactory.mockReturnValue(returned);
+
+            render(<CommissionModel stepNumber={1} inFocus />);
+
+            expect(screen.getByText('We notice a problem')).toBeInTheDocument();
+            expect(
+                screen.getByText('Creation of new pools is currently paused.')
+            ).toBeInTheDocument();
+
+            expect(
+                screen.getByText('CREATE POOL').hasAttribute('disabled')
+            ).toBe(true);
+        });
+
+        it('should display notification and lock the CREATE-POOL when pool factory is loaded and not ready', () => {
+            const returned = buildUseStakingPoolFactoryReturn();
+            returned.ready = false;
+            mockUseStakingPoolFactory.mockReturnValue(returned);
+
+            render(<CommissionModel stepNumber={1} inFocus />);
+
+            expect(screen.getByText('We notice a problem')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'The pool factory is not initialised properly.'
+                )
+            ).toBeInTheDocument();
+
+            expect(
+                screen.getByText('CREATE POOL').hasAttribute('disabled')
+            ).toBe(true);
         });
     });
 });

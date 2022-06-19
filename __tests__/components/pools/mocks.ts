@@ -9,6 +9,9 @@ const buildMockStakingPoolFact = () => mock<UseStakingPoolFactoryReturn>();
 
 function buildUseStakingPoolFactoryReturn() {
     const mock = buildMockStakingPoolFact();
+    mock.loading = false;
+    mock.paused = false;
+    mock.ready = true;
     mock.transaction = buildTransaction();
     return mock;
 }

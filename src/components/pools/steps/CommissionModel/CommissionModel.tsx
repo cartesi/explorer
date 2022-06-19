@@ -17,7 +17,7 @@ import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import TransactionBanner from '../../../node/TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
-import { omit } from 'lodash/fp';
+import { allPass, isEmpty, omit, propEq } from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
 
@@ -51,6 +51,17 @@ const PoolCreationIsPausedAlert = () => {
     return <TransactionBanner failTitle={title} transaction={t} />;
 };
 
+const createPoolDisabled = (
+    creationIsPaused: boolean,
+    factoryIsNotReady: boolean,
+    commissionModel: string,
+    commissionValue: string
+) =>
+    creationIsPaused ||
+    factoryIsNotReady ||
+    isEmpty(commissionModel) ||
+    isEmpty(commissionValue);
+
 const CommissionModel = ({
     stepNumber,
     inFocus,
@@ -75,6 +86,12 @@ const CommissionModel = ({
     const radioHandler = (v: CommissionModels) => setModelType(v);
     const notInitialised = !loading && !ready;
     const poolCreationIsPaused = !loading && paused;
+    const disablePoolCreationButton = createPoolDisabled(
+        poolCreationIsPaused,
+        notInitialised,
+        modelType,
+        modelType === 'flatRateCommission' ? flatRateVal : gasBasedVal
+    );
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -151,6 +168,7 @@ const CommissionModel = ({
                         PREVIOUS
                     </Button>
                     <Button
+                        disabled={disablePoolCreationButton}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => {

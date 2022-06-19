@@ -67,7 +67,7 @@ const messages = {
             },
         },
         creation: {
-            paused: () => `Creation of new pools is currently disabled.`,
+            paused: () => `Creation of new pools is currently paused.`,
         },
     },
     notice: {
