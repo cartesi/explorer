@@ -23,6 +23,7 @@ import CommissionModel from '../../../../src/components/pools/steps/CommissionMo
 import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
 import { useWallet } from '../../../../src/contexts/wallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
+import { buildContractReceipt } from '../../node/mocks';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
 const walletMod = '../../../../src/contexts/wallet';
@@ -128,13 +129,13 @@ describe('CommissionModel step component', () => {
             expect(screen.getByText('CREATE POOL')).toBeInTheDocument();
         });
 
-        it('should initialised with CREATE-POOL button disabled while a model required field are not filled', () => {
+        it('should initialise with CREATE-POOL button disabled while the required field are not filled', () => {
             render(<CommissionModel stepNumber={1} inFocus />);
             const btn = screen.getByText('CREATE POOL');
             expect(btn.hasAttribute('disabled')).toBe(true);
         });
 
-        it('should keep CREATE-POOL button disabled when everything is filled but wallet is not connected', async () => {
+        it('should keep CREATE-POOL button disabled when all required field are filled but wallet is not connected', async () => {
             const { rerender } = render(
                 <CommissionModel stepNumber={1} inFocus />
             );
@@ -275,7 +276,7 @@ describe('CommissionModel step component', () => {
     });
 
     describe('Notifications', () => {
-        it('should display notification and lock the CREATE-POOL when pool factory is loaded and is paused', () => {
+        it('should display notification and disable the CREATE-POOL button when pool factory is loaded but creation is paused', () => {
             const returned = buildUseStakingPoolFactoryReturn();
             returned.paused = true;
             mockUseStakingPoolFactory.mockReturnValue(returned);
@@ -292,7 +293,7 @@ describe('CommissionModel step component', () => {
             ).toBe(true);
         });
 
-        it('should display notification and lock the CREATE-POOL when pool factory is loaded and not ready', () => {
+        it('should display notification and lock the CREATE-POOL button when pool factory is loaded and for some reason it is not ready', () => {
             const returned = buildUseStakingPoolFactoryReturn();
             returned.ready = false;
             mockUseStakingPoolFactory.mockReturnValue(returned);
@@ -309,6 +310,58 @@ describe('CommissionModel step component', () => {
             expect(
                 screen.getByText('CREATE POOL').hasAttribute('disabled')
             ).toBe(true);
+        });
+
+        it('should display an informative notification when transaction to create pool is happening', async () => {
+            const poolFactory = buildUseStakingPoolFactoryReturn();
+            poolFactory.transaction.acknowledged = false;
+            poolFactory.transaction.submitting = true;
+            mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+
+            render(<CommissionModel inFocus stepNumber={1} />);
+
+            const alert = screen.getByRole('alert');
+            expect(
+                await findByText(alert, 'Creating the pool...')
+            ).toBeInTheDocument();
+            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+        });
+
+        it('should display an error notification when pool creation failed', () => {
+            const poolFactory = buildUseStakingPoolFactoryReturn();
+            poolFactory.transaction.acknowledged = false;
+            poolFactory.transaction.error =
+                'Tx metamask: user rejected the transaction';
+            mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+
+            render(<CommissionModel inFocus stepNumber={1} />);
+
+            expect(
+                screen.getByText('The pool creation failed!')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText('Tx metamask: user rejected the transaction')
+            ).toBeInTheDocument();
+        });
+
+        it('should display an success notification when pool is created with pool address included', () => {
+            const poolFactory = buildUseStakingPoolFactoryReturn();
+            poolFactory.transaction.acknowledged = false;
+            poolFactory.transaction.receipt = buildContractReceipt();
+            poolFactory.transaction.result =
+                '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
+            mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+
+            render(<CommissionModel inFocus stepNumber={1} />);
+
+            expect(
+                screen.getByText('Creating the pool...')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Pool 0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA created! moving to the next step...'
+                )
+            ).toBeInTheDocument();
         });
     });
 

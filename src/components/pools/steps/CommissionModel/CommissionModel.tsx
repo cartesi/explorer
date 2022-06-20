@@ -128,6 +128,12 @@ const CommissionModel = ({
                     {notInitialised && <PoolFactoryNotInitialisedAlert />}
                     {poolCreationIsPaused && <PoolCreationIsPausedAlert />}
                 </Stack>
+                <TransactionBanner
+                    title="Creating the pool..."
+                    failTitle="The pool creation failed!"
+                    successDescription={`Pool ${transaction?.result} created! moving to the next step...`}
+                    transaction={transaction}
+                />
                 <Heading as="h3" size="sm" my={4}>
                     Choose commission model
                 </Heading>
