@@ -17,15 +17,24 @@ import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import TransactionBanner from '../../../node/TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
-import { allPass, isEmpty, omit, propEq, toNumber } from 'lodash/fp';
+import {
+    allPass,
+    isEmpty,
+    isFunction,
+    omit,
+    propEq,
+    toNumber,
+} from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
 import { useWallet } from '../../../../contexts/wallet';
+import { atom, useAtom } from 'jotai';
 
 type CommissionModels = FlatRateModel | GasBasedModel;
 type Validation = ValidationResult<FlatRateModel | GasBasedModel>;
 type Errors = OptionalMappedErrors<Validation>;
 const { COMPLETED } = StepStatus;
+const poolAddressAtom = atom<string>('');
 
 const useOpaqueTransaction = (): Transaction<void> => {
     const [ack, setAck] = useState<boolean>(false);
@@ -58,6 +67,7 @@ type CreatePoolDisabledProps = {
     commissionModel: string;
     commissionValue: string;
     account: string;
+    errors: Errors;
 };
 const createPoolDisabled = ({
     commissionModel,
@@ -65,12 +75,17 @@ const createPoolDisabled = ({
     commissionValue,
     creationIsPaused,
     factoryIsNotReady,
+    errors,
 }: CreatePoolDisabledProps): boolean =>
     creationIsPaused ||
     factoryIsNotReady ||
     isEmpty(commissionModel) ||
     isEmpty(commissionValue) ||
-    isEmpty(account);
+    isEmpty(account) ||
+    !isEmpty(errors);
+
+const isPoolCreationCompleted = (transaction: Transaction<any>) =>
+    transaction.receipt?.confirmations >= 1 && !isEmpty(transaction?.result);
 
 const CommissionModel = ({
     stepNumber,
@@ -79,15 +94,9 @@ const CommissionModel = ({
     onPrevious,
     onStepActive,
 }: IStep) => {
+    const [, updatePoolAddressAtom] = useAtom(poolAddressAtom);
     const { account } = useWallet();
-    const {
-        createFlatRateCommission,
-        createGasTaxCommission,
-        loading,
-        paused,
-        ready,
-        transaction,
-    } = useStakingPoolFactory();
+    const poolFactory = useStakingPoolFactory();
     const [stepState, setStepState] = useStepState({ inFocus });
     const [modelType, setModelType] =
         useState<CommissionModels>('flatRateCommission');
@@ -95,8 +104,8 @@ const CommissionModel = ({
     const [gasBasedVal, setGasBasedVal] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
     const radioHandler = (v: CommissionModels) => setModelType(v);
-    const notInitialised = !loading && !ready;
-    const poolCreationIsPaused = !loading && paused;
+    const notInitialised = !poolFactory.loading && !poolFactory.ready;
+    const poolCreationIsPaused = !poolFactory.loading && poolFactory.paused;
     const disablePoolCreationButton = createPoolDisabled({
         creationIsPaused: poolCreationIsPaused,
         factoryIsNotReady: notInitialised,
@@ -104,7 +113,9 @@ const CommissionModel = ({
         commissionValue:
             modelType === 'flatRateCommission' ? flatRateVal : gasBasedVal,
         account,
+        errors,
     });
+    const isStepCompleted = isPoolCreationCompleted(poolFactory.transaction);
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -114,6 +125,14 @@ const CommissionModel = ({
                 : { ...state, [name]: validation };
         });
     };
+
+    useEffect(() => {
+        if (isStepCompleted) {
+            updatePoolAddressAtom(poolFactory?.transaction?.result);
+            setStepState(COMPLETED);
+            isFunction(onComplete) && onComplete();
+        }
+    }, [isStepCompleted]);
 
     return (
         <Step
@@ -131,8 +150,8 @@ const CommissionModel = ({
                 <TransactionBanner
                     title="Creating the pool..."
                     failTitle="The pool creation failed!"
-                    successDescription={`Pool ${transaction?.result} created! moving to the next step...`}
-                    transaction={transaction}
+                    successDescription={`Pool ${poolFactory.transaction?.result} created! moving to the next step...`}
+                    transaction={poolFactory.transaction}
                 />
                 <Heading as="h3" size="sm" my={4}>
                     Choose commission model
@@ -190,18 +209,21 @@ const CommissionModel = ({
                     </Button>
                     <Button
                         disabled={
-                            disablePoolCreationButton || transaction?.submitting
+                            disablePoolCreationButton ||
+                            poolFactory?.transaction?.submitting
                         }
-                        isLoading={transaction?.submitting}
+                        isLoading={poolFactory?.transaction?.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             if (modelType === 'flatRateCommission') {
-                                createFlatRateCommission(
+                                poolFactory.createFlatRateCommission(
                                     toNumber(flatRateVal) * 100
                                 );
                             } else {
-                                createGasTaxCommission(toNumber(gasBasedVal));
+                                poolFactory.createGasTaxCommission(
+                                    toNumber(gasBasedVal)
+                                );
                             }
                         }}
                     >
@@ -212,5 +234,7 @@ const CommissionModel = ({
         </Step>
     );
 };
+
+export { poolAddressAtom };
 
 export default CommissionModel;

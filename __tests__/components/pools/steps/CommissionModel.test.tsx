@@ -24,9 +24,22 @@ import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
 import { useWallet } from '../../../../src/contexts/wallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
 import { buildContractReceipt } from '../../node/mocks';
+import { Atom, useAtom } from 'jotai';
+import { useStepState } from '../../../../src/components/StepGroup';
+import { StepStatus } from '../../../../src/components/Step';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
 const walletMod = '../../../../src/contexts/wallet';
+const stepGroupMod = '../../../../src/components/StepGroup';
+
+jest.mock(stepGroupMod, () => {
+    const originalModule = jest.requireActual(stepGroupMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useStepState: jest.fn(),
+    };
+});
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
@@ -47,13 +60,28 @@ jest.mock(poolFactoryPath, () => {
     };
 });
 
+jest.mock('jotai', () => {
+    const originalModule = jest.requireActual('jotai');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useAtom: jest.fn(),
+    };
+});
+
 const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
     typeof useStakingPoolFactory
 >;
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
+const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
+const mockUseStepState = useStepState as jest.MockedFunction<
+    typeof useStepState
+>;
+const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('CommissionModel step component', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+    const atomSetterStub = jest.fn();
 
     beforeEach(() => {
         // default happy setup.
@@ -68,6 +96,14 @@ describe('CommissionModel step component', () => {
             deactivate: jest.fn(),
             chainId: 3,
         });
+
+        mockUseAtom.mockImplementation((a: Atom<unknown>) => [
+            '',
+            atomSetterStub as never,
+        ]);
+
+        // default is the real implementation
+        mockUseStepState.mockImplementation(realUseStepState);
     });
 
     afterEach(() => {
@@ -351,7 +387,13 @@ describe('CommissionModel step component', () => {
             poolFactory.transaction.result =
                 '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
             mockUseStakingPoolFactory.mockReturnValue(poolFactory);
-
+            // lets control the useStepState hook so we can see the success message
+            mockUseStepState.mockImplementation((a: any) => [
+                { status: StepStatus.ACTIVE },
+                () => {
+                    return a;
+                },
+            ]);
             render(<CommissionModel inFocus stepNumber={1} />);
 
             expect(
@@ -384,6 +426,34 @@ describe('CommissionModel step component', () => {
         });
 
         describe('CREATE POOL button', () => {
+            it('should be disabled when required field is filled but value did not pass the validation', async () => {
+                render(<CommissionModel inFocus stepNumber={1} />);
+
+                const flatRateInput = screen.getByLabelText(
+                    'Flat-rate commission (%)'
+                );
+
+                act(() => {
+                    fireEvent.change(flatRateInput, { target: { value: 10 } });
+                });
+
+                await waitFor(() =>
+                    expect(
+                        screen.getByText('CREATE POOL').hasAttribute('disabled')
+                    ).toBe(false)
+                );
+
+                act(() => {
+                    fireEvent.change(flatRateInput, { target: { value: 101 } });
+                });
+
+                await waitFor(() =>
+                    expect(
+                        screen.getByText('CREATE POOL').hasAttribute('disabled')
+                    ).toBe(true)
+                );
+            });
+
             it('should call creation pool method based on selected model type (Flat Rate)', async () => {
                 const poolFactory = buildUseStakingPoolFactoryReturn();
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
@@ -487,6 +557,60 @@ describe('CommissionModel step component', () => {
                     poolFactory.createFlatRateCommission
                 ).toHaveBeenCalledTimes(1);
             });
+        });
+    });
+
+    describe('When pool is created', () => {
+        it('should call onComplete callback, transition the step to a completed state and update the pool address in an atom', async () => {
+            const onComplete = jest.fn();
+            const Component = () => (
+                <CommissionModel
+                    inFocus
+                    stepNumber={1}
+                    onComplete={onComplete}
+                />
+            );
+            const poolAddress = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
+            const poolFactory = buildUseStakingPoolFactoryReturn();
+            poolFactory.transaction.acknowledged = false;
+            mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+            const { rerender } = render(<Component />);
+
+            expect(
+                screen.getByText('CREATE POOL').hasAttribute('disabled')
+            ).toBe(true);
+
+            act(() => {
+                fireEvent.change(
+                    screen.getByLabelText('Flat-rate commission (%)'),
+                    { target: { value: 5.25 } }
+                );
+            });
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText('CREATE POOL').hasAttribute('disabled')
+                ).toBe(false)
+            );
+
+            const button = screen.getByText('CREATE POOL');
+            fireEvent.click(button);
+
+            //Adding transaction confirmation and pool address
+            poolFactory.transaction.receipt = buildContractReceipt();
+            poolFactory.transaction.result = poolAddress;
+            rerender(<Component />);
+
+            expect(onComplete).toHaveBeenCalledTimes(1);
+            expect(atomSetterStub).toHaveBeenCalledWith(poolAddress);
+            expect(
+                screen.queryByLabelText('Flat-rate commission (%)')
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByLabelText('Gas-based commission (Gas)')
+            ).not.toBeInTheDocument();
+            expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
+            expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
         });
     });
 });

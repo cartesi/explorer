@@ -1,1 +1,1 @@
-export { default } from './CommissionModel';
+export { default, poolAddressAtom } from './CommissionModel';
