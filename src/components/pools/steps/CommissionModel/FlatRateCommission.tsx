@@ -14,11 +14,20 @@ import { useEffect } from 'react';
 import { useMessages } from '../../../../utils/messages';
 import { BaseInput } from '../../../BaseInput';
 import useFieldValidator from './useFieldValidator';
-import { isNil } from 'lodash/fp';
+import { isNil, last } from 'lodash/fp';
 import { Message } from './MessageBlock';
 
 type FlatRateModel = 'flatRateCommission';
 type FlatRateCommisionProps = BaseInput<FlatRateModel>;
+
+const maxDecimalPlaces = (maxDecimalPlaces: number) => (value: number) => {
+    if (Math.floor(value?.valueOf()) === value?.valueOf()) return true;
+
+    const currentDecimalPlaces = last(value.toString().split('.'))?.length;
+    if (currentDecimalPlaces <= maxDecimalPlaces) return true;
+
+    return useMessages('field.value.max.allowed', 2, 'decimal places');
+};
 
 // validation options
 const options = {
@@ -30,6 +39,7 @@ const options = {
         value: 0,
         message: useMessages('field.value.min.allowed', 0),
     },
+    validate: maxDecimalPlaces(2),
 };
 
 const FlatRateCommission = ({

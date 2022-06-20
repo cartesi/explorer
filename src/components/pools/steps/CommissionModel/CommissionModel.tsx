@@ -17,9 +17,10 @@ import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import TransactionBanner from '../../../node/TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
-import { allPass, isEmpty, omit, propEq } from 'lodash/fp';
+import { allPass, isEmpty, omit, propEq, toNumber } from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
+import { useWallet } from '../../../../contexts/wallet';
 
 type CommissionModels = FlatRateModel | GasBasedModel;
 type Validation = ValidationResult<FlatRateModel | GasBasedModel>;
@@ -51,16 +52,25 @@ const PoolCreationIsPausedAlert = () => {
     return <TransactionBanner failTitle={title} transaction={t} />;
 };
 
-const createPoolDisabled = (
-    creationIsPaused: boolean,
-    factoryIsNotReady: boolean,
-    commissionModel: string,
-    commissionValue: string
-) =>
+type CreatePoolDisabledProps = {
+    creationIsPaused: boolean;
+    factoryIsNotReady: boolean;
+    commissionModel: string;
+    commissionValue: string;
+    account: string;
+};
+const createPoolDisabled = ({
+    commissionModel,
+    account,
+    commissionValue,
+    creationIsPaused,
+    factoryIsNotReady,
+}: CreatePoolDisabledProps): boolean =>
     creationIsPaused ||
     factoryIsNotReady ||
     isEmpty(commissionModel) ||
-    isEmpty(commissionValue);
+    isEmpty(commissionValue) ||
+    isEmpty(account);
 
 const CommissionModel = ({
     stepNumber,
@@ -69,6 +79,7 @@ const CommissionModel = ({
     onPrevious,
     onStepActive,
 }: IStep) => {
+    const { account } = useWallet();
     const {
         createFlatRateCommission,
         createGasTaxCommission,
@@ -86,12 +97,14 @@ const CommissionModel = ({
     const radioHandler = (v: CommissionModels) => setModelType(v);
     const notInitialised = !loading && !ready;
     const poolCreationIsPaused = !loading && paused;
-    const disablePoolCreationButton = createPoolDisabled(
-        poolCreationIsPaused,
-        notInitialised,
-        modelType,
-        modelType === 'flatRateCommission' ? flatRateVal : gasBasedVal
-    );
+    const disablePoolCreationButton = createPoolDisabled({
+        creationIsPaused: poolCreationIsPaused,
+        factoryIsNotReady: notInitialised,
+        commissionModel: modelType,
+        commissionValue:
+            modelType === 'flatRateCommission' ? flatRateVal : gasBasedVal,
+        account,
+    });
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -124,6 +137,7 @@ const CommissionModel = ({
                         onChange={radioHandler}
                         value={modelType}
                         pt={1}
+                        name="flatRateOption"
                     >
                         <Radio
                             value="flatRateCommission"
@@ -142,6 +156,7 @@ const CommissionModel = ({
                         onChange={radioHandler}
                         value={modelType}
                         pt={1}
+                        name="gasBasedOption"
                     >
                         <Radio
                             value="gasBasedCommission"
@@ -168,12 +183,20 @@ const CommissionModel = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        disabled={disablePoolCreationButton}
+                        disabled={
+                            disablePoolCreationButton || transaction?.submitting
+                        }
+                        isLoading={transaction?.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
-                        onClick={(evt) => {
-                            onComplete();
-                            setStepState(COMPLETED);
+                        onClick={() => {
+                            if (modelType === 'flatRateCommission') {
+                                createFlatRateCommission(
+                                    toNumber(flatRateVal) * 100
+                                );
+                            } else {
+                                createGasTaxCommission(toNumber(gasBasedVal));
+                            }
                         }}
                     >
                         CREATE POOL

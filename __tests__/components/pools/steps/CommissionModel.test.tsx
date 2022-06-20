@@ -13,14 +13,29 @@ import {
     cleanup,
     fireEvent,
     prettyDOM,
+    act,
     render,
     screen,
+    waitFor,
+    findByText,
 } from '@testing-library/react';
 import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
 import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
+import { useWallet } from '../../../../src/contexts/wallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
+const walletMod = '../../../../src/contexts/wallet';
+
+jest.mock(walletMod, () => {
+    const originalModule = jest.requireActual(walletMod);
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        useWallet: jest.fn(),
+    };
+});
 
 jest.mock(poolFactoryPath, () => {
     const originalModule = jest.requireActual(poolFactoryPath);
@@ -34,13 +49,24 @@ jest.mock(poolFactoryPath, () => {
 const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
     typeof useStakingPoolFactory
 >;
+const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 describe('CommissionModel step component', () => {
+    const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+
     beforeEach(() => {
         // default happy setup.
         mockUseStakingPoolFactory.mockReturnValue(
             buildUseStakingPoolFactoryReturn()
         );
+
+        mockUseWallet.mockReturnValue({
+            account,
+            active: true,
+            activate: jest.fn(),
+            deactivate: jest.fn(),
+            chainId: 3,
+        });
     });
 
     afterEach(() => {
@@ -48,7 +74,7 @@ describe('CommissionModel step component', () => {
         jest.clearAllMocks();
     });
 
-    describe('when not on focus', () => {
+    describe('When not on focus', () => {
         it('Should only display the number, the title and the subtitle.', () => {
             render(<CommissionModel stepNumber={1} />);
 
@@ -107,6 +133,145 @@ describe('CommissionModel step component', () => {
             const btn = screen.getByText('CREATE POOL');
             expect(btn.hasAttribute('disabled')).toBe(true);
         });
+
+        it('should keep CREATE-POOL button disabled when everything is filled but wallet is not connected', async () => {
+            const { rerender } = render(
+                <CommissionModel stepNumber={1} inFocus />
+            );
+
+            act(() => {
+                const flatRateInput = screen.getByLabelText(
+                    'Flat-rate commission (%)'
+                );
+                fireEvent.change(flatRateInput, { target: { value: 10 } });
+            });
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText('CREATE POOL').hasAttribute('disabled')
+                ).toBe(false)
+            );
+
+            mockUseWallet.mockReturnValue({
+                active: false,
+                account: null,
+                activate: jest.fn(),
+                deactivate: jest.fn(),
+            });
+
+            rerender(<CommissionModel stepNumber={1} inFocus />);
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText('CREATE POOL').hasAttribute('disabled')
+                ).toBe(true)
+            );
+        });
+    });
+
+    describe('Validations', () => {
+        describe('Flat Rate Commission', () => {
+            it('should display message when flat rate value is lower than 0', async () => {
+                render(<CommissionModel inFocus stepNumber={1} />);
+
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Flat-rate commission (%)'),
+                        { target: { value: -1 } }
+                    );
+                });
+
+                expect(
+                    await screen.findByText('Minimum value allowed is 0')
+                ).toBeInTheDocument();
+            });
+
+            it('should display message when flat rate value is higher than 100', async () => {
+                render(<CommissionModel inFocus stepNumber={1} />);
+
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Flat-rate commission (%)'),
+                        { target: { value: 101 } }
+                    );
+                });
+
+                expect(
+                    await screen.findByText('Maximum value allowed is 100')
+                ).toBeInTheDocument();
+            });
+
+            it('should display a message when flat rate value has more than 2 decimal places', async () => {
+                render(<CommissionModel inFocus stepNumber={1} />);
+
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Flat-rate commission (%)'),
+                        { target: { value: 0.001 } }
+                    );
+                });
+
+                expect(
+                    await screen.findByText(
+                        'Maximum decimal places allowed is 2'
+                    )
+                ).toBeInTheDocument();
+            });
+
+            it('should display a message when the field is visited and left in blank', async () => {
+                render(<CommissionModel inFocus stepNumber={1} />);
+
+                act(() => {
+                    fireEvent.blur(
+                        screen.getByLabelText('Flat-rate commission (%)')
+                    );
+                });
+
+                expect(
+                    await screen.findByText('This field is required.')
+                ).toBeInTheDocument();
+            });
+        });
+
+        describe('Gas Based Commission', () => {
+            it('should display a message when the field is visited and left in blank', async () => {
+                const { container } = render(
+                    <CommissionModel inFocus stepNumber={1} />
+                );
+
+                expect(
+                    screen
+                        .getByLabelText('Gas-based commission (Gas)')
+                        .hasAttribute('disabled')
+                ).toBe(true);
+
+                const gasBasedOption = container.querySelector(
+                    `input[name='gasBasedOption']`
+                );
+
+                act(() => {
+                    fireEvent.click(gasBasedOption);
+                });
+
+                await waitFor(() =>
+                    expect(
+                        screen
+                            .getByText('Gas-based commission (Gas)')
+                            .hasAttribute('disabled')
+                    ).toBe(false)
+                );
+
+                act(() => {
+                    fireEvent.blur(
+                        screen.getByLabelText('Gas-based commission (Gas)')
+                    );
+                });
+
+                expect(
+                    await screen.findByText('This field is required.')
+                ).toBeInTheDocument();
+            });
+        });
     });
 
     describe('Notifications', () => {
@@ -144,6 +309,131 @@ describe('CommissionModel step component', () => {
             expect(
                 screen.getByText('CREATE POOL').hasAttribute('disabled')
             ).toBe(true);
+        });
+    });
+
+    describe('Actions', () => {
+        describe('PREVIOUS button', () => {
+            it('should call onPrevious callback when clicked', () => {
+                const onPrev = jest.fn();
+                render(
+                    <CommissionModel
+                        inFocus
+                        stepNumber={1}
+                        onPrevious={onPrev}
+                    />
+                );
+                const button = screen.getByText('PREVIOUS');
+                fireEvent.click(button);
+
+                expect(onPrev).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe('CREATE POOL button', () => {
+            it('should call creation pool method based on selected model type (Flat Rate)', async () => {
+                const poolFactory = buildUseStakingPoolFactoryReturn();
+                mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+                render(<CommissionModel inFocus stepNumber={1} />);
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Flat-rate commission (%)'),
+                        { target: { value: 5.25 } }
+                    );
+                });
+
+                const button = screen.getByText('CREATE POOL');
+                fireEvent.click(button);
+
+                await waitFor(() =>
+                    expect(
+                        poolFactory.createFlatRateCommission
+                    ).toHaveBeenCalledWith(525)
+                );
+            });
+
+            it('should call creation pool method based on selected model type (Gas Based)', async () => {
+                const poolFactory = buildUseStakingPoolFactoryReturn();
+                mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+                const { container } = render(
+                    <CommissionModel inFocus stepNumber={1} />
+                );
+
+                const gasBasedOption = container.querySelector(
+                    `input[name='gasBasedOption']`
+                );
+
+                act(() => {
+                    fireEvent.click(gasBasedOption);
+                });
+
+                await waitFor(() =>
+                    expect(
+                        screen
+                            .getByText('Gas-based commission (Gas)')
+                            .hasAttribute('disabled')
+                    ).toBe(false)
+                );
+
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Gas-based commission (Gas)'),
+                        { target: { value: 400000 } }
+                    );
+                });
+
+                const button = screen.getByText('CREATE POOL');
+                fireEvent.click(button);
+
+                await waitFor(() =>
+                    expect(
+                        poolFactory.createGasTaxCommission
+                    ).toHaveBeenCalledWith(400000)
+                );
+            });
+
+            it('should display spinner when transaction is submitted and avoid any subsequent click', async () => {
+                const poolFactory = buildUseStakingPoolFactoryReturn();
+                mockUseStakingPoolFactory.mockReturnValue(poolFactory);
+                // First render
+                const { rerender } = render(
+                    <CommissionModel inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.change(
+                        screen.getByLabelText('Flat-rate commission (%)'),
+                        { target: { value: 5.25 } }
+                    );
+                });
+
+                const button = screen.getByText('CREATE POOL');
+                fireEvent.click(button);
+
+                await waitFor(() =>
+                    expect(
+                        poolFactory.createFlatRateCommission
+                    ).toHaveBeenCalledWith(525)
+                );
+
+                // Emulating hooks changing pool-factory transaction state.
+                poolFactory.transaction.submitting = true;
+                poolFactory.transaction.acknowledged = false;
+                // Then we render the component again to get fresh values
+                rerender(<CommissionModel inFocus stepNumber={1} />);
+
+                expect(
+                    await findByText(button, 'Loading...')
+                ).toBeInTheDocument();
+
+                // trying to click multiple times
+                fireEvent.click(button);
+                fireEvent.click(button);
+
+                expect(
+                    poolFactory.createFlatRateCommission
+                ).toHaveBeenCalledTimes(1);
+            });
         });
     });
 });
