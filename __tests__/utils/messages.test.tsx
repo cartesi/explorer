@@ -127,6 +127,38 @@ describe('useMessages hook', () => {
                 );
             });
         });
+
+        describe('for max allowed', () => {
+            it('should return a default message when no params are pass', () => {
+                const { result } = renderHook(() =>
+                    useMessages('field.value.max.allowed')
+                );
+                expect(result.current).toEqual('Maximum value allowed is 0');
+            });
+
+            it('should return a message with params for the value and the label (e.g. Gas)', () => {
+                const { result } = renderHook(() =>
+                    useMessages('field.value.max.allowed', 10000, 'Gas')
+                );
+                expect(result.current).toEqual('Maximum Gas allowed is 10000');
+            });
+        });
+
+        describe('for min allowed', () => {
+            it('should return a default message when no params are pass', () => {
+                const { result } = renderHook(() =>
+                    useMessages('field.value.min.allowed')
+                );
+                expect(result.current).toEqual('Minimum value allowed is 0');
+            });
+
+            it('should return a message with params for the value and the label (e.g. ETH)', () => {
+                const { result } = renderHook(() =>
+                    useMessages('field.value.min.allowed', 15, 'ETH')
+                );
+                expect(result.current).toEqual('Minimum ETH allowed is 15');
+            });
+        });
     });
 
     describe('Messages on commission context', () => {
@@ -146,6 +178,50 @@ describe('useMessages hook', () => {
                 );
                 expect(result.current).toEqual(
                     'This model calculates the commission considering the current network gas price, Ethereum price and CTSI price. The configured amount of gas above is multiplied by the gas price provided by a ChainLink oracle, then converted from ETH to CTSI using an Uniswap V2 price oracle.'
+                );
+            });
+        });
+    });
+
+    describe('Messages on Pool context', () => {
+        describe('For factory', () => {
+            it('should return a message for not initialised', () => {
+                const { result } = renderHook(() =>
+                    useMessages('pool.factory.not.initialised')
+                );
+                expect(result.current).toEqual(
+                    'The pool factory is not initialised properly.'
+                );
+            });
+        });
+
+        describe('For creation', () => {
+            it('should return a message when paused', () => {
+                const { result } = renderHook(() =>
+                    useMessages('pool.creation.paused')
+                );
+                expect(result.current).toEqual(
+                    'Creation of new pools is currently paused.'
+                );
+            });
+        });
+    });
+
+    describe('Messages for general purporse', () => {
+        describe('Notice', () => {
+            it('should return a message for a found problem', () => {
+                const { result } = renderHook(() =>
+                    useMessages('notice.problem')
+                );
+                expect(result.current).toEqual('We notice a problem');
+            });
+
+            it('should return a message for a found problem with a suffix', () => {
+                const { result } = renderHook(() =>
+                    useMessages('notice.problem', ' in the setup')
+                );
+                expect(result.current).toEqual(
+                    'We notice a problem in the setup'
                 );
             });
         });
