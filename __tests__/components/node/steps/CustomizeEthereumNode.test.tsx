@@ -1,0 +1,79 @@
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import CustomizeEthereumNode from '../../../../src/components/node/steps/CustomizeEthereumNode';
+
+describe('Customize Ethereum Node Step component', () => {
+    afterEach(() => {
+        cleanup();
+    });
+
+    describe('when not in focus', () => {
+        it('Should only display the number, the title and the subtitle when not in focus', () => {
+            render(<CustomizeEthereumNode stepNumber={1} />);
+
+            expect(screen.getByText('1')).toBeInTheDocument();
+            expect(
+                screen.getByText('Set up Ethereum Node')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Cartesi node connects to the Ethereum network through a standard gateway'
+                )
+            ).toBeInTheDocument();
+
+            expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('when in focus', () => {
+        it('should render the body content and action button', () => {
+            render(<CustomizeEthereumNode inFocus stepNumber={1} />);
+
+            expect(screen.getByText('1')).toBeInTheDocument();
+            expect(
+                screen.getByText('Set up Ethereum Node')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Cartesi node connects to the Ethereum network through a standard gateway'
+                )
+            ).toBeInTheDocument();
+
+            expect(screen.getByText('Ethereum node')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    `The node works with any standard JSON-RPC Ethereum provider. It's important to use a stable and reliable provider.`
+                )
+            ).toBeInTheDocument();
+
+            expect(screen.getByText('Ethereum Gateway')).toBeInTheDocument();
+
+            expect(screen.getByText('1. Infura')).toBeInTheDocument();
+            expect(screen.getByText('2. Alchemy')).toBeInTheDocument();
+            expect(
+                screen.getByText('(Recommended third party)')
+            ).toBeInTheDocument();
+            expect(screen.getByText('Relatively stable.')).toBeInTheDocument();
+            expect(
+                screen.getByText('Have to register and setup in advance')
+            ).toBeInTheDocument();
+            expect(screen.getByText('NEXT')).toBeInTheDocument();
+        });
+    });
+
+    describe('Actions', () => {
+        it('should call the onComplete callback when clicking the NEXT button', () => {
+            const onComplete = jest.fn();
+            render(
+                <CustomizeEthereumNode
+                    inFocus
+                    stepNumber={1}
+                    onComplete={onComplete}
+                />
+            );
+
+            fireEvent.click(screen.getByText('NEXT'));
+
+            expect(onComplete).toHaveBeenCalled();
+        });
+    });
+});
