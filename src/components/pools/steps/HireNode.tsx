@@ -30,7 +30,6 @@ import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../../node/TransactionBanner';
-import { hiredNodeAddressAtom } from '../../node/steps/HireNode.atoms';
 import {
     NodeInput,
     NodeField,
@@ -40,9 +39,12 @@ import {
     DepositField,
     InitialFundsInput,
 } from '../../node/inputs/InitialFundsInput';
+import { poolAddressAtom } from './CommissionModel';
+import { useStakingPool } from '../../../services/pool';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
+type TransactionType = 'pause' | 'unpause' | 'hire';
 
 const { COMPLETED } = StepStatus;
 
@@ -57,19 +59,40 @@ const enableNextWhen = (
 const isNodeHiringCompleted = (transaction: Transaction<any>) =>
     transaction.receipt?.confirmations >= 1;
 
+const wordingFor = {
+    pause: {
+        title: 'Pausing new stakes',
+        failTitle: 'Pausing new stakes setup failed!',
+        successDescription: 'The pool will no longer accept new stakes.',
+    },
+    unpause: {
+        title: 'Accepting new stakes',
+        failTitle: 'Accepting new stakes setup failed!',
+        successDescription: 'The pool is now accepting new stakes.',
+    },
+    hire: {
+        title: 'Hiring node...',
+        failTitle: 'Hiring the node failed',
+        successDescription: 'Node hired! moving to the next step...',
+    },
+};
+
 const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
-    const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
     const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
-    const [stepState, setStepState] = useStepState({ inFocus });
+    const [poolAddress] = useAtom(poolAddressAtom);
     const { account } = useWallet();
+    const [stepState, setStepState] = useStepState({ inFocus });
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [initialFunds, setInitialFunds] = useState<string | null>();
+    const [transactionType, setTransactionType] =
+        useState<TransactionType | null>();
     const [errors, setErrors] = useState<Errors>({});
+    const pool = useStakingPool(poolAddress, account);
     const node = useNode(nodeAddress);
-    const { status } = evaluateNode(account, node);
+    const { status } = evaluateNode(poolAddress, node);
     const enableNext = enableNextWhen(initialFunds, status, errors);
-    const { transaction } = node;
-    const isStepCompleted = isNodeHiringCompleted(transaction);
+    const isStepCompleted =
+        transactionType === 'hire' && isNodeHiringCompleted(pool?.transaction);
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -80,13 +103,12 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
         });
     };
 
-    // useEffect(() => {
-    //     if (isStepCompleted) {
-    //         setNodeAddressAtom(nodeAddress);
-    //         setStepState(COMPLETED);
-    //         onComplete && onComplete();
-    //     }
-    // }, [isStepCompleted]);
+    useEffect(() => {
+        if (isStepCompleted) {
+            setStepState(COMPLETED);
+            onComplete && onComplete();
+        }
+    }, [isStepCompleted]);
 
     return (
         <Step
@@ -98,16 +120,18 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
         >
             <StepBody>
                 <TransactionBanner
-                    title="Hiring the node..."
-                    failTitle="Hiring the node failed"
-                    successDescription="Node hired! moving to the next step..."
-                    transaction={node.transaction}
+                    title={wordingFor[transactionType]?.title}
+                    failTitle={wordingFor[transactionType]?.failTitle}
+                    successDescription={
+                        wordingFor[transactionType]?.successDescription
+                    }
+                    transaction={pool.transaction}
                 />
                 <NodeInput
                     onValidationChange={handleValidation}
                     onChange={setNodeAddress}
                     helperText="You may find from the docker configuration"
-                    account={account}
+                    account={poolAddress}
                     node={node}
                 />
                 <InitialFundsInput
@@ -116,7 +140,16 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     max={3}
                     min={0.001}
                 />
-                <Checkbox defaultChecked mt={5}>
+                <Checkbox
+                    defaultChecked
+                    mt={5}
+                    isChecked={!pool.paused}
+                    onChange={() => {
+                        const tType = pool.paused ? 'unpause' : 'pause';
+                        setTransactionType(tType);
+                        pool[tType]();
+                    }}
+                >
                     Allowing your pool to accept new stakes
                 </Checkbox>
                 <Box px={6} py={4} bgColor={tipsBgColor} mt={6}>
@@ -136,14 +169,13 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
-                        // disabled={!enableNext || node.transaction?.submitting}
-                        // isLoading={node.transaction?.submitting}
+                        disabled={!enableNext || pool.transaction?.submitting}
+                        isLoading={pool.transaction?.submitting}
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
-                        // onClick={() => node.hire(toBigNumber(initialFunds))}
                         onClick={() => {
-                            onComplete();
-                            setStepState(COMPLETED);
+                            setTransactionType('hire');
+                            pool.hire(nodeAddress, toBigNumber(initialFunds));
                         }}
                     >
                         NEXT

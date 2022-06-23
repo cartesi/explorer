@@ -9,7 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
+import {
+    act,
+    cleanup,
+    findByText,
+    fireEvent,
+    prettyDOM,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import { useWallet } from '../../../../src/contexts/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
@@ -17,15 +26,26 @@ import HireNode from '../../../../src/components/pools/steps/HireNode';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../../node/mocks';
 import { useAtom } from 'jotai';
+import { useStakingPool } from '../../../../src/services/pool';
+import { useStepState } from '../../../../src/components/StepGroup';
+import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
+import { StepStatus } from '../../../../src/components/Step';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
+const stakingPoolMod = '../../../../src/services/pool';
+const stepGroupMod = '../../../../src/components/StepGroup';
 
-/**
- * Looks repetitive but that is because the way Jest hoist the jest.mock calls to guarantee
- * it will run before the imports.
- */
+jest.mock(stepGroupMod, () => {
+    const originalModule = jest.requireActual(stepGroupMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useStepState: jest.fn(),
+    };
+});
+
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
     return {
@@ -62,13 +82,30 @@ jest.mock('jotai', () => {
     };
 });
 
+jest.mock(stakingPoolMod, () => {
+    const originalModule = jest.requireActual(stakingPoolMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useStakingPool: jest.fn(),
+    };
+});
+
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseNode = useNode as jest.MockedFunction<typeof useNode>;
 const mockUseBalance = useBalance as jest.MockedFunction<typeof useBalance>;
 const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
+const mockUseStakingPool = useStakingPool as jest.MockedFunction<
+    typeof useStakingPool
+>;
+const mockUseStepState = useStepState as jest.MockedFunction<
+    typeof useStepState
+>;
+const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('HireNode Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+    const pool = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
     const atomSetterStub = jest.fn();
 
     beforeEach(() => {
@@ -86,6 +123,10 @@ describe('HireNode Step', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         mockUseAtom.mockImplementation((...a: any) => ['', atomSetterStub]);
+        mockUseStakingPool.mockReturnValue(buildUseStakingPoolReturn());
+
+        // default is the real implementation
+        mockUseStepState.mockImplementation(realUseStepState);
     });
 
     afterEach(() => {
@@ -142,6 +183,485 @@ describe('HireNode Step', () => {
                 )
             ).toBeInTheDocument();
             expect(screen.getByText('NEXT')).toBeInTheDocument();
+        });
+
+        it('Should keep the NEXT button disable when the node address and initial funds are empty', () => {
+            render(<HireNode inFocus stepNumber={1} />);
+            const button = screen.getByText('NEXT');
+            expect(button.hasAttribute('disabled')).toBe(true);
+        });
+    });
+
+    describe('Notifications', () => {
+        describe('Pool Stakes', () => {
+            it('should display an informative notification when pausing new stakes in the pool is in course', async () => {
+                const pool = buildUseStakingPoolReturn();
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                expect(
+                    screen
+                        .getByText('Allowing your pool to accept new stakes')
+                        .hasAttribute('data-checked')
+                ).toBe(true);
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                // setting to have the transaction set
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = true;
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Pausing new stakes')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(alert, 'Loading...')
+                ).toBeInTheDocument();
+                expect(pool.pause).toHaveBeenCalled();
+            });
+
+            it('should display an error notification when pausing new stakes failed', async () => {
+                const pool = buildUseStakingPoolReturn();
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                // setting to fail the transaction
+                pool.transaction.acknowledged = false;
+                pool.transaction.error = 'tx metamask: not enough funds';
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Pausing new stakes setup failed!')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(alert, 'tx metamask: not enough funds')
+                ).toBeInTheDocument();
+                expect(pool.pause).toHaveBeenCalled();
+            });
+
+            it('should display an success message when pausing new stakes transaction is completed', async () => {
+                const pool = buildUseStakingPoolReturn();
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                // setting to have the transaction set
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = false;
+                pool.transaction.receipt = buildContractReceipt();
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Pausing new stakes')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(
+                        alert,
+                        'The pool will no longer accept new stakes.'
+                    )
+                ).toBeInTheDocument();
+                expect(pool.pause).toHaveBeenCalled();
+            });
+
+            it('should display an informative notification when accepting new stakes in the pool is in course', async () => {
+                const pool = buildUseStakingPoolReturn();
+                pool.paused = true;
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                expect(
+                    screen
+                        .getByText('Allowing your pool to accept new stakes')
+                        .hasAttribute('data-checked')
+                ).toBe(false);
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                await waitFor(() => expect(pool.unpause).toHaveBeenCalled());
+
+                // setting to have the transaction set
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = true;
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Accepting new stakes')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(alert, 'Loading...')
+                ).toBeInTheDocument();
+            });
+
+            it('should display an error notification when accepting new stakes failed', async () => {
+                const pool = buildUseStakingPoolReturn();
+                pool.paused = true;
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                // setting to fail the transaction
+                pool.transaction.acknowledged = false;
+                pool.transaction.error = 'tx metamask: error communicating';
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(
+                        alert,
+                        'Accepting new stakes setup failed!'
+                    )
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(alert, 'tx metamask: error communicating')
+                ).toBeInTheDocument();
+                expect(pool.unpause).toHaveBeenCalled();
+            });
+
+            it('should display an success message when accepting new stakes transaction is completed', async () => {
+                const pool = buildUseStakingPoolReturn();
+                pool.paused = true;
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.click(
+                        screen.getByText(
+                            'Allowing your pool to accept new stakes'
+                        )
+                    );
+                });
+
+                // setting to have the transaction set
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = false;
+                pool.transaction.receipt = buildContractReceipt();
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Accepting new stakes')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(
+                        alert,
+                        'The pool is now accepting new stakes.'
+                    )
+                ).toBeInTheDocument();
+                expect(pool.unpause).toHaveBeenCalled();
+            });
+        });
+
+        describe('Hiring node', () => {
+            let node: ReturnType<typeof buildNodeObj>;
+            let pool: ReturnType<typeof buildUseStakingPoolReturn>;
+
+            beforeEach(() => {
+                node = buildNodeObj('available', '0x00');
+                pool = buildUseStakingPoolReturn();
+                mockUseNode.mockReturnValue(node);
+                mockUseStakingPool.mockReturnValue(pool);
+                mockUseBalance.mockReturnValue(toBigNumber('6'));
+            });
+
+            it('should display informative notification when hiring node is in due course', async () => {
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                // emulating transaction state change;
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = true;
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Hiring node...')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(alert, 'Loading...')
+                ).toBeInTheDocument();
+            });
+
+            it('should display an error notification when hiring a node failed', async () => {
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                // emulating transaction state change;
+                pool.transaction.acknowledged = false;
+                pool.transaction.error =
+                    'tx metamask: something went terribly wrong';
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Hiring the node failed')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(
+                        alert,
+                        'tx metamask: something went terribly wrong'
+                    )
+                ).toBeInTheDocument();
+            });
+
+            it('should display an success message when hiring a node is completed with success', async () => {
+                // lets control the useStepState hook so we can see the success message
+                mockUseStepState.mockImplementation((a: any) => [
+                    { status: StepStatus.ACTIVE },
+                    () => {
+                        return a;
+                    },
+                ]);
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                // emulating transaction state change;
+                pool.transaction.acknowledged = false;
+                pool.transaction.receipt = buildContractReceipt();
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                const alert = screen.getByRole('alert');
+                expect(
+                    await findByText(alert, 'Hiring node...')
+                ).toBeInTheDocument();
+                expect(
+                    await findByText(
+                        alert,
+                        'Node hired! moving to the next step...'
+                    )
+                ).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('Actions', () => {
+        describe('NEXT Button', () => {
+            it('should keep next button disabled when node is not available', async () => {
+                const pool = buildUseStakingPoolReturn();
+                const node = buildNodeObj('owned', '0x00');
+                mockUseStakingPool.mockReturnValue(pool);
+                mockUseNode.mockReturnValue(node);
+                mockUseBalance.mockReturnValue(toBigNumber('5'));
+
+                render(<HireNode inFocus stepNumber={1} />);
+
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText(
+                    'Looks like that node is already owned.'
+                );
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                expect(pool.hire).not.toHaveBeenCalled();
+                expect(button.hasAttribute('disabled')).toBe(true);
+            });
+
+            it('should keep next button disabled when initial funds fails validation', async () => {
+                const pool = buildUseStakingPoolReturn();
+                const node = buildNodeObj('available', '0x00');
+                mockUseStakingPool.mockReturnValue(pool);
+                mockUseNode.mockReturnValue(node);
+                mockUseBalance.mockReturnValue(toBigNumber('5'));
+
+                render(<HireNode inFocus stepNumber={1} />);
+
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 4 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                await screen.findByText(
+                    'Max amount of ETH allowed to deposit is 3'
+                );
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                expect(pool.hire).not.toHaveBeenCalled();
+                expect(button.hasAttribute('disabled')).toBe(true);
+            });
+
+            it('should allow user to click the next button when all field pass the validations', async () => {
+                const pool = buildUseStakingPoolReturn();
+                const node = buildNodeObj('available', '0x00');
+                mockUseStakingPool.mockReturnValue(pool);
+                mockUseNode.mockReturnValue(node);
+                mockUseBalance.mockReturnValue(toBigNumber('5'));
+
+                render(<HireNode inFocus stepNumber={1} />);
+
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                expect(pool.hire).toHaveBeenCalledWith(account, toBigNumber(2));
+                expect(button.hasAttribute('disabled')).toBe(false);
+            });
+
+            it('Should display spinner when clicked and block extra clicks while transaction is in course', async () => {
+                const pool = buildUseStakingPoolReturn();
+                const node = buildNodeObj('available', '0x00');
+                mockUseStakingPool.mockReturnValue(pool);
+                mockUseNode.mockReturnValue(node);
+                mockUseBalance.mockReturnValue(toBigNumber('5'));
+
+                const { rerender } = render(
+                    <HireNode inFocus stepNumber={1} />
+                );
+
+                const addressInput = screen.getByLabelText('Node Address');
+                const fundsInput = screen.getByLabelText('Initial Funds');
+
+                act(() => {
+                    fireEvent.change(addressInput, {
+                        target: { value: account },
+                    });
+                    fireEvent.change(fundsInput, { target: { value: 2 } });
+                });
+
+                await screen.findByText('This node is available');
+
+                const button = screen.getByText('NEXT');
+                fireEvent.click(button);
+
+                pool.transaction.acknowledged = false;
+                pool.transaction.submitting = true;
+
+                rerender(<HireNode inFocus stepNumber={1} />);
+
+                expect(
+                    await findByText(button, 'Loading...')
+                ).toBeInTheDocument();
+
+                // trying to do multiple clicks.
+                fireEvent.click(button);
+                fireEvent.click(button);
+
+                expect(pool.hire).toHaveBeenCalledTimes(1);
+            });
         });
     });
 });
