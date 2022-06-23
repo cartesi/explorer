@@ -134,6 +134,14 @@ const CommissionModel = ({
         }
     }, [isStepCompleted]);
 
+    useEffect(() => {
+        if (inFocus) return;
+
+        setFlatRateVal(null);
+        setGasBasedVal(null);
+        setModelType('flatRateCommission');
+    }, [inFocus]);
+
     return (
         <Step
             title="Commission Model"
@@ -157,13 +165,13 @@ const CommissionModel = ({
                     Choose commission model
                 </Heading>
 
-                <Stack direction="row" spacing={{ base: 3, md: 7 }} mt={2}>
-                    <RadioGroup
-                        onChange={radioHandler}
-                        value={modelType}
-                        pt={1}
-                        name="flatRateOption"
-                    >
+                <Stack
+                    direction="row"
+                    spacing={{ base: 3, md: 7 }}
+                    mt={2}
+                    onClick={(e) => radioHandler('flatRateCommission')}
+                >
+                    <RadioGroup value={modelType} pt={1} name="flatRateOption">
                         <Radio
                             value="flatRateCommission"
                             isChecked={modelType === 'flatRateCommission'}
@@ -176,13 +184,13 @@ const CommissionModel = ({
                     />
                 </Stack>
 
-                <Stack direction="row" spacing={{ base: 3, md: 7 }} mt={8}>
-                    <RadioGroup
-                        onChange={radioHandler}
-                        value={modelType}
-                        pt={1}
-                        name="gasBasedOption"
-                    >
+                <Stack
+                    direction="row"
+                    spacing={{ base: 3, md: 7 }}
+                    mt={8}
+                    onClick={(e) => radioHandler('gasBasedCommission')}
+                >
+                    <RadioGroup value={modelType} pt={1} name="gasBasedOption">
                         <Radio
                             value="gasBasedCommission"
                             isChecked={modelType === 'gasBasedCommission'}
