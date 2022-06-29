@@ -65,6 +65,7 @@ export const Step = ({
     subtitle,
     status,
     onActive,
+    optionalText,
     ...stackProps
 }: StepProps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
@@ -163,6 +164,15 @@ export const Step = ({
                         </Heading>
                         <Text size="sm">{subtitle}</Text>
                     </Box>
+                    {optionalText && (
+                        <Text
+                            ml="auto"
+                            alignSelf="flex-start"
+                            color={state.headerColor}
+                        >
+                            {optionalText}
+                        </Text>
+                    )}
                 </Flex>
             )}
             {state.showBodyActions && (

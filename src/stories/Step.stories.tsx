@@ -132,6 +132,15 @@ const Template: ComponentStory<typeof Step> = (args) => {
     );
 };
 
+export const Optional = Template.bind({});
+Optional.args = {
+    stepNumber: 1,
+    title: 'Pool ENS',
+    subtitle: 'Registering a ENS domain and setting it up.',
+    status: StepStatus.ACTIVE,
+    optionalText: 'This step could be skipped.',
+} as StepProps;
+
 export const Active = Template.bind({});
 Active.args = {
     stepNumber: 1,

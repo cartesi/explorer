@@ -19,4 +19,5 @@ export interface StepProps extends StackProps {
     subtitle: string;
     status: StepStatus;
     onActive?: (meta: IStepMeta) => void;
+    optionalText?: string;
 }
