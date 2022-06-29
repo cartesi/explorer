@@ -14,7 +14,6 @@ import {
     cleanup,
     findByText,
     fireEvent,
-    prettyDOM,
     render,
     screen,
     waitFor,
@@ -105,7 +104,6 @@ const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('HireNode Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
-    const pool = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
     const atomSetterStub = jest.fn();
 
     beforeEach(() => {
@@ -122,7 +120,7 @@ describe('HireNode Step', () => {
         mockUseNode.mockReturnValue(buildNodeObj());
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        mockUseAtom.mockImplementation((...a: any) => ['', atomSetterStub]);
+        mockUseAtom.mockImplementation(() => ['', atomSetterStub]);
         mockUseStakingPool.mockReturnValue(buildUseStakingPoolReturn());
 
         // default is the real implementation
