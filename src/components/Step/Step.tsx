@@ -168,7 +168,7 @@ export const Step = ({
                         <Text
                             ml="auto"
                             alignSelf="flex-start"
-                            color={state.headerColor}
+                            color="grey.support"
                         >
                             {optionalText}
                         </Text>

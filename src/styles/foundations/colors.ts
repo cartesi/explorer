@@ -24,6 +24,11 @@ export const colors = {
     grey: {
         support: '#5F6368',
     },
+    light: {
+        support: {
+            alert: '#FFA030',
+        },
+    },
     gray: {
         50: '#FAFAFB',
         80: '#F1F2F5',
