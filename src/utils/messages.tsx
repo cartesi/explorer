@@ -69,6 +69,17 @@ const messages = {
         creation: {
             paused: () => `Creation of new pools is currently paused.`,
         },
+        set: {
+            ens: {
+                success: () => 'Pool ENS updated with success!',
+                fail: () => 'Pool ENS update failed!',
+                update: () => 'Updating pool ENS...',
+            },
+        },
+        ens: {
+            howItWorks: () =>
+                `Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:`,
+        },
     },
     notice: {
         problem: (suffix = '') => `We notice a problem${suffix}`,

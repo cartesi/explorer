@@ -15,14 +15,9 @@ import {
     FormErrorMessage,
     InputGroup,
     InputRightElement,
-    Heading,
     Box,
-    VStack,
     useColorModeValue,
-    Text,
     BoxProps,
-    RadioGroup,
-    Radio,
     Stack,
     Button,
     FormControlProps,
@@ -30,10 +25,18 @@ import {
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { ChangeEvent, ReactNode, useState } from 'react';
-import { BaseInput } from '../../BaseInput';
+import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import { useMessages } from '../../../utils/messages';
 import { OrderedContent } from '../../OrderedContent';
+import { useAtom } from 'jotai';
+import { poolAddressAtom } from './CommissionModel';
+import { useWallet } from '../../../contexts/wallet';
+import { useStakingPool } from '../../../services/pool';
+import TransactionBanner from '../../node/TransactionBanner';
+import { isEmpty } from 'lodash';
+import { trim } from 'lodash/fp';
+import { Transaction } from '../../../services/transaction';
+import { useRouter } from 'next/router';
 
 interface SimpleInput {
     label: string;
@@ -116,9 +119,7 @@ const ENSManagerLink = () => {
 };
 
 const Content = () => {
-    const title = `Pool owners can name the pool addresses to provide additional trust or just make it
-    easier to identify the pool.
-    The system relies on authority information provided by ENS domains:`;
+    const title = useMessages('pool.ens.howItWorks');
 
     const steps = [
         <>
@@ -139,14 +140,38 @@ const Content = () => {
 
 const { COMPLETED } = StepStatus;
 
+const isConfirmed = (transaction: Transaction<any>) =>
+    transaction.receipt?.confirmations >= 1;
+
+const buildURL = (address: string) =>
+    !isEmpty(address) ? `/pools/${address}/manage` : '/newStaking';
+
 const EthereumNameServer = ({
     stepNumber,
     inFocus,
     onComplete,
     onStepActive,
 }: IStep) => {
+    const router = useRouter();
+    const [poolAddress, setAddress] = useAtom(poolAddressAtom);
+    const { account } = useWallet();
+    const pool = useStakingPool(poolAddress, account);
     const [stepState, setStepState] = useStepState({ inFocus });
+    const [proceed, setProceed] = useState<boolean>(false);
     const [ens, setENS] = useState<string | null>();
+    const isCompleted = proceed || isConfirmed(pool.transaction);
+
+    useEffect(() => {
+        setAddress('0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA');
+    }, []);
+
+    useEffect(() => {
+        if (isCompleted) {
+            setStepState(COMPLETED);
+            onComplete && onComplete();
+            router.push(buildURL(poolAddress));
+        }
+    }, [isCompleted]);
 
     return (
         <Step
@@ -157,6 +182,12 @@ const EthereumNameServer = ({
             onActive={onStepActive}
         >
             <StepBody>
+                <TransactionBanner
+                    title={useMessages('pool.set.ens.update')}
+                    failTitle={useMessages('pool.set.ens.fail')}
+                    successDescription={useMessages('pool.set.ens.success')}
+                    transaction={pool.transaction}
+                />
                 <SimpleInput
                     onChange={(evt) => setENS(evt.currentTarget?.value)}
                     label="Pool ENS name"
@@ -173,9 +204,12 @@ const EthereumNameServer = ({
                     <Button
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
-                        onClick={(evt) => {
-                            onComplete();
-                            setStepState(COMPLETED);
+                        onClick={() => {
+                            if (isEmpty(trim(ens))) {
+                                setProceed(true);
+                            } else {
+                                pool.setName(ens);
+                            }
                         }}
                     >
                         COMPLETE
