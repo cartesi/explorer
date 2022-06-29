@@ -22,6 +22,8 @@ import {
     Button,
     FormControlProps,
     Link,
+    Text,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
@@ -152,6 +154,7 @@ const EthereumNameServer = ({
     onComplete,
     onStepActive,
 }: IStep) => {
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const router = useRouter();
     const [poolAddress, setAddress] = useAtom(poolAddressAtom);
     const { account } = useWallet();
@@ -180,6 +183,7 @@ const EthereumNameServer = ({
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
+            optionalText={useMessages('step.skippable')}
         >
             <StepBody>
                 <TransactionBanner
@@ -188,6 +192,15 @@ const EthereumNameServer = ({
                     successDescription={useMessages('pool.set.ens.success')}
                     transaction={pool.transaction}
                 />
+                {isSmallScreen && (
+                    <Text
+                        color="light.support.alert"
+                        fontWeight="medium"
+                        fontSize={18}
+                    >
+                        {useMessages('step.skippable')}
+                    </Text>
+                )}
                 <SimpleInput
                     onChange={(evt) => setENS(evt.currentTarget?.value)}
                     label="Pool ENS name"

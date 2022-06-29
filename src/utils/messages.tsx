@@ -81,6 +81,9 @@ const messages = {
                 `Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:`,
         },
     },
+    step: {
+        skippable: () => 'This step could be skip.',
+    },
     notice: {
         problem: (suffix = '') => `We notice a problem${suffix}`,
     },
