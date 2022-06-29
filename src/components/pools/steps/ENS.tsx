@@ -156,17 +156,13 @@ const EthereumNameServer = ({
 }: IStep) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const router = useRouter();
-    const [poolAddress, setAddress] = useAtom(poolAddressAtom);
+    const [poolAddress] = useAtom(poolAddressAtom);
     const { account } = useWallet();
     const pool = useStakingPool(poolAddress, account);
     const [stepState, setStepState] = useStepState({ inFocus });
     const [proceed, setProceed] = useState<boolean>(false);
     const [ens, setENS] = useState<string | null>();
     const isCompleted = proceed || isConfirmed(pool.transaction);
-
-    useEffect(() => {
-        setAddress('0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA');
-    }, []);
 
     useEffect(() => {
         if (isCompleted) {
