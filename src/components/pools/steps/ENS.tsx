@@ -48,6 +48,7 @@ interface SimpleInput {
     inputRightElement?: ReactNode;
     onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
     formControlProps?: FormControlProps;
+    placeholder?: string;
 }
 
 const SimpleInput = ({
@@ -57,6 +58,7 @@ const SimpleInput = ({
     isInvalid,
     id,
     inputRightElement,
+    placeholder,
     formControlProps,
 }: SimpleInput) => {
     return (
@@ -70,7 +72,12 @@ const SimpleInput = ({
                 {label}
             </FormLabel>
             <InputGroup>
-                <Input id={id} size="lg" onChange={onChange} />
+                <Input
+                    id={id}
+                    size="lg"
+                    onChange={onChange}
+                    placeholder={placeholder}
+                />
                 {inputRightElement && (
                     <InputRightElement
                         children={inputRightElement}
@@ -199,6 +206,7 @@ const EthereumNameServer = ({
                 )}
                 <SimpleInput
                     onChange={(evt) => setENS(evt.currentTarget?.value)}
+                    placeholder="name.eth"
                     label="Pool ENS name"
                     id="poolENS"
                     formControlProps={{ my: 4 }}

@@ -143,6 +143,11 @@ describe('Pool ENS step', () => {
             ).toBeInTheDocument();
 
             expect(screen.getByText('Pool ENS name')).toBeInTheDocument();
+
+            expect(
+                screen.queryByPlaceholderText(/name.eth/i)
+            ).toBeInTheDocument();
+
             expect(
                 screen.getByText(
                     'Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:'
