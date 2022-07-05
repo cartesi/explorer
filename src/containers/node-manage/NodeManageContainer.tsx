@@ -28,20 +28,18 @@ import TransactionFeedback from '../../components/TransactionFeedback';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import PoolSetting from '../../components/poolRedesign/PoolSetting';
-import { UseWallet } from '../../contexts/wallet';
+import { useWallet } from '../../contexts/wallet';
 
 export interface NodeContainerProps {
-    wallet: UseWallet;
     address: string;
     blockNumber: number;
 }
 
 export const NodeManageContainer: FC<NodeContainerProps> = ({
-    wallet,
     address,
     blockNumber,
 }) => {
-    const { account, active } = wallet;
+    const { account, active } = useWallet();
     const userBalance = useBalance(account);
 
     const { staking, transaction: stakingTransaction } = useStaking(account);

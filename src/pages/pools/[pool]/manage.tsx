@@ -11,18 +11,20 @@
 
 import React, { FC } from 'react';
 import Head from 'next/head';
+import { Box, Heading, Stack, HStack, Text, Link } from '@chakra-ui/react';
+import { AiOutlineLeft } from 'react-icons/ai';
 import { useBlockNumber } from '../../../services/eth';
 import Layout from '../../../components/Layout';
 import { useRouter } from 'next/router';
-import NodePoolHeader from '../../../components/poolRedesign/PoolHeader';
 import { useWallet } from '../../../contexts/wallet';
 import { NodeManageContainer } from '../../../containers/node-manage/NodeManageContainer';
+import Address from '../../../components/Address';
 
 const PoolNode: FC = () => {
-    const wallet = useWallet();
+    const { chainId } = useWallet();
     const blockNumber = useBlockNumber();
     const router = useRouter();
-    const address = router.query.node as string;
+    const address = router.query.pool as string;
 
     return (
         <Layout>
@@ -30,12 +32,43 @@ const PoolNode: FC = () => {
                 <title>Cartesi - Manage Node</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <NodePoolHeader />
-            <NodeManageContainer
-                wallet={wallet}
-                blockNumber={blockNumber}
-                address={address}
-            />
+
+            <HStack
+                bg="header"
+                color="white"
+                px={{ base: '6vw', xl: '10vw' }}
+                pt={5}
+            >
+                <Link href="/newStaking" passHref>
+                    <Box as="a" display="flex" alignItems="center">
+                        <Box as={AiOutlineLeft} mr={1} />
+                        <Text>Back</Text>
+                    </Box>
+                </Link>
+            </HStack>
+            <Box
+                bg="header"
+                color="white"
+                px={{ base: '6vw', xl: '12vw' }}
+                pt={0}
+                pb={5}
+            >
+                <Stack alignItems={'flex-start'} direction={'row'}>
+                    <Heading as="h1" fontSize={{ base: '4xl', xl: '5xl' }}>
+                        {address && (
+                            <Address
+                                address={address}
+                                chainId={chainId}
+                                ens
+                                truncated
+                                fontSize={'3xl'}
+                            />
+                        )}
+                    </Heading>
+                </Stack>
+            </Box>
+
+            <NodeManageContainer blockNumber={blockNumber} address={address} />
         </Layout>
     );
 };
