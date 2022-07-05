@@ -230,9 +230,9 @@ export const NodeRunnersContainer = ({
         <>
             <Header />
             <AlertAndConnect display={!active} connect={activate} />
-            <PoolTableInfo router={router} />
-            <Block bg={bg} pt={0} pb={7} />
-            <NodeTableInfo />
+            {active && <PoolTableInfo router={router} />}
+            {active && <Block bg={bg} pt={0} pb={7} />}
+            {active && <NodeTableInfo />}
             <CreationPath router={router} />
         </>
     );
