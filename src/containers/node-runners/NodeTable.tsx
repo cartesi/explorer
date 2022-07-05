@@ -81,7 +81,7 @@ const PoolTableInfo = () => {
                                 bg={bg}
                                 textAlign="center"
                             >
-                                <PencilIcon fill="white" />
+                                <PencilIcon color="white" />
                             </Td>
                         </Tr>
                     </Tbody>
