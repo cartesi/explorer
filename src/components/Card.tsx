@@ -72,6 +72,8 @@ export const Card = ({
                     <Heading
                         as="h3"
                         size="sm"
+                        fontWeight="medium"
+                        fontSize="lg"
                         mb={0}
                         display="flex"
                         justifyContent={{ base: 'center', lg: 'flex-start' }}
