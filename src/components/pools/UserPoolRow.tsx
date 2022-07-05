@@ -98,7 +98,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                             <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink href={`/pools/${balance.pool.id}`}>
+                    <NextLink href={`/pool-redesign/${balance.pool.id}`}>
                         <Button size="sm">Stake</Button>
                     </NextLink>
                     {balance.pool.paused && (
