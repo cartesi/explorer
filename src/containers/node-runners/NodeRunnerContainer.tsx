@@ -18,6 +18,7 @@ import {
     VStack,
     Icon,
     useColorModeValue,
+    BoxProps,
 } from '@chakra-ui/react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { SlideDown } from '../../components/animation/SlideDown';
@@ -26,11 +27,83 @@ import { OrderedContent } from '../../components/OrderedContent';
 import { AllowanceIcon, WalletIcon } from '../../components/Icons';
 import { UseWallet } from '../../contexts/wallet';
 import { NextRouter } from 'next/router';
+import { FC } from 'react';
+import PoolTable from './PoolTable';
+import NodeTable from './NodeTable';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;
     router: NextRouter;
 }
+
+interface TableInfo {
+    boxProps?: BoxProps;
+}
+
+const Block: FC<BoxProps> = ({ children, ...boxProps }) => (
+    <Box
+        px={{ base: '6vw', xl: '12vw' }}
+        pt={{ base: 8, sm: '3vw' }}
+        pb={{ base: 8, sm: '5vw' }}
+        {...boxProps}
+    >
+        {children}
+    </Box>
+);
+
+type PoolTableInfoProps = { router: NextRouter } & TableInfo;
+
+const PoolTableInfo = ({ router, boxProps }: PoolTableInfoProps) => {
+    const bg = useColorModeValue('white', 'gray.800');
+
+    return (
+        <Block bg={bg} {...boxProps}>
+            <Stack
+                justify="space-between"
+                direction={'row'}
+                alignItems={{ base: 'center', md: 'flex-start' }}
+            >
+                <Heading
+                    fontSize="2xl"
+                    mt={5}
+                    mb={{ base: 4, md: 8 }}
+                    fontWeight="medium"
+                    lineHeight={6}
+                >
+                    Pool Management
+                </Heading>
+                <Button
+                    colorScheme="blue"
+                    onClick={() => router.push('/pools/new')}
+                >
+                    CREATE A POOL
+                </Button>
+            </Stack>
+            <PoolTable />
+        </Block>
+    );
+};
+
+const NodeTableInfo = ({ boxProps }: TableInfo) => {
+    const bg = useColorModeValue('white', 'gray.800');
+
+    return (
+        <Block bg={bg} {...boxProps}>
+            <Stack justify="space-between" direction={'row'}>
+                <Heading
+                    fontSize="2xl"
+                    mt={5}
+                    mb={{ base: 4, md: 8 }}
+                    fontWeight="medium"
+                    lineHeight={6}
+                >
+                    Private Node Management
+                </Heading>
+            </Stack>
+            <NodeTable />
+        </Block>
+    );
+};
 
 const Header = () => (
     <Box bg="header" color="white" px={{ base: '6vw', xl: '12vw' }} py={5}>
@@ -95,12 +168,7 @@ type CreationPathT = { router: NextRouter };
 const CreationPath = ({ router }: CreationPathT) => {
     const bg = useColorModeValue('gray.80', 'header');
     return (
-        <Box
-            bg={bg}
-            px={{ base: '6vw', xl: '12vw' }}
-            pt={{ base: 8, sm: '3vw' }}
-            pb={{ base: 8, sm: '5vw' }}
-        >
+        <Block bg={bg}>
             <Heading
                 fontSize="2xl"
                 mt={5}
@@ -147,7 +215,7 @@ const CreationPath = ({ router }: CreationPathT) => {
                     }
                 />
             </VStack>
-        </Box>
+        </Block>
     );
 };
 
@@ -155,12 +223,16 @@ export const NodeRunnersContainer = ({
     wallet,
     router,
 }: NodeRunnersContainerProps) => {
+    const bg = useColorModeValue('gray.80', 'header');
     const { activate, active } = wallet;
 
     return (
         <>
             <Header />
             <AlertAndConnect display={!active} connect={activate} />
+            <PoolTableInfo router={router} />
+            <Block bg={bg} pt={0} pb={7} />
+            <NodeTableInfo />
             <CreationPath router={router} />
         </>
     );
