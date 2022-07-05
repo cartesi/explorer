@@ -13,6 +13,20 @@ import { createIcon } from '@chakra-ui/icons';
 
 import React from 'react';
 
+export const PencilIcon = createIcon({
+    path: (
+        <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M1.26587 16.0453L1.29133 19.8929H5.27749L20.5089 5.30662L16.4963 1.46484L1.26587 16.0453Z"
+            stroke="#232222"
+            stroke-width="1.5"
+        />
+    ),
+    viewBox: '0 0 22 21',
+    defaultProps: { width: '22', height: '21' },
+});
+
 export const DashboardIcon = createIcon({
     displayName: 'DashboardIcon',
     viewBox: '0 0 25 25',
