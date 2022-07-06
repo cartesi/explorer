@@ -14,8 +14,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { constants } from 'ethers';
-import { PoolHeader } from '../../components/poolRedesign/PoolHeader';
-import { PoolBreadcrumbs } from '../../components/poolRedesign/PoolBreadcrumbs';
+import { PoolHeader } from '../../components/stake/PoolHeader';
+import { PoolBreadcrumbs } from '../../components/stake/PoolBreadcrumbs';
 
 import {
     Collapse,
@@ -35,8 +35,8 @@ import { useStaking } from '../../services/staking';
 import { useStakingPool } from '../../services/pool';
 import { useWallet } from '../../contexts/wallet';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
-import PoolStatsPanel from '../../components/poolRedesign/PoolStatsPanel';
-import { PoolActivity } from '../../components/poolRedesign/PoolActivity';
+import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
+import { PoolActivity } from '../../components/stake/PoolActivity';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
 

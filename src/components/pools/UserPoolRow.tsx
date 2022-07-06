@@ -48,7 +48,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
-    const basePath = newPoolPageEnabled ? '/pool-redesign' : '/pools';
+    const basePath = newPoolPageEnabled ? '/stake' : '/pools';
 
     // poor manager is logged user, allow edit
     const edit = account && account.toLowerCase() === balance.pool.manager;

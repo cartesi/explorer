@@ -23,8 +23,8 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
-import { InfoBanner } from '../poolRedesign/InfoBanner';
-import { WalletBalanceSection } from '../poolRedesign/components/WalletBalanceSection';
+import { InfoBanner } from '../stake/InfoBanner';
+import { WalletBalanceSection } from '../stake/components/WalletBalanceSection';
 import { NodeAllowanceSection } from './NodeAllowanceSection';
 import { NodeAllowanceModal } from './modals/NodeAllowanceModal';
 

@@ -40,7 +40,7 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
         >
             <Breadcrumb>
                 <BreadcrumbItem>
-                    <NextLink href={`/pool-redesign/${address}`}>
+                    <NextLink href={`/stake/${address}`}>
                         <BreadcrumbLink>Pool</BreadcrumbLink>
                     </NextLink>
                 </BreadcrumbItem>

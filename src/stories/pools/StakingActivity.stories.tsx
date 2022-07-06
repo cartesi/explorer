@@ -11,7 +11,7 @@
 
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { StakingActivity } from '../../components/poolRedesign/StakingActivity';
+import { StakingActivity } from '../../components/stake/StakingActivity';
 import { GET_POOL_ACTIVITIES } from '../../graphql/queries/poolActivities';
 export default {
     title: 'Pool Redesign/Staking Activity',

@@ -50,7 +50,7 @@ const PoolRowExtended: FunctionComponent<PoolRowExtendedProps> = ({
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
-    const basePath = newPoolPageEnabled ? '/pool-redesign' : '/pools';
+    const basePath = newPoolPageEnabled ? '/stake' : '/pools';
 
     // accured commission
     const accuredCommissionLabel =

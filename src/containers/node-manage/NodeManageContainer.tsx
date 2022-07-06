@@ -23,11 +23,11 @@ import { useBalance } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import { useNode } from '../../services/node';
 import { useUserNode } from '../../graphql/hooks/useNodes';
-import { TransactionInfoBanner } from '../../components/poolRedesign/TransactionInfoBanner';
+import { TransactionInfoBanner } from '../../components/stake/TransactionInfoBanner';
 import TransactionFeedback from '../../components/TransactionFeedback';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import PoolSetting from '../../components/poolRedesign/PoolSetting';
+import PoolSetting from '../../components/stake/PoolSetting';
 import { useWallet } from '../../contexts/wallet';
 
 export interface NodeContainerProps {

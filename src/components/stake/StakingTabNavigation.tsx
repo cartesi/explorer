@@ -11,12 +11,11 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
+import { DashboardIcon, StakeIcon } from '../../components/Icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { SettingsIcon } from '@chakra-ui/icons';
-import { DashboardIcon, StakeIcon } from '../Icons';
 
-export const PoolTabNavigation: FC = () => {
+export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
     const color = useColorModeValue('gray.900', 'white');
     const router = useRouter();
@@ -25,16 +24,16 @@ export const PoolTabNavigation: FC = () => {
     return (
         <>
             <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
-                <NextLink href={`/pool-redesign/${address}`}>
+                <NextLink href={`/stake/${address}`}>
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
                         leftIcon={<DashboardIcon />}
                         outline="none"
                         textTransform="none"
-                        isActive={router.pathname === `/node/[node]/pool`}
+                        isActive={router.pathname === `/stake/[pool]`}
                         variant={
-                            router.pathname === `/node/[node]/pool`
+                            router.pathname === `/stake/[pool]`
                                 ? 'solid'
                                 : 'ghost'
                         }
@@ -47,16 +46,16 @@ export const PoolTabNavigation: FC = () => {
                         Pool Info
                     </Button>
                 </NextLink>
-                <NextLink href={`/pool-redesign/${address}/stake`}>
+                <NextLink href={`/stake/${address}/stake`}>
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
                         leftIcon={<StakeIcon />}
                         outline="none"
                         textTransform="none"
-                        isActive={router.pathname === `/node/[node]/stake`}
+                        isActive={router.pathname === `/stake/[pool]/stake`}
                         variant={
-                            router.pathname === `/node/[node]/stake`
+                            router.pathname === `/stake/[pool]/stake`
                                 ? 'solid'
                                 : 'ghost'
                         }
@@ -69,31 +68,7 @@ export const PoolTabNavigation: FC = () => {
                         Stake
                     </Button>
                 </NextLink>
-                <NextLink href={`/pool-redesign/${address}/manage`}>
-                    <Button
-                        borderTopRadius="6px"
-                        py={{ lg: 7 }}
-                        leftIcon={<SettingsIcon />}
-                        outline="none"
-                        textTransform="none"
-                        isActive={router.pathname === `/node/[node]/manage`}
-                        variant={
-                            router.pathname === `/node/[node]/stake`
-                                ? 'solid'
-                                : 'ghost'
-                        }
-                        _hover={{ bg: 'transparent' }}
-                        _active={{
-                            bg: bg,
-                            color: color,
-                        }}
-                    >
-                        Manage
-                    </Button>
-                </NextLink>
             </HStack>
         </>
     );
 };
-
-export default PoolTabNavigation;

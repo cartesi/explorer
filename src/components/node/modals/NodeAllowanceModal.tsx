@@ -31,7 +31,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
-import { CTSINumberInput } from '../../poolRedesign/CTSINumberInput';
+import { CTSINumberInput } from '../../stake/CTSINumberInput';
 
 interface INodeAllowanceModalProps {
     allowance: BigNumber;

@@ -32,7 +32,7 @@ import {
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { CTSINumberInput } from '../../poolRedesign/CTSINumberInput';
+import { CTSINumberInput } from '../../stake/CTSINumberInput';
 
 interface INodeUnstakeModalProps {
     stakedBalance: BigNumber;

@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import PoolSetting from '../../components/poolRedesign/PoolSetting';
+import PoolSetting from '../../components/stake/PoolSetting';
 
 export default {
     title: 'Pools/Setting',

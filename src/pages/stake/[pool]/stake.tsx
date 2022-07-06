@@ -14,19 +14,19 @@ import Head from 'next/head';
 
 import Layout from '../../../components/Layout';
 import { Box } from '@chakra-ui/layout';
-import { StakingGuide } from '../../../components/poolRedesign/StakingGuide';
+import { StakingGuide } from '../../../components/stake/StakingGuide';
 import { useColorModeValue } from '@chakra-ui/react';
-import { StakingActivity } from '../../../components/poolRedesign/StakingActivity';
-import { Staking } from '../../../components/poolRedesign/Staking';
-import { StakingDashboard } from '../../../components/poolRedesign/StakingDashboard';
+import { StakingActivity } from '../../../components/stake/StakingActivity';
+import { Staking } from '../../../components/stake/Staking';
+import { StakingDashboard } from '../../../components/stake/StakingDashboard';
 import { useStakingPool } from '../../../services/pool';
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useCartesiToken } from '../../../services/token';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
-import { PoolHeader } from '../../../components/poolRedesign/PoolHeader';
-import { PoolBreadcrumbs } from '../../../components/poolRedesign/PoolBreadcrumbs';
+import { PoolHeader } from '../../../components/stake/PoolHeader';
+import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
 
 const PoolRedesignStake = () => {
     const { account, active: isConnected } = useWallet();

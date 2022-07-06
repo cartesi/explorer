@@ -13,7 +13,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import {
     ITransactionInfoBannerProps,
     TransactionInfoBanner,
-} from '../poolRedesign/TransactionInfoBanner';
+} from '../stake/TransactionInfoBanner';
 
 /**
  * HOC to modify the default behaviour of TransactionInfoBanner

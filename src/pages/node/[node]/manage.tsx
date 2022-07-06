@@ -54,7 +54,7 @@ import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeMod
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { TransactionInfoBanner } from '../../../components/poolRedesign/TransactionInfoBanner';
+import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import { NodeHireNodeSection } from '../../../components/node/NodeHireNodeSection';
