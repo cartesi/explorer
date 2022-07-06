@@ -31,10 +31,9 @@ import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
 
-const POOL_REDESIGN_KEY = 'pool-redesign';
 const NEW_STAKING_KEY = 'newStaking';
 
-const buildLinks = ({ newPoolPageEnabled, newNodeRunnersEnabled }) => {
+const buildLinks = ({ newNodeRunnersEnabled }) => {
     const Links = [
         {
             key: 'home',
@@ -57,14 +56,6 @@ const buildLinks = ({ newPoolPageEnabled, newNodeRunnersEnabled }) => {
             href: '/blocks',
         },
     ];
-
-    if (newPoolPageEnabled) {
-        Links.push({
-            key: POOL_REDESIGN_KEY,
-            label: 'Pools Redesign',
-            href: '/pool-redesign',
-        });
-    }
 
     if (newNodeRunnersEnabled)
         Links.push({
@@ -96,9 +87,8 @@ const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
-    const Links = buildLinks({ newPoolPageEnabled, newNodeRunnersEnabled });
+    const Links = buildLinks({ newNodeRunnersEnabled });
     const wallet = useWallet();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
