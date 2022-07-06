@@ -12,6 +12,7 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, VStack, Stack, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { FC } from 'react';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
@@ -30,16 +31,17 @@ export const PoolHeader: FC = () => {
                 direction={{ base: 'column', lg: 'row' }}
             >
                 <VStack alignItems="flex-start" pb="5">
-                    <Button
-                        href="/pools"
-                        as="a"
-                        leftIcon={<ArrowBackIcon />}
-                        variant="text"
-                        size="sm"
-                        pl="0"
-                    >
-                        Staking pool
-                    </Button>
+                    <NextLink href="/pools" passHref>
+                        <Button
+                            as="a"
+                            leftIcon={<ArrowBackIcon />}
+                            variant="text"
+                            size="sm"
+                            pl="0"
+                        >
+                            Staking pool
+                        </Button>
+                    </NextLink>
 
                     <AddressText
                         address={address}
