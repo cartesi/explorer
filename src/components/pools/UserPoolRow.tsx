@@ -30,6 +30,7 @@ import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import { userShare } from '../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../services/pool';
+import { useFlag } from '@unleash/proxy-client-react';
 
 export interface UserPoolRowProps {
     chainId: number;
@@ -46,6 +47,8 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
 }) => {
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+    const basePath = newPoolPageEnabled ? '/pool-redesign' : '/pools';
 
     // poor manager is logged user, allow edit
     const edit = account && account.toLowerCase() === balance.pool.manager;
@@ -98,7 +101,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({
                             <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink href={`/pool-redesign/${balance.pool.id}`}>
+                    <NextLink href={`${basePath}/${balance.pool.id}`}>
                         <Button size="sm">Stake</Button>
                     </NextLink>
                     {balance.pool.paused && (

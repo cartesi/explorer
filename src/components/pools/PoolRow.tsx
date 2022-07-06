@@ -26,6 +26,7 @@ import { StakingPool } from '../../graphql/models';
 import Address from '../../components/Address';
 import { formatCTSI } from '../../utils/token';
 import labels from '../../utils/labels';
+import { useFlag } from '@unleash/proxy-client-react';
 
 export interface PoolRowProps {
     chainId: number;
@@ -45,6 +46,8 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
 }) => {
     // hover style
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+    const basePath = newPoolPageEnabled ? '/pool-redesign' : '/pools';
 
     // accured commission
     const accuredCommissionLabel =
@@ -89,7 +92,7 @@ const PoolRow: FunctionComponent<PoolRowProps> = ({
                             <Button size="sm">Manage</Button>
                         </NextLink>
                     )}
-                    <NextLink href={`/pool-redesign/${pool.id}`}>
+                    <NextLink href={`${basePath}/${pool.id}`}>
                         <Button size="sm">Stake</Button>
                     </NextLink>
                     {pool.paused && (
