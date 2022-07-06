@@ -11,36 +11,30 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
+import { BigNumber } from 'ethers';
 
-import PoolTable from './../../components/pools/PoolTable';
+const defaultAllowance = '10000000000000000000000000000';
 
 export default {
-    title: 'Pools/Table',
-    component: PoolTable,
+    title: 'Stake/Components/AllowanceSection',
+    component: AllowanceSection,
     argTypes: {},
-} as ComponentMeta<typeof PoolTable>;
+} as ComponentMeta<typeof AllowanceSection>;
 
-const Template: ComponentStory<typeof PoolTable> = (args) => (
-    <PoolTable {...args} />
+const Template: ComponentStory<typeof AllowanceSection> = (args) => (
+    <AllowanceSection {...args} />
 );
-
-export const Loading = Template.bind({});
-Loading.args = {
-    loading: true,
-};
-
-import data from './pools.json';
 
 export const Default = Template.bind({});
 Default.args = {
-    loading: false,
-    sort: 'balance',
-    data: data.data.stakingPools,
-    account: '0x79bdc19c6f823f2911190b005f489ed00af6246d',
+    allowance: defaultAllowance,
+    onAllowanceClick: () => {
+        console.log('onAllowanceClick::');
+    },
 };
 
-export const NoItems = Template.bind({});
-NoItems.args = {
-    loading: false,
-    data: [],
+export const ZeroAllowance = Template.bind({});
+ZeroAllowance.args = {
+    allowance: BigNumber.from(0),
 };
