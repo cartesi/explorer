@@ -11,7 +11,8 @@
 
 import React, { FC } from 'react';
 import Head from 'next/head';
-import { Box, Heading, Stack, HStack, Text, Link } from '@chakra-ui/react';
+import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
 import { useBlockNumber } from '../../../services/eth';
 import Layout from '../../../components/Layout';
@@ -39,12 +40,12 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Link href="/newStaking" passHref>
+                <NextLink href="/newStaking" passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>
                     </Box>
-                </Link>
+                </NextLink>
             </HStack>
             <Box
                 bg="header"
