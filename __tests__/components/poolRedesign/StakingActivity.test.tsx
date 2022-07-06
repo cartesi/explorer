@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { StakingActivity } from '../../../src/components/poolRedesign/StakingActivity';
+import { StakingActivity } from '../../../src/components/stake/StakingActivity';
 import usePoolActivities from '../../../src/graphql/hooks/usePoolActivities';
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
