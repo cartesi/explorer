@@ -11,31 +11,25 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
+import { StakingInstructions } from '../../../components/stake/components/StakingInstructions';
 import { BigNumber } from 'ethers';
 
-const defaultAllowance = '10000000000000000000000000000';
+const defaultValue = '10000000000000000000000000000';
 
 export default {
-    title: 'Stake/Components/AllowanceSection',
-    component: AllowanceSection,
+    title: 'Stake/Components/StakingInstructions',
+    component: StakingInstructions,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as ComponentMeta<typeof StakingInstructions>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
+const Template: ComponentStory<typeof StakingInstructions> = (args) => (
+    <StakingInstructions {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    allowance: defaultAllowance,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
+    stakedBalance: BigNumber.from(defaultValue),
+    onUnstakeClick: () => {
+        console.log('onUnstakeClick::');
     },
-};
-
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
-    ...Default.args,
-    allowance: BigNumber.from(0),
 };

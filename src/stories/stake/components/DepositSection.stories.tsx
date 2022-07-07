@@ -37,18 +37,21 @@ Default.args = {
 
 export const ZeroUserWalletBalance = Template.bind({});
 ZeroUserWalletBalance.args = {
+    ...Default.args,
     userWalletBalance: BigNumber.from(0),
     userETHBalance: BigNumber.from(defaultValue),
 };
 
 export const ZeroUserETHBalance = Template.bind({});
 ZeroUserETHBalance.args = {
+    ...Default.args,
     userWalletBalance: BigNumber.from(defaultValue),
     userETHBalance: BigNumber.from(0),
 };
 
 export const ZeroUserWalletBalanceAndZeroUserETHBalance = Template.bind({});
 ZeroUserWalletBalanceAndZeroUserETHBalance.args = {
+    ...Default.args,
     userWalletBalance: BigNumber.from(0),
     userETHBalance: BigNumber.from(0),
 };
