@@ -11,31 +11,27 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
-import { BigNumber } from 'ethers';
+import PoolPerformanceStat from '../../../components/stake/stats/PoolPerformanceStat';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultAddress = 'General Gurko Str. 75';
 
 export default {
-    title: 'Stake/Components/AllowanceSection',
-    component: AllowanceSection,
+    title: 'Stake/Stats/PoolPerformanceStat',
+    component: PoolPerformanceStat,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as ComponentMeta<typeof PoolPerformanceStat>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
+const Template: ComponentStory<typeof PoolPerformanceStat> = (args) => (
+    <PoolPerformanceStat {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    allowance: defaultValue,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
-    },
+    address: defaultAddress,
+    location: 'Stara Zagora, Bulgaria',
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
-    ...Default.args,
-    allowance: BigNumber.from(0),
+export const WithoutLocation = Template.bind({});
+WithoutLocation.args = {
+    address: defaultAddress,
 };

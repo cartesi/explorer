@@ -11,31 +11,27 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
-import { BigNumber } from 'ethers';
-
-const defaultValue = '10000000000000000000000000000';
+import ProductionIntervalStat from '../../../components/stake/stats/ProductionIntervalStat';
 
 export default {
-    title: 'Stake/Components/AllowanceSection',
-    component: AllowanceSection,
+    title: 'Stake/Stats/ProductionIntervalStat',
+    component: ProductionIntervalStat,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as ComponentMeta<typeof ProductionIntervalStat>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
+const Template: ComponentStory<typeof ProductionIntervalStat> = (args) => (
+    <ProductionIntervalStat {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    allowance: defaultValue,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
-    },
+    totalBlocks: 100,
+    productionInterval: 10000,
+    location: 'Stara Zagora, Bulgaria',
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
+export const WithoutLocation = Template.bind({});
+WithoutLocation.args = {
     ...Default.args,
-    allowance: BigNumber.from(0),
+    location: undefined,
 };

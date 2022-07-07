@@ -11,31 +11,26 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
-import { BigNumber } from 'ethers';
-
-const defaultValue = '10000000000000000000000000000';
+import UsersStat from '../../../components/stake/stats/UsersStat';
 
 export default {
-    title: 'Stake/Components/AllowanceSection',
-    component: AllowanceSection,
+    title: 'Stake/Stats/UsersStat',
+    component: UsersStat,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as ComponentMeta<typeof UsersStat>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
+const Template: ComponentStory<typeof UsersStat> = (args) => (
+    <UsersStat {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    allowance: defaultValue,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
-    },
+    totalUsers: 100,
+    location: 'General Gurko Str. 75',
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
+export const WithoutLocation = Template.bind({});
+Default.args = {
     ...Default.args,
-    allowance: BigNumber.from(0),
+    location: undefined,
 };

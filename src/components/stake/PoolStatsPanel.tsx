@@ -14,13 +14,13 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { StackProps, SimpleGrid } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { StakingPoolFee } from '../../graphql/models';
-import StakedBalanceStat from './stats/stakedBalanceStat';
-import EffectiveBalanceStat from './stats/effectiveBalanceStat';
-import PoolBalanceStat from './stats/poolBalanceStat';
-import UsersStat from './stats/usersStat';
-import ProductionIntervalStat from './stats/productionIntervalStat';
-import CommissionStat from './stats/commissionStat';
-import PoolPerformanceStat from './stats/poolPerformanceStat';
+import StakedBalanceStat from './stats/StakedBalanceStat';
+import EffectiveBalanceStat from './stats/EffectiveBalanceStat';
+import PoolBalanceStat from './stats/PoolBalanceStat';
+import UsersStat from './stats/UsersStat';
+import ProductionIntervalStat from './stats/ProductionIntervalStat';
+import CommissionStat from './stats/CommissionStat';
+import PoolPerformanceStat from './stats/PoolPerformanceStat';
 
 export interface PoolStatsPanelProps extends StackProps {
     address: string;

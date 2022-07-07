@@ -64,7 +64,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                         <PoolCommisionIcon w={7} h={7} />
                     </Box>
 
-                    {commissionPercentage && (
+                    {commissionPercentage ? (
                         <BigNumberTextV2
                             value={commissionPercentage}
                             unit="percent"
@@ -83,9 +83,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>
-                    )}
-
-                    {!commissionPercentage && (
+                    ) : (
                         <CommissionTextV2
                             value={fee}
                             componentStyle="ctaChevron"

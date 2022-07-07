@@ -11,31 +11,37 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
-import { BigNumber } from 'ethers';
+import CommissionStat from '../../../components/stake/stats/CommissionStat';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultCommissionPercentage = 50;
+const defaultFee = {
+    id: 1,
+    commission: 25,
+    gas: 20,
+    created: 1657193076608,
+    lastUpdated: 1657193076608,
+};
+const defaultLocation = 'us';
 
 export default {
-    title: 'Stake/Components/AllowanceSection',
-    component: AllowanceSection,
+    title: 'Stake/Stats/CommissionStat',
+    component: CommissionStat,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as ComponentMeta<typeof CommissionStat>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
+const Template: ComponentStory<typeof CommissionStat> = (args) => (
+    <CommissionStat {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    allowance: defaultValue,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
-    },
+    commissionPercentage: defaultCommissionPercentage,
+    fee: defaultFee,
+    location: defaultLocation,
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
+export const ZeroCommissionPercentage = Template.bind({});
+ZeroCommissionPercentage.args = {
     ...Default.args,
-    allowance: BigNumber.from(0),
+    commissionPercentage: 0,
 };
