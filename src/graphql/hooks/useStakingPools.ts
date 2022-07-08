@@ -12,8 +12,22 @@
 import { useQuery } from '@apollo/client';
 import { STAKING_POOLS } from '../queries/stakingPools';
 import { StakingPoolsData, StakingPoolsVars, StakingPoolSort } from '../models';
+import { filter, isEmpty, pipe, reduce } from 'lodash/fp';
+import { toPairs } from 'lodash';
 
 export const POOLS_PER_PAGE = 50;
+
+type TupleOf<T> = T extends never
+    ? never
+    : { [K in keyof T]: [string, T[K]] }[Extract<keyof T, string>];
+
+type WhereClause = { manager?: string; id?: string };
+
+interface UseStakingPoolProps {
+    sort?: StakingPoolSort;
+    pageNumber?: number;
+    where?: WhereClause;
+}
 
 // sort directions for each criteria
 const directions = {
@@ -22,12 +36,30 @@ const directions = {
     commissionPercentage: 'asc',
 };
 
-const useStakingPools = (
-    pageNumber: number,
-    id: string = undefined,
-    sort: StakingPoolSort = 'commissionPercentage'
-) => {
-    const filter = id ? { id: id.toLowerCase() } : {};
+const reducer = (
+    prev: WhereClause,
+    [k, v]: TupleOf<WhereClause>
+): WhereClause => {
+    return {
+        ...prev,
+        [k]: v.toLowerCase(),
+    };
+};
+
+const notEmptyValues = ([, v]) => !isEmpty(v);
+
+const valuesToLowerCase: (a: WhereClause) => WhereClause = pipe(
+    toPairs,
+    filter(notEmptyValues),
+    reduce(reducer, {} as WhereClause)
+);
+
+const useStakingPools = ({
+    sort = 'commissionPercentage',
+    where,
+    pageNumber = 0,
+}: UseStakingPoolProps = {}) => {
+    const filter = valuesToLowerCase(where);
     return useQuery<StakingPoolsData, StakingPoolsVars>(STAKING_POOLS, {
         variables: {
             first: POOLS_PER_PAGE,
