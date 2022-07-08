@@ -1,3 +1,14 @@
+// Copyright (C) 2022 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 import {
     Box,
     Table,
@@ -9,10 +20,10 @@ import {
     Td,
     Text,
 } from '@chakra-ui/react';
-import Address from '../../components/Address';
-import { PencilIcon } from '../../components/Icons';
-import { TableResponsiveHolder } from '../../components/TableResponsiveHolder';
-import { formatValue } from '../../utils/numberFormatter';
+import Address from './Address';
+import { PencilIcon } from '../../../components/Icons';
+import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
+import { formatValue } from '../../../utils/numberFormatter';
 
 const PoolTableInfo = () => {
     const bg = useColorModeValue('white', 'gray.800');
@@ -48,8 +59,6 @@ const PoolTableInfo = () => {
                                 <Address
                                     address="0xe584cd6dD071f532e9598e96589663E69330731B"
                                     truncated
-                                    chainId={3}
-                                    hideActions
                                 />
                             </Td>
                             <Td isNumeric>

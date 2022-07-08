@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Cartesi Pte. Ltd.
+// Copyright (C) 2022 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -20,8 +20,8 @@ import {
     Tag,
     TagProps,
 } from '@chakra-ui/react';
-import { truncateString } from '../../utils/stringUtils';
-import { useENS } from '../..//services/ens';
+import { truncateString } from '../../../utils/stringUtils';
+import { useENS } from '../../../services/ens';
 
 interface AddressProps {
     address: string;
