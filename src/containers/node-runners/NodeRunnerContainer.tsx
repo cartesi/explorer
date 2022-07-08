@@ -30,6 +30,11 @@ import { NextRouter } from 'next/router';
 import { FC } from 'react';
 import PoolTable from './PoolTable';
 import NodeTable from './NodeTable';
+import useStakingPools from '../../graphql/hooks/useStakingPools';
+import { StakingPool, StakingPoolsData } from '../../graphql/models';
+import { formatCTSI } from '../../utils/token';
+import { formatValue } from '../../utils/numberFormatter';
+import { PoolInfo } from './interfaces';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;
@@ -51,37 +56,20 @@ const Block: FC<BoxProps> = ({ children, ...boxProps }) => (
     </Box>
 );
 
-type PoolTableInfoProps = { router: NextRouter } & TableInfo;
-
-const PoolTableInfo = ({ router, boxProps }: PoolTableInfoProps) => {
+const PoolTableInfo = ({
+    boxProps,
+    pools,
+}: {
+    boxProps?: BoxProps;
+    pools: PoolInfo[];
+}) => {
     const bg = useColorModeValue('white', 'gray.800');
 
-    return (
+    return pools?.length > 0 ? (
         <Block bg={bg} {...boxProps}>
-            <Stack
-                justify="space-between"
-                direction={'row'}
-                alignItems={{ base: 'center', md: 'flex-start' }}
-            >
-                <Heading
-                    fontSize="2xl"
-                    mt={5}
-                    mb={{ base: 4, md: 8 }}
-                    fontWeight="medium"
-                    lineHeight={6}
-                >
-                    Pool Management
-                </Heading>
-                <Button
-                    colorScheme="blue"
-                    onClick={() => router.push('/pools/new')}
-                >
-                    CREATE A POOL
-                </Button>
-            </Stack>
-            <PoolTable />
+            <PoolTable pools={pools} />
         </Block>
-    );
+    ) : null;
 };
 
 const NodeTableInfo = ({ boxProps }: TableInfo) => {
@@ -219,18 +207,37 @@ const CreationPath = ({ router }: CreationPathT) => {
     );
 };
 
+const normalise = (data: StakingPoolsData) => {
+    if (!data?.stakingPools) return null;
+    return data.stakingPools.map((pool: StakingPool) => {
+        return {
+            id: pool.id,
+            totalStaked: formatCTSI(pool.amount, 2),
+            totalUsers: pool.totalUsers,
+            totalRewards: formatCTSI(pool.user?.totalReward, 2),
+            commission: pool.commissionPercentage
+                ? formatValue(pool.commissionPercentage, 'percent', {
+                      maximumFractionDigits: 2,
+                  })
+                : '-',
+            blocksProduced: pool.user.totalBlocks,
+        } as PoolInfo;
+    });
+};
+
 export const NodeRunnersContainer = ({
     wallet,
     router,
 }: NodeRunnersContainerProps) => {
     const bg = useColorModeValue('gray.80', 'header');
-    const { activate, active } = wallet;
-
+    const { activate, active, account } = wallet;
+    const { loading, data } = useStakingPools({ where: { manager: account } });
+    const pools = normalise(data);
     return (
         <>
             <Header />
             <AlertAndConnect display={!active} connect={activate} />
-            {active && <PoolTableInfo router={router} />}
+            {active && <PoolTableInfo pools={pools} />}
             {active && <Block bg={bg} pt={0} pb={7} />}
             {active && <NodeTableInfo />}
             <CreationPath router={router} />
