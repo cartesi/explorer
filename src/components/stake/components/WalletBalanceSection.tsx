@@ -25,7 +25,7 @@ import { FC } from 'react';
 import { WalletIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
-interface IWalletBalanceSectionProps {
+export interface IWalletBalanceSectionProps {
     userCTSIBalance: BigNumber;
     userETHBalance: BigNumber;
 }
