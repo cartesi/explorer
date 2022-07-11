@@ -19,14 +19,35 @@ import {
     Tbody,
     Td,
     Text,
+    BoxProps,
+    Stack,
+    Heading,
+    HStack,
+    Spinner,
+    Button,
+    VisuallyHidden,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import Address from './Address';
 import { PencilIcon } from '../../../components/Icons';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
-import { formatValue } from '../../../utils/numberFormatter';
+import Block from './Block';
+import { useAtom } from 'jotai';
+import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
 
-const PoolTableInfo = () => {
+interface TableInfo {
+    boxProps?: BoxProps;
+}
+
+const useStyle = () => {
     const bg = useColorModeValue('white', 'gray.800');
+    return [bg];
+};
+
+const NodeTable = () => {
+    const [bg] = useStyle();
+    const [data] = useAtom(nodeInfoDataAtom);
+    const { list, loading } = data;
     return (
         <Box maxHeight="30vh" overflowY="auto">
             <TableResponsiveHolder>
@@ -40,59 +61,56 @@ const PoolTableInfo = () => {
                             <Th isNumeric whiteSpace="nowrap">
                                 Total Rewards
                             </Th>
-                            <Th isNumeric>
-                                <Text whiteSpace="nowrap">30-Days Yield</Text>
-                                (ANNUAL)
-                            </Th>
                             <Th isNumeric whiteSpace="nowrap">
                                 Block Produced
                             </Th>
                             <Th whiteSpace="nowrap">Node Status</Th>
-                            <Th position="sticky" right="0" zIndex={20}>
+                            <Th position="sticky" right="0">
                                 Manage
                             </Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>
-                                <Address
-                                    address="0xe584cd6dD071f532e9598e96589663E69330731B"
-                                    truncated
-                                />
-                            </Td>
-                            <Td isNumeric>
-                                {' '}
-                                {formatValue(
-                                    '118350000000000000000000',
-                                    'ctsi',
-                                    {
-                                        minimumFractionDigits: 0,
-                                        maximumFractionDigits: 2,
-                                    }
-                                )}
-                            </Td>
-                            <Td isNumeric>
-                                {formatValue('0', 'ctsi', {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 2,
-                                })}
-                            </Td>
-                            <Td isNumeric>
-                                3% <Text whiteSpace={'nowrap'}>(2.318 %)</Text>
-                            </Td>
-                            <Td isNumeric>257</Td>
-                            <Td>Hired</Td>
-                            <Td
-                                position="sticky"
-                                right="0"
-                                zIndex={20}
-                                bg={bg}
-                                textAlign="center"
-                            >
-                                <PencilIcon color="white" />
-                            </Td>
-                        </Tr>
+                        {loading && (
+                            <Tr>
+                                <Td colSpan={6}>
+                                    <HStack justify="center">
+                                        <Spinner />
+                                        <Text>Loading</Text>
+                                    </HStack>
+                                </Td>
+                            </Tr>
+                        )}
+                        {!loading &&
+                            list.map((node) => (
+                                <Tr key={node.id}>
+                                    <Td>
+                                        <Address address={node.id} truncated />
+                                    </Td>
+                                    <Td isNumeric>{node.totalStaked}</Td>
+                                    <Td isNumeric>{node.totalRewards}</Td>
+                                    <Td isNumeric>{node.blocksProduced}</Td>
+                                    <Td>{node.nodeStatus}</Td>
+                                    <Td
+                                        position="sticky"
+                                        right="0"
+                                        bg={bg}
+                                        textAlign="center"
+                                    >
+                                        <NextLink
+                                            href={`/node/${node.id}/manage`}
+                                            passHref
+                                        >
+                                            <Button as="a" variant="link">
+                                                <VisuallyHidden>
+                                                    Manage node {node.id}
+                                                </VisuallyHidden>
+                                                <PencilIcon color="white" />
+                                            </Button>
+                                        </NextLink>
+                                    </Td>
+                                </Tr>
+                            ))}
                     </Tbody>
                 </Table>
             </TableResponsiveHolder>
@@ -100,4 +118,28 @@ const PoolTableInfo = () => {
     );
 };
 
-export default PoolTableInfo;
+const NodeTableBlock = ({ boxProps }: TableInfo) => {
+    const [bg] = useStyle();
+    const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
+
+    return (
+        hasPrivateNode && (
+            <Block bg={bg} {...boxProps}>
+                <Stack justify="space-between" direction={'row'}>
+                    <Heading
+                        fontSize="2xl"
+                        mt={5}
+                        mb={{ base: 4, md: 8 }}
+                        fontWeight="medium"
+                        lineHeight={6}
+                    >
+                        Private Node Management
+                    </Heading>
+                </Stack>
+                <NodeTable />
+            </Block>
+        )
+    );
+};
+
+export default NodeTableBlock;

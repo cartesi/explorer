@@ -123,7 +123,7 @@ const PoolTable = ({ data }: Props) => {
                     <Tbody>
                         {loading && (
                             <Tr>
-                                <Td colSpan={7}>
+                                <Td colSpan={9}>
                                     <HStack justify="center">
                                         <Spinner />
                                         <Text>Loading</Text>
