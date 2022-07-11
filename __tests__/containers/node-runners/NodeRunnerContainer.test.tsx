@@ -21,6 +21,28 @@ import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeR
 import { UseWallet } from '../../../src/contexts/wallet';
 import { NextRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
+import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
+import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
+import { buildUseStakingPoolsReturn, buildUseUserNodesReturn } from '../mocks';
+
+const useNodesMod = '../../../src/graphql/hooks/useNodes';
+
+jest.mock('../../../src/graphql/hooks/useStakingPools');
+jest.mock(useNodesMod, () => {
+    const originalModules = jest.requireActual(useNodesMod);
+    return {
+        __esModule: true,
+        ...originalModules,
+        useUserNodes: jest.fn(),
+    };
+});
+
+const useUserNodeStub = useUserNodes as jest.MockedFunction<
+    typeof useUserNodes
+>;
+const useStakingPoolsStub = useStakingPools as jest.MockedFunction<
+    typeof useStakingPools
+>;
 
 let wallet: UseWallet;
 let router: NextRouter;
@@ -39,6 +61,9 @@ describe('NodeRunners container (Landing Page)', () => {
         router = {
             push: jest.fn(),
         };
+
+        useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
+        useStakingPoolsStub.mockReturnValue(buildUseStakingPoolsReturn());
     });
 
     afterEach(() => {
