@@ -26,7 +26,7 @@ const EAllowanceSection =
 
 describe('Allowance Section', () => {
     // a default configured component
-    const renderActivities = () =>
+    const renderComponent = () =>
         render(
             <EAllowanceSection
                 allowance={BigNumber.from(defaultValue)}
@@ -37,12 +37,12 @@ describe('Allowance Section', () => {
         );
 
     it('Should display pool allowance label', () => {
-        renderActivities();
+        renderComponent();
         expect(screen.getByText('Pool allowance')).toBeInTheDocument();
     });
 
     it('Should display correct allowance value', () => {
-        renderActivities();
+        renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
             parseCtsiValue(BigNumber.from(defaultValue))

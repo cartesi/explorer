@@ -27,7 +27,7 @@ const EDepositSection = withChakraTheme<IDepositSection>(DepositSection);
 
 describe('Deposit Section', () => {
     // a default configured component
-    const renderActivities = () =>
+    const renderComponent = () =>
         render(
             <EDepositSection
                 userWalletBalance={BigNumber.from(defaultValue)}
@@ -37,24 +37,24 @@ describe('Deposit Section', () => {
         );
 
     it('Should display staking label', () => {
-        renderActivities();
+        renderComponent();
         expect(screen.getByText('Staking')).toBeInTheDocument();
     });
 
     it('Should display learn more label', () => {
-        renderActivities();
+        renderComponent();
         expect(
             screen.getByText('Learn more with the tutorial')
         ).toBeInTheDocument();
     });
 
     it('Should display deposit button', () => {
-        renderActivities();
+        renderComponent();
         expect(screen.getByText('Deposit')).toBeInTheDocument();
     });
 
     it('Should display deposit your tokens label', () => {
-        renderActivities();
+        renderComponent();
         expect(
             screen.getByText("Let's deposit your tokens to the pool!")
         ).toBeInTheDocument();
