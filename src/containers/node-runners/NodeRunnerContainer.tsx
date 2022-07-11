@@ -8,26 +8,21 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import {
-    Box,
-    Stack,
-    Heading,
-    Text,
-    useColorModeValue,
-    BoxProps,
-} from '@chakra-ui/react';
+import { Box, Stack, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextRouter } from 'next/router';
 import { useEffect } from 'react';
 import { UseWallet } from '../../contexts/wallet';
 import PoolTable from './components/PoolTable';
 import NodeTable from './components/NodeTable';
 import useStakingPools from '../../graphql/hooks/useStakingPools';
-import { StakingPool, StakingPoolsData } from '../../graphql/models';
+import { StakingPool, Node } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
 import { formatValue } from '../../utils/numberFormatter';
-import { PoolInfo } from './interfaces';
+import { NodeInfo, PoolInfo } from './interfaces';
 import { useAtom } from 'jotai';
 import {
+    nodeInfoFetchingAtom,
+    nodeInfoListAtom,
     poolDataFetchingAtom,
     poolInfoListAtom,
     poolSortByAtom,
@@ -35,36 +30,12 @@ import {
 import CreationPath from './components/CreationPath';
 import AlertAndConnect from './components/AlertAndConnect';
 import Block from './components/Block';
+import { useUserNodes } from '../../graphql/hooks/useNodes';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;
     router: NextRouter;
 }
-
-interface TableInfo {
-    boxProps?: BoxProps;
-}
-
-const NodeTableInfo = ({ boxProps }: TableInfo) => {
-    const bg = useColorModeValue('white', 'gray.800');
-
-    return (
-        <Block bg={bg} {...boxProps}>
-            <Stack justify="space-between" direction={'row'}>
-                <Heading
-                    fontSize="2xl"
-                    mt={5}
-                    mb={{ base: 4, md: 8 }}
-                    fontWeight="medium"
-                    lineHeight={6}
-                >
-                    Private Node Management
-                </Heading>
-            </Stack>
-            <NodeTable />
-        </Block>
-    );
-};
 
 const Header = () => (
     <Box bg="header" color="white" px={{ base: '6vw', xl: '12vw' }} py={5}>
@@ -80,22 +51,34 @@ const Header = () => (
     </Box>
 );
 
-const normalise = (data: StakingPoolsData) => {
-    if (!data?.stakingPools) return null;
-    return data.stakingPools.map((pool: StakingPool) => {
-        return {
-            id: pool.id,
-            totalStaked: formatCTSI(pool.amount, 2),
-            totalUsers: pool.totalUsers,
-            totalRewards: formatCTSI(pool.user?.totalReward, 2),
-            commission: pool.commissionPercentage
-                ? formatValue(pool.commissionPercentage, 'percent', {
-                      maximumFractionDigits: 2,
-                  })
-                : '-',
-            blocksProduced: pool.user.totalBlocks,
-        } as PoolInfo;
-    });
+const nodeMapper = (node: Node) => {
+    return {
+        id: node.id,
+        totalStaked: formatCTSI(node.owner?.stakedBalance, 2),
+        totalRewards: formatCTSI(node.totalReward, 2),
+        blocksProduced: node.totalBlocks,
+        nodeStatus: 'Hired',
+    } as NodeInfo;
+};
+
+const poolMapper = (pool: StakingPool) => {
+    return {
+        id: pool.id,
+        totalStaked: formatCTSI(pool.amount, 2),
+        totalUsers: pool.totalUsers,
+        totalRewards: formatCTSI(pool.user?.totalReward, 2),
+        commission: pool.commissionPercentage
+            ? formatValue(pool.commissionPercentage, 'percent', {
+                  maximumFractionDigits: 2,
+              })
+            : '-',
+        blocksProduced: pool.user.totalBlocks,
+    } as PoolInfo;
+};
+
+const normalise = <T, R>(list: T[] | null, mapper: (item: T) => R) => {
+    if (!list) return null;
+    return list.map(mapper);
 };
 
 export const NodeRunnersContainer = ({
@@ -106,18 +89,33 @@ export const NodeRunnersContainer = ({
     const [poolSortBy] = useAtom(poolSortByAtom);
     const [, setPoolDataLoading] = useAtom(poolDataFetchingAtom);
     const [, setPoolInfoList] = useAtom(poolInfoListAtom);
+    const [, setIsLoadingNodes] = useAtom(nodeInfoFetchingAtom);
+    const [, setNodeInfoList] = useAtom(nodeInfoListAtom);
     const { activate, active, account } = wallet;
-    const { loading, data } = useStakingPools({
-        where: { manager: account },
+    const stakingPools = useStakingPools({
+        where: { manager: account || '0' },
         sort: poolSortBy,
     });
+    const userNodes = useUserNodes(account, 1, {
+        where: { status_not: 'Retired' },
+    });
 
-    useEffect(() => setPoolDataLoading(loading), [loading]);
+    setIsLoadingNodes(userNodes.loading);
+    setPoolDataLoading(stakingPools.loading);
+
     useEffect(() => {
-        const list = normalise(data);
-        if (!list && loading) return;
+        // the null value case is ignored since in case the list is empty
+        // the table is not rendered
+        const list = normalise(stakingPools.data?.stakingPools, poolMapper);
+        if (!list && stakingPools.loading) return;
         setPoolInfoList(list);
-    }, [data]);
+    }, [stakingPools.data]);
+
+    useEffect(() => {
+        const list = normalise(userNodes.data?.nodes, nodeMapper);
+        if (!list && userNodes.loading) return;
+        setNodeInfoList(list);
+    }, [userNodes.data]);
 
     return (
         <>
@@ -125,7 +123,7 @@ export const NodeRunnersContainer = ({
             <AlertAndConnect isVisible={!active} onConnect={activate} />
             {active && <PoolTable />}
             {active && <Block bg={bg} pt={0} pb={7} />}
-            {active && <NodeTableInfo />}
+            {active && <NodeTable />}
             <CreationPath router={router} />
         </>
     );

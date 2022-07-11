@@ -80,7 +80,7 @@ const PoolTable = ({ data }: Props) => {
                 <Table>
                     <Thead>
                         <Tr>
-                            <Th>Node Address</Th>
+                            <Th>Address</Th>
                             <Th isNumeric whiteSpace="nowrap">
                                 <Link onClick={() => setSortBy('amount')}>
                                     Total Staked
@@ -135,10 +135,7 @@ const PoolTable = ({ data }: Props) => {
                             data.map((pool) => (
                                 <Tr key={pool.id}>
                                     <Td>
-                                        <Address
-                                            address={pool.id}
-                                            truncated
-                                        ></Address>
+                                        <Address address={pool.id} truncated />
                                     </Td>
                                     <Td isNumeric>{pool.totalStaked}</Td>
                                     <Td isNumeric>{pool.totalUsers}</Td>
@@ -177,40 +174,41 @@ const PoolTable = ({ data }: Props) => {
         </Box>
     );
 };
-
-type PoolTableInfoProps = {
+interface PoolTableInfoProps {
     boxProps?: BoxProps;
-};
+}
 
 const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const bg = useColorModeValue('white', 'gray.800');
     const [pools] = useAtom(poolInfoListAtom);
 
-    return pools?.length > 0 ? (
-        <Block bg={bg} {...boxProps}>
-            <Stack
-                justify="space-between"
-                direction={'row'}
-                alignItems={{ base: 'center', md: 'flex-start' }}
-            >
-                <Heading
-                    fontSize="2xl"
-                    mt={5}
-                    mb={{ base: 4, md: 8 }}
-                    fontWeight="medium"
-                    lineHeight={6}
+    return (
+        pools?.length > 0 && (
+            <Block bg={bg} {...boxProps}>
+                <Stack
+                    justify="space-between"
+                    direction={'row'}
+                    alignItems={{ base: 'center', md: 'flex-start' }}
                 >
-                    Pool Management
-                </Heading>
-                <NextLink href="/pools/new" passHref>
-                    <Button as="a" colorScheme="blue">
-                        CREATE A POOL
-                    </Button>
-                </NextLink>
-            </Stack>
-            <PoolTable data={pools} />
-        </Block>
-    ) : null;
+                    <Heading
+                        fontSize="2xl"
+                        mt={5}
+                        mb={{ base: 4, md: 8 }}
+                        fontWeight="medium"
+                        lineHeight={6}
+                    >
+                        Pool Management
+                    </Heading>
+                    <NextLink href="/pools/new" passHref>
+                        <Button as="a" colorScheme="blue">
+                            CREATE A POOL
+                        </Button>
+                    </NextLink>
+                </Stack>
+                <PoolTable data={pools} />
+            </Block>
+        )
+    );
 };
 
 export default PoolTableBlock;
