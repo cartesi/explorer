@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber, constants } from 'ethers';
-import { EffectiveBalanceIcon, EyeIcon } from '../../../components/Icons';
+import { EffectiveBalanceIcon, EyeIcon } from '../../Icons';
 import {
     HStack,
     VStack,
@@ -44,7 +44,6 @@ export interface EffectiveBalanceStatProps extends StackProps {
     stakingReleased: BigNumber;
     stakingMaturingTimestamp: Date;
     stakingReleasingTimestamp: Date;
-    hideZeros?: boolean;
     onRebalance?: () => void;
 }
 
@@ -59,9 +58,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
         stakingReleased,
         stakingMaturingTimestamp,
         stakingReleasingTimestamp,
-        hideZeros = true,
         onRebalance,
-        ...stackProps
     } = props;
 
     // tells if an action needs to be done to move tokens around
@@ -122,7 +119,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon />
+                            <Icon role="balance-icon" />
                         </Tooltip>
                         {needRebalance && (
                             <Tooltip
@@ -133,7 +130,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 color="white"
                             >
                                 <Link onClick={onRebalance}>
-                                    <FaBalanceScaleLeft />
+                                    <FaBalanceScaleLeft role="rebalance-icon" />
                                 </Link>
                             </Tooltip>
                         )}

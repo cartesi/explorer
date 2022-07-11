@@ -82,7 +82,9 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>
-                    {location && <ChevronRightIcon w={5} h={5} />}
+                    {location && (
+                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                    )}
                 </HStack>
             </Box>
         </ConditionalWrapper>

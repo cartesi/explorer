@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { memo, FC, ReactChild, ReactFragment } from 'react';
-import { PoolPerformanceIcon } from '../../../components/Icons';
+import { PoolPerformanceIcon } from '../../Icons';
 import {
     HStack,
     useColorModeValue,
@@ -86,7 +86,13 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                             </HStack>
                         </BigNumberTextV2>
 
-                        {location && <ChevronRightIcon w={5} h={5} />}
+                        {location && (
+                            <ChevronRightIcon
+                                w={5}
+                                h={5}
+                                role="location-icon"
+                            />
+                        )}
                     </HStack>
                 </Box>
             </ConditionalWrapper>

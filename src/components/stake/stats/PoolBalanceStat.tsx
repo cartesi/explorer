@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber } from 'ethers';
-import { PoolBalanceIcon } from '../../../components/Icons';
+import { PoolBalanceIcon } from '../../Icons';
 import {
     HStack,
     VStack,
@@ -62,7 +62,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon />
+                            <Icon role="balance-icon" />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

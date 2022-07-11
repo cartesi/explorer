@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, ReactChild, ReactFragment } from 'react';
-import { PoolCommisionIcon } from '../../../components/Icons';
+import React, { FC, ReactChild, ReactFragment } from 'react';
+import { PoolCommisionIcon } from '../../Icons';
 import {
     HStack,
     useColorModeValue,
@@ -71,7 +71,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                             componentStyle="ctaChevron"
                         >
                             <HStack>
-                                <Text>Commission</Text>
+                                <Text role="big-number-text">Commission</Text>
                                 <Tooltip
                                     label="Effective commission taken by pool manager"
                                     placement="top"
@@ -89,7 +89,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                             componentStyle="ctaChevron"
                         >
                             <HStack>
-                                <Text>Commission</Text>
+                                <Text role="commission-text">Commission</Text>
                                 <Tooltip
                                     label="Configured commission taken by pool manager"
                                     placement="top"
@@ -103,7 +103,9 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                         </CommissionTextV2>
                     )}
 
-                    {location && <ChevronRightIcon w={5} h={5} />}
+                    {location && (
+                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                    )}
                 </HStack>
             </Box>
         </ConditionalWrapper>

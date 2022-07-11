@@ -73,11 +73,13 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                                 bg="black"
                                 color="white"
                             >
-                                <Icon />
+                                <Icon role="users-icon" />
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>
-                    {location && <ChevronRightIcon w={5} h={5} />}
+                    {location && (
+                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                    )}
                 </HStack>
             </Box>
         </ConditionalWrapper>
