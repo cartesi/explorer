@@ -13,6 +13,7 @@ import { useQuery } from '@apollo/client';
 import { NODES } from '../queries/nodes';
 import { NodesData, NodesVars } from '../models';
 import { constants } from 'ethers';
+import { NodeStatus } from '../../services/node';
 
 export const NODES_PER_PAGE = 10;
 
@@ -35,7 +36,20 @@ const useNodes = (
     });
 };
 
-export const useUserNodes = (owner: string, count = NODES_PER_PAGE) => {
+type Status = Capitalize<Exclude<NodeStatus, 'none'>>;
+
+type WhereClause = {
+    status?: Status;
+    status_not?: Status;
+};
+
+type Options = { where?: WhereClause };
+
+export const useUserNodes = (
+    owner: string,
+    count = NODES_PER_PAGE,
+    opts?: Options
+) => {
     // if no owner, use address zero, so no nodes are returned
     owner = owner || constants.AddressZero;
 
@@ -45,7 +59,7 @@ export const useUserNodes = (owner: string, count = NODES_PER_PAGE) => {
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: count,
-            where: { owner },
+            where: { owner, ...opts?.where },
             skip: 0,
             orderBy: 'timestamp',
             orderDirection: 'desc',
