@@ -18,15 +18,18 @@ export interface CTSIProps extends TextProps {
     value: BigNumberish;
 }
 
+export const numberFormat = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+});
+
+export const parseCtsiValue = (value) =>
+    numberFormat.format(parseFloat(formatUnits(value, 18)));
+
 const CTSI: FC<CTSIProps> = ({ value, ...textProps }) => {
-    // formatter for CTSI values
-    const numberFormat = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-    });
     return (
-        <Text fontSize="2xl" fontWeight="bold" {...textProps}>
-            {numberFormat.format(parseFloat(formatUnits(value, 18)))}
+        <Text fontSize="2xl" fontWeight="bold" role="ctsi-text" {...textProps}>
+            {parseCtsiValue(value)}
         </Text>
     );
 };

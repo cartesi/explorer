@@ -25,7 +25,7 @@ import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../../pools/staking/CTSI';
 
-interface IAllowanceSectionProps {
+export interface IAllowanceSectionProps {
     allowance: BigNumber;
     onAllowanceClick: () => void;
 }
@@ -68,6 +68,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                         size="sm"
                         icon={<EditIcon />}
                         variant="ghost"
+                        role="button-icon"
                         onClick={onAllowanceClick}
                     />
                 </Box>
