@@ -70,7 +70,7 @@ export const DepositSection: FC<IDepositSection> = ({
                         {userWalletBalance.isZero() ? (
                             <>
                                 <WarningIcon color="orange.500" /> You have 0
-                                CTSI. Plase, add CTSI to deposit.
+                                CTSI. Please, add CTSI to deposit.
                             </>
                         ) : userETHBalance?.isZero() ? (
                             <>
