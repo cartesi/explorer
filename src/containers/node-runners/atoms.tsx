@@ -12,11 +12,26 @@
 import { atom } from 'jotai';
 import { isEmpty } from 'lodash/fp';
 import { StakingPoolSort } from '../../graphql/models';
-import { PoolInfo } from './interfaces';
+import { NodeInfo, PoolInfo } from './interfaces';
 
+// Pool related atoms data and derivations
 export const poolSortByAtom = atom<StakingPoolSort>('commissionPercentage');
 export const poolDataFetchingAtom = atom<boolean>(false);
 export const poolInfoListAtom = atom<PoolInfo[]>([]);
-export const isPoolManagerAtom = atom<boolean>(
+export const hasPoolsAtom = atom<boolean>(
     (get) => !isEmpty(get(poolInfoListAtom))
+);
+
+// Node related atoms data and derivations
+export const nodeInfoListAtom = atom<NodeInfo[]>([]);
+export const nodeInfoFetchingAtom = atom<boolean>(false);
+export const hasPrivateNodeAtom = atom<boolean>(
+    (get) => !isEmpty(get(nodeInfoListAtom))
+);
+// Read-only derived state for node-info
+export const nodeInfoDataAtom = atom<{ list: NodeInfo[]; loading: boolean }>(
+    (get) => ({
+        list: get(nodeInfoListAtom),
+        loading: get(nodeInfoFetchingAtom),
+    })
 );
