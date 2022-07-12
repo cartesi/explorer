@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     StakingDepositModal,
     IStakingDepositModalProps,
@@ -40,7 +40,7 @@ const defaultProps = {
 const EStakingDepositModal =
     withChakraTheme<IStakingDepositModalProps>(StakingDepositModal);
 
-describe('Commission Stat', () => {
+describe('Staking Deposit Modal', () => {
     // a default configured component
     const renderComponent = () =>
         render(<EStakingDepositModal {...defaultProps} />);
@@ -65,5 +65,39 @@ describe('Commission Stat', () => {
                 'You can deposit any amount of token to the pool as far as you have the tokens amount is lower than the set allowance. As a safety precaution, the average waiting time is 6 hours.'
             )
         ).toBeInTheDocument();
+    });
+
+    it('Should not display modal when closed', () => {
+        render(<EStakingDepositModal {...defaultProps} isOpen={false} />);
+
+        expect(() => screen.getByText('Set Allowance and Deposit')).toThrow(
+            'Unable to find an element'
+        );
+    });
+
+    it('Should invoke onClose callback', () => {
+        const mockOnClick = jest.fn();
+        const { getByText } = render(
+            <EStakingDepositModal {...defaultProps} onClose={mockOnClick()} />
+        );
+
+        const button = getByText('Cancel').closest('button');
+
+        fireEvent.click(button);
+
+        expect(mockOnClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should invoke onSave callback', () => {
+        const mockOnClick = jest.fn();
+        const { getByRole } = render(
+            <EStakingDepositModal {...defaultProps} onSave={mockOnClick()} />
+        );
+
+        const button = getByRole('deposit-button');
+
+        fireEvent.click(button);
+
+        expect(mockOnClick).toHaveBeenCalledTimes(1);
     });
 });
