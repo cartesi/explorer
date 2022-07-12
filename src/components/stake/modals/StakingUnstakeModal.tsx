@@ -41,11 +41,11 @@ export interface IStakingUnstakeModalProps {
 }
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
-    isOpen: isOpen,
+    isOpen,
     stakedBalance,
     disclosure,
-    onClose: onClose,
-    onSave: onSave,
+    onClose,
+    onSave,
 }) => {
     const [unstakeFullAmount, setUnstakeFullAmount] = useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -141,6 +141,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="blue"
+                                    role="unstake-button"
                                     disabled={
                                         outputUnstake.isZero() &&
                                         unstakeFullAmount !== 'full'

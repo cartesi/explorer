@@ -52,9 +52,9 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     allowance,
     balance,
     disclosure,
-    isOpen: isOpen,
-    onClose: onClose,
-    onSave: onSave,
+    isOpen,
+    onClose,
+    onSave,
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
@@ -243,6 +243,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         isFullWidth
                                         colorScheme="blue"
                                         disabled={outputDeposit.isZero()}
+                                        role="deposit-button"
                                         onClick={() => {
                                             onSave(outputDeposit, 'deposit');
                                             disclosure.onClose();

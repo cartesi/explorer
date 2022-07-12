@@ -43,9 +43,9 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
     allowance,
     balance,
     disclosure,
-    isOpen: isOpen,
-    onClose: onClose,
-    onSave: onSave,
+    isOpen,
+    onClose,
+    onSave,
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));

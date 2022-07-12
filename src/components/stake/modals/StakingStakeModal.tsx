@@ -42,9 +42,9 @@ export interface IStakingStakeModalProps {
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     userBalance,
     disclosure,
-    isOpen: isOpen,
-    onClose: onClose,
-    onSave: onSave,
+    isOpen,
+    onClose,
+    onSave,
 }) => {
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
     const [outputStake, setOutputStake] = useState<BigNumber>(userBalance);
@@ -105,6 +105,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     isFullWidth
                                     colorScheme="blue"
                                     disabled={outputStake.isZero()}
+                                    role="stake-button"
                                     onClick={() => {
                                         onSave(outputStake);
                                         disclosure.onClose();

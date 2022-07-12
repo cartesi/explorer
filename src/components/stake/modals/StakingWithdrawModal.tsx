@@ -41,11 +41,11 @@ export interface IStakingWithdrawModalProps {
 }
 
 export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
-    isOpen: isOpen,
+    isOpen,
     userBalance,
     disclosure,
-    onClose: onClose,
-    onSave: onSave,
+    onClose,
+    onSave,
 }) => {
     const [withdrawFullAmount, setWithdrawFullAmount] =
         useState<string>('full');
@@ -152,6 +152,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                 <Button
                                     isFullWidth
                                     colorScheme="blue"
+                                    role="withdraw-button"
                                     disabled={
                                         outputWithdraw.isZero() &&
                                         withdrawFullAmount !== 'full'
