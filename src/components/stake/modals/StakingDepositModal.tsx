@@ -71,213 +71,201 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const inputFocusRef = useRef();
 
     return (
-        <>
-            <Modal
-                isOpen={isOpen}
-                onClose={() => {
-                    onClose();
-                    setAllowanceStep(false);
-                }}
-                isCentered
-                initialFocusRef={inputFocusRef}
-            >
-                <ModalOverlay />
-                <ModalContent>
-                    {allowance.isZero() || allowanceStep ? (
-                        <>
-                            <ModalHeader>Set Allowance and Deposit</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <VStack spacing={5}>
-                                    <Text>
-                                        Set the desired allowance. It is the
-                                        total accrued amount of CTSI the pool is
-                                        allowed to stake for you. This number
-                                        should be equal or larger that the CTSI
-                                        you plan to stake.
-                                    </Text>
-                                    <FormControl id="depositAmount">
-                                        <FormLabel fontWeight="bold">
-                                            Allowance Amount
-                                        </FormLabel>
-                                        <CTSINumberInput
-                                            min={0}
-                                            max={balanceFormatted}
-                                            // ref={inputFocusRef}
-                                            onChange={(bigNumberValue) => {
-                                                setOutputAllowance(
-                                                    bigNumberValue
-                                                );
-                                            }}
-                                        />
-                                        <FormHelperText>
-                                            The Pool Allowance can be edited at
-                                            any time. Each edit is charged in
-                                            the form of a gas fee like any
-                                            Ethereum transaction.
-                                        </FormHelperText>
-                                    </FormControl>
-                                </VStack>
-                                <ModalFooter px="0" pt={10}>
-                                    <VStack w="full" spacing={4}>
-                                        <Button
-                                            isFullWidth
-                                            colorScheme="blue"
-                                            onClick={() => {
-                                                onSave(
-                                                    outputAllowance,
-                                                    'allowance'
-                                                );
-                                                setAllowanceStep(false);
-                                            }}
-                                        >
-                                            Approve
-                                        </Button>
-                                        <Button
-                                            isFullWidth
-                                            colorScheme="darkGray"
-                                            variant="ghost"
-                                            onClick={() => {
-                                                onClose();
-                                                setAllowanceStep(false);
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </VStack>
-                                </ModalFooter>
-                            </ModalBody>
-                        </>
-                    ) : (
-                        <>
-                            <ModalHeader>Deposit</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <VStack spacing={5}>
-                                    <Text>
-                                        You can deposit any amount of token to
-                                        the pool as far as you have the tokens
-                                        amount is lower than the set allowance.
-                                        As a safety precaution, the average
-                                        waiting time is 6 hours.
-                                    </Text>
-
-                                    <HStack
-                                        w="full"
-                                        spacing={4}
-                                        alignItems="center"
-                                        p={4}
-                                        bg="blue.50"
+        <Modal
+            isOpen={isOpen}
+            onClose={() => {
+                onClose();
+                setAllowanceStep(false);
+            }}
+            isCentered
+            initialFocusRef={inputFocusRef}
+        >
+            <ModalOverlay />
+            <ModalContent>
+                {allowance.isZero() || allowanceStep ? (
+                    <>
+                        <ModalHeader>Set Allowance and Deposit</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <VStack spacing={5}>
+                                <Text>
+                                    Set the desired allowance. It is the total
+                                    accrued amount of CTSI the pool is allowed
+                                    to stake for you. This number should be
+                                    equal or larger that the CTSI you plan to
+                                    stake.
+                                </Text>
+                                <FormControl id="depositAmount">
+                                    <FormLabel fontWeight="bold">
+                                        Allowance Amount
+                                    </FormLabel>
+                                    <CTSINumberInput
+                                        min={0}
+                                        max={balanceFormatted}
+                                        // ref={inputFocusRef}
+                                        onChange={(bigNumberValue) => {
+                                            setOutputAllowance(bigNumberValue);
+                                        }}
+                                    />
+                                    <FormHelperText>
+                                        The Pool Allowance can be edited at any
+                                        time. Each edit is charged in the form
+                                        of a gas fee like any Ethereum
+                                        transaction.
+                                    </FormHelperText>
+                                </FormControl>
+                            </VStack>
+                            <ModalFooter px="0" pt={10}>
+                                <VStack w="full" spacing={4}>
+                                    <Button
+                                        isFullWidth
+                                        colorScheme="blue"
+                                        onClick={() => {
+                                            onSave(
+                                                outputAllowance,
+                                                'allowance'
+                                            );
+                                            setAllowanceStep(false);
+                                        }}
                                     >
-                                        <Box flexGrow="1">
-                                            <HStack>
-                                                <Text fontSize="sm">
-                                                    Your Allowance
-                                                </Text>
-                                                <Tooltip
-                                                    placement="top"
-                                                    label="Here you can see your current pool allowance."
-                                                    fontSize="small"
-                                                    bg="black"
-                                                    color="white"
-                                                >
-                                                    <Icon color="gray.400" />
-                                                </Tooltip>
-                                            </HStack>
-                                            <Heading m={0} size="sm">
-                                                <Flex align="baseline">
-                                                    <CTSI
-                                                        value={allowance}
-                                                        fontSize="lg"
-                                                    />
-                                                    <Text ml={1}>CTSI</Text>
-                                                </Flex>
-                                            </Heading>
-                                        </Box>
-                                        <Box alignSelf="flex-end">
-                                            <IconButton
-                                                aria-label="Edit"
-                                                size="sm"
-                                                icon={<EditIcon />}
-                                                variant="ghost"
-                                                onClick={() => {
-                                                    setAllowanceStep(true);
-                                                }}
-                                            />
-                                        </Box>
-                                    </HStack>
+                                        Approve
+                                    </Button>
+                                    <Button
+                                        isFullWidth
+                                        colorScheme="darkGray"
+                                        variant="ghost"
+                                        onClick={() => {
+                                            onClose();
+                                            setAllowanceStep(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </VStack>
+                            </ModalFooter>
+                        </ModalBody>
+                    </>
+                ) : (
+                    <>
+                        <ModalHeader>Deposit</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <VStack spacing={5}>
+                                <Text>
+                                    You can deposit any amount of token to the
+                                    pool as far as you have the tokens amount is
+                                    lower than the set allowance. As a safety
+                                    precaution, the average waiting time is 6
+                                    hours.
+                                </Text>
 
-                                    <Box>
-                                        <Text fontSize="xs">
-                                            It is the total accrued amount of
-                                            CTSI the pool is allowed to stake
-                                            for you. Each edit will cost ETH gas
-                                            fee.
-                                        </Text>
+                                <HStack
+                                    w="full"
+                                    spacing={4}
+                                    alignItems="center"
+                                    p={4}
+                                    bg="blue.50"
+                                >
+                                    <Box flexGrow="1">
+                                        <HStack>
+                                            <Text fontSize="sm">
+                                                Your Allowance
+                                            </Text>
+                                            <Tooltip
+                                                placement="top"
+                                                label="Here you can see your current pool allowance."
+                                                fontSize="small"
+                                                bg="black"
+                                                color="white"
+                                            >
+                                                <Icon color="gray.400" />
+                                            </Tooltip>
+                                        </HStack>
+                                        <Heading m={0} size="sm">
+                                            <Flex align="baseline">
+                                                <CTSI
+                                                    value={allowance}
+                                                    fontSize="lg"
+                                                />
+                                                <Text ml={1}>CTSI</Text>
+                                            </Flex>
+                                        </Heading>
                                     </Box>
-
-                                    <FormControl id="depositAmount">
-                                        <FormLabel fontWeight="bold">
-                                            Deposit Amount
-                                        </FormLabel>
-                                        <CTSINumberInput
-                                            min={0}
-                                            max={allowanceFormatted}
-                                            // ref={inputFocusRef}
-                                            onChange={(bigNumberValue) => {
-                                                setOutputDeposit(
-                                                    bigNumberValue
-                                                );
+                                    <Box alignSelf="flex-end">
+                                        <IconButton
+                                            aria-label="Edit"
+                                            size="sm"
+                                            icon={<EditIcon />}
+                                            variant="ghost"
+                                            onClick={() => {
+                                                setAllowanceStep(true);
                                             }}
                                         />
-                                        <FormHelperText>
-                                            <Flex align="baseline">
-                                                <Text mr="1">
-                                                    Wallet balance:
-                                                </Text>
+                                    </Box>
+                                </HStack>
 
-                                                <CTSI
-                                                    value={balance}
-                                                    fontSize="sm"
-                                                />
+                                <Box>
+                                    <Text fontSize="xs">
+                                        It is the total accrued amount of CTSI
+                                        the pool is allowed to stake for you.
+                                        Each edit will cost ETH gas fee.
+                                    </Text>
+                                </Box>
 
-                                                <Text ml="1">CTSI</Text>
-                                            </Flex>
-                                        </FormHelperText>
-                                    </FormControl>
+                                <FormControl id="depositAmount">
+                                    <FormLabel fontWeight="bold">
+                                        Deposit Amount
+                                    </FormLabel>
+                                    <CTSINumberInput
+                                        min={0}
+                                        max={allowanceFormatted}
+                                        // ref={inputFocusRef}
+                                        onChange={(bigNumberValue) => {
+                                            setOutputDeposit(bigNumberValue);
+                                        }}
+                                    />
+                                    <FormHelperText>
+                                        <Flex align="baseline">
+                                            <Text mr="1">Wallet balance:</Text>
+
+                                            <CTSI
+                                                value={balance}
+                                                fontSize="sm"
+                                            />
+
+                                            <Text ml="1">CTSI</Text>
+                                        </Flex>
+                                    </FormHelperText>
+                                </FormControl>
+                            </VStack>
+                            <ModalFooter px="0" pt={10}>
+                                <VStack w="full" spacing={4}>
+                                    <Button
+                                        isFullWidth
+                                        colorScheme="blue"
+                                        disabled={outputDeposit.isZero()}
+                                        onClick={() => {
+                                            onSave(outputDeposit, 'deposit');
+                                            disclosure.onClose();
+                                            onClose();
+                                        }}
+                                    >
+                                        Deposit
+                                    </Button>
+                                    <Button
+                                        isFullWidth
+                                        variant="ghost"
+                                        colorScheme="darkGray"
+                                        onClick={onClose}
+                                    >
+                                        Cancel
+                                    </Button>
                                 </VStack>
-                                <ModalFooter px="0" pt={10}>
-                                    <VStack w="full" spacing={4}>
-                                        <Button
-                                            isFullWidth
-                                            colorScheme="blue"
-                                            disabled={outputDeposit.isZero()}
-                                            onClick={() => {
-                                                onSave(
-                                                    outputDeposit,
-                                                    'deposit'
-                                                );
-                                                disclosure.onClose();
-                                                onClose();
-                                            }}
-                                        >
-                                            Deposit
-                                        </Button>
-                                        <Button
-                                            isFullWidth
-                                            variant="ghost"
-                                            colorScheme="darkGray"
-                                            onClick={onClose}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </VStack>
-                                </ModalFooter>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                            </ModalFooter>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     );
 };

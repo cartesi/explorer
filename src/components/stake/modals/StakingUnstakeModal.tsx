@@ -78,7 +78,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                             <FormControl id="amount">
                                 <RadioGroup
                                     defaultValue={unstakeFullAmount}
-                                    name="unstakeAmmount"
+                                    name="unstakeAmount"
                                 >
                                     <Stack>
                                         <Radio
@@ -122,7 +122,6 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                                 <CTSINumberInput
                                                     min={0}
                                                     max={stakeBalanceFormatted}
-                                                    // ref={inputFocusRef}
                                                     onChange={(
                                                         bigNumberValue
                                                     ) => {

@@ -82,7 +82,6 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                     value={allowanceFormatted}
                                     min={0}
                                     max={balanceFormatted}
-                                    // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
                                         setOutputAllowance(bigNumberValue);
                                     }}

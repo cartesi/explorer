@@ -87,7 +87,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                             <FormControl id="amount">
                                 <RadioGroup
                                     defaultValue={withdrawFullAmount}
-                                    name="unstakeAmmount"
+                                    name="unstakeAmount"
                                 >
                                     <Stack>
                                         <Radio
@@ -133,7 +133,6 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                                 <CTSINumberInput
                                                     min={0}
                                                     max={userBalanceFormatted}
-                                                    // ref={inputFocusRef}
                                                     onChange={(
                                                         bigNumberValue
                                                     ) => {
@@ -147,41 +146,6 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     </Stack>
                                 </RadioGroup>
                             </FormControl>
-                            {/* <VStack
-                                spacing={4}
-                                w="full"
-                                alignItems="flex-start"
-                                justifyContent="flex-start"
-                            >
-                                <HStack>
-                                    <Button
-                                        size="md"
-                                        colorScheme="blue"
-                                        variant="link"
-                                        textDecoration="underline"
-                                        _hover={{
-                                            textDecoration: 'none',
-                                        }}
-                                    >
-                                        Rebalance
-                                    </Button>
-                                    <Spinner
-                                        size="sm"
-                                        speed="0.65s"
-                                        emptyColor="gray.200"
-                                        color="blue.500"
-                                    />
-                                </HStack>
-                                <VStack alignItems="flex-start" spacing={0}>
-                                    <Text>Available liqudity: 10 CTSI</Text>
-                                    <Text color="gray.500" fontSize="sm">
-                                        In the event that the pool's liquidity
-                                        is insufficient to meet your withdrawal
-                                        request, you can appoint Cartesi to make
-                                        up the shortfall by selecting Rebalance.
-                                    </Text>
-                                </VStack>
-                            </VStack> */}
                         </VStack>
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>

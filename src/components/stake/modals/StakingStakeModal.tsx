@@ -89,7 +89,6 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <CTSINumberInput
                                     min={0}
                                     max={userBalanceFormatted}
-                                    // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
                                         setOutputStake(bigNumberValue);
                                     }}
