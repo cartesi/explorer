@@ -32,7 +32,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useState, useRef } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 
-interface IStakingUnstakeModalProps {
+export interface IStakingUnstakeModalProps {
     isOpen: boolean;
     stakedBalance: BigNumber;
     disclosure: UseDisclosureProps;

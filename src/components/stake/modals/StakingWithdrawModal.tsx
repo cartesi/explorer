@@ -32,7 +32,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 
-interface IStakingWithdrawModalProps {
+export interface IStakingWithdrawModalProps {
     isOpen: boolean;
     userBalance: BigNumber;
     disclosure: UseDisclosureProps;

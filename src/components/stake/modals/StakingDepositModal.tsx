@@ -39,7 +39,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 import CTSI from '../../pools/staking/CTSI';
 
-interface IStakingDepositModalProps {
+export interface IStakingDepositModalProps {
     allowance: BigNumber;
     balance: BigNumber;
     disclosure: UseDisclosureProps;
@@ -219,7 +219,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     <CTSINumberInput
                                         min={0}
                                         max={allowanceFormatted}
-                                        // ref={inputFocusRef}
                                         onChange={(bigNumberValue) => {
                                             setOutputDeposit(bigNumberValue);
                                         }}
