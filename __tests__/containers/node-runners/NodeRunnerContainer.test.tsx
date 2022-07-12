@@ -14,11 +14,11 @@ import {
     cleanup,
     findByText,
     fireEvent,
-    prettyDOM,
+    getByRole,
+    getByText,
     render,
     screen,
     waitForElementToBeRemoved,
-    within,
 } from '@testing-library/react';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { UseWallet } from '../../../src/contexts/wallet';
@@ -311,6 +311,26 @@ describe('NodeRunners container (Landing Page)', () => {
                     screen.queryByText('CREATE PUBLIC POOL')
                 ).not.toBeInTheDocument();
             });
+
+            it('should display a feedback message in the table cell while checking the node status', async () => {
+                const userNodes = buildUseUserNodesReturn();
+                userNodes.loading = true;
+                useUserNodeStub.mockReturnValue(userNodes);
+                const stakingPools = buildUseStakingPoolsReturn();
+                stakingPools.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(stakingPools);
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                const firstRow = screen
+                    .getByRole('gridcell', {
+                        name: '0xe58...731b',
+                    })
+                    .closest('tr');
+
+                expect(getByText(firstRow, 'Loading')).toBeInTheDocument();
+            });
         });
 
         describe('When user has a private node', () => {
@@ -390,6 +410,99 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(
                     screen.queryByText('Run a private node')
                 ).not.toBeInTheDocument();
+            });
+        });
+
+        describe('When user has both pools and a private node', () => {
+            it('should not display any of the cards', async () => {
+                const { rerender } = render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(
+                    screen.getByText('Run a private node')
+                ).toBeInTheDocument();
+                expect(screen.getByText('CREATE MY NODE')).toBeInTheDocument();
+                expect(
+                    screen.getByText('Create a public pool')
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByText('CREATE PUBLIC POOL')
+                ).toBeInTheDocument();
+
+                expect(
+                    screen.queryByText('Pool Management')
+                ).not.toBeInTheDocument();
+                expect(
+                    screen.queryByText('Private Node Management')
+                ).not.toBeInTheDocument();
+
+                const userNodes = buildUseUserNodesReturn();
+                userNodes.data = generateNodeData().data;
+                useUserNodeStub.mockReturnValue(userNodes);
+                const stakingPools = buildUseStakingPoolsReturn();
+                stakingPools.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(stakingPools);
+
+                rerender(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(
+                    await screen.queryByText('Run a private node')
+                ).not.toBeInTheDocument();
+                expect(
+                    await screen.queryByText('Create a public pool')
+                ).not.toBeInTheDocument();
+            });
+
+            it('should display pool and node tables', () => {
+                const userNodes = buildUseUserNodesReturn();
+                userNodes.data = generateNodeData().data;
+                useUserNodeStub.mockReturnValue(userNodes);
+                const stakingPools = buildUseStakingPoolsReturn();
+                stakingPools.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(stakingPools);
+
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                const poolTableEl = screen
+                    .getByRole('columnheader', { name: 'Address' })
+                    .closest('table');
+                const nodeTableEl = screen
+                    .getByRole('columnheader', { name: 'Node Address' })
+                    .closest('table');
+
+                expect(poolTableEl).toBeDefined();
+                expect(nodeTableEl).toBeDefined();
+
+                const poolFirstRowEl = getByRole(poolTableEl, 'gridcell', {
+                    name: '0xe58...731b',
+                }).closest('tr');
+
+                expect(
+                    getByText(
+                        poolFirstRowEl,
+                        'Manage pool 0xe584cd6dd071f532e9598e96589663e69330731b'
+                    )
+                ).toBeInTheDocument();
+
+                expect(getByText(poolFirstRowEl, '50,000')).toBeInTheDocument();
+
+                expect(getByText(poolFirstRowEl, 'Hired')).toBeInTheDocument();
+
+                const nodeRowEl = getByRole(nodeTableEl, 'gridcell', {
+                    name: '0x68a...e56c',
+                }).closest('tr');
+
+                expect(
+                    getByText(
+                        nodeRowEl,
+                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c'
+                    )
+                ).toBeInTheDocument();
             });
         });
     });
