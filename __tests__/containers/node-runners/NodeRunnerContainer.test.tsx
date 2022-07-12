@@ -12,10 +12,13 @@
 
 import {
     cleanup,
+    findByText,
     fireEvent,
     prettyDOM,
     render,
     screen,
+    waitForElementToBeRemoved,
+    within,
 } from '@testing-library/react';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { UseWallet } from '../../../src/contexts/wallet';
@@ -23,10 +26,34 @@ import { NextRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
-import { buildUseStakingPoolsReturn, buildUseUserNodesReturn } from '../mocks';
+import {
+    buildUseCartesiTokenReturn,
+    buildUseStakingPoolsReturn,
+    buildUseUserNodesReturn,
+    generateNodeData,
+    generateStakingPoolsData,
+} from '../mocks';
+import { ENSEntry, useENS } from '../../../src/services/ens';
+import { useCartesiToken } from '../../../src/services/token';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
+const useENSMod = '../../../src/services/ens';
 
+jest.mock('../../../src/services/token', () => {
+    return {
+        __esModule: true,
+        useCartesiToken: jest.fn(),
+    };
+});
+
+jest.mock(useENSMod, () => {
+    const original = jest.requireActual(useENSMod);
+    return {
+        __esModule: true,
+        ...original,
+        useENS: jest.fn(),
+    };
+});
 jest.mock('../../../src/graphql/hooks/useStakingPools');
 jest.mock(useNodesMod, () => {
     const originalModules = jest.requireActual(useNodesMod);
@@ -43,19 +70,26 @@ const useUserNodeStub = useUserNodes as jest.MockedFunction<
 const useStakingPoolsStub = useStakingPools as jest.MockedFunction<
     typeof useStakingPools
 >;
+const useENSStub = useENS as jest.MockedFunction<typeof useENS>;
+const useCartesiTokenStub = useCartesiToken as jest.MockedFunction<
+    typeof useCartesiToken
+>;
 
-let wallet: UseWallet;
-let router: NextRouter;
 const ENodeRunnerContainer = withChakraTheme(NodeRunnersContainer);
 
+const buildWallet = (): UseWallet => ({
+    activate: jest.fn(),
+    deactivate: jest.fn(),
+    active: false,
+});
+
 describe('NodeRunners container (Landing Page)', () => {
+    let wallet: UseWallet;
+    let router: NextRouter;
+
     beforeEach(() => {
         // mocking what is necessary in a default state.
-        wallet = {
-            activate: jest.fn(),
-            deactivate: jest.fn(),
-            active: false,
-        };
+        wallet = buildWallet();
 
         //@ts-ignore
         router = {
@@ -64,6 +98,8 @@ describe('NodeRunners container (Landing Page)', () => {
 
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
         useStakingPoolsStub.mockReturnValue(buildUseStakingPoolsReturn());
+        useENSStub.mockReturnValue({} as ENSEntry);
+        useCartesiTokenStub.mockReturnValue(buildUseCartesiTokenReturn());
     });
 
     afterEach(() => {
@@ -72,8 +108,11 @@ describe('NodeRunners container (Landing Page)', () => {
     });
 
     describe('when wallet is connected', () => {
+        const account = '0xa074683b5be015f053b5dceb064c41fc9d11b6e5';
         beforeEach(() => {
+            wallet = buildWallet();
             wallet.active = true;
+            wallet.account = account;
         });
 
         it('Should display the cards and the expected wording', () => {
@@ -171,6 +210,187 @@ describe('NodeRunners container (Landing Page)', () => {
                     'Have a relatively large amount of CTSI to stake.'
                 )
             ).toBeInTheDocument();
+        });
+
+        describe('When user has pools', () => {
+            it('should display a table with pools information with described headers', async () => {
+                const mock = buildUseStakingPoolsReturn();
+                mock.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(mock);
+
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                const firstRow = await screen
+                    .getByRole('gridcell', {
+                        name: '0xe58...731b',
+                    })
+                    .closest('tr');
+
+                expect(
+                    await screen.findByText('Pool Management')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('CREATE A POOL')
+                ).toBeInTheDocument();
+                expect(await screen.findByText('Address')).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Total Staked')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Total Users')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Total Rewards')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Commission')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Pool Balance')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Node Status')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Block Produced')
+                ).toBeInTheDocument();
+                expect(await screen.findByText('Manage')).toBeInTheDocument();
+
+                // checking some row values
+                expect(
+                    await findByText(firstRow, '50,000')
+                ).toBeInTheDocument();
+
+                expect(
+                    await findByText(firstRow, 'Not Hired')
+                ).toBeInTheDocument();
+            });
+
+            it('should remove the usual card for public pool creation', async () => {
+                const { rerender, queryByText } = render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(
+                    screen.getByText('Create a public pool')
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByText(
+                        'Earn commissions out of the blocks rewards.'
+                    )
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByText('CREATE PUBLIC POOL')
+                ).toBeInTheDocument();
+
+                //then load the data
+                const mock = buildUseStakingPoolsReturn();
+                mock.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(mock);
+
+                rerender(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                await waitForElementToBeRemoved(() =>
+                    queryByText('Create a public pool')
+                );
+
+                expect(
+                    screen.queryByText('Create a public pool')
+                ).not.toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        'Earn commissions out of the blocks rewards.'
+                    )
+                ).not.toBeInTheDocument();
+
+                expect(
+                    screen.queryByText('CREATE PUBLIC POOL')
+                ).not.toBeInTheDocument();
+            });
+        });
+
+        describe('When user has a private node', () => {
+            it('should display a table with described headers', async () => {
+                const mock = buildUseUserNodesReturn();
+                mock.data = generateNodeData().data;
+                useUserNodeStub.mockReturnValue(mock);
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                const row = await screen
+                    .getByRole('gridcell', {
+                        name: '0x68a...e56c',
+                    })
+                    .closest('tr');
+
+                expect(
+                    await screen.findByText('Private Node Management')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Node Address')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Total Staked')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Total Rewards')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Block Produced')
+                ).toBeInTheDocument();
+                expect(
+                    await screen.findByText('Node Status')
+                ).toBeInTheDocument();
+                expect(await screen.findByText('Manage')).toBeInTheDocument();
+
+                // check some of the row values
+                expect(await findByText(row, 'Hired')).toBeInTheDocument();
+                expect(
+                    await findByText(
+                        row,
+                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c'
+                    )
+                ).toBeInTheDocument();
+            });
+
+            it('should remove the card for private node creation', async () => {
+                const { rerender } = render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(
+                    screen.getByText('Run a private node')
+                ).toBeInTheDocument();
+
+                expect(
+                    screen.getByText(
+                        'You are able to stake directly by running your own node to represent your stake.'
+                    )
+                ).toBeInTheDocument();
+
+                expect(screen.getByText('CREATE MY NODE')).toBeInTheDocument();
+
+                const mock = buildUseUserNodesReturn();
+                mock.data = generateNodeData().data;
+                useUserNodeStub.mockReturnValue(mock);
+
+                rerender(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                await waitForElementToBeRemoved(() =>
+                    screen.queryByText('Run a private node')
+                );
+
+                expect(
+                    screen.queryByText('Run a private node')
+                ).not.toBeInTheDocument();
+            });
         });
     });
 
