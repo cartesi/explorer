@@ -100,8 +100,11 @@ export const NodeRunnersContainer = ({
         where: { status_not: 'Retired' },
     });
 
-    setIsLoadingNodes(userNodes.loading);
-    setPoolDataLoading(stakingPools.loading);
+    useEffect(() => setIsLoadingNodes(userNodes.loading), [userNodes.loading]);
+    useEffect(
+        () => setPoolDataLoading(stakingPools.loading),
+        [stakingPools.loading]
+    );
 
     useEffect(() => {
         // the null value case is ignored since in case the list is empty

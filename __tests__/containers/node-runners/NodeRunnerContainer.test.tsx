@@ -331,6 +331,65 @@ describe('NodeRunners container (Landing Page)', () => {
 
                 expect(getByText(firstRow, 'Loading')).toBeInTheDocument();
             });
+
+            it('should be able to click on the sortable headers', () => {
+                const stakingPools = buildUseStakingPoolsReturn();
+                stakingPools.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(stakingPools);
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                fireEvent.click(screen.getByText('Total Staked'));
+
+                fireEvent.click(screen.getByText('Total Users'));
+
+                fireEvent.click(screen.getByText('Commission'));
+
+                expect(useStakingPoolsStub).toHaveBeenCalledTimes(5);
+
+                //there are two render cycles happening so we check from the third call forward
+
+                expect(useStakingPoolsStub.mock.calls[2][0]).toHaveProperty(
+                    'sort',
+                    'amount'
+                );
+
+                expect(useStakingPoolsStub.mock.calls[3][0]).toHaveProperty(
+                    'sort',
+                    'totalUsers'
+                );
+
+                expect(useStakingPoolsStub.mock.calls[4][0]).toHaveProperty(
+                    'sort',
+                    'commissionPercentage'
+                );
+            });
+
+            it('should display a loading spinner as the first row when re-fetching data', () => {
+                const stakingPools = buildUseStakingPoolsReturn();
+                stakingPools.data = generateStakingPoolsData().data;
+                useStakingPoolsStub.mockReturnValue(stakingPools);
+                const { rerender } = render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(screen.getByText('0xe58...731b')).toBeInTheDocument();
+
+                const updatedData = buildUseStakingPoolsReturn();
+                updatedData.loading = true;
+                useStakingPoolsStub.mockReturnValue(updatedData);
+
+                rerender(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                expect(
+                    screen.queryByText('0xe58...731b')
+                ).not.toBeInTheDocument();
+
+                expect(screen.getByText('Loading')).toBeInTheDocument();
+            });
         });
 
         describe('When user has a private node', () => {
