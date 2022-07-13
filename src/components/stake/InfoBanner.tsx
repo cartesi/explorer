@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 
-interface IInfoBannerProps extends AlertProps {
+export interface IInfoBannerProps extends AlertProps {
     isOpen?: boolean;
     isClosable?: boolean;
     isExpandable?: boolean;
@@ -96,6 +96,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                             )
                         }
                         aria-label={'Open Panel'}
+                        role="icon-button"
                         onClick={onToggleCollapse}
                     />
                 )}
@@ -106,6 +107,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                         onClick={onToggle}
                         right="8px"
                         top="8px"
+                        role="close-button"
                     />
                 )}
             </Alert>

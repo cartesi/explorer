@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import NextLink from 'next/link';
 
-interface IPoolBreadcrumbsProps {
+export interface IPoolBreadcrumbsProps {
     currentPage: string;
 }
 

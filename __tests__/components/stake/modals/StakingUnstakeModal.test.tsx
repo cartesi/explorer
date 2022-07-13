@@ -23,17 +23,11 @@ const defaultValue = '100000000000000000000000';
 const defaultProps = {
     stakedBalance: BigNumber.from(defaultValue),
     disclosure: {
-        onClose: () => {
-            console.log('disclosure::onClose::');
-        },
+        onClose: () => undefined,
     },
     isOpen: true,
-    onClose: () => {
-        console.log('onClose::');
-    },
-    onSave: () => {
-        console.log('onSave::');
-    },
+    onClose: () => undefined,
+    onSave: () => undefined,
 };
 
 const EStakingUnstakeModal =

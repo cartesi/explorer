@@ -29,9 +29,7 @@ const defaultProps = {
     stakingMaturingTimestamp: new Date(),
     stakingReleasingTimestamp: new Date(),
     hideZeros: false,
-    onRebalance: () => {
-        console.log('onRebalance::');
-    },
+    onRebalance: () => undefined,
 };
 
 const EEffectiveBalanceStat =

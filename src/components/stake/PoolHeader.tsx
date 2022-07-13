@@ -46,7 +46,6 @@ export const PoolHeader: FC = () => {
                     <AddressText
                         address={address}
                         chainId={chainId}
-                        // icon={FaUsers}
                         fontSize={['xl', '3xl']}
                     />
                 </VStack>

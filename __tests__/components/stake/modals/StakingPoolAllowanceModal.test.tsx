@@ -24,17 +24,11 @@ const defaultProps = {
     allowance: BigNumber.from(defaultValue),
     balance: BigNumber.from(defaultValue),
     disclosure: {
-        onClose: () => {
-            console.log('disclosure::onClose::');
-        },
+        onClose: () => undefined,
     },
     isOpen: true,
-    onClose: () => {
-        console.log('onClose::');
-    },
-    onSave: () => {
-        console.log('onSave::');
-    },
+    onClose: () => undefined,
+    onSave: () => undefined,
 };
 
 const EStakingPoolAllowanceModal =

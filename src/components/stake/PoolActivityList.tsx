@@ -10,15 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    //Box,
     VStack,
     HStack,
     Spinner,
     Button,
     Text,
-    //FormControl,
-    //FormLabel,
-    //Select,
     Stack,
     Table,
     Tbody,
@@ -34,7 +30,6 @@ import usePoolActivities, {
     Types,
 } from '../../graphql/hooks/usePoolActivities';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
-//import Pagination from '../Pagination';
 import { formatValue } from '../../utils/numberFormatter';
 import Address from '../Address';
 
@@ -101,7 +96,6 @@ interface IPoolActivityListProps {
 
 export const PoolActivityList: FC<IPoolActivityListProps> = memo(
     ({ poolAddress, userSearch, selectedTypes, selectedTimePeriod }) => {
-        //const [pageNumber, setPageNumber] = useState<number>(0);
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
         userSearch = userSearch === '' ? undefined : userSearch;
@@ -162,50 +156,6 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                         </Table>
                     </TableResponsiveHolder>
                 )}
-
-                {/* <Stack
-                    direction={{
-                        base: 'column',
-                        lg: 'row',
-                    }}
-                    spacing={{
-                        base: 4,
-                        lg: 8,
-                    }}
-                    justify={{
-                        base: 'center',
-                        lg: 'flex-end',
-                    }}
-                    align="center"
-                    mt={6}
-                >
-                    <Box>
-                        <FormControl
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <FormLabel htmlFor="pages" whiteSpace="nowrap">
-                                Rows per page
-                            </FormLabel>
-                            <Select variant="outline" id="pages" w="auto">
-                                <option>10</option>
-                                <option>20</option>
-                                <option>30</option>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <Box>
-                        <Pagination
-                            currentPage={pageNumber}
-                            pages={20}
-                            showPageNumbers
-                            maxPageNumbers={5}
-                            onPageClick={setPageNumber}
-                        />
-                    </Box>
-                </Stack> */}
 
                 {list?.length > 0 && (
                     <Stack spacing={8} mt={{ base: '6' }} alignItems="center">

@@ -11,7 +11,7 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { DashboardIcon, StakeIcon } from '../../components/Icons';
+import { DashboardIcon, StakeIcon } from '../Icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 

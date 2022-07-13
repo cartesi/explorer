@@ -20,12 +20,8 @@ import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
 import { withChakraTheme } from '../../../test-utilities';
 
 const defaultValue = '10000000000000000000000000000';
-const defaultOnStakeClick = () => {
-    console.log('onStakeClick::');
-};
-const defaultOnWithdrawClick = () => {
-    console.log('onWithdrawClick::');
-};
+const defaultOnStakeClick = () => undefined;
+const defaultOnWithdrawClick = () => undefined;
 
 const EPoolBalanceSection =
     withChakraTheme<IPoolBalanceSectionProps>(PoolBalanceSection);

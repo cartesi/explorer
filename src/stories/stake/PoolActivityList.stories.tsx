@@ -11,19 +11,19 @@
 
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { StakingActivity } from '../../components/stake/StakingActivity';
+import { PoolActivityList } from '../../components/stake/PoolActivityList';
 import { GET_POOL_ACTIVITIES } from '../../graphql/queries/poolActivities';
 export default {
-    title: 'Pool Redesign/Staking Activity',
-    component: StakingActivity,
+    title: 'Stake/PoolActivityList',
+    component: PoolActivityList,
     argTypes: {},
-} as ComponentMeta<typeof StakingActivity>;
+} as ComponentMeta<typeof PoolActivityList>;
 
-const Template: ComponentStory<typeof StakingActivity> = (args) => (
-    <StakingActivity {...args} />
+const Template: ComponentStory<typeof PoolActivityList> = (args) => (
+    <PoolActivityList {...args} />
 );
 const componentParams = {
-    userAccount: '0xa074683b5be015f053b5dceb064c41fc9d11b6e5',
+    userSearch: '0xa074683b5be015f053b5dceb064c41fc9d11b6e5',
     poolAddress: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
 };
 const queryVariables = {
@@ -59,6 +59,9 @@ Loading10Seconds.parameters = {
                                     shares: '150000000000000000000000000000',
                                     timestamp: '1643612997',
                                     type: 'STAKE',
+                                    user: {
+                                        id: '398109283091',
+                                    },
                                 },
                                 {
                                     amount: '150000000000000000000',
@@ -66,6 +69,9 @@ Loading10Seconds.parameters = {
                                     shares: null,
                                     timestamp: '1643576268',
                                     type: 'DEPOSIT',
+                                    user: {
+                                        id: '398109283091',
+                                    },
                                 },
                             ],
                         },
@@ -79,7 +85,7 @@ Loading10Seconds.parameters = {
 export const ListOfActivities = Template.bind({});
 
 ListOfActivities.args = {
-    userAccount: '0x0bf9b7f1305839ce936c59bf099550e8e708c09c',
+    userSearch: '0x0bf9b7f1305839ce936c59bf099550e8e708c09c',
     poolAddress: '0xaede3f736596a2367a5e2ebde47d69b469ef0edb',
 };
 
@@ -107,12 +113,18 @@ ListOfActivities.parameters = {
                                 id: '0x6dc64962409c4e446fb950e25f27d89d82497680a2a21edbf65cc8bef4a1d396',
                                 timestamp: '1644943087',
                                 type: 'WITHDRAW',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                             {
                                 amount: '5000000000000000000',
                                 id: '0x5a7ae017358fc09d8ab18ed9c0f55387915ba5e59d5d5fab59b64a3323aff14e',
                                 timestamp: '1644943087',
                                 type: 'WITHDRAW',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                         ],
                     },
@@ -137,24 +149,36 @@ ListOfActivities.parameters = {
                                 id: '0x62814c57466ad25bdf98133e5f978add5c0c8fa49a53108ee579d56943833ce2',
                                 timestamp: '1644926180',
                                 type: 'WITHDRAW',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                             {
                                 amount: '9750000000000000000000',
                                 id: '0xaaafab23e9042e4b4b528291d88a71923e58f6e003da6753b12b1bc7706cba99',
                                 timestamp: '1644926069',
                                 type: 'DEPOSIT',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                             {
                                 amount: '23000000000000000000',
                                 id: '0xf5d699f00bf1fa55124d980f3acc45aa50b70b23d240bfcd3d079ff485e0ce0c',
                                 timestamp: '1644521856',
                                 type: 'DEPOSIT',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                             {
                                 amount: '5000000000000000000',
                                 id: '0x9e756c5e31d8df2582fe4ed80c1cefe61903e1c699a92b6b0aa337f90ecb5c5e',
                                 timestamp: '1644514018',
                                 type: 'DEPOSIT',
+                                user: {
+                                    id: '398109283091',
+                                },
                             },
                         ],
                     },

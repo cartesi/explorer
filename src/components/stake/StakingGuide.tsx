@@ -20,85 +20,79 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import {
-    AllowanceIcon,
-    StakedBalanceIcon,
-    WalletIcon,
-} from '../../components/Icons';
+import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '../Icons';
 
-export const StakingGuide: FC = () => {
-    const steps = [
-        {
-            title: 'Connect Wallet',
-            description:
-                'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
-            icon: <WalletIcon color="blue.500" w={6} h={6} />,
-            bgColor: 'blue.100',
-        },
-        {
-            title: 'Allowance / Deposit',
-            description:
-                'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
-            icon: <AllowanceIcon color="yellow.500" w={6} h={6} />,
-            bgColor: 'yellow.100',
-        },
-        {
-            title: 'Stake',
-            description:
-                'After staking, your deposit will starts contributing to the staking power of the pool.',
-            icon: <StakedBalanceIcon color="green.500" w={6} h={6} />,
-            bgColor: 'green.100',
-        },
-    ];
+export const steps = [
+    {
+        title: 'Connect Wallet',
+        description:
+            'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
+        icon: <WalletIcon color="blue.500" w={6} h={6} />,
+        bgColor: 'blue.100',
+    },
+    {
+        title: 'Allowance / Deposit',
+        description:
+            'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
+        icon: <AllowanceIcon color="yellow.500" w={6} h={6} />,
+        bgColor: 'yellow.100',
+    },
+    {
+        title: 'Stake',
+        description:
+            'After staking, your deposit will starts contributing to the staking power of the pool.',
+        icon: <StakedBalanceIcon color="green.500" w={6} h={6} />,
+        bgColor: 'green.100',
+    },
+];
 
-    return (
-        <>
-            <Stack
-                spacing={4}
-                mb={10}
-                direction={{ base: 'column', md: 'row' }}
-                alignItems="center"
-            >
-                <Heading as="h2" size="lg">
-                    Staking in a few steps
-                </Heading>
-                <Link href="#" isExternal fontSize="sm">
-                    Learn from offical tutorial <ExternalLinkIcon />
-                </Link>
-            </Stack>
-            <Stack
-                direction={{ base: 'column', lg: 'row' }}
-                spacing={12}
-                justifyContent="space-between"
-            >
-                {steps.map((step, index) => (
-                    <HStack
-                        key={index}
-                        alignItems="flex-start"
-                        spacing={4}
-                        flexBasis={{ base: '100%', lg: '33.33%' }}
+export const StakingGuide: FC = () => (
+    <>
+        <Stack
+            spacing={4}
+            mb={10}
+            direction={{ base: 'column', md: 'row' }}
+            alignItems="center"
+        >
+            <Heading as="h2" size="lg">
+                Staking in a few steps
+            </Heading>
+            <Link href="#" isExternal fontSize="sm">
+                Learn from official tutorial <ExternalLinkIcon />
+            </Link>
+        </Stack>
+        <Stack
+            direction={{ base: 'column', lg: 'row' }}
+            spacing={12}
+            justifyContent="space-between"
+        >
+            {steps.map((step, index) => (
+                <HStack
+                    key={index}
+                    alignItems="flex-start"
+                    spacing={4}
+                    flexBasis={{ base: '100%', lg: '33.33%' }}
+                >
+                    <Box
+                        bg={step.bgColor}
+                        w={14}
+                        h={14}
+                        borderRadius="full"
+                        display="grid"
+                        placeContent="center"
+                        flexShrink={0}
                     >
-                        <Box
-                            bg={step.bgColor}
-                            w={14}
-                            h={14}
-                            borderRadius="full"
-                            display="grid"
-                            placeContent="center"
-                            flexShrink={0}
-                        >
-                            {step.icon}
-                        </Box>
+                        {step.icon}
+                    </Box>
 
-                        <VStack alignItems="flex-start">
-                            <Heading as="h3" size="sm">
-                                {index + 1}. {step.title}
-                            </Heading>
-                            <Text>{step.description}</Text>
-                        </VStack>
-                    </HStack>
-                ))}
-            </Stack>
-        </>
-    );
-};
+                    <VStack alignItems="flex-start">
+                        <Heading as="h3" size="sm">
+                            {index + 1}. {step.title}
+                        </Heading>
+                        <Text>{step.description}</Text>
+                    </VStack>
+                </HStack>
+            ))}
+        </Stack>
+    </>
+);

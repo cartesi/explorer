@@ -19,9 +19,7 @@ import {
 import { withChakraTheme } from '../../../test-utilities';
 
 const defaultValue = '10000000000000000000000000000';
-const defaultOnDepositClick = () => {
-    console.log('onDepositClick::');
-};
+const defaultOnDepositClick = () => undefined;
 
 const EDepositSection = withChakraTheme<IDepositSection>(DepositSection);
 
