@@ -31,7 +31,6 @@ export interface PoolStatsPanelProps extends StackProps {
     totalReward: BigNumberish;
     commissionPercentage: number;
     fee: StakingPoolFee;
-    amount: BigNumber;
     pool: BigNumber;
     stake: BigNumber;
     unstake: BigNumber;
@@ -42,7 +41,6 @@ export interface PoolStatsPanelProps extends StackProps {
     stakingReleased: BigNumber;
     stakingMaturingTimestamp: Date;
     stakingReleasingTimestamp: Date;
-    hideZeros: boolean;
     onRebalance?: () => void;
 }
 
@@ -55,7 +53,6 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
         totalUsers,
         productionInterval,
         fee,
-        amount,
         pool,
         stake,
         unstake,
@@ -66,9 +63,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
         stakingReleased,
         stakingMaturingTimestamp,
         stakingReleasingTimestamp,
-        hideZeros = true,
         onRebalance,
-        ...stackProps
     } = props;
 
     const aws = useFlag('aws');
@@ -84,6 +79,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                 }}
                 w="full"
                 spacing={4}
+                role="balance-stat"
             >
                 <StakedBalanceStat stakedBalance={stakedBalance} />
                 <EffectiveBalanceStat
@@ -108,6 +104,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                 }}
                 w="full"
                 spacing={4}
+                role="commission-stat"
             >
                 <UsersStat totalUsers={totalUsers} />
                 <ProductionIntervalStat

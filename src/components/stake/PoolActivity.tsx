@@ -17,7 +17,7 @@ import { PoolActivityList } from './PoolActivityList';
 import { ActivityType } from '../../graphql/models';
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
-interface IPoolActivityProps {
+export interface IPoolActivityProps {
     poolAddress: string;
 }
 
@@ -151,6 +151,7 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
                     lg: 'center',
                 }}
                 direction={{ base: 'column', lg: 'row' }}
+                role="pool-filters-wrapper"
             >
                 <PoolFilters
                     filters={poolFilters}

@@ -108,7 +108,7 @@ export const Staking: FC<StakingProps> = ({
                 <TransactionInfoBanner
                     title="Setting allowance..."
                     failTitle="Error setting allowance"
-                    successDescription="New allowance set sucessfully."
+                    successDescription="New allowance set successfully."
                     transaction={tokenTransaction}
                 />
 
@@ -116,7 +116,7 @@ export const Staking: FC<StakingProps> = ({
                     <TransactionInfoBanner
                         title="Setting deposit..."
                         failTitle="Error setting deposit"
-                        successDescription="New deposit set sucessfully."
+                        successDescription="New deposit set successfully."
                         transaction={
                             currentTransaction === 'deposit'
                                 ? poolTransaction
@@ -134,6 +134,7 @@ export const Staking: FC<StakingProps> = ({
                         } to unlock your deposited tokens before staking them.`}
                         isOpen
                         status="info"
+                        role="info-banner"
                         icon={
                             <VStack mr={4} spacing={1} color={infoColor}>
                                 <TimerIcon boxSize="6" />
@@ -148,7 +149,7 @@ export const Staking: FC<StakingProps> = ({
                     <TransactionInfoBanner
                         title="Withdrawing..."
                         failTitle="Error withdrawing"
-                        successDescription="Withdrawed sucessfully."
+                        successDescription="Withdrawed successfully."
                         transaction={
                             currentTransaction === 'withdraw'
                                 ? poolTransaction
@@ -168,7 +169,7 @@ export const Staking: FC<StakingProps> = ({
                     <TransactionInfoBanner
                         title="Staking..."
                         failTitle="Error staking"
-                        successDescription="Stake set sucessfully."
+                        successDescription="Stake set successfully."
                         transaction={
                             currentTransaction === 'stake'
                                 ? poolTransaction
@@ -180,7 +181,7 @@ export const Staking: FC<StakingProps> = ({
                     <TransactionInfoBanner
                         title="Unstaking..."
                         failTitle="Error unstaking"
-                        successDescription="Unstaked sucessfully."
+                        successDescription="Unstaked successfully."
                         transaction={
                             currentTransaction === 'unstake'
                                 ? poolTransaction

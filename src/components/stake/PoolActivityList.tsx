@@ -87,7 +87,7 @@ const Activity: FC<ActivityProps> = memo(
     }
 );
 
-interface IPoolActivityListProps {
+export interface IPoolActivityListProps {
     poolAddress: string;
     userSearch?: string;
     selectedTypes?: string[];

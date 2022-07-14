@@ -21,13 +21,12 @@ import {
 
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { FC, LegacyRef, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-interface ICTSINumberInputProps {
+export interface ICTSINumberInputProps {
     value?: number;
     min?: number;
     max?: number;
-    ref?: LegacyRef<HTMLDivElement>;
     maxPrecision?: number;
     hasNumberSteppers?: boolean;
     setMaxOnOverflow?: boolean;
@@ -133,8 +132,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
 
                 if (
                     parseFloat(innerValue) > max ||
-                    parseFloat(inputText) > max // ||
-                    // parseFloat(innerValue + inputText) > max
+                    parseFloat(inputText) > max
                 ) {
                     e.preventDefault();
                     if (setMaxOnOverflow) setInnerValue(max.toString());
@@ -152,7 +150,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 children={<Box>CTSI</Box>}
             />
             {hasNumberSteppers && (
-                <NumberInputStepper>
+                <NumberInputStepper data-testid="number-stepper">
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                 </NumberInputStepper>

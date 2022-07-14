@@ -10,17 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
-import { useDisclosure } from '@chakra-ui/react';
+import { render, screen } from '@testing-library/react';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { Staking, StakingProps } from '../../../src/components/stake/Staking';
 import { withChakraTheme } from '../../test-utilities';
 import { Transaction } from '../../../src/services/transaction';
-
-jest.mock('@chakra-ui/react');
-const mockUseDisclosure = useDisclosure as jest.MockedFunction<
-    typeof useDisclosure
->;
 
 const defaultValue = '10000000000000000000000000000';
 
@@ -60,23 +54,6 @@ const EStaking = withChakraTheme<StakingProps>(Staking);
 describe('Staking', () => {
     // a default configured component
     const renderComponent = () => render(<EStaking {...defaultProps} />);
-
-    beforeEach(() => {
-        mockUseDisclosure.mockReturnValue({
-            getButtonProps: () => undefined,
-            getDisclosureProps: () => undefined,
-            isControlled: false,
-            onToggle: () => undefined,
-            isOpen: false,
-            onOpen: () => undefined,
-            onClose: () => undefined,
-        });
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
 
     it('Should display header text', () => {
         renderComponent();

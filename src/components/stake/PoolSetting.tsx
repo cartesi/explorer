@@ -80,6 +80,7 @@ export const PoolSetting: React.FC = () => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
+                                    role="balance-icon"
                                 />
                             </Tooltip>
                         </Box>
@@ -95,7 +96,7 @@ export const PoolSetting: React.FC = () => {
                 <FormControl>
                     <HStack justify="space-between">
                         <FormLabel>
-                            Pool comission{' '}
+                            Pool commission{' '}
                             <Tooltip
                                 placement="bottom"
                                 label="SAMPLE TEXT"
@@ -108,6 +109,7 @@ export const PoolSetting: React.FC = () => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
+                                    role="commission-icon"
                                 />
                             </Tooltip>
                         </FormLabel>
@@ -149,6 +151,7 @@ export const PoolSetting: React.FC = () => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
+                                    role="pool-icon"
                                 />
                             </Tooltip>
                         </FormLabel>
@@ -186,6 +189,7 @@ export const PoolSetting: React.FC = () => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
+                                    role="staking-icon"
                                 />
                             </Tooltip>
                         </FormLabel>
@@ -223,6 +227,7 @@ export const PoolSetting: React.FC = () => {
                                 width={4}
                                 height={4}
                                 color="gray.600"
+                                role="quit-icon"
                             />
                         </Tooltip>
                     </FormLabel>
