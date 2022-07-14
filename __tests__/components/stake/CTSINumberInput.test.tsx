@@ -10,28 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     ICTSINumberInputProps,
     CTSINumberInput,
 } from '../../../src/components/stake/CTSINumberInput';
 import { withChakraTheme } from '../../test-utilities';
-
-// value?: number;
-// min?: number;
-// max?: number;
-// maxPrecision?: number;
-// hasNumberSteppers?: boolean;
-// setMaxOnOverflow?: boolean;
-// onChange?: (
-//     bigNumberValue: BigNumber,
-//     numberValue: number,
-//     value: string
-// ) => void;
-
-// inputText.includes('-') ||
-// inputText.includes('+') ||
-// inputText.includes('e')
 
 const defaultProps = {
     value: undefined,
