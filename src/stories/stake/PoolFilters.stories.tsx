@@ -64,10 +64,6 @@ Default.args = {
     filters: defaultFilters,
     selectedPeriod: null,
     selectedTypes: [],
-    onSelectedPeriodChange: () => {
-        console.log('onSelectedPeriodChange::');
-    },
-    onSelectedTypesChange: () => {
-        console.log('onSelectedTypesChange::');
-    },
+    onSelectedPeriodChange: () => undefined,
+    onSelectedTypesChange: () => undefined,
 };

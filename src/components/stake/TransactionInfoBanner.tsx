@@ -47,10 +47,10 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     onEndTransaction,
     ...props
 }) => {
-    const [innerTransaction, setInnerTransacation] = useState(transaction);
+    const [innerTransaction, setInnerTransaction] = useState(transaction);
 
     useEffect(() => {
-        if (transaction) setInnerTransacation(transaction);
+        if (transaction) setInnerTransaction(transaction);
     }, [transaction]);
 
     // TODO: take into account a higher number of confirmations
@@ -137,6 +137,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     position="absolute"
                     right="8px"
                     top="8px"
+                    role="close-button"
                     onClick={() => innerTransaction?.ack()}
                 />
             )}

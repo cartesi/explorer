@@ -29,9 +29,7 @@ const Template: ComponentStory<typeof StakedBalanceSection> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     stakedBalance: BigNumber.from(defaultValue),
-    onUnstakeClick: () => {
-        console.log('onUnstakeClick::');
-    },
+    onUnstakeClick: () => undefined,
 };
 
 export const ZeroStakedBalance = Template.bind({});

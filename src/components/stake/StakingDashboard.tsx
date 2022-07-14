@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Stack, useDisclosure, VStack, StackProps } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { StakingPoolAllowanceModal } from './modals/StakingPoolAllowanceModal';
 import { WalletBalanceSection } from './components/WalletBalanceSection';
@@ -19,7 +19,6 @@ import { AllowanceSection } from './components/AllowanceSection';
 export interface StakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
-    userBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
     onApprove: (amount: BigNumberish) => void;
 }
@@ -38,11 +37,9 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
 
     const disclosure = useDisclosure();
 
-    const [allowanceTransaction, setAllowanceTransaction] = useState(false);
-
     return (
         <>
-            <VStack spacing={8}>
+            <VStack role="wallet-balance" spacing={8}>
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
                     w="full"
@@ -66,7 +63,6 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                 balance={balance}
                 onClose={onCloseStakingPoolAllowanceModal}
                 onSave={(amount) => {
-                    setAllowanceTransaction(true);
                     onApprove(amount);
                 }}
             />

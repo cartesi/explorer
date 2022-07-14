@@ -38,9 +38,7 @@ Default.args = {
     stakingMaturingTimestamp: new Date(),
     stakingReleasingTimestamp: new Date(),
     hideZeros: false,
-    onRebalance: () => {
-        console.log('onRebalance::');
-    },
+    onRebalance: () => undefined,
 };
 
 export const NeedRebalance = Template.bind({});

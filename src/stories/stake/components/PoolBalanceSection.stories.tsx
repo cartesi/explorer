@@ -30,12 +30,8 @@ export const Default = Template.bind({});
 Default.args = {
     userPoolBalance: BigNumber.from(defaultValue),
     isPoolBalanceLocked: false,
-    onStakeClick: () => {
-        console.log('onStakeClick::');
-    },
-    onWithdrawClick: () => {
-        console.log('onWithdrawClick::');
-    },
+    onStakeClick: () => undefined,
+    onWithdrawClick: () => undefined,
 };
 
 export const PoolBalanceLocked = Template.bind({});

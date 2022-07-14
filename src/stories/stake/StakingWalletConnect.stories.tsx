@@ -25,7 +25,5 @@ const Template: ComponentStory<typeof StakingWalletConnect> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    onConnect: () => {
-        console.log('onConnect::');
-    },
+    onConnect: () => undefined,
 };

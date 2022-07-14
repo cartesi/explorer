@@ -30,9 +30,7 @@ export const Default = Template.bind({});
 Default.args = {
     userWalletBalance: BigNumber.from(defaultValue),
     userETHBalance: BigNumber.from(defaultValue),
-    onDepositClick: () => {
-        console.log('onDepositClick::');
-    },
+    onDepositClick: () => undefined,
 };
 
 export const ZeroUserWalletBalance = Template.bind({});

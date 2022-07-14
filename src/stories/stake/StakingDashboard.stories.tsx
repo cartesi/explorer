@@ -30,9 +30,6 @@ export const Default = Template.bind({});
 Default.args = {
     balance: BigNumber.from(defaultValue),
     allowance: BigNumber.from(defaultValue),
-    userBalance: BigNumber.from(defaultValue),
     userETHBalance: BigNumber.from(defaultValue),
-    onApprove: () => {
-        console.log('onApprove::');
-    },
+    onApprove: () => undefined,
 };

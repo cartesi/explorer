@@ -29,9 +29,7 @@ const Template: ComponentStory<typeof AllowanceSection> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     allowance: defaultValue,
-    onAllowanceClick: () => {
-        console.log('onAllowanceClick::');
-    },
+    onAllowanceClick: () => undefined,
 };
 
 export const ZeroAllowance = Template.bind({});

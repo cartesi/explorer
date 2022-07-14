@@ -49,34 +49,9 @@ Default.args = {
     lockTime: 1000,
     poolTransaction: defaultTransaction,
     tokenTransaction: defaultTransaction,
-    onApprove: () => {
-        console.log('onApprove::');
-    },
-    onDeposit: () => {
-        console.log('onDeposit::');
-    },
-    onWithdraw: () => {
-        console.log('onWithdraw::');
-    },
-    onStake: () => {
-        console.log('onStake::');
-    },
-    onUnstake: () => {
-        console.log('onUnstake::');
-    },
+    onApprove: () => undefined,
+    onDeposit: () => undefined,
+    onWithdraw: () => undefined,
+    onStake: () => undefined,
+    onUnstake: () => undefined,
 };
-
-// userWalletBalance: BigNumber; // wallet balance
-// allowance: BigNumber; // ERC20 allowance
-// userPoolBalance: BigNumber; // user pool balance
-// userETHBalance: BigNumber; // user ETH balance
-// stakedBalance: BigNumber; // user stake balance
-// depositTimestamp: Date;
-// lockTime: number;
-// onApprove: (amount: BigNumberish) => void;
-// onDeposit: (amount: BigNumberish) => void;
-// onWithdraw: (amount: BigNumberish) => void;
-// onStake: (amount: BigNumberish) => void;
-// onUnstake: (amount?: BigNumberish) => void;
-// poolTransaction: Transaction<void>;
-// tokenTransaction: Transaction<any>;

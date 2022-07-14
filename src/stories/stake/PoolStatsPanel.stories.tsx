@@ -55,29 +55,5 @@ Default.args = {
     stakingMaturingTimestamp: new Date(),
     stakingReleasingTimestamp: new Date(),
     hideZeros: false,
-    onRebalance: () => {
-        console.log('onRebalance::');
-    },
+    onRebalance: () => undefined,
 };
-
-// address: string;
-// stakedBalance: BigNumber;
-// totalBlocks: number;
-// totalUsers: number;
-// productionInterval: number; // average number of milliseconds between blocks considering the last 10 produced blocks
-// totalReward: BigNumberish;
-// commissionPercentage: number;
-// fee: StakingPoolFee;
-// amount: BigNumber;
-// pool: BigNumber;
-// stake: BigNumber;
-// unstake: BigNumber;
-// withdraw: BigNumber;
-// stakingMature: BigNumber;
-// stakingMaturing: BigNumber;
-// stakingReleasing: BigNumber;
-// stakingReleased: BigNumber;
-// stakingMaturingTimestamp: Date;
-// stakingReleasingTimestamp: Date;
-// hideZeros: boolean;
-// onRebalance?: () => void;

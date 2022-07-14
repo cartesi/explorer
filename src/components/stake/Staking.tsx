@@ -17,7 +17,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
-import { TimerIcon } from '../../components/Icons';
+import { TimerIcon } from '../Icons';
 import { InfoBanner } from './InfoBanner';
 import { StakingDepositModal } from './modals/StakingDepositModal';
 import { StakingStakeModal } from './modals/StakingStakeModal';
@@ -39,10 +39,6 @@ export interface StakingProps extends StackProps {
     userPoolBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
     stakedBalance: BigNumber; // user stake balance
-    // shares: BigNumber; // user shares
-    // staked: BigNumber; // user stake
-    // withdrawBalance: BigNumber; // amount of token user can actually withdraw
-    // paused: boolean;
     depositTimestamp: Date;
     lockTime: number;
     onApprove: (amount: BigNumberish) => void;

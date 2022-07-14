@@ -31,15 +31,9 @@ Default.args = {
     balance: BigNumber.from(defaultValue),
     userBalance: BigNumber.from(defaultValue),
     disclosure: {
-        onClose: () => {
-            console.log('disclosure::onClose::');
-        },
+        onClose: () => undefined,
     },
     isOpen: true,
-    onClose: () => {
-        console.log('onClose::');
-    },
-    onSave: () => {
-        console.log('onSave::');
-    },
+    onClose: () => undefined,
+    onSave: () => undefined,
 };
