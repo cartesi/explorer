@@ -13,11 +13,7 @@ import { useWallet } from '../../../../src/contexts/wallet';
 import { useStaking } from '../../../../src/services/staking';
 import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
-import {
-    buildContractReceipt,
-    buildUseCartesiTokenReturn,
-    buildUseStakingReturn,
-} from '../mocks';
+import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 
@@ -276,7 +272,7 @@ describe('SetAllowance Step', () => {
             fireEvent.click(button);
 
             // Emulating hooks changing cartesi-token / transaction state.
-            tokenMock.transaction.submitting = true;
+            tokenMock.transaction.isOngoing = true;
             tokenMock.transaction.acknowledged = false;
             // Then we render the component again to get fresh values
             rerender(<SetAllowance stepNumber={1} inFocus />);
@@ -298,7 +294,7 @@ describe('SetAllowance Step', () => {
             });
             const tokenMock = buildUseCartesiTokenReturn();
             tokenMock.transaction.acknowledged = false;
-            tokenMock.transaction.receipt = buildContractReceipt();
+            tokenMock.transaction.state = 'confirmed';
             mockUseStaking.mockReturnValue(stakingMock);
             mockUseCartesiToken.mockReturnValue(tokenMock);
             render(<SetAllowance inFocus stepNumber={1} />);
@@ -314,7 +310,7 @@ describe('SetAllowance Step', () => {
             });
             const tokenMock = buildUseCartesiTokenReturn();
             tokenMock.transaction.acknowledged = false;
-            tokenMock.transaction.receipt = buildContractReceipt();
+            tokenMock.transaction.state = 'confirmed';
             mockUseStaking.mockReturnValue(stakingMock);
             mockUseCartesiToken.mockReturnValue(tokenMock);
             // @ts-ignore

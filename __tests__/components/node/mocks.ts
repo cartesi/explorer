@@ -143,6 +143,8 @@ function buildTransaction(): Transaction<any> {
         set: jest.fn(),
         submitting: false,
         transaction: undefined,
+        isOngoing: false,
+        state: 'acknowledged',
     };
 }
 

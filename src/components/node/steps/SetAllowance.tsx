@@ -28,7 +28,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useWallet } from '../../../contexts/wallet';
 import { useStaking } from '../../../services/staking';
-import { Transaction } from '../../../services/transaction';
 import { useCartesiToken } from '../../../services/token';
 import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
@@ -143,12 +142,10 @@ const SetAllowanceInput = ({
 
 const enableBtnWhen = (
     allowance: string,
-    submitting: boolean,
+    transactionInProgress: boolean,
     errors: Errors
-) => !isEmpty(allowance) && !submitting && isEmpty(errors);
+) => !isEmpty(allowance) && !transactionInProgress && isEmpty(errors);
 
-const isTransactionConfirmed = (transaction: Transaction<any>) =>
-    transaction.receipt?.confirmations >= 1;
 const buildURL = (nodeAddress: string) =>
     !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/newStaking';
 
@@ -174,17 +171,17 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
 
     const enableBtn = enableBtnWhen(
         allowanceAmount,
-        transaction.submitting,
+        transaction.isOngoing,
         errors
     );
 
-    const transactionConfirmed = isTransactionConfirmed(transaction);
+    const isStepCompleted = transaction?.state === 'confirmed';
 
     useEffect(() => {
-        if (transactionConfirmed) {
+        if (isStepCompleted) {
             router.push(buildURL(hiredNodeAddress));
         }
-    }, [transactionConfirmed]);
+    }, [isStepCompleted]);
 
     return (
         <Step
@@ -215,7 +212,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                         disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
                         colorScheme="blue"
-                        isLoading={transaction.submitting}
+                        isLoading={transaction.isOngoing}
                         onClick={() =>
                             approve(
                                 staking.address,

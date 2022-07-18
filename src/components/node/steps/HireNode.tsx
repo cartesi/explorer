@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react';
 import { useWallet } from '../../../contexts/wallet';
 
 import { useNode, NodeStatus } from '../../../services/node';
-import { Transaction } from '../../../services/transaction';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
@@ -57,7 +56,7 @@ const HireNode = ({
     const node = useNode(nodeAddress);
     const { status } = evaluateNode(account, node);
     const enableNext = enableNextWhen(initialFunds, status, errors);
-    const isStepCompleted = node.transaction.state === 'confirmed';
+    const isStepCompleted = node.transaction?.state === 'confirmed';
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
