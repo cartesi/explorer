@@ -37,7 +37,6 @@ import { useStakingPool } from '../../../services/pool';
 import TransactionBanner from '../../node/TransactionBanner';
 import { isEmpty } from 'lodash';
 import { trim } from 'lodash/fp';
-import { Transaction } from '../../../services/transaction';
 import { useRouter } from 'next/router';
 
 interface SimpleInput {
@@ -149,9 +148,6 @@ const Content = () => {
 
 const { COMPLETED } = StepStatus;
 
-const isConfirmed = (transaction: Transaction<any>) =>
-    transaction.receipt?.confirmations >= 1;
-
 const buildURL = (address: string) =>
     !isEmpty(address) ? `/pools/${address}/manage` : '/newStaking';
 
@@ -169,7 +165,7 @@ const EthereumNameServer = ({
     const [stepState, setStepState] = useStepState({ inFocus });
     const [proceed, setProceed] = useState<boolean>(false);
     const [ens, setENS] = useState<string | null>();
-    const isCompleted = proceed || isConfirmed(pool.transaction);
+    const isCompleted = proceed || pool.transaction?.state === 'confirmed';
 
     useEffect(() => {
         if (isCompleted) {
@@ -219,6 +215,8 @@ const EthereumNameServer = ({
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
+                        isLoading={pool.transaction?.isOngoing}
+                        disabled={pool.transaction?.isOngoing}
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
                         onClick={() => {

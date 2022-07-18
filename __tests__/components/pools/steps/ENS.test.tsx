@@ -2,6 +2,7 @@
 import {
     act,
     cleanup,
+    findByText,
     fireEvent,
     render,
     screen,
@@ -301,6 +302,7 @@ describe('Pool ENS step', () => {
                 // setting to have the contract transaction fulfilled
                 pool.transaction.acknowledged = false;
                 pool.transaction.receipt = buildContractReceipt();
+                pool.transaction.state = 'confirmed';
                 rerender(<Component inFocus stepNumber={1} />);
 
                 expect(
@@ -315,6 +317,37 @@ describe('Pool ENS step', () => {
                 expect(routerPushStub).toHaveBeenCalledWith(
                     '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage'
                 );
+            });
+
+            it('should display a spinner and block any futher clicks while transaction is in due course', async () => {
+                const pool = buildUseStakingPoolReturn();
+                mockUseStakingPool.mockReturnValue(pool);
+                const { rerender } = render(
+                    <Component inFocus stepNumber={1} />
+                );
+
+                act(() => {
+                    fireEvent.change(screen.getByLabelText('Pool ENS name'), {
+                        target: { value: 'my.poolname.eth' },
+                    });
+                });
+
+                const button = screen.getByText('COMPLETE');
+                fireEvent.click(button);
+
+                // setting to have the transaction rolling
+                pool.transaction.acknowledged = false;
+                pool.transaction.isOngoing = true;
+                rerender(<Component inFocus stepNumber={1} />);
+
+                expect(
+                    await findByText(button, 'Loading...')
+                ).toBeInTheDocument();
+
+                fireEvent.click(button);
+                fireEvent.click(button);
+
+                expect(pool.setName).toHaveBeenCalledTimes(1);
             });
         });
     });
