@@ -104,7 +104,7 @@ const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('HireNode Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
-    const atomSetterStub = jest.fn();
+    const poolAddress = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
 
     beforeEach(() => {
         // Partial filled Happy returns
@@ -120,7 +120,7 @@ describe('HireNode Step', () => {
         mockUseNode.mockReturnValue(buildNodeObj());
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        mockUseAtom.mockImplementation(() => ['', atomSetterStub]);
+        mockUseAtom.mockImplementation(() => [poolAddress]);
         mockUseStakingPool.mockReturnValue(buildUseStakingPoolReturn());
 
         // default is the real implementation
@@ -130,6 +130,12 @@ describe('HireNode Step', () => {
     afterEach(() => {
         cleanup();
         jest.clearAllMocks();
+    });
+
+    it('should have access to the pool address created previously shared by atom', () => {
+        render(<HireNode inFocus stepNumber={1} />);
+
+        expect(useStakingPool).toHaveBeenCalledWith(poolAddress, account);
     });
 
     it('Should render the step-number assigned to it', () => {
@@ -646,7 +652,7 @@ describe('HireNode Step', () => {
                 fireEvent.click(button);
 
                 pool.transaction.acknowledged = false;
-                pool.transaction.submitting = true;
+                pool.transaction.isOngoing = true;
 
                 rerender(<HireNode inFocus stepNumber={1} />);
 
@@ -660,6 +666,53 @@ describe('HireNode Step', () => {
 
                 expect(pool.hire).toHaveBeenCalledTimes(1);
             });
+        });
+    });
+
+    describe('When node is hired', () => {
+        it('should call onComplete callback, transition the step to a completed state', async () => {
+            const Component = () => (
+                <HireNode inFocus stepNumber={1} onComplete={onComplete} />
+            );
+            const pool = buildUseStakingPoolReturn();
+            const node = buildNodeObj('available', '0x00');
+            mockUseStakingPool.mockReturnValue(pool);
+            mockUseNode.mockReturnValue(node);
+            mockUseBalance.mockReturnValue(toBigNumber('5'));
+            const nodeAddress = '0xBB0d5E9bba2606D01683605cc09eB5561740f623';
+            pool.transaction.acknowledged = false;
+            const onComplete = jest.fn();
+            const { rerender } = render(<Component />);
+
+            const addressInput = screen.getByLabelText('Node Address');
+            const fundsInput = screen.getByLabelText('Initial Funds');
+
+            act(() => {
+                fireEvent.change(addressInput, {
+                    target: { value: nodeAddress },
+                });
+                fireEvent.change(fundsInput, { target: { value: 2 } });
+            });
+
+            await screen.findByText('This node is available');
+
+            const button = screen.getByText('NEXT');
+            fireEvent.click(button);
+
+            //Emulate transaction submission
+            pool.transaction.isOngoing = true;
+            rerender(<Component />);
+            expect(await findByText(button, 'Loading...')).toBeInTheDocument();
+
+            //Emulate transaction confirmation
+            pool.transaction.state = 'confirmed';
+            rerender(<Component />);
+
+            expect(onComplete).toHaveBeenCalledTimes(1);
+            expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
+            expect(screen.queryByText('Initial Funds')).not.toBeInTheDocument();
+            expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
+            expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
         });
     });
 });

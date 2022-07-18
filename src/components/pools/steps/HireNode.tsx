@@ -24,7 +24,6 @@ import { useEffect, useState } from 'react';
 import { useWallet } from '../../../contexts/wallet';
 
 import { useNode, NodeStatus } from '../../../services/node';
-import { Transaction } from '../../../services/transaction';
 import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
@@ -55,9 +54,6 @@ const enableNextWhen = (
 ): boolean => {
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };
-
-const isNodeHiringCompleted = (transaction: Transaction<any>) =>
-    transaction.receipt?.confirmations >= 1;
 
 const wordingFor = {
     pause: {
@@ -92,7 +88,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     const { status } = evaluateNode(poolAddress, node);
     const enableNext = enableNextWhen(initialFunds, status, errors);
     const isStepCompleted =
-        transactionType === 'hire' && isNodeHiringCompleted(pool?.transaction);
+        transactionType === 'hire' && pool?.transaction?.state === 'confirmed';
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -169,8 +165,8 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
-                        disabled={!enableNext || pool.transaction?.submitting}
-                        isLoading={pool.transaction?.submitting}
+                        disabled={!enableNext || pool.transaction?.isOngoing}
+                        isLoading={pool.transaction?.isOngoing}
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
