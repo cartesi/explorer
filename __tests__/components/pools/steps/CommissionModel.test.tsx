@@ -12,7 +12,6 @@
 import {
     cleanup,
     fireEvent,
-    prettyDOM,
     act,
     render,
     screen,
@@ -24,7 +23,7 @@ import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
 import { useWallet } from '../../../../src/contexts/wallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
 import { buildContractReceipt } from '../../node/mocks';
-import { Atom, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { useStepState } from '../../../../src/components/StepGroup';
 import { StepStatus } from '../../../../src/components/Step';
 
@@ -97,10 +96,7 @@ describe('CommissionModel step component', () => {
             chainId: 3,
         });
 
-        mockUseAtom.mockImplementation((a: Atom<unknown>) => [
-            '',
-            atomSetterStub as never,
-        ]);
+        mockUseAtom.mockImplementation(() => ['', atomSetterStub as never]);
 
         // default is the real implementation
         mockUseStepState.mockImplementation(realUseStepState);
@@ -540,7 +536,7 @@ describe('CommissionModel step component', () => {
                 );
 
                 // Emulating hooks changing pool-factory transaction state.
-                poolFactory.transaction.submitting = true;
+                poolFactory.transaction.isOngoing = true;
                 poolFactory.transaction.acknowledged = false;
                 // Then we render the component again to get fresh values
                 rerender(<CommissionModel inFocus stepNumber={1} />);
@@ -597,7 +593,7 @@ describe('CommissionModel step component', () => {
             fireEvent.click(button);
 
             //Adding transaction confirmation and pool address
-            poolFactory.transaction.receipt = buildContractReceipt();
+            poolFactory.transaction.state = 'confirmed';
             poolFactory.transaction.result = poolAddress;
             rerender(<Component />);
 

@@ -17,14 +17,7 @@ import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import TransactionBanner from '../../../node/TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
-import {
-    allPass,
-    isEmpty,
-    isFunction,
-    omit,
-    propEq,
-    toNumber,
-} from 'lodash/fp';
+import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
 import { useWallet } from '../../../../contexts/wallet';
@@ -85,7 +78,7 @@ const createPoolDisabled = ({
     !isEmpty(errors);
 
 const isPoolCreationCompleted = (transaction: Transaction<any>) =>
-    transaction.receipt?.confirmations >= 1 && !isEmpty(transaction?.result);
+    transaction.state === 'confirmed' && !isEmpty(transaction?.result);
 
 const CommissionModel = ({
     stepNumber,
@@ -218,9 +211,9 @@ const CommissionModel = ({
                     <Button
                         disabled={
                             disablePoolCreationButton ||
-                            poolFactory?.transaction?.submitting
+                            poolFactory?.transaction?.isOngoing
                         }
-                        isLoading={poolFactory?.transaction?.submitting}
+                        isLoading={poolFactory?.transaction?.isOngoing}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
