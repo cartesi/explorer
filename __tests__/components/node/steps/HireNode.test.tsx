@@ -22,7 +22,7 @@ import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/node/steps/HireNode';
 import { toBigNumber } from '../../../../src/utils/numberParser';
-import { buildContractReceipt, buildNodeObj } from '../mocks';
+import { buildNodeObj } from '../mocks';
 import { useAtom } from 'jotai';
 
 const walletMod = `../../../../src/contexts/wallet`;
@@ -92,7 +92,7 @@ describe('HireNode Step', () => {
         mockUseNode.mockReturnValue(buildNodeObj());
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        mockUseAtom.mockImplementation((...a: any) => ['', atomSetterStub]);
+        mockUseAtom.mockImplementation(() => ['', atomSetterStub]);
     });
 
     afterEach(() => {
@@ -295,7 +295,7 @@ describe('HireNode Step', () => {
                 fireEvent.click(button);
 
                 // Emulating hooks changing node / transaction state.
-                node.transaction.submitting = true;
+                node.transaction.isOngoing = true;
                 node.transaction.acknowledged = false;
                 // Then we render the component again to get fresh values
                 rerender(<HireNode inFocus stepNumber={1} />);
@@ -338,7 +338,7 @@ describe('HireNode Step', () => {
             await screen.findByText('This node is available');
 
             //Adding transaction confirmation
-            node.transaction.receipt = buildContractReceipt();
+            node.transaction.state = 'confirmed';
             rerender(<Component />);
 
             expect(onComplete).toHaveBeenCalledTimes(1);

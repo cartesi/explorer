@@ -40,9 +40,6 @@ const enableNextWhen = (
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };
 
-const isNodeHiringCompleted = (transaction: Transaction<any>) =>
-    transaction.receipt?.confirmations >= 1;
-
 const HireNode = ({
     stepNumber,
     onComplete,
@@ -60,8 +57,7 @@ const HireNode = ({
     const node = useNode(nodeAddress);
     const { status } = evaluateNode(account, node);
     const enableNext = enableNextWhen(initialFunds, status, errors);
-    const { transaction } = node;
-    const isStepCompleted = isNodeHiringCompleted(transaction);
+    const isStepCompleted = node.transaction.state === 'confirmed';
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -141,8 +137,8 @@ const HireNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        disabled={!enableNext || node.transaction?.submitting}
-                        isLoading={node.transaction?.submitting}
+                        disabled={!enableNext || node.transaction?.isOngoing}
+                        isLoading={node.transaction?.isOngoing}
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => node.hire(toBigNumber(initialFunds))}
