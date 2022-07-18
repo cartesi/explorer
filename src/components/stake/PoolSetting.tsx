@@ -15,6 +15,7 @@ import {
     Box,
     Button,
     Divider,
+    Flex,
     FormControl,
     FormHelperText,
     FormLabel,
@@ -27,12 +28,19 @@ import {
     Link,
     Stack,
     Switch,
+    Text,
     Tooltip,
     VStack,
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
+import { useWallet } from '../../contexts/wallet';
+import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
+import CTSIText from '../CTSIText';
 
 export const PoolSetting: React.FC = () => {
+    const { account } = useWallet();
+    const poolBalance = useTotalPoolBalance(account);
+
     return (
         <Box
             px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
@@ -66,24 +74,38 @@ export const PoolSetting: React.FC = () => {
                         >
                             REBALANCE
                         </Button>
-                        <Box fontSize={'sm'} alignSelf="flex-end">
-                            Pool balance 0 CTSI{' '}
+
+                        <Flex
+                            fontSize={'sm'}
+                            alignSelf="flex-end"
+                            align="center"
+                        >
+                            <Flex align="end" mr={2}>
+                                <Text mr={1} lineHeight={1}>
+                                    Pool balance:
+                                </Text>
+                                <CTSIText
+                                    value={poolBalance}
+                                    fontSize="1x1"
+                                    lineHeight={1}
+                                />
+                            </Flex>
+
                             <Tooltip
                                 placement="bottom"
-                                label="SAMPLE TEXT"
+                                label="Total amount of tokens staked in this pool"
                                 fontSize="small"
                                 bg="black"
                                 color="white"
                             >
                                 <Icon
-                                    pb={1}
-                                    width={4}
-                                    height={4}
+                                    width={3}
+                                    height={3}
                                     color="gray.600"
                                     role="balance-icon"
                                 />
                             </Tooltip>
-                        </Box>
+                        </Flex>
                     </VStack>
                 </Box>
             </Stack>
