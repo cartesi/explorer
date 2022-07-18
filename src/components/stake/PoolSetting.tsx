@@ -288,7 +288,8 @@ export const PoolSetting: FC = () => {
                             isDisabled={
                                 getValues('ensName') === '' ||
                                 !!touchedFields.ensName ||
-                                !!errors.ensName
+                                !!errors.ensName ||
+                                progress >= 1
                             }
                             onClick={() => {
                                 console.log('setName::');
