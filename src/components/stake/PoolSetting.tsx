@@ -11,8 +11,12 @@
 
 import React, { FC } from 'react';
 import {
+    Alert,
+    AlertDescription,
+    AlertIcon,
     Box,
     Button,
+    CloseButton,
     Divider,
     Flex,
     FormControl,
@@ -26,6 +30,7 @@ import {
     InputGroup,
     InputRightElement,
     Link,
+    Spinner,
     Stack,
     Switch,
     Text,
@@ -39,13 +44,16 @@ import CTSIText from '../CTSIText';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../services/pool';
 import { useForm } from 'react-hook-form';
+import Address from '../Address';
+import { validateEns } from '../../utils/validation';
 
 export const PoolSetting: FC = () => {
-    const { account } = useWallet();
-    const poolBalance = useTotalPoolBalance(account);
     const router = useRouter();
-    const poolAddress = router.query.node as string;
-    const pool = useStakingPool(poolAddress, account);
+    const address = router.query.pool as string;
+    const { account } = useWallet();
+    const pool = useStakingPool(address, account);
+    const poolBalance = useTotalPoolBalance(account);
+    const progress = pool.transaction?.receipt?.confirmations || 0;
     const {
         register,
         trigger,
@@ -62,11 +70,7 @@ export const PoolSetting: FC = () => {
             return true;
         }
 
-        if (
-            !/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?/.test(
-                value
-            )
-        ) {
+        if (!validateEns(value)) {
             return 'Enter a valid ENS name';
         }
 
@@ -94,6 +98,43 @@ export const PoolSetting: FC = () => {
             pb={{ base: 6, sm: 8, lg: 8 }}
             fontSize={'xl'}
         >
+            {pool.transaction?.error && (
+                <Alert status="error" variant="left-accent" mt={2}>
+                    <AlertIcon />
+                    <Box flex="1">
+                        <AlertDescription display="block">
+                            {pool.transaction?.error}
+                        </AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+
+            {progress >= 1 && (
+                <Alert status="success" variant="left-accent" mt={2}>
+                    <AlertIcon />
+                    <Box flex="1">
+                        <HStack>
+                            {pool.transaction?.transaction?.hash && (
+                                <Address
+                                    address={
+                                        pool.transaction?.transaction?.hash
+                                    }
+                                    type="tx"
+                                    truncated
+                                    chainId={
+                                        pool.transaction?.transaction?.chainId
+                                    }
+                                />
+                            )}
+                        </HStack>
+
+                        <AlertDescription display="block">
+                            Pool ENS name changed successfully
+                        </AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+
             <Stack
                 spacing={4}
                 justifyContent="space-between"
@@ -249,6 +290,11 @@ export const PoolSetting: FC = () => {
                                 !!touchedFields.ensName ||
                                 !!errors.ensName
                             }
+                            onClick={() => {
+                                console.log('setName::');
+                                console.log(getValues('ensName'));
+                                pool.setName(getValues('ensName'));
+                            }}
                         >
                             UPDATE
                         </Button>
@@ -266,13 +312,27 @@ export const PoolSetting: FC = () => {
                     )}
                 </FormControl>
 
+                {!pool.transaction?.acknowledged &&
+                    !pool.transaction?.error &&
+                    progress === 0 && (
+                        <Alert status="info" variant="left-accent">
+                            <Spinner mx={2} />
+                            <CloseButton
+                                position="absolute"
+                                right="8px"
+                                top="8px"
+                                onClick={() => pool.transaction?.ack()}
+                            />
+                        </Alert>
+                    )}
+
                 <FormControl>
                     <HStack mt={4} justify="space-between">
                         <FormLabel>
                             Staking{' '}
                             <Tooltip
                                 placement="bottom"
-                                label="SAMPLE TEXT"
+                                label="Open or close the pool for new stakes"
                                 fontSize="small"
                                 bg="black"
                                 color="white"
@@ -312,7 +372,7 @@ export const PoolSetting: FC = () => {
                         Decide to quit{' '}
                         <Tooltip
                             placement="bottom"
-                            label="SAMPLE TEXT"
+                            label="If you don't want to keep the pool active, it can be disabled with our help"
                             fontSize="small"
                             bg="black"
                             color="white"
@@ -328,7 +388,7 @@ export const PoolSetting: FC = () => {
                     </FormLabel>
                 </HStack>
                 <FormLabel>
-                    If you would like to close the pool. Please,{' '}
+                    If you would like to close the pool, please{' '}
                     <Link href="mailto:hello@cartesi.io" color="blue.400">
                         contact us
                     </Link>{' '}
