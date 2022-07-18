@@ -15,6 +15,17 @@ import { serializeError } from 'eth-rpc-errors';
 import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
 import { confirmations } from '../utils/networks';
 import { useWallet } from '../contexts/wallet';
+import {
+    allPass,
+    anyPass,
+    complement,
+    cond,
+    isEmpty,
+    pipe,
+    prop,
+    propEq,
+    T,
+} from 'lodash/fp';
 
 export class Transaction<R> {
     submitting: boolean;
@@ -25,7 +36,52 @@ export class Transaction<R> {
     set: (transaction: Promise<ContractTransaction>) => void;
     ack: () => void;
     result?: R;
+    /**
+     * Transaction is considered ongoing when is submitting, or
+     * the transaction was submitted to the blockchain and it is waiting for the receipt (based on confirmations)
+     * to be set.
+     */
+    isOngoing?: boolean;
+    state?: TransactionState;
 }
+
+const isNotEmpty = complement(isEmpty);
+
+const isOngoing = anyPass<Transaction<any>>([
+    propEq('submitting', true),
+    allPass([
+        pipe(prop('transaction'), isNotEmpty),
+        pipe(prop('receipt'), isEmpty),
+    ]),
+]);
+
+type TransactionState =
+    | 'submitting'
+    | 'waiting_confirmation'
+    | 'confirmed'
+    | 'errored'
+    | 'acknowledged';
+
+const deriveStateFrom = cond<Transaction<any>, TransactionState>([
+    [propEq('acknowledged', true), () => 'acknowledged'],
+    [pipe([prop('error'), isNotEmpty]), () => 'errored'],
+    [propEq('submitting', true), () => 'submitting'],
+    [
+        allPass([
+            pipe(prop('transaction'), isNotEmpty),
+            pipe(prop('receipt'), isEmpty),
+        ]),
+        () => 'waiting_confirmation',
+    ],
+    [
+        allPass([
+            pipe(prop('transaction'), isNotEmpty),
+            pipe(prop('receipt'), isNotEmpty),
+        ]),
+        () => 'confirmed',
+    ],
+    [T, () => 'acknowledged'],
+]);
 
 function extractError(error: SerializedEthereumRpcError): string {
     if (error.data) {
@@ -87,7 +143,7 @@ export function useTransaction<R>(
         }
     }, [transaction]);
 
-    return {
+    const t = {
         submitting,
         acknowledged,
         transaction,
@@ -96,5 +152,11 @@ export function useTransaction<R>(
         set,
         ack,
         result,
+    };
+
+    return {
+        ...t,
+        isOngoing: isOngoing(t),
+        state: deriveStateFrom(t),
     };
 }
