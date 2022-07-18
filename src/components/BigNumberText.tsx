@@ -82,6 +82,7 @@ export interface BigNumberTextProps extends FlexProps {
     value: BigNumberish;
     nullLabel?: string;
     direction?: SystemProps['flexDirection'];
+    fontSize?: SystemProps['fontSize'];
     unit?: Unit;
     options?: Intl.NumberFormatOptions;
     countdown?: Countdown;
@@ -98,6 +99,7 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
         value,
         nullLabel = '-',
         direction = 'column',
+        fontSize = '3x1',
         icon,
         unit,
         options = defaultOptions,
@@ -120,7 +122,9 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                 {children}
             </HStack>
             <HStack align="baseline">
-                <Text fontSize="3xl">{valueLabel}</Text>
+                <Text fontSize={fontSize} lineHeight={1}>
+                    {valueLabel}
+                </Text>
                 {unit && value && <Text fontSize="small">{unitLabel}</Text>}
             </HStack>
             {countdown && countdown.timeLeft && (
