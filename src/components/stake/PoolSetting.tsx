@@ -9,14 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import React, { FC } from 'react';
 import {
     Box,
     Button,
     Divider,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormHelperText,
     FormLabel,
     Heading,
@@ -36,10 +36,57 @@ import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useWallet } from '../../contexts/wallet';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import CTSIText from '../CTSIText';
+import { useRouter } from 'next/router';
+import { useStakingPool } from '../../services/pool';
+import { useForm } from 'react-hook-form';
 
-export const PoolSetting: React.FC = () => {
+export const PoolSetting: FC = () => {
     const { account } = useWallet();
     const poolBalance = useTotalPoolBalance(account);
+    const router = useRouter();
+    const poolAddress = router.query.node as string;
+    const pool = useStakingPool(poolAddress, account);
+    const {
+        register,
+        trigger,
+        getValues,
+        formState: { errors, touchedFields },
+    } = useForm<{ ensName: string }>({
+        defaultValues: {
+            ensName: '',
+        },
+    });
+
+    const validate = (value: string) => {
+        if (value === '') {
+            return true;
+        }
+
+        if (
+            !/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?/.test(
+                value
+            )
+        ) {
+            return 'Enter a valid ENS name';
+        }
+
+        return true;
+    };
+
+    const {
+        ref,
+        name,
+        onChange: onChangeValidate,
+    } = register('ensName', {
+        shouldUnregister: true,
+        validate,
+    });
+
+    const onTogglePool = () => {
+        const tType = pool.paused ? 'unpause' : 'pause';
+
+        pool[tType]();
+    };
 
     return (
         <Box
@@ -59,9 +106,9 @@ export const PoolSetting: React.FC = () => {
                     <Heading as="h2" mb={0}>
                         Pool Setting
                     </Heading>
-                    <Link href="#" isExternal fontSize="xs">
-                        Learn with this tutorial <ExternalLinkIcon />
-                    </Link>
+                    <Text fontSize="sm">
+                        All actions approved by wallet transaction.
+                    </Text>
                 </Box>
 
                 <Box>
@@ -121,7 +168,7 @@ export const PoolSetting: React.FC = () => {
                             Pool commission{' '}
                             <Tooltip
                                 placement="bottom"
-                                label="SAMPLE TEXT"
+                                label="Choose the commission fee for your pool"
                                 fontSize="small"
                                 bg="black"
                                 color="white"
@@ -157,13 +204,14 @@ export const PoolSetting: React.FC = () => {
                         </Button>
                     </Stack>
                 </FormControl>
-                <FormControl>
+
+                <FormControl isInvalid={!!errors.ensName}>
                     <HStack justify="space-between">
                         <FormLabel>
                             Pool ENS name{' '}
                             <Tooltip
                                 placement="bottom"
-                                label="SAMPLE TEXT"
+                                label="Enter a registered ENS domain name"
                                 fontSize="small"
                                 bg="black"
                                 color="white"
@@ -180,21 +228,44 @@ export const PoolSetting: React.FC = () => {
                     </HStack>
                     <Stack direction={['column', 'row']}>
                         <InputGroup me={6}>
-                            <Input size="lg" />
+                            <Input
+                                size="lg"
+                                ref={ref}
+                                name={name}
+                                isInvalid={!!errors.ensName}
+                                onBlur={() => trigger('ensName')}
+                                onChange={(event) => {
+                                    onChangeValidate(event);
+                                    trigger('ensName');
+                                }}
+                            />
                         </InputGroup>
                         <Button
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
+                            isDisabled={
+                                getValues('ensName') === '' ||
+                                !!touchedFields.ensName ||
+                                !!errors.ensName
+                            }
                         >
                             UPDATE
                         </Button>
                     </Stack>
-                    <FormHelperText>
-                        After registering an ENS domain and setting it up, set
-                        the name here.
-                    </FormHelperText>
+
+                    {!errors.ensName ? (
+                        <FormHelperText>
+                            After registering an ENS domain and setting it up,
+                            set the name here.
+                        </FormHelperText>
+                    ) : (
+                        <FormErrorMessage>
+                            {errors.ensName?.message}
+                        </FormErrorMessage>
+                    )}
                 </FormControl>
+
                 <FormControl>
                     <HStack mt={4} justify="space-between">
                         <FormLabel>
@@ -219,11 +290,13 @@ export const PoolSetting: React.FC = () => {
                     <HStack>
                         <InputGroup me={6}>
                             <Switch
-                                id="isChecked"
                                 size="lg"
-                                defaultChecked={true}
                                 me={3}
+                                defaultChecked
+                                isChecked={!pool.paused}
+                                onChange={onTogglePool}
                             />
+
                             <FormLabel htmlFor="isChecked">
                                 Open your pool to accept new stakes
                             </FormLabel>
@@ -256,7 +329,7 @@ export const PoolSetting: React.FC = () => {
                 </HStack>
                 <FormLabel>
                     If you would like to close the pool. Please,{' '}
-                    <Link href="#" color="blue.400">
+                    <Link href="mailto:hello@cartesi.io" color="blue.400">
                         contact us
                     </Link>{' '}
                     and we will be glad to help you.
