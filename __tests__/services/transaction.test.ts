@@ -1,9 +1,13 @@
 import { renderHook, act, cleanup } from '@testing-library/react-hooks';
-import { Contract, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { useWallet } from '../../src/contexts/wallet';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 import { confirmations, Network } from '../../src/utils/networks';
-import { buildContractReceipt, buildContractTransaction } from './mocks';
+import {
+    buildContractReceipt,
+    buildContractTransaction,
+    buildContractReceiptEvent,
+} from './mocks';
 
 const walletMod = '../../src/contexts/wallet';
 
@@ -102,10 +106,10 @@ describe('Transaction service', () => {
             expect(result.current.transaction).toBeDefined();
         });
 
-        it('should change state to confirmed when contract-transaction reaches the expected confirmations based on network', async () => {
+        it('should change state to confirmed when contract-transaction reaches the expected confirmation number based on network', async () => {
             const contractTransaction = buildContractTransaction();
             contractTransaction.confirmations = confirmations[Network.MAINNET];
-            // A dummy close to real contract receipt
+            // A closer to real dummy contract receipt
             contractTransaction.wait.mockResolvedValue(buildContractReceipt());
             const { result, waitForValueToChange } = renderHook(() =>
                 useTransaction<string>()
@@ -125,6 +129,110 @@ describe('Transaction service', () => {
             expect(result.current.isOngoing).toBe(false);
             expect(result.current.transaction).toBeDefined();
             expect(result.current.receipt).toBeDefined();
+        });
+    });
+
+    describe('Error stages', () => {
+        it('should change its state to errored when transaction is rejected for any reason', async () => {
+            const { result, waitForValueToChange } = renderHook(() =>
+                useTransaction<string>()
+            );
+
+            expect(result.current.state).toEqual('acknowledged');
+
+            const promise = Promise.reject(
+                new Error('Metamask error goes here')
+            );
+
+            act(() => result.current.set(promise));
+
+            expect(result.current.state).toEqual('submitting');
+
+            await waitForValueToChange(() => result.current.state);
+
+            expect(result.current.state).toEqual('errored');
+            expect(result.current.error).toEqual('Metamask error goes here');
+        });
+
+        it('should be able to acknowledge the transaction after an errored state', async () => {
+            const { result, waitForValueToChange } = renderHook(() =>
+                useTransaction<string>()
+            );
+            const promise = Promise.reject(new Error('Random error'));
+            act(() => result.current.set(promise));
+            await waitForValueToChange(() => result.current.state);
+            expect(result.current.acknowledged).toBe(false);
+            expect(result.current.state).toEqual('errored');
+
+            act(() => result.current.ack());
+
+            expect(result.current.state).toEqual('acknowledged');
+            expect(result.current.acknowledged).toBe(true);
+        });
+
+        it('should handle transaction failures when trying to wait for confirmations', async () => {
+            const contractTransaction = buildContractTransaction();
+            contractTransaction.wait.mockRejectedValue(
+                new Error('Network failure')
+            );
+            const { result, waitForValueToChange } = renderHook(() =>
+                useTransaction<string>()
+            );
+
+            const promise = new Promise<ContractTransaction>((resolve) =>
+                act(() => resolve(contractTransaction))
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            expect(result.current).toHaveProperty('state', 'submitting');
+
+            await waitForValueToChange(() => result.current.state);
+
+            expect(result.current).toHaveProperty('state', 'errored');
+            expect(result.current.error).toEqual('Network failure');
+            expect(result.current.transaction).toBeDefined();
+            expect(result.current.receipt).not.toBeDefined();
+        });
+    });
+
+    describe('Result resolver', () => {
+        it('should be able to extract a result from a confirmed transaction', async () => {
+            const contractTransaction = buildContractTransaction();
+            contractTransaction.confirmations = confirmations[Network.MAINNET];
+            // A closer to real dummy contract receipt
+            const receipt = buildContractReceipt();
+            const receiptEvt = buildContractReceiptEvent();
+            receiptEvt.event = 'DummyEvent';
+            receiptEvt.args = ['my-result-goes-here'];
+            receipt.events = [receiptEvt];
+            contractTransaction.wait.mockResolvedValue(receipt);
+            const { result, waitForValueToChange } = renderHook(() =>
+                useTransaction<string>((receipt) => {
+                    if (receipt.events) {
+                        const event = receipt.events.find(
+                            ({ event }) => event == 'DummyEvent'
+                        );
+
+                        return event.args[0];
+                    }
+                })
+            );
+
+            const promise = new Promise<ContractTransaction>((resolve) =>
+                act(() => resolve(contractTransaction))
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            await waitForValueToChange(() => result.current.state);
+
+            expect(result.current).toHaveProperty('state', 'confirmed');
+            expect(result.current.result).toEqual('my-result-goes-here');
         });
     });
 });

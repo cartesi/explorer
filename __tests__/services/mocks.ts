@@ -1,9 +1,16 @@
-import { ContractTransaction } from 'ethers';
+import { ContractTransaction, Event } from 'ethers';
 import { mock } from 'jest-mock-extended';
 import { buildContractReceipt } from '../components/node/mocks';
 
 const contractTransactionFactory = () => mock<ContractTransaction>();
+const receiptEventFactory = () => mock<Event>();
 
 const buildContractTransaction = () => contractTransactionFactory();
 
-export { buildContractReceipt, buildContractTransaction };
+const buildContractReceiptEvent = () => receiptEventFactory();
+
+export {
+    buildContractReceipt,
+    buildContractTransaction,
+    buildContractReceiptEvent,
+};
