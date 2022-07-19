@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
     Alert,
     AlertDescription,
@@ -53,6 +53,8 @@ export const PoolSetting: FC = () => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const poolBalance = useTotalPoolBalance(account);
+    const [isChangingEns, setChangingEns] = useState<boolean>(false);
+    const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const {
         register,
@@ -86,11 +88,12 @@ export const PoolSetting: FC = () => {
         validate,
     });
 
-    const onTogglePool = () => {
-        const tType = pool.paused ? 'unpause' : 'pause';
-
-        pool[tType]();
-    };
+    useEffect(() => {
+        if (pool.transaction?.error || progress >= 1) {
+            setChangingStaking(false);
+            setChangingEns(false);
+        }
+    }, [pool.transaction]);
 
     return (
         <Box
@@ -292,8 +295,7 @@ export const PoolSetting: FC = () => {
                                 progress >= 1
                             }
                             onClick={() => {
-                                console.log('setName::');
-                                console.log(getValues('ensName'));
+                                setChangingEns(true);
                                 pool.setName(getValues('ensName'));
                             }}
                         >
@@ -313,7 +315,8 @@ export const PoolSetting: FC = () => {
                     )}
                 </FormControl>
 
-                {!pool.transaction?.acknowledged &&
+                {isChangingEns &&
+                    !pool.transaction?.acknowledged &&
                     !pool.transaction?.error &&
                     progress === 0 && (
                         <Alert status="info" variant="left-accent">
@@ -322,7 +325,10 @@ export const PoolSetting: FC = () => {
                                 position="absolute"
                                 right="8px"
                                 top="8px"
-                                onClick={() => pool.transaction?.ack()}
+                                onClick={() => {
+                                    setChangingEns(false);
+                                    pool.transaction?.ack();
+                                }}
                             />
                         </Alert>
                     )}
@@ -355,7 +361,15 @@ export const PoolSetting: FC = () => {
                                 me={3}
                                 defaultChecked
                                 isChecked={!pool.paused}
-                                onChange={onTogglePool}
+                                onChange={() => {
+                                    setChangingStaking(true);
+
+                                    if (pool.paused) {
+                                        pool.unpause();
+                                    } else {
+                                        pool.pause();
+                                    }
+                                }}
                             />
 
                             <FormLabel htmlFor="isChecked">
@@ -364,6 +378,24 @@ export const PoolSetting: FC = () => {
                         </InputGroup>
                     </HStack>
                 </FormControl>
+
+                {isChangingStaking &&
+                    !pool.transaction?.acknowledged &&
+                    !pool.transaction?.error &&
+                    progress === 0 && (
+                        <Alert status="info" variant="left-accent">
+                            <Spinner mx={2} />
+                            <CloseButton
+                                position="absolute"
+                                right="8px"
+                                top="8px"
+                                onClick={() => {
+                                    setChangingStaking(false);
+                                    pool.transaction?.ack();
+                                }}
+                            />
+                        </Alert>
+                    )}
             </Stack>
 
             <Box mt={10}>
