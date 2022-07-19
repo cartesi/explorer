@@ -21,6 +21,7 @@ import {
     complement,
     cond,
     isEmpty,
+    isEqual,
     pipe,
     prop,
     propEq,
@@ -47,12 +48,9 @@ export class Transaction<R> {
 
 const isNotEmpty = complement(isEmpty);
 
-const isOngoing = anyPass<Transaction<any>>([
-    propEq('submitting', true),
-    allPass([
-        pipe(prop('transaction'), isNotEmpty),
-        pipe(prop('receipt'), isEmpty),
-    ]),
+const isOngoing = anyPass<TransactionState>([
+    isEqual('submitting'),
+    isEqual('waiting_confirmation'),
 ]);
 
 type TransactionState =
@@ -60,7 +58,8 @@ type TransactionState =
     | 'waiting_confirmation'
     | 'confirmed'
     | 'errored'
-    | 'acknowledged';
+    | 'acknowledged'
+    | 'unexpected';
 
 const deriveStateFrom = cond<Transaction<any>, TransactionState>([
     [propEq('acknowledged', true), () => 'acknowledged'],
@@ -80,7 +79,7 @@ const deriveStateFrom = cond<Transaction<any>, TransactionState>([
         ]),
         () => 'confirmed',
     ],
-    [T, () => 'acknowledged'],
+    [T, () => 'unexpected'],
 ]);
 
 function extractError(error: SerializedEthereumRpcError): string {
@@ -154,9 +153,11 @@ export function useTransaction<R>(
         result,
     };
 
+    const state = deriveStateFrom(t);
+
     return {
         ...t,
-        isOngoing: isOngoing(t),
-        state: deriveStateFrom(t),
+        state,
+        isOngoing: isOngoing(state),
     };
 }

@@ -67,9 +67,8 @@ describe('Transaction service', () => {
 
             act(() => {
                 result.current.set(
-                    new Promise<ContractTransaction>((resolve) => {
-                        return null;
-                    })
+                    //to be resolved promise.
+                    new Promise<ContractTransaction>(() => null)
                 );
             });
 
@@ -85,8 +84,10 @@ describe('Transaction service', () => {
             const { result, waitForValueToChange } = renderHook(() =>
                 useTransaction<string>()
             );
+
             expect(result.current).toHaveProperty('state', 'acknowledged');
             expect(result.current).toHaveProperty('isOngoing', false);
+
             const promise = new Promise<ContractTransaction>((resolve) =>
                 act(() => resolve(contractTransaction))
             );
@@ -94,6 +95,9 @@ describe('Transaction service', () => {
             act(() => {
                 result.current.set(promise);
             });
+
+            expect(result.current).toHaveProperty('state', 'submitting');
+            expect(result.current).toHaveProperty('isOngoing', true);
 
             await waitForValueToChange(() => result.current.state);
 
@@ -195,6 +199,39 @@ describe('Transaction service', () => {
             expect(result.current.error).toEqual('Network failure');
             expect(result.current.transaction).toBeDefined();
             expect(result.current.receipt).not.toBeDefined();
+        });
+
+        it('should handle exceptions coming from the result resolver', async () => {
+            const contractTransaction = buildContractTransaction();
+            contractTransaction.confirmations = confirmations[Network.MAINNET];
+            // A closer to real dummy contract receipt but without any events.
+            contractTransaction.wait.mockResolvedValue(buildContractReceipt());
+            const { result, waitForValueToChange } = renderHook(() =>
+                useTransaction<string>((receipt) => {
+                    // naive resolver
+                    const event = receipt.events.find(
+                        ({ event }) => event == 'DummyEvent'
+                    );
+
+                    return event.args[0];
+                })
+            );
+
+            const promise = new Promise<ContractTransaction>((resolve) =>
+                act(() => resolve(contractTransaction))
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            await waitForValueToChange(() => result.current.state);
+
+            expect(result.current.state).toEqual('errored');
+            expect(result.current.error).toEqual(
+                `Cannot read properties of undefined (reading 'args')`
+            );
+            expect(result.current.result).not.toBeDefined();
         });
     });
 
