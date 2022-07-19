@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
     Alert,
     AlertDescription,
@@ -28,7 +28,6 @@ import {
     Icon,
     Input,
     InputGroup,
-    InputRightElement,
     Link,
     Spinner,
     Stack,
@@ -46,6 +45,10 @@ import { useStakingPool } from '../../services/pool';
 import { useForm } from 'react-hook-form';
 import Address from '../Address';
 import { validateEns } from '../../utils/validation';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import FlatRateContainer from '../../containers/stake/FlatRateContainer';
+import { ContractTransaction } from 'ethers';
+import GasTaxContainer from '../../containers/stake/GasTaxContainer';
 
 export const PoolSetting: FC = () => {
     const router = useRouter();
@@ -53,9 +56,22 @@ export const PoolSetting: FC = () => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const poolBalance = useTotalPoolBalance(account);
+    const stakingPool = useStakingPoolQuery(address);
     const [isChangingEns, setChangingEns] = useState<boolean>(false);
     const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
+    const [commissionError, setCommissionError] = useState<
+        string | undefined
+    >();
+    const [commissionSuccessTransaction, setCommissionSuccessTransaction] =
+        useState<ContractTransaction | undefined>();
     const progress = pool.transaction?.receipt?.confirmations || 0;
+    const feeType =
+        stakingPool?.fee?.commission !== null
+            ? 'flatRate'
+            : stakingPool?.fee?.gas !== null
+            ? 'gasTax'
+            : undefined;
+
     const {
         register,
         trigger,
@@ -88,6 +104,17 @@ export const PoolSetting: FC = () => {
         validate,
     });
 
+    const onCommissionSuccess = useCallback(
+        (transaction: ContractTransaction) => {
+            setCommissionSuccessTransaction(transaction);
+        },
+        []
+    );
+
+    const onCommissionError = useCallback((error: string) => {
+        setCommissionError(error);
+    }, []);
+
     useEffect(() => {
         if (pool.transaction?.error || progress >= 1) {
             setChangingStaking(false);
@@ -101,12 +128,49 @@ export const PoolSetting: FC = () => {
             pb={{ base: 6, sm: 8, lg: 8 }}
             fontSize={'xl'}
         >
+            {commissionError && (
+                <Alert status="error" variant="left-accent" mt={2}>
+                    <AlertIcon />
+                    <Box flex="1">
+                        <AlertDescription display="block">
+                            {commissionError}
+                        </AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+
             {pool.transaction?.error && (
                 <Alert status="error" variant="left-accent" mt={2}>
                     <AlertIcon />
                     <Box flex="1">
                         <AlertDescription display="block">
                             {pool.transaction?.error}
+                        </AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+
+            {commissionSuccessTransaction && (
+                <Alert status="success" variant="left-accent" mt={2}>
+                    <AlertIcon />
+                    <Box flex="1">
+                        <HStack>
+                            {pool.transaction?.transaction?.hash && (
+                                <Address
+                                    address={
+                                        pool.transaction?.transaction?.hash
+                                    }
+                                    type="tx"
+                                    truncated
+                                    chainId={
+                                        pool.transaction?.transaction?.chainId
+                                    }
+                                />
+                            )}
+                        </HStack>
+
+                        <AlertDescription display="block">
+                            Pool commission rate changed successfully
                         </AlertDescription>
                     </Box>
                 </Alert>
@@ -201,54 +265,28 @@ export const PoolSetting: FC = () => {
                 </Box>
             </Stack>
 
+            {feeType == 'flatRate' && (
+                <FlatRateContainer
+                    pool={address}
+                    onSuccess={onCommissionSuccess}
+                    onError={onCommissionError}
+                />
+            )}
+
+            {feeType == 'gasTax' && (
+                <GasTaxContainer
+                    pool={address}
+                    onSuccess={onCommissionSuccess}
+                    onError={onCommissionError}
+                />
+            )}
+
             <Stack
                 justifySelf="flex-end"
                 justifyContent="flex-end"
                 alignItems="flex-end"
+                mt={2}
             >
-                <FormControl>
-                    <HStack justify="space-between">
-                        <FormLabel>
-                            Pool commission{' '}
-                            <Tooltip
-                                placement="bottom"
-                                label="Choose the commission fee for your pool"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
-                            >
-                                <Icon
-                                    pb={1}
-                                    width={4}
-                                    height={4}
-                                    color="gray.600"
-                                    role="commission-icon"
-                                />
-                            </Tooltip>
-                        </FormLabel>
-                    </HStack>
-                    <Stack direction={['column', 'row']}>
-                        <InputGroup me={6}>
-                            <Input size="lg" />
-                            <InputRightElement
-                                color="gray.300"
-                                size="lg"
-                                pointerEvents="none"
-                                w={14}
-                                h="100%"
-                                children={<Box>%</Box>}
-                            />
-                        </InputGroup>
-                        <Button
-                            colorScheme="blue"
-                            w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
-                        >
-                            UPDATE
-                        </Button>
-                    </Stack>
-                </FormControl>
-
                 <FormControl isInvalid={!!errors.ensName}>
                     <HStack justify="space-between">
                         <FormLabel>
