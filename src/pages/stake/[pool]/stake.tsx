@@ -96,7 +96,6 @@ const PoolRedesignStake = () => {
             >
                 {isConnected ? (
                     <StakingDashboard
-                        userBalance={userBalance}
                         userETHBalance={userETHBalance}
                         balance={balance}
                         allowance={allowance}
