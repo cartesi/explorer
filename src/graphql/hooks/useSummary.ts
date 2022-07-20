@@ -20,8 +20,7 @@ const useSummary = (): Summary => {
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 600000,
-    });
-
+    });  
     return data?.summary;
 };
 

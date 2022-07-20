@@ -24,7 +24,6 @@ import {
 } from '@cartesi/staking-pool';
 
 import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
-import ropsten from '@cartesi/staking-pool/export/abi/ropsten.json';
 import goerli from '@cartesi/staking-pool/export/abi/goerli.json';
 
 import localhost from './localhost.json';
@@ -34,7 +33,6 @@ import { useWallet } from '../../contexts/wallet';
 
 const abis: ChainMap = {
     1: mainnet,
-    3: ropsten,
     5: goerli,
     31337: localhost,
 };

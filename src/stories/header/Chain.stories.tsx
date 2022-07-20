@@ -28,9 +28,6 @@ Mainnet.args = { chainId: 1 };
 export const ExplicitMainnet = Template.bind({});
 ExplicitMainnet.args = { chainId: 1, showMainnet: true };
 
-export const Ropsten = Template.bind({});
-Ropsten.args = { chainId: 3 };
-
 export const Goerli = Template.bind({});
 Goerli.args = { chainId: 5 };
 

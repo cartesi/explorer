@@ -12,7 +12,6 @@
 import { StakingImpl__factory, PoS__factory, PoS, Staking } from '@cartesi/pos';
 
 import mainnet from '@cartesi/pos/export/abi/mainnet.json';
-import ropsten from '@cartesi/pos/export/abi/ropsten.json';
 import goerli from '@cartesi/pos/export/abi/goerli.json';
 
 import localhost from './localhost.json';
@@ -21,7 +20,6 @@ import { ChainMap, useContract } from '.';
 
 const abis: ChainMap = {
     1: mainnet,
-    3: ropsten,
     5: goerli,
     31337: localhost,
 };

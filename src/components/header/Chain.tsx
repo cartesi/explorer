@@ -33,7 +33,6 @@ const Chain: FC<ChainProps> = (props) => {
     const defaultColorScheme = 'gray';
     const colorSchemes = {
         1: 'teal', // mainnet
-        3: 'pink', // ropsten
         5: 'blue', // goerli
     };
 

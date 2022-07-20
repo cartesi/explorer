@@ -52,7 +52,6 @@ const buildWalletOptions = (useAnkr: boolean): WalletInitOptions[] => {
             walletName: 'walletConnect',
             rpc: {
                 '1': mainnetRpcUrl,
-                '3': getRPC('ropsten'),
                 '5': getRPC('goerli'),
             },
         },

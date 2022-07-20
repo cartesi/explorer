@@ -18,7 +18,6 @@ import { Environment } from '../utils/environment';
 const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
     1: `${hostedBaseUrl}/pos`,
-    3: `${hostedBaseUrl}/pos-ropsten`,
     5: `${hostedBaseUrl}/pos-goerli`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
@@ -31,7 +30,6 @@ const AWS_URL =
 const subgraphBaseUrl = `${AWS_URL}/subgraphs/name/cartesi`;
 const awsUris = {
     1: `${subgraphBaseUrl}/pos`,
-    3: `${subgraphBaseUrl}/pos-ropsten`,
     5: `${subgraphBaseUrl}/pos-goerli`,
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
@@ -39,7 +37,6 @@ const awsUris = {
 const extendedBaseUrl = `${AWS_URL}/extended`;
 const extendedUris = {
     1: `${extendedBaseUrl}/mainnet/graphql`,
-    3: `${extendedBaseUrl}/ropsten/graphql`,
     5: `${extendedBaseUrl}/goerli/graphql`,
     31337: 'http://localhost:5001/graphql',
 };

@@ -3,7 +3,7 @@
   "chainId": "31337",
   "contracts": {
     "CartesiToken": {
-      "address": "0x302311FF8A135c0FC8703Cb4769EAa1604A4A515",
+      "address": "0x3dd3f098241950fa84535E788b1e8aFe50f1B5c4",
       "abi": [
         {
           "constant": true,
@@ -451,7 +451,7 @@
       ]
     },
     "MineTimelock": {
-      "address": "0x7CD2b2F951BAc762BF7affd73689A3e1198596AB",
+      "address": "0x6b1CdC752f425304944B41Fe0c798Ba46E58E237",
       "abi": [
         {
           "constant": true,
@@ -620,7 +620,7 @@
       ]
     },
     "SimpleFaucet": {
-      "address": "0xdeCac9ff6b588642887414e85dfdDE740A797F56",
+      "address": "0xED4c46b9E196DF4d814004b2212C164d76bD0122",
       "abi": [
         {
           "constant": true,
@@ -706,7 +706,7 @@
       ]
     },
     "BitsManipulationLibrary": {
-      "address": "0x50bEFaEfD3AAaFac11Fd936A8dfEB1050eC5Cf00",
+      "address": "0x172C227Bd63649100D2258B77334E7D285AB6b56",
       "abi": [
         {
           "inputs": [
@@ -797,7 +797,7 @@
       ]
     },
     "Merkle": {
-      "address": "0x89f1f1bc37Ef872ff0073bee7eE6d6B0D94Fd166",
+      "address": "0x2BF00e390DDC71cb26b4f3bc1cA7539EeE4cc2e7",
       "abi": [
         {
           "inputs": [
@@ -941,7 +941,7 @@
       ]
     },
     "WorkerManagerImpl": {
-      "address": "0x91E780568A1FEdd5d01E1c1E4cAed68E3a849345",
+      "address": "0x5A67396438254727fAD1077CA93617b14df3E245",
       "abi": [
         {
           "anonymous": false,
@@ -1189,7 +1189,7 @@
       ]
     },
     "WorkerAuthManagerImpl": {
-      "address": "0x3F62ccC0e41287ea4d28dce6582a215B75bB43fd",
+      "address": "0xCf5c9106EfCf7445D6257c315E4379E851f7EfA5",
       "abi": [
         {
           "inputs": [
@@ -1334,7 +1334,7 @@
       ]
     },
     "WorkerManagerAuthManagerImpl": {
-      "address": "0x7db3A9BdA16D1C295b23B94a61808EFf82288269",
+      "address": "0x6C5903bfb27c777DD73a06C2E8C124e8c659D21C",
       "abi": [
         {
           "anonymous": false,
@@ -1710,7 +1710,7 @@
       ]
     },
     "StakingImpl": {
-      "address": "0x353439934aCC3C435A2627954835241ab9FacBF8",
+      "address": "0x789Edc75ebdD07e48631D3895f19C821E1b9DB30",
       "abi": [
         {
           "inputs": [
@@ -1939,7 +1939,7 @@
       ]
     },
     "BlockSelector": {
-      "address": "0x9F7EBA84FfED559c7C63Bdf4DB6a1C6eB763ffb3",
+      "address": "0x726dFc8F33F10402752556059B98061Cf6f0e4a4",
       "abi": [
         {
           "anonymous": false,
@@ -2339,7 +2339,7 @@
       ]
     },
     "PoS": {
-      "address": "0x4F046BE54AA9f542887d504e8EA8551286B7ba31",
+      "address": "0xa7C28b427061FB4e4c191639c407b9D5AD057d7d",
       "abi": [
         {
           "anonymous": false,
@@ -2832,7 +2832,7 @@
       ]
     },
     "StakingPoolImpl": {
-      "address": "0xdB96468910d81BA6085eb9FE258f0DEF3cA8aA9A",
+      "address": "0xe284A6588F4254BDe1b8d6E45f19958E1b27f8b3",
       "abi": [
         {
           "inputs": [
@@ -2848,11 +2848,6 @@
             },
             {
               "internalType": "address",
-              "name": "_pos",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
               "name": "_workerManager",
               "type": "address"
             },
@@ -2860,6 +2855,11 @@
               "internalType": "address",
               "name": "_ens",
               "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stakeLock",
+              "type": "uint256"
             }
           ],
           "stateMutability": "nonpayable",
@@ -2882,6 +2882,31 @@
             }
           ],
           "name": "BlockProduced",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "stakeTimestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "Deposit",
           "type": "event"
         },
         {
@@ -2935,12 +2960,6 @@
               "indexed": false,
               "internalType": "uint256",
               "name": "shares",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "unlockTimestamp",
               "type": "uint256"
             }
           ],
@@ -3099,11 +3118,37 @@
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "deposit",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "ens",
           "outputs": [
             {
               "internalType": "contract ENS",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "factory",
+          "outputs": [
+            {
+              "internalType": "contract StakingPoolFactory",
               "name": "",
               "type": "address"
             }
@@ -3158,14 +3203,27 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
-              "name": "_stakeLock",
-              "type": "uint256"
+              "internalType": "address",
+              "name": "_pos",
+              "type": "address"
             }
           ],
           "name": "initialize",
           "outputs": [],
           "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "lockTime",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -3372,6 +3430,13 @@
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "update",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
               "internalType": "address",
@@ -3383,17 +3448,17 @@
           "outputs": [
             {
               "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "shares",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "released",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "unstakeTimestamp",
+              "name": "depositTimestamp",
               "type": "uint256"
             }
           ],
@@ -3401,7 +3466,13 @@
           "type": "function"
         },
         {
-          "inputs": [],
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
           "name": "withdraw",
           "outputs": [],
           "stateMutability": "nonpayable",
@@ -3413,8 +3484,8 @@
         }
       ]
     },
-    "MockAggregator": {
-      "address": "0x63065568DceFf08e02f99534cabaBaC1B301766b",
+    "GasAggregator": {
+      "address": "0x523623db8abc3A227DC5c94ff118491E2D02Bd8A",
       "abi": [
         {
           "anonymous": false,
@@ -3558,333 +3629,28 @@
         }
       ]
     },
-    "MockUniswapV2Pair": {
-      "address": "0x5eacED599B1cDfc5D7b119Fc52cA1B13396861f9",
+    "ChainlinkGasOracle": {
+      "address": "0x4bd8FaD5b6acd2c324a74aF4cE0b386DDf975163",
       "abi": [
         {
-          "inputs": [],
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_oracle",
+              "type": "address"
+            }
+          ],
           "stateMutability": "nonpayable",
           "type": "constructor"
         },
         {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "Approval",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount0",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount1",
-              "type": "uint256"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            }
-          ],
-          "name": "Burn",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount0",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount1",
-              "type": "uint256"
-            }
-          ],
-          "name": "Mint",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount0In",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount1In",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount0Out",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount1Out",
-              "type": "uint256"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            }
-          ],
-          "name": "Swap",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint112",
-              "name": "reserve0",
-              "type": "uint112"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint112",
-              "name": "reserve1",
-              "type": "uint112"
-            }
-          ],
-          "name": "Sync",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "Transfer",
-          "type": "event"
-        },
-        {
           "inputs": [],
-          "name": "DOMAIN_SEPARATOR",
-          "outputs": [
-            {
-              "internalType": "bytes32",
-              "name": "",
-              "type": "bytes32"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "MINIMUM_LIQUIDITY",
+          "name": "getGasPrice",
           "outputs": [
             {
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "PERMIT_TYPEHASH",
-          "outputs": [
-            {
-              "internalType": "bytes32",
-              "name": "",
-              "type": "bytes32"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            }
-          ],
-          "name": "allowance",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "approve",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            }
-          ],
-          "name": "balanceOf",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            }
-          ],
-          "name": "burn",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "amount0",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amount1",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "decimals",
-          "outputs": [
-            {
-              "internalType": "uint8",
-              "name": "",
-              "type": "uint8"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "factory",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
             }
           ],
           "stateMutability": "view",
@@ -3892,22 +3658,86 @@
         },
         {
           "inputs": [],
-          "name": "getReserves",
+          "name": "oracle",
           "outputs": [
             {
-              "internalType": "uint112",
-              "name": "reserve0",
-              "type": "uint112"
+              "internalType": "contract AggregatorInterface",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    },
+    "PriceAggregator": {
+      "address": "0x1000B0eB4eD878192aAD2c83501E7674d73CfD12",
+      "abi": [
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "int256",
+              "name": "current",
+              "type": "int256"
             },
             {
-              "internalType": "uint112",
-              "name": "reserve1",
-              "type": "uint112"
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "roundId",
+              "type": "uint256"
             },
             {
-              "internalType": "uint32",
-              "name": "blockTimestampLast",
-              "type": "uint32"
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "updatedAt",
+              "type": "uint256"
+            }
+          ],
+          "name": "AnswerUpdated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "roundId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "startedBy",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "startedAt",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewRound",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "roundId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getAnswer",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
             }
           ],
           "stateMutability": "view",
@@ -3916,341 +3746,152 @@
         {
           "inputs": [
             {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
+              "internalType": "uint256",
+              "name": "roundId",
+              "type": "uint256"
             }
           ],
-          "name": "initialize",
+          "name": "getTimestamp",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "latestAnswer",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "latestRound",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "latestTimestamp",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "answer",
+              "type": "int256"
+            }
+          ],
+          "name": "setAnswer",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "kLast",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
+        }
+      ]
+    },
+    "ChainlinkPriceOracle": {
+      "address": "0xb98C412f1d58B1C6dea5c3858986bC51d5687284",
+      "abi": [
         {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_to",
+              "name": "_oracle",
               "type": "address"
-            }
-          ],
-          "name": "mint",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "liquidity",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "name",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            }
-          ],
-          "name": "nonces",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "deadline",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint8",
-              "name": "v",
-              "type": "uint8"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "r",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "s",
-              "type": "bytes32"
-            }
-          ],
-          "name": "permit",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "price0CumulativeLast",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "price1CumulativeLast",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint112",
-              "name": "reserve0",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "reserve1",
-              "type": "uint112"
-            }
-          ],
-          "name": "setReserves",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            }
-          ],
-          "name": "skim",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "amount0Out",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amount1Out",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "data",
-              "type": "bytes"
-            }
-          ],
-          "name": "swap",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "symbol",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "sync",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "token0",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "token1",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "totalSupply",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "pure",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "transfer",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
             }
           ],
           "stateMutability": "nonpayable",
-          "type": "function"
+          "type": "constructor"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
+          "inputs": [],
+          "name": "getPrice",
+          "outputs": [
             {
               "internalType": "uint256",
-              "name": "value",
+              "name": "",
               "type": "uint256"
             }
           ],
-          "name": "transferFrom",
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "oracle",
           "outputs": [
             {
-              "internalType": "bool",
+              "internalType": "contract AggregatorInterface",
               "name": "",
-              "type": "bool"
+              "type": "address"
             }
           ],
-          "stateMutability": "pure",
+          "stateMutability": "view",
           "type": "function"
         }
       ]
     },
     "StakingPoolFactoryImpl": {
-      "address": "0x15F864DF20E87D7c2fb8004d2cFa53A5BD570E2a",
+      "address": "0x8b313c1B85Fc20c3AAc3311E8Fe59d3c99F27f2D",
       "abi": [
         {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_chainlinkOracle",
+              "name": "_gasOracle",
               "type": "address"
             },
             {
               "internalType": "address",
-              "name": "_uniswapOracle",
+              "name": "_priceOracle",
               "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_pos",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_feeRaiseTimeout",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxGasRaise",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxFeePercentageRaise",
+              "type": "uint256"
             }
           ],
           "stateMutability": "nonpayable",
@@ -4332,6 +3973,19 @@
             {
               "indexed": true,
               "internalType": "address",
+              "name": "_pos",
+              "type": "address"
+            }
+          ],
+          "name": "PoSAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
               "name": "pool",
               "type": "address"
             }
@@ -4351,19 +4005,6 @@
           ],
           "name": "Unpaused",
           "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "chainlinkOracle",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
         },
         {
           "inputs": [
@@ -4405,6 +4046,71 @@
         },
         {
           "inputs": [],
+          "name": "feeRaiseTimeout",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "gasOracle",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getPoS",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "_pos",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "maxFeePercentageRaise",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "maxGasRaise",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
           "name": "owner",
           "outputs": [
             {
@@ -4438,6 +4144,32 @@
         },
         {
           "inputs": [],
+          "name": "pos",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "priceOracle",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
           "name": "referencePool",
           "outputs": [
             {
@@ -4452,6 +4184,19 @@
         {
           "inputs": [],
           "name": "renounceOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_pos",
+              "type": "address"
+            }
+          ],
+          "name": "setPoSAddress",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -4484,23 +4229,14 @@
         },
         {
           "inputs": [],
-          "name": "uniswapOracle",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "unpause",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
+        },
+        {
+          "stateMutability": "payable",
+          "type": "receive"
         }
       ]
     }
