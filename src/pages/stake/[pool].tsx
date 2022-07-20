@@ -140,7 +140,6 @@ const poolRedesign = () => {
                                 stakingPool?.commissionPercentage
                             }
                             fee={stakingPool?.fee}
-                            amount={amount}
                             pool={poolBalance}
                             stake={amounts?.stake}
                             unstake={amounts?.unstake}
@@ -165,7 +164,6 @@ const poolRedesign = () => {
                             stakingReleasingTimestamp={
                                 staking?.releasingTimestamp
                             }
-                            hideZeros={true}
                             onRebalance={rebalance}
                         />
                     </VStack>
