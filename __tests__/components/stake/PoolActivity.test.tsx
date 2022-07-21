@@ -15,10 +15,21 @@ import {
     PoolActivity,
     IPoolActivityProps,
 } from '../../../src/components/stake/PoolActivity';
+import { useWallet } from '../../../src/contexts/wallet';
 import { withChakraTheme } from '../../test-utilities';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
+
+const walletMod = `../../../src/contexts/wallet`;
+jest.mock(walletMod, () => {
+    const originalModule = jest.requireActual(walletMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useWallet: jest.fn(),
+    };
+});
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
 const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
@@ -31,6 +42,9 @@ const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
 
+const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+
+const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const EPoolActivity = withChakraTheme<IPoolActivityProps>(PoolActivity);
 
 describe('Pool Activity', () => {
@@ -38,6 +52,14 @@ describe('Pool Activity', () => {
     const renderComponent = () => render(<EPoolActivity {...defaultProps} />);
 
     beforeEach(() => {
+        mockUseWallet.mockReturnValue({
+            account,
+            active: true,
+            activate: jest.fn(),
+            deactivate: jest.fn(),
+            chainId: 3,
+        });
+
         // default mock return
         mockUsePoolActivities.mockReturnValue({
             loading: false,
