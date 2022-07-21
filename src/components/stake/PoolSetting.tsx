@@ -59,12 +59,22 @@ export const PoolSetting: FC = () => {
     const stakingPool = useStakingPoolQuery(address);
     const [isChangingEns, setChangingEns] = useState<boolean>(false);
     const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
+    const [isRebalancing, setRebalancing] = useState<boolean>(false);
     const [commissionError, setCommissionError] = useState<
         string | undefined
     >();
-    const [commissionSuccessTransaction, setCommissionSuccessTransaction] =
-        useState<ContractTransaction | undefined>();
+    const [commissionSuccess, setCommissionSuccess] = useState<
+        ContractTransaction | undefined
+    >();
     const progress = pool.transaction?.receipt?.confirmations || 0;
+    const isRebalanceDisabled =
+        pool.amounts?.stake?.isZero() &&
+        pool.amounts?.unstake?.isZero() &&
+        pool.amounts?.withdraw?.isZero();
+    const isMakingPoolTransaction =
+        !pool.transaction?.acknowledged &&
+        !pool.transaction?.error &&
+        progress === 0;
     const feeType =
         stakingPool?.fee?.commission !== null
             ? 'flatRate'
@@ -106,7 +116,7 @@ export const PoolSetting: FC = () => {
 
     const onCommissionSuccess = useCallback(
         (transaction: ContractTransaction) => {
-            setCommissionSuccessTransaction(transaction);
+            setCommissionSuccess(transaction);
         },
         []
     );
@@ -119,6 +129,7 @@ export const PoolSetting: FC = () => {
         if (pool.transaction?.error || progress >= 1) {
             setChangingStaking(false);
             setChangingEns(false);
+            setRebalancing(false);
         }
     }, [pool.transaction]);
 
@@ -128,77 +139,62 @@ export const PoolSetting: FC = () => {
             pb={{ base: 6, sm: 8, lg: 8 }}
             fontSize={'xl'}
         >
-            {commissionError && (
+            {(pool.transaction?.error || commissionError) && (
                 <Alert status="error" variant="left-accent" mt={2}>
                     <AlertIcon />
                     <Box flex="1">
                         <AlertDescription display="block">
-                            {commissionError}
+                            {pool.transaction?.error || commissionError}
                         </AlertDescription>
                     </Box>
                 </Alert>
             )}
 
-            {pool.transaction?.error && (
-                <Alert status="error" variant="left-accent" mt={2}>
-                    <AlertIcon />
-                    <Box flex="1">
-                        <AlertDescription display="block">
-                            {pool.transaction?.error}
-                        </AlertDescription>
-                    </Box>
-                </Alert>
-            )}
-
-            {commissionSuccessTransaction && (
+            {(progress >= 1 || commissionSuccess) && (
                 <Alert status="success" variant="left-accent" mt={2}>
                     <AlertIcon />
                     <Box flex="1">
                         <HStack>
-                            {pool.transaction?.transaction?.hash && (
+                            {progress >= 1 &&
+                                pool.transaction?.transaction?.hash && (
+                                    <Address
+                                        address={
+                                            pool.transaction?.transaction?.hash
+                                        }
+                                        type="tx"
+                                        truncated
+                                        chainId={
+                                            pool.transaction?.transaction
+                                                ?.chainId
+                                        }
+                                    />
+                                )}
+
+                            {commissionSuccess && (
                                 <Address
-                                    address={
-                                        pool.transaction?.transaction?.hash
-                                    }
+                                    address={commissionSuccess?.hash}
                                     type="tx"
                                     truncated
-                                    chainId={
-                                        pool.transaction?.transaction?.chainId
-                                    }
+                                    chainId={commissionSuccess?.chainId}
                                 />
                             )}
                         </HStack>
-
-                        <AlertDescription display="block">
-                            Pool commission rate changed successfully
-                        </AlertDescription>
                     </Box>
                 </Alert>
             )}
 
-            {progress >= 1 && (
-                <Alert status="success" variant="left-accent" mt={2}>
-                    <AlertIcon />
-                    <Box flex="1">
-                        <HStack>
-                            {pool.transaction?.transaction?.hash && (
-                                <Address
-                                    address={
-                                        pool.transaction?.transaction?.hash
-                                    }
-                                    type="tx"
-                                    truncated
-                                    chainId={
-                                        pool.transaction?.transaction?.chainId
-                                    }
-                                />
-                            )}
-                        </HStack>
-
-                        <AlertDescription display="block">
-                            Pool ENS name changed successfully
-                        </AlertDescription>
-                    </Box>
+            {isRebalancing && isMakingPoolTransaction && (
+                <Alert status="info" variant="left-accent">
+                    <Spinner mx={2} />
+                    <CloseButton
+                        position="absolute"
+                        right="8px"
+                        top="8px"
+                        onClick={() => {
+                            setRebalancing(false);
+                            pool.transaction?.ack();
+                        }}
+                    />
                 </Alert>
             )}
 
@@ -226,6 +222,11 @@ export const PoolSetting: FC = () => {
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             leftIcon={<FaBalanceScaleLeft />}
+                            isDisabled={isRebalanceDisabled}
+                            onClick={() => {
+                                pool.rebalance();
+                                setRebalancing(true);
+                            }}
                         >
                             REBALANCE
                         </Button>
@@ -353,23 +354,20 @@ export const PoolSetting: FC = () => {
                     )}
                 </FormControl>
 
-                {isChangingEns &&
-                    !pool.transaction?.acknowledged &&
-                    !pool.transaction?.error &&
-                    progress === 0 && (
-                        <Alert status="info" variant="left-accent">
-                            <Spinner mx={2} />
-                            <CloseButton
-                                position="absolute"
-                                right="8px"
-                                top="8px"
-                                onClick={() => {
-                                    setChangingEns(false);
-                                    pool.transaction?.ack();
-                                }}
-                            />
-                        </Alert>
-                    )}
+                {isChangingEns && isMakingPoolTransaction && (
+                    <Alert status="info" variant="left-accent">
+                        <Spinner mx={2} />
+                        <CloseButton
+                            position="absolute"
+                            right="8px"
+                            top="8px"
+                            onClick={() => {
+                                setChangingEns(false);
+                                pool.transaction?.ack();
+                            }}
+                        />
+                    </Alert>
+                )}
 
                 <FormControl>
                     <HStack mt={4} justify="space-between">
@@ -417,23 +415,20 @@ export const PoolSetting: FC = () => {
                     </HStack>
                 </FormControl>
 
-                {isChangingStaking &&
-                    !pool.transaction?.acknowledged &&
-                    !pool.transaction?.error &&
-                    progress === 0 && (
-                        <Alert status="info" variant="left-accent">
-                            <Spinner mx={2} />
-                            <CloseButton
-                                position="absolute"
-                                right="8px"
-                                top="8px"
-                                onClick={() => {
-                                    setChangingStaking(false);
-                                    pool.transaction?.ack();
-                                }}
-                            />
-                        </Alert>
-                    )}
+                {isChangingStaking && isMakingPoolTransaction && (
+                    <Alert status="info" variant="left-accent">
+                        <Spinner mx={2} />
+                        <CloseButton
+                            position="absolute"
+                            right="8px"
+                            top="8px"
+                            onClick={() => {
+                                setChangingStaking(false);
+                                pool.transaction?.ack();
+                            }}
+                        />
+                    </Alert>
+                )}
             </Stack>
 
             <Box mt={10}>
