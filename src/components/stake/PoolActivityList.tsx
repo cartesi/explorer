@@ -32,6 +32,7 @@ import usePoolActivities, {
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { formatValue } from '../../utils/numberFormatter';
 import Address from '../Address';
+import { useWallet } from '../../contexts/wallet';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,
@@ -65,19 +66,20 @@ interface ActivityProps {
     index: number;
     accountId: string;
     timestamp: number;
+    chainId: number;
     type: string;
     amount: string;
 }
 
 const Activity: FC<ActivityProps> = memo(
-    ({ index, accountId, timestamp, type, amount }) => {
+    ({ index, accountId, chainId, timestamp, type, amount }) => {
         const formattedAmount = formatValue(amount, 'ctsi', ctsiFormatOptions);
         const formattedTime = dateTimeFormat.format(timestamp);
 
         return (
             <Tr key={index}>
                 <Td>
-                    <Address address={accountId} truncated />
+                    <Address address={accountId} chainId={chainId} truncated />
                 </Td>
                 <Td>{formattedTime}</Td>
                 <Td>{type}</Td>
@@ -98,6 +100,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
     ({ poolAddress, userSearch, selectedTypes, selectedTimePeriod }) => {
         const [timestamp, setTimestamp] = useState<number | null>();
         const [list, updateList] = useState(null);
+        const { chainId } = useWallet();
         userSearch = userSearch === '' ? undefined : userSearch;
 
         const { activities, loading } = usePoolActivities({
@@ -147,6 +150,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                         key={index}
                                         index={index}
                                         accountId={activity.user.id}
+                                        chainId={chainId}
                                         timestamp={activity.timestamp}
                                         type={activity.type}
                                         amount={activity.amount}
