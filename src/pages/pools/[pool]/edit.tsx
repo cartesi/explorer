@@ -56,7 +56,7 @@ const ManagePool = () => {
     const [worker, setWorker] = useState<string>();
 
     // priority is the typed address (at state variable)
-    const activeWorker = worker || existingNode || '';
+    const activeWorker = worker || '';
 
     const node = useNode(activeWorker);
 
