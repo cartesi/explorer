@@ -45,7 +45,7 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
     return (
         <>
             <CommissionForm
-                currentValue={rate?.toNumber() / 100}
+                currentValue={rate ? rate?.toNumber() / 100 : 0}
                 unit="%"
                 min={0}
                 max={100}

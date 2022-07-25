@@ -45,7 +45,7 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
     return (
         <>
             <CommissionForm
-                currentValue={gas?.toNumber()}
+                currentValue={gas ? gas?.toNumber() : 0}
                 unit="gas"
                 min={0}
                 maxDigits={0}
