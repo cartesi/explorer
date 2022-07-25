@@ -34,6 +34,7 @@ import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
 import { parseUnits } from 'ethers/lib/utils';
+import { useWallet } from '../../contexts/wallet';
 
 interface StakeFormProps extends StackProps {
     allowance: BigNumber;
@@ -45,6 +46,8 @@ interface StakeFormProps extends StackProps {
 }
 
 const StakeForm: FC<StakeFormProps> = (props) => {
+    const { account, chainId } = useWallet();
+
     const {
         allowance,
         releasing,
@@ -109,11 +112,19 @@ const StakeForm: FC<StakeFormProps> = (props) => {
     // part coming from wallet is the original amount minus the amount from releasing
     const fromWallet = amount_.sub(fromReleasing);
 
+    const zero = '0';
+
     return (
         <VStack align="flex-start" {...restProps}>
-            <CTSIText value={allowance}>
-                <Text>Allowance</Text>
-            </CTSIText>
+            {account ? (
+                <CTSIText value={allowance}>
+                    <Text>Allowance</Text>
+                </CTSIText>
+            ) : (
+                <CTSIText value={zero}>
+                    <Text>Allowance</Text>
+                </CTSIText>
+            )}
 
             <FormControl isInvalid={!!errors.stake}>
                 <FormLabel>Amount to stake</FormLabel>
