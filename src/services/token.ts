@@ -33,6 +33,10 @@ export const useCartesiToken = (
                 token.allowance(account, spender).then(setAllowance);
             }
         }
+        if (!account) {
+            setBalance(BigNumber.from(0));
+            setAllowance(BigNumber.from(0));
+        }
     }, [token, account, spender, blockNumber]);
 
     const approve = (spender: string, amount: BigNumberish) => {

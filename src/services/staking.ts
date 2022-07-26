@@ -49,6 +49,9 @@ export const useStaking = (user: string) => {
             staking.getMaturingBalance(user).then(setMaturingBalance);
             staking.getReleasingBalance(user).then(setReleasingBalance);
         }
+        if (!user) {
+            setStakedBalance(constants.Zero);
+        }
     }, [staking, user, blockNumber]);
 
     const stake = (amount: BigNumberish) => {
