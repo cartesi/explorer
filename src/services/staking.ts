@@ -35,6 +35,7 @@ export const useStaking = (user: string) => {
 
     useEffect(() => {
         if (staking && user) {
+            console.log({ setStakedBalance });
             staking.getStakedBalance(user).then(setStakedBalance);
             staking
                 .getMaturingTimestamp(user)
@@ -48,9 +49,12 @@ export const useStaking = (user: string) => {
                 );
             staking.getMaturingBalance(user).then(setMaturingBalance);
             staking.getReleasingBalance(user).then(setReleasingBalance);
-        }
-        if (!user) {
+        } else {
             setStakedBalance(constants.Zero);
+            console.log('yeeee nooooo user', { setStakedBalance });
+            setReleasingBalance(constants.Zero);
+            setMaturingBalance(constants.Zero);
+            console.log('yeeee nooooo user', { setReleasingBalance });
         }
     }, [staking, user, blockNumber]);
 

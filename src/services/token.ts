@@ -28,12 +28,13 @@ export const useCartesiToken = (
     // balances
     useEffect(() => {
         if (token && account) {
+            console.log('yeeee user');
             token.balanceOf(account).then(setBalance);
             if (spender) {
                 token.allowance(account, spender).then(setAllowance);
             }
-        }
-        if (!account) {
+        } else {
+            console.log('yeeee nooo user');
             setBalance(BigNumber.from(0));
             setAllowance(BigNumber.from(0));
         }
