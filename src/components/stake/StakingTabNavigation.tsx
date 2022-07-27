@@ -28,7 +28,7 @@ export const StakingTabNavigation: FC = () => {
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
-                        leftIcon={<DashboardIcon />}
+                        leftIcon={<DashboardIcon w="24px" h="24px" />}
                         outline="none"
                         textTransform="none"
                         isActive={router.pathname === `/stake/[pool]`}
@@ -50,7 +50,7 @@ export const StakingTabNavigation: FC = () => {
                     <Button
                         borderTopRadius="6px"
                         py={{ lg: 7 }}
-                        leftIcon={<StakeIcon />}
+                        leftIcon={<StakeIcon w="24px" h="24px" />}
                         outline="none"
                         textTransform="none"
                         isActive={router.pathname === `/stake/[pool]/stake`}
