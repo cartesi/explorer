@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.1] - 2022-07-27
+
+-   Support to the `ropsten` testnet removed. [Deprecation due on Q4/2022](https://blog.ethereum.org/2022/06/21/testnet-deprecation/)
+
 ## [2.5.0] - 2022-05-31
 
 -   Improved visual experience for hardware wallet's account selection (Ledger). Button that loads more accounts is not compressed.
