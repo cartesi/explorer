@@ -99,7 +99,7 @@ export const StakingInstructions: FC = () => {
                                     mt={6}
                                     w="full"
                                 >
-                                    <Link
+                                    {/* <Link
                                         href="#"
                                         isExternal
                                         fontSize="sm"
@@ -110,7 +110,7 @@ export const StakingInstructions: FC = () => {
                                     >
                                         Learn detailed staking instructions{' '}
                                         <ExternalLinkIcon />
-                                    </Link>
+                                    </Link> */}
                                     <Button
                                         size="sm"
                                         onClick={handleDontShowAgainClick}

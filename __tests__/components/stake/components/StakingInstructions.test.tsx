@@ -27,7 +27,8 @@ describe('Staking Instructions', () => {
         ).toBeInTheDocument();
     });
 
-    it('Should display learn detailed staking instructions label', () => {
+    // Will be back when we have the tutorial link
+    it.skip('Should display learn detailed staking instructions label', () => {
         renderComponent();
         expect(
             screen.getByText('Learn detailed staking instructions')

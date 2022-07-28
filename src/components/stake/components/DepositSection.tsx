@@ -46,9 +46,9 @@ export const DepositSection: FC<IDepositSection> = ({
                 <Heading as="h2" size="lg" py={2} mb={0}>
                     Staking
                 </Heading>
-                <Link href="#" isExternal fontSize="xs">
+                {/* <Link href="#" isExternal fontSize="xs">
                     Learn more with the tutorial <ExternalLinkIcon />
-                </Link>
+                </Link> */}
             </Box>
             <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
