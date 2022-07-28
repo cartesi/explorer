@@ -34,7 +34,6 @@ import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { isInfinite } from '../../utils/token';
 import CTSIText from '../CTSIText';
 import { parseUnits } from 'ethers/lib/utils';
-import { useWallet } from '../../contexts/wallet';
 
 interface StakeFormProps extends StackProps {
     allowance: BigNumber;
@@ -46,8 +45,6 @@ interface StakeFormProps extends StackProps {
 }
 
 const StakeForm: FC<StakeFormProps> = (props) => {
-    const { account, chainId } = useWallet();
-
     const {
         allowance,
         releasing,
