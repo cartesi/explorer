@@ -65,12 +65,12 @@ const wordingFor = {
     rebalance: {
         title: 'Rebalancing pool...',
         failTitle: 'Rebalancing the pool failed',
-        successDescription: 'Pool rebalanced! Moving to the next step...',
+        successDescription: 'Pool rebalanced!',
     },
     changeEns: {
         title: 'Changing ENS name...',
         failTitle: 'Changing ENS name failed',
-        successDescription: 'ENS name changed! Moving to the next step...',
+        successDescription: 'ENS name changed!',
     },
 };
 
