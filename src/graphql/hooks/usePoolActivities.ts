@@ -30,10 +30,21 @@ export type Types = `${ActivityType}`;
 interface UsePoolActivitiesProps {
     user?: string;
     pool?: string;
+    /**
+     * Exclusive before given date in milliseconds (i.e. lt)
+     */
     beforeInMillis?: number;
+    /**
+     * Inclusive after given date in milliseconds or Date (i.e. gte)
+     */
     from?: Date | number;
+    /**
+     * Inclusive before fiven date in milliseconds or Date (.ie. lte)
+     */
     to?: Date | number;
     types?: Types[];
+    skip?: number;
+    first?: number;
 }
 interface UsePoolActivities {
     activities: Activity[] | null;
@@ -64,8 +75,7 @@ const transform = pipe(getPoolActivities, normalize);
 
 /**
  * Hook retrieves withdrawals, deposits, stakes and unstakes based
- * on a few component API properties. Note. from prop has precedence over
- * beforeInMillis props so choose one or the other.
+ * on a few component API properties.
  * @param {UsePoolActivitiesProps}
  * @returns {UsePoolActivities}
  */
@@ -79,7 +89,7 @@ const usePoolActivities = ({
 }: UsePoolActivitiesProps): UsePoolActivities => {
     const where: any = { user, pool };
     if (beforeInMillis) {
-        where.timestamp_lte = toUnixTimestamp(beforeInMillis);
+        where.timestamp_lt = toUnixTimestamp(beforeInMillis);
     }
 
     if (from) {
