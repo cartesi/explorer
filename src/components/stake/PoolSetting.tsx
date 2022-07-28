@@ -47,8 +47,32 @@ import Address from '../Address';
 import { validateEns } from '../../utils/validation';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
-import { ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 import GasTaxContainer from '../../containers/stake/GasTaxContainer';
+import { TransactionType } from '../../types/pool';
+
+const wordingFor = {
+    pause: {
+        title: 'Pausing new stakes...',
+        failTitle: 'Pausing new stakes setup failed!',
+        successDescription: 'The pool will no longer accept new stakes.',
+    },
+    unpause: {
+        title: 'Accepting new stakes...',
+        failTitle: 'Accepting new stakes setup failed!',
+        successDescription: 'The pool is now accepting new stakes.',
+    },
+    rebalance: {
+        title: 'Rebalancing pool...',
+        failTitle: 'Rebalancing the pool failed',
+        successDescription: 'Pool rebalanced! Moving to the next step...',
+    },
+    changeEns: {
+        title: 'Changing ENS name...',
+        failTitle: 'Changing ENS name failed',
+        successDescription: 'ENS name changed! Moving to the next step...',
+    },
+};
 
 export const PoolSetting: FC = () => {
     const router = useRouter();
@@ -60,6 +84,8 @@ export const PoolSetting: FC = () => {
     const [isChangingEns, setChangingEns] = useState<boolean>(false);
     const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
     const [isRebalancing, setRebalancing] = useState<boolean>(false);
+    const [transactionType, setTransactionType] =
+        useState<TransactionType | null>(null);
     const [commissionError, setCommissionError] = useState<
         string | undefined
     >();
@@ -67,10 +93,10 @@ export const PoolSetting: FC = () => {
         ContractTransaction | undefined
     >();
     const progress = pool.transaction?.receipt?.confirmations || 0;
-    const isRebalanceDisabled =
-        pool.amounts?.stake?.isZero() &&
-        pool.amounts?.unstake?.isZero() &&
-        pool.amounts?.withdraw?.isZero();
+    const isRebalanceEnabled =
+        pool.amounts?.stake > BigNumber.from(0) ||
+        pool.amounts?.unstake > BigNumber.from(0) ||
+        pool.amounts?.withdraw > BigNumber.from(0);
     const isMakingPoolTransaction =
         !pool.transaction?.acknowledged &&
         !pool.transaction?.error &&
@@ -140,7 +166,7 @@ export const PoolSetting: FC = () => {
             fontSize={'xl'}
         >
             {(pool.transaction?.error || commissionError) && (
-                <Alert status="error" variant="left-accent" mt={2}>
+                <Alert status="warning" variant="left-accent" mt={2}>
                     <AlertIcon />
                     <Box flex="1">
                         <AlertDescription display="block">
@@ -186,6 +212,11 @@ export const PoolSetting: FC = () => {
             {isRebalancing && isMakingPoolTransaction && (
                 <Alert status="info" variant="left-accent">
                     <Spinner mx={2} />
+                    <Box flex="1">
+                        <AlertDescription display="block">
+                            {wordingFor[transactionType].title}
+                        </AlertDescription>
+                    </Box>
                     <CloseButton
                         position="absolute"
                         right="8px"
@@ -222,10 +253,12 @@ export const PoolSetting: FC = () => {
                             w={{ base: '100%', md: 'auto' }}
                             minW="15rem"
                             leftIcon={<FaBalanceScaleLeft />}
-                            isDisabled={isRebalanceDisabled}
+                            isDisabled={!isRebalanceEnabled || isRebalancing}
+                            isLoading={isRebalancing}
                             onClick={() => {
                                 pool.rebalance();
                                 setRebalancing(true);
+                                setTransactionType('rebalance');
                             }}
                         >
                             REBALANCE
@@ -334,6 +367,7 @@ export const PoolSetting: FC = () => {
                                 progress >= 1
                             }
                             onClick={() => {
+                                setTransactionType('changeEns');
                                 setChangingEns(true);
                                 pool.setName(getValues('ensName'));
                             }}
@@ -357,6 +391,11 @@ export const PoolSetting: FC = () => {
                 {isChangingEns && isMakingPoolTransaction && (
                     <Alert status="info" variant="left-accent">
                         <Spinner mx={2} />
+                        <Box flex="1">
+                            <AlertDescription display="block">
+                                {wordingFor[transactionType].title}
+                            </AlertDescription>
+                        </Box>
                         <CloseButton
                             position="absolute"
                             right="8px"
@@ -398,6 +437,10 @@ export const PoolSetting: FC = () => {
                                 defaultChecked
                                 isChecked={!pool.paused}
                                 onChange={() => {
+                                    const transactionType = pool.paused
+                                        ? 'unpause'
+                                        : 'pause';
+                                    setTransactionType(transactionType);
                                     setChangingStaking(true);
 
                                     if (pool.paused) {
@@ -418,6 +461,11 @@ export const PoolSetting: FC = () => {
                 {isChangingStaking && isMakingPoolTransaction && (
                     <Alert status="info" variant="left-accent">
                         <Spinner mx={2} />
+                        <Box flex="1">
+                            <AlertDescription display="block">
+                                {wordingFor[transactionType].title}
+                            </AlertDescription>
+                        </Box>
                         <CloseButton
                             position="absolute"
                             right="8px"
