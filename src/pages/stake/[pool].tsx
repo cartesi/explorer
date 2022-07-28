@@ -90,13 +90,15 @@ const poolRedesign = () => {
         defaultIsOpen: true,
     });
 
+    const isManager = account && account.toLowerCase() === stakingPool?.manager;
+
     return (
         <Layout>
             <Head>
                 <title>Cartesi - Pool Info</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <PoolHeader />
+            <PoolHeader isManager={isManager} />
             <PoolBreadcrumbs currentPage="Overview" />
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
