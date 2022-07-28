@@ -72,7 +72,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         ) : (
                             <Text color="gray.400">Your pool balance</Text>
                         )}
-                        <Heading m={0} size="lg">
+                        <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={userPoolBalance} />
                                 <Text ml={1}>CTSI</Text>
