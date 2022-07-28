@@ -48,7 +48,7 @@ export const useStaking = (user: string) => {
                 );
             staking.getMaturingBalance(user).then(setMaturingBalance);
             staking.getReleasingBalance(user).then(setReleasingBalance);
-        } else {
+        } else if (!staking && !user) {
             setStakedBalance(constants.Zero);
             setReleasingBalance(constants.Zero);
             setMaturingBalance(constants.Zero);
