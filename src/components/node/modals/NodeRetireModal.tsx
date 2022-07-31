@@ -13,12 +13,6 @@ import { WarningIcon } from '@chakra-ui/icons';
 import {
     Button,
     FormControl,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
     VStack,
     Text,
     FormHelperText,
@@ -31,6 +25,14 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
+import {
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../../Modal';
 
 interface INodeRetireModalProps {
     address: string;
@@ -54,7 +56,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     return (
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent minHeight={610}>
                 <Box pb={6}>
                     <HStack justify="space-between">
                         <Box
@@ -89,7 +91,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         </FormHelperText>
                     </FormControl>
                 </ModalBody>
-                <ModalFooter>
+                <ModalFooter pb="40px !important">
                     <VStack
                         alignItems="flex-start"
                         flexBasis={{ base: '100%', lg: '100%' }}
