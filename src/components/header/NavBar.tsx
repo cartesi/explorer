@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { FC, ReactNode } from 'react';
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -23,7 +24,6 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useFlag } from '@unleash/proxy-client-react';
-import { FC, ReactNode } from 'react';
 import { useWallet } from '../../contexts/wallet';
 import Account from './Account';
 import ConnectMetamask from './ConnectMetamask';
@@ -31,24 +31,22 @@ import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
 
-const NEW_STAKING_KEY = 'newStaking';
-
-const buildLinks = ({ newNodeRunnersEnabled }) => {
-    const Links = [
+export const buildLinks = ({ newNodeRunnersEnabled }) => {
+    const links = [
         {
             key: 'home',
             label: 'Home',
             href: '/',
         },
         {
+            key: 'pools',
+            label: 'Stake',
+            href: '/pools',
+        },
+        {
             key: 'staking',
             label: 'Node Runners',
             href: '/staking',
-        },
-        {
-            key: 'pools',
-            label: 'Pools',
-            href: '/pools',
         },
         {
             key: 'blocks',
@@ -57,17 +55,23 @@ const buildLinks = ({ newNodeRunnersEnabled }) => {
         },
     ];
 
-    if (newNodeRunnersEnabled)
-        Links.push({
-            key: NEW_STAKING_KEY,
+    if (newNodeRunnersEnabled) {
+        links.push({
+            key: 'newStaking',
             label: 'New Node Runners',
             href: '/newStaking',
         });
+    }
 
-    return Links;
+    return links;
 };
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
+export interface NavLinkProps {
+    href: string;
+    children: ReactNode;
+}
+
+export const NavLink: FC<NavLinkProps> = ({ href, children }) => (
     <NextLink href={href} passHref>
         <Link
             px={2}
@@ -88,9 +92,8 @@ const NavBar: FC<FlexProps> = (props) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const multiWalletEnabled = useFlag('multiWalletEnabled');
     const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
-    const Links = buildLinks({ newNodeRunnersEnabled });
+    const links = buildLinks({ newNodeRunnersEnabled });
     const wallet = useWallet();
-
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
@@ -100,12 +103,18 @@ const NavBar: FC<FlexProps> = (props) => {
                     size="md"
                     bg="transparent"
                     icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                    aria-label={'Open Menu'}
+                    aria-label="Open Menu"
+                    data-testid="menu-button"
                     display={{ md: 'none' }}
                     onClick={isOpen ? onClose : onOpen}
                     _hover={{ bg: 'gray.800' }}
                 />
-                <HStack spacing={8} alignItems="center">
+
+                <HStack
+                    spacing={8}
+                    alignItems="center"
+                    data-testid="links-container"
+                >
                     <Logo mr={{ base: 0, sm: 2 }} />
                     <SelectedChain display={{ base: 'none', md: 'flex' }} />
                     <HStack
@@ -113,15 +122,14 @@ const NavBar: FC<FlexProps> = (props) => {
                         spacing={{ base: '4', md: '6' }}
                         display={{ base: 'none', md: 'flex' }}
                     >
-                        {Links.map(({ key, label, href }) => {
-                            return (
-                                <NavLink key={key} href={href}>
-                                    {label}
-                                </NavLink>
-                            );
-                        })}
+                        {links.map(({ key, label, href }) => (
+                            <NavLink key={key} href={href}>
+                                {label}
+                            </NavLink>
+                        ))}
                     </HStack>
                 </HStack>
+
                 <Flex alignItems="center">
                     <IconButton
                         size="sm"
@@ -130,20 +138,20 @@ const NavBar: FC<FlexProps> = (props) => {
                         mx={2}
                         _hover={{ bg: 'gray.800' }}
                         aria-label="Toggle dark mode"
+                        data-testid="theme-toggle-button"
                         icon={
                             colorMode === 'light' ? <MoonIcon /> : <SunIcon />
                         }
                         onClick={toggleColorMode}
                     />
-                    {!multiWalletEnabled && (
-                        <ConnectMetamask
+
+                    {multiWalletEnabled ? (
+                        <ConnectWallet
                             display={{ base: 'none', md: 'flex' }}
                             wallet={wallet}
                         />
-                    )}
-
-                    {multiWalletEnabled && (
-                        <ConnectWallet
+                    ) : (
+                        <ConnectMetamask
                             display={{ base: 'none', md: 'flex' }}
                             wallet={wallet}
                         />
@@ -152,24 +160,23 @@ const NavBar: FC<FlexProps> = (props) => {
                     <Account />
                 </Flex>
             </Flex>
+
             {isOpen && (
-                <Box pb={5} display={{ md: 'none' }}>
+                <Box pb={5} display={{ md: 'none' }} data-testid="mobile-menu">
                     <Stack as="nav" spacing={4}>
-                        {Links.map(({ label, key, href }) => {
-                            return (
-                                <NavLink key={key} href={href}>
-                                    {label}
-                                </NavLink>
-                            );
-                        })}
-                        {!multiWalletEnabled && (
-                            <ConnectMetamask
+                        {links.map(({ label, key, href }) => (
+                            <NavLink key={key} href={href}>
+                                {label}
+                            </NavLink>
+                        ))}
+
+                        {multiWalletEnabled ? (
+                            <ConnectWallet
                                 wallet={wallet}
                                 onClick={isOpen ? onClose : onOpen}
                             />
-                        )}
-                        {multiWalletEnabled && (
-                            <ConnectWallet
+                        ) : (
+                            <ConnectMetamask
                                 wallet={wallet}
                                 onClick={isOpen ? onClose : onOpen}
                             />

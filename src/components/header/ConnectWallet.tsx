@@ -13,31 +13,33 @@ import React, { FC } from 'react';
 import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
 import { UnsupportedNetworkError, UseWallet } from '../../contexts/wallet';
 
-interface ConnectWallet extends BoxProps {
+export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
 }
 
-const ConnectWallet: FC<ConnectWallet> = (props) => {
+const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
-
-    const isUnsupportNetworkError = error instanceof UnsupportedNetworkError;
+    const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
 
     return (
         <Box {...boxProps}>
-            {isUnsupportNetworkError && (
+            {isUnsupportedNetworkError ? (
                 <Button size="md" bg="red" _hover={{ bg: 'darkred' }}>
                     <HStack>
                         <Text>Unsupported Network</Text>
                     </HStack>
                 </Button>
-            )}
-            {!active && !isUnsupportNetworkError && (
-                <Button size="md" colorScheme="blue" onClick={() => activate()}>
-                    <HStack>
-                        <Text>Connect To Wallet</Text>
-                    </HStack>
-                </Button>
+            ) : (
+                !active && (
+                    <Button size="md" colorScheme="blue" onClick={activate}>
+                        <HStack>
+                            <Text fontWeight="medium" fontSize="sm">
+                                Connect To Wallet
+                            </Text>
+                        </HStack>
+                    </Button>
+                )
             )}
         </Box>
     );
