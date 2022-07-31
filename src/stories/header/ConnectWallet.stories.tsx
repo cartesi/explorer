@@ -11,23 +11,32 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import ConnectMetamask from '../../components/header/ConnectMetamask';
+import ConnectWallet from '../../components/header/ConnectWallet';
+import { UnsupportedNetworkError } from '../../contexts/wallet';
 
 export default {
-    title: 'Header/ConnectMetamask',
-    component: ConnectMetamask,
+    title: 'Header/ConnectWallet',
+    component: ConnectWallet,
     argTypes: {},
-} as ComponentMeta<typeof ConnectMetamask>;
+} as ComponentMeta<typeof ConnectWallet>;
 
-const Template: ComponentStory<typeof ConnectMetamask> = (args) => (
-    <ConnectMetamask {...args} />
+const Template: ComponentStory<typeof ConnectWallet> = (args) => (
+    <ConnectWallet {...args} />
 );
 
-export const Connect = Template.bind({});
-Connect.args = {
+export const ConnectToWallet = Template.bind({});
+ConnectToWallet.args = {
     wallet: {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        activate: () => {},
+        active: false,
+        activate: () => undefined,
+    },
+};
+
+export const UnsupportedNetwork = Template.bind({});
+UnsupportedNetwork.args = {
+    wallet: {
+        error: new UnsupportedNetworkError(1),
+        active: false,
+        activate: () => undefined,
     },
 };
