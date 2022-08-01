@@ -15,13 +15,6 @@ import {
     Collapse,
     Radio,
     RadioGroup,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     VStack,
     Text,
     Stack,
@@ -30,6 +23,15 @@ import {
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
+import {
+    Modal,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../../Modal';
 import { CTSINumberInput } from '../CTSINumberInput';
 
 export interface IStakingWithdrawModalProps {

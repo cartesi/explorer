@@ -20,13 +20,6 @@ import {
     IconButton,
     Heading,
     FormControl,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     VStack,
     Text,
     FormHelperText,
@@ -36,6 +29,15 @@ import {
 import React, { FC, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+import {
+    Modal,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../../Modal';
 import { CTSINumberInput } from '../CTSINumberInput';
 import CTSI from '../../pools/staking/CTSI';
 

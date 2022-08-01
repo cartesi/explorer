@@ -80,7 +80,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         account. If you want to participate in the system,
                         please hire a new node with a new address.
                     </Text>
-                    <FormControl id="retireNode">
+                    <FormControl id="retireNode" mb="auto">
                         <FormLabel fontWeight="bold">Node address</FormLabel>
                         <Input
                             value={addressValue}

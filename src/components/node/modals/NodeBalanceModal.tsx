@@ -12,12 +12,6 @@
 import {
     Button,
     FormControl,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
     VStack,
     Text,
     FormHelperText,
@@ -34,6 +28,14 @@ import {
 import { BigNumber, constants, ethers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import {
+    Modal,
+    ModalCloseButton,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../../Modal';
 
 interface INodeBalanceModalProps {
     userBalance: BigNumber;

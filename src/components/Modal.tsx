@@ -11,15 +11,29 @@
 
 import {
     Modal,
-    ModalBody,
+    ModalHeader,
+    ModalBody as BaseModalBody,
     ModalCloseButton,
     ModalContent as BaseModalContent,
     ModalFooter as BaseModalFooter,
     ModalOverlay,
     ModalContentProps,
     ModalFooterProps,
+    ModalBodyProps,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
+
+const ModalBody: FC<ModalBodyProps> = ({ children, ...restProps }) => (
+    <BaseModalBody
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        pb="0 !important"
+        {...restProps}
+    >
+        {children}
+    </BaseModalBody>
+);
 
 const ModalContent: FC<ModalContentProps> = ({ children, ...restProps }) => (
     <BaseModalContent minHeight={610} {...restProps}>
@@ -35,6 +49,7 @@ const ModalFooter: FC<ModalFooterProps> = ({ children, ...restProps }) => (
 
 export {
     Modal,
+    ModalHeader,
     ModalBody,
     ModalCloseButton,
     ModalOverlay,

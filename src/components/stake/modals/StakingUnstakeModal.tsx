@@ -12,13 +12,6 @@
 import {
     Button,
     FormControl,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     VStack,
     Text,
     Collapse,
@@ -30,6 +23,15 @@ import {
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useState, useRef } from 'react';
+import {
+    Modal,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../../Modal';
 import { CTSINumberInput } from '../CTSINumberInput';
 
 export interface IStakingUnstakeModalProps {

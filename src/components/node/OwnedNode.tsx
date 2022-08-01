@@ -23,16 +23,18 @@ import {
     Stack,
     Text,
     VStack,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
     useDisclosure,
     Link,
     Checkbox,
 } from '@chakra-ui/react';
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalOverlay,
+} from '../Modal';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { BigNumber, BigNumberish, ethers } from 'ethers';
@@ -194,6 +196,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                                                 e.target.checked
                                             )
                                         }
+                                        mb="auto"
                                     >
                                         I confirm I'm running noether &gt;=
                                         2.0.3
