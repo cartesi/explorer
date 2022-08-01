@@ -18,6 +18,7 @@ import {
     Text,
     VStack,
     Button,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
@@ -70,13 +71,14 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
     const formattedAmount = formatValue(amount, 'ctsi', ctsiFormatOptions);
     const headerContent = `${type} ${formattedAmount} CTSI`;
     const formattedTime = dateTimeFormat.format(timestamp);
+    const timeColor = useColorModeValue('gray.400', 'white');
 
     return (
         <Box>
             <Heading as="h4" size="sm">
                 {headerContent}
             </Heading>
-            <Text fontSize="sm" color="gray.400">
+            <Text fontSize="sm" color={timeColor}>
                 {formattedTime}
             </Text>
         </Box>
