@@ -20,6 +20,7 @@ import {
     Icon,
     Heading,
     IconButton,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -34,6 +35,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
     allowance,
     onAllowanceClick,
 }) => {
+    const color = useColorModeValue('gray.400', 'white');
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '25%' }}>
             <HStack
@@ -44,7 +46,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
             >
                 <Box flexGrow="1">
                     <HStack>
-                        <Text color="gray.400">Pool allowance</Text>
+                        <Text color={color}>Pool allowance</Text>
                         <Tooltip
                             placement="top"
                             label="Here you can see your current pool allowance."
@@ -52,7 +54,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon color="gray.400" />
+                            <Icon color={color} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">
