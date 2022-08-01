@@ -40,6 +40,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
     onWithdrawClick,
 }) => {
     const bg = useColorModeValue('white', 'gray.800');
+    const balanceColor = useColorModeValue('gray.400', 'white');
 
     return (
         <Box
@@ -66,11 +67,11 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                     </Box>
                     <Box>
                         {isPoolBalanceLocked ? (
-                            <Text color="gray.400">
+                            <Text color={balanceColor}>
                                 Your pool balance (currently locked)
                             </Text>
                         ) : (
-                            <Text color="gray.400">Your pool balance</Text>
+                            <Text color={balanceColor}>Your pool balance</Text>
                         )}
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
