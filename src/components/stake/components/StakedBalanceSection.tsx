@@ -36,6 +36,7 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
     onUnstakeClick,
 }) => {
     const bg = useColorModeValue('white', 'gray.800');
+    const stakedBalanceColor = useColorModeValue('gray.400', 'white');
 
     return (
         <Box
@@ -61,7 +62,9 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                         <StakedBalanceIcon color="yellow.500" w={7} h={7} />
                     </Box>
                     <Box>
-                        <Text color="gray.400">Your staked balance</Text>
+                        <Text color={stakedBalanceColor}>
+                            Your staked balance
+                        </Text>
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={stakedBalance} />
