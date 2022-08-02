@@ -3,7 +3,7 @@
   "chainId": "31337",
   "contracts": {
     "CartesiToken": {
-      "address": "0x3dd3f098241950fa84535E788b1e8aFe50f1B5c4",
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       "abi": [
         {
           "constant": true,
@@ -451,7 +451,7 @@
       ]
     },
     "MineTimelock": {
-      "address": "0x6b1CdC752f425304944B41Fe0c798Ba46E58E237",
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       "abi": [
         {
           "constant": true,
@@ -620,7 +620,7 @@
       ]
     },
     "SimpleFaucet": {
-      "address": "0xED4c46b9E196DF4d814004b2212C164d76bD0122",
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
       "abi": [
         {
           "constant": true,
@@ -706,7 +706,7 @@
       ]
     },
     "BitsManipulationLibrary": {
-      "address": "0x172C227Bd63649100D2258B77334E7D285AB6b56",
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       "abi": [
         {
           "inputs": [
@@ -797,7 +797,7 @@
       ]
     },
     "Merkle": {
-      "address": "0x2BF00e390DDC71cb26b4f3bc1cA7539EeE4cc2e7",
+      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       "abi": [
         {
           "inputs": [
@@ -941,7 +941,7 @@
       ]
     },
     "WorkerManagerImpl": {
-      "address": "0x5A67396438254727fAD1077CA93617b14df3E245",
+      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
       "abi": [
         {
           "anonymous": false,
@@ -1189,7 +1189,7 @@
       ]
     },
     "WorkerAuthManagerImpl": {
-      "address": "0xCf5c9106EfCf7445D6257c315E4379E851f7EfA5",
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       "abi": [
         {
           "inputs": [
@@ -1334,7 +1334,7 @@
       ]
     },
     "WorkerManagerAuthManagerImpl": {
-      "address": "0x6C5903bfb27c777DD73a06C2E8C124e8c659D21C",
+      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
       "abi": [
         {
           "anonymous": false,
@@ -1710,7 +1710,7 @@
       ]
     },
     "StakingImpl": {
-      "address": "0x789Edc75ebdD07e48631D3895f19C821E1b9DB30",
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       "abi": [
         {
           "inputs": [
@@ -1939,7 +1939,7 @@
       ]
     },
     "BlockSelector": {
-      "address": "0x726dFc8F33F10402752556059B98061Cf6f0e4a4",
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
       "abi": [
         {
           "anonymous": false,
@@ -2339,7 +2339,7 @@
       ]
     },
     "PoS": {
-      "address": "0xa7C28b427061FB4e4c191639c407b9D5AD057d7d",
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
       "abi": [
         {
           "anonymous": false,
@@ -2832,7 +2832,7 @@
       ]
     },
     "StakingPoolImpl": {
-      "address": "0xe284A6588F4254BDe1b8d6E45f19958E1b27f8b3",
+      "address": "0x59b670e9fA9D0A427751Af201D676719a970857b",
       "abi": [
         {
           "inputs": [
@@ -3485,7 +3485,7 @@
       ]
     },
     "GasAggregator": {
-      "address": "0x523623db8abc3A227DC5c94ff118491E2D02Bd8A",
+      "address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
       "abi": [
         {
           "anonymous": false,
@@ -3630,7 +3630,7 @@
       ]
     },
     "ChainlinkGasOracle": {
-      "address": "0x4bd8FaD5b6acd2c324a74aF4cE0b386DDf975163",
+      "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44",
       "abi": [
         {
           "inputs": [
@@ -3672,7 +3672,7 @@
       ]
     },
     "PriceAggregator": {
-      "address": "0x1000B0eB4eD878192aAD2c83501E7674d73CfD12",
+      "address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
       "abi": [
         {
           "anonymous": false,
@@ -3817,7 +3817,7 @@
       ]
     },
     "ChainlinkPriceOracle": {
-      "address": "0xb98C412f1d58B1C6dea5c3858986bC51d5687284",
+      "address": "0x4A679253410272dd5232B3Ff7cF5dbB88f295319",
       "abi": [
         {
           "inputs": [
@@ -3859,7 +3859,7 @@
       ]
     },
     "StakingPoolFactoryImpl": {
-      "address": "0x8b313c1B85Fc20c3AAc3311E8Fe59d3c99F27f2D",
+      "address": "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F",
       "abi": [
         {
           "inputs": [

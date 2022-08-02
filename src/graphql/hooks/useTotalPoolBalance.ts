@@ -27,23 +27,27 @@ const useTotalPoolBalance = (user: string) => {
     const [total, setTotal] = useState<BigNumber>(constants.Zero);
 
     // query all user balances
-    const query = useQuery<PoolBalancesData, PoolBalancesVars>(POOL_BALANCES, {
-        variables: {
-            where: filter,
-            skip: 0,
-            first: POOLS_PER_PAGE, // XXX: consider only 50 first pools, ordered by shares
-            orderBy: 'shares',
-            orderDirection: 'desc',
-        },
-        notifyOnNetworkStatusChange: true,
-        pollInterval: 600000,
-    });
+    const { data, refetch } = useQuery<PoolBalancesData, PoolBalancesVars>(
+        POOL_BALANCES,
+        {
+            variables: {
+                where: filter,
+                skip: 0,
+                first: POOLS_PER_PAGE, // XXX: consider only 50 first pools, ordered by shares
+                orderBy: 'shares',
+                orderDirection: 'desc',
+            },
+            notifyOnNetworkStatusChange: true,
+            pollInterval: 600000,
+        }
+    );
 
     // aggregation of balances
     useEffect(() => {
-        if (query.data) {
+        if (data) {
+            refetch();
             // get user balance in all pools he is in
-            const amounts = query.data.poolBalances.map((b) => {
+            const amounts = data.poolBalances.map((b) => {
                 const userShares = FixedNumber.from(b.shares);
                 const poolShares = FixedNumber.from(b.pool.shares);
                 const poolAmount = FixedNumber.from(b.pool.amount);
@@ -66,7 +70,7 @@ const useTotalPoolBalance = (user: string) => {
             );
             setTotal(BigNumber.from(total).div(constants.WeiPerEther));
         }
-    }, [query.data]);
+    }, [data]);
     return total;
 };
 
