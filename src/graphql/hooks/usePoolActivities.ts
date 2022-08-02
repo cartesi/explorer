@@ -18,6 +18,7 @@ import {
     PoolActivitiesData,
     PoolActivitiesVars,
     PoolActivity,
+    PoolActivityFilter,
 } from '../models';
 import { GET_POOL_ACTIVITIES } from '../queries/poolActivities';
 
@@ -51,6 +52,26 @@ interface UsePoolActivities {
     loading: boolean;
     error?: Error;
 }
+
+const buildWhere = ({
+    user,
+    beforeInMillis,
+    from,
+    pool,
+    to,
+    types,
+}: UsePoolActivitiesProps): PoolActivityFilter => {
+    const where: PoolActivityFilter = {};
+
+    if (beforeInMillis) where.timestamp_lt = toUnixTimestamp(beforeInMillis);
+    if (from) where.timestamp_gte = toUnixTimestamp(from);
+    if (to) where.timestamp_lte = toUnixTimestamp(to);
+    if (!isEmpty(types)) where.type_in = types as ActivityType[];
+    if (user) where.user = user.toLowerCase();
+    if (pool) where.pool = pool.toLowerCase();
+
+    return where;
+};
 
 const getPoolActivities = (val: PoolActivitiesData): PoolActivity[] =>
     getOr([], 'poolActivities', val);
@@ -87,23 +108,7 @@ const usePoolActivities = ({
     to,
     types,
 }: UsePoolActivitiesProps): UsePoolActivities => {
-    const where: any = { user, pool };
-    if (beforeInMillis) {
-        where.timestamp_lt = toUnixTimestamp(beforeInMillis);
-    }
-
-    if (from) {
-        where.timestamp_gte = toUnixTimestamp(from);
-    }
-
-    if (to) {
-        where.timestamp_lte = toUnixTimestamp(to);
-    }
-
-    if (!isEmpty(types)) {
-        where.type_in = types;
-    }
-
+    const where = buildWhere({ beforeInMillis, user, pool, from, to, types });
     const orderBy = 'timestamp';
     const orderDirection = 'desc';
     const first = 20;

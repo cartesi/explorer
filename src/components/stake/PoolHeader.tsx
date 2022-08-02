@@ -26,7 +26,6 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
     const address = router.query.pool as string;
     const { chainId } = useWallet();
 
-    console.log(`isManager: ${isManager}`);
     return (
         <Box bg="header" color="white" px={{ base: '6vw', xl: '12vw' }} pt={5}>
             <Stack

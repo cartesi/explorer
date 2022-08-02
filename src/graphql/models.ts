@@ -157,6 +157,8 @@ export interface PoolActivityFilter {
     user?: string;
     pool?: string;
     timestamp_lt?: number;
+    timestamp_gte?: number;
+    timestamp_lte?: number;
     type?: ActivityType;
     type_in?: ActivityType[];
 }
