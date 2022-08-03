@@ -88,7 +88,6 @@ export interface BigNumberTextV2Props extends FlexProps {
     icon?: IconType;
     value: BigNumberish;
     nullLabel?: string;
-    direction?: SystemProps['flexDirection'];
     unit?: Unit;
     options?: Intl.NumberFormatOptions;
     countdown?: Countdown;
@@ -106,7 +105,6 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
         children,
         value,
         nullLabel = '-',
-        direction = 'column',
         icon,
         unit,
         options = defaultOptions,
@@ -162,15 +160,9 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
                 </Heading>
                 {unit && value && (
                     <>
-                        <Text size={'base'} color="gray.500">
-                            {unitLabel}
-                        </Text>
+                        <Text size={'base'}>{unitLabel}</Text>
                         {note && (
-                            <Text
-                                size={'base'}
-                                color="gray.500"
-                                paddingLeft={4}
-                            >
+                            <Text size={'base'} paddingLeft={4}>
                                 {note}
                             </Text>
                         )}
