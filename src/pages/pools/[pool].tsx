@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -52,6 +52,7 @@ import UserPool from '../../components/pools/UserPool';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
 import SectionHeading from '../../components/SectionHeading';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const blockAverageInterval = (
     result: QueryResult<BlocksData, BlocksVars>
@@ -67,6 +68,7 @@ const blockAverageInterval = (
 
 const Pool = () => {
     const { account, chainId } = useWallet();
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     // get pool address from path
     const router = useRouter();
@@ -134,6 +136,12 @@ const Pool = () => {
     };
 
     const { isOpen, onToggle } = useDisclosure();
+
+    useEffect(() => {
+        // When the flag is on, the user is automatically redirected to /stake/:addr
+        // The replace method overrides the current URL with the new one.
+        if (newPoolPageEnabled) router.replace(`/stake/${address}`);
+    }, [newPoolPageEnabled]);
 
     return (
         <Layout>

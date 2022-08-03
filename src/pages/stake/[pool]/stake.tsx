@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 
 import Layout from '../../../components/Layout';
@@ -27,9 +27,11 @@ import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const PoolRedesignStake = () => {
     const { account, active: isConnected } = useWallet();
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     // get pool address from path
     const router = useRouter();
@@ -79,6 +81,12 @@ const PoolRedesignStake = () => {
             unstake(stakedShares);
         }
     };
+
+    useEffect(() => {
+        // When the flag is off, the user is automatically redirected to /pools/:addr
+        // The replace method overrides the current URL with the new one.
+        if (!newPoolPageEnabled) router.replace(`/pools/${address}`);
+    }, [newPoolPageEnabled]);
 
     return (
         <Layout>
