@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2022-08-04
+
+-   New Staking Page workflow is ready to be rollout.
+-   Fix for stale data problem spotted on 'My Pools' after staking activities and when the wallet is disconnected. This fix also covers a widget in the home and node-runners page.
+
 ## [2.5.1] - 2022-07-27
 
 -   Support to the `ropsten` testnet removed. [Deprecation due on Q4/2022](https://blog.ethereum.org/2022/06/21/testnet-deprecation/)
