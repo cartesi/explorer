@@ -44,6 +44,8 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                     direction={{ base: 'column', lg: 'row' }}
                     w="full"
                     justifyContent="space-between"
+                    width="800px"
+                    maxWidth="100%"
                 >
                     <WalletBalanceSection
                         userCTSIBalance={balance}

@@ -70,7 +70,7 @@ const PoolRedesignStake = () => {
         approve,
     } = useCartesiToken(account, address, blockNumber);
 
-    const bg = useColorModeValue('gray.50', 'header');
+    const bg = useColorModeValue('gray.80', 'header');
 
     const onUnstake = (amount?: BigNumber) => {
         if (amount) {
@@ -113,6 +113,7 @@ const PoolRedesignStake = () => {
                     <StakingGuide />
                 )}
             </Box>
+
             <Box
                 bg={bg}
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
@@ -140,8 +141,10 @@ const PoolRedesignStake = () => {
 
             {isConnected && (
                 <Box
-                    px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                    py={{ base: 8, sm: 12, lg: 16 }}
+                    p={{ base: '40px', lg: '40px 0', xl: '40px 0' }}
+                    width="800px"
+                    maxWidth="100%"
+                    margin="0 auto"
                 >
                     <StakingActivity
                         userAccount={account}

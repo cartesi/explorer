@@ -66,7 +66,9 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                     <Heading m={0} size="sm">
                         <Flex align="baseline">
                             <CTSI value={userCTSIBalance} />
-                            <Text ml={1}>CTSI</Text>
+                            <Text ml={1} fontSize="sm">
+                                CTSI
+                            </Text>
                         </Flex>
                     </Heading>
                 </Box>

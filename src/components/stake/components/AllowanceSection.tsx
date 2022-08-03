@@ -60,7 +60,9 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                     <Heading m={0} size="sm">
                         <Flex align="baseline">
                             <CTSI value={allowance} />
-                            <Text ml={1}>CTSI</Text>
+                            <Text ml={1} fontSize="sm">
+                                CTSI
+                            </Text>
                         </Flex>
                     </Heading>
                 </Box>

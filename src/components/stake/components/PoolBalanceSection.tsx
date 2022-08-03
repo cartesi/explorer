@@ -76,7 +76,9 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={userPoolBalance} />
-                                <Text ml={1}>CTSI</Text>
+                                <Text ml={1} fontSize="sm">
+                                    CTSI
+                                </Text>
                             </Flex>
                         </Heading>
                     </Box>
@@ -86,31 +88,27 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                     alignItems="stretch"
                     pt={{ base: 6, md: 0 }}
                 >
-                    <Box>
-                        <Button
-                            w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
-                            onClick={onStakeClick}
-                            colorScheme="blue"
-                            disabled={
-                                isPoolBalanceLocked || userPoolBalance.isZero()
-                            }
-                        >
-                            Stake
-                        </Button>
-                    </Box>
-                    <Box>
-                        <Button
-                            variant="ghost"
-                            w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
-                            onClick={onWithdrawClick}
-                            colorScheme="darkGray"
-                            disabled={userPoolBalance.isZero()}
-                        >
-                            Withdraw
-                        </Button>
-                    </Box>
+                    <Button
+                        width="173px"
+                        ml="auto"
+                        onClick={onStakeClick}
+                        colorScheme="blue"
+                        disabled={
+                            isPoolBalanceLocked || userPoolBalance.isZero()
+                        }
+                    >
+                        Stake
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        width="173px"
+                        ml="auto"
+                        onClick={onWithdrawClick}
+                        colorScheme="darkGray"
+                        disabled={userPoolBalance.isZero()}
+                    >
+                        Withdraw
+                    </Button>
                 </VStack>
             </Stack>
         </Box>

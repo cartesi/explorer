@@ -9,16 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Flex,
-    Button,
-    Stack,
-    Heading,
-    Link,
-    Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Button, Stack, Heading, Text } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
@@ -46,23 +37,20 @@ export const DepositSection: FC<IDepositSection> = ({
                 <Heading as="h2" size="lg" py={2} mb={0}>
                     Staking
                 </Heading>
-                {/* <Link href="#" isExternal fontSize="xs">
-                    Learn more with the tutorial <ExternalLinkIcon />
-                </Link> */}
             </Box>
             <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
                     colorScheme="blue"
                     onClick={onDepositClick}
-                    w={{ base: '100%', md: 'auto' }}
-                    minW="15rem"
+                    width="173px"
+                    ml="auto"
                     disabled={
                         userWalletBalance.isZero() || userETHBalance?.isZero()
                     }
                 >
                     Deposit
                 </Button>
-                <Box pt={2}>
+                <Box pt={2} ml="auto">
                     <Text
                         fontSize="xs"
                         textAlign={{ base: 'left', md: 'right' }}

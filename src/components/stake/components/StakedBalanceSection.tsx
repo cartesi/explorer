@@ -68,7 +68,9 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={stakedBalance} />
-                                <Text ml={1}>CTSI</Text>
+                                <Text ml={1} fontSize="sm">
+                                    CTSI
+                                </Text>
                             </Flex>
                         </Heading>
                     </Box>
@@ -79,18 +81,16 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                     alignItems="stretch"
                     pt={{ base: 6, md: 0 }}
                 >
-                    <Box>
-                        <Button
-                            variant="ghost"
-                            w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
-                            onClick={onUnstakeClick}
-                            colorScheme="darkGray"
-                            disabled={stakedBalance.isZero()}
-                        >
-                            Unstake
-                        </Button>
-                    </Box>
+                    <Button
+                        variant="ghost"
+                        width="173px"
+                        ml="auto"
+                        onClick={onUnstakeClick}
+                        colorScheme="darkGray"
+                        disabled={stakedBalance.isZero()}
+                    >
+                        Unstake
+                    </Button>
                 </VStack>
             </Stack>
         </Box>

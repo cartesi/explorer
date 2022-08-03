@@ -98,7 +98,13 @@ export const Staking: FC<StakingProps> = ({
         <>
             <StakingInstructions />
 
-            <VStack spacing={6} alignItems="stretch">
+            <VStack
+                spacing={6}
+                alignItems="stretch"
+                width="800px"
+                maxWidth="100%"
+                margin="0 auto"
+            >
                 <DepositSection
                     userWalletBalance={userWalletBalance}
                     userETHBalance={userETHBalance}
