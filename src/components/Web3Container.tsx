@@ -10,23 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { Web3ReactProvider } from '@web3-react/core';
-import { Web3ConnectionProvider } from '../contexts/Web3Connection';
 import { WalletConnectionProvider } from '../contexts/wallet';
 
 const Web3Container = ({ children }) => {
-    const getLibrary = (provider: any) => {
-        return new Web3Provider(provider, 'any');
-    };
-
-    return (
-        <Web3ReactProvider getLibrary={getLibrary}>
-            <Web3ConnectionProvider>
-                <WalletConnectionProvider>{children}</WalletConnectionProvider>
-            </Web3ConnectionProvider>
-        </Web3ReactProvider>
-    );
+    return <WalletConnectionProvider>{children}</WalletConnectionProvider>;
 };
 
 export default Web3Container;

@@ -26,7 +26,6 @@ import NextLink from 'next/link';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useWallet } from '../../contexts/wallet';
 import Account from './Account';
-import ConnectMetamask from './ConnectMetamask';
 import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
@@ -145,17 +144,10 @@ const NavBar: FC<FlexProps> = (props) => {
                         onClick={toggleColorMode}
                     />
 
-                    {multiWalletEnabled ? (
-                        <ConnectWallet
-                            display={{ base: 'none', md: 'flex' }}
-                            wallet={wallet}
-                        />
-                    ) : (
-                        <ConnectMetamask
-                            display={{ base: 'none', md: 'flex' }}
-                            wallet={wallet}
-                        />
-                    )}
+                    <ConnectWallet
+                        display={{ base: 'none', md: 'flex' }}
+                        wallet={wallet}
+                    />
 
                     <Account />
                 </Flex>
@@ -170,17 +162,10 @@ const NavBar: FC<FlexProps> = (props) => {
                             </NavLink>
                         ))}
 
-                        {multiWalletEnabled ? (
-                            <ConnectWallet
-                                wallet={wallet}
-                                onClick={isOpen ? onClose : onOpen}
-                            />
-                        ) : (
-                            <ConnectMetamask
-                                wallet={wallet}
-                                onClick={isOpen ? onClose : onOpen}
-                            />
-                        )}
+                        <ConnectWallet
+                            wallet={wallet}
+                            onClick={isOpen ? onClose : onOpen}
+                        />
                     </Stack>
                 </Box>
             )}

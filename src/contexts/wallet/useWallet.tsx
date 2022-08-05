@@ -12,33 +12,11 @@
 import { useContext, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContext } from './provider';
-import { useWeb3React } from '@web3-react/core';
-import { useFlag } from '@unleash/proxy-client-react';
 import { WalletConnectionContextProps } from './definitions';
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 
-export type UseWallet = WalletConnectionContextProps &
-    Partial<Web3ReactContextInterface<Web3Provider>>;
+export type UseWallet = WalletConnectionContextProps & Partial<Web3Provider>;
 
 export const useWallet = (): UseWallet => {
-    const multiWalletEnabled = useFlag('multiWalletEnabled');
     const onboardContext = useContext(WalletConnectionContext);
-    const web3ReactContext = useWeb3React<Web3Provider>();
-    const context = multiWalletEnabled ? onboardContext : web3ReactContext;
-
-    useEffect(() => {
-        const previousWallet = multiWalletEnabled
-            ? web3ReactContext
-            : onboardContext;
-
-        if (previousWallet.active) {
-            console.info(
-                `Deactivating previous wallet/provider (${
-                    multiWalletEnabled ? 'web3ReactProvider' : 'onboardJS'
-                })`
-            );
-            previousWallet.deactivate();
-        }
-    }, [multiWalletEnabled]);
-    return context;
+    return onboardContext;
 };
