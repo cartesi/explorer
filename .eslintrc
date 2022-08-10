@@ -16,6 +16,11 @@
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
-        "react/react-in-jsx-scope": "warn"
+        "react/react-in-jsx-scope": "warn",
+        "react/no-children-prop": "warn",
+        "react-hooks/rules-of-hooks": "warn",
+        "react/prop-types": "warn",
+        "react/display-name": "off",
+        "react/no-unescaped-entities": "warn"
     }
 }
