@@ -9,8 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import humanizeDuration from 'humanize-duration';
+import { isString } from 'lodash';
+import moment from 'moment';
 
 export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
     const [state, setState] = useState<D>(dependency);
@@ -23,40 +25,74 @@ export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
 }
 
 /**
- * Returns a label representing the time left until the given date, or undefined if the given date is in the past.
+ * @desc Returns a label representing the time left until the given date, or undefined if the given date is in the past.
  * Label updates every second, until it reaches the given date, where it becomes undefined.
- **/
+ * @param timestamp
+ * @param fields
+ * @param isHumanizedOutput
+ * @param format
+ */
 export const useTimeLeft = (
     timestamp: number,
     fields = 2,
-    humanizeOutput = true
-) => {
-    const [timeLeft, setTimeLeft] = useState<string>(undefined);
+    isHumanizedOutput = true,
+    format?: string
+): string => {
+    const applyFormat = useCallback((duration: number, format: string) => {
+        return moment
+            .utc(moment.duration(duration).asMilliseconds())
+            .format(format);
+    }, []);
+
+    const durationToShortDate = useCallback((duration: number) => {
+        return new Date(duration).toISOString().substring(11, 16);
+    }, []);
+
+    const formatDuration = useCallback((duration, fields) => {
+        return humanizeDuration(duration, {
+            largest: fields,
+            round: false,
+        });
+    }, []);
+
+    const formatRemainingTime = useCallback(
+        (duration: number) => {
+            return isHumanizedOutput
+                ? isString(format)
+                    ? applyFormat(duration, format)
+                    : formatDuration(duration, fields)
+                : durationToShortDate(duration);
+        },
+        [
+            fields,
+            format,
+            formatDuration,
+            isHumanizedOutput,
+            applyFormat,
+            durationToShortDate,
+        ]
+    );
+
+    const [timeLeft, setTimeLeft] = useState<string>(
+        formatRemainingTime(timestamp - Date.now())
+    );
+
     useEffect(() => {
+        const delay = 1000;
         const intervalId = setInterval(() => {
-            const t = Date.now();
-            if (t >= timestamp) {
+            if (Date.now() >= timestamp) {
                 setTimeLeft(undefined);
                 clearInterval(intervalId);
             } else {
                 const duration = timestamp - Date.now();
-                const outputHumanized = humanizeDuration(duration, {
-                    largest: fields,
-                    round: false,
-                });
+                const nextTimeLeft = formatRemainingTime(duration);
 
-                const durationToShortDate = (duration: number) => {
-                    return new Date(duration).toISOString().substring(11, 16);
-                };
-
-                setTimeLeft(
-                    humanizeOutput
-                        ? outputHumanized
-                        : durationToShortDate(duration)
-                );
+                setTimeLeft(nextTimeLeft);
             }
-        }, 1000);
+        }, delay);
+
         return () => clearInterval(intervalId);
-    }, [timestamp, fields]);
+    }, [timestamp, fields, isHumanizedOutput, format, formatRemainingTime]);
+
     return timeLeft;
 };
