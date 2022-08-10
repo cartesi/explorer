@@ -18,6 +18,12 @@ export const Button = {
         lg: {
             fontSize: 'md',
         },
+        md: {
+            fontSize: 'sm',
+        },
+        sm: {
+            fontSize: 'xs',
+        },
     },
     variants: {
         outline: (props) => {
