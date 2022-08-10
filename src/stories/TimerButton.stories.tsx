@@ -11,29 +11,34 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Button } from '../../components/base/Button';
+import TimerButton from '../components/TimerButton';
 
 export default {
-    title: 'Base/Button',
-    component: Button,
+    title: 'Base/TimerButton',
+    component: TimerButton,
     argTypes: {},
-} as ComponentMeta<typeof Button>;
+} as ComponentMeta<typeof TimerButton>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof TimerButton> = (args) => (
+    <TimerButton {...args} />
+);
 
 export const MediumButton = Template.bind({});
 MediumButton.args = {
     children: 'Medium button',
+    remainingTime: Date.now() + 60000,
 };
 
 export const LargeButton = Template.bind({});
 LargeButton.args = {
     size: 'lg',
     children: 'Large button',
+    remainingTime: Date.now() + 600000,
 };
 
 export const SmallButton = Template.bind({});
 SmallButton.args = {
     size: 'sm',
     children: 'Small button',
+    remainingTime: Date.now() + 6000000,
 };
