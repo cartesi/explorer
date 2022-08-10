@@ -21,11 +21,14 @@ import {
     Stack,
     useColorMode,
     useDisclosure,
+    Hide,
+    Show,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useWallet } from '../../contexts/wallet';
 import Account from './Account';
+import AccountMobile from './AccountMobile';
 import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
@@ -96,17 +99,6 @@ const NavBar: FC<FlexProps> = (props) => {
     return (
         <Box bg="gray.900" color="white" px="6vw" position="fixed" {...props}>
             <Flex h="100px" alignItems="center" justifyContent="space-between">
-                <IconButton
-                    size="md"
-                    bg="transparent"
-                    icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                    aria-label="Open Menu"
-                    data-testid="menu-button"
-                    display={{ md: 'none' }}
-                    onClick={isOpen ? onClose : onOpen}
-                    _hover={{ bg: 'gray.800' }}
-                />
-
                 <HStack
                     spacing={8}
                     alignItems="center"
@@ -147,7 +139,20 @@ const NavBar: FC<FlexProps> = (props) => {
                         wallet={wallet}
                     />
 
-                    <Account />
+                    <IconButton
+                        size="md"
+                        bg="transparent"
+                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                        aria-label="Open Menu"
+                        data-testid="menu-button"
+                        display={{ md: 'none' }}
+                        onClick={isOpen ? onClose : onOpen}
+                        _hover={{ bg: 'gray.800' }}
+                    />
+
+                    <Hide breakpoint="(max-width: 504px)">
+                        <Account />
+                    </Hide>
                 </Flex>
             </Flex>
 
@@ -159,6 +164,7 @@ const NavBar: FC<FlexProps> = (props) => {
                                 {label}
                             </NavLink>
                         ))}
+                        <AccountMobile />
 
                         <ConnectWallet
                             wallet={wallet}

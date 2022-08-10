@@ -13,14 +13,22 @@ import {
     HStack,
     Tag,
     TagLabel,
-    TagCloseButton,
-    IconButton,
     Box,
-    useColorModeValue,
+    MenuItem,
+    MenuButton,
+    Menu,
+    MenuList,
+    Flex,
+    useClipboard,
+    Link,
+    Text,
+    MenuItemOption,
 } from '@chakra-ui/react';
+import { ChevronDownIcon, CopyIcon } from '@chakra-ui/icons';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
-import { HiSwitchVertical } from 'react-icons/hi';
+import { CgArrowsExchangeAlt } from 'react-icons/cg';
+import { AiOutlineDisconnect } from 'react-icons/ai';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
 import { useWallet } from '../../contexts/wallet';
@@ -29,40 +37,110 @@ const Account: FC = () => {
     const { account, library, isHardwareWallet, onboard, deactivate } =
         useWallet();
     const ens = useENS(account);
-    const iconColor = useColorModeValue('white', 'gray.300');
+    const { hasCopied, onCopy } = useClipboard(account);
 
     if (!account) {
         return null;
     }
 
     return (
-        <Tag size="md" borderRadius="full" colorScheme="gray">
+        <Tag
+            size="md"
+            borderRadius="0"
+            colorScheme="gray"
+            h={10}
+            w={150}
+            backgroundColor="white"
+        >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
                 <TagLabel>
                     {ens.name || truncateString(ens.address || account)}
                 </TagLabel>
-                {account && library && onboard && isHardwareWallet && (
-                    <IconButton
-                        onClick={onboard.accountSelect}
-                        aria-label="Switch accounts"
-                        title="Switch accounts"
-                        colorScheme="transparent"
-                        size="sm"
-                        variant="ghost"
-                        color={iconColor}
-                        icon={<Box as={HiSwitchVertical} />}
-                    />
-                )}
-
-                {account && library && (
-                    <TagCloseButton
-                        aria-label="Disconnect wallet"
-                        title="Disconnect wallet"
-                        onClick={deactivate}
-                    />
-                )}
             </HStack>
+            <Menu closeOnSelect={false}>
+                <MenuButton h={5} w={5} px={2}>
+                    <ChevronDownIcon />
+                </MenuButton>
+
+                <MenuList borderRadius="0" p={0}>
+                    <MenuItemOption
+                        justifyContent={'flex-end'}
+                        borderBottom="1px"
+                        borderColor={'gray.100'}
+                    >
+                        <Flex>
+                            <Box>{ens.address}</Box>
+                            <Box>
+                                {!hasCopied && (
+                                    <Link px={2}>
+                                        <CopyIcon onClick={onCopy} />
+                                    </Link>
+                                )}
+                                {hasCopied && <Text fontSize="sm">Copied</Text>}
+                            </Box>
+                        </Flex>
+                    </MenuItemOption>
+
+                    {account && library && (
+                        <MenuItem
+                            justifyContent={'flex-end'}
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                        >
+                            <Flex>
+                                <Box
+                                    onClick={deactivate}
+                                    aria-label="Disconnect wallet"
+                                    title="Disconnect wallet"
+                                    px={2}
+                                >
+                                    Disconnect account
+                                </Box>
+                                <AiOutlineDisconnect
+                                    onClick={deactivate}
+                                    aria-label="Disconnect wallet"
+                                    title="Disconnect wallet"
+                                    style={{
+                                        marginRight: 7,
+                                        height: 16,
+                                        width: 16,
+                                    }}
+                                />
+                            </Flex>
+                        </MenuItem>
+                    )}
+
+                    {account && library && onboard && isHardwareWallet && (
+                        <MenuItem
+                            justifyContent={'flex-end'}
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                        >
+                            <Flex>
+                                <Box
+                                    onClick={onboard.accountSelect}
+                                    aria-label="Switch accounts"
+                                    title="Switch accounts"
+                                    px={2}
+                                >
+                                    Switch accounts
+                                </Box>
+                                <CgArrowsExchangeAlt
+                                    onClick={onboard.accountSelect}
+                                    aria-label="Switch accounts"
+                                    title="Switch accounts"
+                                    style={{
+                                        marginRight: 7,
+                                        height: 19,
+                                        width: 19,
+                                    }}
+                                />
+                            </Flex>
+                        </MenuItem>
+                    )}
+                </MenuList>
+            </Menu>
         </Tag>
     );
 };
