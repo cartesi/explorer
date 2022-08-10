@@ -75,7 +75,6 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => (
         <Link
             px={2}
             py={1}
-            rounded={'md'}
             _hover={{
                 textDecoration: 'none',
                 bg: 'gray.800',

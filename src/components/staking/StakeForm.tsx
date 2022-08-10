@@ -18,13 +18,13 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
-    Input,
-    InputGroup,
-    InputRightAddon,
     Text,
     Flex,
     Checkbox,
     VStack,
+    Input,
+    InputGroup,
+    InputRightAddon,
     StackProps,
 } from '@chakra-ui/react';
 import { formatCTSI } from '../../utils/token';

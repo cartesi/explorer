@@ -11,10 +11,10 @@
 
 import React, { ChangeEventHandler, FunctionComponent } from 'react';
 import {
+    InputGroupProps,
     Input,
     InputGroup,
     InputLeftElement,
-    InputGroupProps,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 

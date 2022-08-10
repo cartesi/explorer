@@ -104,7 +104,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
         <Alert
             variant="left-accent"
             alignItems="flex-start"
-            borderRadius="lg"
             boxShadow="sm"
             bg={bg}
             status={status}

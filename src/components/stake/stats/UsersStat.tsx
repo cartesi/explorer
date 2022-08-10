@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC, ReactChild, ReactFragment } from 'react';
-import { PoolUsersIcon } from '../../../components/Icons';
+import { PoolUsersIcon } from '../../Icons';
 import {
     HStack,
     useColorModeValue,
@@ -46,7 +46,6 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                 flexBasis={{ base: '100%', lg: '33.33%' }}
                 flexShrink={0}
                 bgColor={bgBlocks}
-                borderRadius={4}
                 cursor={location ? 'pointer' : ''}
             >
                 <HStack spacing={4} align="center" p={4} w="full">

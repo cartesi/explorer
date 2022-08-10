@@ -20,11 +20,11 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
+    Text,
+    VStack,
     Input,
     InputGroup,
     InputRightAddon,
-    Text,
-    VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { BigNumber, BigNumberish } from 'ethers';

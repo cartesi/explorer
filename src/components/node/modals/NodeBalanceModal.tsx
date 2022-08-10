@@ -24,18 +24,16 @@ import {
     Input,
     InputRightElement,
     InputGroup,
-} from '@chakra-ui/react';
-import { BigNumber, constants, ethers } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import {
     Modal,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../../Modal';
+} from '@chakra-ui/react';
+import { BigNumber, constants, ethers } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 interface INodeBalanceModalProps {
     userBalance: BigNumber;

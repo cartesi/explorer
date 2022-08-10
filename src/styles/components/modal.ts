@@ -16,8 +16,15 @@ export const Modal = {
             marginRight: 3,
         },
         body: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            paddingBottom: 0,
             paddingInlineStart: [6, 8],
             paddingInlineEnd: [6, 8],
+        },
+        content: {
+            minHeight: 610,
         },
         header: {
             paddingInlineStart: [6, 8],
@@ -25,7 +32,7 @@ export const Modal = {
             paddingTop: [6, 8],
         },
         footer: {
-            paddingBottom: [6, 8],
+            paddingBottom: [6, 10],
         },
     }),
 };

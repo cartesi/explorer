@@ -22,17 +22,15 @@ import {
     Box,
     Divider,
     Input,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import React, { FC, useEffect, useState } from 'react';
-import {
     Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../../Modal';
+    useColorModeValue,
+} from '@chakra-ui/react';
+import React, { FC, useEffect, useState } from 'react';
 
 interface INodeRetireModalProps {
     address: string;

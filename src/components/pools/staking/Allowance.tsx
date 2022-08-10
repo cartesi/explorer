@@ -14,9 +14,9 @@ import {
     Stack,
     HStack,
     IconButton,
-    Input,
     Text,
     Tooltip,
+    Input,
     useDisclosure,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';

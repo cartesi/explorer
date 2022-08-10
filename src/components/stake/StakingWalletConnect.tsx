@@ -31,7 +31,7 @@ export const StakingWalletConnect: FC<StakingTabNavigationProps> = ({
 
     return (
         <>
-            <VStack bg={bg} borderRadius="lg" shadow="sm">
+            <VStack bg={bg} shadow="sm">
                 <Stack
                     direction={{ base: 'column', md: 'row' }}
                     w="full"

@@ -17,10 +17,10 @@ import {
     FormErrorMessage,
     HStack,
     IconButton,
-    Input,
     Text,
     Tooltip,
     Stack,
+    Input,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';

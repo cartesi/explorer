@@ -24,12 +24,6 @@ import {
     Text,
     FormHelperText,
     FormLabel,
-    UseDisclosureProps,
-} from '@chakra-ui/react';
-import React, { FC, useRef, useState } from 'react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import {
     Modal,
     ModalHeader,
     ModalCloseButton,
@@ -37,7 +31,11 @@ import {
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../../Modal';
+    UseDisclosureProps,
+} from '@chakra-ui/react';
+import React, { FC, useRef, useState } from 'react';
+import { BigNumber, constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 import CTSI from '../../pools/staking/CTSI';
 

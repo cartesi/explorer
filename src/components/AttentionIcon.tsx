@@ -10,7 +10,7 @@ const AttentionIcon: FC<AttentionIconProps> = (props) => {
 
     return (
         <Box
-            bg="orange.40"
+            bg="gray.90"
             w={14}
             h={14}
             borderRadius="full"

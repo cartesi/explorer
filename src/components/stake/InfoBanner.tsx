@@ -59,7 +59,6 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
             <Alert
                 variant="left-accent"
                 alignItems="flex-start"
-                borderRadius="lg"
                 boxShadow="sm"
                 bg={bg}
                 {...props}

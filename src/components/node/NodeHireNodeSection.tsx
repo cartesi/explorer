@@ -16,11 +16,11 @@ import {
     FormHelperText,
     FormLabel,
     HStack,
+    Stack,
+    Button,
     Input,
     InputGroup,
     InputRightElement,
-    Stack,
-    Button,
     useColorModeValue,
 } from '@chakra-ui/react';
 
@@ -30,7 +30,6 @@ export const NodeHireNodeSection = () => {
     return (
         <Box
             bg={bg}
-            borderRadius="lg"
             shadow="sm"
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}

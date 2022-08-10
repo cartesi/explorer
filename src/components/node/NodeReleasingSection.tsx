@@ -42,7 +42,6 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     return (
         <Box
             bg={bg}
-            borderRadius="lg"
             shadow="sm"
             p={6}
             pl={5}

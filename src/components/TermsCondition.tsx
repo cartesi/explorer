@@ -10,16 +10,17 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC, useEffect, useRef, useState } from 'react';
-import { Button, Box } from '@chakra-ui/react';
-import createPersistedState from 'use-persisted-state';
 import {
+    Button,
+    Box,
     Modal,
     ModalHeader,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from './Modal';
+} from '@chakra-ui/react';
+import createPersistedState from 'use-persisted-state';
 
 export interface TermsConditionProps {
     persistanceKey: string;

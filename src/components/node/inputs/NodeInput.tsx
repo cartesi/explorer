@@ -15,12 +15,12 @@ import {
     FormErrorMessage,
     FormHelperText,
     FormLabel,
-    Input,
-    InputGroup,
-    InputRightElement,
     Spinner,
     useColorModeValue,
     VisuallyHidden,
+    Input,
+    InputGroup,
+    InputRightElement,
 } from '@chakra-ui/react';
 import {
     capitalize,

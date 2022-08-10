@@ -16,6 +16,7 @@ import { Button } from './components/button';
 import { Link } from './components/link';
 import { Modal } from './components/modal';
 import { Table } from './components/table';
+import { Input } from './components/input';
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 import { fonts } from './foundations/fonts';
@@ -43,6 +44,7 @@ const theme = extendTheme({
         Link,
         Modal,
         Table,
+        Input,
     },
     fonts,
     colors,

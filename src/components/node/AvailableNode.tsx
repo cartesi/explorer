@@ -17,12 +17,12 @@ import {
     FormHelperText,
     FormLabel,
     HStack,
-    Input,
-    InputGroup,
-    InputRightAddon,
     Stack,
     Text,
     VStack,
+    Input,
+    InputGroup,
+    InputRightAddon,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';

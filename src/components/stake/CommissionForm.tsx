@@ -19,12 +19,12 @@ import {
     FormLabel,
     HStack,
     Icon,
-    Input,
-    InputGroup,
-    InputRightElement,
     Text,
     Tooltip,
     VStack,
+    Input,
+    InputGroup,
+    InputRightElement,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';

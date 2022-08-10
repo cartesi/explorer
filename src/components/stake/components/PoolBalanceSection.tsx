@@ -43,13 +43,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
     const balanceColor = useColorModeValue('gray.400', 'white');
 
     return (
-        <Box
-            bg={bg}
-            borderRadius="lg"
-            shadow="sm"
-            p={6}
-            pl={{ base: 6, md: 8 }}
-        >
+        <Box bg={bg} shadow="sm" p={6} pl={{ base: 6, md: 8 }}>
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"

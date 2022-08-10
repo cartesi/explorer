@@ -52,7 +52,6 @@ export const Card = ({
         <Stack
             id={id}
             bg={bg}
-            borderRadius={6}
             spacing={10}
             py={8}
             px={8}

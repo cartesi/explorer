@@ -27,7 +27,6 @@ export const PoolTabNavigation: FC = () => {
             <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
                 <NextLink href={`/stake/${address}`}>
                     <Button
-                        borderTopRadius="6px"
                         py={{ lg: 7 }}
                         leftIcon={<DashboardIcon />}
                         outline="none"
@@ -49,7 +48,6 @@ export const PoolTabNavigation: FC = () => {
                 </NextLink>
                 <NextLink href={`/stake/${address}/stake`}>
                     <Button
-                        borderTopRadius="6px"
                         py={{ lg: 7 }}
                         leftIcon={<StakeIcon />}
                         outline="none"

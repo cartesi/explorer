@@ -26,8 +26,6 @@ import {
     Heading,
     HStack,
     Icon,
-    Input,
-    InputGroup,
     Link,
     Spinner,
     Stack,
@@ -35,6 +33,8 @@ import {
     Text,
     Tooltip,
     VStack,
+    Input,
+    InputGroup,
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useWallet } from '../../contexts/wallet';

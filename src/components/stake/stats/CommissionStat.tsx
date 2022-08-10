@@ -49,7 +49,6 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                 flexBasis={{ base: '100%', lg: '33.33%' }}
                 flexShrink={0}
                 bgColor={bgBlocks}
-                borderRadius={4}
                 cursor={location ? 'pointer' : ''}
             >
                 <HStack spacing={4} align="center" p={4} w="full">

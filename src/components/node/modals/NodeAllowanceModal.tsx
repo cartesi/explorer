@@ -20,19 +20,17 @@ import {
     Box,
     HStack,
     Divider,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useRef, useState } from 'react';
-import {
     Modal,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../../Modal';
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
+import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 
 interface INodeAllowanceModalProps {

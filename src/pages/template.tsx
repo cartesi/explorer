@@ -14,13 +14,13 @@ import Head from 'next/head';
 import {
     Box,
     Heading,
-    Input,
     Table,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
+    Input,
 } from '@chakra-ui/react';
 
 import Layout, { PageHeader, PagePanel, PageBody } from '../components/Layout';

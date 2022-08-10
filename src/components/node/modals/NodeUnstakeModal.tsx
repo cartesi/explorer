@@ -22,18 +22,16 @@ import {
     useColorModeValue,
     Link,
     Divider,
-} from '@chakra-ui/react';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import {
     Modal,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../../Modal';
+} from '@chakra-ui/react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { BigNumber, constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 
 interface INodeUnstakeModalProps {

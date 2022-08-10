@@ -17,24 +17,22 @@ import {
     FormHelperText,
     FormLabel,
     HStack,
-    Input,
-    InputGroup,
-    InputRightAddon,
     Stack,
     Text,
     VStack,
     useDisclosure,
     Link,
     Checkbox,
-} from '@chakra-ui/react';
-import {
     Modal,
     ModalHeader,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-} from '../Modal';
+    Input,
+    InputGroup,
+    InputRightAddon,
+} from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { BigNumber, BigNumberish, ethers } from 'ethers';

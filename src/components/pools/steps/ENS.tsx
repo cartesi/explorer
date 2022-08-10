@@ -11,10 +11,7 @@
 import {
     FormControl,
     FormLabel,
-    Input,
     FormErrorMessage,
-    InputGroup,
-    InputRightElement,
     Box,
     useColorModeValue,
     BoxProps,
@@ -23,6 +20,9 @@ import {
     FormControlProps,
     Link,
     Text,
+    Input,
+    InputGroup,
+    InputRightElement,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';

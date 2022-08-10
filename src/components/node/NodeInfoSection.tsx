@@ -72,13 +72,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
     return (
         <>
-            <Box
-                bg={bg}
-                borderRadius="lg"
-                shadow="sm"
-                p={{ base: 2, lg: 6 }}
-                mb={6}
-            >
+            <Box bg={bg} shadow="sm" p={{ base: 2, lg: 6 }} mb={6}>
                 <Stack
                     spacing={4}
                     alignContent="flex-start"
