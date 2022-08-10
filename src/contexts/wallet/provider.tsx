@@ -82,7 +82,6 @@ export const WalletConnectionProvider: FC = (props) => {
     const [isFirstNetworkChange, setFirstNetworkChange] = useState(true);
     const { library, account, chainId, error, onboard } = state;
     const { colorMode } = useColorMode();
-    const multiWalletEnabled = useFlag('multiWalletEnabled');
     const ankrEnabled = useFlag('ankrEnabled');
     const updateUnleashCtx = useUnleashContext();
 
@@ -205,7 +204,7 @@ export const WalletConnectionProvider: FC = (props) => {
     useEffect(() => {
         const previousWalletSelected =
             window.localStorage.getItem(SELECTED_WALLET);
-        if (onboard && multiWalletEnabled) {
+        if (onboard) {
             console.log(
                 `Setting up pre-selected wallet: ${
                     previousWalletSelected
@@ -228,7 +227,7 @@ export const WalletConnectionProvider: FC = (props) => {
             }
             setState((state) => ({ ...state, tried: true }));
         }
-    }, [onboard, multiWalletEnabled]);
+    }, [onboard]);
 
     useEffect(() => {
         const { onboard } = state;

@@ -89,7 +89,6 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => (
 const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
-    const multiWalletEnabled = useFlag('multiWalletEnabled');
     const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
     const links = buildLinks({ newNodeRunnersEnabled });
     const wallet = useWallet();
