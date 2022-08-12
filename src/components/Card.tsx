@@ -66,7 +66,7 @@ export const Card = ({
                 alignItems={['center']}
                 px={4}
             >
-                <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={1} />
+                <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={2.5} />
                 <Box textAlign={{ base: 'center', lg: 'left' }}>
                     <Heading
                         as="h3"

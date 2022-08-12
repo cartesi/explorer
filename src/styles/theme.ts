@@ -21,6 +21,7 @@ import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 import { fonts } from './foundations/fonts';
 import { buildOnboardTheme } from './onboardTheme';
+import { formsTheme } from './formsTheme';
 
 const theme = extendTheme({
     styles: {
@@ -30,6 +31,7 @@ const theme = extendTheme({
                     color: props.colorMode === 'dark' ? 'white' : 'gray.800',
                 },
                 ...buildOnboardTheme(props),
+                ...formsTheme(),
             };
         },
     },
