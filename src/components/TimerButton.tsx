@@ -9,7 +9,7 @@ export interface TimerButtonProps extends ButtonProps {
 
 const TimerButton: FC<TimerButtonProps> = (props) => {
     const { children, remainingTime, ...restProps } = props;
-    const time = useTimeLeft(remainingTime, 2, true, 'HH:mm:ss');
+    const time = useTimeLeft(remainingTime, 2, true, 'hh:mm:ss');
 
     return (
         <Button {...restProps} data-testid="timer-button">

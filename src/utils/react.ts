@@ -12,7 +12,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import humanizeDuration from 'humanize-duration';
 import { isString } from 'lodash';
-import moment from 'moment';
+import { Duration } from 'luxon';
 
 export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
     const [state, setState] = useState<D>(dependency);
@@ -39,9 +39,7 @@ export const useTimeLeft = (
     format?: string
 ): string => {
     const applyFormat = useCallback((duration: number, format: string) => {
-        return moment
-            .utc(moment.duration(duration).asMilliseconds())
-            .format(format);
+        return Duration.fromMillis(duration).toFormat(format);
     }, []);
 
     const durationToShortDate = useCallback((duration: number) => {
