@@ -27,14 +27,18 @@ import {
     useDisclosure,
     Heading,
 } from '@chakra-ui/react';
-import { ArrowUpDownIcon, CopyIcon } from '@chakra-ui/icons';
+import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateStringMobile } from '../../utils/stringUtilsMobile';
 import { useWallet } from '../../contexts/wallet';
-import { AiOutlineDisconnect } from 'react-icons/ai';
-import { CgArrowsExchange } from 'react-icons/cg';
+import {
+    DisconnectIcon,
+    CopyIcon,
+    SwitchIcon,
+    ArrowsUpDownIcon,
+} from '../Icons';
 
 const AccountMobile: FC = () => {
     const { account, library, isHardwareWallet, onboard, deactivate } =
@@ -57,19 +61,30 @@ const AccountMobile: FC = () => {
             onClick={() => onOpen()}
             key={'xs'}
         >
-            <HStack w="full" spacing={4} alignItems="center">
+            <HStack w="full" spacing={4}>
                 <Box flexGrow="1">
                     <Jazzicon
                         diameter={15}
                         seed={jsNumberForAddress(account)}
                     />
-                    <TagLabel px={2}>
+                    <TagLabel
+                        px={2}
+                        style={{
+                            fontSize: 14,
+                            fontWeight: 400,
+                        }}
+                    >
                         {ens.name ||
                             truncateStringMobile(ens.address || account)}
                     </TagLabel>
                 </Box>
                 <Box alignSelf="flex-end">
-                    <ArrowUpDownIcon />
+                    <ArrowsUpDownIcon
+                        style={{
+                            height: 23,
+                            width: 24,
+                        }}
+                    />
                 </Box>
             </HStack>
 
@@ -78,40 +93,48 @@ const AccountMobile: FC = () => {
                 <ModalContent borderRadius="0" p={0}>
                     <ModalHeader>Your account</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody borderBottom="1px" borderColor={'gray.100'}>
+                    <ModalBody
+                        borderBottom="1px"
+                        borderColor={'gray.100'}
+                        backgroundColor="#F1F2F5"
+                        py={4}
+                    >
                         <HStack w="full" spacing={4} alignItems="center">
                             <Box flexGrow="1">
                                 <HStack>
-                                    <Text fontSize="xs">Current wallet</Text>
+                                    <Text fontSize="xs" color={'#939393'}>
+                                        Current wallet
+                                    </Text>
                                 </HStack>
                                 <Heading m={0} size="sm">
                                     <Flex align="baseline">
-                                        <Box maxWidth="62%">{ens.address}</Box>
-                                        <Box>
-                                            {!hasCopied && (
-                                                <Link>
-                                                    <CopyIcon
-                                                        onClick={onCopy}
-                                                    />
-                                                </Link>
-                                            )}
-                                            {hasCopied && (
-                                                <Text
-                                                    maxWidth="52%"
-                                                    fontSize="xs"
-                                                >
-                                                    Copied
-                                                </Text>
-                                            )}
-                                        </Box>
+                                        <Box maxWidth="210">{ens.address}</Box>
                                     </Flex>
                                 </Heading>
                             </Box>
+                            <Box>
+                                {!hasCopied && (
+                                    <Link>
+                                        <CopyIcon
+                                            onClick={onCopy}
+                                            style={{
+                                                height: 19,
+                                                width: 19,
+                                                marginLeft: 10,
+                                            }}
+                                        />
+                                    </Link>
+                                )}
+                                {hasCopied && <Text fontSize="xs">Copied</Text>}
+                            </Box>
                         </HStack>
                     </ModalBody>
-
-                    <ModalBody borderBottom="1px" borderColor={'gray.100'}>
-                        {account && library && (
+                    {account && library && (
+                        <ModalBody
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                            py={5}
+                        >
                             <HStack w="full" spacing={4} alignItems="center">
                                 <Box flexGrow="1">
                                     <Heading m={0} size="sm">
@@ -120,6 +143,8 @@ const AccountMobile: FC = () => {
                                                 onClick={deactivate}
                                                 aria-label="Disconnect wallet"
                                                 title="Disconnect wallet"
+                                                fontSize={16}
+                                                fontWeight={400}
                                             >
                                                 Disconnect account
                                             </Box>
@@ -127,17 +152,25 @@ const AccountMobile: FC = () => {
                                     </Heading>
                                 </Box>
                                 <Box alignSelf="flex-end">
-                                    <AiOutlineDisconnect
+                                    <DisconnectIcon
                                         onClick={deactivate}
                                         aria-label="Disconnect wallet"
                                         title="Disconnect wallet"
+                                        style={{
+                                            height: 18,
+                                            width: 18,
+                                        }}
                                     />
                                 </Box>
                             </HStack>
-                        )}
-                    </ModalBody>
-                    <ModalBody borderBottom="1px" borderColor={'gray.100'}>
-                        {account && library && onboard && isHardwareWallet && (
+                        </ModalBody>
+                    )}
+                    {account && library && onboard && isHardwareWallet && (
+                        <ModalBody
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                            py={5}
+                        >
                             <HStack w="full" spacing={4} alignItems="center">
                                 <Box flexGrow="1">
                                     <Heading m={0} size="sm">
@@ -146,22 +179,28 @@ const AccountMobile: FC = () => {
                                                 onClick={onboard.accountSelect}
                                                 aria-label="Switch accounts"
                                                 title="Switch accounts"
+                                                fontSize={16}
+                                                fontWeight={400}
                                             >
-                                                Switch accounts
+                                                Switch account
                                             </Box>
                                         </Flex>
                                     </Heading>
                                 </Box>
                                 <Box alignSelf="flex-end">
-                                    <CgArrowsExchange
+                                    <SwitchIcon
                                         onClick={onboard.accountSelect}
                                         aria-label="Switch accounts"
                                         title="Switch accounts"
+                                        style={{
+                                            height: 18,
+                                            width: 18,
+                                        }}
                                     />
                                 </Box>
                             </HStack>
-                        )}
-                    </ModalBody>
+                        </ModalBody>
+                    )}
                 </ModalContent>
             </Modal>
         </Tag>

@@ -22,13 +22,10 @@ import {
     useClipboard,
     Link,
     Text,
-    MenuItemOption,
 } from '@chakra-ui/react';
-import { ChevronDownIcon, CopyIcon } from '@chakra-ui/icons';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
-import { CgArrowsExchangeAlt } from 'react-icons/cg';
-import { AiOutlineDisconnect } from 'react-icons/ai';
+import { DisconnectIcon, CopyIcon, SwitchIcon, PaginationIcon } from '../Icons';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
 import { useWallet } from '../../contexts/wallet';
@@ -51,6 +48,7 @@ const Account: FC = () => {
             h={10}
             w={150}
             backgroundColor="white"
+            padding={3}
         >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
@@ -59,52 +57,71 @@ const Account: FC = () => {
                 </TagLabel>
             </HStack>
             <Menu closeOnSelect={false}>
-                <MenuButton h={5} w={5} px={2}>
-                    <ChevronDownIcon />
+                <MenuButton>
+                    <PaginationIcon
+                        style={{
+                            height: 32,
+                            width: 32,
+                        }}
+                    />
                 </MenuButton>
 
                 <MenuList borderRadius="0" p={0}>
-                    <MenuItemOption
+                    <MenuItem
                         justifyContent={'flex-end'}
                         borderBottom="1px"
                         borderColor={'gray.100'}
+                        padding={3}
+                        backgroundColor={'#E1EBFF'}
                     >
                         <Flex>
-                            <Box>{ens.address}</Box>
-                            <Box>
-                                {!hasCopied && (
-                                    <Link px={2}>
-                                        <CopyIcon onClick={onCopy} />
-                                    </Link>
-                                )}
-                                {hasCopied && <Text fontSize="sm">Copied</Text>}
+                            <Box ontSize={14} fontWeight={400} px={4}>
+                                {ens.address}
                             </Box>
+                            {!hasCopied && (
+                                <Link>
+                                    <CopyIcon
+                                        onClick={onCopy}
+                                        style={{
+                                            height: 19,
+                                            width: 19,
+                                        }}
+                                    />
+                                </Link>
+                            )}
+                            {hasCopied && (
+                                <Text fontSize="sm" pl={1}>
+                                    Copied
+                                </Text>
+                            )}
                         </Flex>
-                    </MenuItemOption>
+                    </MenuItem>
 
                     {account && library && (
                         <MenuItem
                             justifyContent={'flex-end'}
                             borderBottom="1px"
                             borderColor={'gray.100'}
+                            padding={3}
                         >
                             <Flex>
                                 <Box
                                     onClick={deactivate}
                                     aria-label="Disconnect wallet"
                                     title="Disconnect wallet"
-                                    px={2}
+                                    px={4}
+                                    fontSize={16}
+                                    fontWeight={400}
                                 >
                                     Disconnect account
                                 </Box>
-                                <AiOutlineDisconnect
+                                <DisconnectIcon
                                     onClick={deactivate}
                                     aria-label="Disconnect wallet"
                                     title="Disconnect wallet"
                                     style={{
-                                        marginRight: 7,
-                                        height: 16,
-                                        width: 16,
+                                        height: 18,
+                                        width: 18,
                                     }}
                                 />
                             </Flex>
@@ -116,24 +133,26 @@ const Account: FC = () => {
                             justifyContent={'flex-end'}
                             borderBottom="1px"
                             borderColor={'gray.100'}
+                            padding={3}
                         >
                             <Flex>
                                 <Box
                                     onClick={onboard.accountSelect}
                                     aria-label="Switch accounts"
                                     title="Switch accounts"
-                                    px={2}
+                                    px={4}
+                                    fontSize={16}
+                                    fontWeight={400}
                                 >
-                                    Switch accounts
+                                    Switch account
                                 </Box>
-                                <CgArrowsExchangeAlt
+                                <SwitchIcon
                                     onClick={onboard.accountSelect}
                                     aria-label="Switch accounts"
                                     title="Switch accounts"
                                     style={{
-                                        marginRight: 7,
-                                        height: 19,
-                                        width: 19,
+                                        height: 18,
+                                        width: 18,
                                     }}
                                 />
                             </Flex>

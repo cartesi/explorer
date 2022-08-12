@@ -149,10 +149,9 @@ const NavBar: FC<FlexProps> = (props) => {
                         onClick={isOpen ? onClose : onOpen}
                         _hover={{ bg: 'gray.800' }}
                     />
-
-                    <Hide breakpoint="(max-width: 504px)">
+                    <Box display={{ base: 'none', md: 'flex' }}>
                         <Account />
-                    </Hide>
+                    </Box>
                 </Flex>
             </Flex>
 
