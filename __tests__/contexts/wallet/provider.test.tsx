@@ -24,6 +24,7 @@ import { useFlag, useUnleashContext } from '@unleash/proxy-client-react';
 import { WalletConnectionProvider } from '../../../src/contexts/wallet';
 import { emulateFor, TestComponent } from './helpers';
 import { ReturnOf } from '../../test-utilities';
+import { Network } from '../../../src/utils/networks';
 
 jest.mock('@unleash/proxy-client-react', () => {
     const originalMod = jest.requireActual('@unleash/proxy-client-react');
@@ -66,6 +67,22 @@ describe('Wallet Provider', () => {
     );
 
     let log: jest.SpyInstance;
+    let info: jest.SpyInstance;
+    const original = window.location;
+
+    beforeAll(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: { reload: jest.fn() },
+        });
+    });
+
+    afterAll(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: original,
+        });
+    });
 
     beforeEach(() => {
         // default valid returns.
@@ -77,8 +94,11 @@ describe('Wallet Provider', () => {
         useFlagStub.mockReturnValue(true);
         useUnleashContextStub.mockReturnValue(jest.fn());
         onboardStub.mockReturnValue(APIStub);
+        jest.spyOn(APIStub, 'walletSelect').mockResolvedValue(false);
+        jest.spyOn(APIStub, 'walletCheck').mockResolvedValue(false);
         // capture the params passed to the console.log() and avoid making the real log dirty.
         log = jest.spyOn(console, 'log').mockImplementation(() => null);
+        info = jest.spyOn(console, 'info').mockImplementation(() => null);
     });
 
     afterEach(() => {
@@ -212,6 +232,67 @@ describe('Wallet Provider', () => {
                     'Skipping the page reload since is not WalletConnect. The selected one is Metamask',
                 ],
             ]);
+        });
+
+        it('should clean-up the local-storage and reset onboard state when disconnet the wallet', async () => {
+            let subs: Subscriptions = {};
+            onboardStub.mockImplementation(({ subscriptions }) => {
+                const { wallet, network, address } = subscriptions;
+                subs = { wallet, network, address };
+                return APIStub;
+            });
+
+            const removeItemSpy = jest.spyOn(
+                global.Storage.prototype,
+                'removeItem'
+            );
+            const walletResetSpy = jest.spyOn(APIStub, 'walletReset');
+
+            render(<Component />);
+
+            await screen.findByText('Wallet is not connected');
+
+            act(() => {
+                emulateFor({ name: 'Metamask', account, subscriptions: subs });
+            });
+
+            await waitFor(() => screen.findByText('Disconnect Wallet'));
+
+            fireEvent.click(screen.getByText('Disconnect Wallet'));
+
+            expect(removeItemSpy).toHaveBeenCalledWith('selectedWallet');
+            expect(walletResetSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call the location reload when using the wallet-connect and change the chain-id', async () => {
+            let subs: Subscriptions;
+            onboardStub.mockImplementation(({ subscriptions }) => {
+                const { wallet, network, address } = subscriptions;
+                subs = { wallet, network, address };
+                emulateFor({ name: 'WalletConnect', subscriptions, account });
+                return APIStub;
+            });
+
+            render(<Component />);
+
+            // When first time rendering with WalletConnect wallet
+            expect(
+                await screen.findByText('chainId is: 1')
+            ).toBeInTheDocument();
+
+            expect(info).toHaveBeenCalledWith(
+                'Skipping reload because it was the first network change'
+            );
+
+            //Then after changing the network to Goerli
+            act(() => {
+                subs.network(Network.GOERLI);
+            });
+
+            expect(
+                await screen.findByText('chainId is: 5')
+            ).toBeInTheDocument();
+            expect(window.location.reload).toHaveBeenCalled();
         });
     });
 });

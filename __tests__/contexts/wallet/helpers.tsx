@@ -1,6 +1,7 @@
 import { Subscriptions } from 'bnc-onboard/dist/src/interfaces';
 import { isFunction } from 'lodash/fp';
 import { useWallet } from '../../../src/contexts/wallet';
+import { Network } from '../../../src/utils/networks';
 
 /**
  * Helper test component to support testing the provider.
@@ -42,11 +43,12 @@ export const TestComponent = () => {
     );
 };
 
-type WalletName = 'Metamask' | 'Ledger';
+type WalletName = 'Metamask' | 'Ledger' | 'WalletConnect';
 interface EmulateForProps {
     name: WalletName;
     account: string;
     subscriptions: Subscriptions;
+    chainId?: number;
 }
 
 const validAccount = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -55,6 +57,7 @@ export const emulateFor = ({
     name,
     subscriptions,
     account = validAccount,
+    chainId = Network.MAINNET,
 }: EmulateForProps) => {
     const { wallet, network, address } = subscriptions;
     switch (name) {
@@ -65,8 +68,6 @@ export const emulateFor = ({
                 provider: jest.fn(),
                 icons: {},
             });
-            network(1);
-            address(account);
             break;
         case 'Ledger':
             wallet({
@@ -75,12 +76,20 @@ export const emulateFor = ({
                 provider: jest.fn(),
                 icons: {},
             });
-            network(1);
-            address(account);
+            break;
+        case 'WalletConnect':
+            wallet({
+                name: 'WalletConnect',
+                type: 'sdk',
+                provider: jest.fn(),
+                icons: {},
+            });
             break;
         default:
             throw new Error(
-                `name: ${name} not supported: [Ledger, Metamask] are supported`
+                `name: ${name} not supported: [Ledger, Metamask, WalletConnect] are supported`
             );
     }
+    network(chainId);
+    address(account);
 };
