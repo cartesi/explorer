@@ -9,12 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useContext, useEffect } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
+import { useContext } from 'react';
 import { WalletConnectionContext } from './provider';
 import { WalletConnectionContextProps } from './definitions';
 
-export type UseWallet = WalletConnectionContextProps & Partial<Web3Provider>;
+export type UseWallet = WalletConnectionContextProps;
 
 export const useWallet = (): UseWallet => {
     const onboardContext = useContext(WalletConnectionContext);

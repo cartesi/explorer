@@ -13,6 +13,8 @@ export const TestComponent = () => {
         activate,
         deactivate,
         isHardwareWallet,
+        isGnosisSafe,
+        walletType,
         account,
         chainId,
         walletName,
@@ -35,9 +37,11 @@ export const TestComponent = () => {
                 </button>
             )}
             {isHardwareWallet && <span>Wallet is hardware type</span>}
+            {isGnosisSafe && <span>Wallet is Gnosis Safe</span>}
             {account && <span>account is: {account}</span>}
             {chainId && <span>chainId is: {chainId}</span>}
             {walletName && <span>wallet name is: {walletName}</span>}
+            {walletType && <span>wallet type is: {walletType}</span>}
             {error && (
                 <div>
                     <span>Error: {error.name}</span>
@@ -48,7 +52,7 @@ export const TestComponent = () => {
     );
 };
 
-type WalletName = 'Metamask' | 'Ledger' | 'WalletConnect';
+type WalletName = 'Metamask' | 'Ledger' | 'WalletConnect' | 'Gnosis Safe';
 interface EmulateForProps {
     name: WalletName;
     account: string;
@@ -85,6 +89,14 @@ export const emulateFor = ({
         case 'WalletConnect':
             wallet({
                 name: 'WalletConnect',
+                type: 'sdk',
+                provider: jest.fn(),
+                icons: {},
+            });
+            break;
+        case 'Gnosis Safe':
+            wallet({
+                name: 'Gnosis Safe',
                 type: 'sdk',
                 provider: jest.fn(),
                 icons: {},

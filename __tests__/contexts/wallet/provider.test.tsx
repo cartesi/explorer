@@ -355,4 +355,22 @@ describe('Wallet Provider', () => {
             );
         });
     });
+
+    describe('Gnosis Safe', () => {
+        it('Should have a way to recognize when the wallet is the gnosis safe', async () => {
+            onboardStub.mockImplementation(({ subscriptions }) => {
+                emulateFor({ name: 'Gnosis Safe', subscriptions, account });
+                return APIStub;
+            });
+
+            render(<Component />);
+
+            expect(
+                await screen.findByText('Wallet is Gnosis Safe')
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('wallet type is: sdk')
+            ).toBeInTheDocument();
+        });
+    });
 });

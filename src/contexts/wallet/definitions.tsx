@@ -29,5 +29,7 @@ export interface WalletConnectionContextProps {
     deactivate: () => void;
     tried?: boolean;
     isHardwareWallet?: boolean;
+    isGnosisSafe?: boolean;
     walletName?: string;
+    walletType?: `${WalletType}`;
 }

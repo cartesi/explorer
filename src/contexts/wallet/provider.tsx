@@ -128,6 +128,10 @@ export const WalletConnectionProvider: FC = (props) => {
                             library: ethersProvider,
                             isHardwareWallet: type === WalletType.HARDWARE,
                             walletName: name,
+                            walletType: type,
+                            isGnosisSafe:
+                                type === WalletType.SDK &&
+                                name === 'Gnosis Safe',
                         }));
                     } else {
                         setState((state) => ({
