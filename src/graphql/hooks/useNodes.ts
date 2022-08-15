@@ -68,6 +68,9 @@ export const useUserNodes = (
 };
 
 export const useUserNode = (owner: string): string => {
+    // convert to lowercase because backend is all lowercase
+    owner = owner.toLowerCase();
+
     // get most recent node hired by user (if any)
     const nodes = useUserNodes(owner, 2);
     const existingNode =
