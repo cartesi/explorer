@@ -38,7 +38,12 @@ export const TestComponent = () => {
             {account && <span>account is: {account}</span>}
             {chainId && <span>chainId is: {chainId}</span>}
             {walletName && <span>wallet name is: {walletName}</span>}
-            {error && <span>{JSON.stringify(error, null, 2)}</span>}
+            {error && (
+                <div>
+                    <span>Error: {error.name}</span>
+                    <span>{error.message}</span>
+                </div>
+            )}
         </div>
     );
 };

@@ -294,5 +294,65 @@ describe('Wallet Provider', () => {
             ).toBeInTheDocument();
             expect(window.location.reload).toHaveBeenCalled();
         });
+
+        it('should call walletCheck and log information when user refuse to change the network', async () => {
+            const getItemSpy = jest
+                .spyOn(global.Storage.prototype, 'getItem')
+                .mockReturnValue('Metamask');
+            const selectMock = jest
+                .spyOn(APIStub, 'walletSelect')
+                .mockResolvedValue(true);
+            const checkMock = jest
+                .spyOn(APIStub, 'walletCheck')
+                .mockResolvedValue(false);
+            render(<Component />);
+
+            await waitFor(() => checkMock.mock.calls.length > 0);
+
+            expect(getItemSpy).toHaveBeenCalled();
+            expect(selectMock).toHaveBeenCalled();
+            expect(checkMock).toHaveBeenCalled();
+            expect(log.mock.calls).toEqual([
+                ['Initializing onboarding.\nIs ankr enabled: true'],
+                ['Onboard initialized.'],
+                ['Setting up pre-selected wallet: Metamask'],
+                ['User rejected the request to switch to mainnet'],
+            ]);
+        });
+    });
+
+    describe('Error Handling', () => {
+        it('should set an Error when user tries to use an unsupported chain', async () => {
+            let subs: Subscriptions;
+            onboardStub.mockImplementation(({ subscriptions }) => {
+                const { wallet, network, address } = subscriptions;
+                subs = { wallet, network, address };
+                emulateFor({ name: 'Metamask', subscriptions, account });
+                return APIStub;
+            });
+
+            render(<Component />);
+
+            // When first time rendering with WalletConnect wallet
+            expect(
+                await screen.findByText('chainId is: 1')
+            ).toBeInTheDocument();
+
+            act(() => {
+                // trying to use Ropsten
+                subs.network(3);
+            });
+
+            await waitFor(() => screen.findByText('Wallet is not connected'));
+
+            expect(
+                screen.getByText('Error: UnsupportedNetworkError')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Network id 3 is not supported. Supported network ids are 1, 5, 31337'
+                )
+            );
+        });
     });
 });
