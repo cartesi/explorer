@@ -23,6 +23,8 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { useWallet } from '../../../contexts/wallet';
+import { useMessages } from '../../../utils/messages';
 import { WalletIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
@@ -36,6 +38,8 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     userCTSIBalance,
 }) => {
     const balanceColor = useColorModeValue('gray.400', 'white');
+    const { isGnosisSafe } = useWallet();
+    const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
@@ -73,13 +77,20 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                     </Heading>
                 </Box>
             </HStack>
-            {userETHBalance?.isZero() && (
+            {userETHBalance?.isZero() && !isGnosisSafe && (
                 <HStack spacing={2} alignItems="flex-start">
                     <WarningIcon color="orange.500" />
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
                         transaction fee.
                     </Text>
+                </HStack>
+            )}
+
+            {isGnosisSafe && (
+                <HStack spacing={2} alignItems="flex-start">
+                    <WarningIcon color="orange.500" />
+                    <Text fontSize="sm">{ethInfoMessage}</Text>
                 </HStack>
             )}
         </VStack>

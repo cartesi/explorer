@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import {
     IWalletBalanceSectionProps,
@@ -18,11 +18,16 @@ import {
 } from '../../../../src/components/stake/components/WalletBalanceSection';
 import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
 import { withChakraTheme } from '../../../test-utilities';
+import { useWallet } from '../../../../src/contexts/wallet';
+
+jest.mock('../../../../src/contexts/wallet');
 
 const defaultValue = '10000000000000000000000000000';
 
 const EWalletBalanceSection =
     withChakraTheme<IWalletBalanceSectionProps>(WalletBalanceSection);
+
+const useWalletMock = useWallet as jest.MockedFunction<typeof useWallet>;
 
 describe('Wallet Balance Section', () => {
     // a default configured component
@@ -33,6 +38,21 @@ describe('Wallet Balance Section', () => {
                 userETHBalance={BigNumber.from(defaultValue)}
             />
         );
+
+    const dummyWallet = {
+        active: true,
+        activate: () => null,
+        deactivate: () => null,
+    };
+
+    beforeEach(() => {
+        useWalletMock.mockReturnValue({ ...dummyWallet });
+    });
+
+    afterEach(() => {
+        cleanup();
+        jest.resetAllMocks();
+    });
 
     it('Should display wallet balance label', () => {
         renderComponent();
@@ -50,6 +70,26 @@ describe('Wallet Balance Section', () => {
         expect(
             getByText(
                 "You don't have enough ETH in your wallet for the transaction fee."
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('Should display a different warning message when user-eth-balance is zero but the wallet is gnosis-safe', () => {
+        useWalletMock.mockReturnValue({
+            ...dummyWallet,
+            isGnosisSafe: true,
+        });
+
+        render(
+            <EWalletBalanceSection
+                userCTSIBalance={BigNumber.from(defaultValue)}
+                userETHBalance={BigNumber.from(0)}
+            />
+        );
+
+        expect(
+            screen.getByText(
+                'Please make sure you have sufficient ETH to proceed with the staking fee.'
             )
         ).toBeInTheDocument();
     });
