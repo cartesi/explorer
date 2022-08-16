@@ -18,6 +18,7 @@ import {
     Text,
     VStack,
     StackProps,
+    Box,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
@@ -79,7 +80,11 @@ const Node: FC<NodeProps> = (props) => {
                     value={address}
                     onChange={onAddressChange}
                 >
-                    <EditablePreview />
+                    {window.innerWidth <= 555 ? (
+                        <EditablePreview maxWidth={225} />
+                    ) : (
+                        <EditablePreview />
+                    )}
                     <EditableInput />
                 </Editable>
             </HStack>
