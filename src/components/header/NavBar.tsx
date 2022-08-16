@@ -21,8 +21,6 @@ import {
     Stack,
     useColorMode,
     useDisclosure,
-    Hide,
-    Show,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useFlag } from '@unleash/proxy-client-react';
