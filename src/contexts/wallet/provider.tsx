@@ -144,7 +144,10 @@ export const WalletConnectionProvider: FC = (props) => {
                 },
                 address: (address: string) => {
                     console.log(`Address changed to: ${address}`);
-                    setState((state) => ({ ...state, account: address }));
+                    setState((state) => ({
+                        ...state,
+                        account: address?.toLowerCase(),
+                    }));
                 },
                 network: (networkId: number) => {
                     let error = null;

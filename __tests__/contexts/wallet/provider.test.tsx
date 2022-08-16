@@ -214,7 +214,7 @@ describe('Wallet Provider', () => {
             ).toBeInTheDocument();
             expect(screen.getByText('Disconnect Wallet')).toBeInTheDocument();
             expect(
-                screen.getByText(`account is: ${account}`)
+                screen.getByText(`account is: ${account.toLowerCase()}`)
             ).toBeInTheDocument();
             expect(screen.getByText(`chainId is: 1`)).toBeInTheDocument();
             expect(
