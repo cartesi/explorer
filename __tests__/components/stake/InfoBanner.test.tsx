@@ -10,7 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+    fireEvent,
+    render,
+    screen,
+    cleanup,
+    prettyDOM,
+} from '@testing-library/react';
 import {
     IInfoBannerProps,
     InfoBanner,
@@ -33,18 +39,27 @@ describe('Info Banner', () => {
     // a default configured component
     const renderComponent = () => render(<EInfoBanner {...defaultProps} />);
 
+    afterEach(() => {
+        cleanup();
+    });
+
     it('Should display title', () => {
         renderComponent();
         expect(screen.getByText(defaultProps.title)).toBeInTheDocument();
     });
 
     it('Should not display banner', () => {
-        render(<EInfoBanner {...defaultProps} isOpen={false} />);
-        expect(screen.getByText(defaultProps.title)).toBeInTheDocument();
-
-        expect(() => screen.getByText(defaultProps.title)).toThrow(
-            'Unable to find an element'
+        //Start as open banner
+        const { rerender } = render(
+            <EInfoBanner {...defaultProps} isOpen={true} />
         );
+        expect(screen.queryByText('Info Banner')).toBeInTheDocument();
+
+        // when closing the banner
+        rerender(<EInfoBanner {...defaultProps} isOpen={false} />);
+
+        // then the content will not be rendered
+        expect(screen.queryByText('Info Banner')).not.toBeInTheDocument();
     });
 
     it('Should display content', () => {
