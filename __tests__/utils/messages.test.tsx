@@ -226,4 +226,17 @@ describe('useMessages hook', () => {
             });
         });
     });
+
+    describe('Messages on balance context', () => {
+        describe('For ETH', () => {
+            it('should have a message to warn about available eth to pay for the transaction gas-costs', () => {
+                const { result } = renderHook(() =>
+                    useMessages('balance.eth.available.forGasCosts')
+                );
+                expect(result.current).toEqual(
+                    'Please make sure you have sufficient ETH to proceed with the staking fee.'
+                );
+            });
+        });
+    });
 });

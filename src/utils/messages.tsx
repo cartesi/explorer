@@ -47,6 +47,14 @@ const messages = {
             },
         },
     },
+    balance: {
+        eth: {
+            available: {
+                forGasCosts: () =>
+                    `Please make sure you have sufficient ETH to proceed with the staking fee.`,
+            },
+        },
+    },
     commission: {
         model: {
             flatRate: {
