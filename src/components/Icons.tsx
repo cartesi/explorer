@@ -433,6 +433,17 @@ export const FilterIcon = createIcon({
     ),
 });
 
+export const CloseIcon = createIcon({
+    displayName: 'CloseIcon',
+    viewBox: '0 0 24 24',
+    path: (
+        <path
+            d="M12 9.92755L19.2596 2.66797L21.3333 4.74172L14.0737 12.0013L21.3333 19.2609L19.2596 21.3346L12 14.075L4.7404 21.3346L2.66666 19.2609L9.92624 12.0013L2.66666 4.74172L4.7404 2.66797L12 9.92755Z"
+            fill="#1E1941"
+        />
+    ),
+});
+
 export const ViewMoreIcon = createIcon({
     displayName: 'ViewMoreIcon',
     viewBox: '0 0 24 24',

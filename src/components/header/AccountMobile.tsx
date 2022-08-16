@@ -23,11 +23,9 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    ModalCloseButton,
     useDisclosure,
     Heading,
 } from '@chakra-ui/react';
-import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
@@ -38,6 +36,7 @@ import {
     CopyIcon,
     SwitchIcon,
     ArrowsUpDownIcon,
+    CloseIcon,
 } from '../Icons';
 
 const AccountMobile: FC = () => {
@@ -91,13 +90,21 @@ const AccountMobile: FC = () => {
             <Modal onClose={onClose} size={'xs'} isOpen={isOpen}>
                 <ModalOverlay />
                 <ModalContent borderRadius="0" p={0}>
-                    <ModalHeader>Your account</ModalHeader>
-                    <ModalCloseButton />
+                    <HStack w="full" spacing={2} alignItems="center">
+                        <Box flexGrow="2">
+                            <ModalHeader>Your account</ModalHeader>
+                        </Box>
+                        <Box flexGrow="1" paddingLeft="10">
+                            <CloseIcon onClick={onClose} />
+                        </Box>
+                    </HStack>
+
                     <ModalBody
                         borderBottom="1px"
                         borderColor={'gray.100'}
                         backgroundColor="#F1F2F5"
                         py={4}
+                        paddingBottom={4}
                     >
                         <HStack w="full" spacing={4} alignItems="center">
                             <Box flexGrow="1">
@@ -134,6 +141,7 @@ const AccountMobile: FC = () => {
                             borderBottom="1px"
                             borderColor={'gray.100'}
                             py={5}
+                            paddingBottom={4}
                         >
                             <HStack w="full" spacing={4} alignItems="center">
                                 <Box flexGrow="1">
@@ -170,6 +178,7 @@ const AccountMobile: FC = () => {
                             borderBottom="1px"
                             borderColor={'gray.100'}
                             py={5}
+                            paddingBottom={4}
                         >
                             <HStack w="full" spacing={4} alignItems="center">
                                 <Box flexGrow="1">

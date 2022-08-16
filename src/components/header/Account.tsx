@@ -46,9 +46,9 @@ const Account: FC = () => {
             borderRadius="0"
             colorScheme="gray"
             h={10}
-            w={150}
+            w={170}
             backgroundColor="white"
-            padding={3}
+            padding={5}
         >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
@@ -66,19 +66,24 @@ const Account: FC = () => {
                     />
                 </MenuButton>
 
-                <MenuList borderRadius="0" p={0}>
-                    <MenuItem
-                        justifyContent={'flex-end'}
-                        borderBottom="1px"
-                        borderColor={'gray.100'}
-                        padding={3}
-                        backgroundColor={'#E1EBFF'}
-                    >
-                        <Flex>
-                            <Box ontSize={14} fontWeight={400} px={4}>
-                                {ens.address}
-                            </Box>
-                            {!hasCopied && (
+                <MenuList
+                    borderRadius="0"
+                    p={0}
+                    left={-383}
+                    position={'absolute'}
+                >
+                    {!hasCopied ? (
+                        <MenuItem
+                            justifyContent={'flex-end'}
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                            padding={3}
+                            backgroundColor={'#E1EBFF'}
+                        >
+                            <Flex>
+                                <Box fontSize={14} fontWeight={400} px={4}>
+                                    {ens.address}
+                                </Box>
                                 <Link>
                                     <CopyIcon
                                         onClick={onCopy}
@@ -88,14 +93,26 @@ const Account: FC = () => {
                                         }}
                                     />
                                 </Link>
-                            )}
-                            {hasCopied && (
-                                <Text fontSize="sm" pl={1}>
+                            </Flex>
+                        </MenuItem>
+                    ) : (
+                        <MenuItem
+                            justifyContent={'flex-end'}
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                            padding={3}
+                            backgroundColor={'#E1EBFF'}
+                        >
+                            <Flex>
+                                <Box fontSize={14} fontWeight={400}>
+                                    {ens.address}
+                                </Box>
+                                <Text fontSize="sm" pl={1} height="5">
                                     Copied
                                 </Text>
-                            )}
-                        </Flex>
-                    </MenuItem>
+                            </Flex>
+                        </MenuItem>
+                    )}
 
                     {account && library && (
                         <MenuItem
