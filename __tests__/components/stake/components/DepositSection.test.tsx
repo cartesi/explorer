@@ -10,18 +10,23 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import {
     DepositSection,
     IDepositSection,
 } from '../../../../src/components/stake/components/DepositSection';
 import { withChakraTheme } from '../../../test-utilities';
+import { useWallet } from '../../../../src/contexts/wallet';
+
+jest.mock('../../../../src/contexts/wallet');
 
 const defaultValue = '10000000000000000000000000000';
 const defaultOnDepositClick = () => undefined;
 
 const EDepositSection = withChakraTheme<IDepositSection>(DepositSection);
+
+const useWalletMock = useWallet as jest.MockedFunction<typeof useWallet>;
 
 describe('Deposit Section', () => {
     // a default configured component
@@ -33,6 +38,21 @@ describe('Deposit Section', () => {
                 onDepositClick={defaultOnDepositClick}
             />
         );
+
+    const dummyWallet = {
+        active: true,
+        activate: () => null,
+        deactivate: () => null,
+    };
+
+    beforeEach(() => {
+        useWalletMock.mockReturnValue({ ...dummyWallet });
+    });
+
+    afterEach(() => {
+        cleanup();
+        jest.resetAllMocks();
+    });
 
     it('Should display staking label', () => {
         renderComponent();
@@ -111,6 +131,19 @@ describe('Deposit Section', () => {
         );
 
         expect(getByText('Deposit').closest('button')).toBeDisabled();
+    });
+
+    it('Should not disable deposit button when user-eth-balance is zero but the wallet is gnosis-safe', () => {
+        useWalletMock.mockReturnValue({ ...dummyWallet, isGnosisSafe: true });
+        render(
+            <EDepositSection
+                userWalletBalance={BigNumber.from(defaultValue)}
+                userETHBalance={BigNumber.from(0)}
+                onDepositClick={defaultOnDepositClick}
+            />
+        );
+
+        expect(screen.getByText('Deposit').closest('button')).toBeEnabled();
     });
 
     it('Should enable deposit button when userWalletBalance and userETHBalance are above zero', () => {

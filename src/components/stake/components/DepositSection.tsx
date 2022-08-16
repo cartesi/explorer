@@ -14,6 +14,7 @@ import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { useWallet } from '../../../contexts/wallet';
 
 export interface IDepositSection {
     userWalletBalance: BigNumber;
@@ -26,6 +27,9 @@ export const DepositSection: FC<IDepositSection> = ({
     userETHBalance,
     onDepositClick,
 }) => {
+    const { isGnosisSafe } = useWallet();
+    const noEthAndIsNotASafe = userETHBalance?.isZero() && !isGnosisSafe;
+
     return (
         <Stack
             spacing={4}
@@ -44,9 +48,7 @@ export const DepositSection: FC<IDepositSection> = ({
                     onClick={onDepositClick}
                     width="173px"
                     ml="auto"
-                    disabled={
-                        userWalletBalance.isZero() || userETHBalance?.isZero()
-                    }
+                    disabled={userWalletBalance.isZero() || noEthAndIsNotASafe}
                 >
                     Deposit
                 </Button>
@@ -60,7 +62,7 @@ export const DepositSection: FC<IDepositSection> = ({
                                 <WarningIcon color="orange.500" /> You have 0
                                 CTSI. Please, add CTSI to deposit.
                             </>
-                        ) : userETHBalance?.isZero() ? (
+                        ) : noEthAndIsNotASafe ? (
                             <>
                                 <WarningIcon color="orange.500" /> You have 0
                                 ETH. You'll need ETH for transaction fees.

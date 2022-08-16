@@ -13,6 +13,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { DepositSection } from '../../../components/stake/components/DepositSection';
 import { BigNumber } from 'ethers';
+import { WalletConnectionContext } from '../../../contexts/wallet/provider';
 
 const defaultValue = '10000000000000000000000000000';
 
@@ -53,3 +54,24 @@ ZeroUserWalletBalanceAndZeroUserETHBalance.args = {
     userWalletBalance: BigNumber.from(0),
     userETHBalance: BigNumber.from(0),
 };
+
+export const ZeroUserEthBalanceAndUsingGnosisSafe = Template.bind({});
+ZeroUserEthBalanceAndUsingGnosisSafe.args = {
+    ...Default.args,
+    userWalletBalance: BigNumber.from(defaultValue),
+    userETHBalance: BigNumber.from(0),
+};
+ZeroUserEthBalanceAndUsingGnosisSafe.decorators = [
+    (Story) => (
+        <WalletConnectionContext.Provider
+            value={{
+                active: true,
+                activate: () => null,
+                deactivate: () => null,
+                isGnosisSafe: true,
+            }}
+        >
+            <Story />
+        </WalletConnectionContext.Provider>
+    ),
+];
