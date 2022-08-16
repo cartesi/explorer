@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.1] - 2022-08-19
+
+-   Fix problem when trying to do deposits using the Gnosis Safe wallet.
+-   Small changes to the staking page UI.
+
 ## [2.6.0] - 2022-08-04
 
 -   New Staking Page workflow is ready to be rollout.
