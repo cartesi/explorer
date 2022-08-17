@@ -112,19 +112,11 @@ const StakeForm: FC<StakeFormProps> = (props) => {
     // part coming from wallet is the original amount minus the amount from releasing
     const fromWallet = amount_.sub(fromReleasing);
 
-    const zero = '0';
-
     return (
         <VStack align="flex-start" {...restProps}>
-            {account ? (
-                <CTSIText value={allowance}>
-                    <Text>Allowance</Text>
-                </CTSIText>
-            ) : (
-                <CTSIText value={zero}>
-                    <Text>Allowance</Text>
-                </CTSIText>
-            )}
+            <CTSIText value={allowance}>
+                <Text>Allowance</Text>
+            </CTSIText>
 
             <FormControl isInvalid={!!errors.stake}>
                 <FormLabel>Amount to stake</FormLabel>

@@ -68,6 +68,9 @@ export const useUserNodes = (
 };
 
 export const useUserNode = (owner: string): string => {
+    // if no owner, use address zero, so no nodes are returned
+    owner = owner || constants.AddressZero;
+
     // convert to lowercase because backend is all lowercase
     owner = owner.toLowerCase();
 

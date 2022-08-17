@@ -104,8 +104,6 @@ const Staking: FC = () => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.700');
 
-    const zero = '0';
-
     return (
         <Layout>
             <Head>
@@ -120,25 +118,13 @@ const Staking: FC = () => {
                         direction={['column', 'column', 'row', 'row']}
                         spacing={[5, 5, 10, 10]}
                     >
-                        {account ? (
-                            <CTSIText value={balance} icon={FaWallet}>
-                                <Text>Wallet Balance</Text>
-                            </CTSIText>
-                        ) : (
-                            <CTSIText value={zero} icon={FaWallet}>
-                                <Text>Wallet Balance</Text>
-                            </CTSIText>
-                        )}
+                        <CTSIText value={balance} icon={FaWallet}>
+                            <Text>Wallet Balance</Text>
+                        </CTSIText>
 
-                        {account ? (
-                            <CTSIText value={stakedBalance} icon={FaCoins}>
-                                <Text>Staked Balance</Text>
-                            </CTSIText>
-                        ) : (
-                            <CTSIText value={zero} icon={FaCoins}>
-                                <Text>Staked Balance</Text>
-                            </CTSIText>
-                        )}
+                        <CTSIText value={stakedBalance} icon={FaCoins}>
+                            <Text>Staked Balance</Text>
+                        </CTSIText>
                     </Stack>
                 </Flex>
             </PageHeader>
@@ -215,25 +201,14 @@ const Staking: FC = () => {
                                     </Text>
                                 )}
                             </CTSIText>
-                            {account ? (
-                                <CTSIText
-                                    p={6}
-                                    value={stakedBalance}
-                                    icon={FaCoins}
-                                    direction="row"
-                                >
-                                    <Text>Staked</Text>
-                                </CTSIText>
-                            ) : (
-                                <CTSIText
-                                    p={6}
-                                    value={zero}
-                                    icon={FaCoins}
-                                    direction="row"
-                                >
-                                    <Text>Staked</Text>
-                                </CTSIText>
-                            )}
+                            <CTSIText
+                                p={6}
+                                value={stakedBalance}
+                                icon={FaCoins}
+                                direction="row"
+                            >
+                                <Text>Staked</Text>
+                            </CTSIText>
                         </Box>
 
                         <Box

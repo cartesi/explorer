@@ -18,7 +18,7 @@ import {
     Text,
     VStack,
     StackProps,
-    Box,
+    useMediaQuery,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
@@ -67,6 +67,8 @@ const Node: FC<NodeProps> = (props) => {
         ...stackProps
     } = props;
 
+    const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
+
     return (
         <VStack {...stackProps}>
             <HStack justify="space-between" w="100%" spacing={10}>
@@ -80,10 +82,10 @@ const Node: FC<NodeProps> = (props) => {
                     value={address}
                     onChange={onAddressChange}
                 >
-                    {window.innerWidth <= 555 ? (
-                        <EditablePreview maxWidth={225} />
-                    ) : (
+                    {isLargerThan555 ? (
                         <EditablePreview />
+                    ) : (
+                        <EditablePreview maxWidth={225} />
                     )}
                     <EditableInput />
                 </Editable>
