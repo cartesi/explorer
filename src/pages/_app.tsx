@@ -9,12 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { TrackingProvider } from '../contexts/tracker';
 import { FeatureFlagProvider } from '../utils/featureFlags';
 import dynamic from 'next/dynamic';
+import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
 import { Fonts } from '../components/Fonts';
@@ -24,6 +25,14 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') {
+            TagManager.initialize({
+                gtmId: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
+            });
+        }
+    }, []);
+
     return (
         <ChakraProvider theme={theme}>
             <Fonts />
