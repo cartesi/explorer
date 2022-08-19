@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.6.1] - 2022-08-19
 
 -   Fix problem when trying to do deposits using the Gnosis Safe wallet.
--   Small changes to the staking page UI.
+-   Added google tag manager to collate the traffic data on explorer and have a holistic idea of traffic behaviour across Cartesi websites.
+-   Updated UI elements in the new staking page.
+-   Fixed problem when hiring a node for the pool. In a specific case the pool info mistakenly would fill the node form.
 
 ## [2.6.0] - 2022-08-04
 
@@ -146,7 +148,16 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.4.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...HEAD
+[2.6.1]: https://github.com/cartesi-corp/explorer/compare/v2.6.0...v2.6.1
+[2.6.0]: https://github.com/cartesi-corp/explorer/compare/v2.5.1...v2.6.0
+[2.5.1]: https://github.com/cartesi-corp/explorer/compare/v2.5.0...v2.5.1
+[2.5.0]: https://github.com/cartesi-corp/explorer/compare/v2.4.5...v2.5.0
+[2.4.5]: https://github.com/cartesi-corp/explorer/compare/v2.4.4...v2.4.5
+[2.4.4]: https://github.com/cartesi-corp/explorer/compare/v2.4.3...v2.4.4
+[2.4.3]: https://github.com/cartesi-corp/explorer/compare/v2.4.2...v2.4.3
+[2.4.2]: https://github.com/cartesi-corp/explorer/compare/v2.4.1...v2.4.2
+[2.4.1]: https://github.com/cartesi-corp/explorer/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/cartesi-corp/explorer/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/cartesi-corp/explorer/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/cartesi-corp/explorer/compare/v2.1.0...v2.2.0
