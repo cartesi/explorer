@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
     Box,
     Stack,
@@ -33,6 +33,7 @@ import { useWallet } from '../../contexts/wallet';
 import TransactionBanner from '../../components/node/TransactionBanner';
 import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
 import { useStakingPool } from '../../services/pool';
+import { isEmpty } from 'lodash/fp';
 
 export interface NodeContainerProps {
     address: string;
@@ -60,6 +61,7 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
 
     // use a state variable for the typed node address
     const [worker, setWorker] = useState<string>();
+    const [hiringAddress, setHiringAddress] = useState<string>();
 
     // priority is the typed address (at state variable)
     const activeWorker = worker || existingNode || '';
@@ -71,6 +73,18 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
 
     // dark mode support
     const bg = useColorModeValue('gray.50', 'header');
+    const hiredNewNode =
+        currentTransaction === 'hire' &&
+        pool.transaction?.state === 'confirmed';
+
+    useEffect(() => {
+        if (isEmpty(hiringAddress)) return;
+
+        if (hiredNewNode) {
+            setWorker(hiringAddress);
+            setHiringAddress('');
+        }
+    }, [hiredNewNode, hiringAddress]);
 
     return (
         <>
@@ -201,8 +215,16 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                     userBalance={userBalance}
                     nodeBalance={node.balance}
                     isRetired={node.retired}
-                    isHiring={node.transaction?.isOngoing}
-                    onRetire={pool.retire}
+                    isHiring={pool.transaction?.isOngoing}
+                    isRetiringNode={
+                        currentTransaction === 'retire' &&
+                        pool.transaction?.isOngoing
+                    }
+                    onRetire={(address) => {
+                        setCurrentTransaction('retire');
+                        setTransactionBanners((t) => ({ ...t, retire: true }));
+                        pool.retire(address);
+                    }}
                     onDeposit={(amount) => {
                         setCurrentTransaction('deposit');
                         setTransactionBanners({
@@ -217,6 +239,7 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                             ...transactionBanners,
                             hire: true,
                         });
+                        setHiringAddress(nodeAddress);
                         pool.hire(nodeAddress, funds);
                     }}
                 />

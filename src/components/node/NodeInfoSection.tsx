@@ -26,6 +26,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
@@ -37,6 +38,7 @@ export interface INodeInfoSection {
     nodeBalance: BigNumber;
     isRetired?: boolean;
     isHiring?: boolean;
+    isRetiringNode?: boolean;
     onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
     onHire: (nodeAddress: string, funds: BigNumber) => void;
@@ -48,6 +50,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     nodeBalance,
     isRetired = false,
     isHiring = false,
+    isRetiringNode = false,
     onRetire,
     onDeposit,
     onHire,
@@ -72,6 +75,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
         return valueFormatted;
     };
 
+    const needToHire = isRetired || isEmpty(address);
+
     const onConfirmRetire = () => {
         retireModal.onClose();
         onRetire(address);
@@ -79,7 +84,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
     return (
         <>
-            {isRetired ? (
+            {needToHire ? (
                 <>
                     <NodeHireNodeSection isHiring={isHiring} onHire={onHire} />
                 </>
@@ -167,6 +172,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     </Box>
                     <Button
                         onClick={retireModal.onOpen}
+                        disabled={isRetiringNode}
                         bgColor={bg}
                         w={{ base: '100%', md: 'auto' }}
                         minW="15rem"
