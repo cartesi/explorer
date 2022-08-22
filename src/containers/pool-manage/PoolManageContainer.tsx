@@ -135,6 +135,19 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                             }
                         />
                     )}
+
+                    {transactionBanners?.retire && (
+                        <TransactionInfoBanner
+                            title="Retiring Node..."
+                            failTitle="Error retiring the node"
+                            successDescription="Node retired successfully."
+                            transaction={
+                                currentTransaction === 'retire'
+                                    ? pool.transaction
+                                    : null
+                            }
+                        />
+                    )}
                     {transactionBanners?.hire && (
                         <TransactionInfoBanner
                             title="Hiring node..."
@@ -155,7 +168,7 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                             }
                             transaction={
                                 currentTransaction === 'hire'
-                                    ? node.transaction
+                                    ? pool.transaction
                                     : null
                             }
                         />
