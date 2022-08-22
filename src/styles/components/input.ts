@@ -13,27 +13,42 @@ export const Input = {
     baseStyle: {
         field: {
             borderRadius: 0,
+            _disabled: {
+                backgroundColor: 'gray.80',
+            },
         },
     },
     variants: {
         outline: {
             field: {
                 borderRadius: 0,
+                _disabled: {
+                    opacity: 1,
+                },
             },
         },
         filled: {
             field: {
                 borderRadius: 0,
+                _disabled: {
+                    opacity: 1,
+                },
             },
         },
         flushed: {
             field: {
                 borderRadius: 0,
+                _disabled: {
+                    opacity: 1,
+                },
             },
         },
         unstyled: {
             field: {
                 borderRadius: 0,
+                _disabled: {
+                    opacity: 1,
+                },
             },
         },
     },
