@@ -57,11 +57,14 @@ const GasBasedCommission = ({
                     onChangeValidate(e);
                     trigger('gasBasedCommission');
                 }}
-                onBlur={(e) => trigger('gasBasedCommission')}
+                onBlur={() => {
+                    if (!isDisabled) {
+                        return trigger('gasBasedCommission');
+                    }
+                }}
                 label="Gas-based commission (Gas)"
                 id="gasBasedCommission"
                 inputRightElement="ETH"
-                isDisabled={isDisabled}
                 isInvalid={!isNil(inputErrors)}
                 errorMessage={inputErrors?.message}
             />

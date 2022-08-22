@@ -77,11 +77,14 @@ const FlatRateCommission = ({
                     onChangeValidate(e);
                     trigger('flatRateCommission');
                 }}
-                onBlur={(e) => trigger('flatRateCommission')}
+                onBlur={() => {
+                    if (!isDisabled) {
+                        return trigger('flatRateCommission');
+                    }
+                }}
                 label="Flat-rate commission (%)"
                 id="flatRateCommission"
                 inputRightElement="%"
-                isDisabled={isDisabled}
                 isInvalid={!isNil(errors.flatRateCommission)}
                 errorMessage={errors.flatRateCommission?.message}
             />
