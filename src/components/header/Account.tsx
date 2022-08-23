@@ -22,6 +22,7 @@ import {
     useClipboard,
     Link,
     Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
@@ -47,12 +48,12 @@ const Account: FC = () => {
             colorScheme="gray"
             h={10}
             w={170}
-            backgroundColor="white"
             padding={5}
+            bg={useColorModeValue('white', 'gray.700')}
         >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
-                <TagLabel>
+                <TagLabel color={useColorModeValue('black', 'white')}>
                     {ens.name || truncateString(ens.address || account)}
                 </TagLabel>
             </HStack>
@@ -78,10 +79,15 @@ const Account: FC = () => {
                             borderBottom="1px"
                             borderColor={'gray.100'}
                             padding={3}
-                            backgroundColor={'#E1EBFF'}
+                            backgroundColor={'blue.50'}
                         >
                             <Flex>
-                                <Box fontSize={14} fontWeight={400} px={4}>
+                                <Box
+                                    fontSize={14}
+                                    fontWeight={400}
+                                    px={4}
+                                    color={useColorModeValue('black', 'white')}
+                                >
                                     {ens.address}
                                 </Box>
                                 <Link>
@@ -101,10 +107,14 @@ const Account: FC = () => {
                             borderBottom="1px"
                             borderColor={'gray.100'}
                             padding={3}
-                            backgroundColor={'#E1EBFF'}
+                            backgroundColor={'blue.50'}
                         >
                             <Flex>
-                                <Box fontSize={14} fontWeight={400}>
+                                <Box
+                                    fontSize={14}
+                                    fontWeight={400}
+                                    color={useColorModeValue('black', 'white')}
+                                >
                                     {ens.address}
                                 </Box>
                                 <Text fontSize="sm" pl={1} height="5">
@@ -129,6 +139,8 @@ const Account: FC = () => {
                                     px={4}
                                     fontSize={16}
                                     fontWeight={400}
+                                    //bg={useColorModeValue('black', 'white')}
+                                    color={useColorModeValue('black', 'white')}
                                 >
                                     Disconnect account
                                 </Box>
@@ -160,6 +172,7 @@ const Account: FC = () => {
                                     px={4}
                                     fontSize={16}
                                     fontWeight={400}
+                                    color={useColorModeValue('black', 'white')}
                                 >
                                     Switch account
                                 </Box>

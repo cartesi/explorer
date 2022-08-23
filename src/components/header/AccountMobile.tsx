@@ -14,37 +14,26 @@ import {
     Tag,
     TagLabel,
     Box,
-    Flex,
-    useClipboard,
-    Link,
-    Text,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
     useDisclosure,
-    Heading,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateStringMobile } from '../../utils/stringUtilsMobile';
 import { useWallet } from '../../contexts/wallet';
-import {
-    DisconnectIcon,
-    CopyIcon,
-    SwitchIcon,
-    ArrowsUpDownIcon,
-    CloseIcon,
-} from '../Icons';
+import { ArrowsUpDownIcon } from '../Icons';
+import { WalletMobileModal } from './modals/WalletMobileModal';
 
 const AccountMobile: FC = () => {
-    const { account, library, isHardwareWallet, onboard, deactivate } =
-        useWallet();
+    const { account } = useWallet();
     const ens = useENS(account);
-    const { hasCopied, onCopy } = useClipboard(account);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {
+        isOpen: isOpenWalletMobileModal,
+        onOpen: onOpenWalletMobileModal,
+        onClose: onCloseWalletMobileModal,
+    } = useDisclosure();
+    const disclosure = useDisclosure();
 
     if (!account) {
         return null;
@@ -56,9 +45,9 @@ const AccountMobile: FC = () => {
             borderRadius="0"
             colorScheme="gray"
             h={10}
-            backgroundColor="white"
-            onClick={() => onOpen()}
+            onClick={() => onOpenWalletMobileModal()}
             key={'xs'}
+            bg={useColorModeValue('white', 'gray.700')}
         >
             <HStack w="full" spacing={4}>
                 <Box flexGrow="1">
@@ -72,6 +61,7 @@ const AccountMobile: FC = () => {
                             fontSize: 14,
                             fontWeight: 400,
                         }}
+                        color={useColorModeValue('black', 'white')}
                     >
                         {ens.name ||
                             truncateStringMobile(ens.address || account)}
@@ -87,131 +77,11 @@ const AccountMobile: FC = () => {
                 </Box>
             </HStack>
 
-            <Modal onClose={onClose} size={'xs'} isOpen={isOpen}>
-                <ModalOverlay />
-                <ModalContent borderRadius="0" p={0}>
-                    <HStack w="full" spacing={2} alignItems="center">
-                        <Box flexGrow="2">
-                            <ModalHeader>Your account</ModalHeader>
-                        </Box>
-                        <Box flexGrow="1" paddingLeft="10">
-                            <CloseIcon onClick={onClose} />
-                        </Box>
-                    </HStack>
-
-                    <ModalBody
-                        borderBottom="1px"
-                        borderColor={'gray.100'}
-                        backgroundColor="#F1F2F5"
-                        py={4}
-                        paddingBottom={4}
-                    >
-                        <HStack w="full" spacing={4} alignItems="center">
-                            <Box flexGrow="1">
-                                <HStack>
-                                    <Text fontSize="xs" color={'#939393'}>
-                                        Current wallet
-                                    </Text>
-                                </HStack>
-                                <Heading m={0} size="sm">
-                                    <Flex align="baseline">
-                                        <Box maxWidth="210">{ens.address}</Box>
-                                    </Flex>
-                                </Heading>
-                            </Box>
-                            <Box>
-                                {!hasCopied && (
-                                    <Link>
-                                        <CopyIcon
-                                            onClick={onCopy}
-                                            style={{
-                                                height: 19,
-                                                width: 19,
-                                                marginLeft: 10,
-                                            }}
-                                        />
-                                    </Link>
-                                )}
-                                {hasCopied && <Text fontSize="xs">Copied</Text>}
-                            </Box>
-                        </HStack>
-                    </ModalBody>
-                    {account && library && (
-                        <ModalBody
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            py={5}
-                            paddingBottom={4}
-                        >
-                            <HStack w="full" spacing={4} alignItems="center">
-                                <Box flexGrow="1">
-                                    <Heading m={0} size="sm">
-                                        <Flex align="baseline">
-                                            <Box
-                                                onClick={deactivate}
-                                                aria-label="Disconnect wallet"
-                                                title="Disconnect wallet"
-                                                fontSize={16}
-                                                fontWeight={400}
-                                            >
-                                                Disconnect account
-                                            </Box>
-                                        </Flex>
-                                    </Heading>
-                                </Box>
-                                <Box alignSelf="flex-end">
-                                    <DisconnectIcon
-                                        onClick={deactivate}
-                                        aria-label="Disconnect wallet"
-                                        title="Disconnect wallet"
-                                        style={{
-                                            height: 18,
-                                            width: 18,
-                                        }}
-                                    />
-                                </Box>
-                            </HStack>
-                        </ModalBody>
-                    )}
-                    {account && library && onboard && isHardwareWallet && (
-                        <ModalBody
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            py={5}
-                            paddingBottom={4}
-                        >
-                            <HStack w="full" spacing={4} alignItems="center">
-                                <Box flexGrow="1">
-                                    <Heading m={0} size="sm">
-                                        <Flex align="baseline">
-                                            <Box
-                                                onClick={onboard.accountSelect}
-                                                aria-label="Switch accounts"
-                                                title="Switch accounts"
-                                                fontSize={16}
-                                                fontWeight={400}
-                                            >
-                                                Switch account
-                                            </Box>
-                                        </Flex>
-                                    </Heading>
-                                </Box>
-                                <Box alignSelf="flex-end">
-                                    <SwitchIcon
-                                        onClick={onboard.accountSelect}
-                                        aria-label="Switch accounts"
-                                        title="Switch accounts"
-                                        style={{
-                                            height: 18,
-                                            width: 18,
-                                        }}
-                                    />
-                                </Box>
-                            </HStack>
-                        </ModalBody>
-                    )}
-                </ModalContent>
-            </Modal>
+            <WalletMobileModal
+                isOpen={isOpenWalletMobileModal}
+                disclosure={disclosure}
+                onClose={onCloseWalletMobileModal}
+            />
         </Tag>
     );
 };

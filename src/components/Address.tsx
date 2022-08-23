@@ -18,6 +18,7 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
+    useMediaQuery,
 } from '@chakra-ui/react';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
@@ -67,8 +68,10 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         xl: false,
     });
 
+    const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
+
     const label =
-        ensEntry?.name ||
+        (isLargerThan555 ? ensEntry?.name : truncateString(ensEntry?.name)) ||
         (truncated || (responsive && responsiveTruncate)
             ? truncateString(address)
             : address);

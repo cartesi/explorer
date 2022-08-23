@@ -1,7 +1,13 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": ["eslint-plugin-import", "@typescript-eslint", "prettier", "react", "react-hooks"],
+    "plugins": [
+        "eslint-plugin-import",
+        "@typescript-eslint",
+        "prettier",
+        "react",
+        "react-hooks"
+    ],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
