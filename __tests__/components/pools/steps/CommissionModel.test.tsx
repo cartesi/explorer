@@ -268,30 +268,12 @@ describe('CommissionModel step component', () => {
 
         describe('Gas Based Commission', () => {
             it('should display a message when the field is visited and left in blank', async () => {
-                const { container } = render(
-                    <CommissionModel inFocus stepNumber={1} />
-                );
-
-                expect(
-                    screen
-                        .getByLabelText('Gas-based commission (Gas)')
-                        .hasAttribute('disabled')
-                ).toBe(true);
-
-                const gasBasedOption = container.querySelector(
-                    `input[name='gasBasedOption']`
-                );
-
-                act(() => {
-                    fireEvent.click(gasBasedOption);
-                });
-
-                await waitFor(() =>
-                    expect(
-                        screen
-                            .getByText('Gas-based commission (Gas)')
-                            .hasAttribute('disabled')
-                    ).toBe(false)
+                render(
+                    <CommissionModel
+                        inFocus
+                        stepNumber={1}
+                        initialModelType="gasBasedCommission"
+                    />
                 );
 
                 act(() => {

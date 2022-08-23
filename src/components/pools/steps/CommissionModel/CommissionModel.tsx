@@ -86,13 +86,14 @@ const CommissionModel = ({
     onComplete,
     onPrevious,
     onStepActive,
-}: IStep) => {
+    initialModelType = 'flatRateCommission',
+}: IStep & { initialModelType?: CommissionModels }) => {
     const [, updatePoolAddressAtom] = useAtom(poolAddressAtom);
     const { account } = useWallet();
     const poolFactory = useStakingPoolFactory();
     const [stepState, setStepState] = useStepState({ inFocus });
     const [modelType, setModelType] =
-        useState<CommissionModels>('flatRateCommission');
+        useState<CommissionModels>(initialModelType);
     const [flatRateVal, setFlatRateVal] = useState<string | null>();
     const [gasBasedVal, setGasBasedVal] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
