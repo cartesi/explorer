@@ -37,9 +37,11 @@ const Account: FC = () => {
     }
 
     return (
-        <Tag bg={bgColor} p={0} borderRadius="0">
+        <Tag p={0} borderRadius="0">
             <Menu closeOnSelect={false}>
                 <MenuButton
+                    bg={bgColor}
+                    h={10}
                     px={4}
                     as={Button}
                     rightIcon={
@@ -49,7 +51,7 @@ const Account: FC = () => {
                         />
                     }
                 >
-                    <HStack>
+                    <HStack h={10}>
                         <Jazzicon
                             diameter={15}
                             seed={jsNumberForAddress(account)}
