@@ -13,29 +13,22 @@ import {
     HStack,
     Tag,
     TagLabel,
-    Box,
-    MenuItem,
+    useColorModeValue,
     MenuButton,
     Menu,
-    MenuList,
-    Flex,
-    useClipboard,
-    Link,
-    Text,
-    useColorModeValue,
+    Button,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
-import { DisconnectIcon, CopyIcon, SwitchIcon, PaginationIcon } from '../Icons';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
 import { useWallet } from '../../contexts/wallet';
+import WalletMenu from './menu/WalletMenu';
+import { PaginationIcon } from '../Icons';
 
 const Account: FC = () => {
-    const { account, library, isHardwareWallet, onboard, deactivate } =
-        useWallet();
+    const { account } = useWallet();
     const ens = useENS(account);
-    const { hasCopied, onCopy } = useClipboard(account);
     const bgColor = useColorModeValue('white', 'gray.700');
     const color = useColorModeValue('black', 'white');
 
@@ -44,161 +37,29 @@ const Account: FC = () => {
     }
 
     return (
-        <Tag
-            size="md"
-            borderRadius="0"
-            colorScheme="gray"
-            h={10}
-            w={170}
-            padding={5}
-            bg={bgColor}
-        >
-            <HStack>
-                <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
-                <TagLabel color={color}>
-                    {ens.name || truncateString(ens.address || account)}
-                </TagLabel>
-            </HStack>
+        <Tag bg={bgColor} p={0} borderRadius="0">
             <Menu closeOnSelect={false}>
-                <MenuButton>
-                    <PaginationIcon
-                        style={{
-                            height: 32,
-                            width: 32,
-                        }}
-                        color={color}
-                    />
-                </MenuButton>
-
-                <MenuList
-                    borderRadius="0"
-                    p={0}
-                    left={-383}
-                    position={'absolute'}
+                <MenuButton
+                    px={4}
+                    as={Button}
+                    rightIcon={
+                        <PaginationIcon
+                            style={{ height: 32, width: 32 }}
+                            color={color}
+                        />
+                    }
                 >
-                    {!hasCopied ? (
-                        <MenuItem
-                            justifyContent={'flex-end'}
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            padding={3}
-                            backgroundColor={'blue.50'}
-                        >
-                            <Flex>
-                                <Box
-                                    fontSize={14}
-                                    fontWeight={400}
-                                    px={4}
-                                    color={color}
-                                >
-                                    {ens.address}
-                                </Box>
-                                <Link>
-                                    <CopyIcon
-                                        onClick={onCopy}
-                                        style={{
-                                            height: 19,
-                                            width: 19,
-                                        }}
-                                        color={color}
-                                    />
-                                </Link>
-                            </Flex>
-                        </MenuItem>
-                    ) : (
-                        <MenuItem
-                            justifyContent={'flex-end'}
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            padding={3}
-                            backgroundColor={'blue.50'}
-                        >
-                            <Flex>
-                                <Box
-                                    fontSize={14}
-                                    fontWeight={400}
-                                    color={color}
-                                >
-                                    {ens.address}
-                                </Box>
-                                <Text
-                                    fontSize="sm"
-                                    pl={1}
-                                    height="5"
-                                    color={color}
-                                >
-                                    Copied
-                                </Text>
-                            </Flex>
-                        </MenuItem>
-                    )}
-
-                    {account && library && (
-                        <MenuItem
-                            justifyContent={'flex-end'}
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            padding={3}
-                        >
-                            <Flex>
-                                <Box
-                                    onClick={deactivate}
-                                    aria-label="Disconnect wallet"
-                                    title="Disconnect wallet"
-                                    px={4}
-                                    fontSize={16}
-                                    fontWeight={400}
-                                    color={color}
-                                >
-                                    Disconnect account
-                                </Box>
-                                <DisconnectIcon
-                                    onClick={deactivate}
-                                    aria-label="Disconnect wallet"
-                                    title="Disconnect wallet"
-                                    style={{
-                                        height: 18,
-                                        width: 18,
-                                    }}
-                                    color={color}
-                                />
-                            </Flex>
-                        </MenuItem>
-                    )}
-
-                    {account && library && onboard && isHardwareWallet && (
-                        <MenuItem
-                            justifyContent={'flex-end'}
-                            borderBottom="1px"
-                            borderColor={'gray.100'}
-                            padding={3}
-                        >
-                            <Flex>
-                                <Box
-                                    onClick={onboard.accountSelect}
-                                    aria-label="Switch accounts"
-                                    title="Switch accounts"
-                                    px={4}
-                                    fontSize={16}
-                                    fontWeight={400}
-                                    color={color}
-                                >
-                                    Switch account
-                                </Box>
-                                <SwitchIcon
-                                    onClick={onboard.accountSelect}
-                                    aria-label="Switch accounts"
-                                    title="Switch accounts"
-                                    style={{
-                                        height: 18,
-                                        width: 18,
-                                    }}
-                                    color={color}
-                                />
-                            </Flex>
-                        </MenuItem>
-                    )}
-                </MenuList>
+                    <HStack>
+                        <Jazzicon
+                            diameter={15}
+                            seed={jsNumberForAddress(account)}
+                        />
+                        <TagLabel color={color} fontSize={'sm'}>
+                            {ens.name || truncateString(ens.address || account)}
+                        </TagLabel>
+                    </HStack>
+                </MenuButton>
+                <WalletMenu />
             </Menu>
         </Tag>
     );
