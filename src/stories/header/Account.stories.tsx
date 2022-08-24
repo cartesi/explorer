@@ -11,16 +11,16 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AccountMobile from '../../components/header/AccountMobile';
+import Account from '../../components/header/Account';
 
 export default {
-    title: 'Header/AccountMobile',
-    component: AccountMobile,
+    title: 'Header/Account',
+    component: Account,
     argTypes: {},
-} as ComponentMeta<typeof AccountMobile>;
+} as ComponentMeta<typeof Account>;
 
-const Template: ComponentStory<typeof AccountMobile> = (args) => (
-    <AccountMobile {...args} />
+const Template: ComponentStory<typeof Account> = (args) => (
+    <Account {...args} />
 );
 
 export const Default = Template.bind({});

@@ -34,6 +34,8 @@ const AccountMobile: FC = () => {
         onClose: onCloseWalletMobileModal,
     } = useDisclosure();
     const disclosure = useDisclosure();
+    const bgColor = useColorModeValue('white', 'gray.700');
+    const color = useColorModeValue('black', 'white');
 
     if (!account) {
         return null;
@@ -47,7 +49,7 @@ const AccountMobile: FC = () => {
             h={10}
             onClick={() => onOpenWalletMobileModal()}
             key={'xs'}
-            bg={useColorModeValue('white', 'gray.700')}
+            bg={bgColor}
         >
             <HStack w="full" spacing={4}>
                 <Box flexGrow="1">
@@ -61,7 +63,7 @@ const AccountMobile: FC = () => {
                             fontSize: 14,
                             fontWeight: 400,
                         }}
-                        color={useColorModeValue('black', 'white')}
+                        color={color}
                     >
                         {ens.name ||
                             truncateStringMobile(ens.address || account)}
@@ -73,6 +75,7 @@ const AccountMobile: FC = () => {
                             height: 23,
                             width: 24,
                         }}
+                        color={color}
                     />
                 </Box>
             </HStack>

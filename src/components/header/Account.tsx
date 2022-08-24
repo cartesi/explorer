@@ -36,6 +36,8 @@ const Account: FC = () => {
         useWallet();
     const ens = useENS(account);
     const { hasCopied, onCopy } = useClipboard(account);
+    const bgColor = useColorModeValue('white', 'gray.700');
+    const color = useColorModeValue('black', 'white');
 
     if (!account) {
         return null;
@@ -49,11 +51,11 @@ const Account: FC = () => {
             h={10}
             w={170}
             padding={5}
-            bg={useColorModeValue('white', 'gray.700')}
+            bg={bgColor}
         >
             <HStack>
                 <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
-                <TagLabel color={useColorModeValue('black', 'white')}>
+                <TagLabel color={color}>
                     {ens.name || truncateString(ens.address || account)}
                 </TagLabel>
             </HStack>
@@ -64,6 +66,7 @@ const Account: FC = () => {
                             height: 32,
                             width: 32,
                         }}
+                        color={color}
                     />
                 </MenuButton>
 
@@ -86,7 +89,7 @@ const Account: FC = () => {
                                     fontSize={14}
                                     fontWeight={400}
                                     px={4}
-                                    color={useColorModeValue('black', 'white')}
+                                    color={color}
                                 >
                                     {ens.address}
                                 </Box>
@@ -97,6 +100,7 @@ const Account: FC = () => {
                                             height: 19,
                                             width: 19,
                                         }}
+                                        color={color}
                                     />
                                 </Link>
                             </Flex>
@@ -113,11 +117,16 @@ const Account: FC = () => {
                                 <Box
                                     fontSize={14}
                                     fontWeight={400}
-                                    color={useColorModeValue('black', 'white')}
+                                    color={color}
                                 >
                                     {ens.address}
                                 </Box>
-                                <Text fontSize="sm" pl={1} height="5">
+                                <Text
+                                    fontSize="sm"
+                                    pl={1}
+                                    height="5"
+                                    color={color}
+                                >
                                     Copied
                                 </Text>
                             </Flex>
@@ -139,8 +148,7 @@ const Account: FC = () => {
                                     px={4}
                                     fontSize={16}
                                     fontWeight={400}
-                                    //bg={useColorModeValue('black', 'white')}
-                                    color={useColorModeValue('black', 'white')}
+                                    color={color}
                                 >
                                     Disconnect account
                                 </Box>
@@ -152,6 +160,7 @@ const Account: FC = () => {
                                         height: 18,
                                         width: 18,
                                     }}
+                                    color={color}
                                 />
                             </Flex>
                         </MenuItem>
@@ -172,7 +181,7 @@ const Account: FC = () => {
                                     px={4}
                                     fontSize={16}
                                     fontWeight={400}
-                                    color={useColorModeValue('black', 'white')}
+                                    color={color}
                                 >
                                     Switch account
                                 </Box>
@@ -184,6 +193,7 @@ const Account: FC = () => {
                                         height: 18,
                                         width: 18,
                                     }}
+                                    color={color}
                                 />
                             </Flex>
                         </MenuItem>
