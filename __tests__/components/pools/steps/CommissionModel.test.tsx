@@ -265,28 +265,6 @@ describe('CommissionModel step component', () => {
                 ).toBeInTheDocument();
             });
         });
-
-        describe('Gas Based Commission', () => {
-            it('should display a message when the field is visited and left in blank', async () => {
-                render(
-                    <CommissionModel
-                        inFocus
-                        stepNumber={1}
-                        initialModelType="gasBasedCommission"
-                    />
-                );
-
-                act(() => {
-                    fireEvent.blur(
-                        screen.getByLabelText('Gas-based commission (Gas)')
-                    );
-                });
-
-                expect(
-                    await screen.findByText('This field is required.')
-                ).toBeInTheDocument();
-            });
-        });
     });
 
     describe('Notifications', () => {
