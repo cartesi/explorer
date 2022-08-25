@@ -23,7 +23,7 @@ const NewStaking: FC = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - New Staking</title>
+                <title>Explorer - New Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <NodeRunnersContainer wallet={wallet} router={router} />

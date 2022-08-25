@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.2] - 2022-08-26
+
+-   Changes to the titles of each explorer page to avoid wrong data aggregation on GA.
+
 ## [2.6.1] - 2022-08-19
 
 -   Fix problem when trying to do deposits using the Gnosis Safe wallet.
@@ -148,12 +152,12 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...HEAD
+[2.6.2]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/cartesi-corp/explorer/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/cartesi-corp/explorer/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/cartesi-corp/explorer/compare/v2.5.0...v2.5.1
-[2.5.0]: https://github.com/cartesi-corp/explorer/compare/v2.4.5...v2.5.0
-[2.4.5]: https://github.com/cartesi-corp/explorer/compare/v2.4.4...v2.4.5
+[2.5.0]: https://github.com/cartesi-corp/explorer/compare/v2.4.4...v2.5.0
 [2.4.4]: https://github.com/cartesi-corp/explorer/compare/v2.4.3...v2.4.4
 [2.4.3]: https://github.com/cartesi-corp/explorer/compare/v2.4.2...v2.4.3
 [2.4.2]: https://github.com/cartesi-corp/explorer/compare/v2.4.1...v2.4.2

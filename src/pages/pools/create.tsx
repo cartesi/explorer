@@ -99,7 +99,7 @@ const CreatePool: FunctionComponent = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Create Pool</title>
+                <title>Explorer - Create Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 

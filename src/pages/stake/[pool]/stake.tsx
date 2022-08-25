@@ -91,7 +91,7 @@ const PoolRedesignStake = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Stake</title>
+                <title>Explorer - Stake</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PoolHeader />

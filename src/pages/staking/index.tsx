@@ -107,7 +107,7 @@ const Staking: FC = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Staking</title>
+                <title>Explorer - Staking</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>

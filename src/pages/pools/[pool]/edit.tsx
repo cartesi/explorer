@@ -74,7 +74,7 @@ const ManagePool = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Edit Pool</title>
+                <title>Explorer - Edit Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>

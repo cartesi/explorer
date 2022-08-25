@@ -146,7 +146,7 @@ const Pool = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Pool</title>
+                <title>Explorer - Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>

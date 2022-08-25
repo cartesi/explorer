@@ -103,7 +103,7 @@ const poolRedesign = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Pool Info</title>
+                <title>Explorer - Pool Info</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PoolHeader isManager={isManager} />

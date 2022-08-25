@@ -29,7 +29,7 @@ const Home = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi</title>
+                <title>Explorer</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>

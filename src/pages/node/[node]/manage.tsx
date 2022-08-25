@@ -140,7 +140,7 @@ const ManageNode: FC = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Manage Node</title>
+                <title>Explorer - Manage Node</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Box

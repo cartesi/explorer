@@ -130,7 +130,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Blocks</title>
+                <title>Explorer - Blocks</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 

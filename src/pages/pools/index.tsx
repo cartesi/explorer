@@ -76,7 +76,7 @@ const StakingPools: FC = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - Pools</title>
+                <title>Explorer - Pools</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <PageHeader>

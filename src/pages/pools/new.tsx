@@ -36,7 +36,7 @@ const NewNode: FC = () => {
     return (
         <Layout>
             <Head>
-                <title>Cartesi - New Staking</title>
+                <title>Explorer - Create a public pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
