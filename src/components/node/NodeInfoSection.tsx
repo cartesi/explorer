@@ -57,6 +57,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
+    const buttonBg = useColorModeValue('gray.50', 'gray.800');
 
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
@@ -92,16 +93,15 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                 <>
                     <Box
                         bg={bg}
-                        borderRadius="lg"
-                        shadow="sm"
-                        p={{ base: 2, lg: 6 }}
-                        mb={6}
+                        shadow="md"
+                        px={{ base: 2, lg: 8 }}
+                        py={{ base: 2, lg: 6 }}
+                        mb={2}
                     >
                         <Stack
                             spacing={4}
-                            alignContent="flex-start"
                             direction={{ base: 'column', md: 'row' }}
-                            p={2}
+                            mb={2}
                         >
                             <Box w={{ base: '100%', md: '140px' }}>
                                 <Text variant="label">Node address</Text>
@@ -110,14 +110,14 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         </Stack>
                         <Stack
                             spacing={4}
-                            alignContent="flex-start"
                             direction={{ base: 'column', md: 'row' }}
-                            p={2}
+                            mb={2}
+                            alignItems="center"
                         >
                             <Box w={{ base: '100%', md: '140px' }}>
                                 <HStack>
                                     <Text variant="label">Node balance</Text>
-                                    <Box>
+                                    <Box display="flex" alignItems="center">
                                         <Tooltip
                                             placement="bottom"
                                             label="The node balance is the amount of ETH available in the node’s wallet."
@@ -125,8 +125,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             color="white"
                                         >
                                             <Icon
-                                                width={4}
-                                                height={4}
+                                                width={2.5}
+                                                height={2.5}
                                                 color="gray.600"
                                             />
                                         </Tooltip>
@@ -134,18 +134,18 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                 </HStack>
                             </Box>
 
-                            <HStack spacing={4} alignItems="flex-end">
+                            <HStack spacing={4} alignItems="center">
                                 <Box>
                                     <Flex align="baseline">
                                         <Text>{toETH(nodeBalance)}</Text>
                                         <Text pl={1}>ETH</Text>
                                     </Flex>
                                 </Box>
-                                <Box alignSelf="flex-end">
+                                <Box>
                                     <IconButton
                                         aria-label="Edit"
                                         size="sm"
-                                        icon={<EditIcon />}
+                                        icon={<EditIcon w={4} h={4} />}
                                         variant="ghost"
                                         onClick={depositModal.onOpen}
                                     />
@@ -154,9 +154,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         </Stack>
                         <Stack
                             spacing={4}
-                            alignContent="flex-start"
                             direction={{ base: 'column', md: 'row' }}
-                            p={2}
                         >
                             <Box w={{ base: '100%', md: '140px' }}>
                                 <HStack>
@@ -173,12 +171,14 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     <Button
                         onClick={retireModal.onOpen}
                         disabled={isRetiringNode}
-                        bgColor={bg}
+                        bgColor={buttonBg}
                         w={{ base: '100%', md: 'auto' }}
-                        minW="15rem"
+                        minW="173px"
+                        fontWeight="bold"
+                        textTransform="uppercase"
                         me={2}
                     >
-                        RETIRE NODE
+                        Retire node
                     </Button>
 
                     <NodeRetireModal
