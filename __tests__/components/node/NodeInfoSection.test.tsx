@@ -29,12 +29,13 @@ describe('NodeInfoSection component', () => {
                 nodeBalance={TEST_NODE_BALANCE}
                 onRetire={null}
                 onDeposit={null}
+                onHire={null}
             />
         );
 
         expect(screen.getByText(TEST_ADDRESS)).toBeInTheDocument();
         expect(screen.getByText(NODE_BALANCE_ETH)).toBeInTheDocument();
         expect(screen.getByText('ETH')).toBeInTheDocument();
-        expect(screen.getByText('Running')).toBeInTheDocument();
+        expect(screen.getByText('Hired')).toBeInTheDocument();
     });
 });

@@ -165,7 +165,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                             </Box>
                             <HStack spacing={4} alignItems="flex-end">
                                 <Box>
-                                    <Text>Running</Text>
+                                    <Text>Hired</Text>
                                 </Box>
                             </HStack>
                         </Stack>
