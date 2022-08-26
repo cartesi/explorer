@@ -16,17 +16,12 @@ import {
     Heading,
     VStack,
     useColorModeValue,
-    Link,
     chakra,
     Text,
 } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { useStaking } from '../../services/staking';
 import { useBalance } from '../../services/eth';
-import { useCartesiToken } from '../../services/token';
 import { useNode } from '../../services/node';
 import { useUserNode } from '../../graphql/hooks/useNodes';
-import { TransactionInfoBanner } from '../../components/stake/TransactionInfoBanner';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import PoolSetting from '../../components/stake/PoolSetting';
 import { useWallet } from '../../contexts/wallet';
@@ -35,26 +30,16 @@ import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
 import { useStakingPool } from '../../services/pool';
 import { isEmpty } from 'lodash/fp';
 
-export interface NodeContainerProps {
+export interface PoolManageContainerProps {
     address: string;
-    blockNumber: number;
 }
 
-export const PoolManageContainer: FC<NodeContainerProps> = ({
+export const PoolManageContainer: FC<PoolManageContainerProps> = ({
     address,
-    blockNumber,
 }) => {
-    const { account, active } = useWallet();
+    const { account } = useWallet();
     const userBalance = useBalance(account);
     const pool = useStakingPool(address, account);
-
-    const { staking, transaction: stakingTransaction } = useStaking(account);
-
-    const { transaction: tokenTransaction } = useCartesiToken(
-        account,
-        staking?.address,
-        blockNumber
-    );
 
     // get most recent node hired by user (i.e. the Pool)
     const existingNode = useUserNode(address);
@@ -94,15 +79,8 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                 bg={bg}
             >
                 <VStack spacing={4} alignItems="stretch">
-                    <TransactionBanner
-                        title="Setting allowance..."
-                        failTitle="Error setting allowance"
-                        successDescription="New allowance set successfully."
-                        transaction={tokenTransaction}
-                    />
-
                     {transactionBanners?.deposit && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Setting deposit..."
                             failTitle="Error setting deposit"
                             successDescription="New deposit set successfully."
@@ -113,45 +91,8 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                             }
                         />
                     )}
-                    {transactionBanners?.withdraw && (
-                        <TransactionInfoBanner
-                            title="Withdrawing..."
-                            failTitle="Error withdrawing"
-                            successDescription="Withdrawing was successful."
-                            transaction={
-                                currentTransaction === 'withdraw'
-                                    ? node.transaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.stake && (
-                        <TransactionInfoBanner
-                            title="Staking..."
-                            failTitle="Error staking"
-                            successDescription="Stake set successfully."
-                            transaction={
-                                currentTransaction === 'stake'
-                                    ? stakingTransaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.unstake && (
-                        <TransactionInfoBanner
-                            title="Unstaking..."
-                            failTitle="Error unstaking"
-                            successDescription="Unstaked successfully."
-                            transaction={
-                                currentTransaction === 'unstake'
-                                    ? stakingTransaction
-                                    : null
-                            }
-                        />
-                    )}
-
                     {transactionBanners?.retire && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Retiring Node..."
                             failTitle="Error retiring the node"
                             successDescription="Node retired successfully."
@@ -163,7 +104,7 @@ export const PoolManageContainer: FC<NodeContainerProps> = ({
                         />
                     )}
                     {transactionBanners?.hire && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Hiring node..."
                             failTitle="Error hiring node"
                             successDescription={

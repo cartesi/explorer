@@ -14,7 +14,6 @@ import Head from 'next/head';
 import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
-import { useBlockNumber } from '../../../services/eth';
 import Layout from '../../../components/Layout';
 import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
@@ -23,7 +22,6 @@ import Address from '../../../components/Address';
 
 const PoolNode: FC = () => {
     const { chainId } = useWallet();
-    const blockNumber = useBlockNumber();
     const router = useRouter();
     const address = router.query.pool as string;
 
@@ -69,7 +67,7 @@ const PoolNode: FC = () => {
                 </Stack>
             </Box>
 
-            <PoolManageContainer blockNumber={blockNumber} address={address} />
+            <PoolManageContainer address={address} />
         </Layout>
     );
 };
