@@ -38,7 +38,6 @@ import {
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useWallet } from '../../contexts/wallet';
-import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import CTSIText from '../CTSIText';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../services/pool';
@@ -79,7 +78,6 @@ export const PoolSetting: FC = () => {
     const address = router.query.pool as string;
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
-    const poolBalance = useTotalPoolBalance(account);
     const stakingPool = useStakingPoolQuery(address);
     const [isChangingEns, setChangingEns] = useState<boolean>(false);
     const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
@@ -274,7 +272,7 @@ export const PoolSetting: FC = () => {
                                     Pool balance:
                                 </Text>
                                 <CTSIText
-                                    value={poolBalance}
+                                    value={pool?.amount}
                                     fontSize="1x1"
                                     lineHeight={1}
                                 />
