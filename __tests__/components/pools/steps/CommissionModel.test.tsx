@@ -265,6 +265,40 @@ describe('CommissionModel step component', () => {
                 ).toBeInTheDocument();
             });
         });
+
+        describe('Gas Based Commission', () => {
+            it('should display a message when the field is visited and left in blank', async () => {
+                const { container } = render(
+                    <CommissionModel inFocus stepNumber={1} />
+                );
+
+                const gasBasedOption = container.querySelector(
+                    `input[name='gasBasedOption']`
+                );
+
+                act(() => {
+                    fireEvent.click(gasBasedOption);
+                });
+
+                await waitFor(() =>
+                    expect(
+                        screen
+                            .getByText('Gas-based commission (Gas)')
+                            .hasAttribute('disabled')
+                    ).toBe(false)
+                );
+
+                act(() => {
+                    fireEvent.blur(
+                        screen.getByLabelText('Gas-based commission (Gas)')
+                    );
+                });
+
+                expect(
+                    await screen.findByText('This field is required.')
+                ).toBeInTheDocument();
+            });
+        });
     });
 
     describe('Notifications', () => {
