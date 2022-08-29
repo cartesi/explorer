@@ -105,7 +105,9 @@ const WalletMenu: FC = () => {
                     borderBottom="1px"
                     borderColor={'gray.100'}
                     padding={3}
-                    backgroundColor={'blue.50'}
+                    backgroundColor={
+                        colorMode === 'light' ? 'blue.50' : 'gray.700'
+                    }
                 >
                     <Flex>
                         <Box fontSize={14} fontWeight={400} color={color}>
