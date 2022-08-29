@@ -18,6 +18,7 @@ import {
     Link,
     Text,
     useColorModeValue,
+    useColorMode,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { DisconnectIcon, CopyIcon, SwitchIcon } from '../../Icons';
@@ -30,6 +31,7 @@ const WalletMenu: FC = () => {
     const ens = useENS(account);
     const { hasCopied, onCopy } = useClipboard(account);
     const color = useColorModeValue('black', 'white');
+    const { colorMode, toggleColorMode } = useColorMode();
 
     if (!account) {
         return null;
@@ -43,28 +45,59 @@ const WalletMenu: FC = () => {
                     borderBottom="1px"
                     borderColor={'gray.100'}
                     padding={3}
-                    backgroundColor={'blue.50'}
+                    backgroundColor={
+                        colorMode === 'light' ? 'blue.50' : 'gray.700'
+                    }
                 >
-                    <Flex>
-                        <Box
-                            fontSize={14}
-                            fontWeight={400}
-                            px={4}
-                            color={color}
-                        >
-                            {ens.address}
-                        </Box>
-                        <Link>
-                            <CopyIcon
-                                onClick={onCopy}
-                                style={{
-                                    height: 19,
-                                    width: 19,
-                                }}
+                    {colorMode === 'light' ? (
+                        <Flex>
+                            <Text
+                                fontSize={14}
+                                fontWeight={400}
+                                px={4}
                                 color={color}
-                            />
-                        </Link>
-                    </Flex>
+                            >
+                                {ens.address}
+                            </Text>
+                            <Link>
+                                <CopyIcon
+                                    onClick={onCopy}
+                                    style={{
+                                        height: 19,
+                                        width: 19,
+                                    }}
+                                    color={color}
+                                />
+                            </Link>
+                        </Flex>
+                    ) : (
+                        <Flex>
+                            <Box
+                                fontSize={14}
+                                fontWeight={400}
+                                px={4}
+                                color={color}
+                                _hover={{
+                                    color: 'white',
+                                }}
+                            >
+                                {ens.address}
+                            </Box>
+                            <Link>
+                                <CopyIcon
+                                    onClick={onCopy}
+                                    style={{
+                                        height: 19,
+                                        width: 19,
+                                    }}
+                                    color={color}
+                                    _hover={{
+                                        color: color,
+                                    }}
+                                />
+                            </Link>
+                        </Flex>
+                    )}
                 </MenuItem>
             ) : (
                 <MenuItem
@@ -84,7 +117,6 @@ const WalletMenu: FC = () => {
                     </Flex>
                 </MenuItem>
             )}
-
             {account && library && (
                 <MenuItem
                     justifyContent={'flex-end'}
@@ -117,7 +149,6 @@ const WalletMenu: FC = () => {
                     </Flex>
                 </MenuItem>
             )}
-
             {account && library && onboard && isHardwareWallet && (
                 <MenuItem
                     justifyContent={'flex-end'}

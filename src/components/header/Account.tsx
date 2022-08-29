@@ -17,6 +17,7 @@ import {
     MenuButton,
     Menu,
     Button,
+    useColorMode,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
@@ -31,6 +32,7 @@ const Account: FC = () => {
     const ens = useENS(account);
     const bgColor = useColorModeValue('white', 'gray.700');
     const color = useColorModeValue('black', 'white');
+    const { colorMode, toggleColorMode } = useColorMode();
 
     if (!account) {
         return null;
@@ -39,28 +41,58 @@ const Account: FC = () => {
     return (
         <Tag p={0} borderRadius="0">
             <Menu closeOnSelect={false}>
-                <MenuButton
-                    bg={bgColor}
-                    h={10}
-                    px={4}
-                    as={Button}
-                    rightIcon={
-                        <PaginationIcon
-                            style={{ height: 32, width: 32 }}
-                            color={color}
-                        />
-                    }
-                >
-                    <HStack h={10}>
-                        <Jazzicon
-                            diameter={15}
-                            seed={jsNumberForAddress(account)}
-                        />
-                        <TagLabel color={color} fontSize={'sm'}>
-                            {ens.name || truncateString(ens.address || account)}
-                        </TagLabel>
-                    </HStack>
-                </MenuButton>
+                {colorMode === 'light' ? (
+                    <MenuButton
+                        bg={bgColor}
+                        h={10}
+                        px={4}
+                        as={Button}
+                        rightIcon={
+                            <PaginationIcon
+                                style={{ height: 32, width: 32 }}
+                                color={color}
+                            />
+                        }
+                        _expanded={{ bg: 'white' }}
+                        _hover={{ bg: 'white' }}
+                        colorScheme="gray"
+                    >
+                        <HStack h={10}>
+                            <Jazzicon
+                                diameter={15}
+                                seed={jsNumberForAddress(account)}
+                            />
+                            <TagLabel color={color} fontSize={'sm'}>
+                                {ens.name ||
+                                    truncateString(ens.address || account)}
+                            </TagLabel>
+                        </HStack>
+                    </MenuButton>
+                ) : (
+                    <MenuButton
+                        bg={bgColor}
+                        h={10}
+                        px={4}
+                        as={Button}
+                        rightIcon={
+                            <PaginationIcon
+                                style={{ height: 32, width: 32 }}
+                                color={color}
+                            />
+                        }
+                    >
+                        <HStack h={10}>
+                            <Jazzicon
+                                diameter={15}
+                                seed={jsNumberForAddress(account)}
+                            />
+                            <TagLabel color={color} fontSize={'sm'}>
+                                {ens.name ||
+                                    truncateString(ens.address || account)}
+                            </TagLabel>
+                        </HStack>
+                    </MenuButton>
+                )}
                 <WalletMenu />
             </Menu>
         </Tag>
