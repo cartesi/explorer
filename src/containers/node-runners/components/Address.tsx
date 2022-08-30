@@ -39,7 +39,9 @@ const TaggableText = ({ text, tagged, tagProps }: TaggableTextProps) => {
     const bg = tagged ? 'blue.50' : 'transparent';
     return (
         <Tag borderRadius="full" size="md" bg={bg} {...tagProps}>
-            <Text {...textProps}>{text}</Text>
+            <Text {...textProps} color="gray.900">
+                {text}
+            </Text>
         </Tag>
     );
 };
