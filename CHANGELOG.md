@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2022-09-01
+
+-   Improved UX for the wallet connected. Users now can click in the displayed address and see a menu with actions they can do. Besides the usual disconnect and switch accounts **(for Hardware wallet only)** a new action is available to copy the connected address.
+
 ## [2.6.2] - 2022-08-26
 
 -   Changes to the titles of each explorer page to avoid wrong data aggregation on GA.
@@ -152,7 +156,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...HEAD
+[2.7.0]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...v2.7.0
 [2.6.2]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/cartesi-corp/explorer/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/cartesi-corp/explorer/compare/v2.5.1...v2.6.0
