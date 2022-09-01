@@ -43,7 +43,7 @@ export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
         <>
             <Modal isOpen={isOpen} onClose={onClose} size={'xs'} isCentered>
                 <ModalOverlay />
-                <ModalContent borderRadius="0" p={0}>
+                <ModalContent borderRadius="0" p={0} minH="auto">
                     <HStack w="full" spacing={2} alignItems="center">
                         <Box flexGrow="2">
                             <ModalHeader>Your account</ModalHeader>
