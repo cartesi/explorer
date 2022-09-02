@@ -150,6 +150,12 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 h="100%"
                 children={<Box>CTSI</Box>}
             />
+            {/* {hasNumberSteppers && (
+                <NumberInputStepper data-testid="number-stepper">
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                </NumberInputStepper>
+            )} */}
         </NumberInput>
     );
 };

@@ -48,7 +48,9 @@ describe('Staking Deposit Modal', () => {
         );
 
         expect(
-            screen.getByText('Set Allowance and Deposit')
+            screen.getByText(
+                'Set the desired allowance. It is the total accrued amount of CTSI the pool is allowed to stake for you. This number should be equal or larger that the CTSI you plan to stake.'
+            )
         ).toBeInTheDocument();
     });
 
@@ -64,7 +66,7 @@ describe('Staking Deposit Modal', () => {
     it('Should not display modal when closed', () => {
         render(<EStakingDepositModal {...defaultProps} isOpen={false} />);
 
-        expect(() => screen.getByText('Set Allowance and Deposit')).toThrow(
+        expect(() => screen.getByText('Deposit')).toThrow(
             'Unable to find an element'
         );
     });
