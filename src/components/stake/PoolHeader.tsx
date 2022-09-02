@@ -27,7 +27,12 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
     const { chainId } = useWallet();
 
     return (
-        <Box bg="header" color="white" px={{ base: '6vw', xl: '12vw' }} pt={5}>
+        <Box
+            bg="header"
+            color="white"
+            px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
+            pt={5}
+        >
             <Stack
                 justify="space-between"
                 alignItems={{ base: 'flex-start', lg: 'flex-end' }}

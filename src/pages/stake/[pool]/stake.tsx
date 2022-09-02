@@ -116,7 +116,7 @@ const PoolRedesignStake = () => {
 
             <Box
                 bg={bg}
-                px={{ base: '6vw', lg: '11vw', xl: '11vw' }}
+                px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 8, sm: 12, lg: 16 }}
             >
                 {isConnected && (
