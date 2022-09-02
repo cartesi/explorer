@@ -64,7 +64,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon color={balanceColor} />
+                            <Icon color={balanceColor} w="14px" h="14px" />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm" pt="10px">

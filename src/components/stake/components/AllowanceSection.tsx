@@ -57,7 +57,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon color={color} />
+                            <Icon color={color} w="14px" h="14px" />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm" pt="10px">
@@ -75,8 +75,8 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                                     icon={
                                         <PencilIconWhite
                                             style={{
-                                                height: 28,
-                                                width: 28,
+                                                height: 24,
+                                                width: 24,
                                             }}
                                             color={IconColor}
                                         />
