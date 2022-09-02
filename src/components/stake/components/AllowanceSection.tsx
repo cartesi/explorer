@@ -21,10 +21,12 @@ import {
     Heading,
     IconButton,
     useColorModeValue,
+    Spacer,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../../pools/staking/CTSI';
+import { PencilIconWhite } from '../../Icons';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;
@@ -36,6 +38,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
     onAllowanceClick,
 }) => {
     const color = useColorModeValue('gray.400', 'white');
+    const IconColor = useColorModeValue('black', 'white');
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '25%' }}>
             <HStack
@@ -57,24 +60,36 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             <Icon color={color} />
                         </Tooltip>
                     </HStack>
-                    <Heading m={0} size="sm">
+                    <Heading m={0} size="sm" pt="10px">
                         <Flex align="baseline">
                             <CTSI value={allowance} />
                             <Text ml={1} fontSize="sm">
                                 CTSI
                             </Text>
+                            <Box>
+                                <IconButton
+                                    mx={2}
+                                    marginTop="-7px"
+                                    aria-label="Edit"
+                                    size="sm"
+                                    icon={
+                                        <PencilIconWhite
+                                            style={{
+                                                height: 28,
+                                                width: 28,
+                                            }}
+                                            color={IconColor}
+                                        />
+                                    }
+                                    variant="ghost"
+                                    role="button-icon"
+                                    onClick={onAllowanceClick}
+                                />
+                            </Box>
                         </Flex>
+                        {/* <Flex alignItems="center">
+                        </Flex> */}
                     </Heading>
-                </Box>
-                <Box alignSelf="flex-end">
-                    <IconButton
-                        aria-label="Edit"
-                        size="sm"
-                        icon={<EditIcon />}
-                        variant="ghost"
-                        role="button-icon"
-                        onClick={onAllowanceClick}
-                    />
                 </Box>
             </HStack>
         </VStack>

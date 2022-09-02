@@ -43,7 +43,7 @@ export const StakingInstructions: FC = () => {
     return (
         <>
             {showInstructions && (
-                <Box pb={{ base: 6, sm: 10, lg: 10 }}>
+                <Box pb={isOpen ? { base: 6, sm: 10, lg: 10 } : '0'}>
                     <InfoBanner
                         title="Earn rewards by staking CTSI"
                         content={

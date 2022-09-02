@@ -28,6 +28,46 @@ export const PencilIcon = createIcon({
     defaultProps: { width: '22', height: '21' },
 });
 
+export const PencilIconWhite = createIcon({
+    displayName: 'PencilIconWhite',
+    viewBox: '0 0 24 24',
+    path: (
+        <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g clip-path="url(#clip0_638_4627)">
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M4.50073 16.206L4.52163 19.5039H7.79283L20.2924 7.00145L16.9994 3.7085L4.50073 16.206Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M4.51636 19.5166L7.44786 16.4547L4.51636 19.5166Z"
+                    fill="currentColor"
+                />
+                <path
+                    d="M4.51636 19.5166L7.44786 16.4547"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+            </g>
+            <defs>
+                <clipPath id="clip0_638_4627">
+                    <rect width="24" height="24" fill="currentColor" />
+                </clipPath>
+            </defs>
+        </svg>
+    ),
+});
+
 export const DashboardIcon = createIcon({
     displayName: 'DashboardIcon',
     viewBox: '0 0 24 24',

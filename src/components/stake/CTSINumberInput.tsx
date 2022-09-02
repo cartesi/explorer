@@ -145,16 +145,11 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 color="gray.300"
                 size="lg"
                 pointerEvents="none"
+                pl={8}
                 w={hasNumberSteppers ? 24 : 14}
                 h="100%"
                 children={<Box>CTSI</Box>}
             />
-            {hasNumberSteppers && (
-                <NumberInputStepper data-testid="number-stepper">
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                </NumberInputStepper>
-            )}
         </NumberInput>
     );
 };

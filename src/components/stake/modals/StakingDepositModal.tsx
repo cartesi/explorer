@@ -32,12 +32,15 @@ import {
     ModalOverlay,
     UseDisclosureProps,
     Divider,
+    TagLabel,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 import CTSI from '../../pools/staking/CTSI';
+import { CheckCircleIcon, PencilIconWhite } from '../../Icons';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;
@@ -67,11 +70,16 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
         constants.Zero
     );
+    const color = useColorModeValue('black', 'white');
+    const fontColor = useColorModeValue('black', 'black');
+    const max_depositColor = useColorModeValue('blue.500', 'white');
+    const iconColor = useColorModeValue('black', 'black');
 
     const inputFocusRef = useRef();
 
     return (
         <Modal
+            size={'md'}
             isOpen={isOpen}
             onClose={() => {
                 onClose();
@@ -81,7 +89,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
             initialFocusRef={inputFocusRef}
         >
             <ModalOverlay />
-            <ModalContent>
+
+            <ModalContent borderRadius="0" p={0} minH="auto">
                 {allowance.isZero() || allowanceStep ? (
                     <>
                         <Box pb={6}>
@@ -93,7 +102,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     pl={8}
                                     pb={4}
                                 >
-                                    Set Allowance and Deposit
+                                    Deposit
                                 </Box>
 
                                 <ModalCloseButton mt="8px !important" />
@@ -102,6 +111,41 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                         </Box>
                         <ModalBody>
                             <VStack spacing={5}>
+                                <HStack w="full" spacing={4}>
+                                    <Box flexGrow="0">
+                                        <CheckCircleIcon w={21} h={21} mr={2} />
+                                        <TagLabel
+                                            fontSize={18}
+                                            fontWeight={400}
+                                        >
+                                            Set Allowance
+                                        </TagLabel>
+                                    </Box>
+                                    <Box alignSelf="center">
+                                        <Divider
+                                            orientation="horizontal"
+                                            w={12}
+                                            borderColor={color}
+                                        />
+                                    </Box>
+                                    <Box flexGrow="1">
+                                        <CheckCircleIcon
+                                            w={21}
+                                            h={21}
+                                            mr={2}
+                                            color="gray.300"
+                                            pointerEvents="none"
+                                        />
+                                        <TagLabel
+                                            fontSize={18}
+                                            fontWeight={400}
+                                            color="gray.300"
+                                            pointerEvents="none"
+                                        >
+                                            Deposit
+                                        </TagLabel>
+                                    </Box>
+                                </HStack>
                                 <Text>
                                     Set the desired allowance. It is the total
                                     accrued amount of CTSI the pool is allowed
@@ -122,15 +166,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         }}
                                     />
                                     <FormHelperText>
-                                        The Pool Allowance can be edited at any
-                                        time. Each edit is charged in the form
-                                        of a gas fee like any Ethereum
+                                        First time setting will cost ETH gas
+                                        fee. It will display in the wallet
                                         transaction.
                                     </FormHelperText>
                                 </FormControl>
                             </VStack>
-                            <ModalFooter px="0" pt={10}>
-                                <VStack w="full" spacing={4}>
+                            <ModalFooter px="0">
+                                <VStack w="full">
                                     <Button
                                         isFullWidth
                                         colorScheme="blue"
@@ -143,17 +186,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         }}
                                     >
                                         Approve
-                                    </Button>
-                                    <Button
-                                        isFullWidth
-                                        colorScheme="darkGray"
-                                        variant="ghost"
-                                        onClick={() => {
-                                            onClose();
-                                            setAllowanceStep(false);
-                                        }}
-                                    >
-                                        Cancel
                                     </Button>
                                 </VStack>
                             </ModalFooter>
@@ -179,6 +211,41 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                         </Box>
                         <ModalBody>
                             <VStack spacing={5}>
+                                <HStack w="full" spacing={4}>
+                                    <Box flexGrow="0">
+                                        <CheckCircleIcon
+                                            w={21}
+                                            h={21}
+                                            mr={2}
+                                            bgColor="blue.50"
+                                            rounded={'full'}
+                                            color={fontColor}
+                                        />
+                                        <TagLabel
+                                            fontSize={18}
+                                            fontWeight={400}
+                                        >
+                                            Set Allowance
+                                        </TagLabel>
+                                    </Box>
+                                    <Box alignSelf="center">
+                                        <Divider
+                                            orientation="horizontal"
+                                            w={12}
+                                            borderColor={color}
+                                        />
+                                    </Box>
+                                    <Box flexGrow="1">
+                                        <CheckCircleIcon w={21} h={21} mr={2} />
+                                        <TagLabel
+                                            fontSize={18}
+                                            fontWeight={400}
+                                        >
+                                            Deposit
+                                        </TagLabel>
+                                    </Box>
+                                </HStack>
+
                                 <Text>
                                     You can deposit any amount of token to the
                                     pool as far as you have the tokens amount is
@@ -196,7 +263,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 >
                                     <Box flexGrow="1">
                                         <HStack>
-                                            <Text fontSize="sm">
+                                            <Text
+                                                fontSize="sm"
+                                                color={fontColor}
+                                            >
                                                 Your Allowance
                                             </Text>
                                             <Tooltip
@@ -214,17 +284,40 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 <CTSI
                                                     value={allowance}
                                                     fontSize="lg"
+                                                    color={fontColor}
                                                 />
-                                                <Text ml={1}>CTSI</Text>
+                                                <Text ml={1} color={fontColor}>
+                                                    CTSI
+                                                </Text>
                                             </Flex>
                                         </Heading>
                                     </Box>
                                     <Box alignSelf="flex-end">
+                                        {/* <IconButton
+                                            aria-label="Edit"
+                                            size="md"
+                                            icon={<EditIcon />}
+                                            variant="ghost"
+                                            onClick={() => {
+                                                setAllowanceStep(true);
+                                            }}
+                                            _hover={{
+                                                background: 'blue.50',
+                                            }}
+                                        /> */}
                                         <IconButton
                                             aria-label="Edit"
                                             size="sm"
-                                            icon={<EditIcon />}
-                                            variant="ghost"
+                                            icon={
+                                                <PencilIconWhite
+                                                    style={{
+                                                        height: 25,
+                                                        width: 26,
+                                                    }}
+                                                    color={iconColor}
+                                                />
+                                            }
+                                            variant="blue.50"
                                             onClick={() => {
                                                 setAllowanceStep(true);
                                             }}
@@ -241,9 +334,23 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 </Box>
 
                                 <FormControl id="depositAmount">
-                                    <FormLabel fontWeight="bold">
-                                        Deposit Amount
-                                    </FormLabel>
+                                    <HStack w="full" spacing={4}>
+                                        <Box flexGrow="1">
+                                            <FormLabel fontWeight="bold">
+                                                Deposit Amount
+                                            </FormLabel>
+                                        </Box>
+                                        <Box alignSelf="flex-end">
+                                            <FormLabel
+                                                fontWeight="400"
+                                                fontSize={16}
+                                                color={max_depositColor}
+                                                textAlign={'right'}
+                                            >
+                                                MAX DEPOSIT
+                                            </FormLabel>
+                                        </Box>
+                                    </HStack>
                                     <CTSINumberInput
                                         min={0}
                                         max={allowanceFormatted}
