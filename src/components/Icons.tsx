@@ -39,13 +39,13 @@ export const PencilIconWhite = createIcon({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_638_4627)">
+            <g clipPath="url(#clip0_638_4627)">
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M4.50073 16.206L4.52163 19.5039H7.79283L20.2924 7.00145L16.9994 3.7085L4.50073 16.206Z"
                     stroke="currentColor"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                 />
                 <path
                     fillRule="evenodd"
@@ -56,7 +56,7 @@ export const PencilIconWhite = createIcon({
                 <path
                     d="M4.51636 19.5166L7.44786 16.4547"
                     stroke="currentColor"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                 />
             </g>
             <defs>
