@@ -78,7 +78,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                     bg="black"
                                     color="white"
                                 >
-                                    <Icon />
+                                    <Icon w="14px" h="14px" />
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>
@@ -96,7 +96,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                     bg="black"
                                     color="white"
                                 >
-                                    <Icon />
+                                    <Icon w="14px" h="14px" />
                                 </Tooltip>
                             </HStack>
                         </CommissionTextV2>

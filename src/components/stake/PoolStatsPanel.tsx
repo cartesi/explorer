@@ -103,7 +103,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     lg: 3,
                 }}
                 w="full"
-                spacing={4}
+                spacing={5}
                 role="commission-stat"
             >
                 <UsersStat totalUsers={totalUsers} />

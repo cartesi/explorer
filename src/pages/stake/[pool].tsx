@@ -84,8 +84,6 @@ const poolRedesign = () => {
     const productionInterval = blockAverageInterval(
         useBlocks({ producer: address }, 10)
     );
-
-    const bgPageDevider = useColorModeValue('gray.100', 'gray.900');
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
     const { isOpen, onToggle } = useDisclosure({
@@ -110,7 +108,7 @@ const poolRedesign = () => {
             <PoolBreadcrumbs currentPage="Overview" />
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
-                py={{ base: 4, sm: 6, lg: 8 }}
+                py={{ base: 4, sm: 8, lg: 26 }}
             >
                 <HStack
                     spacing={4}
@@ -138,7 +136,7 @@ const poolRedesign = () => {
                 </HStack>
 
                 <Collapse in={isOpen}>
-                    <VStack spacing={8}>
+                    <VStack spacing={5}>
                         <PoolStatsPanel
                             address={address}
                             productionInterval={productionInterval}
@@ -179,14 +177,6 @@ const poolRedesign = () => {
                     </VStack>
                 </Collapse>
             </Box>
-            <Box
-                bg={bgPageDevider}
-                as="hr"
-                border={0}
-                shadow="inner"
-                h={6}
-                w="full"
-            />
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
                 py={{ base: 8, sm: 12, lg: 16 }}

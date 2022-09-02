@@ -58,7 +58,7 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
                     <AddressText
                         address={address}
                         chainId={chainId}
-                        fontSize={['xl', '3xl']}
+                        fontSize={['xl', '2xl']}
                     />
                 </VStack>
 

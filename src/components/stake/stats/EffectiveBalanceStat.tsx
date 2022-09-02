@@ -119,7 +119,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon role="balance-icon" />
+                            <Icon role="balance-icon" w="14px" h="14px" />
                         </Tooltip>
                         {needRebalance && (
                             <Tooltip
@@ -182,7 +182,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon color="gray.500" />
+                                                <Icon
+                                                    color="gray.500"
+                                                    w="14px"
+                                                    h="14px"
+                                                />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>
@@ -210,7 +214,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon color="gray.500" />
+                                                <Icon
+                                                    color="gray.500"
+                                                    w="14px"
+                                                    h="14px"
+                                                />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>
@@ -234,7 +242,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon color="gray.500" />
+                                                <Icon
+                                                    color="gray.500"
+                                                    w="14px"
+                                                    h="14px"
+                                                />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>
