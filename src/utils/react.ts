@@ -37,8 +37,12 @@ export const useTimeLeft = (
     fields = 2,
     isHumanizedOutput = true,
     format?: string
-): string => {
+): string | undefined => {
     const applyFormat = useCallback((duration: number, format: string) => {
+        if (duration <= 0) {
+            return undefined;
+        }
+
         return Duration.fromMillis(duration).toFormat(format);
     }, []);
 

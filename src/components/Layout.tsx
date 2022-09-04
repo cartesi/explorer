@@ -42,13 +42,13 @@ export const PageHeader: FC = ({ children }) => (
     </Box>
 );
 
-export const PagePanel: FC = ({ children }) => {
+export const PagePanel: FC = ({ children, ...restProps }) => {
     const bg = useColorModeValue('white', 'gray.700');
     const bgHeader = useColorModeValue('white', 'gray.800');
     return (
         <Center
-            px="6vw"
             bgGradient={`linear(to-b, gray.900 0%, gray.900 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
+            {...restProps}
         >
             <Box bg={bg} w="100%" shadow="lg">
                 {children}

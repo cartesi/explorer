@@ -13,8 +13,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TimerButton, {
     TimerButtonProps,
-} from '../../../src/components/TimerButton';
-import { withChakraTheme } from '../../test-utilities';
+} from '../../src/components/TimerButton';
+import { withChakraTheme } from '../test-utilities';
 
 const Component = withChakraTheme<TimerButtonProps>(TimerButton);
 
@@ -49,5 +49,16 @@ describe('Timer Button', () => {
 
         const button = screen.getByTestId('timer-button');
         expect(button.textContent.includes('01:39:59')).toBe(true);
+    });
+
+    it('Should not display time information', () => {
+        renderComponent({
+            children: 'Button',
+            remainingTime: Date.now() - 6000,
+        });
+
+        const button = screen.getByTestId('timer-button');
+        expect(button.textContent.includes('(')).toBe(false);
+        expect(button.textContent.includes(')')).toBe(false);
     });
 });
