@@ -81,7 +81,6 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                 <CTSINumberInput
                                     value={allowanceFormatted}
                                     min={0}
-                                    max={balanceFormatted}
                                     onChange={(bigNumberValue) => {
                                         setOutputAllowance(bigNumberValue);
                                     }}

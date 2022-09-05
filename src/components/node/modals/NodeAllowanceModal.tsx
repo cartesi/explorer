@@ -101,7 +101,6 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                 <CTSINumberInput
                                     value={allowanceFormatted}
                                     min={0}
-                                    max={balanceFormatted}
                                     // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
                                         setOutputAllowance(bigNumberValue);

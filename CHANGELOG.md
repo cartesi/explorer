@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.1] - 2022-09-06
+
+- Update the pool allowance functionality. The allowance capped by the users CTSI balance is removed leaving the user free to set bigger amounts that saves unnecessary ETH expenditure.
+
 ## [2.7.0] - 2022-09-01
 
 -   Improved UX for the wallet connected. Users now can click in the displayed address and see a menu with actions they can do. Besides the usual disconnect and switch accounts **(for Hardware wallet only)** a new action is available to copy the connected address.
@@ -156,7 +160,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.1...HEAD
+[2.7.1]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...v2.7.1
 [2.7.0]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...v2.7.0
 [2.6.2]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/cartesi-corp/explorer/compare/v2.6.0...v2.6.1
