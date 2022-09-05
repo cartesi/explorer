@@ -1,18 +1,10 @@
 import React from 'react';
 import StakeCard from '../StakeCard';
 import { Icon } from '@chakra-ui/icons';
-import { HStack, Text, Tooltip } from '@chakra-ui/react';
-import {
-    StakedBalanceIcon,
-    DelegateIcon,
-    WalletIcon,
-    PoolsTimer,
-    AllowanceIcon,
-    StakePlus,
-} from '../../Icons';
+import { HStack, Text, Tooltip, Stack } from '@chakra-ui/react';
+import { StakedBalanceIcon, PoolsTimer, StakePlus } from '../../Icons';
 import BigNumberText from '../../BigNumberText';
 import CTSIText from '../../CTSIText';
-import StatsPanel from '../../home/StatsPanel';
 import { useWallet } from '../../../contexts/wallet';
 import useTotalPoolBalance from '../../../graphql/hooks/useTotalPoolBalance';
 import useSummary from '../../../graphql/hooks/useSummary';
@@ -25,12 +17,13 @@ const PoolsOverview = () => {
     const balances = usePoolBalances(account);
 
     return (
-        <StatsPanel
+        <Stack
+            direction={['column', 'column', 'row', 'row']}
+            justify="space-evenly"
             w="100%"
             p={[5, 5, 10, 10]}
-            px={[10, 10, '12vw', '12vw']}
+            px={['6vw', '6vw', '12vw', '12vw']}
             spacing={6}
-            divider={null}
         >
             <StakeCard
                 Icon={<StakedBalanceIcon w={8} h={8} />}
@@ -86,7 +79,7 @@ const PoolsOverview = () => {
                     }}
                 />
             </StakeCard>
-        </StatsPanel>
+        </Stack>
     );
 };
 

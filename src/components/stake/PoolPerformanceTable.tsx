@@ -20,40 +20,56 @@ import {
     Thead,
     HStack,
     Spinner,
-    useBreakpointValue,
+    Link,
 } from '@chakra-ui/react';
-import { BigNumber } from '@ethersproject/bignumber';
-import { PoolBalance } from '../../graphql/models';
+import { ArrowDownIcon } from '@chakra-ui/icons';
+import { StakingPoolFlat, StakingPoolSortExtended } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
-import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
+import PoolPerformanceTableRow from './PoolPerformanceTableRow';
 
-export interface UserStakingPoolsProps {
+export interface PoolPerformanceTableProps {
     chainId: number;
     account?: string;
-    walletBalance: BigNumber;
     loading: boolean;
-    data?: PoolBalance[];
+    data?: StakingPoolFlat[];
+    sort?: StakingPoolSortExtended;
+    onSort: (order: StakingPoolSortExtended) => void;
 }
 
-const UserStakingPools: FC<UserStakingPoolsProps> = ({
+const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     chainId,
     account,
-    walletBalance,
     data,
     loading,
+    sort,
+    onSort,
 }) => {
-    // number of columns at each breakpoint
-    const columns = useBreakpointValue([3, 3, 4, 8]);
-
     return (
         <TableResponsiveHolder>
             <Table>
                 <Thead>
                     <Tr>
                         <Th>Pool Address</Th>
-                        <Th isNumeric>Unstaked</Th>
-                        <Th isNumeric>Staked</Th>
-                        <Th isNumeric>% Pool</Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('totalUsers')}>
+                                Total Users
+                            </Link>
+                            {sort == 'totalUsers' && <ArrowDownIcon />}
+                        </Th>
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('amount')}>
+                                Total Staked
+                            </Link>
+                            {sort == 'amount' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('monthPerformance')}>
+                                30-days % (annual)
+                            </Link>
+                            {sort == 'monthPerformance' && <ArrowDownIcon />}
+                        </Th>
                         <Th isNumeric>Stake/Info</Th>
                     </Tr>
                 </Thead>
@@ -61,7 +77,7 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                 <Tbody>
                     {loading && (
                         <Tr>
-                            <Td colSpan={columns} textAlign="center">
+                            <Td colSpan={9} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
@@ -73,7 +89,7 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                         (!data ||
                             (data.length === 0 && (
                                 <Tr>
-                                    <Td colSpan={columns} textAlign="center">
+                                    <Td colSpan={9} textAlign="center">
                                         <Text>No items</Text>
                                     </Td>
                                 </Tr>
@@ -81,13 +97,11 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                     {!loading &&
                         data &&
                         data.length > 0 &&
-                        data.map((balance) => (
-                            <UserStakingPoolsTableRow
-                                key={balance.pool.id}
+                        data.map((pool) => (
+                            <PoolPerformanceTableRow
+                                key={pool.id}
                                 chainId={chainId}
-                                walletBalance={walletBalance}
-                                balance={balance}
-                                account={account}
+                                pool={pool}
                             />
                         ))}
                 </Tbody>
@@ -96,4 +110,4 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
     );
 };
 
-export default UserStakingPools;
+export default PoolPerformanceTable;

@@ -25,6 +25,8 @@ import {
     Heading,
     Box,
     useColorModeValue,
+    Button,
+    VStack,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
 import { FaCoins, FaWallet } from 'react-icons/fa';
@@ -64,6 +66,13 @@ import StakeCard from '../../components/stake/StakeCard';
 import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import PoolsOverview from '../../components/stake/components/PoolsOverview';
 import UserStakingPools from '../../components/stake/UserStakingPoolsTable';
+import NextLink from 'next/link';
+import { StakingPoolSortExtended } from '../../graphql/models';
+import useStakingPoolsExtended from '../../graphql/hooks/useStakingPoolsExtended';
+import PoolTableExtended from '../../components/pools/PoolTableExtended';
+import Pagination from '../../components/Pagination';
+import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
+import PoolPerformanceTable from '../../components/stake/PoolPerformanceTable';
 
 const Home = () => {
     const router = useRouter();
@@ -82,6 +91,7 @@ const Home = () => {
 
     // query total pool balance
     const poolBalance = useTotalPoolBalance(account);
+    const [search, setSearch] = useState<string>();
 
     // global summary information
     const summary = useSummary();
@@ -106,6 +116,18 @@ const Home = () => {
     const [userSearch, setUserSearch] = useState<string>();
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
+    const bodyBg = useColorModeValue('gray.80', 'header');
+    const stakingPoolsBg = useColorModeValue('white', 'gray.700');
+    const [sort, setSort] = useState<StakingPoolSortExtended>(
+        'commissionPercentage'
+    );
+    const [pageNumber, setPageNumber] = useState<number>(0);
+    const { data: stakingPoolsData, loading } = useStakingPoolsExtended(
+        pageNumber,
+        search,
+        sort
+    );
+    const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
 
     useEffect(() => {
         // When the flag is off, the user is automatically redirected to /pool
@@ -122,29 +144,83 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <PageHeader>
-                <Box bg="header" color="white" px={{ base: '6vw', xl: '6vw' }}>
-                    <Heading as="h1" fontSize={['4xl', '5xl']}>
-                        Pools
-                    </Heading>
-                </Box>
-            </PageHeader>
+            <Box bg={bg}>
+                <PageHeader>
+                    <Box
+                        bg="header"
+                        color="white"
+                        px={{ base: '6vw', xl: '6vw' }}
+                    >
+                        <Heading as="h1" fontSize={['4xl', '5xl']}>
+                            Pools
+                        </Heading>
+                    </Box>
+                </PageHeader>
 
-            <PagePanel>
-                <PoolsOverview />
-            </PagePanel>
+                <PagePanel>
+                    <PoolsOverview />
+                </PagePanel>
 
-            <PageBody>
-                <Box px={{ base: '6vw', xl: '6vw' }}>
-                    <Heading as="h2">My staking pools</Heading>
-                    <UserStakingPools
-                        chainId={chainId}
-                        walletBalance={balance}
-                        loading={balances.loading}
-                        data={balances.data?.poolBalances || []}
-                    />
-                </Box>
-            </PageBody>
+                <PageBody bg={bodyBg} mt={8} p={0}>
+                    <Box shadow="md" pt={10} mb={6} bg={stakingPoolsBg}>
+                        <Box
+                            px={{ base: '6vw', md: '12vw', xl: '12vw' }}
+                            pb={10}
+                        >
+                            <Heading as="h1" fontSize={['1xl', '2xl']} mb={6}>
+                                My staking pools
+                            </Heading>
+                            <UserStakingPools
+                                chainId={chainId}
+                                walletBalance={balance}
+                                loading={balances.loading}
+                                data={balances.data?.poolBalances || []}
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box shadow="md" mt={8} pt={10} bg={stakingPoolsBg}>
+                        <Box
+                            px={{ base: '6vw', md: '12vw', xl: '12vw' }}
+                            pb={10}
+                        >
+                            <HStack justify="space-between" mb={6}>
+                                <Heading as="h1" fontSize={['1xl', '2xl']}>
+                                    All Pools Performance
+                                </Heading>
+                                <SearchInput
+                                    w={[100, 200, 400, 400]}
+                                    placeholder="Search pool address..."
+                                    onSearchChange={(e) =>
+                                        setSearch(e.target.value)
+                                    }
+                                />
+                            </HStack>
+
+                            <VStack w="100%">
+                                <PoolPerformanceTable
+                                    chainId={chainId}
+                                    account={account}
+                                    loading={loading}
+                                    data={
+                                        stakingPoolsData?.allStakingPools
+                                            .nodes || []
+                                    }
+                                    sort={sort}
+                                    onSort={(order) => setSort(order)}
+                                />
+                                {!search && (
+                                    <Pagination
+                                        pages={pages}
+                                        currentPage={pageNumber}
+                                        onPageClick={setPageNumber}
+                                    />
+                                )}
+                            </VStack>
+                        </Box>
+                    </Box>
+                </PageBody>
+            </Box>
         </Layout>
     );
 };
