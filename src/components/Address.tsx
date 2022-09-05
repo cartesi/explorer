@@ -99,13 +99,17 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             {name && <Text>{name}</Text>}
             <Text {...textProps}>{label}</Text>
             {showActions && !hasCopied && (
-                <Link>
+                <Link color={textProps?.color}>
                     <CopyIcon onClick={onCopy} fontSize={textProps.fontSize} />
                 </Link>
             )}
-            {hasCopied && <Text fontSize="sm">Copied</Text>}
+            {hasCopied && (
+                <Text fontSize="sm" color={textProps?.color}>
+                    Copied
+                </Text>
+            )}
             {showActions && externalLink && (
-                <Link href={externalLink} isExternal>
+                <Link href={externalLink} color={textProps?.color} isExternal>
                     <ExternalLinkIcon fontSize={textProps.fontSize} />
                 </Link>
             )}
