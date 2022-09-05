@@ -18,6 +18,7 @@ import {
     VStack,
     useBreakpointValue,
     useColorModeValue,
+    StackProps,
 } from '@chakra-ui/react';
 import Header from './Header';
 import Footer from './Footer';
@@ -50,15 +51,15 @@ export const PagePanel: FC = ({ children, ...restProps }) => {
             bgGradient={`linear(to-b, gray.900 0%, gray.900 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
             {...restProps}
         >
-            <Box bg={bg} w="100%" shadow="lg">
+            <Box bg={bg} w="100%" shadow="md">
                 {children}
             </Box>
         </Center>
     );
 };
 
-export const PageBody: FC = ({ children }) => (
-    <VStack px="6vw" py={5} align="stretch" spacing={5}>
+export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
+    <VStack px="6vw" py={5} align="stretch" {...restProps}>
         {children}
     </VStack>
 );
