@@ -128,6 +128,7 @@ const Home = () => {
         sort
     );
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
+    const items = stakingPoolsData?.allStakingPools.nodes || [];
 
     useEffect(() => {
         // When the flag is off, the user is automatically redirected to /pool
@@ -209,7 +210,7 @@ const Home = () => {
                                     sort={sort}
                                     onSort={(order) => setSort(order)}
                                 />
-                                {!search && (
+                                {!search && items.length > 0 && (
                                     <Pagination
                                         pages={pages}
                                         currentPage={pageNumber}
