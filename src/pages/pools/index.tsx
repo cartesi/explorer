@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -45,8 +45,10 @@ import TermsCondition from '../../components/TermsCondition';
 import { useFlag } from '@unleash/proxy-client-react';
 import PoolsExtended from '../../containers/pool/PoolsExtended';
 import { useWallet } from '../../contexts/wallet';
+import { useRouter } from 'next/router';
 
 const StakingPools: FC = () => {
+    const router = useRouter();
     const { account, chainId } = useWallet();
 
     // ethereum block number (from metamask)
@@ -72,6 +74,15 @@ const StakingPools: FC = () => {
 
     const apr = useFlag('apr');
     const aws = useFlag('aws');
+    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+
+    useEffect(() => {
+        // When the flag is off, the user is automatically redirected to /pool
+        // The replace method overrides the current URL with the new one.
+        if (newPoolPageEnabled) {
+            router.replace('/stake');
+        }
+    }, [newPoolPageEnabled, router]);
 
     return (
         <Layout>
