@@ -57,9 +57,6 @@ export const StakingGuide: FC = () => (
             <Heading as="h2" size="lg">
                 Staking in a few steps
             </Heading>
-            {/* <Link href="#" isExternal fontSize="sm">
-                Learn from official tutorial <ExternalLinkIcon />
-            </Link> */}
         </Stack>
         <Stack
             direction={{ base: 'column', lg: 'row' }}

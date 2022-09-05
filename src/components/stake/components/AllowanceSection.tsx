@@ -21,7 +21,6 @@ import {
     Heading,
     IconButton,
     useColorModeValue,
-    Spacer,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -57,10 +56,10 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon color={color} w="14px" h="14px" />
+                            <Icon color={color} w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
-                    <Heading m={0} size="sm" pt="10px">
+                    <Heading m={0} size="sm" pt={2.5}>
                         <Flex align="baseline">
                             <CTSI value={allowance} />
                             <Text ml={1} fontSize="sm">
@@ -87,8 +86,6 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                                 />
                             </Box>
                         </Flex>
-                        {/* <Flex alignItems="center">
-                        </Flex> */}
                     </Heading>
                 </Box>
             </HStack>

@@ -71,11 +71,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
         constants.Zero
     );
     const color = useColorModeValue('black', 'white');
-    const fontColor = useColorModeValue('black', 'black');
     const max_depositColor = useColorModeValue('blue.500', 'white');
-    const iconColor = useColorModeValue('black', 'black');
-    const btnColor = useColorModeValue('white', 'white');
-    const btnColor1 = useColorModeValue('black', 'white');
 
     const inputFocusRef = useRef();
 
@@ -115,15 +111,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             <VStack spacing={5}>
                                 <HStack w="full" spacing={4}>
                                     <Box flexGrow="0">
-                                        <CheckCircleIcon
-                                            w="20px"
-                                            h="20px"
-                                            mr={2}
-                                        />
-                                        <TagLabel
-                                            fontSize={18}
-                                            fontWeight={400}
-                                        >
+                                        <CheckCircleIcon w={5} h={5} mr={2} />
+                                        <TagLabel fontSize="lg" fontWeight="lg">
                                             Set Allowance
                                         </TagLabel>
                                     </Box>
@@ -136,15 +125,15 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
                                     <Box flexGrow="1">
                                         <CheckCircleIcon
-                                            w="20px"
-                                            h="20px"
+                                            w={5}
+                                            h={5}
                                             mr={2}
                                             color="gray.300"
                                             pointerEvents="none"
                                         />
                                         <TagLabel
-                                            fontSize={18}
-                                            fontWeight={400}
+                                            fontSize="lg"
+                                            fontWeight="lg"
                                             color="gray.300"
                                             pointerEvents="none"
                                         >
@@ -220,17 +209,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <HStack w="full" spacing={4}>
                                     <Box flexGrow="0">
                                         <CheckCircleIcon
-                                            w="20px"
-                                            h="20px"
+                                            w={5}
+                                            h={5}
                                             mr={2}
                                             bgColor="blue.50"
                                             rounded={'full'}
-                                            color={fontColor}
+                                            color="black"
                                         />
-                                        <TagLabel
-                                            fontSize={18}
-                                            fontWeight={400}
-                                        >
+                                        <TagLabel fontSize="lg" fontWeight="lg">
                                             Set Allowance
                                         </TagLabel>
                                     </Box>
@@ -242,15 +228,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         />
                                     </Box>
                                     <Box flexGrow="1">
-                                        <CheckCircleIcon
-                                            w="20px"
-                                            h="20px"
-                                            mr={2}
-                                        />
-                                        <TagLabel
-                                            fontSize={18}
-                                            fontWeight={400}
-                                        >
+                                        <CheckCircleIcon w={5} h={5} mr={2} />
+                                        <TagLabel fontSize="lg" fontWeight="lg">
                                             Deposit
                                         </TagLabel>
                                     </Box>
@@ -273,10 +252,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 >
                                     <Box flexGrow="1">
                                         <HStack>
-                                            <Text
-                                                fontSize="sm"
-                                                color={fontColor}
-                                            >
+                                            <Text fontSize="sm" color="black">
                                                 Your Allowance
                                             </Text>
                                             <Tooltip
@@ -294,27 +270,15 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 <CTSI
                                                     value={allowance}
                                                     fontSize="lg"
-                                                    color={fontColor}
+                                                    color="black"
                                                 />
-                                                <Text ml={1} color={fontColor}>
+                                                <Text ml={1} color="black">
                                                     CTSI
                                                 </Text>
                                             </Flex>
                                         </Heading>
                                     </Box>
                                     <Box alignSelf="flex-end">
-                                        {/* <IconButton
-                                            aria-label="Edit"
-                                            size="md"
-                                            icon={<EditIcon />}
-                                            variant="ghost"
-                                            onClick={() => {
-                                                setAllowanceStep(true);
-                                            }}
-                                            _hover={{
-                                                background: 'blue.50',
-                                            }}
-                                        /> */}
                                         <IconButton
                                             aria-label="Edit"
                                             size="sm"
@@ -324,7 +288,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                         height: 24,
                                                         width: 24,
                                                     }}
-                                                    color={iconColor}
+                                                    color="black"
                                                 />
                                             }
                                             variant="blue.50"
@@ -352,8 +316,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         </Box>
                                         <Box alignSelf="flex-end">
                                             <FormLabel
-                                                fontWeight="400"
-                                                fontSize={16}
+                                                fontSize="md"
+                                                fontWeight="md"
                                                 color={max_depositColor}
                                                 textAlign={'right'}
                                             >
@@ -386,22 +350,12 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <VStack w="full" spacing={4}>
                                     <Button
                                         isFullWidth
-                                        variant="solid"
+                                        colorScheme="blue"
                                         disabled={outputDeposit.isZero()}
                                         background={
                                             outputDeposit.isZero()
                                                 ? 'gray'
                                                 : 'blue.200'
-                                        }
-                                        color={
-                                            outputDeposit.isZero()
-                                                ? btnColor
-                                                : btnColor1
-                                        }
-                                        _hover={
-                                            outputDeposit.isZero()
-                                                ? { colorScheme: 'gray11' }
-                                                : { colorScheme: 'blue.200' }
                                         }
                                         role="deposit-button"
                                         onClick={() => {

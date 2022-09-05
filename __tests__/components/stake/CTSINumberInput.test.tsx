@@ -39,14 +39,6 @@ describe('CTSI Number Input', () => {
         expect(container.querySelector('input')).toBeInTheDocument();
     });
 
-    // it('Should display number stepper', async () => {
-    //     const { queryByTestId } = render(
-    //         <ECTSINumberInput {...defaultProps} hasNumberSteppers />
-    //     );
-
-    //     expect(queryByTestId('number-stepper')).toBeInTheDocument();
-    // });
-
     it('Should have correct initial value', () => {
         const initialValue = 150;
         const { container } = render(
