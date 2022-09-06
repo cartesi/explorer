@@ -121,6 +121,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
         default: {
             as: 'h2',
             size: 'lg',
+            fontWeight: 'bold',
             px: '0',
             py: '0',
             flexGrow: '0',
@@ -135,6 +136,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
         ctaChevron: {
             as: 'h2',
             size: 'lg',
+            fontWeight: 'bold',
             px: '0',
             py: '0',
             flexGrow: '1',
@@ -155,6 +157,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
                     as={styles[componentStyle].as}
                     m={0}
                     size={styles[componentStyle].size}
+                    fontWeight={styles[componentStyle].fontWeight}
                 >
                     {valueLabel}
                 </Heading>

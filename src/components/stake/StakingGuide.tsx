@@ -86,7 +86,7 @@ export const StakingGuide: FC = () => (
                     </Box>
 
                     <VStack alignItems="flex-start">
-                        <Heading as="h3" size="sm">
+                        <Heading as="h3" size="sm" fontWeight="bold">
                             {index + 1}. {step.title}
                         </Heading>
                         <Text>{step.description}</Text>

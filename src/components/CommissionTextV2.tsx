@@ -63,6 +63,7 @@ const CommissionText: FC<CommissionTextProps> = (props) => {
         default: {
             as: 'h2',
             size: 'lg',
+            fontWeight: 'bold',
             px: '0',
             py: '0',
             flexGrow: '0',
@@ -77,6 +78,7 @@ const CommissionText: FC<CommissionTextProps> = (props) => {
         ctaChevron: {
             as: 'h2',
             size: 'lg',
+            fontWeight: 'bold',
             px: '0',
             py: '0',
             flexGrow: '1',
@@ -97,6 +99,7 @@ const CommissionText: FC<CommissionTextProps> = (props) => {
                     as={styles[componentStyle].as}
                     m={0}
                     size={styles[componentStyle].size}
+                    fontWeight={styles[componentStyle].fontWeight}
                 >
                     {valueLabel}
                 </Heading>
