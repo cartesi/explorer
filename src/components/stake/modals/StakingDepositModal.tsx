@@ -262,7 +262,11 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon color="gray.400" />
+                                                <Icon
+                                                    color="gray.400"
+                                                    w={3.5}
+                                                    h={3.5}
+                                                />
                                             </Tooltip>
                                         </HStack>
                                         <Heading m={0} size="sm">

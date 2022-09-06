@@ -19,8 +19,8 @@ import {
     Tooltip,
     Icon,
     Heading,
-    IconButton,
     useColorModeValue,
+    Button,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -65,26 +65,19 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             <Text ml={1} fontSize="sm">
                                 CTSI
                             </Text>
-                            <Box>
-                                <IconButton
-                                    mx={2}
-                                    marginTop="-7px"
-                                    aria-label="Edit"
-                                    size="sm"
-                                    icon={
-                                        <PencilIconWhite
-                                            style={{
-                                                height: 24,
-                                                width: 24,
-                                            }}
-                                            color={IconColor}
-                                        />
-                                    }
-                                    variant="ghost"
-                                    role="button-icon"
-                                    onClick={onAllowanceClick}
+                            <Button
+                                variant="link"
+                                alignSelf="center"
+                                arial-label="Edit Allowance"
+                                role="button-icon"
+                                onClick={onAllowanceClick}
+                            >
+                                <PencilIconWhite
+                                    w={6}
+                                    h={6}
+                                    color={IconColor}
                                 />
-                            </Box>
+                            </Button>
                         </Flex>
                     </Heading>
                 </Box>
