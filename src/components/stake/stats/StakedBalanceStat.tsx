@@ -69,8 +69,8 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             <Icon
                                 color="gray.500"
                                 role="balance-icon"
-                                w="14px"
-                                h="14px"
+                                w={3.5}
+                                h={3.5}
                             />
                         </Tooltip>
                     </HStack>

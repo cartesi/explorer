@@ -77,7 +77,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                                 bg="black"
                                 color="white"
                             >
-                                <Icon w="14px" h="14px" />
+                                <Icon w={3.5} h={3.5} />
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>

@@ -84,6 +84,7 @@ const poolRedesign = () => {
     const productionInterval = blockAverageInterval(
         useBlocks({ producer: address }, 10)
     );
+
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
     const { isOpen, onToggle } = useDisclosure({

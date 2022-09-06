@@ -72,7 +72,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                                 bg="black"
                                 color="white"
                             >
-                                <Icon role="users-icon" w="14px" h="14px" />
+                                <Icon role="users-icon" w={3.5} h={3.5} />
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>

@@ -62,7 +62,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon role="balance-icon" w="14px" h="14px" />
+                            <Icon role="balance-icon" w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

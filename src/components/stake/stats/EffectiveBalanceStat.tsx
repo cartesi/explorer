@@ -119,7 +119,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon role="balance-icon" w="14px" h="14px" />
+                            <Icon role="balance-icon" w={3.5} h={3.5} />
                         </Tooltip>
                         {needRebalance && (
                             <Tooltip
@@ -184,8 +184,8 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                             >
                                                 <Icon
                                                     color="gray.500"
-                                                    w="14px"
-                                                    h="14px"
+                                                    w={3.5}
+                                                    h={3.5}
                                                 />
                                             </Tooltip>
                                         </HStack>
@@ -216,8 +216,8 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                             >
                                                 <Icon
                                                     color="gray.500"
-                                                    w="14px"
-                                                    h="14px"
+                                                    w={3.5}
+                                                    h={3.5}
                                                 />
                                             </Tooltip>
                                         </HStack>
@@ -244,8 +244,8 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                             >
                                                 <Icon
                                                     color="gray.500"
-                                                    w="14px"
-                                                    h="14px"
+                                                    w={3.5}
+                                                    h={3.5}
                                                 />
                                             </Tooltip>
                                         </HStack>
