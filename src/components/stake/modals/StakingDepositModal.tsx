@@ -112,7 +112,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <HStack w="full" spacing={4}>
                                     <Box flexGrow="0">
                                         <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <TagLabel fontSize="lg" fontWeight="lg">
+                                        <TagLabel
+                                            fontSize="lg"
+                                            fontWeight="normal"
+                                        >
                                             Set Allowance
                                         </TagLabel>
                                     </Box>
@@ -133,7 +136,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         />
                                         <TagLabel
                                             fontSize="lg"
-                                            fontWeight="lg"
+                                            fontWeight="normal"
                                             color="gray.300"
                                             pointerEvents="none"
                                         >
@@ -216,7 +219,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             rounded={'full'}
                                             color="black"
                                         />
-                                        <TagLabel fontSize="lg" fontWeight="lg">
+                                        <TagLabel
+                                            fontSize="lg"
+                                            fontWeight="normal"
+                                        >
                                             Set Allowance
                                         </TagLabel>
                                     </Box>
@@ -229,7 +235,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
                                     <Box flexGrow="1">
                                         <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <TagLabel fontSize="lg" fontWeight="lg">
+                                        <TagLabel
+                                            fontSize="lg"
+                                            fontWeight="normal"
+                                        >
                                             Deposit
                                         </TagLabel>
                                     </Box>
@@ -321,7 +330,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         <Box alignSelf="flex-end">
                                             <FormLabel
                                                 fontSize="md"
-                                                fontWeight="md"
+                                                fontWeight="normal"
                                                 color={max_depositColor}
                                                 textAlign={'right'}
                                             >
