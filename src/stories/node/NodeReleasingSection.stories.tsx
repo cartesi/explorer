@@ -30,3 +30,8 @@ Basic.args = {
     releasingBalance: ethers.utils.parseEther('3.34'),
     releasingLeftShort: '1 days, 4 hours',
 };
+
+export const NoBalance = Template.bind({});
+NoBalance.args = {
+    releasingBalance: ethers.utils.parseEther('0'),
+};

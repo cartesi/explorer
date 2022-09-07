@@ -10,32 +10,76 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
-import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { BigNumber } from 'ethers';
+import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 
-const TEST_ADDRESS = '0xb00299b573a9deee20e6a242416188d1033e325f';
-const TEST_USER_BALANCE = BigNumber.from('0x029799b68c5fbbd4');
-const TEST_NODE_BALANCE = BigNumber.from('0x029799b68c5fbbd4');
 const NODE_BALANCE_ETH = '0.1868';
+const defaultProps = {
+    address: '0xb00299b573a9deee20e6a242416188d1033e325f',
+    userBalance: BigNumber.from('0x029799b68c5fbbd4'),
+    nodeBalance: BigNumber.from('0x029799b68c5fbbd4'),
+    onRetire: null,
+    onHire: null,
+    onDeposit: null,
+};
 
 describe('NodeInfoSection component', () => {
     afterEach(() => cleanup());
 
     it('Should render proper values', () => {
-        render(
-            <NodeInfoSection
-                address={TEST_ADDRESS}
-                userBalance={TEST_USER_BALANCE}
-                nodeBalance={TEST_NODE_BALANCE}
-                onRetire={null}
-                onDeposit={null}
-                onHire={null}
-            />
-        );
+        render(<NodeInfoSection {...defaultProps} isOwned />);
 
-        expect(screen.getByText(TEST_ADDRESS)).toBeInTheDocument();
+        expect(screen.getByText(defaultProps.address)).toBeInTheDocument();
         expect(screen.getByText(NODE_BALANCE_ETH)).toBeInTheDocument();
         expect(screen.getByText('ETH')).toBeInTheDocument();
         expect(screen.getByText('Hired')).toBeInTheDocument();
+    });
+
+    it('should render node info section', () => {
+        render(<NodeInfoSection {...defaultProps} isOwned />);
+
+        expect(screen.getByText('Node address')).toBeInTheDocument();
+    });
+
+    it('should render node hire form', () => {
+        render(<NodeInfoSection {...defaultProps} isOwned={false} />);
+
+        expect(screen.getByText('Hire node')).toBeInTheDocument();
+    });
+
+    it('should disable edit balance button while retiring', () => {
+        render(<NodeInfoSection {...defaultProps} isRetiringNode />);
+
+        const editBalanceButton = screen.getByTestId('edit-balance-button');
+        expect(editBalanceButton.hasAttribute('disabled')).toBe(true);
+    });
+
+    it('should enable edit balance button when not retiring', () => {
+        render(
+            <NodeInfoSection {...defaultProps} isOwned isRetiringNode={false} />
+        );
+
+        const editBalanceButton = screen.getByTestId('edit-balance-button');
+        expect(editBalanceButton.hasAttribute('disabled')).toBe(false);
+    });
+
+    it('should disable retire node button while retiring', () => {
+        render(<NodeInfoSection {...defaultProps} isRetiringNode />);
+
+        const retireNodeButton = screen
+            .getByText('Retire node')
+            .closest('button');
+        expect(retireNodeButton.hasAttribute('disabled')).toBe(true);
+    });
+
+    it('should enable retire node button when not retiring', () => {
+        render(
+            <NodeInfoSection {...defaultProps} isOwned isRetiringNode={false} />
+        );
+
+        const retireNodeButton = screen
+            .getByText('Retire node')
+            .closest('button');
+        expect(retireNodeButton.hasAttribute('disabled')).toBe(false);
     });
 });

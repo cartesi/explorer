@@ -25,9 +25,17 @@ const Template: ComponentStory<typeof NodeInfoSection> = (args) => (
     <NodeInfoSection {...args} />
 );
 
-export const Basic = Template.bind({});
-Basic.args = {
+const defaultProps = {
     address: '0xb00299b573a9deee20e6a242416188d1033e325f',
     userBalance: ethers.utils.parseEther('5.345'),
     nodeBalance: ethers.utils.parseEther('2.345'),
+};
+
+export const NodeHire = Template.bind({});
+NodeHire.args = { ...defaultProps };
+
+export const NodeInfo = Template.bind({});
+NodeInfo.args = {
+    ...defaultProps,
+    isOwned: true,
 };

@@ -33,7 +33,7 @@ describe('NodeMaturingSection component', () => {
     });
 
     it(`Should be with ${TEST_MATURING_BALANCE_CTSI} CTSI, ${TEST_MATURING_TIME}`, () => {
-        render(
+        const { container } = render(
             <NodeMaturingSection
                 maturingBalance={TEST_MATURING_BALANCE}
                 maturingLeft={TEST_MATURING_TIME}
@@ -42,12 +42,14 @@ describe('NodeMaturingSection component', () => {
 
         expect(
             screen.getByText(
-                'The staking will take 1 hour, 20 minutes to be ready. Each new stake will restart the waiting time.'
+                'The staking will take 6 hours to be ready. Each new stake will restart the waiting time.'
             )
         ).toBeInTheDocument();
 
+        const stakeButton = container.querySelector('button');
+
         expect(
-            screen.getByText(TEST_MATURING_BALANCE_CTSI)
-        ).toBeInTheDocument();
+            stakeButton.textContent.includes(`STAKE (${TEST_MATURING_TIME})`)
+        ).toBe(true);
     });
 });
