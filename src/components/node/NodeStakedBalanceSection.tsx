@@ -34,31 +34,31 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
-        <Box
-            bg={bg}
-            borderBottomRadius="lg"
-            shadow="sm"
-            p={6}
-            pl={{ base: 6, md: 8 }}
-        >
+        <Box bg={bg} shadow="md" p={6} mt={5} minHeight="114px">
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={4} alignItems="center">
+                <HStack spacing={5} alignItems="center">
                     <Box
                         bg={'blue.50'}
-                        w={14}
-                        h={14}
-                        minW={14}
+                        w="66px"
+                        h="66px"
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon color="blue.400" w={6} h={6} />
+                        <StakedBalanceIcon
+                            color="blue.400"
+                            w={8}
+                            h={8}
+                            ml="2px"
+                        />
                     </Box>
                     <Box>
-                        <Text color="gray.400">Your staked balance</Text>
+                        <Text fontSize="md" mb={2}>
+                            Your staked balance
+                        </Text>
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
                                 <CTSI value={stakedBalance} />

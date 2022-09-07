@@ -18,8 +18,13 @@ import {
     CloseButton,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { FC } from 'react';
 
-export const NodeRetiredBanner = () => {
+export interface NodeRetiredBannerProps {
+    onClose?: () => void;
+}
+
+export const NodeRetiredBanner: FC<NodeRetiredBannerProps> = ({ onClose }) => {
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
@@ -28,7 +33,6 @@ export const NodeRetiredBanner = () => {
             shadow="sm"
             p={3}
             pl={5}
-            mt={6}
             mb={6}
             borderLeftWidth={14}
             borderLeftColor={'orange'}
@@ -43,7 +47,7 @@ export const NodeRetiredBanner = () => {
                         , you will need to hire a new node.
                     </Text>
                 </HStack>
-                <CloseButton />
+                <CloseButton onClick={onClose} />{' '}
             </HStack>
         </Box>
     );

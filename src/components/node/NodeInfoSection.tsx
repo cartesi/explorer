@@ -39,6 +39,7 @@ export interface INodeInfoSection {
     isRetired?: boolean;
     isHiring?: boolean;
     isRetiringNode?: boolean;
+    isOwned?: boolean;
     onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
     onHire: (nodeAddress: string, funds: BigNumber) => void;
@@ -51,16 +52,21 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     isRetired = false,
     isHiring = false,
     isRetiringNode = false,
+    isOwned = false,
     onRetire,
     onDeposit,
     onHire,
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
-    const buttonBg = useColorModeValue('gray.50', 'gray.800');
+    const buttonBg = useColorModeValue('gray.80', 'gray.800');
 
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
+
+    const isNodeHireSectionVisible =
+        !isRetiringNode &&
+        (isHiring || isRetired || !isOwned || isEmpty(address));
 
     const toETH = (value: BigNumber) => {
         const options: Intl.NumberFormatOptions = {
@@ -69,14 +75,10 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
         };
 
         const numberFormat = new Intl.NumberFormat('en-US', options);
-        const valueFormatted = numberFormat.format(
+        return numberFormat.format(
             value ? parseFloat(formatUnits(value, 18)) : 0
         );
-
-        return valueFormatted;
     };
-
-    const needToHire = isRetired || isEmpty(address);
 
     const onConfirmRetire = () => {
         retireModal.onClose();
@@ -85,7 +87,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
     return (
         <>
-            {needToHire ? (
+            {isNodeHireSectionVisible ? (
                 <>
                     <NodeHireNodeSection isHiring={isHiring} onHire={onHire} />
                 </>
@@ -134,7 +136,12 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                 </HStack>
                             </Box>
 
-                            <HStack spacing={4} alignItems="center">
+                            <HStack
+                                spacing={4}
+                                alignItems="center"
+                                flex={1}
+                                width="100%"
+                            >
                                 <Box>
                                     <Flex align="baseline">
                                         <Text>{toETH(nodeBalance)}</Text>
@@ -147,6 +154,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                         size="sm"
                                         icon={<EditIcon w={4} h={4} />}
                                         variant="ghost"
+                                        data-testid="edit-balance-button"
+                                        disabled={isRetiringNode}
                                         onClick={depositModal.onOpen}
                                     />
                                 </Box>

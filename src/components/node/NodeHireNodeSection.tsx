@@ -52,15 +52,13 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     return (
         <Box
             bg={bg}
-            borderRadius="lg"
-            shadow="sm"
+            shadow="md"
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
         >
             <Stack
                 spacing={4}
-                py={[4, 4, 6]}
                 px={[4, 4, 60]}
                 justifySelf="flex-end"
                 justifyContent="flex-end"
@@ -92,14 +90,15 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                 <Button
                     colorScheme="blue"
                     w={{ base: '100%', md: 'auto' }}
-                    minW="15rem"
+                    minW="173px"
+                    textTransform="uppercase"
                     disabled={!isEnabled}
                     isLoading={isHiring}
                     onClick={() =>
                         onHire(nodeAddress, toBigNumber(initialFunds))
                     }
                 >
-                    HIRE NODE
+                    Hire node
                 </Button>
                 <Text fontSize="sm" mt="0 !important">
                     Approve by wallet transaction

@@ -18,8 +18,13 @@ import {
     CloseButton,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { FC } from 'react';
 
-export const NodeHiredBanner = () => {
+export interface NodeHiredBannerProps {
+    onClose?: () => void;
+}
+
+export const NodeHiredBanner: FC<NodeHiredBannerProps> = ({ onClose }) => {
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
@@ -28,7 +33,6 @@ export const NodeHiredBanner = () => {
             shadow="sm"
             p={3}
             pl={5}
-            mt={6}
             mb={6}
             borderLeftWidth={14}
             borderLeftColor={'green.400'}
@@ -43,7 +47,7 @@ export const NodeHiredBanner = () => {
                         You hired a new node for your pool successfully.
                     </Text>
                 </HStack>
-                <CloseButton />
+                <CloseButton onClick={onClose} />
             </HStack>
         </Box>
     );

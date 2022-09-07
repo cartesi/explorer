@@ -102,7 +102,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 Unstake
                             </Box>
 
-                            <ModalCloseButton pt={2} mt={5} />
+                            <ModalCloseButton mt="8px !important" />
                         </HStack>
                         <Divider />
                     </Box>

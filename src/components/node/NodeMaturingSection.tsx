@@ -17,6 +17,7 @@ import {
     Stack,
     useColorModeValue,
     Heading,
+    Button,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -38,18 +39,17 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     return (
         <Box
             bg={bg}
-            borderTopRadius="lg"
-            shadow="sm"
             p={6}
-            pl={5}
+            pl={7}
+            border="solid 1px var(--chakra-colors-gray-100)"
             borderLeftWidth={14}
-            borderLeftColor={maturingBalance.isZero() ? 'gray.200' : 'blue.200'}
+            borderLeftColor={maturingBalance.isZero() ? 'gray.450' : 'blue.200'}
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={4} alignItems="center">
+                <HStack spacing={8} alignItems="center">
                     <Box
                         w={14}
                         h={14}
@@ -59,27 +59,23 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                         placeContent="center"
                     >
                         <TimeIcon
-                            color={
-                                maturingBalance.isZero()
-                                    ? 'gray.200'
-                                    : 'blue.200'
-                            }
                             w={9}
                             h={9}
+                            color={
+                                maturingBalance.isZero()
+                                    ? 'gray.450'
+                                    : 'blue.200'
+                            }
                         />
                     </Box>
 
                     <Box>
-                        <Text pb={1} color="gray.400" fontWeight="semibold">
+                        <Text pb={1} fontSize="lg" fontWeight={600}>
                             Maturing
                         </Text>
-                        <Text pb={1} fontSize={'sm'} color="gray.400">
-                            The staking will take{' '}
-                            {maturingBalance.isZero()
-                                ? '6 hours'
-                                : maturingLeft}{' '}
-                            to be ready. Each new stake will restart the waiting
-                            time.
+                        <Text pb={1} fontSize="sm">
+                            The staking will take 6 hours to be ready. Each new
+                            stake will restart the waiting time.
                         </Text>
                         <Heading m={0} size="sm">
                             <Flex align="baseline">
@@ -89,6 +85,17 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                         </Heading>
                     </Box>
                 </HStack>
+                <Stack
+                    direction={['column', 'row']}
+                    spacing={4}
+                    alignItems="center"
+                >
+                    {maturingBalance.gt(0) && maturingLeft && (
+                        <Button bg={bg} mt={[8, 0]} disabled>
+                            STAKE ({maturingLeft})
+                        </Button>
+                    )}
+                </Stack>
             </Stack>
         </Box>
     );

@@ -21,7 +21,7 @@ import {
     useColorModeValue,
     StackProps,
 } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { InfoBanner } from '../stake/InfoBanner';
 import { WalletBalanceSection } from '../stake/components/WalletBalanceSection';
@@ -60,7 +60,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
     const disclosure = useDisclosure();
 
     const borderColor = useColorModeValue('gray.100', 'transparent');
-    const [allowanceTransaction, setAllowanceTransaction] = useState(false);
 
     const handleDontShowAgainClick = () => {
         localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
@@ -158,7 +157,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                 )}
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
-                    // spacing={8}
                     w="full"
                     justifyContent="space-between"
                 >
@@ -179,10 +177,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                 allowance={allowance}
                 balance={balance}
                 onClose={onCloseStakingPoolAllowanceModal}
-                onSave={(amount) => {
-                    setAllowanceTransaction(true);
-                    onApprove(amount);
-                }}
+                onSave={onApprove}
             />
         </>
     );

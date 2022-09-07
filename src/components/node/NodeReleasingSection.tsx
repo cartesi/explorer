@@ -23,7 +23,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { AiOutlineDollar } from 'react-icons/ai';
+import { AiFillDollarCircle } from 'react-icons/ai';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
@@ -42,20 +42,20 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     return (
         <Box
             bg={bg}
-            shadow="sm"
             p={6}
-            pl={5}
-            mt={6}
+            pl={7}
+            mt={5}
+            border="solid 1px var(--chakra-colors-gray-100)"
             borderLeftWidth={14}
             borderLeftColor={
-                releasingBalance.isZero() ? 'gray.200' : 'yellow.400'
+                releasingBalance.isZero() ? 'gray.450' : 'blue.200'
             }
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={4} alignItems="center">
+                <HStack spacing={8} alignItems="center">
                     <Box
                         w={14}
                         h={14}
@@ -65,21 +65,21 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                         placeContent="center"
                     >
                         <Icon
-                            as={AiOutlineDollar}
-                            color={
-                                releasingBalance.isZero()
-                                    ? 'gray.200'
-                                    : 'yellow.400'
-                            }
                             w={9}
                             h={9}
+                            as={AiFillDollarCircle}
+                            color={
+                                releasingBalance.isZero()
+                                    ? 'gray.450'
+                                    : 'blue.200'
+                            }
                         />
                     </Box>
                     <Box>
-                        <Text pb={1} color="gray.400" fontWeight="semibold">
+                        <Text pb={1} fontWeight="semibold" fontSize="lg">
                             {releasingLeftShort ? 'Releasing' : 'Released'}
                         </Text>
-                        <Text pb={1} fontSize={'sm'} color="gray.400">
+                        <Text pb={1} fontSize="sm">
                             Your funds take 48 hours to become unblocked.
                         </Text>
                         <Heading m={0} size="sm">
@@ -96,7 +96,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     alignItems="center"
                 >
                     {releasingBalance.gt(0) && releasingLeftShort && (
-                        <Button bg={bg} mt={[8, 0]} disabled={true}>
+                        <Button bg={bg} mt={[8, 0]} disabled>
                             WITHDRAW ({releasingLeftShort})
                         </Button>
                     )}

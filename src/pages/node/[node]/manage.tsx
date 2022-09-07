@@ -9,16 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Head from 'next/head';
 import {
     Box,
     Button,
-    chakra,
     Flex,
     Heading,
+    HStack,
     Link,
-    Spacer,
     Stack,
     Text,
     useBreakpointValue,
@@ -31,43 +30,37 @@ import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
 import Layout from '../../../components/Layout';
-import TransactionFeedback from '../../../components/TransactionFeedback';
 import { useTimeLeft } from '../../../utils/react';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useNode } from '../../../services/node';
 import { useWallet } from '../../../contexts/wallet';
-import { ArrowBackIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
 import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
 import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';
 import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
-
-import { useRouter } from 'next/router';
 import { NodeStakedBalanceSection } from '../../../components/node/NodeStakedBalanceSection';
 import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
 import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
-import { NodeHireNodeSection } from '../../../components/node/NodeHireNodeSection';
 import theme from '../../../styles/theme';
-import { useStakingPool } from '../../../services/pool';
+import { AiOutlineLeft } from 'react-icons/ai';
 
 const ManageNode: FC = () => {
     const { account, active: isConnected } = useWallet();
     const blockNumber = useBlockNumber();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const stepBoxBg = useColorModeValue('white', 'gray.700');
-
-    const router = useRouter();
-    const address = router.query.node as string;
+    const [isNodeHiredAlertActive, setNodeHiredAlertActive] =
+        useState<boolean>(false);
+    const [isNodeRetiredAlertActive, setNodeRetiredAlertActive] =
+        useState<boolean>(false);
 
     // user ETH balance
     const userBalance = useBalance(account);
     const userETHBalance = useBalance(account);
-    const pool = useStakingPool(address, account);
 
     const {
         staking,
@@ -89,25 +82,18 @@ const ManageNode: FC = () => {
         transaction: tokenTransaction,
     } = useCartesiToken(account, staking?.address, blockNumber);
 
-    // const summary = useSummary();
-    // const user = useUser(account);
-
-    // const waiting =
-    //     stakingTransaction.submitting || tokenTransaction.submitting;
-
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
-    const releasingLeftShort = useTimeLeft(
-        releasingTimestamp?.getTime(),
-        2,
-        true
-    );
+    const releasingLeftShort = useTimeLeft(releasingTimestamp?.getTime(), 2);
 
     // get most recent node hired by user (if any)
     const existingNode = useUserNode(account);
 
     // use a state variable for the typed node address
     const [worker, setWorker] = useState<string>();
+    const [hiringFunds, setHiringFunds] = useState<BigNumber>(
+        BigNumber.from(0)
+    );
 
     // priority is the typed address (at state variable)
     const activeWorker = worker || existingNode || '';
@@ -115,23 +101,45 @@ const ManageNode: FC = () => {
     const node = useNode(activeWorker);
 
     // dark mode support
-    const bg = useColorModeValue('gray.50', 'header');
+    const bg = useColorModeValue('gray.80', 'header');
 
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
     const [currentTransaction, setCurrentTransaction] = useState<any>(null);
     const [transactionBanners, setTransactionBanners] = useState<any>({});
+    const hiredNewNode =
+        currentTransaction === 'hire' &&
+        node.transaction?.state === 'confirmed';
+    const isRetiringNode =
+        currentTransaction === 'retire' && node.transaction?.isOngoing;
 
-    const toCTSI = (value: BigNumber) => {
-        // formatter for CTSI values
-        const numberFormat = new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-        });
+    useEffect(() => {
+        if (node.retired) {
+            setNodeRetiredAlertActive(true);
+        }
+    }, [node.retired]);
 
-        return numberFormat.format(parseFloat(formatUnits(value, 18)));
-    };
+    useEffect(() => {
+        if (hiredNewNode) {
+            setNodeHiredAlertActive(true);
+            window.history.pushState(
+                null,
+                '',
+                `${window.origin}/node/${activeWorker}/manage`
+            );
+        }
+    }, [hiredNewNode, activeWorker]);
+
+    useEffect(() => {
+        if (
+            hiringFunds.gt(BigNumber.from(0)) &&
+            currentTransaction === 'hire'
+        ) {
+            node.hire(hiringFunds);
+            setHiringFunds(BigNumber.from(0));
+        }
+    }, [node, hiringFunds, currentTransaction]);
 
     return (
         <Layout>
@@ -139,39 +147,42 @@ const ManageNode: FC = () => {
                 <title>Explorer - Manage Node</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
+            <HStack
+                bg="header"
+                color="white"
+                px={{ base: '6vw', xl: '10vw' }}
+                pt={5}
+            >
+                <Link href="/staking" passHref>
+                    <Box as="a" display="flex" alignItems="center">
+                        <Box as={AiOutlineLeft} mr={1} />
+                        <Text>Back</Text>
+                    </Box>
+                </Link>
+            </HStack>
+
             <Box
                 bg="header"
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
-                pt={5}
+                pt={0}
+                pb={10}
             >
-                <Stack
-                    justify="space-between"
-                    alignItems={{ base: 'flex-start', lg: 'flex-end' }}
-                    direction={{ base: 'column', lg: 'row' }}
-                >
-                    <VStack alignItems="flex-start" pb="5">
-                        <Button
-                            href="/staking"
-                            as="a"
-                            leftIcon={<ArrowBackIcon />}
-                            variant="text"
-                            size="sm"
-                            pl="0"
-                        >
-                            Back
-                        </Button>
-                        <Heading fontWeight="bold">Run your own node</Heading>
-                        <Spacer />
-                    </VStack>
+                <Stack alignItems={'flex-start'} direction={'row'}>
+                    <Heading as="h1" fontSize={{ base: '4xl', xl: '5xl' }}>
+                        Run your own node
+                    </Heading>
                 </Stack>
             </Box>
-            <Box
-                px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                py={{ base: 4, sm: 6, lg: 8 }}
-                shadow="md"
-            >
-                {isConnected && (
+
+            {isConnected && (
+                <Box
+                    px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
+                    py={{ base: 4, sm: 6, lg: '26px' }}
+                    shadow="md"
+                    position="relative"
+                >
                     <NodeStakingDashboard
                         userBalance={userBalance}
                         userETHBalance={userETHBalance}
@@ -181,26 +192,27 @@ const ManageNode: FC = () => {
                             approve(staking.address, amount);
                         }}
                     />
-                )}
-            </Box>
+                </Box>
+            )}
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                pt={{ base: 6 }}
+                pt={{ base: 8 }}
                 bg={bg}
+                pb={4}
             >
                 <VStack spacing={4} alignItems="stretch">
                     <TransactionInfoBanner
                         title="Setting allowance..."
                         failTitle="Error setting allowance"
-                        successDescription="New allowance set sucessfully."
+                        successDescription="New allowance set successfully."
                         transaction={tokenTransaction}
                     />
                     {transactionBanners?.deposit && (
                         <TransactionInfoBanner
                             title="Setting deposit..."
                             failTitle="Error setting deposit"
-                            successDescription="New deposit set sucessfully."
+                            successDescription="New deposit set successfully."
                             transaction={
                                 currentTransaction === 'deposit'
                                     ? node.transaction
@@ -212,10 +224,10 @@ const ManageNode: FC = () => {
                         <TransactionInfoBanner
                             title="Withdrawing..."
                             failTitle="Error withdrawing"
-                            successDescription="Withdrawed sucessfully."
+                            successDescription="Withdrawed successfully."
                             transaction={
                                 currentTransaction === 'withdraw'
-                                    ? node.transaction
+                                    ? stakingTransaction
                                     : null
                             }
                         />
@@ -224,7 +236,7 @@ const ManageNode: FC = () => {
                         <TransactionInfoBanner
                             title="Staking..."
                             failTitle="Error staking"
-                            successDescription="Stake set sucessfully."
+                            successDescription="Stake set successfully."
                             transaction={
                                 currentTransaction === 'stake'
                                     ? stakingTransaction
@@ -236,10 +248,22 @@ const ManageNode: FC = () => {
                         <TransactionInfoBanner
                             title="Unstaking..."
                             failTitle="Error unstaking"
-                            successDescription="Unstaked sucessfully."
+                            successDescription="Unstaked successfully."
                             transaction={
                                 currentTransaction === 'unstake'
                                     ? stakingTransaction
+                                    : null
+                            }
+                        />
+                    )}
+                    {transactionBanners?.retire && (
+                        <TransactionInfoBanner
+                            title="Retiring Node..."
+                            failTitle="Error retiring the node"
+                            successDescription="Node retired successfully."
+                            transaction={
+                                currentTransaction === 'retire'
+                                    ? node.transaction
                                     : null
                             }
                         />
@@ -248,20 +272,6 @@ const ManageNode: FC = () => {
                         <TransactionInfoBanner
                             title="Hiring node..."
                             failTitle="Error hiring node"
-                            successDescription={
-                                <>
-                                    <Text fontSize="sm">
-                                        <chakra.span
-                                            fontWeight="bold"
-                                            fontSize="sm"
-                                        >
-                                            Congratulations!
-                                        </chakra.span>{' '}
-                                        You hire a new node for your pool
-                                        successfully.
-                                    </Text>
-                                </>
-                            }
                             transaction={
                                 currentTransaction === 'hire'
                                     ? node.transaction
@@ -269,8 +279,6 @@ const ManageNode: FC = () => {
                             }
                         />
                     )}
-                    {node.retired && <NodeRetiredBanner />}
-                    <TransactionFeedback transaction={tokenTransaction} />
                 </VStack>
             </Box>
 
@@ -280,6 +288,18 @@ const ManageNode: FC = () => {
                 bg={bg}
                 fontSize={'xl'}
             >
+                {isNodeHiredAlertActive && (
+                    <NodeHiredBanner
+                        onClose={() => setNodeHiredAlertActive(false)}
+                    />
+                )}
+
+                {isNodeRetiredAlertActive && (
+                    <NodeRetiredBanner
+                        onClose={() => setNodeRetiredAlertActive(false)}
+                    />
+                )}
+
                 <Stack
                     spacing={4}
                     justifyContent="space-between"
@@ -291,21 +311,27 @@ const ManageNode: FC = () => {
                         <Heading as="h2" mb={0}>
                             Your Node
                         </Heading>
-                        <Link href="#" isExternal fontSize="xs">
-                            Learn with this tutorial <ExternalLinkIcon />
-                        </Link>
                     </Box>
                 </Stack>
 
                 <NodeInfoSection
-                    address={address}
+                    address={activeWorker}
                     userBalance={userBalance}
                     nodeBalance={node.balance}
                     isRetired={node.retired}
                     isHiring={node.transaction?.isOngoing}
-                    onRetire={() => node.retire()}
+                    isRetiringNode={isRetiringNode}
+                    isOwned={node.owned}
+                    onRetire={() => {
+                        setCurrentTransaction('retire');
+                        setTransactionBanners({
+                            ...transactionBanners,
+                            retire: true,
+                        });
+
+                        node.retire();
+                    }}
                     onDeposit={(amount) => {
-                        console.log('deposit...');
                         setCurrentTransaction('deposit');
                         setTransactionBanners({
                             ...transactionBanners,
@@ -319,7 +345,10 @@ const ManageNode: FC = () => {
                             ...transactionBanners,
                             hire: true,
                         });
-                        pool.hire(nodeAddress, funds);
+
+                        setWorker(nodeAddress);
+                        setHiringFunds(funds);
+                        setNodeRetiredAlertActive(false);
                     }}
                 />
 
@@ -327,43 +356,48 @@ const ManageNode: FC = () => {
                     spacing={4}
                     justifyContent="space-between"
                     alignContent="flex-start"
-                    mt={16}
-                    mb={4}
+                    alignItems="center"
+                    mt={10}
+                    mb={8}
                     direction={{ base: 'column', md: 'row' }}
                 >
                     <Box>
                         <Heading as="h2" mb={0}>
                             Staking
                         </Heading>
-                        <Link href="#" isExternal fontSize="xs">
-                            Learn with this tutorial <ExternalLinkIcon />
-                        </Link>
                     </Box>
+
                     {!isSmallScreen && (
                         <Box>
                             <Button
                                 bgColor={bg}
+                                color="gray.450"
                                 w={{ base: '100%', md: 'auto' }}
-                                minW="15rem"
+                                minW="173px"
                                 me={2}
+                                fontWeight={600}
+                                textTransform="uppercase"
+                                letterSpacing="0.5px"
+                                disabled={node.retired || !node.owned}
                                 onClick={unstakeDisclosure.onOpen}
                             >
-                                UNSTAKE
+                                Unstake
                             </Button>
                             <Button
                                 colorScheme="blue"
                                 w={{ base: '100%', md: 'auto' }}
-                                minW="15rem"
+                                minW="173px"
+                                fontWeight={600}
+                                textTransform="uppercase"
+                                letterSpacing="0.5px"
+                                disabled={node.retired || !node.owned}
                                 onClick={stakeDisclosure.onOpen}
                             >
-                                STAKE
+                                Stake
                             </Button>
                         </Box>
                     )}
                 </Stack>
-
-                <TransactionFeedback transaction={stakingTransaction} />
-                <TransactionFeedback transaction={node.transaction} />
 
                 <Flex pb={12} direction={['column', 'column', 'column', 'row']}>
                     <Box flex="3">
@@ -395,7 +429,6 @@ const ManageNode: FC = () => {
                     allowance={allowance}
                     disclosure={stakeDisclosure}
                     onSave={(amount) => {
-                        console.log('stake transaction', toCTSI(amount));
                         setCurrentTransaction('stake');
                         setTransactionBanners({
                             ...transactionBanners,
@@ -412,7 +445,6 @@ const ManageNode: FC = () => {
                         stakedBalance={stakedBalance}
                         disclosure={unstakeDisclosure}
                         onSave={(amount) => {
-                            console.log('unstake transaction', toCTSI(amount));
                             setCurrentTransaction('unstake');
                             setTransactionBanners({
                                 ...transactionBanners,
@@ -422,17 +454,11 @@ const ManageNode: FC = () => {
                         }}
                     />
                 )}
-
-                <NodeHiredBanner />
-                <NodeRetiredBanner />
-                <NodeHireNodeSection
-                    isHiring={node.transaction?.isOngoing}
-                    onHire={(funds) => node.hire(funds)}
-                />
             </Box>
+
             {isSmallScreen && (
                 <Box
-                    position={'sticky'}
+                    position="sticky"
                     bottom={0}
                     boxShadow="0px -4px 8px rgb(47 32 27 / 4%)"
                     bgColor={stepBoxBg}
@@ -449,6 +475,7 @@ const ManageNode: FC = () => {
                             bgColor={bg}
                             w={{ base: '100%', md: 'auto' }}
                             me={2}
+                            disabled={node.retired || !node.owned}
                             onClick={unstakeDisclosure.onOpen}
                         >
                             UNSTAKE
@@ -456,6 +483,7 @@ const ManageNode: FC = () => {
                         <Button
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
+                            disabled={node.retired || !node.owned}
                             onClick={stakeDisclosure.onOpen}
                         >
                             STAKE

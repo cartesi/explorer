@@ -20,6 +20,7 @@ import {
     Icon,
     Heading,
     IconButton,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -34,18 +35,20 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
     allowance,
     onAllowanceClick,
 }) => {
+    const color = useColorModeValue('gray.400', 'white');
+
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '20%' }}>
             <HStack
                 w="full"
                 spacing={4}
+                justify="flex-end"
                 alignItems="center"
                 pt={{ base: 4, lg: 0 }}
             >
-                <Box w={14} h={14}></Box>
-                <Box flexGrow="1">
+                <Box flex={0}>
                     <HStack>
-                        <Text color="gray.400">Allowance</Text>
+                        <Text color={color}>Allowance</Text>
                         <Tooltip
                             placement="top"
                             label="Here you can see your current allowance."
@@ -53,7 +56,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon color="gray.400" />
+                            <Icon width={2.5} height={2.5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">
@@ -63,10 +66,10 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                         </Flex>
                     </Heading>
                 </Box>
-                <Box alignSelf="flex-end">
+                <Box alignSelf="flex-end" mt="26px !important">
                     <IconButton
                         aria-label="Edit"
-                        size="sm"
+                        size="md"
                         icon={<EditIcon />}
                         variant="ghost"
                         onClick={onAllowanceClick}
