@@ -48,7 +48,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     onSelectedTypesChange,
 }) => {
     const checkedBg = useColorModeValue('gray.50', 'gray.600');
-    const badgeBg = useColorModeValue('blue.500', 'blue.300');
+    const badgeBg = useColorModeValue('blue.200', 'blue.300');
 
     return (
         <Stack
@@ -176,7 +176,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     <Box p={'1px'}>
                         <HStack
                             bg={badgeBg}
-                            color="white"
+                            color="header"
                             px={3}
                             py={1.5}
                             borderRadius="full"
@@ -200,7 +200,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     <Box p={'1px'} key={index}>
                         <HStack
                             bg={badgeBg}
-                            color="white"
+                            color="header"
                             px={3}
                             py={1}
                             borderRadius="full"
