@@ -378,7 +378,11 @@ const ManageNode: FC = () => {
                                 fontWeight={600}
                                 textTransform="uppercase"
                                 letterSpacing="0.5px"
-                                disabled={node.retired || !node.owned}
+                                disabled={
+                                    node.retired ||
+                                    !node.owned ||
+                                    isRetiringNode
+                                }
                                 onClick={unstakeDisclosure.onOpen}
                             >
                                 Unstake
@@ -390,7 +394,11 @@ const ManageNode: FC = () => {
                                 fontWeight={600}
                                 textTransform="uppercase"
                                 letterSpacing="0.5px"
-                                disabled={node.retired || !node.owned}
+                                disabled={
+                                    node.retired ||
+                                    !node.owned ||
+                                    isRetiringNode
+                                }
                                 onClick={stakeDisclosure.onOpen}
                             >
                                 Stake
@@ -475,7 +483,9 @@ const ManageNode: FC = () => {
                             bgColor={bg}
                             w={{ base: '100%', md: 'auto' }}
                             me={2}
-                            disabled={node.retired || !node.owned}
+                            disabled={
+                                node.retired || !node.owned || isRetiringNode
+                            }
                             onClick={unstakeDisclosure.onOpen}
                         >
                             UNSTAKE
@@ -483,7 +493,9 @@ const ManageNode: FC = () => {
                         <Button
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
-                            disabled={node.retired || !node.owned}
+                            disabled={
+                                node.retired || !node.owned || isRetiringNode
+                            }
                             onClick={stakeDisclosure.onOpen}
                         >
                             STAKE
