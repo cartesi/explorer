@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.2] - 2022-09-08
+
+-   Layout design updates in the pool staking page.
+-   Removed the allowance cap inside the deposit modal quick allowance setup.
+
 ## [2.7.1] - 2022-09-06
 
-- Update the pool allowance functionality. The allowance capped by the users CTSI balance is removed leaving the user free to set bigger amounts that saves unnecessary ETH expenditure.
+-   Update the pool allowance functionality. The allowance capped by the users CTSI balance is removed leaving the user free to set bigger amounts that saves unnecessary ETH expenditure.
 
 ## [2.7.0] - 2022-09-01
 
@@ -160,7 +165,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.1...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.2...HEAD
+[2.7.2]: https://github.com/cartesi-corp/explorer/compare/v2.7.1...v2.7.2
 [2.7.1]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...v2.7.1
 [2.7.0]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...v2.7.0
 [2.6.2]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...v2.6.2
