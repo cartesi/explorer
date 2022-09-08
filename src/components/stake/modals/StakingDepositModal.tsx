@@ -157,8 +157,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </FormLabel>
                                     <CTSINumberInput
                                         min={0}
-                                        max={balanceFormatted}
-                                        // ref={inputFocusRef}
                                         onChange={(bigNumberValue) => {
                                             setOutputAllowance(bigNumberValue);
                                         }}
