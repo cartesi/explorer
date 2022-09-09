@@ -349,7 +349,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 color={max_depositColor}
                                                 textTransform="uppercase"
                                                 p={0}
-                                                data-testid="max-deposit-button"
+                                                role="max-deposit-button"
                                                 disabled={outputDeposit.eq(
                                                     balance && allowance
                                                 )}

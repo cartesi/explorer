@@ -91,9 +91,29 @@ describe('Staking Deposit Modal', () => {
         );
 
         const button = getByRole('deposit-button');
+        const buttonMax = getByRole('max-deposit-button');
 
         fireEvent.click(button);
+        fireEvent.click(buttonMax);
 
         expect(mockOnClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should disable deposit button when deposit is zero', () => {
+        const { getByRole } = render(
+            <EStakingDepositModal
+                {...defaultProps}
+                balance={BigNumber.from(0)}
+            />
+        );
+
+        expect(getByRole('deposit-button')).toBeDisabled();
+    });
+
+    it('Should enable deposit button when deposit is above zero', () => {
+        const { getByRole } = renderComponent();
+
+        fireEvent.click(getByRole('max-deposit-button'));
+        expect(getByRole('deposit-button')).toBeEnabled();
     });
 });
