@@ -34,8 +34,9 @@ import {
     Divider,
     TagLabel,
     useColorModeValue,
+    Stack,
 } from '@chakra-ui/react';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState, useEffect } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
@@ -59,6 +60,9 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     onClose,
     onSave,
 }) => {
+    const formatBigNumber = (value: BigNumber) =>
+        parseFloat(formatUnits(value, 18));
+
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
 
@@ -70,10 +74,18 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
         constants.Zero
     );
+    const formattedDepositValue = formatBigNumber(outputDeposit);
+
     const color = useColorModeValue('black', 'white');
     const max_depositColor = useColorModeValue('blue.500', 'white');
 
     const inputFocusRef = useRef();
+
+    useEffect(() => {
+        if (isOpen) {
+            setOutputDeposit(BigNumber.from(0));
+        }
+    }, [isOpen]);
 
     return (
         <Modal
@@ -319,24 +331,43 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 </Box>
 
                                 <FormControl id="depositAmount">
-                                    <HStack w="full" spacing={4}>
-                                        <Box flexGrow="1">
-                                            <FormLabel fontWeight="bold">
-                                                Deposit Amount
-                                            </FormLabel>
-                                        </Box>
-                                        <Box alignSelf="flex-end">
-                                            <FormLabel
-                                                fontSize="md"
-                                                fontWeight="normal"
-                                                color={max_depositColor}
-                                                textAlign={'right'}
+                                    <FormLabel mr={0}>
+                                        <Stack
+                                            direction="row"
+                                            justify="space-between"
+                                            alignItems="center"
+                                        >
+                                            <span
+                                                style={{ fontWeight: 'bold' }}
                                             >
-                                                MAX DEPOSIT
-                                            </FormLabel>
-                                        </Box>
-                                    </HStack>
+                                                Deposit Amount
+                                            </span>
+                                            <Button
+                                                variant="text"
+                                                size="lg"
+                                                height="auto"
+                                                color={max_depositColor}
+                                                textTransform="uppercase"
+                                                p={0}
+                                                data-testid="max-deposit-button"
+                                                disabled={outputDeposit.eq(
+                                                    balance && allowance
+                                                )}
+                                                onClick={() => {
+                                                    setOutputDeposit(
+                                                        balanceFormatted <
+                                                            allowanceFormatted
+                                                            ? balance
+                                                            : allowance
+                                                    );
+                                                }}
+                                            >
+                                                Max deposit
+                                            </Button>
+                                        </Stack>
+                                    </FormLabel>
                                     <CTSINumberInput
+                                        value={formattedDepositValue}
                                         min={0}
                                         max={allowanceFormatted}
                                         onChange={(bigNumberValue) => {
