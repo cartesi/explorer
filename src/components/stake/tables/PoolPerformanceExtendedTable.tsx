@@ -24,11 +24,14 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { StakingPoolFlat, StakingPoolSortExtended } from '../../graphql/models';
-import { TableResponsiveHolder } from '../TableResponsiveHolder';
+import {
+    StakingPoolFlat,
+    StakingPoolSortExtended,
+} from '../../../graphql/models';
+import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolPerformanceExtendedTableRow from './PoolPerformanceExtendedTableRow';
 
-export interface PoolPerformanceTableProps {
+export interface PoolPerformanceExtendedTableProps {
     chainId: number;
     account?: string;
     loading: boolean;
@@ -37,7 +40,7 @@ export interface PoolPerformanceTableProps {
     onSort: (order: StakingPoolSortExtended) => void;
 }
 
-const PoolPerformanceExtendedTable: FC<PoolPerformanceTableProps> = ({
+const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
     chainId,
     account,
     data,

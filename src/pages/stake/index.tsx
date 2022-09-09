@@ -26,56 +26,30 @@ import Layout, {
     PagePanel,
 } from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
-import { useCartesiToken } from '../../services/token';
-import { useBlockNumber } from '../../services/eth';
 import { useWallet } from '../../contexts/wallet';
 import SearchInput from '../../components/SearchInput';
 import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import PoolsOverview from '../../components/stake/components/PoolsOverview';
-import UserStakingPools from '../../components/stake/UserStakingPoolsTable';
-import { StakingPoolSortExtended } from '../../graphql/models';
-import useStakingPoolsExtended from '../../graphql/hooks/useStakingPoolsExtended';
-import Pagination from '../../components/Pagination';
+import UserStakingPoolsTable from '../../components/stake/tables/UserStakingPoolsTable';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
-import PoolPerformanceExtendedTable from '../../components/stake/PoolPerformanceTable';
 import PoolPerformanceExtended from '../../components/stake/PoolPerformanceExtended';
 import PoolPerformance from '../../components/stake/PoolPerformance';
 
 const Home = () => {
     const router = useRouter();
-
-    // user account and blockchain information (from metamask or other wallets)
     const { account, chainId } = useWallet();
-
-    // ethereum block number (from metamask)
-    const blockNumber = useBlockNumber();
-
-    // global summary information
     const summary = useSummary();
-
     const balances = usePoolBalances(account);
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
     const bodyBg = useColorModeValue('gray.80', 'header');
     const stakingPoolsBg = useColorModeValue('white', 'gray.700');
-    const [sort, setSort] = useState<StakingPoolSortExtended>(
-        'commissionPercentage'
-    );
     const [search, setSearch] = useState<string>();
-    const [pageNumber, setPageNumber] = useState<number>(0);
-    const { data: stakingPoolsData, loading } = useStakingPoolsExtended(
-        pageNumber,
-        search,
-        sort
-    );
-    const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
-    const items = stakingPoolsData?.allStakingPools.nodes || [];
     const apr = useFlag('apr');
     const aws = useFlag('aws');
+    const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
 
     useEffect(() => {
-        // When the flag is off, the user is automatically redirected to /pool
-        // The replace method overrides the current URL with the new one.
         if (!newPoolPageEnabled) {
             router.replace('/pool');
         }
@@ -128,7 +102,7 @@ const Home = () => {
                             >
                                 My staking pools
                             </Heading>
-                            <UserStakingPools
+                            <UserStakingPoolsTable
                                 chainId={chainId}
                                 loading={balances.loading}
                                 data={balances.data?.poolBalances || []}
@@ -184,20 +158,14 @@ const Home = () => {
                                 {apr && aws ? (
                                     <PoolPerformanceExtended
                                         chainId={chainId}
-                                        pages={Math.ceil(
-                                            (summary?.totalPools || 0) /
-                                                POOLS_PER_PAGE
-                                        )}
+                                        pages={pages}
                                         account={account}
                                         search={search}
                                     />
                                 ) : (
                                     <PoolPerformance
                                         chainId={chainId}
-                                        pages={Math.ceil(
-                                            (summary?.totalPools || 0) /
-                                                POOLS_PER_PAGE
-                                        )}
+                                        pages={pages}
                                         account={account}
                                         search={search}
                                     />

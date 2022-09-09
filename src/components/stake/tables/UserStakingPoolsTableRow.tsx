@@ -11,13 +11,12 @@
 
 import React, { FC } from 'react';
 import { Box, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
-import { BigNumber } from '@ethersproject/bignumber';
-import { PoolBalance } from '../../graphql/models';
-import { StakeInfo } from '../Icons';
-import Address from '../../components/Address';
-import { formatCTSI } from '../../utils/token';
-import { userShare } from '../../graphql/hooks/usePoolBalances';
-import { useStakingPool } from '../../services/pool';
+import { PoolBalance } from '../../../graphql/models';
+import { StakeInfo } from '../../Icons';
+import Address from '../../Address';
+import { formatCTSI } from '../../../utils/token';
+import { userShare } from '../../../graphql/hooks/usePoolBalances';
+import { useStakingPool } from '../../../services/pool';
 
 export interface UserStakingPoolsTableRowProps {
     chainId: number;
