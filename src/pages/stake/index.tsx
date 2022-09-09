@@ -37,7 +37,9 @@ import { StakingPoolSortExtended } from '../../graphql/models';
 import useStakingPoolsExtended from '../../graphql/hooks/useStakingPoolsExtended';
 import Pagination from '../../components/Pagination';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
-import PoolPerformanceTable from '../../components/stake/PoolPerformanceTable';
+import PoolPerformanceExtendedTable from '../../components/stake/PoolPerformanceTable';
+import PoolPerformanceExtended from '../../components/stake/PoolPerformanceExtended';
+import PoolPerformance from '../../components/stake/PoolPerformance';
 
 const Home = () => {
     const router = useRouter();
@@ -47,9 +49,6 @@ const Home = () => {
 
     // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();
-
-    // user CTSI balance
-    const { balance } = useCartesiToken(account, null, blockNumber);
 
     // global summary information
     const summary = useSummary();
@@ -71,6 +70,8 @@ const Home = () => {
     );
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
     const items = stakingPoolsData?.allStakingPools.nodes || [];
+    const apr = useFlag('apr');
+    const aws = useFlag('aws');
 
     useEffect(() => {
         // When the flag is off, the user is automatically redirected to /pool
@@ -104,35 +105,74 @@ const Home = () => {
                     <PoolsOverview />
                 </PagePanel>
 
-                <PageBody bg={bodyBg} mt={8} p={0}>
-                    <Box shadow="md" pt={10} mb={6} bg={stakingPoolsBg}>
+                <PageBody bg={bodyBg} mt={[4, 4, 8]} p={0}>
+                    <Box
+                        shadow="md"
+                        pt={[6, 6, 10]}
+                        mb={[2, 2, 6]}
+                        bg={stakingPoolsBg}
+                    >
                         <Box
-                            px={{ base: '6vw', md: '12vw', xl: '12vw' }}
-                            pb={10}
+                            px={{
+                                sm: '0vw',
+                                md: '12vw',
+                                xl: '12vw',
+                            }}
+                            pb={[0, 0, 10]}
                         >
-                            <Heading as="h1" fontSize={['1xl', '2xl']} mb={6}>
+                            <Heading
+                                as="h1"
+                                fontSize={['1xl', '2xl']}
+                                mb={6}
+                                pl={[8, 8, 0]}
+                            >
                                 My staking pools
                             </Heading>
                             <UserStakingPools
                                 chainId={chainId}
-                                walletBalance={balance}
                                 loading={balances.loading}
                                 data={balances.data?.poolBalances || []}
                             />
                         </Box>
                     </Box>
 
-                    <Box shadow="md" mt={8} pt={10} bg={stakingPoolsBg}>
+                    <Box
+                        shadow="md"
+                        mt={[4, 4, 8]}
+                        pt={[6, 6, 10]}
+                        bg={stakingPoolsBg}
+                    >
                         <Box
-                            px={{ base: '6vw', md: '12vw', xl: '12vw' }}
-                            pb={10}
+                            px={{
+                                sm: '0vw',
+                                md: '12vw',
+                                xl: '12vw',
+                            }}
+                            pb={[0, 0, 10]}
                         >
-                            <HStack justify="space-between" mb={6}>
-                                <Heading as="h1" fontSize={['1xl', '2xl']}>
+                            <HStack
+                                justify="space-between"
+                                mb={6}
+                                mr={[8, 8, 0]}
+                                flexDirection={['column', 'row', 'row', 'row']}
+                                alignItems={[
+                                    'flex-start',
+                                    'center',
+                                    'center',
+                                    'center',
+                                ]}
+                            >
+                                <Heading
+                                    as="h1"
+                                    fontSize={['1xl', '2xl']}
+                                    ml={[8, 8, 0]}
+                                    mb={[4, 0, 0]}
+                                >
                                     All Pools Performance
                                 </Heading>
                                 <SearchInput
-                                    w={[100, 200, 400, 400]}
+                                    w={['calc(100% - 30px)', 200, 400, 400]}
+                                    ml={['auto !important', 0, 0, 0]}
                                     placeholder="Search pool address..."
                                     onSearchChange={(e) =>
                                         setSearch(e.target.value)
@@ -140,21 +180,26 @@ const Home = () => {
                                 />
                             </HStack>
 
-                            <VStack w="100%">
-                                <PoolPerformanceTable
-                                    chainId={chainId}
-                                    account={account}
-                                    loading={loading}
-                                    data={items}
-                                    sort={sort}
-                                    onSort={setSort}
-                                />
-
-                                {!search && items.length > 0 && (
-                                    <Pagination
-                                        pages={pages}
-                                        currentPage={pageNumber}
-                                        onPageClick={setPageNumber}
+                            <VStack w="100%" pb={10}>
+                                {apr && aws ? (
+                                    <PoolPerformanceExtended
+                                        chainId={chainId}
+                                        pages={Math.ceil(
+                                            (summary?.totalPools || 0) /
+                                                POOLS_PER_PAGE
+                                        )}
+                                        account={account}
+                                        search={search}
+                                    />
+                                ) : (
+                                    <PoolPerformance
+                                        chainId={chainId}
+                                        pages={Math.ceil(
+                                            (summary?.totalPools || 0) /
+                                                POOLS_PER_PAGE
+                                        )}
+                                        account={account}
+                                        search={search}
                                     />
                                 )}
                             </VStack>

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Tag, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
+import { Box, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalance } from '../../graphql/models';
 import { StakeInfo } from '../Icons';
@@ -19,14 +19,17 @@ import { formatCTSI } from '../../utils/token';
 import { userShare } from '../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../services/pool';
 
-export interface UserPoolRowProps {
+export interface UserStakingPoolsTableRowProps {
     chainId: number;
-    walletBalance: BigNumber;
     balance: PoolBalance;
     account?: string;
 }
 
-const UserPoolRow: FC<UserPoolRowProps> = ({ chainId, account, balance }) => {
+const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
+    chainId,
+    account,
+    balance,
+}) => {
     const borderColor = useColorModeValue('gray.100', 'header');
     const percentFormatter = new Intl.NumberFormat('en-US', {
         style: 'percent',
@@ -55,6 +58,7 @@ const UserPoolRow: FC<UserPoolRowProps> = ({ chainId, account, balance }) => {
                     px="0.5rem"
                     py="0.25rem"
                     color="gray.900"
+                    minWidth="120px"
                 />
             </Td>
             <Td isNumeric borderColor={borderColor}>
@@ -66,13 +70,32 @@ const UserPoolRow: FC<UserPoolRowProps> = ({ chainId, account, balance }) => {
             <Td isNumeric borderColor={borderColor}>
                 {percentFormatter.format(userShare(balance))}
             </Td>
-            <Td isNumeric borderColor={borderColor}>
-                <Link href={`/stake/${balance.pool.id}`} mr={5}>
-                    <StakeInfo w={8} h={8} />
-                </Link>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                position={['sticky', 'sticky', 'initial', 'initial']}
+                top={0}
+                right={0}
+                backgroundColor={['white', 'white', 'transparent']}
+                padding={0}
+            >
+                <Box
+                    shadow={['md', 'md', 'none', 'none']}
+                    padding={[0, 0, 8, 8]}
+                    minHeight={['71px', '71px', 'auto', 'auto']}
+                    width={['80px', '80px', 'auto', 'auto']}
+                    display={['flex', 'flex', 'block', 'block']}
+                    alignItems="center"
+                    justifyContent="center"
+                    ml="auto"
+                >
+                    <Link href={`/stake/${balance.pool.id}`} mr={[0, 0, 3]}>
+                        <StakeInfo w={8} h={8} />
+                    </Link>
+                </Box>
             </Td>
         </Tr>
     );
 };
 
-export default UserPoolRow;
+export default UserStakingPoolsTableRow;

@@ -11,29 +11,27 @@
 
 import React, { FunctionComponent } from 'react';
 import {
-    HStack,
-    Icon,
     Td,
-    Tooltip,
     Tr,
     useColorModeValue,
-    Button,
-    Box,
     Link,
+    Tooltip,
+    Icon,
+    Box,
+    Button,
+    HStack,
 } from '@chakra-ui/react';
+import { StakingPoolFlat } from '../../graphql/models';
+import Address from '../../components/Address';
+import { formatCTSI } from '../../utils/token';
+import { StakeInfo } from '../Icons';
+import labels from '../../utils/labels';
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
 
-import { StakingPool } from '../../graphql/models';
-import Address from '../../components/Address';
-import { formatCTSI } from '../../utils/token';
-import labels from '../../utils/labels';
-import { useFlag } from '@unleash/proxy-client-react';
-import { StakeInfo } from '../Icons';
-
 export interface PoolPerformanceTableRowProps {
     chainId: number;
-    pool: StakingPool;
+    pool: StakingPoolFlat;
     account?: string;
 }
 
@@ -42,12 +40,13 @@ const numberFormat = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
 });
 
-const PoolPerformanceTableRow: FunctionComponent<
+const apr = (value: number, days: number) =>
+    Math.pow(Math.pow(value + 1, 1 / days), 365) - 1;
+
+const PoolPerformanceExtendedTableRow: FunctionComponent<
     PoolPerformanceTableRowProps
 > = ({ chainId, account, pool }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
-    const basePath = newPoolPageEnabled ? '/stake' : '/pools';
 
     // accured commission
     const accuredCommissionLabel =
@@ -55,27 +54,19 @@ const PoolPerformanceTableRow: FunctionComponent<
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
 
-    let flatRate = pool.fee.commission > 0;
-    const gasTax = pool.fee.gas > 0;
-
-    // XXX: if both are zero, currently we don't which is it, for now let's assume it's flat rate
-    if (!flatRate && !gasTax) {
-        flatRate = true;
-    }
-
     // commission label
     let commissionLabel = '';
-    if (flatRate) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (gasTax) {
-        commissionLabel = `${pool.fee.gas} Gas`;
+    if (pool.feeCommission !== undefined) {
+        commissionLabel = `${(pool.feeCommission / 100).toFixed(2)} %`;
+    } else if (pool.feeGas !== undefined) {
+        commissionLabel = `${pool.feeGas} Gas`;
     }
 
     // commission help tooptip
     let commissionTooltip: string = undefined;
-    if (flatRate) {
+    if (pool.feeCommission !== undefined) {
         commissionTooltip = labels.flatRateCommission;
-    } else if (gasTax) {
+    } else if (pool.feeGas !== undefined) {
         commissionTooltip = labels.gasTaxCommission;
     }
 
@@ -128,7 +119,15 @@ const PoolPerformanceTableRow: FunctionComponent<
                 {formatCTSI(pool.amount, 2)} CTSI
             </Td>
             <Td isNumeric borderColor={borderColor}>
-                {formatCTSI(pool.user.totalReward, 2)} CTSI
+                {formatCTSI(pool.userTotalReward, 2)} CTSI
+            </Td>
+            <Td isNumeric borderColor={borderColor}>
+                {numberFormat.format(pool.weekPerformance)} (
+                {numberFormat.format(apr(pool.weekPerformance, 7))})
+            </Td>
+            <Td isNumeric borderColor={borderColor}>
+                {numberFormat.format(pool.monthPerformance)} (
+                {numberFormat.format(apr(pool.monthPerformance, 30))})
             </Td>
             <Td borderColor={borderColor}>
                 {commissionLabel}{' '}
@@ -174,4 +173,4 @@ const PoolPerformanceTableRow: FunctionComponent<
     );
 };
 
-export default PoolPerformanceTableRow;
+export default PoolPerformanceExtendedTableRow;

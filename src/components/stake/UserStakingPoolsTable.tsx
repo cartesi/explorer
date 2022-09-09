@@ -22,7 +22,6 @@ import {
     Spinner,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalance } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
@@ -30,7 +29,6 @@ import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
 export interface UserStakingPoolsProps {
     chainId: number;
     account?: string;
-    walletBalance: BigNumber;
     loading: boolean;
     data?: PoolBalance[];
 }
@@ -38,12 +36,11 @@ export interface UserStakingPoolsProps {
 const UserStakingPools: FC<UserStakingPoolsProps> = ({
     chainId,
     account,
-    walletBalance,
     data,
     loading,
 }) => {
-    // number of columns at each breakpoint
     const columns = useBreakpointValue([3, 3, 4, 8]);
+    const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
 
     return (
         <TableResponsiveHolder>
@@ -54,7 +51,19 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                         <Th isNumeric>Unstaked</Th>
                         <Th isNumeric>Staked</Th>
                         <Th isNumeric>% Pool</Th>
-                        <Th isNumeric>Stake/Info</Th>
+                        <Th
+                            isNumeric
+                            position={[
+                                'sticky',
+                                'sticky',
+                                'initial',
+                                'initial',
+                            ]}
+                            top={0}
+                            right={0}
+                        >
+                            {stakeText}
+                        </Th>
                     </Tr>
                 </Thead>
 
@@ -69,6 +78,7 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                             </Td>
                         </Tr>
                     )}
+
                     {!loading &&
                         (!data ||
                             (data.length === 0 && (
@@ -78,6 +88,7 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                                     </Td>
                                 </Tr>
                             )))}
+
                     {!loading &&
                         data &&
                         data.length > 0 &&
@@ -85,7 +96,6 @@ const UserStakingPools: FC<UserStakingPoolsProps> = ({
                             <UserStakingPoolsTableRow
                                 key={balance.pool.id}
                                 chainId={chainId}
-                                walletBalance={walletBalance}
                                 balance={balance}
                                 account={account}
                             />

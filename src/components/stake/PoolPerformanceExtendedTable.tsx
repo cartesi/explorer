@@ -24,17 +24,17 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { StakingPool, StakingPoolSort } from '../../graphql/models';
+import { StakingPoolFlat, StakingPoolSortExtended } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
-import PoolPerformanceTableRow from './PoolPerformanceTableRow';
+import PoolPerformanceExtendedTableRow from './PoolPerformanceExtendedTableRow';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
     account?: string;
     loading: boolean;
-    data?: StakingPool[];
-    sort?: StakingPoolSort;
-    onSort: (order: StakingPoolSort) => void;
+    data?: StakingPoolFlat[];
+    sort?: StakingPoolSortExtended;
+    onSort: (order: StakingPoolSortExtended) => void;
 }
 
 const PoolPerformanceExtendedTable: FC<PoolPerformanceTableProps> = ({
@@ -69,6 +69,20 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceTableProps> = ({
                         </Th>
 
                         <Th isNumeric>Total Rewards</Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('weekPerformance')}>
+                                7-days % (annual)
+                            </Link>
+                            {sort == 'weekPerformance' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('monthPerformance')}>
+                                30-days % (annual)
+                            </Link>
+                            {sort == 'monthPerformance' && <ArrowDownIcon />}
+                        </Th>
 
                         <Th>Configured Commission</Th>
                         <Th>
@@ -124,7 +138,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceTableProps> = ({
                         data &&
                         data.length > 0 &&
                         data.map((pool) => (
-                            <PoolPerformanceTableRow
+                            <PoolPerformanceExtendedTableRow
                                 key={pool.id}
                                 chainId={chainId}
                                 pool={pool}
