@@ -34,12 +34,14 @@ import UserStakingPoolsTable from '../../components/stake/tables/UserStakingPool
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import PoolPerformanceExtended from '../../components/stake/PoolPerformanceExtended';
 import PoolPerformance from '../../components/stake/PoolPerformance';
+import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 
 const Home = () => {
     const router = useRouter();
     const { account, chainId } = useWallet();
     const summary = useSummary();
     const balances = usePoolBalances(account);
+    const poolBalance = useTotalPoolBalance(account);
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
     const bodyBg = useColorModeValue('gray.80', 'header');
@@ -76,7 +78,11 @@ const Home = () => {
                 </PageHeader>
 
                 <PagePanel>
-                    <PoolsOverview />
+                    <PoolsOverview
+                        balance={poolBalance}
+                        summary={summary}
+                        poolBalancesCount={balances.data?.poolBalances?.length}
+                    />
                 </PagePanel>
 
                 <PageBody bg={bodyBg} mt={[4, 4, 8]} p={0}>

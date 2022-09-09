@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
     Table,
     Tbody,
@@ -41,6 +41,10 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
 }) => {
     const columns = useBreakpointValue([3, 3, 4, 8]);
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
+
+    useEffect(() => {
+        console.log(JSON.stringify(data, null, 4));
+    }, [data]);
 
     return (
         <TableResponsiveHolder>

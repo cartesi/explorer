@@ -11,25 +11,25 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import PoolPerformanceExtendedTable from '../../../components/stake/tables/PoolPerformanceExtendedTable';
-import stakingPoolsExtendedData from './stakingPoolsExtendedData';
+import PoolPerformanceTable from '../../../components/stake/tables/PoolPerformanceTable';
+import stakingPoolsData from './stakingPoolsData';
 
 export default {
-    title: 'Stake/PoolPerformanceExtendedTable',
-    component: PoolPerformanceExtendedTable,
+    title: 'Stake/PoolPerformanceTable',
+    component: PoolPerformanceTable,
     argTypes: {},
-} as ComponentMeta<typeof PoolPerformanceExtendedTable>;
+} as ComponentMeta<typeof PoolPerformanceTable>;
 
-const Template: ComponentStory<typeof PoolPerformanceExtendedTable> = (
-    args
-) => <PoolPerformanceExtendedTable {...args} />;
+const Template: ComponentStory<typeof PoolPerformanceTable> = (args) => (
+    <PoolPerformanceTable {...args} />
+);
 
 const defaultProps = {
-    account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
+    account: '0x17b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
     chainId: 5,
     loading: false,
     sort: 'commissionPercentage',
-    data: stakingPoolsExtendedData,
+    data: stakingPoolsData,
 };
 
 export const Default = Template.bind({});
@@ -40,5 +40,5 @@ Default.args = {
 export const WithManageButton = Template.bind({});
 WithManageButton.args = {
     ...defaultProps,
-    account: stakingPoolsExtendedData[0].manager,
+    account: stakingPoolsData[0].manager,
 };

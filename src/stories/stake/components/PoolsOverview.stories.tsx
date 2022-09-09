@@ -11,34 +11,37 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import PoolPerformanceExtendedTable from '../../../components/stake/tables/PoolPerformanceExtendedTable';
-import stakingPoolsExtendedData from './stakingPoolsExtendedData';
+import PoolsOverview from '../../../components/stake/components/PoolsOverview';
+import { BigNumber } from 'ethers';
 
 export default {
-    title: 'Stake/PoolPerformanceExtendedTable',
-    component: PoolPerformanceExtendedTable,
+    title: 'Stake/Components/PoolsOverview',
+    component: PoolsOverview,
     argTypes: {},
-} as ComponentMeta<typeof PoolPerformanceExtendedTable>;
+} as ComponentMeta<typeof PoolsOverview>;
 
-const Template: ComponentStory<typeof PoolPerformanceExtendedTable> = (
-    args
-) => <PoolPerformanceExtendedTable {...args} />;
+const Template: ComponentStory<typeof PoolsOverview> = (args) => (
+    <PoolsOverview {...args} />
+);
 
 const defaultProps = {
-    account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
-    chainId: 5,
-    loading: false,
-    sort: 'commissionPercentage',
-    data: stakingPoolsExtendedData,
+    balance: BigNumber.from('10000000000000000000000'),
+    poolBalancesCount: 10,
+    summary: {
+        id: '1',
+        totalUsers: 2,
+        totalPools: 3,
+        totalStakers: 4,
+        totalNodes: 5,
+        totalStaked: 6,
+        totalBlocks: 7,
+        totalReward: 8,
+        totalProtocols: 9,
+        totalChains: 10,
+    },
 };
 
 export const Default = Template.bind({});
 Default.args = {
     ...defaultProps,
-};
-
-export const WithManageButton = Template.bind({});
-WithManageButton.args = {
-    ...defaultProps,
-    account: stakingPoolsExtendedData[0].manager,
 };

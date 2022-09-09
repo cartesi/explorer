@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import StakeCard from '../StakeCard';
 import { Icon } from '@chakra-ui/icons';
 import { HStack, Text, Tooltip, Stack } from '@chakra-ui/react';
 import { StakedBalanceIcon, PoolsTimer, StakePlus } from '../../Icons';
 import BigNumberText from '../../BigNumberText';
 import CTSIText from '../../CTSIText';
-import { useWallet } from '../../../contexts/wallet';
-import useTotalPoolBalance from '../../../graphql/hooks/useTotalPoolBalance';
-import useSummary from '../../../graphql/hooks/useSummary';
-import usePoolBalances from '../../../graphql/hooks/usePoolBalances';
+import { BigNumber } from 'ethers';
+import { Summary } from '../../../graphql/models';
 
-const PoolsOverview = () => {
-    const { account } = useWallet();
-    const poolBalance = useTotalPoolBalance(account);
-    const summary = useSummary();
-    const balances = usePoolBalances(account);
+interface PoolsOverviewProps {
+    balance: BigNumber;
+    summary: Summary;
+    poolBalancesCount: number;
+}
 
+const PoolsOverview: FC<PoolsOverviewProps> = ({
+    balance,
+    summary,
+    poolBalancesCount,
+}) => {
     return (
         <Stack
             direction={['column', 'column', 'row', 'row']}
@@ -53,7 +56,7 @@ const PoolsOverview = () => {
                     </HStack>
                 }
             >
-                <BigNumberText value={balances.data?.poolBalances?.length} />
+                <BigNumberText value={poolBalancesCount} />
             </StakeCard>
 
             <StakeCard
@@ -71,7 +74,7 @@ const PoolsOverview = () => {
                 }
             >
                 <CTSIText
-                    value={poolBalance}
+                    value={balance}
                     options={{
                         notation: 'compact',
                         minimumFractionDigits: 0,
