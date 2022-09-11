@@ -115,7 +115,11 @@ const PoolPerformanceTableRow: FunctionComponent<
                             bg="black"
                             color="white"
                         >
-                            <LockIcon w={2.5} h={2.5} />
+                            <LockIcon
+                                w={2.5}
+                                h={2.5}
+                                data-testid="paused-tooltip-icon"
+                            />
                         </Tooltip>
                     )}
                 </HStack>

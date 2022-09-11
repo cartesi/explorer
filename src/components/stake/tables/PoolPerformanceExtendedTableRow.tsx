@@ -75,7 +75,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
 
     return (
         <Tr key={pool.id} data-testid="pool-performance-extended-table-row">
-            <Td borderColor={borderColor}>
+            <Td borderColor={borderColor} data-testid="address-col">
                 <HStack>
                     <Address
                         ens
@@ -107,29 +107,49 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                             bg="black"
                             color="white"
                         >
-                            <LockIcon w={2.5} h={2.5} />
+                            <LockIcon
+                                w={2.5}
+                                h={2.5}
+                                data-testid="paused-tooltip-icon"
+                            />
                         </Tooltip>
                     )}
                 </HStack>
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="total-users-col"
+            >
                 {pool.totalUsers}
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td isNumeric borderColor={borderColor} data-testid="amount-col">
                 {formatCTSI(pool.amount, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="total-reward-col"
+            >
                 {formatCTSI(pool.userTotalReward, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="week-performance-col"
+            >
                 {numberFormat.format(pool.weekPerformance)} (
                 {numberFormat.format(apr(pool.weekPerformance, 7))})
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="month-performance-col"
+            >
                 {numberFormat.format(pool.monthPerformance)} (
                 {numberFormat.format(apr(pool.monthPerformance, 30))})
             </Td>
-            <Td borderColor={borderColor}>
+            <Td borderColor={borderColor} data-testid="commission-col">
                 {commissionLabel}{' '}
                 {commissionTooltip && (
                     <Tooltip
@@ -144,7 +164,9 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     </Tooltip>
                 )}
             </Td>
-            <Td borderColor={borderColor}>{accruedCommissionLabel}</Td>
+            <Td borderColor={borderColor} data-testid="accrued-commission-col">
+                {accruedCommissionLabel}
+            </Td>
             <Td
                 isNumeric
                 borderColor={borderColor}
@@ -153,6 +175,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                 right={0}
                 backgroundColor={['white', 'white', 'transparent']}
                 padding={0}
+                data-testid="stake-info-col"
             >
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
@@ -165,7 +188,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <Link href={`/stake/${pool.id}`} mr={[0, 0, 3]}>
-                        <StakeInfo w={8} h={8} />
+                        <StakeInfo w={8} h={8} data-testid="stake-info-icon" />
                     </Link>
                 </Box>
             </Td>

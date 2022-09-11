@@ -11,15 +11,15 @@
 
 import React, { FC } from 'react';
 import { render, screen } from '@testing-library/react';
-import PoolPerformanceTableRow, {
-    PoolPerformanceTableRowProps,
-} from '../../../../src/components/stake/tables/PoolPerformanceTableRow';
-import stakingPoolsData from '../../../../src/stories/stake/tables/stakingPoolsData';
+import PoolPerformanceExtendedTableRow, {
+    PoolPerformanceExtendedTableRowProps,
+} from '../../../../src/components/stake/tables/PoolPerformanceExtendedTableRow';
+import stakingPoolsExtendedData from '../../../../src/stories/stake/tables/stakingPoolsExtendedData';
 import { StakingPool } from '../../../../src/graphql/models';
 import { Table, Tbody } from '@chakra-ui/react';
 import { withChakraTheme } from '../../../test-utilities';
 
-const [pool] = stakingPoolsData as unknown as StakingPool[];
+const [pool] = stakingPoolsExtendedData as unknown as StakingPool[];
 
 const defaultProps = {
     account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
@@ -27,18 +27,18 @@ const defaultProps = {
     pool,
 };
 
-const Component: FC<PoolPerformanceTableRowProps> = (props) => (
+const Component: FC<PoolPerformanceExtendedTableRowProps> = (props) => (
     <Table>
         <Tbody>
-            <PoolPerformanceTableRow {...props} />
+            <PoolPerformanceExtendedTableRow {...props} />
         </Tbody>
     </Table>
 );
 
 const ThemedComponent =
-    withChakraTheme<PoolPerformanceTableRowProps>(Component);
+    withChakraTheme<PoolPerformanceExtendedTableRowProps>(Component);
 
-describe('Pool Performance Table Row', () => {
+describe('Pool Performance Extended Table Row', () => {
     const renderComponent = (props) => render(<ThemedComponent {...props} />);
 
     it('Should have required columns', () => {
@@ -46,7 +46,10 @@ describe('Pool Performance Table Row', () => {
 
         expect(screen.getByTestId('address-col')).toBeInTheDocument();
         expect(screen.getByTestId('total-users-col')).toBeInTheDocument();
+        expect(screen.getByTestId('amount-col')).toBeInTheDocument();
         expect(screen.getByTestId('total-reward-col')).toBeInTheDocument();
+        expect(screen.getByTestId('week-performance-col')).toBeInTheDocument();
+        expect(screen.getByTestId('month-performance-col')).toBeInTheDocument();
         expect(screen.getByTestId('commission-col')).toBeInTheDocument();
         expect(
             screen.getByTestId('accrued-commission-col')
