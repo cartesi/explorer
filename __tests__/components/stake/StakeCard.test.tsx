@@ -24,7 +24,7 @@ const defaultProps = {
 
 const Component = withChakraTheme<StakeCardProps>(StakeCard);
 
-describe('Pool Performance Table', () => {
+describe('StakeCard', () => {
     const renderComponent = (props) =>
         render(<Component {...props}>{props.children}</Component>);
 
@@ -35,16 +35,17 @@ describe('Pool Performance Table', () => {
     });
 
     it('Should spread additional props in component node', () => {
+        const className = 'stake-card';
         const props = {
             ...defaultProps,
-            className: 'stake-card',
+            className,
             style: {
                 fontWeight: 900,
             },
         };
         renderComponent(props);
 
-        const componentNode = screen.getByText('Icon').closest('.stake-card');
+        const componentNode = screen.getByText('Icon').closest(`.${className}`);
         expect(componentNode.getAttribute('style')).toBe(
             `font-weight: ${props.style.fontWeight};`
         );

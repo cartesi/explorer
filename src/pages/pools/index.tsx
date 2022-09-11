@@ -77,8 +77,6 @@ const StakingPools: FC = () => {
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     useEffect(() => {
-        // When the flag is off, the user is automatically redirected to /pool
-        // The replace method overrides the current URL with the new one.
         if (newPoolPageEnabled) {
             router.replace('/stake');
         }

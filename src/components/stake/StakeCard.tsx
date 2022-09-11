@@ -10,12 +10,12 @@ import { isObject } from 'lodash';
 
 export interface StakeCardProps extends BoxProps {
     children: React.ReactNode;
-    Icon: React.ReactNode;
     Title: React.ReactNode;
+    Icon?: React.ReactNode;
 }
 
 const StakeCard: FC<StakeCardProps> = (props) => {
-    const { children, Icon, Title, ...restProps } = props;
+    const { children, Title, Icon, ...restProps } = props;
     const hasIcon = isObject(Icon);
     const bg = useColorModeValue('blue.50', 'primary');
 
