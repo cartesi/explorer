@@ -12,11 +12,11 @@
 import React, { FC } from 'react';
 import { Box, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
 import { PoolBalance } from '../../../graphql/models';
-import { StakeInfo } from '../../Icons';
-import Address from '../../Address';
 import { formatCTSI } from '../../../utils/token';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../../services/pool';
+import { StakeInfo } from '../../Icons';
+import Address from '../../Address';
 
 export interface UserStakingPoolsTableRowProps {
     chainId: number;
@@ -44,8 +44,8 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     const stakedBalance = sharesToAmount(stakedShares);
 
     return (
-        <Tr key={balance.pool.id}>
-            <Td borderColor={borderColor}>
+        <Tr key={balance.pool.id} data-testid="user-staking-pools-table-row">
+            <Td borderColor={borderColor} data-testid="address-col">
                 <Address
                     ens
                     address={balance.pool.id}
@@ -60,13 +60,17 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     minWidth="120px"
                 />
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td isNumeric borderColor={borderColor} data-testid="unstaked-col">
                 {formatCTSI(unstakedBalance, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td isNumeric borderColor={borderColor} data-testid="staked-col">
                 {formatCTSI(stakedBalance, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="percentage-col"
+            >
                 {percentFormatter.format(userShare(balance))}
             </Td>
             <Td
@@ -77,6 +81,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 right={0}
                 backgroundColor={['white', 'white', 'transparent']}
                 padding={0}
+                data-testid="stake-info-col"
             >
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
@@ -89,7 +94,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     ml="auto"
                 >
                     <Link href={`/stake/${balance.pool.id}`} mr={[0, 0, 3]}>
-                        <StakeInfo w={8} h={8} />
+                        <StakeInfo w={8} h={8} data-testid="stake-info-icon" />
                     </Link>
                 </Box>
             </Td>

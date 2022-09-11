@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import {
     Table,
     Tbody,
@@ -41,10 +41,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
 }) => {
     const columns = useBreakpointValue([3, 3, 4, 8]);
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
-
-    useEffect(() => {
-        console.log(JSON.stringify(data, null, 4));
-    }, [data]);
+    const hasItems = data?.length > 0;
 
     return (
         <TableResponsiveHolder>
@@ -72,7 +69,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                 </Thead>
 
                 <Tbody>
-                    {loading && (
+                    {loading ? (
                         <Tr>
                             <Td colSpan={columns} textAlign="center">
                                 <HStack justify="center">
@@ -81,21 +78,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                                 </HStack>
                             </Td>
                         </Tr>
-                    )}
-
-                    {!loading &&
-                        (!data ||
-                            (data.length === 0 && (
-                                <Tr>
-                                    <Td colSpan={columns} textAlign="center">
-                                        <Text>No items</Text>
-                                    </Td>
-                                </Tr>
-                            )))}
-
-                    {!loading &&
-                        data &&
-                        data.length > 0 &&
+                    ) : hasItems ? (
                         data.map((balance) => (
                             <UserStakingPoolsTableRow
                                 key={balance.pool.id}
@@ -103,7 +86,14 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                                 balance={balance}
                                 account={account}
                             />
-                        ))}
+                        ))
+                    ) : (
+                        <Tr>
+                            <Td colSpan={columns} textAlign="center">
+                                <Text>No items</Text>
+                            </Td>
+                        </Tr>
+                    )}
                 </Tbody>
             </Table>
         </TableResponsiveHolder>

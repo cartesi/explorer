@@ -23,7 +23,6 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
-import { useFlag } from '@unleash/proxy-client-react';
 import { StakingPool } from '../../../graphql/models';
 import Address from '../../../components/Address';
 import { formatCTSI } from '../../../utils/token';
@@ -45,10 +44,9 @@ const PoolPerformanceTableRow: FunctionComponent<
     PoolPerformanceTableRowProps
 > = ({ chainId, account, pool }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
-    // accured commission
-    const accuredCommissionLabel =
+    // accrued commission
+    const accruedCommissionLabel =
         pool.commissionPercentage !== null
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
@@ -69,7 +67,7 @@ const PoolPerformanceTableRow: FunctionComponent<
         commissionLabel = `${pool.fee.gas} Gas`;
     }
 
-    // commission help tooptip
+    // commission help tooltip
     let commissionTooltip: string = undefined;
     if (flatRate) {
         commissionTooltip = labels.flatRateCommission;
@@ -81,8 +79,8 @@ const PoolPerformanceTableRow: FunctionComponent<
     const edit = account && account.toLowerCase() === pool.manager;
 
     return (
-        <Tr key={pool.id}>
-            <Td borderColor={borderColor}>
+        <Tr key={pool.id} data-testid="pool-performance-table-row">
+            <Td borderColor={borderColor} data-testid="address-col">
                 <HStack>
                     <Address
                         ens
@@ -100,7 +98,10 @@ const PoolPerformanceTableRow: FunctionComponent<
 
                     {edit && (
                         <Box ml={10}>
-                            <NextLink href={`/pools/${pool.id}/edit`}>
+                            <NextLink
+                                href={`/pools/${pool.id}/edit`}
+                                data-testid="manage-button"
+                            >
                                 <Button size="sm">Manage</Button>
                             </NextLink>
                         </Box>
@@ -119,16 +120,24 @@ const PoolPerformanceTableRow: FunctionComponent<
                     )}
                 </HStack>
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="total-users-col"
+            >
                 {pool.totalUsers}
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td isNumeric borderColor={borderColor} data-testid="amount-col">
                 {formatCTSI(pool.amount, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="total-reward-col"
+            >
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
             </Td>
-            <Td borderColor={borderColor}>
+            <Td borderColor={borderColor} data-testid="commission-col">
                 {commissionLabel}{' '}
                 {commissionTooltip && (
                     <Tooltip
@@ -143,7 +152,9 @@ const PoolPerformanceTableRow: FunctionComponent<
                     </Tooltip>
                 )}
             </Td>
-            <Td borderColor={borderColor}>{accuredCommissionLabel}</Td>
+            <Td borderColor={borderColor} data-testid="accrued-commission-col">
+                {accruedCommissionLabel}
+            </Td>
             <Td
                 isNumeric
                 borderColor={borderColor}
@@ -152,6 +163,7 @@ const PoolPerformanceTableRow: FunctionComponent<
                 right={0}
                 backgroundColor={['white', 'white', 'transparent']}
                 padding={0}
+                data-testid="stake-info-col"
             >
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
@@ -164,7 +176,7 @@ const PoolPerformanceTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <Link href={`/stake/${pool.id}`} mr={[0, 0, 3]}>
-                        <StakeInfo w={8} h={8} />
+                        <StakeInfo w={8} h={8} data-testid="stake-info-icon" />
                     </Link>
                 </Box>
             </Td>

@@ -48,8 +48,8 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
 > = ({ chainId, account, pool }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
 
-    // accured commission
-    const accuredCommissionLabel =
+    // accrued commission
+    const accruedCommissionLabel =
         pool.commissionPercentage !== null
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
@@ -74,7 +74,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
     const edit = account && account.toLowerCase() === pool.manager;
 
     return (
-        <Tr key={pool.id}>
+        <Tr key={pool.id} data-testid="pool-performance-extended-table-row">
             <Td borderColor={borderColor}>
                 <HStack>
                     <Address
@@ -144,7 +144,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     </Tooltip>
                 )}
             </Td>
-            <Td borderColor={borderColor}>{accuredCommissionLabel}</Td>
+            <Td borderColor={borderColor}>{accruedCommissionLabel}</Td>
             <Td
                 isNumeric
                 borderColor={borderColor}

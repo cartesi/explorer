@@ -46,6 +46,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     onSort,
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
+    const hasItems = data?.length > 0;
 
     return (
         <TableResponsiveHolder>
@@ -99,7 +100,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                 </Thead>
 
                 <Tbody>
-                    {loading && (
+                    {loading ? (
                         <Tr>
                             <Td colSpan={9} textAlign="center">
                                 <HStack justify="center">
@@ -108,21 +109,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 </HStack>
                             </Td>
                         </Tr>
-                    )}
-
-                    {!loading &&
-                        (!data ||
-                            (data.length === 0 && (
-                                <Tr>
-                                    <Td colSpan={9} textAlign="center">
-                                        <Text>No items</Text>
-                                    </Td>
-                                </Tr>
-                            )))}
-
-                    {!loading &&
-                        data &&
-                        data.length > 0 &&
+                    ) : hasItems ? (
                         data.map((pool) => (
                             <PoolPerformanceTableRow
                                 key={pool.id}
@@ -130,7 +117,14 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 pool={pool}
                                 account={account}
                             />
-                        ))}
+                        ))
+                    ) : (
+                        <Tr>
+                            <Td colSpan={9} textAlign="center">
+                                <Text>No items</Text>
+                            </Td>
+                        </Tr>
+                    )}
                 </Tbody>
             </Table>
         </TableResponsiveHolder>

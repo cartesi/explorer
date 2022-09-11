@@ -40,6 +40,8 @@ export interface PoolPerformanceExtendedTableProps {
     onSort: (order: StakingPoolSortExtended) => void;
 }
 
+const SortIcon = () => <ArrowDownIcon data-testid="sort-icon" />;
+
 const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
     chainId,
     account,
@@ -49,6 +51,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
     onSort,
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
+    const hasItems = data?.length > 0;
 
     return (
         <TableResponsiveHolder>
@@ -61,14 +64,14 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                             <Link onClick={() => onSort('totalUsers')}>
                                 Total Users
                             </Link>
-                            {sort == 'totalUsers' && <ArrowDownIcon />}
+                            {sort === 'totalUsers' && <SortIcon />}
                         </Th>
 
                         <Th isNumeric>
                             <Link onClick={() => onSort('amount')}>
                                 Total Staked
                             </Link>
-                            {sort == 'amount' && <ArrowDownIcon />}
+                            {sort === 'amount' && <SortIcon />}
                         </Th>
 
                         <Th isNumeric>Total Rewards</Th>
@@ -77,14 +80,14 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                             <Link onClick={() => onSort('weekPerformance')}>
                                 7-days % (annual)
                             </Link>
-                            {sort == 'weekPerformance' && <ArrowDownIcon />}
+                            {sort === 'weekPerformance' && <SortIcon />}
                         </Th>
 
                         <Th isNumeric>
                             <Link onClick={() => onSort('monthPerformance')}>
                                 30-days % (annual)
                             </Link>
-                            {sort == 'monthPerformance' && <ArrowDownIcon />}
+                            {sort === 'monthPerformance' && <SortIcon />}
                         </Th>
 
                         <Th>Configured Commission</Th>
@@ -94,9 +97,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                             >
                                 Accrued Commission
                             </Link>{' '}
-                            {sort == 'commissionPercentage' && (
-                                <ArrowDownIcon />
-                            )}
+                            {sort === 'commissionPercentage' && <SortIcon />}
                         </Th>
 
                         <Th
@@ -116,7 +117,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                 </Thead>
 
                 <Tbody>
-                    {loading && (
+                    {loading ? (
                         <Tr>
                             <Td colSpan={9} textAlign="center">
                                 <HStack justify="center">
@@ -125,21 +126,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                                 </HStack>
                             </Td>
                         </Tr>
-                    )}
-
-                    {!loading &&
-                        (!data ||
-                            (data.length === 0 && (
-                                <Tr>
-                                    <Td colSpan={9} textAlign="center">
-                                        <Text>No items</Text>
-                                    </Td>
-                                </Tr>
-                            )))}
-
-                    {!loading &&
-                        data &&
-                        data.length > 0 &&
+                    ) : hasItems ? (
                         data.map((pool) => (
                             <PoolPerformanceExtendedTableRow
                                 key={pool.id}
@@ -147,7 +134,14 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                                 pool={pool}
                                 account={account}
                             />
-                        ))}
+                        ))
+                    ) : (
+                        <Tr>
+                            <Td colSpan={9} textAlign="center">
+                                <Text>No items</Text>
+                            </Td>
+                        </Tr>
+                    )}
                 </Tbody>
             </Table>
         </TableResponsiveHolder>
