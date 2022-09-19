@@ -56,7 +56,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon width={2.5} height={2.5} />
+                            <Icon color={color} w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">
@@ -66,7 +66,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                         </Flex>
                     </Heading>
                 </Box>
-                <Box alignSelf="flex-end" mt="26px !important">
+                <Box alignSelf="flex-end" mt="1.625rem !important">
                     <IconButton
                         aria-label="Edit"
                         size="md"

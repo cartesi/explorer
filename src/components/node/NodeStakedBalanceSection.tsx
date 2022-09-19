@@ -34,16 +34,16 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
-        <Box bg={bg} shadow="md" p={6} mt={5} minHeight="114px">
+        <Box bg={bg} shadow="md" p={6} mt={5} minHeight="7.125rem">
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
                 <HStack spacing={5} alignItems="center">
                     <Box
-                        bg={'blue.50'}
-                        w="66px"
-                        h="66px"
+                        bg="blue.50"
+                        w="4.125rem"
+                        h="4.125rem"
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
@@ -52,7 +52,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                             color="blue.400"
                             w={8}
                             h={8}
-                            ml="2px"
+                            ml={0.5}
                         />
                     </Box>
                     <Box>

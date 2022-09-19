@@ -81,7 +81,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                 Set allowance
                             </Box>
 
-                            <ModalCloseButton mt="8px !important" />
+                            <ModalCloseButton mt="0.5rem !important" />
                         </HStack>
                         <Divider />
                     </Box>

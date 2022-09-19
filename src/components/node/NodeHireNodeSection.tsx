@@ -90,7 +90,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                 <Button
                     colorScheme="blue"
                     w={{ base: '100%', md: 'auto' }}
-                    minW="173px"
+                    minW="10.813rem"
                     textTransform="uppercase"
                     disabled={!isEnabled}
                     isLoading={isHiring}

@@ -46,8 +46,8 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
                     bg="orange.40"
-                    w="66px"
-                    h="66px"
+                    w="4.125rem"
+                    h="4.125rem"
                     borderRadius="full"
                     display="grid"
                     placeContent="center"
@@ -64,7 +64,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             bg="black"
                             color="white"
                         >
-                            <Icon width={2.5} height={2.5} />
+                            <Icon color={balanceColor} w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">

@@ -102,7 +102,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                 Stake
                             </Box>
 
-                            <ModalCloseButton mt="8px !important" />
+                            <ModalCloseButton mt="0.5rem !important" />
                         </HStack>
                         <Divider />
                     </Box>
