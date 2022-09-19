@@ -211,6 +211,12 @@ const ManageNode: FC = () => {
                                     ? node.transaction
                                     : null
                             }
+                            onClose={() => {
+                                setTransactionBanners({
+                                    ...transactionBanners,
+                                    deposit: false,
+                                });
+                            }}
                         />
                     )}
                     {transactionBanners?.retire && (
@@ -223,17 +229,30 @@ const ManageNode: FC = () => {
                                     ? node.transaction
                                     : null
                             }
+                            onClose={() => {
+                                setTransactionBanners({
+                                    ...transactionBanners,
+                                    retire: false,
+                                });
+                            }}
                         />
                     )}
                     {transactionBanners?.hire && (
                         <TransactionInfoBanner
                             title="Hiring node..."
                             failTitle="Error hiring node"
+                            successDescription="Node hired successfully."
                             transaction={
                                 currentTransaction === 'hire'
                                     ? node.transaction
                                     : null
                             }
+                            onClose={() => {
+                                setTransactionBanners({
+                                    ...transactionBanners,
+                                    hire: false,
+                                });
+                            }}
                         />
                     )}
                 </VStack>
@@ -264,9 +283,8 @@ const ManageNode: FC = () => {
                     userBalance={userBalance}
                     nodeBalance={node.balance}
                     isRetired={node.retired}
-                    isHiring={node.transaction?.isOngoing}
                     isRetiringNode={isRetiringNode}
-                    isOwned={node.owned}
+                    isHiring={node.transaction?.isOngoing}
                     onRetire={() => {
                         setCurrentTransaction('retire');
                         setTransactionBanners({

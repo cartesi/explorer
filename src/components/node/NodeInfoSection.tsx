@@ -39,7 +39,6 @@ export interface INodeInfoSection {
     isRetired?: boolean;
     isHiring?: boolean;
     isRetiringNode?: boolean;
-    isOwned?: boolean;
     onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
     onHire: (nodeAddress: string, funds: BigNumber) => void;
@@ -52,7 +51,6 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     isRetired = false,
     isHiring = false,
     isRetiringNode = false,
-    isOwned = false,
     onRetire,
     onDeposit,
     onHire,
@@ -65,9 +63,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
 
-    const isNodeHireSectionVisible =
-        !isRetiringNode &&
-        (isHiring || isRetired || !isOwned || isEmpty(address));
+    const isNodeHireSectionVisible = isRetired || isEmpty(address);
 
     const toETH = (value: BigNumber) => {
         const options: Intl.NumberFormatOptions = {
