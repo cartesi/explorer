@@ -24,6 +24,7 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import Address from '../Address';
 import { Transaction } from '../../services/transaction';
+import { isFunction } from 'lodash/fp';
 
 export interface ITransactionInfoBannerProps extends AlertProps {
     title?: string;
@@ -34,6 +35,7 @@ export interface ITransactionInfoBannerProps extends AlertProps {
     onEndTransaction?: () => void;
     onSuccess?: () => void;
     onError?: () => void;
+    onClose?: () => void;
 }
 
 export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
@@ -45,6 +47,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     onError,
     onBeginTransaction,
     onEndTransaction,
+    onClose,
     ...props
 }) => {
     const [innerTransaction, setInnerTransaction] = useState(transaction);
@@ -137,7 +140,14 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     right="8px"
                     top="8px"
                     role="close-button"
-                    onClick={() => innerTransaction?.ack()}
+                    onClick={() => {
+                        if (innerTransaction) {
+                            innerTransaction.ack();
+                        }
+                        if (isFunction(onClose)) {
+                            onClose();
+                        }
+                    }}
                 />
             )}
         </Alert>

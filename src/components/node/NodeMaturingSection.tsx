@@ -41,7 +41,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
             bg={bg}
             p={6}
             pl={7}
-            border="solid 1px var(--chakra-colors-gray-100)"
+            border="1px solid var(--chakra-colors-gray-100)"
             borderLeftWidth={14}
             borderLeftColor={maturingBalance.isZero() ? 'gray.450' : 'blue.200'}
         >

@@ -60,6 +60,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
     const buttonBg = useColorModeValue('gray.80', 'gray.800');
+    const tooltipColor = useColorModeValue('gray.400', 'white');
 
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
@@ -127,9 +128,9 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             color="white"
                                         >
                                             <Icon
-                                                width={2.5}
-                                                height={2.5}
-                                                color="gray.600"
+                                                width={3.5}
+                                                height={3.5}
+                                                color={tooltipColor}
                                             />
                                         </Tooltip>
                                     </Box>

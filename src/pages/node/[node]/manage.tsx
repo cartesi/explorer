@@ -25,6 +25,8 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { AiOutlineLeft } from 'react-icons/ai';
 
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useStaking } from '../../../services/staking';
@@ -41,22 +43,14 @@ import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
 import { NodeStakedBalanceSection } from '../../../components/node/NodeStakedBalanceSection';
 import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
-import { BigNumber } from 'ethers';
 import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
-import { NodeHiredBanner } from '../../../components/node/NodeHiredBanner';
-import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import theme from '../../../styles/theme';
-import { AiOutlineLeft } from 'react-icons/ai';
 
 const ManageNode: FC = () => {
     const { account, active: isConnected } = useWallet();
     const blockNumber = useBlockNumber();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const stepBoxBg = useColorModeValue('white', 'gray.700');
-    const [isNodeHiredAlertActive, setNodeHiredAlertActive] =
-        useState<boolean>(false);
-    const [isNodeRetiredAlertActive, setNodeRetiredAlertActive] =
-        useState<boolean>(false);
 
     // user ETH balance
     const userBalance = useBalance(account);
@@ -115,14 +109,7 @@ const ManageNode: FC = () => {
         currentTransaction === 'retire' && node.transaction?.isOngoing;
 
     useEffect(() => {
-        if (node.retired) {
-            setNodeRetiredAlertActive(true);
-        }
-    }, [node.retired]);
-
-    useEffect(() => {
         if (hiredNewNode) {
-            setNodeHiredAlertActive(true);
             window.history.pushState(
                 null,
                 '',
@@ -141,6 +128,12 @@ const ManageNode: FC = () => {
         }
     }, [node, hiringFunds, currentTransaction]);
 
+    useEffect(() => {
+        if (node.transaction?.state === 'confirmed') {
+            setCurrentTransaction(null);
+        }
+    }, [node.transaction]);
+
     return (
         <Layout>
             <Head>
@@ -154,7 +147,7 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Link href="/staking" passHref>
+                <Link href="/newStaking" passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>
@@ -220,42 +213,6 @@ const ManageNode: FC = () => {
                             }
                         />
                     )}
-                    {transactionBanners?.withdraw && (
-                        <TransactionInfoBanner
-                            title="Withdrawing..."
-                            failTitle="Error withdrawing"
-                            successDescription="Withdrawed successfully."
-                            transaction={
-                                currentTransaction === 'withdraw'
-                                    ? stakingTransaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.stake && (
-                        <TransactionInfoBanner
-                            title="Staking..."
-                            failTitle="Error staking"
-                            successDescription="Stake set successfully."
-                            transaction={
-                                currentTransaction === 'stake'
-                                    ? stakingTransaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.unstake && (
-                        <TransactionInfoBanner
-                            title="Unstaking..."
-                            failTitle="Error unstaking"
-                            successDescription="Unstaked successfully."
-                            transaction={
-                                currentTransaction === 'unstake'
-                                    ? stakingTransaction
-                                    : null
-                            }
-                        />
-                    )}
                     {transactionBanners?.retire && (
                         <TransactionInfoBanner
                             title="Retiring Node..."
@@ -288,18 +245,6 @@ const ManageNode: FC = () => {
                 bg={bg}
                 fontSize={'xl'}
             >
-                {isNodeHiredAlertActive && (
-                    <NodeHiredBanner
-                        onClose={() => setNodeHiredAlertActive(false)}
-                    />
-                )}
-
-                {isNodeRetiredAlertActive && (
-                    <NodeRetiredBanner
-                        onClose={() => setNodeRetiredAlertActive(false)}
-                    />
-                )}
-
                 <Stack
                     spacing={4}
                     justifyContent="space-between"
@@ -348,7 +293,6 @@ const ManageNode: FC = () => {
 
                         setWorker(nodeAddress);
                         setHiringFunds(funds);
-                        setNodeRetiredAlertActive(false);
                     }}
                 />
 
@@ -358,7 +302,7 @@ const ManageNode: FC = () => {
                     alignContent="flex-start"
                     alignItems="center"
                     mt={10}
-                    mb={8}
+                    mb={4}
                     direction={{ base: 'column', md: 'row' }}
                 >
                     <Box>
@@ -407,7 +351,70 @@ const ManageNode: FC = () => {
                     )}
                 </Stack>
 
-                <Flex pb={12} direction={['column', 'column', 'column', 'row']}>
+                <Box bg={bg}>
+                    <VStack spacing={4} alignItems="stretch">
+                        {transactionBanners?.withdraw && (
+                            <TransactionInfoBanner
+                                title="Withdrawing..."
+                                failTitle="Error withdrawing"
+                                successDescription="Withdrawed successfully."
+                                transaction={
+                                    currentTransaction === 'withdraw'
+                                        ? stakingTransaction
+                                        : null
+                                }
+                                onClose={() => {
+                                    setTransactionBanners({
+                                        ...transactionBanners,
+                                        withdraw: false,
+                                    });
+                                }}
+                            />
+                        )}
+                        {transactionBanners?.stake && (
+                            <TransactionInfoBanner
+                                title="Staking..."
+                                failTitle="Error staking"
+                                successDescription="Stake set successfully."
+                                transaction={
+                                    currentTransaction === 'stake'
+                                        ? stakingTransaction
+                                        : null
+                                }
+                                onClose={() => {
+                                    setTransactionBanners({
+                                        ...transactionBanners,
+                                        stake: false,
+                                    });
+                                }}
+                            />
+                        )}
+                        {transactionBanners?.unstake && (
+                            <TransactionInfoBanner
+                                title="Unstaking..."
+                                failTitle="Error unstaking"
+                                successDescription="Unstaked successfully."
+                                transaction={
+                                    currentTransaction === 'unstake'
+                                        ? stakingTransaction
+                                        : null
+                                }
+                                onClose={() => {
+                                    setTransactionBanners({
+                                        ...transactionBanners,
+                                        unstake: false,
+                                    });
+                                }}
+                            />
+                        )}
+                    </VStack>
+                </Box>
+
+                <Flex
+                    mt={4}
+                    pb={12}
+                    direction={['column', 'column', 'column', 'row']}
+                >
                     <Box flex="3">
                         <NodeMaturingSection
                             maturingBalance={maturingBalance}
