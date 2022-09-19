@@ -38,7 +38,7 @@ import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 
 const Home = () => {
     const router = useRouter();
-    const { account, chainId } = useWallet();
+    const { account, chainId, active } = useWallet();
     const summary = useSummary();
     const balances = usePoolBalances(account);
     const poolBalance = useTotalPoolBalance(account);
@@ -85,36 +85,39 @@ const Home = () => {
                     />
                 </PagePanel>
 
-                <PageBody bg={bodyBg} mt={[4, 4, 8]} p={0}>
-                    <Box
-                        shadow="md"
-                        pt={[6, 6, 10]}
-                        mb={[2, 2, 6]}
-                        bg={stakingPoolsBg}
-                    >
+                <PageBody bg={bodyBg} p={0}>
+                    {active && (
                         <Box
-                            px={{
-                                sm: '0vw',
-                                md: '12vw',
-                                xl: '12vw',
-                            }}
-                            pb={[0, 0, 10]}
+                            shadow="md"
+                            pt={[6, 6, 10]}
+                            mt={[4, 4, 8]}
+                            mb={[2, 2, 6]}
+                            bg={stakingPoolsBg}
                         >
-                            <Heading
-                                as="h1"
-                                fontSize={['1xl', '2xl']}
-                                mb={6}
-                                pl={[8, 8, 0]}
+                            <Box
+                                px={{
+                                    sm: '0vw',
+                                    md: '12vw',
+                                    xl: '12vw',
+                                }}
+                                pb={[0, 0, 10]}
                             >
-                                My staking pools
-                            </Heading>
-                            <UserStakingPoolsTable
-                                chainId={chainId}
-                                loading={balances.loading}
-                                data={balances.data?.poolBalances || []}
-                            />
+                                <Heading
+                                    as="h1"
+                                    fontSize={['1xl', '2xl']}
+                                    mb={6}
+                                    pl={[8, 8, 0]}
+                                >
+                                    My staking pools
+                                </Heading>
+                                <UserStakingPoolsTable
+                                    chainId={chainId}
+                                    loading={balances.loading}
+                                    data={balances.data?.poolBalances || []}
+                                />
+                            </Box>
                         </Box>
-                    </Box>
+                    )}
 
                     <Box
                         shadow="md"
