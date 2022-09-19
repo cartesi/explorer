@@ -27,7 +27,7 @@ describe('NodeInfoSection component', () => {
     afterEach(() => cleanup());
 
     it('Should render proper values', () => {
-        render(<NodeInfoSection {...defaultProps} isOwned />);
+        render(<NodeInfoSection {...defaultProps} />);
 
         expect(screen.getByText(defaultProps.address)).toBeInTheDocument();
         expect(screen.getByText(NODE_BALANCE_ETH)).toBeInTheDocument();
@@ -36,13 +36,13 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should render node info section', () => {
-        render(<NodeInfoSection {...defaultProps} isOwned />);
+        render(<NodeInfoSection {...defaultProps} />);
 
         expect(screen.getByText('Node address')).toBeInTheDocument();
     });
 
     it('should render node hire form', () => {
-        render(<NodeInfoSection {...defaultProps} isOwned={false} />);
+        render(<NodeInfoSection {...defaultProps} isRetired />);
 
         expect(screen.getByText('Hire node')).toBeInTheDocument();
     });
@@ -55,9 +55,7 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should enable edit balance button when not retiring', () => {
-        render(
-            <NodeInfoSection {...defaultProps} isOwned isRetiringNode={false} />
-        );
+        render(<NodeInfoSection {...defaultProps} isRetiringNode={false} />);
 
         const editBalanceButton = screen.getByTestId('edit-balance-button');
         expect(editBalanceButton.hasAttribute('disabled')).toBe(false);
@@ -73,9 +71,7 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should enable retire node button when not retiring', () => {
-        render(
-            <NodeInfoSection {...defaultProps} isOwned isRetiringNode={false} />
-        );
+        render(<NodeInfoSection {...defaultProps} isRetiringNode={false} />);
 
         const retireNodeButton = screen
             .getByText('Retire node')
