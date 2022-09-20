@@ -116,7 +116,6 @@ const ManageNode: FC = () => {
     const [isUnstakeAlertActive, setUnstakeAlertActive] =
         useState<boolean>(false);
     const isInitialLoading = useRef<boolean>(true);
-    const lastNode = useRef(node);
     const isStakeUnstakeDisabled = node.retired || !node.owned || isRetiring;
     const hiredNewNode =
         currentTransaction === 'hire' &&
@@ -149,8 +148,6 @@ const ManageNode: FC = () => {
     }, [node.transaction]);
 
     useEffect(() => {
-        lastNode.current = node;
-
         if (node.ready && isInitialLoading.current) {
             setRetired(node.retired);
             isInitialLoading.current = false;
@@ -316,11 +313,7 @@ const ManageNode: FC = () => {
                             setRetireAlertActive(true);
                             setRetiring(true);
 
-                            console.log('onRetire::');
-                            console.log(node);
-                            console.log(lastNode.current);
-
-                            lastNode.current.retire();
+                            node.retire();
                         }}
                         onDeposit={(amount) => {
                             setCurrentTransaction('deposit');
