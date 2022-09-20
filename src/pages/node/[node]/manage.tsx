@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 import {
     Box,
@@ -18,6 +18,7 @@ import {
     Heading,
     HStack,
     Link,
+    Spinner,
     Stack,
     Text,
     useBreakpointValue,
@@ -100,13 +101,26 @@ const ManageNode: FC = () => {
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
+    const [isRetiring, setRetiring] = useState<boolean>(false);
+    const [isHiring, setHiring] = useState<boolean>(false);
+    const [isRetired, setRetired] = useState<boolean>(node.retired);
     const [currentTransaction, setCurrentTransaction] = useState<any>(null);
-    const [transactionBanners, setTransactionBanners] = useState<any>({});
+    const [isRetireAlertActive, setRetireAlertActive] =
+        useState<boolean>(false);
+    const [isHireAlertActive, setHireAlertActive] = useState<boolean>(false);
+    const [isDepositAlertActive, setDepositAlertActive] =
+        useState<boolean>(false);
+    const [isWithdrawAlertActive, setWithdrawAlertActive] =
+        useState<boolean>(false);
+    const [isStakeAlertActive, setStakeAlertActive] = useState<boolean>(false);
+    const [isUnstakeAlertActive, setUnstakeAlertActive] =
+        useState<boolean>(false);
+    const isInitialLoading = useRef<boolean>(true);
+    const lastNode = useRef(node);
+    const isStakeUnstakeDisabled = node.retired || !node.owned || isRetiring;
     const hiredNewNode =
         currentTransaction === 'hire' &&
         node.transaction?.state === 'confirmed';
-    const isRetiringNode =
-        currentTransaction === 'retire' && node.transaction?.isOngoing;
 
     useEffect(() => {
         if (hiredNewNode) {
@@ -133,6 +147,15 @@ const ManageNode: FC = () => {
             setCurrentTransaction(null);
         }
     }, [node.transaction]);
+
+    useEffect(() => {
+        lastNode.current = node;
+
+        if (node.ready && isInitialLoading.current) {
+            setRetired(node.retired);
+            isInitialLoading.current = false;
+        }
+    }, [node]);
 
     return (
         <Layout>
@@ -201,58 +224,50 @@ const ManageNode: FC = () => {
                         successDescription="New allowance set successfully."
                         transaction={tokenTransaction}
                     />
-                    {transactionBanners?.deposit && (
+
+                    {isDepositAlertActive && (
                         <TransactionInfoBanner
                             title="Setting deposit..."
                             failTitle="Error setting deposit"
                             successDescription="New deposit set successfully."
-                            transaction={
-                                currentTransaction === 'deposit'
-                                    ? node.transaction
-                                    : null
-                            }
-                            onClose={() => {
-                                setTransactionBanners({
-                                    ...transactionBanners,
-                                    deposit: false,
-                                });
-                            }}
+                            transaction={node.transaction}
+                            onClose={() => setDepositAlertActive(false)}
                         />
                     )}
-                    {transactionBanners?.retire && (
+
+                    {isRetireAlertActive && (
                         <TransactionInfoBanner
                             title="Retiring Node..."
                             failTitle="Error retiring the node"
                             successDescription="Node retired successfully."
-                            transaction={
-                                currentTransaction === 'retire'
-                                    ? node.transaction
-                                    : null
-                            }
-                            onClose={() => {
-                                setTransactionBanners({
-                                    ...transactionBanners,
-                                    retire: false,
-                                });
+                            transaction={node.transaction}
+                            onSuccess={() => {
+                                setRetiring(false);
+                                setRetired(true);
                             }}
+                            onError={() => {
+                                setRetiring(false);
+                                setRetired(false);
+                            }}
+                            onClose={() => setRetireAlertActive(false)}
                         />
                     )}
-                    {transactionBanners?.hire && (
+
+                    {isHireAlertActive && (
                         <TransactionInfoBanner
                             title="Hiring node..."
                             failTitle="Error hiring node"
                             successDescription="Node hired successfully."
-                            transaction={
-                                currentTransaction === 'hire'
-                                    ? node.transaction
-                                    : null
-                            }
-                            onClose={() => {
-                                setTransactionBanners({
-                                    ...transactionBanners,
-                                    hire: false,
-                                });
+                            transaction={node.transaction}
+                            onSuccess={() => {
+                                setHiring(false);
+                                setRetired(false);
                             }}
+                            onError={() => {
+                                setHiring(false);
+                                setRetired(true);
+                            }}
+                            onClose={() => setHireAlertActive(false)}
                         />
                     )}
                 </VStack>
@@ -278,41 +293,50 @@ const ManageNode: FC = () => {
                     </Box>
                 </Stack>
 
-                <NodeInfoSection
-                    address={activeWorker}
-                    userBalance={userBalance}
-                    nodeBalance={node.balance}
-                    isRetired={node.retired}
-                    isRetiringNode={isRetiringNode}
-                    isHiring={node.transaction?.isOngoing}
-                    onRetire={() => {
-                        setCurrentTransaction('retire');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            retire: true,
-                        });
+                {!node.ready ? (
+                    <Box
+                        bg={bg}
+                        px={{ base: 2, lg: 8 }}
+                        py={{ base: 2, lg: 6 }}
+                        display="flex"
+                        justifyContent="center"
+                    >
+                        <Spinner size="xl" color="white" />
+                    </Box>
+                ) : (
+                    <NodeInfoSection
+                        address={activeWorker}
+                        userBalance={userBalance}
+                        nodeBalance={node.balance}
+                        isRetired={isRetired}
+                        isRetiring={isRetiring}
+                        isHiring={isHiring}
+                        onRetire={() => {
+                            setCurrentTransaction('retire');
+                            setRetireAlertActive(true);
+                            setRetiring(true);
 
-                        node.retire();
-                    }}
-                    onDeposit={(amount) => {
-                        setCurrentTransaction('deposit');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            deposit: true,
-                        });
-                        node.transfer(amount);
-                    }}
-                    onHire={(nodeAddress, funds) => {
-                        setCurrentTransaction('hire');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            hire: true,
-                        });
+                            console.log('onRetire::');
+                            console.log(node);
+                            console.log(lastNode.current);
 
-                        setWorker(nodeAddress);
-                        setHiringFunds(funds);
-                    }}
-                />
+                            lastNode.current.retire();
+                        }}
+                        onDeposit={(amount) => {
+                            setCurrentTransaction('deposit');
+                            setDepositAlertActive(true);
+                            node.transfer(amount);
+                        }}
+                        onHire={(nodeAddress, funds) => {
+                            setCurrentTransaction('hire');
+                            setHireAlertActive(true);
+                            setHiring(true);
+                            setRetiring(false);
+                            setWorker(nodeAddress);
+                            setHiringFunds(funds);
+                        }}
+                    />
+                )}
 
                 <Stack
                     spacing={4}
@@ -340,11 +364,7 @@ const ManageNode: FC = () => {
                                 fontWeight={600}
                                 textTransform="uppercase"
                                 letterSpacing="0.5px"
-                                disabled={
-                                    node.retired ||
-                                    !node.owned ||
-                                    isRetiringNode
-                                }
+                                disabled={isStakeUnstakeDisabled}
                                 onClick={unstakeDisclosure.onOpen}
                             >
                                 Unstake
@@ -356,11 +376,7 @@ const ManageNode: FC = () => {
                                 fontWeight={600}
                                 textTransform="uppercase"
                                 letterSpacing="0.5px"
-                                disabled={
-                                    node.retired ||
-                                    !node.owned ||
-                                    isRetiringNode
-                                }
+                                disabled={isStakeUnstakeDisabled}
                                 onClick={stakeDisclosure.onOpen}
                             >
                                 Stake
@@ -371,58 +387,33 @@ const ManageNode: FC = () => {
 
                 <Box bg={bg}>
                     <VStack spacing={4} alignItems="stretch">
-                        {transactionBanners?.withdraw && (
+                        {isWithdrawAlertActive && (
                             <TransactionInfoBanner
                                 title="Withdrawing..."
                                 failTitle="Error withdrawing"
                                 successDescription="Withdrawed successfully."
-                                transaction={
-                                    currentTransaction === 'withdraw'
-                                        ? stakingTransaction
-                                        : null
-                                }
-                                onClose={() => {
-                                    setTransactionBanners({
-                                        ...transactionBanners,
-                                        withdraw: false,
-                                    });
-                                }}
+                                transaction={stakingTransaction}
+                                onClose={() => setWithdrawAlertActive(false)}
                             />
                         )}
-                        {transactionBanners?.stake && (
+
+                        {isStakeAlertActive && (
                             <TransactionInfoBanner
                                 title="Staking..."
                                 failTitle="Error staking"
                                 successDescription="Stake set successfully."
-                                transaction={
-                                    currentTransaction === 'stake'
-                                        ? stakingTransaction
-                                        : null
-                                }
-                                onClose={() => {
-                                    setTransactionBanners({
-                                        ...transactionBanners,
-                                        stake: false,
-                                    });
-                                }}
+                                transaction={stakingTransaction}
+                                onClose={() => setStakeAlertActive(false)}
                             />
                         )}
-                        {transactionBanners?.unstake && (
+
+                        {isUnstakeAlertActive && (
                             <TransactionInfoBanner
                                 title="Unstaking..."
                                 failTitle="Error unstaking"
                                 successDescription="Unstaked successfully."
-                                transaction={
-                                    currentTransaction === 'unstake'
-                                        ? stakingTransaction
-                                        : null
-                                }
-                                onClose={() => {
-                                    setTransactionBanners({
-                                        ...transactionBanners,
-                                        unstake: false,
-                                    });
-                                }}
+                                transaction={stakingTransaction}
+                                onClose={() => setUnstakeAlertActive(false)}
                             />
                         )}
                     </VStack>
@@ -446,10 +437,7 @@ const ManageNode: FC = () => {
                             releasingLeftShort={releasingLeftShort}
                             onWithdraw={() => {
                                 setCurrentTransaction('withdraw');
-                                setTransactionBanners({
-                                    ...transactionBanners,
-                                    withdraw: true,
-                                });
+                                setWithdrawAlertActive(true);
                                 withdraw(releasingBalance);
                             }}
                         />
@@ -463,10 +451,7 @@ const ManageNode: FC = () => {
                     disclosure={stakeDisclosure}
                     onSave={(amount) => {
                         setCurrentTransaction('stake');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            stake: true,
-                        });
+                        setStakeAlertActive(true);
                         stake(amount);
                     }}
                 />
@@ -479,10 +464,7 @@ const ManageNode: FC = () => {
                         disclosure={unstakeDisclosure}
                         onSave={(amount) => {
                             setCurrentTransaction('unstake');
-                            setTransactionBanners({
-                                ...transactionBanners,
-                                unstake: true,
-                            });
+                            setUnstakeAlertActive(true);
                             unstake(amount);
                         }}
                     />
@@ -508,9 +490,7 @@ const ManageNode: FC = () => {
                             bgColor={bg}
                             w={{ base: '100%', md: 'auto' }}
                             me={2}
-                            disabled={
-                                node.retired || !node.owned || isRetiringNode
-                            }
+                            disabled={isStakeUnstakeDisabled}
                             onClick={unstakeDisclosure.onOpen}
                         >
                             UNSTAKE
@@ -518,9 +498,7 @@ const ManageNode: FC = () => {
                         <Button
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
-                            disabled={
-                                node.retired || !node.owned || isRetiringNode
-                            }
+                            disabled={isStakeUnstakeDisabled}
                             onClick={stakeDisclosure.onOpen}
                         >
                             STAKE

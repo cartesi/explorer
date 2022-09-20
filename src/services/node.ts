@@ -28,6 +28,7 @@ export interface Node {
     user: string;
     available: boolean;
     pending: boolean;
+    ready: boolean;
     owned: boolean;
     retired: boolean;
     authorized: boolean;
@@ -56,6 +57,7 @@ export const useNode = (address: string): Node => {
     const [authorized1, setAuthorized1] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [ready, setReady] = useState<boolean>(false);
 
     const transaction = useTransaction();
 
@@ -95,6 +97,7 @@ export const useNode = (address: string): Node => {
             setRetired(retired);
             setAuthorized(authorized);
             setAuthorized1(authorized1);
+            setReady(true);
         } catch (e) {
             resetState('');
         }
@@ -155,6 +158,7 @@ export const useNode = (address: string): Node => {
         pending,
         owned,
         retired,
+        ready,
         authorized,
         authorized1,
         loading,

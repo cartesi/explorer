@@ -36,9 +36,9 @@ export interface INodeInfoSection {
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
-    isRetired?: boolean;
     isHiring?: boolean;
-    isRetiringNode?: boolean;
+    isRetired?: boolean;
+    isRetiring?: boolean;
     onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
     onHire: (nodeAddress: string, funds: BigNumber) => void;
@@ -48,9 +48,9 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     address,
     userBalance,
     nodeBalance,
-    isRetired = false,
     isHiring = false,
-    isRetiringNode = false,
+    isRetired = false,
+    isRetiring = false,
     onRetire,
     onDeposit,
     onHire,
@@ -63,7 +63,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
 
-    const isNodeHireSectionVisible = isRetired || isEmpty(address);
+    const isNodeHireSectionVisible = isRetired || isHiring || isEmpty(address);
 
     const toETH = (value: BigNumber) => {
         const options: Intl.NumberFormatOptions = {
@@ -85,9 +85,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     return (
         <>
             {isNodeHireSectionVisible ? (
-                <>
-                    <NodeHireNodeSection isHiring={isHiring} onHire={onHire} />
-                </>
+                <NodeHireNodeSection isHiring={isHiring} onHire={onHire} />
             ) : (
                 <>
                     <Box
@@ -152,7 +150,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                         icon={<EditIcon w={4} h={4} />}
                                         variant="ghost"
                                         data-testid="edit-balance-button"
-                                        disabled={isRetiringNode}
+                                        disabled={isRetiring}
                                         onClick={depositModal.onOpen}
                                     />
                                 </Box>
@@ -176,7 +174,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     </Box>
                     <Button
                         onClick={retireModal.onOpen}
-                        disabled={isRetiringNode}
+                        disabled={isRetiring}
                         bgColor={buttonBg}
                         w={{ base: '100%', md: 'auto' }}
                         minW="173px"
