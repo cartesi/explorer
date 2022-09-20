@@ -54,7 +54,7 @@ const Header = () => (
 const nodeMapper = (node: Node) => {
     return {
         id: node.id,
-        totalStaked: formatCTSI(node.owner?.stakedBalance, 2),
+        totalStaked: formatCTSI(node.owner?.balance, 2),
         totalRewards: formatCTSI(node.totalReward, 2),
         blocksProduced: node.totalBlocks,
         nodeStatus: 'Hired',

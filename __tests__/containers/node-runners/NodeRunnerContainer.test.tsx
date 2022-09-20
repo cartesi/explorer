@@ -438,6 +438,28 @@ describe('NodeRunners container (Landing Page)', () => {
                 ).toBeInTheDocument();
             });
 
+            it('should display the correct staked balance value', async () => {
+                const mock = buildUseUserNodesReturn();
+                mock.data = generateNodeData().data;
+                useUserNodeStub.mockReturnValue(mock);
+                render(
+                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                );
+
+                const row = await screen
+                    .getByRole('gridcell', {
+                        name: '0x68a...e56c',
+                    })
+                    .closest('tr');
+
+                // staked balance
+                expect(await findByText(row, '3,400')).toBeInTheDocument();
+                // reward
+                expect(await findByText(row, '10')).toBeInTheDocument();
+                //blocks produced
+                expect(await findByText(row, '1')).toBeInTheDocument();
+            });
+
             it('should remove the card for private node creation', async () => {
                 const { rerender } = render(
                     <ENodeRunnerContainer wallet={wallet} router={router} />
