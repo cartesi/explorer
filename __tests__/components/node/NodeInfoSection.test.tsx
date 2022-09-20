@@ -48,21 +48,21 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should disable edit balance button while retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiringNode />);
+        render(<NodeInfoSection {...defaultProps} isRetiring />);
 
         const editBalanceButton = screen.getByTestId('edit-balance-button');
         expect(editBalanceButton.hasAttribute('disabled')).toBe(true);
     });
 
     it('should enable edit balance button when not retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiringNode={false} />);
+        render(<NodeInfoSection {...defaultProps} isRetiring={false} />);
 
         const editBalanceButton = screen.getByTestId('edit-balance-button');
         expect(editBalanceButton.hasAttribute('disabled')).toBe(false);
     });
 
     it('should disable retire node button while retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiringNode />);
+        render(<NodeInfoSection {...defaultProps} isRetiring />);
 
         const retireNodeButton = screen
             .getByText('Retire node')
@@ -71,7 +71,7 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should enable retire node button when not retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiringNode={false} />);
+        render(<NodeInfoSection {...defaultProps} isRetiring={false} />);
 
         const retireNodeButton = screen
             .getByText('Retire node')

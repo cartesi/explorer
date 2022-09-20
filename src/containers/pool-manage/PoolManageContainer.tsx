@@ -157,7 +157,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                     nodeBalance={node.balance}
                     isRetired={node.retired}
                     isHiring={pool.transaction?.isOngoing}
-                    isRetiringNode={
+                    isRetiring={
                         currentTransaction === 'retire' &&
                         pool.transaction?.isOngoing
                     }
