@@ -19,7 +19,6 @@ import {
 import { useWallet } from '../../../../src/contexts/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { InitialFundsInput } from '../../../../src/components/node/inputs/InitialFundsInput';
-import { buildNodeObj } from '../mocks';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 
 const walletMod = `../../../../src/contexts/wallet`;
@@ -45,9 +44,16 @@ jest.mock(servicesEthMod, () => {
 
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseBalance = useBalance as jest.MockedFunction<typeof useBalance>;
+const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+const defaultUseWalletData = {
+    account,
+    active: true,
+    activate: jest.fn(),
+    deactivate: jest.fn(),
+    chainId: 3,
+};
 
 describe('InitialFundsInput component', () => {
-    const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
     const onValidationStub = jest.fn();
     const onChangeStub = jest.fn();
 
@@ -61,13 +67,7 @@ describe('InitialFundsInput component', () => {
     );
 
     beforeEach(() => {
-        mockUseWallet.mockReturnValue({
-            account,
-            active: true,
-            activate: jest.fn(),
-            deactivate: jest.fn(),
-            chainId: 3,
-        });
+        mockUseWallet.mockReturnValue(defaultUseWalletData);
 
         mockUseBalance.mockReturnValue(toBigNumber('1'));
     });
@@ -82,7 +82,17 @@ describe('InitialFundsInput component', () => {
 
         expect(screen.getByLabelText('Initial Funds')).toBeInTheDocument();
         expect(screen.getByText('ETH')).toBeInTheDocument();
-        expect(screen.getByText('Your balance: 1 ETH'));
+        expect(screen.getByText('Your balance: 1 ETH')).toBeInTheDocument();
+    });
+
+    it('should reset ETH balance when wallet is disconnected', () => {
+        mockUseWallet.mockReturnValue({
+            ...defaultUseWalletData,
+            active: false,
+        });
+        render(<Component max={3} min={0} />);
+
+        expect(screen.getByText('Your balance: 0.00 ETH')).toBeInTheDocument();
     });
 
     describe('validations', () => {

@@ -50,11 +50,12 @@ const InitialFundsInput = ({
     styleProps,
 }: InitialFundsInputProps) => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
-    const { account } = useWallet();
+    const { account, active } = useWallet();
     const userBalance = useBalance(account);
-    const ethBalance = userBalance
-        ? formatValue(userBalance, 'eth', numberFormatOpts)
-        : '0.00';
+    const ethBalance =
+        userBalance && active
+            ? formatValue(userBalance, 'eth', numberFormatOpts)
+            : '0.00';
     const {
         register,
         formState: { errors },
