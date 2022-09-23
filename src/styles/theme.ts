@@ -20,8 +20,9 @@ import { Input } from './components/input';
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 import { fonts } from './foundations/fonts';
-import { buildOnboardTheme } from './onboardTheme';
+// import { buildOnboardTheme } from './onboardTheme';
 import { formsTheme } from './formsTheme';
+import { buildOnboardTheme } from './onboard';
 
 const theme = extendTheme({
     styles: {

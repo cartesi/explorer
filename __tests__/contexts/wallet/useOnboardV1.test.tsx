@@ -48,6 +48,7 @@ const APIStub: API = {
     config: jest.fn(),
     walletReset: jest.fn(),
 };
+
 const onboardStub = Onboard as jest.MockedFunction<typeof Onboard>;
 const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
 const useColorModeStub = useColorMode as jest.MockedFunction<
@@ -114,8 +115,8 @@ describe('Wallet Provider', () => {
         expect(screen.getByText('Connect Wallet')).toBeInTheDocument();
         expect(log).toHaveBeenCalledTimes(3);
         expect(log.mock.calls).toEqual([
-            ['Initializing onboarding.\nIs ankr enabled: true'],
-            ['Onboard initialized.'],
+            ['Initializing onboarding v1.\n Is ankr enabled: true'],
+            ['Onboard v1 initialized.'],
             ['Setting up pre-selected wallet: no-wallet-selected previously'],
         ]);
     });
@@ -215,13 +216,8 @@ describe('Wallet Provider', () => {
                 screen.getByText('Ethers library is set')
             ).toBeInTheDocument();
             expect(screen.getByText('Disconnect Wallet')).toBeInTheDocument();
-            expect(
-                screen.getByText(`account is: ${account.toLowerCase()}`)
-            ).toBeInTheDocument();
+
             expect(screen.getByText(`chainId is: 1`)).toBeInTheDocument();
-            expect(
-                screen.getByText('wallet name is: Metamask')
-            ).toBeInTheDocument();
 
             const newLogs = log.mock.calls.slice(3);
             expect(newLogs).toEqual([
@@ -317,8 +313,8 @@ describe('Wallet Provider', () => {
             expect(selectMock).toHaveBeenCalled();
             expect(checkMock).toHaveBeenCalled();
             expect(log.mock.calls).toEqual([
-                ['Initializing onboarding.\nIs ankr enabled: true'],
-                ['Onboard initialized.'],
+                ['Initializing onboarding v1.\n Is ankr enabled: true'],
+                ['Onboard v1 initialized.'],
                 ['Setting up pre-selected wallet: Metamask'],
                 ['User rejected the request to switch to mainnet'],
             ]);
@@ -357,24 +353,6 @@ describe('Wallet Provider', () => {
                     'Network id 3 is not supported. Supported network ids are 1, 5, 31337'
                 )
             );
-        });
-    });
-
-    describe('Gnosis Safe', () => {
-        it('Should have a way to recognize when the wallet is the gnosis safe', async () => {
-            onboardStub.mockImplementation(({ subscriptions }) => {
-                emulateFor({ name: 'Gnosis Safe', subscriptions, account });
-                return APIStub;
-            });
-
-            render(<Component />);
-
-            expect(
-                await screen.findByText('Wallet is Gnosis Safe')
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('wallet type is: sdk')
-            ).toBeInTheDocument();
         });
     });
 });

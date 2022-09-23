@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Web3Provider } from '@ethersproject/providers';
-import { API } from 'bnc-onboard/dist/src/interfaces';
 
 export enum WalletType {
     HARDWARE = 'hardware',
@@ -19,7 +18,6 @@ export enum WalletType {
 }
 
 export interface WalletConnectionContextProps {
-    onboard?: API;
     account?: string;
     chainId?: number;
     library?: Web3Provider;
@@ -27,6 +25,7 @@ export interface WalletConnectionContextProps {
     active: boolean;
     activate: (...a: any) => Promise<void>;
     deactivate: () => void;
+    selectAccount?: () => void;
     tried?: boolean;
     isHardwareWallet?: boolean;
     isGnosisSafe?: boolean;

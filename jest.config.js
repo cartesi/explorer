@@ -1,5 +1,16 @@
 // eslint-disable-next-line no-undef
 module.exports = {
+    build: {
+        standalone: true,
+    },
+    globals: {
+        // This is necessary because next.js forces { "jsx": "preserve" }, but ts-jest requires { "jsx": "react-jsx" }
+        'ts-jest': {
+            tsconfig: {
+                jsx: 'react-jsx',
+            },
+        },
+    },
     collectCoverageFrom: [
         '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
         '!<rootDir>/src/graphql/models.ts',

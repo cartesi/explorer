@@ -26,7 +26,7 @@ import { useENS } from '../../../services/ens';
 import { useWallet } from '../../../contexts/wallet';
 
 const WalletMenu: FC = () => {
-    const { account, library, isHardwareWallet, onboard, deactivate } =
+    const { account, library, isHardwareWallet, selectAccount, deactivate } =
         useWallet();
     const ens = useENS(account);
     const { hasCopied, onCopy } = useClipboard(account);
@@ -150,7 +150,7 @@ const WalletMenu: FC = () => {
                     </Flex>
                 </MenuItem>
             )}
-            {account && library && onboard && isHardwareWallet && (
+            {account && library && selectAccount && isHardwareWallet && (
                 <MenuItem
                     justifyContent={'flex-end'}
                     borderBottom="1px"
@@ -159,7 +159,7 @@ const WalletMenu: FC = () => {
                 >
                     <Flex>
                         <Box
-                            onClick={onboard.accountSelect}
+                            onClick={selectAccount}
                             aria-label="Switch accounts"
                             title="Switch accounts"
                             px={4}
@@ -170,7 +170,7 @@ const WalletMenu: FC = () => {
                             Switch account
                         </Box>
                         <SwitchIcon
-                            onClick={onboard.accountSelect}
+                            onClick={selectAccount}
                             aria-label="Switch accounts"
                             style={{
                                 height: 18,
