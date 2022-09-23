@@ -93,7 +93,7 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
             <HStack>
                 <Button
                     colorScheme="blue"
-                    isFullWidth
+                    width="full"
                     onClick={handleSubmit((data) =>
                         onHire(toBigNumber(data.deposit))
                     )}

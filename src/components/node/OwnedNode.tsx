@@ -148,7 +148,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                     <>
                         <Button
                             colorScheme="blue"
-                            isFullWidth
+                            width="full"
                             onClick={handleSubmit((data) =>
                                 onTransfer(toBigNumber(data.deposit))
                             )}
@@ -159,12 +159,12 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                             <Button
                                 colorScheme="blue"
                                 onClick={onAuthorize}
-                                isFullWidth
+                                width="full"
                             >
                                 Authorize
                             </Button>
                         )}
-                        <Button onClick={onOpen} colorScheme="red" isFullWidth>
+                        <Button onClick={onOpen} colorScheme="red" width="full">
                             Retire
                         </Button>
                         <Modal onClose={onClose} isOpen={isOpen} isCentered>

@@ -147,7 +147,7 @@ const UnstakeForm: FC<UnstakeFormProps> = (props) => {
             </Box>
 
             <Button
-                isFullWidth
+                width="full"
                 isDisabled={disabled}
                 onClick={handleSubmit((data) => doUnstake(data.amount))}
             >

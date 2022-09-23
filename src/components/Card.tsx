@@ -111,7 +111,7 @@ export const Card = ({
                         colorScheme="blue"
                         onClick={onButtonClick}
                         fontWeight={500}
-                        isFullWidth
+                        width="full"
                         h={{ base: 12, lg: 14 }}
                         w="16rem"
                     >

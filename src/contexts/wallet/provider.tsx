@@ -19,7 +19,7 @@ import {
 import { chains } from 'eth-chains';
 import { ethers } from 'ethers';
 import { omit } from 'lodash/fp';
-import { createContext, FC, useEffect, useState } from 'react';
+import React, { createContext, FC, useEffect, useState } from 'react';
 import { networks } from '../../utils/networks';
 import { WalletConnectionContextProps, WalletType } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
@@ -75,7 +75,13 @@ const initialContextState = {
 export const WalletConnectionContext =
     createContext<WalletConnectionContextProps>(initialContextState);
 
-export const WalletConnectionProvider: FC = (props) => {
+interface WalletConnectionProviderProps {
+    children: React.ReactNode;
+}
+
+export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
+    props
+) => {
     const [state, setState] = useState<WalletConnectionContextProps>({
         ...initialContextState,
     });

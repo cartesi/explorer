@@ -10,9 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Box, useConst } from '@chakra-ui/react';
+import { Box, ChakraProps, useConst } from '@chakra-ui/react';
 
-export const TableResponsiveHolder: FC = ({ children }) => {
+interface TableResponsiveHolderProps {
+    children: React.ReactNode;
+}
+
+export const TableResponsiveHolder: FC<TableResponsiveHolderProps> = ({
+    children,
+}) => {
     const [state, setState] = useState({
         overflow: false,
         scrolled: false,
@@ -30,7 +36,7 @@ export const TableResponsiveHolder: FC = ({ children }) => {
         pointerEvents: 'none',
         zIndex: 2,
         transition: 'opacity 0.2s ease-in-out',
-    }));
+    })) as ChakraProps;
 
     const handleResize = () => {
         setState((prev) => {

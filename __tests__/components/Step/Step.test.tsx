@@ -13,15 +13,41 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import {
     Step,
+    StepProps,
     StepBody,
     StepActions,
     StepStatus,
 } from '../../../src/components/Step';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Heading, useBreakpointValue } from '@chakra-ui/react';
+import { withChakraTheme } from '../../test-utilities';
+
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
+
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
+
+const Component = withChakraTheme<StepProps>(Step);
 
 describe('Step component', () => {
+    beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
+    });
+
+    afterEach(() => {
+        cleanup();
+        jest.clearAllMocks();
+    });
+
     const CreateStep = (status: StepStatus) => (
-        <Step
+        <Component
             stepNumber={1}
             title="Hello There"
             subtitle="This is the first step"
@@ -33,11 +59,8 @@ describe('Step component', () => {
             <StepActions>
                 <Button>Next</Button>
             </StepActions>
-        </Step>
+        </Component>
     );
-    afterEach(() => {
-        cleanup();
-    });
 
     it('should render the header, body and actions when status is active', () => {
         render(CreateStep(StepStatus.ACTIVE));

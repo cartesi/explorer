@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react';
 import { StepStatus } from '../../../src/components/Step';
-import { useStepState } from '../../../src/components/StepGroup/useStepState';
+import { useStepState } from '../../../src/components/StepGroup';
 
 describe('useStepState hook', () => {
     it('should return an array with two values the state as the first and a function as the second', () => {

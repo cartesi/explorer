@@ -17,6 +17,7 @@ import { withChakraTheme } from '../../../test-utilities';
 import { useStepState } from '../../../../src/components/StepGroup';
 import ENS from '../../../../src/components/pools/steps/ENS';
 import { StepStatus } from '../../../../src/components/Step';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const stakingPoolMod = '../../../../src/services/pool';
@@ -66,6 +67,14 @@ jest.mock('next/router', () => {
         useRouter: jest.fn(),
     };
 });
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
 
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
@@ -75,6 +84,9 @@ const mockUseStakingPool = useStakingPool as jest.MockedFunction<
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockUseStepState = useStepState as jest.MockedFunction<
     typeof useStepState
+>;
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
 >;
 const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
@@ -86,6 +98,7 @@ describe('Pool ENS step', () => {
     const routerPushStub = jest.fn();
 
     beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
         // Partial filled Happy returns
         mockUseWallet.mockReturnValue({
             account,

@@ -141,7 +141,6 @@ const WalletMenu: FC = () => {
                         <DisconnectIcon
                             onClick={deactivate}
                             aria-label="Disconnect wallet"
-                            title="Disconnect wallet"
                             style={{
                                 height: 18,
                                 width: 18,
@@ -173,7 +172,6 @@ const WalletMenu: FC = () => {
                         <SwitchIcon
                             onClick={onboard.accountSelect}
                             aria-label="Switch accounts"
-                            title="Switch accounts"
                             style={{
                                 height: 18,
                                 width: 18,

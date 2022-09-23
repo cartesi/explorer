@@ -102,14 +102,14 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             </Text>
                         </HStack>
                         <Button
-                            isFullWidth
+                            width="full"
                             colorScheme="blue"
                             disabled={address != addressValue?.trim()}
                             onClick={onConfirmRetire}
                         >
                             Retire
                         </Button>
-                        <Button isFullWidth bg={bg} onClick={onClose}>
+                        <Button width="full" bg={bg} onClick={onClose}>
                             Cancel
                         </Button>
                     </VStack>

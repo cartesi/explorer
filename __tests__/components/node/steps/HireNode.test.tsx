@@ -17,6 +17,7 @@ import {
     act,
     findByText,
 } from '@testing-library/react';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useWallet } from '../../../../src/contexts/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
@@ -69,10 +70,23 @@ jest.mock('jotai', () => {
     };
 });
 
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
+
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseNode = useNode as jest.MockedFunction<typeof useNode>;
 const mockUseBalance = useBalance as jest.MockedFunction<typeof useBalance>;
 const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
+
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
 
 describe('HireNode Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -93,6 +107,7 @@ describe('HireNode Step', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         mockUseAtom.mockImplementation(() => ['', atomSetterStub]);
+        mockUseBreakpointValue.mockReturnValue(false);
     });
 
     afterEach(() => {
@@ -169,7 +184,7 @@ describe('HireNode Step', () => {
             );
 
             // Fill the required fields
-            act(() => {
+            await act(() => {
                 fireEvent.change(addressInput, {
                     target: { value: account },
                 });
@@ -254,7 +269,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -282,7 +297,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -328,7 +343,7 @@ describe('HireNode Step', () => {
             const addressInput = screen.getByLabelText('Node Address');
             const fundsInput = screen.getByLabelText('Initial Funds');
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(addressInput, {
                     target: { value: nodeAddress },
                 });

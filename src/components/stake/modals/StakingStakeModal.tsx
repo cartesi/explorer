@@ -151,7 +151,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     disabled={stakedValue.isZero()}
                                     data-testid="stake-button"
@@ -164,7 +164,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     Stake
                                 </Button>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     variant="ghost"
                                     colorScheme="darkGray"
                                     onClick={onClose}

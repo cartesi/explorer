@@ -9,13 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    cleanup,
-    fireEvent,
-    prettyDOM,
-    render,
-    screen,
-} from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { Notification } from '../../src/components/Notification';
 import { withChakraTheme } from '../test-utilities';
@@ -80,26 +74,20 @@ describe('Notification component', () => {
         const role = screen.getByRole('alert');
 
         // default is info
-        expect(role).toHaveStyle(
-            'border-inline-start-color: var(--chakra-colors-blue-500);'
-        );
+        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-blue-500);');
 
         rerender(<ENotification title="Title" status="success" />);
 
-        expect(role).toHaveStyle(
-            'border-inline-start-color: var(--chakra-colors-green-500);'
-        );
+        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-green-500);');
 
         rerender(<ENotification title="Title" status="error" />);
 
-        expect(role).toHaveStyle(
-            'border-inline-start-color:  var(--chakra-colors-red-500);'
-        );
+        expect(role).toHaveStyle('--alert-fg:  var(--chakra-colors-red-500);');
 
         rerender(<ENotification title="Title" status="warning" />);
 
         expect(role).toHaveStyle(
-            'border-inline-start-color:  var(--chakra-colors-orange-500);'
+            '--alert-fg:  var(--chakra-colors-orange-500);'
         );
     });
 });

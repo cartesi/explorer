@@ -24,6 +24,7 @@ module.exports = {
 
         // Handle module aliases
         '^@/components/(.*)$': '<rootDir>/components/$1',
+        uuid: '<rootDir>/node_modules/uuid/dist/umd/uuid.min.js',
     },
     testMatch: [
         '**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)',

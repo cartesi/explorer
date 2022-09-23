@@ -26,6 +26,7 @@ import { buildContractReceipt } from '../../node/mocks';
 import { useAtom } from 'jotai';
 import { useStepState } from '../../../../src/components/StepGroup';
 import { StepStatus } from '../../../../src/components/Step';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
 const walletMod = '../../../../src/contexts/wallet';
@@ -68,6 +69,15 @@ jest.mock('jotai', () => {
     };
 });
 
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
+
 const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
     typeof useStakingPoolFactory
 >;
@@ -76,6 +86,10 @@ const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
 const mockUseStepState = useStepState as jest.MockedFunction<
     typeof useStepState
 >;
+
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
 const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('CommissionModel step component', () => {
@@ -83,6 +97,7 @@ describe('CommissionModel step component', () => {
     const atomSetterStub = jest.fn();
 
     beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
         // default happy setup.
         mockUseStakingPoolFactory.mockReturnValue(
             buildUseStakingPoolFactoryReturn()
@@ -172,7 +187,7 @@ describe('CommissionModel step component', () => {
                 <CommissionModel stepNumber={1} inFocus />
             );
 
-            act(() => {
+            await act(() => {
                 const flatRateInput = screen.getByLabelText(
                     'Flat-rate commission (%)'
                 );
@@ -207,7 +222,7 @@ describe('CommissionModel step component', () => {
             it('should display message when flat rate value is lower than 0', async () => {
                 render(<CommissionModel inFocus stepNumber={1} />);
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
                         { target: { value: -1 } }
@@ -222,7 +237,7 @@ describe('CommissionModel step component', () => {
             it('should display message when flat rate value is higher than 100', async () => {
                 render(<CommissionModel inFocus stepNumber={1} />);
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
                         { target: { value: 101 } }
@@ -237,7 +252,7 @@ describe('CommissionModel step component', () => {
             it('should display a message when flat rate value has more than 2 decimal places', async () => {
                 render(<CommissionModel inFocus stepNumber={1} />);
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
                         { target: { value: 0.001 } }
@@ -254,7 +269,7 @@ describe('CommissionModel step component', () => {
             it('should display a message when the field is visited and left in blank', async () => {
                 render(<CommissionModel inFocus stepNumber={1} />);
 
-                act(() => {
+                await act(() => {
                     fireEvent.blur(
                         screen.getByLabelText('Flat-rate commission (%)')
                     );
@@ -276,7 +291,7 @@ describe('CommissionModel step component', () => {
                     `input[name='gasBasedOption']`
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(gasBasedOption);
                 });
 
@@ -288,7 +303,7 @@ describe('CommissionModel step component', () => {
                     ).toBe(false)
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.blur(
                         screen.getByLabelText('Gas-based commission (Gas)')
                     );
@@ -446,7 +461,7 @@ describe('CommissionModel step component', () => {
                     'Flat-rate commission (%)'
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(flatRateInput, { target: { value: 10 } });
                 });
 
@@ -456,7 +471,7 @@ describe('CommissionModel step component', () => {
                     ).toBe(false)
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(flatRateInput, { target: { value: 101 } });
                 });
 
@@ -471,7 +486,7 @@ describe('CommissionModel step component', () => {
                 const poolFactory = buildUseStakingPoolFactoryReturn();
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
                 render(<CommissionModel inFocus stepNumber={1} />);
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
                         { target: { value: 5.25 } }
@@ -499,7 +514,7 @@ describe('CommissionModel step component', () => {
                     `input[name='gasBasedOption']`
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(gasBasedOption);
                 });
 
@@ -511,7 +526,7 @@ describe('CommissionModel step component', () => {
                     ).toBe(false)
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Gas-based commission (Gas)'),
                         { target: { value: 400000 } }
@@ -536,7 +551,7 @@ describe('CommissionModel step component', () => {
                     <CommissionModel inFocus stepNumber={1} />
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
                         { target: { value: 5.25 } }
@@ -593,7 +608,7 @@ describe('CommissionModel step component', () => {
                 screen.getByText('CREATE POOL').hasAttribute('disabled')
             ).toBe(true);
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(
                     screen.getByLabelText('Flat-rate commission (%)'),
                     { target: { value: 5.25 } }

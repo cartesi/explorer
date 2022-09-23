@@ -35,6 +35,7 @@ import {
     TagLabel,
     useColorModeValue,
     Stack,
+    Tag,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { BigNumber, constants } from 'ethers';
@@ -124,12 +125,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <HStack w="full" spacing={4}>
                                     <Box flexGrow="0">
                                         <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <TagLabel
-                                            fontSize="lg"
-                                            fontWeight="normal"
-                                        >
-                                            Set Allowance
-                                        </TagLabel>
+                                        <Tag>
+                                            <TagLabel
+                                                fontSize="lg"
+                                                fontWeight="normal"
+                                            >
+                                                Set Allowance
+                                            </TagLabel>
+                                        </Tag>
                                     </Box>
                                     <Box alignSelf="center">
                                         <Divider
@@ -146,14 +149,16 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             color="gray.300"
                                             pointerEvents="none"
                                         />
-                                        <TagLabel
-                                            fontSize="lg"
-                                            fontWeight="normal"
-                                            color="gray.300"
-                                            pointerEvents="none"
-                                        >
-                                            Deposit
-                                        </TagLabel>
+                                        <Tag>
+                                            <TagLabel
+                                                fontSize="lg"
+                                                fontWeight="normal"
+                                                color="gray.300"
+                                                pointerEvents="none"
+                                            >
+                                                Deposit
+                                            </TagLabel>
+                                        </Tag>
                                     </Box>
                                 </HStack>
                                 <Text>
@@ -183,7 +188,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             <ModalFooter px="0">
                                 <VStack w="full">
                                     <Button
-                                        isFullWidth
+                                        width="full"
                                         colorScheme="blue"
                                         onClick={() => {
                                             onSave(
@@ -229,12 +234,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             rounded={'full'}
                                             color="black"
                                         />
-                                        <TagLabel
-                                            fontSize="lg"
-                                            fontWeight="normal"
-                                        >
-                                            Set Allowance
-                                        </TagLabel>
+                                        <Tag>
+                                            <TagLabel
+                                                fontSize="lg"
+                                                fontWeight="normal"
+                                            >
+                                                Set Allowance
+                                            </TagLabel>
+                                        </Tag>
                                     </Box>
                                     <Box alignSelf="center">
                                         <Divider
@@ -245,12 +252,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
                                     <Box flexGrow="1">
                                         <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <TagLabel
-                                            fontSize="lg"
-                                            fontWeight="normal"
-                                        >
-                                            Deposit
-                                        </TagLabel>
+                                        <Tag>
+                                            <TagLabel
+                                                fontSize="lg"
+                                                fontWeight="normal"
+                                            >
+                                                Deposit
+                                            </TagLabel>
+                                        </Tag>
                                     </Box>
                                 </HStack>
 
@@ -391,7 +400,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             <ModalFooter px="0" pt={10}>
                                 <VStack w="full" spacing={4}>
                                     <Button
-                                        isFullWidth
+                                        width="full"
                                         colorScheme="blue"
                                         disabled={outputDeposit.isZero()}
                                         background={
@@ -409,7 +418,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         Deposit
                                     </Button>
                                     <Button
-                                        isFullWidth
+                                        width="full"
                                         variant="ghost"
                                         colorScheme="darkGray"
                                         onClick={onClose}

@@ -11,6 +11,7 @@
 
 import {
     Box,
+    InputGroup,
     InputRightElement,
     NumberInput,
     NumberInputField,
@@ -86,67 +87,70 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     }, [value]);
 
     return (
-        <NumberInput
-            value={innerValue}
-            min={min}
-            max={max}
-            onBeforeInputCapture={(e) => {
-                const inputText: string = (e as any)?.data;
+        <InputGroup>
+            <NumberInput
+                value={innerValue}
+                min={min}
+                max={max}
+                width="full"
+                onBeforeInputCapture={(e) => {
+                    const inputText: string = (e as any)?.data;
 
-                // no -/+ e7 allowed
-                if (
-                    inputText.includes('-') ||
-                    inputText.includes('+') ||
-                    inputText.includes('e')
-                ) {
-                    e.preventDefault();
-                    return;
-                }
+                    // no -/+ e7 allowed
+                    if (
+                        inputText.includes('-') ||
+                        inputText.includes('+') ||
+                        inputText.includes('e')
+                    ) {
+                        e.preventDefault();
+                        return;
+                    }
 
-                // in case of double ..
-                if (inputText === '.' && innerValue.includes('.')) {
-                    e.preventDefault();
-                    return;
-                }
+                    // in case of double ..
+                    if (inputText === '.' && innerValue.includes('.')) {
+                        e.preventDefault();
+                        return;
+                    }
 
-                // in case of paste
-                if (
-                    inputText.includes('.') &&
-                    inputText.split('.')[1].length >= maxPrecision
-                ) {
-                    e.preventDefault();
-                    return;
-                }
+                    // in case of paste
+                    if (
+                        inputText.includes('.') &&
+                        inputText.split('.')[1].length >= maxPrecision
+                    ) {
+                        e.preventDefault();
+                        return;
+                    }
 
-                // in case of typing
-                if (
-                    innerValue.includes('.') &&
-                    innerValue.split('.')[1].length >= maxPrecision
-                ) {
-                    e.preventDefault();
-                    return;
-                }
+                    // in case of typing
+                    if (
+                        innerValue.includes('.') &&
+                        innerValue.split('.')[1].length >= maxPrecision
+                    ) {
+                        e.preventDefault();
+                        return;
+                    }
 
-                if (
-                    parseFloat(innerValue) > max ||
-                    parseFloat(inputText) > max
-                ) {
-                    e.preventDefault();
-                    if (setMaxOnOverflow) setInnerValue(max.toString());
-                }
-            }}
-            onChange={handleOnChange}
-        >
-            <NumberInputField />
-            <InputRightElement
-                color="gray.300"
-                size="lg"
-                pointerEvents="none"
-                pl={8}
-                w={hasNumberSteppers ? 24 : 14}
-                h="100%"
-                children={<Box>CTSI</Box>}
-            />
-        </NumberInput>
+                    if (
+                        parseFloat(innerValue) > max ||
+                        parseFloat(inputText) > max
+                    ) {
+                        e.preventDefault();
+                        if (setMaxOnOverflow) setInnerValue(max.toString());
+                    }
+                }}
+                onChange={handleOnChange}
+            >
+                <NumberInputField />
+                <InputRightElement
+                    color="gray.300"
+                    pointerEvents="none"
+                    pl={8}
+                    w={hasNumberSteppers ? 24 : 14}
+                    h="100%"
+                >
+                    <Box>CTSI</Box>
+                </InputRightElement>
+            </NumberInput>
+        </InputGroup>
     );
 };

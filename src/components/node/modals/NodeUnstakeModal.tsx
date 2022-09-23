@@ -145,7 +145,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     disabled={outputStake.isZero()}
                                     onClick={() => {
@@ -156,7 +156,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 >
                                     UNSTAKE
                                 </Button>
-                                <Button isFullWidth bg={bg} onClick={onClose}>
+                                <Button width="full" bg={bg} onClick={onClose}>
                                     CANCEL
                                 </Button>
                             </VStack>

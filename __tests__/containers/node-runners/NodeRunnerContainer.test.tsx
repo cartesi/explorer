@@ -224,9 +224,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 );
 
                 const firstRow = await screen
-                    .getByRole('gridcell', {
-                        name: '0xe58...731b',
-                    })
+                    .getByText('0xe58...731b')
                     .closest('tr');
 
                 expect(
@@ -324,11 +322,7 @@ describe('NodeRunners container (Landing Page)', () => {
                     <ENodeRunnerContainer wallet={wallet} router={router} />
                 );
 
-                const firstRow = screen
-                    .getByRole('gridcell', {
-                        name: '0xe58...731b',
-                    })
-                    .closest('tr');
+                const firstRow = screen.getByText('0xe58...731b').closest('tr');
 
                 expect(getByText(firstRow, 'Loading')).toBeInTheDocument();
             });
@@ -403,9 +397,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 );
 
                 const row = await screen
-                    .getByRole('gridcell', {
-                        name: '0x68a...e56c',
-                    })
+                    .getByText('0x68a...e56c')
                     .closest('tr');
 
                 expect(
@@ -447,9 +439,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 );
 
                 const row = await screen
-                    .getByRole('gridcell', {
-                        name: '0x68a...e56c',
-                    })
+                    .getByText('0x68a...e56c')
                     .closest('tr');
 
                 // staked balance
@@ -560,9 +550,9 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(poolTableEl).toBeDefined();
                 expect(nodeTableEl).toBeDefined();
 
-                const poolFirstRowEl = getByRole(poolTableEl, 'gridcell', {
-                    name: '0xe58...731b',
-                }).closest('tr');
+                const poolFirstRowEl = screen
+                    .getByText('0xe58...731b')
+                    .closest('tr');
 
                 expect(
                     getByText(
@@ -582,9 +572,9 @@ describe('NodeRunners container (Landing Page)', () => {
 
                 expect(getByText(poolFirstRowEl, 'Hired')).toBeInTheDocument();
 
-                const nodeRowEl = getByRole(nodeTableEl, 'gridcell', {
-                    name: '0x68a...e56c',
-                }).closest('tr');
+                const nodeRowEl = screen
+                    .getByText('0x68a...e56c')
+                    .closest('tr');
 
                 expect(
                     getByText(

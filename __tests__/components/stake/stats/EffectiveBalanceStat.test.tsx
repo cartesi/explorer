@@ -10,7 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import EffectiveBalanceStat, {
     EffectiveBalanceStatProps,
 } from '../../../../src/components/stake/stats/EffectiveBalanceStat';
@@ -65,15 +66,16 @@ describe('Effective Balance Stat', () => {
         expect(screen.getByRole('rebalance-icon')).toBeInTheDocument();
     });
 
-    it('Should display balance tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for balance tooltip', async () => {
+        renderComponent();
         const text = 'Amount of mature pool tokens at the Staking contract';
 
-        const icon = getByRole('balance-icon');
+        const icon = screen.getByRole('balance-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 });

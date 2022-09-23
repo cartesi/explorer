@@ -17,7 +17,14 @@ import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 import { WalletConnectionContextProps } from '../../../src/contexts/wallet/definitions';
 
-jest.mock('next/router');
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 jest.mock('../../../src/contexts/wallet');

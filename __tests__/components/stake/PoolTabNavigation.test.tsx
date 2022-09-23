@@ -15,7 +15,15 @@ import { PoolTabNavigation } from '../../../src/components/stake/PoolTabNavigati
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 
-jest.mock('next/router');
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 const EPoolTabNavigation = withChakraTheme(PoolTabNavigation);

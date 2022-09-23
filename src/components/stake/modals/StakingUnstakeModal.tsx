@@ -156,7 +156,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     role="unstake-button"
                                     disabled={
@@ -177,7 +177,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     Unstake
                                 </Button>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="darkGray"
                                     variant="ghost"
                                     onClick={onClose}

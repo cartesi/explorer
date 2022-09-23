@@ -1,14 +1,37 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { useBreakpointValue } from '@chakra-ui/react';
 import CustomizeEthereumNode from '../../../../src/components/node/steps/CustomizeEthereumNode';
+import { IStep } from '../../../../src/components/StepGroup';
+import { withChakraTheme } from '../../../test-utilities';
+
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
+
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
+
+const Component = withChakraTheme<IStep>(CustomizeEthereumNode);
 
 describe('Customize Ethereum Node Step component', () => {
+    beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
+    });
+
     afterEach(() => {
         cleanup();
+        jest.clearAllMocks();
     });
 
     describe('when not in focus', () => {
         it('Should only display the number, the title and the subtitle when not in focus', () => {
-            render(<CustomizeEthereumNode stepNumber={1} />);
+            render(<Component stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(
@@ -26,7 +49,7 @@ describe('Customize Ethereum Node Step component', () => {
 
     describe('when in focus', () => {
         it('should render the body content and action button', () => {
-            render(<CustomizeEthereumNode inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(

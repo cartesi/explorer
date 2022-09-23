@@ -184,7 +184,9 @@ describe('Wallet Provider', () => {
 
             fireEvent.click(screen.getByText('Connect Wallet'));
 
-            await waitFor(() => walletCheckMock.mock.calls.length > 0);
+            await waitFor(() => {
+                expect(walletCheckMock.mock.calls.length > 0).toBe(true);
+            });
 
             expect(walletSelectMock).toHaveBeenCalledTimes(1);
             expect(walletCheckMock).toHaveBeenCalledTimes(1);
@@ -307,7 +309,9 @@ describe('Wallet Provider', () => {
                 .mockResolvedValue(false);
             render(<Component />);
 
-            await waitFor(() => checkMock.mock.calls.length > 0);
+            await waitFor(() =>
+                expect(checkMock.mock.calls.length > 0).toBe(true)
+            );
 
             expect(getItemSpy).toHaveBeenCalled();
             expect(selectMock).toHaveBeenCalled();

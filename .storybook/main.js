@@ -25,6 +25,21 @@ module.exports = {
         'storybook-addon-next-router',
     ],
     webpackFinal: async (config) => {
+        config.module.rules = config.module.rules.map((r) =>
+            r.test.toString().includes('jsx')
+                ? {
+                      ...r,
+                      exclude: (filename) => {
+                          return (
+                              /node_modules/.test(filename) &&
+                              !/@chakra-ui/.test(filename) &&
+                              !/@zag-js/.test(filename)
+                          );
+                      },
+                  }
+                : r
+        );
+
         return {
             ...config,
             resolve: {

@@ -95,7 +95,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     onClick={() => {
                                         onSave(outputAllowance);
@@ -106,7 +106,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                     Save
                                 </Button>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="darkGray"
                                     variant="ghost"
                                     onClick={onClose}

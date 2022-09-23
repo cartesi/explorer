@@ -183,7 +183,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
             </Box>
 
             <Button
-                isFullWidth
+                width="full"
                 isDisabled={disabled || allowance.gte(fromWallet)}
                 onClick={handleSubmit((data) => doApproveOrStake(data.stake))}
             >
@@ -191,7 +191,7 @@ const StakeForm: FC<StakeFormProps> = (props) => {
             </Button>
 
             <Button
-                isFullWidth
+                width="full"
                 isDisabled={
                     disabled || allowance.lt(fromWallet) || amount_.isZero()
                 }

@@ -11,9 +11,13 @@
 
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Heading } from '@chakra-ui/layout';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
-const SectionHeading: FC = (props) => {
+interface SectionHeadingProps {
+    children: React.ReactNode;
+}
+
+const SectionHeading: FC<SectionHeadingProps> = ({ children }) => {
     const borderLeftColor = useColorModeValue('gray.900', 'gray.200');
     return (
         <Heading
@@ -26,7 +30,7 @@ const SectionHeading: FC = (props) => {
             size="lg"
             fontWeight="normal"
         >
-            {props.children}
+            {children}
         </Heading>
     );
 };

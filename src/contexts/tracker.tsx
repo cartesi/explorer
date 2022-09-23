@@ -9,7 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { createContext, FC, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    FC,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { Router } from 'next/router';
 import ReactGA from 'react-ga';
 import { useWallet } from './wallet';
@@ -20,17 +26,21 @@ const CustomDimensions = {
 };
 
 interface TrackingProviderProps {
+    children: React.ReactNode;
+}
+
+interface TrackingContextProps {
     addTracker: (trackerId: string, trackerName: string) => void;
     logEvent: (args: ReactGA.EventArgs) => void;
     removeTracker: (trackerName: string) => void;
 }
 
-const TrackingContext = createContext<TrackingProviderProps>(undefined);
+const TrackingContext = createContext<TrackingContextProps>(undefined);
 
 // take only the first 8 chars from address for tracking purposes
 const anonymizeUser = (account: string) => account?.substring(2, 10);
 
-const TrackingProvider: FC = (props) => {
+const TrackingProvider: FC<TrackingProviderProps> = (props) => {
     const { account, walletName } = useWallet();
 
     // we create a default state to keep track of whether GA

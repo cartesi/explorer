@@ -199,7 +199,7 @@ const Pool = () => {
                         commissionPercentage={stakingPool?.commissionPercentage}
                         fee={stakingPool?.fee}
                     />
-                    <Collapse in={isOpen} css={{ width: '100%' }}>
+                    <Collapse in={isOpen} style={{ width: '100%' }}>
                         <BalancePanel
                             px={[5, 5, 10, 10]}
                             amount={amount}

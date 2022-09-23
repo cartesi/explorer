@@ -9,14 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { memo, FC } from 'react';
+import React, { memo, FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export interface SlideDownProps {
+    children: React.ReactNode;
     display: boolean;
 }
 
 export const SlideDown: FC<SlideDownProps> = memo(({ display, children }) => {
+    const Component = AnimatePresence as FC<{
+        children: React.ReactNode;
+    }>;
     const transition = {
         duration: 0.5,
         bounce: 0.5,
@@ -24,7 +28,7 @@ export const SlideDown: FC<SlideDownProps> = memo(({ display, children }) => {
     };
 
     return (
-        <AnimatePresence>
+        <Component>
             {display && (
                 <motion.div
                     initial={{ height: 0 }}
@@ -43,6 +47,6 @@ export const SlideDown: FC<SlideDownProps> = memo(({ display, children }) => {
                     {children}
                 </motion.div>
             )}
-        </AnimatePresence>
+        </Component>
     );
 });

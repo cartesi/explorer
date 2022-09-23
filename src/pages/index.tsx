@@ -99,7 +99,7 @@ const Home = () => {
                     align="flex-end"
                     px="6vw"
                     py={8}
-                    wrap="wrap"
+                    shouldWrapChildren
                 >
                     <WrapItem p={2}>
                         <MarketInfo

@@ -165,7 +165,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     role="withdraw-button"
                                     disabled={
@@ -186,7 +186,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     Withdraw
                                 </Button>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="darkGray"
                                     variant="ghost"
                                     onClick={onClose}

@@ -10,7 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import UsersStat, {
     UsersStatProps,
 } from '../../../../src/components/stake/stats/UsersStat';
@@ -44,15 +45,16 @@ describe('Users Stat', () => {
         );
     });
 
-    it('Should display tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for users tooltip', async () => {
+        renderComponent();
         const text = 'Number of users who staked in this pool';
 
-        const icon = getByRole('users-icon');
+        const icon = screen.getByRole('users-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 });

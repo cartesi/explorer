@@ -49,16 +49,19 @@ const WhenReady = ({ children }: Props) => {
 
     return <>{children}</>;
 };
+
 /**
  * Handy provider with our default configuration already set. Just wrap your
  * React component(s) on it and you are set with feature-flags (currently using unleash)
  * @param Props
  * @returns JSX.Element
  */
-export const FeatureFlagProvider = ({ children }: Props) => {
+const FeatureFlagProvider = ({ children }: Props) => {
     return (
         <FlagProvider config={config}>
             <WhenReady>{children}</WhenReady>
         </FlagProvider>
     );
 };
+
+export default FeatureFlagProvider;

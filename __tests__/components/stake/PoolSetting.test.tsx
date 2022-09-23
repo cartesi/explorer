@@ -10,13 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react';
+import { cleanup, render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { NextRouter, useRouter } from 'next/router';
 import { useWallet } from '../../../src/contexts/wallet';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
@@ -32,7 +27,15 @@ const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const poolFactoryPath = '../../../src/services/poolFactory';
 const totalPoolBalance = '100000000000000000000000000000000';
 
-jest.mock('next/router');
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 jest.mock('../../../src/contexts/wallet');
@@ -130,52 +133,56 @@ describe('PoolSetting', () => {
         expect(screen.getByText('Pool Setting')).toBeInTheDocument();
     });
 
-    it('Should display balance tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for balance tooltip', async () => {
+        renderComponent();
         const text = 'Total amount of tokens staked in this pool';
 
-        const icon = getByRole('balance-icon');
+        const icon = screen.getByRole('balance-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 
-    it('Should display pool tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for pool tooltip', async () => {
+        renderComponent();
         const text = 'Enter a registered ENS domain name';
 
-        const icon = getByRole('pool-icon');
+        const icon = screen.getByRole('pool-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 
-    it('Should display staking tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for staking tooltip', async () => {
+        renderComponent();
         const text = 'Open or close the pool for new stakes';
 
-        const icon = getByRole('staking-icon');
+        const icon = screen.getByRole('staking-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 
     it('Should display quit tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+        renderComponent();
         const text =
             "If you don't want to keep the pool active, it can be disabled with our help";
 
-        const icon = getByRole('quit-icon');
+        const icon = screen.getByRole('quit-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 });

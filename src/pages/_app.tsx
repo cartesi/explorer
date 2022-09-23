@@ -13,12 +13,15 @@ import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { TrackingProvider } from '../contexts/tracker';
-import { FeatureFlagProvider } from '../utils/featureFlags';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
 import { Fonts } from '../components/Fonts';
+
+const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
+    ssr: false,
+});
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,

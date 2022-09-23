@@ -1,4 +1,4 @@
-import { renderHook, act, cleanup } from '@testing-library/react-hooks';
+import { renderHook, act, cleanup, waitFor } from '@testing-library/react';
 import { ContractTransaction } from 'ethers';
 import { useWallet } from '../../src/contexts/wallet';
 import { Transaction, useTransaction } from '../../src/services/transaction';
@@ -81,9 +81,7 @@ describe('Transaction service', () => {
         it('should change state to waiting_confirmation when contract-transaction resolve (i.e. user signed the transaction)', async () => {
             const contractTransaction = buildContractTransaction();
             contractTransaction.confirmations = 0;
-            const { result, waitForValueToChange } = renderHook(() =>
-                useTransaction<string>()
-            );
+            const { result } = renderHook(() => useTransaction<string>());
 
             expect(result.current).toHaveProperty('state', 'acknowledged');
             expect(result.current).toHaveProperty('isOngoing', false);
@@ -99,7 +97,9 @@ describe('Transaction service', () => {
             expect(result.current).toHaveProperty('state', 'submitting');
             expect(result.current).toHaveProperty('isOngoing', true);
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() =>
+                expect(result.current.state).toBe('waiting_confirmation')
+            );
 
             expect(result.current).toHaveProperty(
                 'state',
@@ -115,9 +115,7 @@ describe('Transaction service', () => {
             contractTransaction.confirmations = confirmations[Network.MAINNET];
             // A closer to real dummy contract receipt
             contractTransaction.wait.mockResolvedValue(buildContractReceipt());
-            const { result, waitForValueToChange } = renderHook(() =>
-                useTransaction<string>()
-            );
+            const { result } = renderHook(() => useTransaction<string>());
 
             const promise = new Promise<ContractTransaction>((resolve) =>
                 act(() => resolve(contractTransaction))
@@ -127,7 +125,7 @@ describe('Transaction service', () => {
                 result.current.set(promise);
             });
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('confirmed'));
 
             expect(result.current).toHaveProperty('state', 'confirmed');
             expect(result.current.isOngoing).toBe(false);
@@ -138,9 +136,7 @@ describe('Transaction service', () => {
 
     describe('Error stages', () => {
         it('should change its state to errored when transaction is rejected for any reason', async () => {
-            const { result, waitForValueToChange } = renderHook(() =>
-                useTransaction<string>()
-            );
+            const { result } = renderHook(() => useTransaction<string>());
 
             expect(result.current.state).toEqual('acknowledged');
 
@@ -152,19 +148,17 @@ describe('Transaction service', () => {
 
             expect(result.current.state).toEqual('submitting');
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('errored'));
 
             expect(result.current.state).toEqual('errored');
             expect(result.current.error).toEqual('Metamask error goes here');
         });
 
         it('should be able to acknowledge the transaction after an errored state', async () => {
-            const { result, waitForValueToChange } = renderHook(() =>
-                useTransaction<string>()
-            );
+            const { result } = renderHook(() => useTransaction<string>());
             const promise = Promise.reject(new Error('Random error'));
             act(() => result.current.set(promise));
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('errored'));
             expect(result.current.acknowledged).toBe(false);
             expect(result.current.state).toEqual('errored');
 
@@ -179,9 +173,7 @@ describe('Transaction service', () => {
             contractTransaction.wait.mockRejectedValue(
                 new Error('Network failure')
             );
-            const { result, waitForValueToChange } = renderHook(() =>
-                useTransaction<string>()
-            );
+            const { result } = renderHook(() => useTransaction<string>());
 
             const promise = new Promise<ContractTransaction>((resolve) =>
                 act(() => resolve(contractTransaction))
@@ -193,7 +185,7 @@ describe('Transaction service', () => {
 
             expect(result.current).toHaveProperty('state', 'submitting');
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('errored'));
 
             expect(result.current).toHaveProperty('state', 'errored');
             expect(result.current.error).toEqual('Network failure');
@@ -206,7 +198,7 @@ describe('Transaction service', () => {
             contractTransaction.confirmations = confirmations[Network.MAINNET];
             // A closer to real dummy contract receipt but without any events.
             contractTransaction.wait.mockResolvedValue(buildContractReceipt());
-            const { result, waitForValueToChange } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTransaction<string>((receipt) => {
                     // naive resolver
                     const event = receipt.events.find(
@@ -225,7 +217,7 @@ describe('Transaction service', () => {
                 result.current.set(promise);
             });
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('errored'));
 
             expect(result.current.state).toEqual('errored');
             expect(result.current.error).toEqual(
@@ -246,7 +238,7 @@ describe('Transaction service', () => {
             receiptEvt.args = ['my-result-goes-here'];
             receipt.events = [receiptEvt];
             contractTransaction.wait.mockResolvedValue(receipt);
-            const { result, waitForValueToChange } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTransaction<string>((receipt) => {
                     if (receipt.events) {
                         const event = receipt.events.find(
@@ -266,7 +258,7 @@ describe('Transaction service', () => {
                 result.current.set(promise);
             });
 
-            await waitForValueToChange(() => result.current.state);
+            await waitFor(() => expect(result.current.state).toBe('confirmed'));
 
             expect(result.current).toHaveProperty('state', 'confirmed');
             expect(result.current.result).toEqual('my-result-goes-here');

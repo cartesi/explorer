@@ -29,6 +29,7 @@ import { useStakingPool } from '../../../../src/services/pool';
 import { useStepState } from '../../../../src/components/StepGroup';
 import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
 import { StepStatus } from '../../../../src/components/Step';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
@@ -89,6 +90,14 @@ jest.mock(stakingPoolMod, () => {
         useStakingPool: jest.fn(),
     };
 });
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
 
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseNode = useNode as jest.MockedFunction<typeof useNode>;
@@ -100,6 +109,9 @@ const mockUseStakingPool = useStakingPool as jest.MockedFunction<
 const mockUseStepState = useStepState as jest.MockedFunction<
     typeof useStepState
 >;
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
 const { useStepState: realUseStepState } = jest.requireActual(stepGroupMod);
 
 describe('HireNode Step', () => {
@@ -107,6 +119,7 @@ describe('HireNode Step', () => {
     const poolAddress = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
 
     beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
         // Partial filled Happy returns
         mockUseWallet.mockReturnValue({
             account,
@@ -226,7 +239,7 @@ describe('HireNode Step', () => {
                         .hasAttribute('data-checked')
                 ).toBe(true);
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -256,7 +269,7 @@ describe('HireNode Step', () => {
                     <HireNode inFocus stepNumber={1} />
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -286,7 +299,7 @@ describe('HireNode Step', () => {
                     <HireNode inFocus stepNumber={1} />
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -327,7 +340,7 @@ describe('HireNode Step', () => {
                         .hasAttribute('data-checked')
                 ).toBe(false);
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -359,7 +372,7 @@ describe('HireNode Step', () => {
                     <HireNode inFocus stepNumber={1} />
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -393,7 +406,7 @@ describe('HireNode Step', () => {
                     <HireNode inFocus stepNumber={1} />
                 );
 
-                act(() => {
+                await act(() => {
                     fireEvent.click(
                         screen.getByText(
                             'Allowing your pool to accept new stakes'
@@ -440,7 +453,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -473,7 +486,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -517,7 +530,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -562,7 +575,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -592,7 +605,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -624,7 +637,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -654,7 +667,7 @@ describe('HireNode Step', () => {
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(addressInput, {
                         target: { value: account },
                     });
@@ -702,7 +715,7 @@ describe('HireNode Step', () => {
             const addressInput = screen.getByLabelText('Node Address');
             const fundsInput = screen.getByLabelText('Initial Funds');
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(addressInput, {
                     target: { value: nodeAddress },
                 });

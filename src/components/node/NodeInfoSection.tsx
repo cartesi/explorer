@@ -118,7 +118,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     Node Address
                                 </Text>
                             </Box>
-                            <Text isTruncated flex={1}>
+                            <Text noOfLines={1} flex={1}>
                                 {formattedAddress}
                             </Text>
                         </Stack>

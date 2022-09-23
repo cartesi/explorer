@@ -144,7 +144,6 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         />
                         <InputRightElement
                             color="gray.300"
-                            size="lg"
                             pointerEvents="none"
                             w={14}
                             h="100%"

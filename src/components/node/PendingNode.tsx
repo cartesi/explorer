@@ -54,7 +54,7 @@ const PendingNode: FC<PendingNodeProps> = ({
                     <Button
                         onClick={onCancelHire}
                         colorScheme="blue"
-                        isFullWidth
+                        width="full"
                     >
                         Cancel Hire
                     </Button>

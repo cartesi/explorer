@@ -139,7 +139,6 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                     />
                                     <InputRightElement
                                         color="gray.300"
-                                        size="lg"
                                         pointerEvents="none"
                                         w={12}
                                         h="100%"
@@ -154,7 +153,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                         <ModalFooter px="0" pt={10}>
                             <VStack w="full" spacing={4}>
                                 <Button
-                                    isFullWidth
+                                    width="full"
                                     colorScheme="blue"
                                     disabled={
                                         output.isZero() ||
@@ -168,7 +167,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 >
                                     ADD FUNDS
                                 </Button>
-                                <Button isFullWidth bg={bg} onClick={onClose}>
+                                <Button width="full" bg={bg} onClick={onClose}>
                                     CANCEL
                                 </Button>
                             </VStack>

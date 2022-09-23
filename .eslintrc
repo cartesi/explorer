@@ -15,7 +15,7 @@
         "plugin:prettier/recommended",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
-        "prettier"
+        "prettier",
     ],
     "rules": {
         "prettier/prettier": "error",
@@ -28,5 +28,10 @@
         "react/prop-types": "off",
         "react/display-name": "off",
         "react/no-unescaped-entities": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

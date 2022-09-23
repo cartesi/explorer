@@ -15,7 +15,15 @@ import { StakingTabNavigation } from '../../../src/components/stake/StakingTabNa
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 
-jest.mock('next/router');
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 const EStakingTabNavigation = withChakraTheme(StakingTabNavigation);

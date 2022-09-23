@@ -16,6 +16,7 @@ import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const walletMod = `../../../../src/contexts/wallet`;
 const servicesStakingMod = `../../../../src/services/staking`;
@@ -66,6 +67,15 @@ jest.mock('next/router', () => {
     };
 });
 
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useBreakpointValue: jest.fn(),
+    };
+});
+
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 const mockUseStaking = useStaking as jest.MockedFunction<typeof useStaking>;
 const mockUseCartesiToken = useCartesiToken as jest.MockedFunction<
@@ -74,6 +84,10 @@ const mockUseCartesiToken = useCartesiToken as jest.MockedFunction<
 const mockUseAtom = useAtom as jest.MockedFunction<typeof useAtom>;
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
+const mockUseBreakpointValue = useBreakpointValue as jest.MockedFunction<
+    typeof useBreakpointValue
+>;
+
 describe('SetAllowance Step', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
     const stakingAddress = '0x329f000E4195823418ff2eCC7cb6f4ca1530Ca4f';
@@ -81,6 +95,7 @@ describe('SetAllowance Step', () => {
     const routerPushStub = jest.fn();
 
     beforeEach(() => {
+        mockUseBreakpointValue.mockReturnValue(false);
         // Partial filled Happy returns
         mockUseWallet.mockReturnValue({
             account,
@@ -155,7 +170,7 @@ describe('SetAllowance Step', () => {
 
                 const input = screen.getByLabelText('Enter the allowance');
 
-                act(() => {
+                await act(() => {
                     fireEvent.change(input, { target: { value: 0 } });
                 });
 
@@ -171,7 +186,7 @@ describe('SetAllowance Step', () => {
 
                 const input = screen.getByLabelText('Enter the allowance');
 
-                act(() => {
+                await act(() => {
                     // In theory that means the user left the field i.e. removed the focus
                     fireEvent.blur(input);
                 });
@@ -263,7 +278,7 @@ describe('SetAllowance Step', () => {
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(input, { target: { value: 10000 } });
             });
 
@@ -287,7 +302,7 @@ describe('SetAllowance Step', () => {
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(input, { target: { value: 10000 } });
             });
 

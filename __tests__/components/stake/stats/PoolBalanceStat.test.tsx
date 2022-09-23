@@ -10,7 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BigNumber } from 'ethers';
 import PoolBalanceStat, {
     PoolBalanceStatProps,
@@ -31,16 +32,17 @@ describe('Pool Balance Stat', () => {
         expect(screen.getByText('Pool Balance')).toBeInTheDocument();
     });
 
-    it('Should display tooltip', async () => {
-        const { getByRole, getByText } = renderComponent();
+    it('Should display required text for balance tooltip', async () => {
+        renderComponent();
         const text =
             'Amount of tokens available at the pool contract either for stake or withdraw';
 
-        const icon = getByRole('balance-icon');
+        const icon = screen.getByRole('balance-icon');
+        await act(() => {
+            userEvent.hover(icon);
+        });
 
-        fireEvent.mouseOver(icon);
-
-        await waitFor(() => getByText(text));
-        expect(getByText(text)).toBeInTheDocument();
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
     });
 });

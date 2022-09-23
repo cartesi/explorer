@@ -24,6 +24,10 @@ import Header from './Header';
 import Footer from './Footer';
 import SyncStatus from './SyncStatus';
 
+interface ComponentProps {
+    children: React.ReactNode;
+}
+
 export const ResponsiveDebug: FC = () => {
     const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
     const size = useBreakpointValue(['sm', 'md', 'lg', 'xl']);
@@ -37,13 +41,13 @@ export const ResponsiveDebug: FC = () => {
     );
 };
 
-export const PageHeader: FC = ({ children }) => (
+export const PageHeader: FC<ComponentProps> = ({ children }) => (
     <Box w="100%" bg="gray.900" color="white" px="6vw" py={5}>
         {children}
     </Box>
 );
 
-export const PagePanel: FC = ({ children, ...restProps }) => {
+export const PagePanel: FC<ComponentProps> = ({ children, ...restProps }) => {
     const bg = useColorModeValue('white', 'gray.700');
     const bgHeader = useColorModeValue('white', 'gray.800');
     return (
@@ -64,7 +68,7 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
     </VStack>
 );
 
-const Layout = ({ children }) => {
+const Layout: FC<ComponentProps> = ({ children }) => {
     return (
         <Flex direction="column" align="center" m="0 auto">
             <Header />
