@@ -74,6 +74,7 @@ export const useNode = (address: string): Node => {
         setRetired(false);
         setAuthorized(false);
         setAuthorized1(false);
+        setReady(false);
     };
 
     const updateState = async (address: string) => {
