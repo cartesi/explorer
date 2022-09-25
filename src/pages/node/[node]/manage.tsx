@@ -298,7 +298,7 @@ const ManageNode: FC = () => {
                         display="flex"
                         justifyContent="center"
                     >
-                        <Spinner size="xl" color="white" />
+                        <Spinner size="xl" />
                     </Box>
                 ) : (
                     <NodeInfoSection
