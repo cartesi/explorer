@@ -51,6 +51,11 @@ export const buildLinks = () => [
         label: 'Blocks',
         href: '/blocks',
     },
+    {
+        key: 'rollups',
+        label: 'Rollups',
+        href: '/rollups',
+    },
 ];
 
 export interface NavLinkProps {

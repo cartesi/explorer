@@ -34,6 +34,7 @@ const Chain: FC<ChainProps> = (props) => {
     const colorSchemes = {
         1: 'teal', // mainnet
         5: 'blue', // goerli
+        421613: 'darkblue', // arbitrum-goerli
     };
 
     // do not show anything for unrecognized chain

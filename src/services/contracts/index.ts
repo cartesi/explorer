@@ -36,6 +36,8 @@ import localhost from './localhost.json';
 import * as pos from './pos';
 import * as pos1 from './pos-1.0';
 import * as pool from './pool';
+import axios from 'axios';
+import { isObject } from 'lodash/fp';
 
 export interface ContractAbi {
     address: string;
@@ -56,16 +58,46 @@ export interface ChainMap {
     [chainId: number]: ChainAbi;
 }
 
+// Starts the local_abi with whatever we have locally.
+const abi = {
+    val: localhost,
+    get localhost(): ChainAbi {
+        return this.val;
+    },
+    set localhost(value: ChainAbi) {
+        this.val = value;
+    },
+};
+
 const utilAbis: ChainMap = {
     1: util_mainnet,
     5: util_goerli,
-    31337: localhost,
+    31337: abi.localhost,
 };
 
 const tokenAbis: ChainMap = {
     1: token_mainnet,
     5: token_goerli,
-    31337: localhost,
+    31337: abi.localhost,
+};
+
+const fetchLocalABI = process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true';
+let fetchedLocalABI = false;
+/**
+ * Fetches the localhost.json file for local-node development that is available as a public static file
+ * @returns
+ */
+const getLocalABI = async () => {
+    if (!fetchedLocalABI) {
+        const { data } = await axios.get('/abi/localhost.json');
+        if (isObject(data)) {
+            fetchedLocalABI = true;
+            // guessing the configuration is correct
+            abi.localhost = data as ChainAbi;
+        }
+    }
+
+    return abi.localhost;
 };
 
 export const getAddress = (
@@ -125,6 +157,13 @@ export function useContract<C>(
             setContract(undefined);
         }
     }, [library, chainId]);
+
+    useEffect(() => {
+        console.count(`should fetch local ABI - ${fetchLocalABI}`);
+        if (fetchLocalABI) {
+            getLocalABI();
+        }
+    }, []);
 
     return contract;
 }

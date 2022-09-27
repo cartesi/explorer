@@ -55,7 +55,7 @@ describe('Nav Bar', () => {
     it('Should generate correct default nav links', () => {
         const links = buildLinks();
 
-        expect(links.length).toBe(4);
+        expect(links.length).toBe(5);
 
         expect(links[0].key).toBe('home');
         expect(links[0].label).toBe('Home');
@@ -72,6 +72,10 @@ describe('Nav Bar', () => {
         expect(links[3].key).toBe('blocks');
         expect(links[3].label).toBe('Blocks');
         expect(links[3].href).toBe('/blocks');
+
+        expect(links[4].key).toBe('rollups');
+        expect(links[4].label).toBe('Rollups');
+        expect(links[4].href).toBe('/rollups');
     });
 
     it('Should display children', () => {

@@ -346,7 +346,10 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
 
                         {!search && balancesData.length > 0 && totalPages > 1 && (
                             <Flex
-                                flexDirection={{ base: 'column', md: 'row' }}
+                                flexDirection={{
+                                    base: 'column',
+                                    md: 'row',
+                                }}
                                 justifyContent="flex-end"
                                 alignItems={{
                                     base: 'flex-end',

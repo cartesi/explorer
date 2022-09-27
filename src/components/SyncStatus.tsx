@@ -18,12 +18,17 @@ import {
     AlertTitle,
 } from '@chakra-ui/alert';
 import { Box } from '@chakra-ui/layout';
+import { useWallet } from '../contexts/wallet';
+import { Network } from '../utils/networks';
+import { includes } from 'lodash/fp';
 
 const threshold = 25;
+const excludedNetworks = [Network.ARBITRUM_GOERLI];
 
 const SyncStatus = () => {
     // read block number from metamask
     const blockNumber = useBlockNumber();
+    const { chainId, active } = useWallet();
 
     // read block number from thegraph
     const meta = useMeta();
@@ -38,8 +43,9 @@ const SyncStatus = () => {
         ? 'Indexing errors'
         : 'Syncronization delay';
     const delay = blockNumber - meta?.block?.number;
+    const ignoreIssues = includes(chainId, excludedNetworks);
 
-    return issues ? (
+    return issues && !ignoreIssues ? (
         <Box px="6vw" bg="gray.900">
             <Alert status="error">
                 <AlertIcon />

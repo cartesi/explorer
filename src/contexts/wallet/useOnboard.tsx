@@ -64,16 +64,22 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
         wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
         chains: [
             {
-                id: `0x${Network.MAINNET}`,
+                id: `0x${Network.MAINNET.toString(16)}`,
                 token: 'ETH',
                 label: 'Ethereum Mainnet',
                 rpcUrl: mainnetRpcUrl,
             },
             {
-                id: `0x${Network.GOERLI}`,
+                id: `0x${Network.GOERLI.toString(16)}`,
                 token: 'ETH',
                 label: 'Goerli Testnet',
                 rpcUrl: getRPC('goerli'),
+            },
+            {
+                id: `0x${Network.ARBITRUM_GOERLI.toString(16)}`,
+                token: 'ETH',
+                label: 'Arbitrum Goerli Testnet',
+                rpcUrl: getRPC('arbitrum-goerli'),
             },
         ],
         appMetadata: {

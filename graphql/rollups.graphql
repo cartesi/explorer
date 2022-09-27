@@ -1,0 +1,25 @@
+query dapps {
+    dapps(orderBy: inputCount, orderDirection: desc) {
+        id
+        inputCount
+        deploymentTimestamp
+        activityTimestamp
+    }
+}
+
+query factoryDApps($id: ID!, $orderBy: DApp_orderBy!, $search: Bytes) {
+    dappFactory(id: $id) {
+        dappCount
+        inputCount
+        dapps(
+            orderBy: $orderBy
+            orderDirection: desc
+            where: { id_contains: $search }
+        ) {
+            id
+            inputCount
+            deploymentTimestamp
+            activityTimestamp
+        }
+    }
+}

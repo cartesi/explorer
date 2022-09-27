@@ -1218,3 +1218,151 @@ export const SettingsIcon = createIcon({
         </g>
     ),
 });
+
+// DAPPS ICONS
+
+const defaultProps = {
+    fill: 'none',
+    xmlns: 'http://www.w3.org/2000/svg',
+};
+
+export const DappIcon = createIcon({
+    displayName: 'DappIcon',
+    viewBox: '0 0 28 28',
+    defaultProps,
+    path: (
+        <g>
+            <path
+                d="M1.16667 4.66675H26.8333"
+                stroke="currentColor"
+                strokeWidth="2"
+            />
+            <path
+                d="M26.8333 14.0001V1.16675H1.16667V24.5001H24.5"
+                stroke="currentColor"
+                strokeWidth="2"
+            />
+            <rect
+                x="14.2831"
+                y="10.3939"
+                width="5.5"
+                height="5.5"
+                transform="rotate(45 14.2831 10.3939)"
+                stroke="currentColor"
+                strokeWidth="1.5"
+            />
+            <rect
+                x="21.75"
+                y="17.0833"
+                width="5.5"
+                height="3.16667"
+                stroke="currentColor"
+                strokeWidth="1.5"
+            />
+        </g>
+    ),
+});
+
+export const InputIcon = createIcon({
+    displayName: 'InputIcon',
+    viewBox: '0 0 28 28',
+    defaultProps,
+    path: (
+        <g>
+            <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M11.0833 10.5L9.91668 12.25L12.8333 15.1667H2.33334V17.5H12.8333L9.91668 19.8333L11.0833 21.5833L16.9167 16.3333L11.0833 10.5Z"
+                fill="currentColor"
+            />
+            <path
+                d="M5.83334 11.0834V1.16675H21L24.5 4.66675V25.6667H5.83334V21.5834"
+                stroke="currentColor"
+                strokeWidth="2"
+            />
+        </g>
+    ),
+});
+
+export const NoticeIcon = createIcon({
+    displayName: 'NoticeIcon',
+    viewBox: '0 0 28 28',
+    defaultProps,
+    path: (
+        <g>
+            <path
+                d="M14 6.27598L24.6207 24.1381H3.37931L14 6.27598ZM14 1.93115L-1.84158e-06 26.0691H28L14 1.93115ZM15.2727 19.717H12.7273V22.2578H15.2727V19.717ZM15.2727 12.0945H12.7273V17.1762H15.2727V12.0945Z"
+                fill="currentColor"
+            />
+        </g>
+    ),
+});
+
+export const ReportIcon = createIcon({
+    displayName: 'ReportIcon',
+    viewBox: '0 0 28 28',
+    defaultProps,
+    path: (
+        <g>
+            <path
+                d="M15.75 25.6667H3.5V1.16675H19.0615L23.3333 5.50852V13.5278"
+                stroke="currentColor"
+                strokeWidth="2"
+            />
+            <rect
+                x="17.7407"
+                y="20.3521"
+                width="5.59657"
+                height="5.59657"
+                transform="rotate(-45 17.7407 20.3521)"
+                stroke="currentColor"
+                strokeWidth="1.7"
+            />
+            <rect
+                x="7.92527"
+                y="7.72412"
+                width="10.6207"
+                height="1.44828"
+                fill="currentColor"
+            />
+            <rect
+                x="7.92527"
+                y="11.5862"
+                width="10.6207"
+                height="1.44828"
+                fill="currentColor"
+            />
+            <rect
+                x="7.92527"
+                y="15.4482"
+                width="5.7931"
+                height="1.44828"
+                fill="currentColor"
+            />
+        </g>
+    ),
+});
+
+export const VoucherIcon = createIcon({
+    displayName: 'VoucherIcon',
+    viewBox: '0 0 28 28',
+    defaultProps,
+    path: (
+        <g>
+            <path
+                d="M22.4084 2.89648L5.62839 2.89648L5.62839 26.2021L14.8303 22.731L22.4084 26.2021L22.4084 2.89648Z"
+                stroke="currentColor"
+                strokeWidth="2"
+            />
+            <path
+                d="M23.2916 7.05828C23.2916 7.279 23.1821 7.49081 22.9873 7.64687C22.7925 7.80293 22.5281 7.89062 22.2526 7.89062L6.66738 7.89062C6.29608 7.89062 5.95308 7.73196 5.76754 7.47445C5.582 7.21695 5.582 6.89961 5.76754 6.64211C5.95308 6.38461 6.29609 6.22594 6.66738 6.22594L22.2526 6.22594C22.5281 6.22594 22.7925 6.31364 22.9873 6.4697C23.1821 6.62576 23.2916 6.83756 23.2916 7.05828Z"
+                fill="currentColor"
+            />
+            <path
+                d="M18.5891 11.5572L13.6583 16.3908L10.1224 13.6543"
+                stroke="currentColor"
+                strokeWidth="1.7"
+            />
+        </g>
+    ),
+});

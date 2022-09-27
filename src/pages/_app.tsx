@@ -18,6 +18,7 @@ import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
 import { Fonts } from '../components/Fonts';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
+import { useRouter } from 'next/router';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
@@ -28,12 +29,15 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+    const router = useRouter();
     useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
             TagManager.initialize({
                 gtmId: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
             });
         }
+        const redirect = process.env.NEXT_PUBLIC_ROLLUPS_ONLY;
+        if (redirect === 'true') router.replace('/rollups');
     }, []);
 
     return (

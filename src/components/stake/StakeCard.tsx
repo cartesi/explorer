@@ -36,8 +36,10 @@ const StakeCard: FC<StakeCardProps> = (props) => {
             )}
 
             <Stack direction="column">
-                <Text fontSize="md">{Title}</Text>
-                <Text fontSize="36px" lineHeight={1}>
+                <Text as="div" fontSize="md">
+                    {Title}
+                </Text>
+                <Text as="div" fontSize="36px" lineHeight={1}>
                     {children}
                 </Text>
             </Stack>

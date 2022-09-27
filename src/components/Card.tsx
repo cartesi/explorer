@@ -21,18 +21,22 @@ import {
     useColorModeValue,
     useDisclosure,
     Tooltip,
+    BoxProps,
+    HeadingProps,
 } from '@chakra-ui/react';
 import { MouseEventHandler, ReactElement, ReactNode } from 'react';
 
-export interface CardProps extends StackProps {
+export interface CardProps extends Omit<StackProps, 'title'> {
     id?: string;
     buttonText?: string | ReactElement;
     icon?: ReactElement;
     iconBg?: string | (string & {});
     subtitle?: string;
     tooltip?: string | ReactNode;
-    title: string;
+    title: string | ReactNode;
     onButtonClick?: MouseEventHandler<HTMLButtonElement>;
+    contentStackProps?: StackProps;
+    titleProps?: HeadingProps;
 }
 
 export const Card = ({
@@ -43,7 +47,9 @@ export const Card = ({
     iconBg,
     subtitle,
     title,
+    titleProps,
     tooltip,
+    contentStackProps,
     ...stackProps
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
@@ -65,6 +71,7 @@ export const Card = ({
                 direction={{ base: 'column', lg: 'row' }}
                 alignItems={['center']}
                 px={4}
+                {...contentStackProps}
             >
                 <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={2.5} />
                 <Box textAlign={{ base: 'center', lg: 'left' }}>
@@ -76,6 +83,7 @@ export const Card = ({
                         mb={0}
                         display="flex"
                         justifyContent={{ base: 'center', lg: 'flex-start' }}
+                        {...titleProps}
                     >
                         {title}{' '}
                         {tooltip && (
