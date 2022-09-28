@@ -51,14 +51,15 @@ const InitialFundsInput = ({
 }: InitialFundsInputProps) => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
     const { account, active } = useWallet();
-    const userBalance = useBalance(account);
+    const balance = useBalance(account);
+    const userBalance = active ? balance : toBigNumber(0);
     const ethBalance =
         userBalance && active
             ? formatValue(userBalance, 'eth', numberFormatOpts)
             : '0.00';
     const {
         register,
-        formState: { errors },
+        formState: { errors, isDirty },
         trigger,
     } = useForm<{ deposit: number }>();
 
@@ -92,6 +93,10 @@ const InitialFundsInput = ({
     });
 
     const { deposit: depositErrors } = errors;
+
+    useEffect(() => {
+        if (isDirty) trigger('deposit');
+    }, [active]);
 
     useEffect(() => {
         if (!isFunction(onValidationChange)) return;

@@ -110,6 +110,24 @@ describe('InitialFundsInput component', () => {
             ).toBeInTheDocument();
         });
 
+        it('should display insufficient-eth-balance when wallet is disconnected and input change', async () => {
+            mockUseWallet.mockReturnValue({
+                ...defaultUseWalletData,
+                active: false,
+            });
+            mockUseBalance.mockReturnValue(undefined);
+
+            render(<Component min={0.001} />);
+            const input = screen.getByLabelText('Initial Funds');
+            act(() => {
+                fireEvent.change(input, { target: { value: 0.5 } });
+            });
+
+            expect(
+                await screen.findByText('Insufficient ETH balance')
+            ).toBeInTheDocument();
+        });
+
         it(`Should display message when deposit set is bigger than user's ETH balance`, async () => {
             render(<Component />);
             const input = screen.getByLabelText('Initial Funds');
