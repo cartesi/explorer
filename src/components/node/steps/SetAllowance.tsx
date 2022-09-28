@@ -41,6 +41,8 @@ import {
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../TransactionBanner';
+import { Notification } from '../../Notification';
+import ConnectWallet from '../../header/ConnectWallet';
 
 const useStyle = () => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
@@ -152,7 +154,8 @@ const buildURL = (nodeAddress: string) =>
 const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const [hiredNodeAddress] = useAtom(hiredNodeAddressAtom);
     const router = useRouter();
-    const { account } = useWallet();
+    const wallet = useWallet();
+    const { account, active } = wallet;
     const { staking } = useStaking(account);
     const { approve, transaction } = useCartesiToken(account, staking?.address);
 
@@ -169,11 +172,8 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
         });
     };
 
-    const enableBtn = enableBtnWhen(
-        allowanceAmount,
-        transaction.isOngoing,
-        errors
-    );
+    const enableBtn =
+        enableBtnWhen(allowanceAmount, transaction.isOngoing, errors) && active;
 
     const isStepCompleted = transaction?.state === 'confirmed';
 
@@ -192,6 +192,15 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
             onActive={onStepActive}
         >
             <StepBody>
+                {!active && (
+                    <Notification
+                        title="Your wallet is disconnected"
+                        status="warning"
+                    >
+                        <ConnectWallet wallet={wallet} />
+                    </Notification>
+                )}
+
                 <TransactionBanner
                     title="Setting the allowance..."
                     failTitle="Setting the allowance failed"

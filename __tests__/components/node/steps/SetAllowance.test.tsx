@@ -184,6 +184,32 @@ describe('SetAllowance Step', () => {
     });
 
     describe('Notifications', () => {
+        it('should display an warn message and action to connect wallet when wallet is disconnected', async () => {
+            const activate = jest.fn();
+            mockUseWallet.mockReturnValue({
+                active: false,
+                activate,
+                deactivate: jest.fn(),
+            });
+
+            render(<SetAllowance stepNumber={1} inFocus />);
+
+            const alert = screen.getByRole('alert');
+            expect(
+                await findByText(alert, 'Your wallet is disconnected')
+            ).toBeInTheDocument();
+            expect(
+                await findByText(alert, 'Connect To Wallet')
+            ).toBeInTheDocument();
+
+            // should call activate method from useWallet hook
+            act(() => {
+                fireEvent.click(screen.getByText('Connect To Wallet'));
+            });
+
+            expect(activate).toHaveBeenCalledTimes(1);
+        });
+
         it('should display an informative notification when the transaction is in course', async () => {
             const tokenMock = buildUseCartesiTokenReturn();
             tokenMock.transaction.acknowledged = false;
@@ -220,6 +246,35 @@ describe('SetAllowance Step', () => {
         const stakingSetup = {
             staking: { address: stakingAddress },
         };
+
+        it('should not be able to click RUN-YOUR-NODE button when wallet is disconnected', async () => {
+            const stakingMock = buildUseStakingReturn(stakingSetup);
+            const tokenMock = buildUseCartesiTokenReturn();
+            mockUseStaking.mockReturnValue(stakingMock);
+            mockUseCartesiToken.mockReturnValue(tokenMock);
+            mockUseWallet.mockReturnValue({
+                active: false,
+                activate: jest.fn(),
+                deactivate: jest.fn(),
+            });
+
+            render(<SetAllowance stepNumber={1} inFocus />);
+
+            const input = screen.getByLabelText('Enter the allowance');
+            const button = screen.getByText('RUN YOUR NODE');
+
+            act(() => {
+                fireEvent.change(input, { target: { value: 10000 } });
+            });
+
+            await waitFor(() => {
+                expect(button.hasAttribute('disabled')).toBe(true);
+            });
+
+            fireEvent.click(button);
+
+            expect(tokenMock.approve).not.toHaveBeenCalled();
+        });
 
         it('should call approve() with correct BigNumber when validations passed and it is clicked', async () => {
             const stakingMock = buildUseStakingReturn(stakingSetup);
