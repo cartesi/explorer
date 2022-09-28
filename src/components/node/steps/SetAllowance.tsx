@@ -194,7 +194,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
             <StepBody>
                 {!active && (
                     <Notification
-                        title="Your wallet is disconnected"
+                        title={useMessages('wallet.is.disconnected')}
                         status="warning"
                     >
                         <ConnectWallet wallet={wallet} />

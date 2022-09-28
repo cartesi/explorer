@@ -12,6 +12,11 @@
 import { pathOr } from 'lodash/fp';
 
 const messages = {
+    wallet: {
+        is: {
+            disconnected: () => 'Your wallet is disconnected',
+        },
+    },
     node: {
         owned: {
             mine: () => 'Looks like you already own that node.',

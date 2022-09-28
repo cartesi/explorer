@@ -25,6 +25,9 @@ import TransactionBanner from '../TransactionBanner';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
 import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';
+import { Notification } from '../../Notification';
+import ConnectWallet from '../../header/ConnectWallet';
+import { useMessages } from '../../../utils/messages';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -49,13 +52,15 @@ const HireNode = ({
     const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
     const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
     const [stepState, setStepState] = useStepState({ inFocus });
-    const { account } = useWallet();
+    const wallet = useWallet();
+    const { account, active } = wallet;
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [initialFunds, setInitialFunds] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
     const node = useNode(nodeAddress);
     const { status } = evaluateNode(account, node);
-    const enableNext = enableNextWhen(initialFunds, status, errors);
+    const enableNext =
+        enableNextWhen(initialFunds, status, errors) && wallet.active;
     const isStepCompleted = node.transaction?.state === 'confirmed';
 
     const handleValidation = (validation: Validation) => {
@@ -91,6 +96,14 @@ const HireNode = ({
             onActive={onStepActive}
         >
             <StepBody>
+                {!active && (
+                    <Notification
+                        title={useMessages('wallet.is.disconnected')}
+                        status="warning"
+                    >
+                        <ConnectWallet wallet={wallet} />
+                    </Notification>
+                )}
                 <TransactionBanner
                     title="Hiring the node..."
                     failTitle="Hiring the node failed"
