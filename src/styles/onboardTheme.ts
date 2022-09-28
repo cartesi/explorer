@@ -11,6 +11,7 @@
 
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
+import { zIndices } from './foundations/zIndices';
 
 const CUSTOM_CLASS = '.bn-onboard-custom';
 const MODAL = `${CUSTOM_CLASS}.bn-onboard-modal`;
@@ -25,6 +26,7 @@ export const buildOnboardTheme = (props) => {
     return {
         [MODAL]: {
             fontFamily: fonts.body,
+            zIndex: zIndices.lg,
         },
         [`${MODAL_CONTENT}${DARK_MODE}`]: {
             background: colors.gray[800],
