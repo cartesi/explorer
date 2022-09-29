@@ -30,7 +30,7 @@ const withErrorStatusAs = (
         }>({});
 
         useEffect(() => {
-            const newProps: { status?: AlertStatus } = transaction.error
+            const newProps: { status?: AlertStatus } = transaction?.error
                 ? transaction.acknowledged
                     ? {}
                     : { status: alertStatus }

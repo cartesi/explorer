@@ -18,6 +18,8 @@ import {
     useColorModeValue,
     chakra,
     Text,
+    useDisclosure,
+    Spinner,
 } from '@chakra-ui/react';
 import { useBalance } from '../../services/eth';
 import { useNode } from '../../services/node';
@@ -55,6 +57,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
 
     const [currentTransaction, setCurrentTransaction] = useState<any>(null);
     const [transactionBanners, setTransactionBanners] = useState<any>({});
+    const retiredDisclosure = useDisclosure();
 
     // dark mode support
     const bg = useColorModeValue('gray.50', 'header');
@@ -71,11 +74,18 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
         }
     }, [hiredNewNode, hiringAddress]);
 
+    useEffect(() => {
+        if (node?.retired) {
+            retiredDisclosure.onOpen();
+        }
+    }, [node]);
+
     return (
         <>
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 pt={{ base: 6 }}
+                pb={4}
                 bg={bg}
             >
                 <VStack spacing={4} alignItems="stretch">
@@ -128,7 +138,11 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                             }
                         />
                     )}
-                    {node.retired && <NodeRetiredBanner />}
+                    {retiredDisclosure.isOpen && (
+                        <NodeRetiredBanner
+                            onClose={retiredDisclosure.onClose}
+                        />
+                    )}
                 </VStack>
             </Box>
             <Box
@@ -151,39 +165,54 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                     </Box>
                 </Stack>
 
-                <NodeInfoSection
-                    address={activeWorker}
-                    userBalance={userBalance}
-                    nodeBalance={node.balance}
-                    isRetired={node.retired}
-                    isHiring={pool.transaction?.isOngoing}
-                    isRetiring={
-                        currentTransaction === 'retire' &&
-                        pool.transaction?.isOngoing
-                    }
-                    onRetire={(address) => {
-                        setCurrentTransaction('retire');
-                        setTransactionBanners((t) => ({ ...t, retire: true }));
-                        pool.retire(address);
-                    }}
-                    onDeposit={(amount) => {
-                        setCurrentTransaction('deposit');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            deposit: true,
-                        });
-                        node.transfer(amount);
-                    }}
-                    onHire={(nodeAddress, funds) => {
-                        setCurrentTransaction('hire');
-                        setTransactionBanners({
-                            ...transactionBanners,
-                            hire: true,
-                        });
-                        setHiringAddress(nodeAddress);
-                        pool.hire(nodeAddress, funds);
-                    }}
-                />
+                {!node?.ready ? (
+                    <Box
+                        bg={bg}
+                        px={{ base: 2, lg: 8 }}
+                        py={{ base: 2, lg: 6 }}
+                        display="flex"
+                        justifyContent="center"
+                    >
+                        <Spinner size="xl" />
+                    </Box>
+                ) : (
+                    <NodeInfoSection
+                        address={activeWorker}
+                        userBalance={userBalance}
+                        nodeBalance={node.balance}
+                        isRetired={node.retired}
+                        isHiring={pool.transaction?.isOngoing}
+                        isRetiring={
+                            currentTransaction === 'retire' &&
+                            pool.transaction?.isOngoing
+                        }
+                        onRetire={(address) => {
+                            setCurrentTransaction('retire');
+                            setTransactionBanners((t) => ({
+                                ...t,
+                                retire: true,
+                            }));
+                            pool.retire(address);
+                        }}
+                        onDeposit={(amount) => {
+                            setCurrentTransaction('deposit');
+                            setTransactionBanners({
+                                ...transactionBanners,
+                                deposit: true,
+                            });
+                            node.transfer(amount);
+                        }}
+                        onHire={(nodeAddress, funds) => {
+                            setCurrentTransaction('hire');
+                            setTransactionBanners({
+                                ...transactionBanners,
+                                hire: true,
+                            });
+                            setHiringAddress(nodeAddress);
+                            pool.hire(nodeAddress, funds);
+                        }}
+                    />
+                )}
             </Box>
             <PoolSetting />
         </>
