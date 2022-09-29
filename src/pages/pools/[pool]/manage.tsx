@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Head from 'next/head';
 import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -21,14 +21,18 @@ import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageC
 import Address from '../../../components/Address';
 
 const PoolNode: FC = () => {
-    const { chainId } = useWallet();
+    const { chainId, active } = useWallet();
     const router = useRouter();
     const address = router.query.pool as string;
+
+    useEffect(() => {
+        if (!active) router.replace('/newStaking');
+    }, [active, router]);
 
     return (
         <Layout>
             <Head>
-                <title>Explorer - Manage Node</title>
+                <title>Explorer - Manage Public Pool</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 

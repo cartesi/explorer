@@ -27,6 +27,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
+import { useRouter } from 'next/router';
 import { AiOutlineLeft } from 'react-icons/ai';
 
 import { useBalance, useBlockNumber } from '../../../services/eth';
@@ -48,6 +49,7 @@ import { TransactionInfoBanner } from '../../../components/stake/TransactionInfo
 import theme from '../../../styles/theme';
 
 const ManageNode: FC = () => {
+    const router = useRouter();
     const { account, active: isConnected } = useWallet();
     const blockNumber = useBlockNumber();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
@@ -120,6 +122,12 @@ const ManageNode: FC = () => {
     const hiredNewNode =
         currentTransaction === 'hire' &&
         node.transaction?.state === 'confirmed';
+
+    useEffect(() => {
+        if (!isConnected) {
+            router.replace(`/newStaking`);
+        }
+    }, [isConnected, router]);
 
     useEffect(() => {
         if (hiredNewNode) {
