@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2022-09-30
+
+-   New Node Runners page and workflows are ready for rollout.
+
 ## [2.7.3] - 2022-09-20
 
 -   Added max deposit feature in the staking pool page. The smallest amount between the allowance and the user's CTSI balance will be used to fill the deposit amount.
@@ -169,7 +173,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.7.3...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.8.0...HEAD
+[2.8.0]: https://github.com/cartesi-corp/explorer/compare/v2.7.3...v2.8.0
 [2.7.3]: https://github.com/cartesi-corp/explorer/compare/v2.7.2...v2.7.3
 [2.7.2]: https://github.com/cartesi-corp/explorer/compare/v2.7.1...v2.7.2
 [2.7.1]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...v2.7.1
