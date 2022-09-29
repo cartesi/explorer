@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
 
 import { useBalance, useBlockNumber } from '../../../services/eth';
@@ -47,6 +48,7 @@ import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeMod
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import theme from '../../../styles/theme';
+import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 
 const ManageNode: FC = () => {
     const router = useRouter();
@@ -102,6 +104,7 @@ const ManageNode: FC = () => {
 
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
+    const retiredDisclosure = useDisclosure();
 
     const [isRetiring, setRetiring] = useState<boolean>(false);
     const [isHiring, setHiring] = useState<boolean>(false);
@@ -162,6 +165,12 @@ const ManageNode: FC = () => {
         }
     }, [node]);
 
+    useEffect(() => {
+        if (node?.retired) {
+            retiredDisclosure.onOpen();
+        }
+    }, [node.retired]);
+
     return (
         <Layout>
             <Head>
@@ -175,12 +184,12 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Link href="/node-runners" passHref>
+                <NextLink href="/node-runners" passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>
                     </Box>
-                </Link>
+                </NextLink>
             </HStack>
 
             <Box
@@ -273,6 +282,11 @@ const ManageNode: FC = () => {
                                 setRetired(true);
                             }}
                             onClose={() => setHireAlertActive(false)}
+                        />
+                    )}
+                    {retiredDisclosure.isOpen && (
+                        <NodeRetiredBanner
+                            onClose={retiredDisclosure.onClose}
                         />
                     )}
                 </VStack>
