@@ -35,7 +35,7 @@ export interface IWalletMobileModalProps {
 }
 
 export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
-    const { account, library, isHardwareWallet, onboard, deactivate } =
+    const { account, library, isHardwareWallet, selectAccount, deactivate } =
         useWallet();
     const ens = useENS(account);
     const { hasCopied, onCopy } = useClipboard(account);
@@ -126,7 +126,7 @@ export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
                             </HStack>
                         </ModalBody>
                     )}
-                    {account && library && onboard && isHardwareWallet && (
+                    {account && library && selectAccount && isHardwareWallet && (
                         <ModalBody
                             borderBottom="1px"
                             borderColor={'gray.100'}
@@ -138,7 +138,7 @@ export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
                                     <Heading m={0} size="sm">
                                         <Flex align="baseline">
                                             <Box
-                                                onClick={onboard.accountSelect}
+                                                onClick={selectAccount}
                                                 aria-label="Switch accounts"
                                                 title="Switch accounts"
                                                 fontSize={16}
@@ -151,7 +151,7 @@ export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
                                 </Box>
                                 <Box alignSelf="flex-end">
                                     <SwitchIcon
-                                        onClick={onboard.accountSelect}
+                                        onClick={selectAccount}
                                         aria-label="Switch accounts"
                                         style={{
                                             height: 18,
