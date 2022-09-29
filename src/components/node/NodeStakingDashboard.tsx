@@ -156,9 +156,10 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                     />
                 )}
                 <Stack
-                    direction={{ base: 'column', lg: 'row' }}
+                    direction={{ base: 'column', md: 'row' }}
                     w="full"
                     justifyContent="space-between"
+                    alignItems="flex-start"
                 >
                     <WalletBalanceSection
                         userCTSIBalance={balance}

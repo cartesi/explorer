@@ -46,6 +46,14 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                 alignItems="center"
                 pt={{ base: 4, lg: 0 }}
             >
+                <Box
+                    bg="transparent"
+                    w="4.125rem"
+                    h="4.125rem"
+                    borderRadius="full"
+                    display="grid"
+                    placeContent="center"
+                />
                 <Box flex={0}>
                     <HStack>
                         <Text color={color}>Allowance</Text>
