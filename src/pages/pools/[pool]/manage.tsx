@@ -26,7 +26,7 @@ const PoolNode: FC = () => {
     const address = router.query.pool as string;
 
     useEffect(() => {
-        if (!active) router.replace('/newStaking');
+        if (!active) router.replace('/node-runners');
     }, [active, router]);
 
     return (
@@ -42,7 +42,7 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <NextLink href="/newStaking" passHref>
+                <NextLink href="/node-runners" passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>

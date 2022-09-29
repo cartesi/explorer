@@ -372,7 +372,7 @@ describe('SetAllowance Step', () => {
             mockUseAtom.mockImplementation(() => ['', jest.fn()]);
             render(<SetAllowance inFocus stepNumber={1} />);
 
-            expect(routerPushStub).toHaveBeenCalledWith('/newStaking');
+            expect(routerPushStub).toHaveBeenCalledWith('/node-runners');
         });
     });
 });

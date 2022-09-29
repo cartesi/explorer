@@ -44,9 +44,9 @@ export const buildLinks = ({ newNodeRunnersEnabled }) => {
             href: '/pools',
         },
         {
-            key: 'staking',
+            key: newNodeRunnersEnabled ? 'runners' : 'staking',
             label: 'Node Runners',
-            href: '/staking',
+            href: newNodeRunnersEnabled ? '/node-runners' : '/staking',
         },
         {
             key: 'blocks',
@@ -54,14 +54,6 @@ export const buildLinks = ({ newNodeRunnersEnabled }) => {
             href: '/blocks',
         },
     ];
-
-    if (newNodeRunnersEnabled) {
-        links.push({
-            key: 'newStaking',
-            label: 'New Node Runners',
-            href: '/newStaking',
-        });
-    }
 
     return links;
 };

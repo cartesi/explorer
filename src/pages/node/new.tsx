@@ -45,7 +45,7 @@ const NewNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Link href="/newStaking" passHref>
+                <Link href="/node-runners" passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>

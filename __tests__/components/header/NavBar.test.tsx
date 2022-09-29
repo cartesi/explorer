@@ -81,11 +81,11 @@ describe('Nav Bar', () => {
             newNodeRunnersEnabled: true,
         });
 
-        expect(links.length).toBe(5);
+        expect(links.length).toBe(4);
 
-        expect(links[4].key).toBe('newStaking');
-        expect(links[4].label).toBe('New Node Runners');
-        expect(links[4].href).toBe('/newStaking');
+        expect(links[2].key).toBe('runners');
+        expect(links[2].label).toBe('Node Runners');
+        expect(links[2].href).toBe('/node-runners');
     });
 
     it('Should display children', () => {

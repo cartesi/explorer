@@ -149,7 +149,7 @@ const enableBtnWhen = (
 ) => !isEmpty(allowance) && !transactionInProgress && isEmpty(errors);
 
 const buildURL = (nodeAddress: string) =>
-    !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/newStaking';
+    !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/node-runners';
 
 const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const [hiredNodeAddress] = useAtom(hiredNodeAddressAtom);

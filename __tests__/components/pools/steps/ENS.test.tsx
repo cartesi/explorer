@@ -227,7 +227,7 @@ describe('Pool ENS step', () => {
                 fireEvent.click(screen.getByText('COMPLETE'));
 
                 expect(onComplete).toHaveBeenCalled();
-                expect(routerPushStub).toHaveBeenCalledWith('/newStaking');
+                expect(routerPushStub).toHaveBeenCalledWith('/node-runners');
             });
         });
 
