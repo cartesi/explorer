@@ -171,6 +171,36 @@ describe('Pool ENS step', () => {
         });
     });
 
+    describe('Notifications', () => {
+        it('should only display wallet-disconnected message if the ENS input is filled', async () => {
+            mockUseWallet.mockReturnValue({
+                active: false,
+                activate: jest.fn(),
+                deactivate: jest.fn(),
+            });
+
+            render(<Component inFocus stepNumber={1} />);
+
+            // check if the warning message is rendered when input is clean
+            expect(
+                screen.queryByText('Your wallet is disconnected')
+            ).not.toBeInTheDocument();
+
+            act(() => {
+                fireEvent.change(screen.getByLabelText('Pool ENS name'), {
+                    target: { value: 'my.poolname.eth' },
+                });
+            });
+
+            expect(
+                await screen.findByText('Your wallet is disconnected')
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Connect To Wallet')
+            ).toBeInTheDocument();
+        });
+    });
+
     describe('Actions', () => {
         describe('Complete without ENS', () => {
             it('should redirect the use to the pool manage screen when pool-address available', () => {

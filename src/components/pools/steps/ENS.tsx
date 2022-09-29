@@ -27,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useMessages } from '../../../utils/messages';
 import { OrderedContent } from '../../OrderedContent';
 import { useAtom } from 'jotai';
@@ -38,6 +38,7 @@ import TransactionBanner from '../../node/TransactionBanner';
 import { isEmpty } from 'lodash';
 import { trim } from 'lodash/fp';
 import { useRouter } from 'next/router';
+import { WalletDisconnectedNotification } from './WalletDisconnectedNotification';
 
 interface SimpleInput {
     label: string;
@@ -158,14 +159,16 @@ const EthereumNameServer = ({
     onStepActive,
 }: IStep) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const notificationRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const [poolAddress] = useAtom(poolAddressAtom);
-    const { account } = useWallet();
+    const { account, active } = useWallet();
     const pool = useStakingPool(poolAddress, account);
     const [stepState, setStepState] = useStepState({ inFocus });
     const [proceed, setProceed] = useState<boolean>(false);
     const [ens, setENS] = useState<string | null>();
     const isCompleted = proceed || pool.transaction?.state === 'confirmed';
+    const ensInputIsEmpty = isEmpty(trim(ens));
 
     useEffect(() => {
         if (isCompleted) {
@@ -185,6 +188,9 @@ const EthereumNameServer = ({
             optionalText={useMessages('step.skippable')}
         >
             <StepBody>
+                {!active && !ensInputIsEmpty && (
+                    <WalletDisconnectedNotification ref={notificationRef} />
+                )}
                 <TransactionBanner
                     title={useMessages('pool.set.ens.update')}
                     failTitle={useMessages('pool.set.ens.fail')}
@@ -220,10 +226,17 @@ const EthereumNameServer = ({
                         colorScheme="blue"
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
-                            if (isEmpty(trim(ens))) {
+                            if (ensInputIsEmpty) {
                                 setProceed(true);
                             } else {
-                                pool.setName(ens);
+                                if (active) {
+                                    pool.setName(ens);
+                                } else {
+                                    notificationRef.current?.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'center',
+                                    });
+                                }
                             }
                         }}
                     >

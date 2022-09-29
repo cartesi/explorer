@@ -197,6 +197,21 @@ describe('HireNode Step', () => {
     });
 
     describe('Notifications', () => {
+        it('should display an warning notification when wallet is disconnected and action button to quick connect', () => {
+            const activate = jest.fn();
+            mockUseWallet.mockReturnValue({
+                active: false,
+                activate,
+                deactivate: jest.fn(),
+            });
+            render(<HireNode stepNumber={1} inFocus />);
+
+            expect(
+                screen.getByText('Your wallet is disconnected')
+            ).toBeInTheDocument();
+            expect(screen.getByText('Connect To Wallet')).toBeInTheDocument();
+        });
+
         describe('Pool Stakes', () => {
             it('should display an informative notification when pausing new stakes in the pool is in course', async () => {
                 const pool = buildUseStakingPoolReturn();

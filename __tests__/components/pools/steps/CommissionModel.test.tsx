@@ -302,6 +302,29 @@ describe('CommissionModel step component', () => {
     });
 
     describe('Notifications', () => {
+        it('should display notification when wallet is disconnected and a connect-to-wallet button for quick action', async () => {
+            const activate = jest.fn();
+            mockUseWallet.mockReturnValue({
+                active: false,
+                activate,
+                deactivate: jest.fn(),
+            });
+
+            render(<CommissionModel stepNumber={1} inFocus />);
+
+            expect(
+                screen.getByText('Your wallet is disconnected')
+            ).toBeInTheDocument();
+            expect(screen.getByText('Connect To Wallet')).toBeInTheDocument();
+
+            // clicking the connect to wallet
+            act(() => {
+                fireEvent.click(screen.getByText('Connect To Wallet'));
+            });
+
+            expect(activate).toHaveBeenCalledTimes(1);
+        });
+
         it('should display notification and disable the CREATE-POOL button when pool factory is loaded but creation is paused', () => {
             const returned = buildUseStakingPoolFactoryReturn();
             returned.paused = true;

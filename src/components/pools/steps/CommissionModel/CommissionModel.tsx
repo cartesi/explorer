@@ -22,6 +22,7 @@ import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
 import { useWallet } from '../../../../contexts/wallet';
 import { atom, useAtom } from 'jotai';
+import { WalletDisconnectedNotification } from '../WalletDisconnectedNotification';
 
 type CommissionModels = FlatRateModel | GasBasedModel;
 type Validation = ValidationResult<FlatRateModel | GasBasedModel>;
@@ -88,7 +89,8 @@ const CommissionModel = ({
     onStepActive,
 }: IStep) => {
     const [, updatePoolAddressAtom] = useAtom(poolAddressAtom);
-    const { account } = useWallet();
+    const wallet = useWallet();
+    const { account, active } = wallet;
     const poolFactory = useStakingPoolFactory();
     const [stepState, setStepState] = useStepState({ inFocus });
     const [modelType, setModelType] =
@@ -148,6 +150,7 @@ const CommissionModel = ({
                     {notInitialised && <PoolFactoryNotInitialisedAlert />}
                     {poolCreationIsPaused && <PoolCreationIsPausedAlert />}
                 </Stack>
+                {!active && <WalletDisconnectedNotification />}
                 <TransactionBanner
                     title="Creating the pool..."
                     failTitle="The pool creation failed!"

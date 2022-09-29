@@ -41,6 +41,7 @@ import {
 import { poolAddressAtom } from './CommissionModel';
 import { useStakingPool } from '../../../services/pool';
 import { TransactionType } from '../../../types/pool';
+import { WalletDisconnectedNotification } from './WalletDisconnectedNotification';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -76,7 +77,7 @@ const wordingFor = {
 const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
     const [poolAddress] = useAtom(poolAddressAtom);
-    const { account } = useWallet();
+    const { account, active } = useWallet();
     const [stepState, setStepState] = useStepState({ inFocus });
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [initialFunds, setInitialFunds] = useState<string | null>();
@@ -86,7 +87,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     const pool = useStakingPool(poolAddress, account);
     const node = useNode(nodeAddress);
     const { status } = evaluateNode(poolAddress, node);
-    const enableNext = enableNextWhen(initialFunds, status, errors);
+    const enableNext = enableNextWhen(initialFunds, status, errors) && active;
     const isStepCompleted =
         transactionType === 'hire' && pool?.transaction?.state === 'confirmed';
 
@@ -115,6 +116,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
             onActive={onStepActive}
         >
             <StepBody>
+                {!active && <WalletDisconnectedNotification />}
                 <TransactionBanner
                     title={wordingFor[transactionType]?.title}
                     failTitle={wordingFor[transactionType]?.failTitle}
