@@ -67,26 +67,26 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
             icon: CartesiIcon,
             description: 'A place where you can stake your CTSI and much more.',
         },
-        i18n: {
-            en: {
-                connect: {
-                    selectingWallet: {
-                        header: 'Available Wallets',
-                        sidebar: {
-                            heading: 'Get Started',
-                            subheading: 'Connect your wallet',
-                            paragraph:
-                                'Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.',
-                        },
-                        recommendedWalletsPart1: '{app} only supports',
-                        recommendedWalletsPart2:
-                            'on this platform. Please use or install one of the supported wallets to continue',
-                        installWallet:
-                            'You do not have any wallets installed that {app} supports, please use a supported wallet',
-                    },
-                },
-            },
-        },
+        // i18n: {
+        //     en: {
+        //         connect: {
+        //             selectingWallet: {
+        //                 header: 'Available Wallets',
+        //                 sidebar: {
+        //                     heading: 'Get Started',
+        //                     subheading: 'Connect your wallet',
+        //                     paragraph:
+        //                         'Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.',
+        //                 },
+        //                 recommendedWalletsPart1: '{app} only supports',
+        //                 recommendedWalletsPart2:
+        //                     'on this platform. Please use or install one of the supported wallets to continue',
+        //                 installWallet:
+        //                     'You do not have any wallets installed that {app} supports, please use a supported wallet',
+        //             },
+        //         },
+        //     },
+        // },
     };
 };
 
@@ -196,7 +196,7 @@ export const useOnboardV2 = () => {
                 connectedWallet.provider,
                 'any'
             );
-            setState((state) => ({ ...state, library }));
+            setState((state) => ({ ...state, library } as PropState));
         }
 
         return wallets;

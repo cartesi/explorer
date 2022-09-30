@@ -126,11 +126,15 @@ export const useOnboardV1 = () => {
                         console.log(`Wallet selected: ${name}`);
                         window.localStorage.setItem(SELECTED_WALLET, name);
 
-                        setState((state) => ({
-                            ...state,
-                            library: ethersProvider,
-                            isHardwareWallet: type === WalletType.HARDWARE,
-                        }));
+                        setState(
+                            (state) =>
+                                ({
+                                    ...state,
+                                    library: ethersProvider,
+                                    isHardwareWallet:
+                                        type === WalletType.HARDWARE,
+                                } as HookState)
+                        );
                     } else {
                         setState((state) => ({
                             ...state,
