@@ -6,7 +6,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "test": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.js",
+        "test": "jest",
         "test:ci": "jest --runInBand --coverage",
         "lint": "eslint --color --ext .ts src/",
         "lint:fix": "yarn lint --fix",
