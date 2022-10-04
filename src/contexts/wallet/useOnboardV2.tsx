@@ -21,7 +21,7 @@ import { ConnectOptionsString } from '@web3-onboard/core/dist/types';
 import injectedModule from '@web3-onboard/injected-wallets';
 import ledgerModule from '@web3-onboard/ledger';
 import walletConnectModule from '@web3-onboard/walletconnect';
-import walletLinkModule from '@web3-onboard/walletlink';
+import coinbaseWalletModule from '@web3-onboard/coinbase';
 import gnosisModule from '@web3-onboard/gnosis';
 import { ethers } from 'ethers';
 import { contains, debounce, keys, map, pick } from 'lodash/fp';
@@ -44,12 +44,12 @@ const supportedNetworks = map(parseInt)(keys(networks));
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
 const walletConnect = walletConnectModule();
-const walletLink = walletLinkModule({ darkMode: true });
+const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
 const buildConfig = (ankrEnabled: boolean): InitOptions => {
     return {
-        wallets: [injectedWallet, walletLink, gnosis, ledger, walletConnect],
+        wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
         chains: [
             {
                 id: `0x${Network.MAINNET}`,
