@@ -48,6 +48,9 @@ module.exports = {
                     ...config.resolve.alias,
                     '@emotion/core': toPath('node_modules/@emotion/react'),
                     'emotion-theming': toPath('node_modules/@emotion/react'),
+                    '@ledgerhq/devices/hid-framing': toPath(
+                        'node_modules/@ledgerhq/devices/lib/hid-framing'
+                    ),
                 },
             },
         };
