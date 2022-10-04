@@ -56,6 +56,9 @@ export const WalletConnectionProvider: FC = (props) => {
         error,
         active,
         isHardwareWallet,
+        isGnosisSafe,
+        walletName,
+        walletType,
         connectWallet,
         disconnectWallet,
         selectAccount,
@@ -78,6 +81,9 @@ export const WalletConnectionProvider: FC = (props) => {
               error,
               selectAccount,
               isHardwareWallet,
+              isGnosisSafe,
+              walletName,
+              walletType,
               ...defaults,
           }
         : defaults;

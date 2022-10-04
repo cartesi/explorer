@@ -25,6 +25,8 @@ import { WalletConnectionProvider } from '../../../src/contexts/wallet';
 import { emulateFor, TestComponent } from './helpers';
 import { ReturnOf } from '../../test-utilities';
 import { Network } from '../../../src/utils/networks';
+import { useOnboardV2 } from '../../../src/contexts/wallet/useOnboardV2';
+import { buildMockUseOnboardV2Return } from './mocks';
 
 jest.mock('@unleash/proxy-client-react', () => {
     const originalMod = jest.requireActual('@unleash/proxy-client-react');
@@ -37,6 +39,7 @@ jest.mock('@unleash/proxy-client-react', () => {
     };
 });
 
+jest.mock('../../../src/contexts/wallet/useOnboardV2');
 jest.mock('@chakra-ui/react');
 jest.mock('bnc-onboard');
 
@@ -51,6 +54,9 @@ const APIStub: API = {
 
 const onboardStub = Onboard as jest.MockedFunction<typeof Onboard>;
 const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
+const useOnboardV2Stub = useOnboardV2 as jest.MockedFunction<
+    typeof useOnboardV2
+>;
 const useColorModeStub = useColorMode as jest.MockedFunction<
     typeof useColorMode
 >;
@@ -87,12 +93,16 @@ describe('Wallet Provider', () => {
 
     beforeEach(() => {
         // default valid returns.
+
+        useOnboardV2Stub.mockReturnValue(buildMockUseOnboardV2Return());
         useColorModeStub.mockReturnValue({
             colorMode: 'light',
             toggleColorMode: jest.fn(),
             setColorMode: jest.fn(),
         });
-        useFlagStub.mockReturnValue(true);
+        useFlagStub.mockImplementation((name) =>
+            name === 'onboardV2Enabled' ? false : true
+        );
         useUnleashContextStub.mockReturnValue(jest.fn());
         onboardStub.mockReturnValue(APIStub);
         jest.spyOn(APIStub, 'walletSelect').mockResolvedValue(false);
@@ -353,6 +363,24 @@ describe('Wallet Provider', () => {
                     'Network id 3 is not supported. Supported network ids are 1, 5, 31337'
                 )
             );
+        });
+    });
+
+    describe('Gnosis Safe', () => {
+        it('Should have a way to recognize when the wallet is the gnosis safe', async () => {
+            onboardStub.mockImplementation(({ subscriptions }) => {
+                emulateFor({ name: 'Gnosis Safe', subscriptions, account });
+                return APIStub;
+            });
+
+            render(<Component />);
+
+            expect(
+                await screen.findByText('Wallet is Gnosis Safe')
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('wallet type is: sdk')
+            ).toBeInTheDocument();
         });
     });
 });

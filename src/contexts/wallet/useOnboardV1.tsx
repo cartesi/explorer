@@ -72,15 +72,27 @@ interface HookState {
     chainId?: number;
     error?: Error;
     walletLabel?: string;
-    isHardwareWallet?: boolean;
     selectAccount?: () => void;
     onboard?: API;
+    isHardwareWallet?: boolean;
+    isGnosisSafe?: boolean;
+    walletName?: string;
+    walletType?: `${WalletType}`;
 }
 
 export const useOnboardV1 = () => {
     const [state, setState] = useState<HookState>({});
-    const { library, account, chainId, error, isHardwareWallet, onboard } =
-        state;
+    const {
+        library,
+        account,
+        chainId,
+        error,
+        isHardwareWallet,
+        onboard,
+        isGnosisSafe,
+        walletName,
+        walletType,
+    } = state;
     const [isFirstNetworkChange, setFirstNetworkChange] = useState(true);
     const { colorMode } = useColorMode();
     const ankrEnabled = useFlag('ankrEnabled');
@@ -133,6 +145,11 @@ export const useOnboardV1 = () => {
                                     library: ethersProvider,
                                     isHardwareWallet:
                                         type === WalletType.HARDWARE,
+                                    walletName: name,
+                                    walletType: type,
+                                    isGnosisSafe:
+                                        type === WalletType.SDK &&
+                                        name === 'Gnosis Safe',
                                 } as HookState)
                         );
                     } else {
@@ -248,6 +265,9 @@ export const useOnboardV1 = () => {
         account,
         active,
         isHardwareWallet,
+        isGnosisSafe,
+        walletName,
+        walletType,
         connectWallet,
         disconnectWallet,
         selectAccount,

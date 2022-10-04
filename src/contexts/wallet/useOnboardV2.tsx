@@ -29,6 +29,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Network, networks } from '../../utils/networks';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
+import { WalletType } from './definitions';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -36,6 +37,8 @@ const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
 const hardwareWallets = ['ledger'];
+const sdkWallets = ['gnosis safe'];
+const injectedWallets = ['metamask', 'coinbase'];
 const supportedNetworks = map(parseInt)(keys(networks));
 
 const injectedWallet = injectedModule();
@@ -67,34 +70,28 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
             icon: CartesiIcon,
             description: 'A place where you can stake your CTSI and much more.',
         },
-        // i18n: {
-        //     en: {
-        //         connect: {
-        //             selectingWallet: {
-        //                 header: 'Available Wallets',
-        //                 sidebar: {
-        //                     heading: 'Get Started',
-        //                     subheading: 'Connect your wallet',
-        //                     paragraph:
-        //                         'Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.',
-        //                 },
-        //                 recommendedWalletsPart1: '{app} only supports',
-        //                 recommendedWalletsPart2:
-        //                     'on this platform. Please use or install one of the supported wallets to continue',
-        //                 installWallet:
-        //                     'You do not have any wallets installed that {app} supports, please use a supported wallet',
-        //             },
-        //         },
-        //     },
-        // },
     };
 };
 
 /**
  * Check what type of wallet is based on its label e.g. Ledger
  */
+const getWalletType = (label = ''): WalletType | null => {
+    const name = label.toLocaleLowerCase();
+    return contains(name, injectedWallets)
+        ? WalletType.INJECTED
+        : contains(name, hardwareWallets)
+        ? WalletType.HARDWARE
+        : contains(name, sdkWallets)
+        ? WalletType.SDK
+        : null;
+};
+
 const isHardwareType = (label = '') =>
     contains(label.toLocaleLowerCase(), hardwareWallets);
+
+const isSDKType = (label = '') =>
+    contains(label.toLocaleLowerCase(), ['gnosis safe']);
 
 const checkNetwork = (chainId: number): Error | null => {
     let error;
@@ -117,7 +114,11 @@ const handlerBuilder =
             const chainId = parseInt(chains[0]?.id, 16);
             const account = accounts[0]?.address;
 
-            const isHardwareWallet = isHardwareType(label);
+            const walletType = getWalletType(label);
+            const isHardwareWallet = WalletType.HARDWARE === walletType;
+            const isGnosisSafe =
+                WalletType.SDK === walletType && label === 'Gnosis Safe';
+
             const error = checkNetwork(chainId);
 
             console.info(
@@ -130,6 +131,8 @@ const handlerBuilder =
                 account,
                 chainId,
                 isHardwareWallet,
+                isGnosisSafe,
+                walletType,
                 walletLabel: label,
             }));
         } else {
@@ -149,8 +152,10 @@ interface PropState {
     library?: Web3Provider;
     chainId?: number;
     error?: Error;
-    walletLabel?: string;
     isHardwareWallet?: boolean;
+    isGnosisSafe?: boolean;
+    walletLabel?: string;
+    walletType?: `${WalletType}`;
     selectAccount?: () => void;
     onboard?: OnboardAPI;
 }
@@ -164,7 +169,9 @@ export const useOnboardV2 = () => {
         chainId,
         error,
         isHardwareWallet,
+        isGnosisSafe,
         walletLabel,
+        walletType,
         onboard,
     } = state;
 
@@ -243,6 +250,9 @@ export const useOnboardV2 = () => {
         library,
         active,
         isHardwareWallet,
+        isGnosisSafe,
+        walletName: walletLabel,
+        walletType,
         connectWallet,
         disconnectWallet,
         selectAccount,
