@@ -175,7 +175,6 @@ const Home = () => {
                                     <PoolPerformance
                                         chainId={chainId}
                                         pages={pages}
-                                        account={account}
                                         search={search}
                                     />
                                 )}

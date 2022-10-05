@@ -30,7 +30,6 @@ import PoolPerformanceTableRow from './PoolPerformanceTableRow';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
-    account?: string;
     loading: boolean;
     data?: StakingPool[];
     sort?: StakingPoolSort;
@@ -39,7 +38,6 @@ export interface PoolPerformanceTableProps {
 
 const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     chainId,
-    account,
     data,
     loading,
     sort,
@@ -115,7 +113,6 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 key={pool.id}
                                 chainId={chainId}
                                 pool={pool}
-                                account={account}
                             />
                         ))
                     ) : (

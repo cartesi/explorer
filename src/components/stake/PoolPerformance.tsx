@@ -19,14 +19,12 @@ import PoolPerformanceTable from './tables/PoolPerformanceTable';
 
 interface PoolPerformanceProps {
     chainId: number;
-    account?: string;
     pages: number;
     search?: string;
 }
 
 const PoolPerformance: FC<PoolPerformanceProps> = ({
     chainId,
-    account,
     pages,
     search,
 }) => {
@@ -44,7 +42,6 @@ const PoolPerformance: FC<PoolPerformanceProps> = ({
         <VStack w="100%">
             <PoolPerformanceTable
                 chainId={chainId}
-                account={account}
                 loading={loading}
                 data={data?.stakingPools || []}
                 sort={sort}

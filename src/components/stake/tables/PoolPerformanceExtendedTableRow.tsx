@@ -18,7 +18,6 @@ import {
     Tooltip,
     Icon,
     Box,
-    Button,
     HStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
