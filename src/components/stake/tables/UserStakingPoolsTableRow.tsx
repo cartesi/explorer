@@ -11,6 +11,7 @@
 
 import React, { FC } from 'react';
 import { Box, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { PoolBalance } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
@@ -93,9 +94,15 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     justifyContent="center"
                     ml="auto"
                 >
-                    <Link href={`/stake/${balance.pool.id}`} mr={[0, 0, 3]}>
-                        <StakeInfo w={8} h={8} data-testid="stake-info-icon" />
-                    </Link>
+                    <NextLink href={`/stake/${balance.pool.id}`}>
+                        <Link mr={[0, 0, 3]}>
+                            <StakeInfo
+                                w={8}
+                                h={8}
+                                data-testid="stake-info-icon"
+                            />
+                        </Link>
+                    </NextLink>
                 </Box>
             </Td>
         </Tr>

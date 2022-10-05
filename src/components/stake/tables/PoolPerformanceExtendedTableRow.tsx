@@ -91,14 +91,6 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                         minWidth="120px"
                     />
 
-                    {edit && (
-                        <Box ml={10}>
-                            <NextLink href={`/pools/${pool.id}/edit`}>
-                                <Button size="sm">Manage</Button>
-                            </NextLink>
-                        </Box>
-                    )}
-
                     {pool.paused && (
                         <Tooltip
                             placement="top"
@@ -187,9 +179,15 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     justifyContent="center"
                     ml="auto"
                 >
-                    <Link href={`/stake/${pool.id}`} mr={[0, 0, 3]}>
-                        <StakeInfo w={8} h={8} data-testid="stake-info-icon" />
-                    </Link>
+                    <NextLink href={`/stake/${pool.id}`}>
+                        <Link mr={[0, 0, 3]}>
+                            <StakeInfo
+                                w={8}
+                                h={8}
+                                data-testid="stake-info-icon"
+                            />
+                        </Link>
+                    </NextLink>
                 </Box>
             </Td>
         </Tr>
