@@ -556,7 +556,7 @@ export const PoolsTimer = createIcon({
     ),
 });
 
-export const StakePlus = (props) => {
+export const StakePlusIcon = (props) => {
     const plusColor = useColorModeValue('white', 'blue.900');
 
     return (
@@ -619,8 +619,8 @@ export const StakePlus = (props) => {
     );
 };
 
-export const StakeCircled = createIcon({
-    displayName: 'StakeCircled',
+export const StakeCircledIcon = createIcon({
+    displayName: 'StakeCircledIcon',
     viewBox: '0 0 44 44',
     path: (
         <g>

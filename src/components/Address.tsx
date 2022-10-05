@@ -25,7 +25,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { etherscanLinks } from '../utils/networks';
 import { truncateString } from '../utils/stringUtils';
 import { useENS } from '../services/ens';
-import { StakeCircled } from './Icons';
+import { StakeCircledIcon } from './Icons';
 
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
 
@@ -99,7 +99,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
                     onError={() => setAvatarError(true)}
                 />
             ) : (
-                <StakeCircled width="42px" height="42px" />
+                <StakeCircledIcon width="42px" height="42px" />
             )}
             {name && <Text>{name}</Text>}
             <Text {...textProps} color="gray.900">
