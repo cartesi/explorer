@@ -16,7 +16,7 @@ import { PoolBalance } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../../services/pool';
-import { StakeInfo } from '../../Icons';
+import { StakeIcon } from '../../Icons';
 import Address from '../../Address';
 
 export interface UserStakingPoolsTableRowProps {
@@ -87,7 +87,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
                     padding={[0, 0, 8, 8]}
-                    minHeight={['71px', '71px', 'auto', 'auto']}
+                    minHeight={['80px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
                     display={['flex', 'flex', 'block', 'block']}
                     alignItems="center"
@@ -96,7 +96,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 >
                     <NextLink href={`/stake/${balance.pool.id}`}>
                         <Link mr={[0, 0, 3]} data-testid="stake-info-link">
-                            <StakeInfo w={8} h={8} />
+                            <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>
                 </Box>

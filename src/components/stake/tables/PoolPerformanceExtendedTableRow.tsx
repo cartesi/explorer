@@ -26,7 +26,7 @@ import { LockIcon } from '@chakra-ui/icons';
 import { StakingPoolFlat } from '../../../graphql/models';
 import Address from '../../../components/Address';
 import { formatCTSI } from '../../../utils/token';
-import { StakeInfo } from '../../Icons';
+import { StakeIcon } from '../../Icons';
 import labels from '../../../utils/labels';
 
 export interface PoolPerformanceExtendedTableRowProps {
@@ -87,7 +87,6 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                         bg="blue.50"
                         px="0.5rem"
                         py="0.25rem"
-                        color="gray.900"
                         minWidth="120px"
                     />
 
@@ -172,7 +171,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
                     padding={[0, 0, 8, 8]}
-                    minHeight={['71px', '71px', 'auto', 'auto']}
+                    minHeight={['80px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
                     display={['flex', 'flex', 'block', 'block']}
                     alignItems="center"
@@ -181,7 +180,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                 >
                     <NextLink href={`/stake/${pool.id}`}>
                         <Link mr={[0, 0, 3]} data-testid="stake-info-link">
-                            <StakeInfo w={8} h={8} />
+                            <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>
                 </Box>
