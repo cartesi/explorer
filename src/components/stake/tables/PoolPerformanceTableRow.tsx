@@ -17,7 +17,6 @@ import {
     Tooltip,
     Tr,
     useColorModeValue,
-    Button,
     Box,
     Link,
 } from '@chakra-ui/react';
@@ -74,9 +73,6 @@ const PoolPerformanceTableRow: FunctionComponent<
     } else if (gasTax) {
         commissionTooltip = labels.gasTaxCommission;
     }
-
-    // poor manager is logged user, allow edit
-    const edit = account && account.toLowerCase() === pool.manager;
 
     return (
         <Tr key={pool.id} data-testid="pool-performance-table-row">
@@ -169,12 +165,8 @@ const PoolPerformanceTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <NextLink href={`/stake/${pool.id}`}>
-                        <Link mr={[0, 0, 3]}>
-                            <StakeInfo
-                                w={8}
-                                h={8}
-                                data-testid="stake-info-icon"
-                            />
+                        <Link mr={[0, 0, 3]} data-testid="stake-info-link">
+                            <StakeInfo w={8} h={8} />
                         </Link>
                     </NextLink>
                 </Box>

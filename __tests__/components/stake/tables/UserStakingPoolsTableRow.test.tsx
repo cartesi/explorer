@@ -19,6 +19,10 @@ import userStakingPoolsData from '../../../../src/stories/stake/tables/userStaki
 import { PoolBalance } from '../../../../src/graphql/models';
 import { withChakraTheme } from '../../../test-utilities';
 
+jest.mock('next/link', () => ({ children, ...restProps }) => (
+    <div {...restProps}>{children}</div>
+));
+
 const [balance] = userStakingPoolsData as unknown as PoolBalance[];
 
 const defaultProps = {
@@ -54,10 +58,9 @@ describe('User Staking Pools Table Row', () => {
     it('should have href to stake info page', () => {
         renderComponent(defaultProps);
 
-        const stakeInfoIcon = screen
-            .getByTestId('stake-info-icon')
-            .closest('a');
-        expect(stakeInfoIcon.getAttribute('href')).toBe(
+        const stakeInfoLink =
+            screen.getByTestId('stake-info-link').parentElement;
+        expect(stakeInfoLink.getAttribute('href')).toBe(
             `/stake/${balance.pool.id}`
         );
     });

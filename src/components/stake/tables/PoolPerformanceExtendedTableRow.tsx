@@ -180,12 +180,8 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <NextLink href={`/stake/${pool.id}`}>
-                        <Link mr={[0, 0, 3]}>
-                            <StakeInfo
-                                w={8}
-                                h={8}
-                                data-testid="stake-info-icon"
-                            />
+                        <Link mr={[0, 0, 3]} data-testid="stake-info-link">
+                            <StakeInfo w={8} h={8} />
                         </Link>
                     </NextLink>
                 </Box>

@@ -19,6 +19,10 @@ import { StakingPool } from '../../../../src/graphql/models';
 import { Table, Tbody } from '@chakra-ui/react';
 import { withChakraTheme } from '../../../test-utilities';
 
+jest.mock('next/link', () => ({ children, ...restProps }) => (
+    <div {...restProps}>{children}</div>
+));
+
 const [pool] = stakingPoolsExtendedData as unknown as StakingPool[];
 
 const defaultProps = {
@@ -60,10 +64,9 @@ describe('Pool Performance Extended Table Row', () => {
     it('should have href to stake info page', () => {
         renderComponent(defaultProps);
 
-        const stakeInfoIcon = screen
-            .getByTestId('stake-info-icon')
-            .closest('a');
-        expect(stakeInfoIcon.getAttribute('href')).toBe(`/stake/${pool.id}`);
+        const stakeInfoLink =
+            screen.getByTestId('stake-info-link').parentElement;
+        expect(stakeInfoLink.getAttribute('href')).toBe(`/stake/${pool.id}`);
     });
 
     it('should not display manage button when account is different from pool manager', () => {
@@ -74,16 +77,6 @@ describe('Pool Performance Extended Table Row', () => {
         expect(() => screen.getByText('Manage')).toThrow(
             'Unable to find an element'
         );
-    });
-
-    it('should display manage button when account is same as pool manager', () => {
-        renderComponent({
-            ...defaultProps,
-            account: pool.manager,
-        });
-
-        const manageButton = screen.getByText('Manage').closest('button');
-        expect(manageButton).toBeInTheDocument();
     });
 
     it('should display paused tooltip when pool is paused', () => {
