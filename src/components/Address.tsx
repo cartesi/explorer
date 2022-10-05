@@ -25,6 +25,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { etherscanLinks } from '../utils/networks';
 import { truncateString } from '../utils/stringUtils';
 import { useENS } from '../services/ens';
+import { StakeCircled } from './Icons';
 
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
 
@@ -59,6 +60,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
 
     const { hasCopied, onCopy } = useClipboard(address);
     const [hover, setHover] = useState(false);
+    const [hasAvatarError, setAvatarError] = useState<boolean>(false);
 
     // truncate if screen is 'small'
     const responsiveTruncate = useBreakpointValue({
@@ -89,32 +91,28 @@ const Address: FunctionComponent<AddressProps> = (props) => {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            {ensEntry?.avatar && (
+            {ensEntry?.avatar && !hasAvatarError ? (
                 <Image
                     src={ensEntry.avatar}
                     boxSize="42px"
                     objectFit="contain"
+                    onError={() => setAvatarError(true)}
                 />
+            ) : (
+                <StakeCircled width="42px" height="42px" />
             )}
             {name && <Text>{name}</Text>}
-            <Text {...textProps}>{label}</Text>
+            <Text {...textProps} color="gray.900">
+                {label}
+            </Text>
             {showActions && !hasCopied && (
-                <Link color={textProps?.color} display="flex">
+                <Link display="flex">
                     <CopyIcon onClick={onCopy} fontSize={textProps.fontSize} />
                 </Link>
             )}
-            {hasCopied && (
-                <Text fontSize="sm" color={textProps?.color}>
-                    Copied
-                </Text>
-            )}
+            {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
-                <Link
-                    href={externalLink}
-                    color={textProps?.color}
-                    display="flex"
-                    isExternal
-                >
+                <Link href={externalLink} display="flex" isExternal>
                     <ExternalLinkIcon fontSize={textProps.fontSize} />
                 </Link>
             )}
