@@ -88,6 +88,7 @@ const PoolPerformanceTableRow: FunctionComponent<
                         px="0.5rem"
                         py="0.25rem"
                         minWidth="120px"
+                        shouldDisplayFallbackAvatar
                     />
 
                     {pool.paused && (

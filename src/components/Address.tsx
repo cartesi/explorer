@@ -39,6 +39,7 @@ export interface AddressProps extends TextProps {
     responsive?: boolean;
     hideActions?: boolean;
     noActions?: boolean;
+    shouldDisplayFallbackAvatar?: boolean;
 }
 
 const Address: FunctionComponent<AddressProps> = (props) => {
@@ -52,6 +53,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         responsive = false,
         hideActions = false,
         noActions = false,
+        shouldDisplayFallbackAvatar = false,
         ...textProps
     } = props;
 
@@ -99,7 +101,9 @@ const Address: FunctionComponent<AddressProps> = (props) => {
                     onError={() => setAvatarError(true)}
                 />
             ) : (
-                <StakeCircledIcon width="42px" height="42px" />
+                shouldDisplayFallbackAvatar && (
+                    <StakeCircledIcon width="42px" height="42px" />
+                )
             )}
             {name && <Text>{name}</Text>}
             <Text {...textProps} color="gray.900">

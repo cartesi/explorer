@@ -59,6 +59,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     py="0.25rem"
                     color="gray.900"
                     minWidth="120px"
+                    shouldDisplayFallbackAvatar
                 />
             </Td>
             <Td isNumeric borderColor={borderColor} data-testid="unstaked-col">
