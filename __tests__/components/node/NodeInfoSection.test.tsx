@@ -74,7 +74,7 @@ describe('NodeInfoSection component', () => {
     it('should render node info section', () => {
         render(<NodeInfoSection {...defaultProps} />);
 
-        expect(screen.getByText('Node address')).toBeInTheDocument();
+        expect(screen.getByText('Node Address')).toBeInTheDocument();
     });
 
     it('should render node hire form', () => {

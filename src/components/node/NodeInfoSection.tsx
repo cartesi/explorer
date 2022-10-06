@@ -115,7 +115,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     variant="label"
                                     fontWeight={textFontWeight}
                                 >
-                                    Node address
+                                    Node Address
                                 </Text>
                             </Box>
                             <Text isTruncated flex={1}>
@@ -137,7 +137,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                         variant="label"
                                         fontWeight={textFontWeight}
                                     >
-                                        Node balance
+                                        Node Balance
                                     </Text>
                                     <Box display="flex" alignItems="center">
                                         <Tooltip
@@ -189,7 +189,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                         variant="label"
                                         fontWeight={textFontWeight}
                                     >
-                                        Node status
+                                        Node Status
                                     </Text>
                                 </HStack>
                             </Box>
