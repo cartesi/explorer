@@ -39,7 +39,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={5} alignItems="center">
+                <HStack ml={3} alignItems="center">
                     <Box
                         bg="blue.50"
                         w="4.125rem"
@@ -47,6 +47,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
+                        mr={5}
                     >
                         <StakedBalanceIcon
                             color="blue.400"
