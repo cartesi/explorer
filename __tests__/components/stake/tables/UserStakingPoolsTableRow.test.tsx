@@ -19,9 +19,10 @@ import userStakingPoolsData from '../../../../src/stories/stake/tables/userStaki
 import { PoolBalance } from '../../../../src/graphql/models';
 import { withChakraTheme } from '../../../test-utilities';
 
-jest.mock('next/link', () => ({ children, ...restProps }) => (
-    <div {...restProps}>{children}</div>
-));
+jest.mock('next/link', () => ({ children, ...props }) => {
+    const { passHref, ...restProps } = props;
+    return <div {...restProps}>{children}</div>;
+});
 
 const [balance] = userStakingPoolsData as unknown as PoolBalance[];
 

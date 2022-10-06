@@ -95,7 +95,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     justifyContent="center"
                     ml="auto"
                 >
-                    <NextLink href={`/stake/${balance.pool.id}`}>
+                    <NextLink href={`/stake/${balance.pool.id}`} passHref>
                         <Link mr={[0, 0, 3]} data-testid="stake-info-link">
                             <StakeIcon w={8} h={8} />
                         </Link>

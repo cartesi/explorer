@@ -19,9 +19,10 @@ import { StakingPool } from '../../../../src/graphql/models';
 import { Table, Tbody } from '@chakra-ui/react';
 import { withChakraTheme } from '../../../test-utilities';
 
-jest.mock('next/link', () => ({ children, ...restProps }) => (
-    <div {...restProps}>{children}</div>
-));
+jest.mock('next/link', () => ({ children, ...props }) => {
+    const { passHref, ...restProps } = props;
+    return <div {...restProps}>{children}</div>;
+});
 
 const [pool] = stakingPoolsExtendedData as unknown as StakingPool[];
 

@@ -69,9 +69,6 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
         commissionTooltip = labels.gasTaxCommission;
     }
 
-    // poor manager is logged user, allow edit
-    const edit = account && account.toLowerCase() === pool.manager;
-
     return (
         <Tr key={pool.id} data-testid="pool-performance-extended-table-row">
             <Td borderColor={borderColor} data-testid="address-col">
@@ -178,7 +175,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     justifyContent="center"
                     ml="auto"
                 >
-                    <NextLink href={`/stake/${pool.id}`}>
+                    <NextLink href={`/stake/${pool.id}`} passHref>
                         <Link mr={[0, 0, 3]} data-testid="stake-info-link">
                             <StakeIcon w={8} h={8} />
                         </Link>
