@@ -354,13 +354,13 @@ const ManageNode: FC = () => {
                 )}
 
                 <Stack
-                    spacing={4}
+                    direction={{ base: 'column', md: 'row' }}
                     justifyContent="space-between"
+                    alignItems={{ base: 'flex-start', md: 'center' }}
                     alignContent="flex-start"
-                    alignItems="center"
+                    spacing={4}
                     mt={10}
                     mb={4}
-                    direction={{ base: 'column', md: 'row' }}
                 >
                     <Box>
                         <Heading as="h2" mb={0}>
