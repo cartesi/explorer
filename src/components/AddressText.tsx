@@ -37,6 +37,7 @@ const AddressText: FC<PoolIdProps> = (props) => {
                         ens
                         truncated
                         fontSize={props.fontSize || '3xl'}
+                        color="white"
                     />
                 )}
             </HStack>

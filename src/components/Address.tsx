@@ -106,7 +106,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
                 )
             )}
             {name && <Text>{name}</Text>}
-            <Text {...textProps} color="gray.900">
+            <Text color="gray.900" {...textProps}>
                 {label}
             </Text>
             {showActions && !hasCopied && (
