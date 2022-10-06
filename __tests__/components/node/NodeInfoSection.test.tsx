@@ -10,8 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
+import { useMediaQuery } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
+import { truncateString } from '../../../src/utils/stringUtils';
 
 const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {
@@ -23,16 +25,50 @@ const defaultProps = {
     onDeposit: null,
 };
 
+jest.mock('@chakra-ui/react', () => {
+    const originalModule = jest.requireActual('@chakra-ui/react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useMediaQuery: jest.fn(),
+    };
+});
+
+const mockUseMediaQuery = useMediaQuery as jest.MockedFunction<
+    typeof useMediaQuery
+>;
+
 describe('NodeInfoSection component', () => {
-    afterEach(() => cleanup());
+    beforeEach(() => {
+        mockUseMediaQuery.mockReturnValue([true]);
+    });
+
+    afterEach(() => {
+        cleanup();
+        jest.clearAllMocks();
+    });
 
     it('Should render proper values', () => {
         render(<NodeInfoSection {...defaultProps} />);
 
-        expect(screen.getByText(defaultProps.address)).toBeInTheDocument();
         expect(screen.getByText(NODE_BALANCE_ETH)).toBeInTheDocument();
         expect(screen.getByText('ETH')).toBeInTheDocument();
         expect(screen.getByText('Hired')).toBeInTheDocument();
+    });
+
+    it('Should render full address', () => {
+        mockUseMediaQuery.mockReturnValue([true]);
+        render(<NodeInfoSection {...defaultProps} />);
+
+        expect(screen.getByText(defaultProps.address)).toBeInTheDocument();
+    });
+
+    it('Should render truncated address', () => {
+        mockUseMediaQuery.mockReturnValue([false]);
+        render(<NodeInfoSection {...defaultProps} />);
+        expect(
+            screen.getByText(truncateString(defaultProps.address))
+        ).toBeInTheDocument();
     });
 
     it('should render node info section', () => {
