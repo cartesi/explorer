@@ -360,7 +360,7 @@ const ManageNode: FC = () => {
                     alignContent="flex-start"
                     spacing={4}
                     mt={10}
-                    mb={4}
+                    mb={{ base: 0, md: 4 }}
                 >
                     <Box>
                         <Heading as="h2" mb={0}>
