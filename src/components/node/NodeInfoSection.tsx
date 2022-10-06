@@ -22,6 +22,7 @@ import {
     useDisclosure,
     Tooltip,
     Icon,
+    useMediaQuery,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -31,6 +32,7 @@ import React, { FC } from 'react';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
 import { NodeHireNodeSection } from './NodeHireNodeSection';
+import { truncateString } from '../../utils/stringUtils';
 
 export interface INodeInfoSection {
     address: string;
@@ -59,11 +61,16 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     const bg = useColorModeValue('white', 'gray.800');
     const buttonBg = useColorModeValue('gray.80', 'gray.800');
     const tooltipColor = useColorModeValue('gray.400', 'white');
+    const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
+    const textFontWeight = isLargerThan554 ? 400 : 600;
 
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
 
     const isNodeHireSectionVisible = isRetired || isHiring || isEmpty(address);
+    const formattedAddress = isLargerThan554
+        ? address
+        : truncateString(address);
 
     const toETH = (value: BigNumber) => {
         const options: Intl.NumberFormatOptions = {
@@ -91,29 +98,47 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     <Box
                         bg={bg}
                         shadow="md"
-                        px={{ base: 2, lg: 8 }}
-                        py={{ base: 2, lg: 6 }}
+                        px={{ base: 4, sm: 6, lg: 8 }}
+                        py={{ base: 2, sm: 4, lg: 6 }}
                         mb={2}
                     >
                         <Stack
-                            spacing={4}
-                            direction={{ base: 'column', md: 'row' }}
+                            spacing={{ base: 2, md: 4 }}
+                            direction={{ base: 'row' }}
                             mb={2}
                         >
-                            <Box w={{ base: '100%', md: '140px' }}>
-                                <Text variant="label">Node address</Text>
+                            <Box
+                                minWidth={{ base: '130px', sm: '140px' }}
+                                flex={{ base: 'none', md: 0 }}
+                            >
+                                <Text
+                                    variant="label"
+                                    fontWeight={textFontWeight}
+                                >
+                                    Node address
+                                </Text>
                             </Box>
-                            <Text isTruncated>{address}</Text>
+                            <Text isTruncated flex={1}>
+                                {formattedAddress}
+                            </Text>
                         </Stack>
                         <Stack
-                            spacing={4}
-                            direction={{ base: 'column', md: 'row' }}
+                            spacing={{ base: 2, md: 4 }}
+                            direction={{ base: 'row' }}
                             mb={2}
                             alignItems="center"
                         >
-                            <Box w={{ base: '100%', md: '140px' }}>
+                            <Box
+                                minWidth={{ base: '130px', sm: '140px' }}
+                                flex={{ base: 'none', md: 0 }}
+                            >
                                 <HStack>
-                                    <Text variant="label">Node balance</Text>
+                                    <Text
+                                        variant="label"
+                                        fontWeight={textFontWeight}
+                                    >
+                                        Node balance
+                                    </Text>
                                     <Box display="flex" alignItems="center">
                                         <Tooltip
                                             placement="bottom"
@@ -131,12 +156,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                 </HStack>
                             </Box>
 
-                            <HStack
-                                spacing={4}
-                                alignItems="center"
-                                flex={1}
-                                width="100%"
-                            >
+                            <HStack alignItems="center" flex={1} width="100%">
                                 <Box>
                                     <Flex align="baseline">
                                         <Text>{toETH(nodeBalance)}</Text>
@@ -157,15 +177,23 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                             </HStack>
                         </Stack>
                         <Stack
-                            spacing={4}
-                            direction={{ base: 'column', md: 'row' }}
+                            spacing={{ base: 2, md: 4 }}
+                            direction={{ base: 'row' }}
                         >
-                            <Box w={{ base: '100%', md: '140px' }}>
+                            <Box
+                                minWidth={{ base: '130px', sm: '140px' }}
+                                flex={{ base: 'none', md: 0 }}
+                            >
                                 <HStack>
-                                    <Text variant="label">Node status</Text>
+                                    <Text
+                                        variant="label"
+                                        fontWeight={textFontWeight}
+                                    >
+                                        Node status
+                                    </Text>
                                 </HStack>
                             </Box>
-                            <HStack spacing={4} alignItems="flex-end">
+                            <HStack spacing={4} alignItems="flex-end" flex={1}>
                                 <Box>
                                     <Text>Hired</Text>
                                 </Box>
@@ -176,8 +204,9 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         onClick={retireModal.onOpen}
                         disabled={isRetiring}
                         bgColor={buttonBg}
-                        w={{ base: '100%', md: 'auto' }}
-                        minW="173px"
+                        w={{ base: 'auto' }}
+                        px={{ base: 4, md: 6 }}
+                        minWidth={{ base: 'auto', md: '173px' }}
                         fontWeight="bold"
                         textTransform="uppercase"
                         me={2}
