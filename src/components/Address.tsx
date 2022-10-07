@@ -40,6 +40,7 @@ export interface AddressProps extends TextProps {
     hideActions?: boolean;
     noActions?: boolean;
     shouldDisplayFallbackAvatar?: boolean;
+    fallbackAvatar?: React.ReactNode;
 }
 
 const Address: FC<AddressProps> = (props) => {
@@ -54,6 +55,7 @@ const Address: FC<AddressProps> = (props) => {
         hideActions = false,
         noActions = false,
         shouldDisplayFallbackAvatar = false,
+        fallbackAvatar,
         color,
         fontSize,
         ...restProps
@@ -65,6 +67,8 @@ const Address: FC<AddressProps> = (props) => {
     const { hasCopied, onCopy } = useClipboard(address);
     const [hover, setHover] = useState(false);
     const [hasAvatarError, setAvatarError] = useState<boolean>(false);
+    const FallbackAvatar = (fallbackAvatar ||
+        StakeCircledIcon) as FC<IconProps>;
 
     // truncate if screen is 'small'
     const responsiveTruncate = useBreakpointValue({
@@ -104,7 +108,7 @@ const Address: FC<AddressProps> = (props) => {
                 />
             ) : (
                 shouldDisplayFallbackAvatar && (
-                    <StakeCircledIcon width="42px" height="42px" />
+                    <FallbackAvatar width="42px" height="42px" />
                 )
             )}
             {name && <Text>{name}</Text>}
