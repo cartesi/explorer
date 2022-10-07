@@ -109,7 +109,11 @@ const Address: FC<AddressProps> = (props) => {
                 />
             ) : (
                 shouldDisplayFallbackAvatar && (
-                    <FallbackAvatar width="42px" height="42px" />
+                    <FallbackAvatar
+                        width="42px"
+                        height="42px"
+                        data-testid="fallback-avatar"
+                    />
                 )
             )}
             {name && <Text>{name}</Text>}
@@ -118,13 +122,20 @@ const Address: FC<AddressProps> = (props) => {
             </Text>
             {showActions && !hasCopied && (
                 <Link display="flex">
-                    <CopyIcon onClick={onCopy} fontSize={fontSize} />
+                    <CopyIcon
+                        onClick={onCopy}
+                        fontSize={fontSize}
+                        data-testid="copy-icon"
+                    />
                 </Link>
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link href={externalLink} display="flex" isExternal>
-                    <ExternalLinkIcon fontSize={fontSize} />
+                    <ExternalLinkIcon
+                        fontSize={fontSize}
+                        data-testid="external-link-icon"
+                    />
                 </Link>
             )}
         </HStack>

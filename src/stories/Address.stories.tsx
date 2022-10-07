@@ -13,6 +13,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Address from '../components/Address';
+import { StakePlusIcon } from '../components/Icons';
 
 export default {
     title: 'Address',
@@ -44,3 +45,9 @@ Goerli.args = { chainId: 5 };
 
 export const WithName = Template.bind({});
 WithName.args = { name: 'Pool Factory' };
+
+export const WithCustomFallbackAvatar = Template.bind({});
+WithCustomFallbackAvatar.args = {
+    shouldDisplayFallbackAvatar: true,
+    fallbackAvatar: StakePlusIcon,
+};

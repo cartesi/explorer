@@ -652,7 +652,7 @@ export const StakeCircledIcon = createIcon({
 });
 
 export const StakeCircledOutlinedIcon = createIcon({
-    displayName: 'StakeCircledIcon',
+    displayName: 'StakeCircledOutlinedIcon',
     viewBox: '0 0 46 46',
     path: (
         <g>
