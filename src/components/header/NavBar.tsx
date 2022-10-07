@@ -31,7 +31,10 @@ import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
 
-export const buildLinks = ({ newNodeRunnersEnabled, newPoolPageEnabled }) => {
+export const buildLinks = ({
+    newNodeRunnersEnabled,
+    newPoolListPageEnabled,
+}) => {
     const links = [
         {
             key: 'home',
@@ -41,7 +44,7 @@ export const buildLinks = ({ newNodeRunnersEnabled, newPoolPageEnabled }) => {
         {
             key: 'pools',
             label: 'Stake',
-            href: newPoolPageEnabled ? '/stake' : '/pools',
+            href: newPoolListPageEnabled ? '/stake' : '/pools',
         },
         {
             key: newNodeRunnersEnabled ? 'runners' : 'staking',
@@ -82,8 +85,8 @@ const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
-    const links = buildLinks({ newNodeRunnersEnabled, newPoolPageEnabled });
+    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
+    const links = buildLinks({ newNodeRunnersEnabled, newPoolListPageEnabled });
     const wallet = useWallet();
     const { isOpen, onOpen, onClose } = useDisclosure();
 

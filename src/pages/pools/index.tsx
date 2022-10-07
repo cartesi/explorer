@@ -74,13 +74,13 @@ const StakingPools: FC = () => {
 
     const apr = useFlag('apr');
     const aws = useFlag('aws');
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
 
     useEffect(() => {
-        if (newPoolPageEnabled) {
+        if (newPoolListPageEnabled) {
             router.replace('/stake');
         }
-    }, [newPoolPageEnabled, router]);
+    }, [newPoolListPageEnabled, router]);
 
     return (
         <Layout>

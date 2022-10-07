@@ -42,7 +42,7 @@ const Home = () => {
     const summary = useSummary();
     const balances = usePoolBalances(account);
     const poolBalance = useTotalPoolBalance(account);
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
+    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
     const bodyBg = useColorModeValue('gray.80', 'header');
     const stakingPoolsBg = useColorModeValue('white', 'gray.700');
@@ -52,10 +52,10 @@ const Home = () => {
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
 
     useEffect(() => {
-        if (!newPoolPageEnabled) {
-            router.replace('/pool');
+        if (!newPoolListPageEnabled) {
+            router.replace('/pools');
         }
-    }, [newPoolPageEnabled, router]);
+    }, [newPoolListPageEnabled, router]);
 
     return (
         <Layout>
