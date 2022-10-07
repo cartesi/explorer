@@ -12,6 +12,7 @@
 import React, { FC, useState } from 'react';
 import {
     HStack,
+    IconProps,
     Image,
     Link,
     Text,
