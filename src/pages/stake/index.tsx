@@ -114,6 +114,7 @@ const Home = () => {
                                     chainId={chainId}
                                     loading={balances.loading}
                                     data={balances.data?.poolBalances || []}
+                                    account={account}
                                 />
                             </Box>
                         </Box>
