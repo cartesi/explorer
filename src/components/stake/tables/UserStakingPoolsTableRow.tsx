@@ -31,6 +31,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     balance,
 }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
+    const stakeInfoBg = useColorModeValue('white', 'gray.700');
     const percentFormatter = new Intl.NumberFormat('en-US', {
         style: 'percent',
         minimumFractionDigits: 0,
@@ -78,10 +79,10 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
             <Td
                 isNumeric
                 borderColor={borderColor}
-                position={['sticky', 'sticky', 'initial', 'initial']}
+                position={{ base: 'sticky', md: 'initial' }}
                 top={0}
                 right={0}
-                backgroundColor={['white', 'white', 'transparent']}
+                backgroundColor={[stakeInfoBg, stakeInfoBg, 'transparent']}
                 padding={0}
                 data-testid="stake-info-col"
             >

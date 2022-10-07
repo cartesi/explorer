@@ -42,6 +42,7 @@ const PoolPerformanceTableRow: FunctionComponent<
     PoolPerformanceTableRowProps
 > = ({ chainId, pool }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
+    const stakeInfoBg = useColorModeValue('white', 'gray.700');
 
     // accrued commission
     const accruedCommissionLabel =
@@ -146,10 +147,10 @@ const PoolPerformanceTableRow: FunctionComponent<
             <Td
                 isNumeric
                 borderColor={borderColor}
-                position={['sticky', 'sticky', 'initial', 'initial']}
+                position={{ base: 'sticky', md: 'initial' }}
                 top={0}
                 right={0}
-                backgroundColor={['white', 'white', 'transparent']}
+                backgroundColor={[stakeInfoBg, stakeInfoBg, 'transparent']}
                 padding={0}
                 data-testid="stake-info-col"
             >
