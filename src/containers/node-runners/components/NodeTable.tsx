@@ -28,9 +28,12 @@ import {
     VisuallyHidden,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import Address from './Address';
+import Address from '../../../components/Address';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
-import { PencilIcon } from '../../../components/Icons';
+import {
+    PencilIcon,
+    StakeCircledOutlinedIcon,
+} from '../../../components/Icons';
 import Block from './Block';
 import { useAtom } from 'jotai';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
@@ -85,7 +88,14 @@ const NodeTable = () => {
                             list.map((node) => (
                                 <Tr key={node.id}>
                                     <Td>
-                                        <Address address={node.id} truncated />
+                                        <Address
+                                            address={node.id}
+                                            truncated
+                                            shouldDisplayFallbackAvatar
+                                            fallbackAvatar={
+                                                StakeCircledOutlinedIcon
+                                            }
+                                        />
                                     </Td>
                                     <Td isNumeric>{node.totalStaked}</Td>
                                     <Td isNumeric>{node.totalRewards}</Td>
