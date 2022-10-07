@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.2] - 2022-10-07
+
+-   Fixes for the navigation menu links and page redirects.
+
 ## [2.8.1] - 2022-10-07
 
 -   Design adjustment for small screens in the node section for both private node and public pool management.
@@ -178,7 +182,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.8.1...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.8.2...HEAD
+[2.8.2]: https://github.com/cartesi-corp/explorer/compare/v2.8.1...v2.8.2
 [2.8.1]: https://github.com/cartesi-corp/explorer/compare/v2.8.0...v2.8.1
 [2.8.0]: https://github.com/cartesi-corp/explorer/compare/v2.7.3...v2.8.0
 [2.7.3]: https://github.com/cartesi-corp/explorer/compare/v2.7.2...v2.7.3
