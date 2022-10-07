@@ -43,6 +43,7 @@ import {
     PoolsTimer,
     StakePlusIcon,
     StakeCircledIcon,
+    StakeCircledOutlinedIcon,
 } from '../components/Icons';
 
 const Icons = () => (
@@ -175,6 +176,10 @@ const Icons = () => (
 
         <div title="StakeCircledIcon">
             <StakeCircledIcon width={10} height={10} />
+        </div>
+
+        <div title="StakeCircledOutlinedIcon">
+            <StakeCircledOutlinedIcon width={10} height={10} />
         </div>
     </div>
 );
