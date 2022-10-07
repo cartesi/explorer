@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
     HStack,
     Image,
@@ -42,7 +42,7 @@ export interface AddressProps extends TextProps {
     shouldDisplayFallbackAvatar?: boolean;
 }
 
-const Address: FunctionComponent<AddressProps> = (props) => {
+const Address: FC<AddressProps> = (props) => {
     const {
         address,
         name,
@@ -55,7 +55,8 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         noActions = false,
         shouldDisplayFallbackAvatar = false,
         color,
-        ...textProps
+        fontSize,
+        ...restProps
     } = props;
 
     // resolve ENS entry from address
@@ -107,18 +108,18 @@ const Address: FunctionComponent<AddressProps> = (props) => {
                 )
             )}
             {name && <Text>{name}</Text>}
-            <Text color={color} {...textProps}>
+            <Text color={color} {...restProps}>
                 {label}
             </Text>
             {showActions && !hasCopied && (
                 <Link display="flex">
-                    <CopyIcon onClick={onCopy} fontSize={textProps.fontSize} />
+                    <CopyIcon onClick={onCopy} fontSize={fontSize} />
                 </Link>
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link href={externalLink} display="flex" isExternal>
-                    <ExternalLinkIcon fontSize={textProps.fontSize} />
+                    <ExternalLinkIcon fontSize={fontSize} />
                 </Link>
             )}
         </HStack>

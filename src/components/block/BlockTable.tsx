@@ -10,7 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC } from 'react';
-import { Table, TableProps, Tbody, Td, Text, Th, Tr } from '@chakra-ui/react';
+import {
+    Table,
+    TableProps,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Tr,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
 import Address from '../Address';
 import { Block } from '../../graphql/models';
@@ -33,6 +42,8 @@ const BlockTable: FC<BlockTableProps> = (props) => {
         highlightColor = 'lightyellow',
         ...tableProps
     } = props;
+    const addressColor = useColorModeValue('gray.800', 'white');
+
     return (
         <Table {...tableProps} variant="clear" size="sm">
             <Tbody>
@@ -61,6 +72,7 @@ const BlockTable: FC<BlockTableProps> = (props) => {
                             address={block.producer.id}
                             chainId={chainId}
                             responsive
+                            color={addressColor}
                         />
                     </Td>
                 </Tr>
@@ -71,6 +83,7 @@ const BlockTable: FC<BlockTableProps> = (props) => {
                             address={block.node.id}
                             chainId={chainId}
                             responsive
+                            color={addressColor}
                         />
                     </Td>
                 </Tr>
@@ -82,6 +95,7 @@ const BlockTable: FC<BlockTableProps> = (props) => {
                             address={block.id}
                             chainId={chainId}
                             truncated
+                            color={addressColor}
                         />
                     </Td>
                 </Tr>

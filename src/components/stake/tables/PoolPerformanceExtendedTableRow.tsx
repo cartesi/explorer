@@ -86,6 +86,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                         py="0.25rem"
                         color="gray.900"
                         minWidth="120px"
+                        color="gray.900"
                         shouldDisplayFallbackAvatar
                     />
 
@@ -170,7 +171,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                 <Box
                     shadow={['md', 'md', 'none', 'none']}
                     padding={[0, 0, 8, 8]}
-                    minHeight={['80px', '80px', 'auto', 'auto']}
+                    minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
                     display={['flex', 'flex', 'block', 'block']}
                     alignItems="center"

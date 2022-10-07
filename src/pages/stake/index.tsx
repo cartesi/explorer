@@ -108,7 +108,7 @@ const Home = () => {
                                     mb={6}
                                     pl={[8, 8, 0]}
                                 >
-                                    My staking pools
+                                    My Staking Pools
                                 </Heading>
                                 <UserStakingPoolsTable
                                     chainId={chainId}

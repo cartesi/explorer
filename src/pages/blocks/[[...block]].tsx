@@ -22,6 +22,7 @@ import {
     TagLabel,
     TagCloseButton,
     VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { FaEllipsisH } from 'react-icons/fa';
 
@@ -62,6 +63,7 @@ const BlockList = (props: BlockListProps) => {
     const { chainId, result, filterField, filterValue, ...stackProps } = props;
     const { data, loading, fetchMore } = result;
     const blocks = data?.blocks || [];
+    const highlightColor = useColorModeValue('lightyellow', 'header');
 
     // handler for the "load more" button
     const loadMore = () => {
@@ -92,6 +94,7 @@ const BlockList = (props: BlockListProps) => {
                         key={block.id}
                         block={block}
                         highlight={filterField}
+                        highlightColor={highlightColor}
                         width="100%"
                     />
                 );
