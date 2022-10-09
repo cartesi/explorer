@@ -20,6 +20,9 @@ export const useStaking = (user: string) => {
 
     const blockNumber = useBlockNumber();
     const transaction = useTransaction();
+    const stakeTransaction = useTransaction();
+    const unstakeTransaction = useTransaction();
+    const withdrawTransaction = useTransaction();
 
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
         constants.Zero
@@ -57,25 +60,27 @@ export const useStaking = (user: string) => {
 
     const stake = (amount: BigNumberish) => {
         if (staking) {
-            transaction.set(staking.stake(amount));
+            stakeTransaction.set(staking.stake(amount));
         }
     };
 
     const unstake = (amount: BigNumberish) => {
         if (staking) {
-            transaction.set(staking.unstake(amount));
+            unstakeTransaction.set(staking.unstake(amount));
         }
     };
 
     const withdraw = (amount: BigNumberish) => {
         if (staking) {
-            transaction.set(staking.withdraw(amount));
+            withdrawTransaction.set(staking.withdraw(amount));
         }
     };
 
     return {
         staking,
-        transaction,
+        stakeTransaction,
+        unstakeTransaction,
+        withdrawTransaction,
         stakedBalance,
         maturingTimestamp,
         releasingTimestamp,
