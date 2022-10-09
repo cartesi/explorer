@@ -67,7 +67,9 @@ const Staking: FC = () => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        transaction: stakingTransaction,
+        stakeTransaction,
+        unstakeTransaction,
+        withdrawTransaction,
         withdraw,
         stake,
         unstake,
@@ -84,7 +86,10 @@ const Staking: FC = () => {
     const user = useUser(account);
 
     const waiting =
-        stakingTransaction.submitting || tokenTransaction.submitting;
+        stakeTransaction.submitting ||
+        unstakeTransaction.submitting ||
+        withdrawTransaction.submitting ||
+        tokenTransaction.submitting;
 
     // countdown timers for maturation and release
     const maturingLeft = useTimeLeft(maturingTimestamp?.getTime());
@@ -153,7 +158,9 @@ const Staking: FC = () => {
                 <TermsCondition persistanceKey="stakingTermsAccepted" />
                 <StakingDisclaimer persistanceKey="readDisclaimer" />
                 <TransactionFeedback transaction={tokenTransaction} />
-                <TransactionFeedback transaction={stakingTransaction} />
+                <TransactionFeedback transaction={stakeTransaction} />
+                <TransactionFeedback transaction={unstakeTransaction} />
+                <TransactionFeedback transaction={withdrawTransaction} />
                 <TransactionFeedback transaction={node.transaction} />
                 <Flex direction={['column', 'column', 'column', 'row']}>
                     <Box flex="3" pr={[0, 0, 0, 8]} mb={[8, 8, 8, 0]}>

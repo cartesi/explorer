@@ -17,7 +17,6 @@ import {
     Flex,
     Heading,
     HStack,
-    Link,
     Spinner,
     Stack,
     Text,
@@ -68,7 +67,9 @@ const ManageNode: FC = () => {
         releasingTimestamp,
         maturingBalance,
         releasingBalance,
-        transaction: stakingTransaction,
+        stakeTransaction,
+        unstakeTransaction,
+        withdrawTransaction,
         withdraw,
         stake,
         unstake,
@@ -407,7 +408,7 @@ const ManageNode: FC = () => {
                                 title="Withdrawing..."
                                 failTitle="Error withdrawing"
                                 successDescription="Withdrawed successfully."
-                                transaction={stakingTransaction}
+                                transaction={withdrawTransaction}
                                 onClose={() => setWithdrawAlertActive(false)}
                             />
                         )}
@@ -417,7 +418,7 @@ const ManageNode: FC = () => {
                                 title="Staking..."
                                 failTitle="Error staking"
                                 successDescription="Stake set successfully."
-                                transaction={stakingTransaction}
+                                transaction={stakeTransaction}
                                 onClose={() => setStakeAlertActive(false)}
                             />
                         )}
@@ -427,7 +428,7 @@ const ManageNode: FC = () => {
                                 title="Unstaking..."
                                 failTitle="Error unstaking"
                                 successDescription="Unstaked successfully."
-                                transaction={stakingTransaction}
+                                transaction={unstakeTransaction}
                                 onClose={() => setUnstakeAlertActive(false)}
                             />
                         )}
