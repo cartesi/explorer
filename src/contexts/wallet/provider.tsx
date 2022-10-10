@@ -31,16 +31,15 @@ const useOnboard = () => {
     useEffect(() => {
         const prevWallet = v2Enabled ? v1 : v2;
         if (prevWallet.active) {
-            console.info(`
-                Wallet provider switched\n
-                Disconnecting the previous one (${
+            console.info(
+                `Wallet provider switched\n Disconnecting the previous one (${
                     v2Enabled ? 'Onboard V1' : 'Onboard V2'
-                })
-            `);
+                })`
+            );
 
             prevWallet.disconnectWallet();
         }
-    }, [v2Enabled]);
+    }, [v2Enabled, v1, v2]);
 
     return v2Enabled ? v2 : v1;
 };
