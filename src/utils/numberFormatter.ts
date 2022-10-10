@@ -80,3 +80,18 @@ export const formatValue = (
     const [stringValue] = format(value, unit, options);
     return stringValue;
 };
+
+export const formatNumberValue = (
+    value: number,
+    fractionDigits = 2,
+    unit = 'decimal'
+): string => {
+    const numberFormat = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: fractionDigits,
+        notation: 'compact',
+        style: unit,
+    });
+
+    return numberFormat.format(value);
+};

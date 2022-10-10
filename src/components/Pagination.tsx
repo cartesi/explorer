@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { HStack, Link, Text, useColorModeValue } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 export interface PaginationProps {
     currentPage: number;
@@ -21,7 +21,7 @@ export interface PaginationProps {
     onPageClick: (page: number) => void;
 }
 
-const Pagination: FunctionComponent<PaginationProps> = (props) => {
+const Pagination: FC<PaginationProps> = (props) => {
     const {
         currentPage,
         pages,
@@ -29,12 +29,14 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
         maxPageNumbers = 5,
         onPageClick,
     } = props;
+    const isAfterFirstPage = currentPage > 0;
+    const isBeforeLastPage = currentPage < pages - 1;
+    const activeArrowBg = useColorModeValue('gray.900', 'white');
+    const inactiveArrowBg = 'gray.300';
+    const pageNumbers = Array.from({ length: pages }).map((_, i) => i);
+    const hasMultiplePages = pages > 1;
 
     const pagination = React.useMemo(() => {
-        const pageNumbers = Array.from({ length: pages })
-            .fill(0)
-            .map((_, i) => i);
-
         const start =
             currentPage < maxPageNumbers
                 ? 0
@@ -50,33 +52,40 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
                 : currentPage + maxPageNumbers / 2;
 
         return pageNumbers.slice(start, end);
-    }, [currentPage, pages, maxPageNumbers]);
+    }, [pageNumbers, currentPage, pages, maxPageNumbers]);
 
     return (
-        <HStack>
-            {currentPage > 0 && (
-                <Link>
+        <HStack maxWidth="100%">
+            {hasMultiplePages && (
+                <Link mr={2}>
                     <ChevronLeftIcon
-                        onClick={() => onPageClick(currentPage - 1)}
+                        display="flex"
+                        color={
+                            isAfterFirstPage ? activeArrowBg : inactiveArrowBg
+                        }
+                        onClick={() => {
+                            if (isAfterFirstPage) {
+                                onPageClick(currentPage - 1);
+                            }
+                        }}
                     />
                 </Link>
             )}
+
             {showPageNumbers ? (
                 <>
-                    {pages > 1 && currentPage > maxPageNumbers - 1 && (
+                    {hasMultiplePages && currentPage > maxPageNumbers - 1 && (
                         <>
                             <PageLink
                                 currentPage={currentPage}
                                 index={0}
                                 onPageClick={onPageClick}
                             />
-                            <Text as="span" fontSize="sm">
-                                &hellip;
-                            </Text>
+                            <Text as="span">&hellip;</Text>
                         </>
                     )}
 
-                    {pages > 1 &&
+                    {hasMultiplePages &&
                         pagination.map((page) => {
                             {
                                 return (
@@ -90,29 +99,37 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
                             }
                         })}
 
-                    {pages > 1 && currentPage <= pages - maxPageNumbers && (
-                        <>
-                            <Text as="span" fontSize="sm">
-                                &hellip;
-                            </Text>
-                            <PageLink
-                                currentPage={currentPage}
-                                index={pages - 1}
-                                onPageClick={onPageClick}
-                            />
-                        </>
-                    )}
+                    {hasMultiplePages &&
+                        currentPage <= pages - maxPageNumbers &&
+                        !pagination.includes(pageNumbers.length - 1) && (
+                            <>
+                                <Text as="span">&hellip;</Text>
+                                <PageLink
+                                    currentPage={currentPage}
+                                    index={pages - 1}
+                                    onPageClick={onPageClick}
+                                />
+                            </>
+                        )}
                 </>
             ) : (
-                pages > 1 && (
+                hasMultiplePages && (
                     <Text>{`Page ${currentPage + 1} of ${pages}`}</Text>
                 )
             )}
 
-            {currentPage < pages - 1 && (
-                <Link>
+            {hasMultiplePages && (
+                <Link marginInline={0} ml={2}>
                     <ChevronRightIcon
-                        onClick={() => onPageClick(currentPage + 1)}
+                        display="flex"
+                        color={
+                            isBeforeLastPage ? activeArrowBg : inactiveArrowBg
+                        }
+                        onClick={() => {
+                            if (isBeforeLastPage) {
+                                onPageClick(currentPage + 1);
+                            }
+                        }}
                     />
                 </Link>
             )}
@@ -121,7 +138,7 @@ const Pagination: FunctionComponent<PaginationProps> = (props) => {
 };
 
 const PageLink = ({ currentPage, index, onPageClick }) => {
-    const bg = useColorModeValue('gray.100', 'gray.700');
+    const bg = useColorModeValue('gray.80', 'header');
 
     return (
         <Link
@@ -140,7 +157,9 @@ const PageLink = ({ currentPage, index, onPageClick }) => {
             }}
             backgroundColor={currentPage === index ? bg : 'transparent'}
         >
-            <Text>{index + 1}</Text>
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
+                {index + 1}
+            </Text>
         </Link>
     );
 };

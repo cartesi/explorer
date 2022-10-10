@@ -10,27 +10,28 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { USERS } from '../queries/users';
+import { USERS } from '../queries';
 import { UsersData, UsersVars } from '../models';
-
-export const USERS_PER_PAGE = 10;
 
 const useUsers = (
     pageNumber: number,
     id: string = undefined,
-    sort = 'timestamp'
+    sort = 'timestamp',
+    perPage = 10
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
+    const tenMinutesInMs = 600000;
+
     return useQuery<UsersData, UsersVars>(USERS, {
         variables: {
-            first: USERS_PER_PAGE,
+            first: perPage,
             where: filter,
-            skip: pageNumber * USERS_PER_PAGE,
+            skip: pageNumber * perPage,
             orderBy: sort,
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 600000, // Every 10 minutes
+        pollInterval: tenMinutesInMs,
     });
 };
 

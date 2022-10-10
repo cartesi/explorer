@@ -124,7 +124,6 @@ const NodeTable = () => {
                                                     Manage node {node.id}
                                                 </VisuallyHidden>
                                                 <PencilIcon
-                                                    color="white"
                                                     data-testid={`pencil-svg-${node.id}`}
                                                 />
                                             </Button>

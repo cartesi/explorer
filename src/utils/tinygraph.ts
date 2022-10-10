@@ -31,8 +31,9 @@ export const shapes = [
     'labs/isogrids/hexa16', // Hexa rotation 1/6
 ];
 
-export const tinyGraphUrl = (block: Block): string => {
+export const tinyGraphUrl = (block: Block, shapeIndex?: number): string => {
     const themeId = block.chain.number % themes.length;
-    const shapeId = (block.chain.protocol.version - 1) % shapes.length;
+    const shapeId =
+        shapeIndex ?? (block.chain.protocol.version - 1) % shapes.length;
     return `https://tinygraphs.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
 };

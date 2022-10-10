@@ -21,95 +21,99 @@ import {
     Tr,
     Td,
     Link,
-    useColorModeValue,
+    useBreakpointValue,
 } from '@chakra-ui/react';
-import { TriangleDownIcon } from '@chakra-ui/icons';
-
+import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
+import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
 
 export interface UserTableProps {
     chainId: number;
-    account?: string;
     loading: boolean;
     data?: User[];
-    size?: 'lg' | 'md' | 'sm';
     sort?: UserSort;
     onSort: (order: UserSort) => void;
 }
 
 const UserTable: FC<UserTableProps> = ({
     chainId,
-    account,
     data,
     loading,
-    size = 'lg',
     sort,
     onSort,
 }) => {
-    const sizes = {
-        lg: 5,
-        md: 5,
-        sm: 2,
-    };
-    const columns = sizes[size] || 6;
-
-    const header = (title: string, thisSort: UserSort) => (
-        <Th isNumeric>
-            <Link onClick={() => onSort(thisSort)}>
-                <HStack justify="flex-end">
-                    <Text>{title}</Text>
-                    {sort === thisSort && <TriangleDownIcon />}
-                </HStack>
-            </Link>
-        </Th>
-    );
+    const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
+    const hasItems = data?.length > 0;
 
     return (
-        <Table variant="simple" bg={useColorModeValue('white', 'gray.700')}>
-            <Thead>
-                <Tr>
-                    <Th>User</Th>
-                    {size != 'sm' && header('#Blocks Produced', 'totalBlocks')}
-                    {header('Total Staked', 'balance')}
-                    {size != 'sm' && header('Total Rewards', 'totalReward')}
-                    {size != 'sm' && <Th></Th>}
-                </Tr>
-            </Thead>
-
-            <Tbody>
-                {loading && (
+        <TableResponsiveHolder>
+            <Table>
+                <Thead>
                     <Tr>
-                        <Td colSpan={columns} textAlign="center">
-                            <HStack justify="center">
-                                <Spinner />
-                                <Text>Loading</Text>
-                            </HStack>
-                        </Td>
+                        <Th>User</Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('totalBlocks')}>
+                                Block Produced
+                            </Link>
+                            {sort == 'totalBlocks' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('balance')}>
+                                Total Staked
+                            </Link>
+                            {sort == 'balance' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th isNumeric>
+                            <Link onClick={() => onSort('totalReward')}>
+                                Total Rewards
+                            </Link>
+                            {sort == 'totalReward' && <ArrowDownIcon />}
+                        </Th>
+
+                        <Th
+                            isNumeric
+                            position={{ base: 'sticky', md: 'initial' }}
+                            top={0}
+                            right={0}
+                            style={{ textAlign: 'center' }}
+                        >
+                            {stakeText}
+                        </Th>
                     </Tr>
-                )}
-                {!data ||
-                    (data.length === 0 && (
+                </Thead>
+
+                <Tbody>
+                    {loading ? (
                         <Tr>
-                            <Td colSpan={columns} textAlign="center">
+                            <Td colSpan={9} textAlign="center">
+                                <HStack justify="center">
+                                    <Spinner />
+                                    <Text>Loading</Text>
+                                </HStack>
+                            </Td>
+                        </Tr>
+                    ) : hasItems ? (
+                        data.map((user) => (
+                            <UserRow
+                                key={user.id}
+                                chainId={chainId}
+                                user={user}
+                            />
+                        ))
+                    ) : (
+                        <Tr>
+                            <Td colSpan={9} textAlign="center">
                                 <Text>No items</Text>
                             </Td>
                         </Tr>
-                    ))}
-                {!loading &&
-                    data &&
-                    data.length > 0 &&
-                    data.map((user) => (
-                        <UserRow
-                            key={user.id}
-                            chainId={chainId}
-                            user={user}
-                            account={account}
-                            size={size}
-                        />
-                    ))}
-            </Tbody>
-        </Table>
+                    )}
+                </Tbody>
+            </Table>
+        </TableResponsiveHolder>
     );
 };
 

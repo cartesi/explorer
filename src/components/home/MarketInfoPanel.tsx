@@ -10,32 +10,54 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { Flex, FlexProps, Spacer } from '@chakra-ui/react';
-import { MarketInformation } from '../../services/market';
-import MarketInfo from '../MarketInfo';
+import { HStack, Text, TextProps, VStack } from '@chakra-ui/react';
 
-export interface MarketInfoPanelProps extends FlexProps {
-    market: MarketInformation;
+export type MarketInfoUnit = 'USD' | 'CTSI';
+
+export interface MarketInfoProps extends TextProps {
+    label: React.ReactNode;
+    value: number;
+    unit: MarketInfoUnit;
+    fractionDigits?: number;
 }
 
-const MarketInfoPanel: FunctionComponent<MarketInfoPanelProps> = (props) => {
-    const { market } = props;
+const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
+    const { fractionDigits = 4, label, value, unit, ...textProps } = props;
+    const numberFormat =
+        unit == 'USD'
+            ? new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: fractionDigits,
+              })
+            : new Intl.NumberFormat('en-US', {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: fractionDigits,
+              });
+    const valueLabel = numberFormat.format(value);
+
     return (
-        <Flex direction={['column', 'row', 'row', 'row']} {...props}>
-            <MarketInfo label="CTSI Price" value={market?.price} unit="USD" />
-            <Spacer />
-            <MarketInfo
-                label="CTSI Market Cap"
-                value={market?.marketCap}
-                unit="USD"
-            />
-            <Spacer />
-            <MarketInfo
-                label="Circ. Supply"
-                value={market?.circulatingSupply}
-                unit="CTSI"
-            />
-        </Flex>
+        <VStack align="flex-start">
+            <Text fontSize="md" {...textProps}>
+                {label}
+            </Text>
+            {value && (
+                <HStack align="baseline">
+                    <Text
+                        fontSize={{ base: 28, md: 36 }}
+                        fontWeight="bold"
+                        {...textProps}
+                    >
+                        {valueLabel}
+                    </Text>
+                    <Text fontSize="md" {...textProps}>
+                        {unit}
+                    </Text>
+                </HStack>
+            )}
+            {!value && <Text>-</Text>}
+        </VStack>
     );
 };
 

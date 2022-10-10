@@ -43,6 +43,15 @@ import {
     PoolsTimer,
     StakePlusIcon,
     StakeCircledIcon,
+    ChartIcon,
+    MarketCapICon,
+    CircleSupplyIcon,
+    ActiveNodeIcon,
+    PrizeIcon,
+    GridIcon,
+    TotalStakedIcon,
+    ChevronRightIcon,
+    ChevronLeftIcon,
     StakeCircledOutlinedIcon,
 } from '../components/Icons';
 
@@ -176,6 +185,42 @@ const Icons = () => (
 
         <div title="StakeCircledIcon">
             <StakeCircledIcon width={10} height={10} />
+        </div>
+
+        <div title="ChartIcon">
+            <ChartIcon width={10} height={10} />
+        </div>
+
+        <div title="MarketCapICon">
+            <MarketCapICon width={10} height={10} />
+        </div>
+
+        <div title="CircleSupplyIcon">
+            <CircleSupplyIcon width={10} height={10} />
+        </div>
+
+        <div title="ActiveNodeIcon">
+            <ActiveNodeIcon width={10} height={10} />
+        </div>
+
+        <div title="PrizeIcon">
+            <PrizeIcon width={10} height={10} />
+        </div>
+
+        <div title="GridIcon">
+            <GridIcon width={10} height={10} />
+        </div>
+
+        <div title="TotalStakedIcon">
+            <TotalStakedIcon width={10} height={10} />
+        </div>
+
+        <div title="ChevronRightIcon">
+            <ChevronRightIcon width={10} height={10} />
+        </div>
+
+        <div title="ChevronLeftIcon">
+            <ChevronLeftIcon width={10} height={10} />
         </div>
 
         <div title="StakeCircledOutlinedIcon">

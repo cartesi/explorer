@@ -59,7 +59,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
             <Center p={2}>
                 <HStack>
                     <TimeIcon />
-                    <Text fontWeight="bold">
+                    <Text>
                         {humanizeDuration(Date.now() - block.timestamp * 1000, {
                             units: ['m'],
                             round: true,
@@ -68,43 +68,41 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     </Text>
                 </HStack>
             </Center>
-            <Center bg="gray.900" p={2}>
+            <Center bg="header" p={2}>
                 <Text color="white">Block {id}</Text>
             </Center>
-            <Flex
-                p={[5, 5, 7, 10]}
-                justify="space-between"
-                boxShadow="md"
-                bg={bg}
-            >
+            <Flex p={6} justify="space-between" boxShadow="md" bg={bg}>
                 <Flex
                     direction="column"
                     align="flex-start"
                     justify="space-around"
                 >
-                    <Box>
-                        <Text>Producer</Text>
+                    <Box mb={4}>
+                        <Text fontSize="sm">Claimer</Text>
                         <Address
                             address={block.producer.id}
                             chainId={chainId}
                             truncated
-                            fontWeight="bold"
                             fontSize="lg"
                         />
                     </Box>
-                    <Spacer minH={5} />
                     <Box>
-                        <Text>Node</Text>
+                        <Text fontSize="sm">Node</Text>
                         <Address
                             address={block.node.id}
                             chainId={chainId}
                             truncated
+                            fontSize="sm"
                         />
                     </Box>
                 </Flex>
                 <Spacer minW={5} />
                 <Box marginLeft="auto" flex="0 1 100px">
-                    <Image src={tinyGraphUrl(block)} maxWidth="100%" h="auto" />
+                    <Image
+                        src={tinyGraphUrl(block, 0)}
+                        maxWidth="100%"
+                        h="auto"
+                    />
                 </Box>
             </Flex>
         </Box>

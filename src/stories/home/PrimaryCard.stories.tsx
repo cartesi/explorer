@@ -11,32 +11,27 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import MarketInfoPanel from '../../components/home/MarketInfoPanel';
+import { ChartIcon } from '../../components/Icons';
 
-export default {
-    title: 'Home/Market Info Panel',
-    component: MarketInfoPanel,
-    argTypes: {},
-} as ComponentMeta<typeof MarketInfoPanel>;
-
-const Template: ComponentStory<typeof MarketInfoPanel> = (args) => (
-    <MarketInfoPanel {...args} />
-);
+import PrimaryCard from '../../components/home/PrimaryCard';
 
 const defaultProps = {
-    label: 'Price',
-    value: 123441206,
-    unit: 'USD',
+    children: 'Primary Card',
+    icon: ChartIcon,
 };
+
+export default {
+    title: 'Home/PrimaryCard',
+    component: PrimaryCard,
+    argTypes: {},
+} as ComponentMeta<typeof PrimaryCard>;
+
+const Template: ComponentStory<typeof PrimaryCard> = ({
+    children,
+    ...restProps
+}) => <PrimaryCard {...restProps}>{children}</PrimaryCard>;
 
 export const Default = Template.bind({});
 Default.args = {
     ...defaultProps,
-};
-
-export const CTSI = Template.bind({});
-CTSI.args = {
-    ...defaultProps,
-    value: 380469518,
-    unit: 'CTSI',
 };
