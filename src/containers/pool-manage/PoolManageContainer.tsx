@@ -165,7 +165,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                     </Box>
                 </Stack>
 
-                {!node?.ready ? (
+                {!node?.ready && !node?.error ? (
                     <Box
                         bg={bg}
                         px={{ base: 2, lg: 8 }}

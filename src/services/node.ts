@@ -35,6 +35,7 @@ export interface Node {
     authorized1: boolean;
     loading: boolean;
     transaction: Transaction<any>;
+    error: string | null;
     hire: (amount: BigNumberish) => void;
     authorize: () => void;
     cancelHire: () => void;
@@ -58,6 +59,7 @@ export const useNode = (address: string): Node => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const transaction = useTransaction();
 
@@ -99,8 +101,10 @@ export const useNode = (address: string): Node => {
             setAuthorized(authorized);
             setAuthorized1(authorized1);
             setReady(true);
+            setError(null);
         } catch (e) {
             resetState('');
+            setError(e.message);
         }
     };
 
@@ -164,6 +168,7 @@ export const useNode = (address: string): Node => {
         authorized1,
         loading,
         transaction,
+        error,
         hire,
         authorize,
         cancelHire,
