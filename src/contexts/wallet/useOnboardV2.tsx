@@ -90,12 +90,6 @@ const getWalletType = (label = ''): WalletType | null => {
         : null;
 };
 
-const isHardwareType = (label = '') =>
-    contains(label.toLocaleLowerCase(), hardwareWallets);
-
-const isSDKType = (label = '') =>
-    contains(label.toLocaleLowerCase(), ['gnosis safe']);
-
 const checkNetwork = (chainId: number): Error | null => {
     let error;
 
@@ -115,7 +109,9 @@ const handlerBuilder =
         if (connectedWallet?.provider) {
             const { label, chains, accounts } = connectedWallet;
             const chainId = parseInt(chains[0]?.id, 16);
-            const account = accounts[0]?.address;
+            // Keep account info as lowercase to match
+            // how that is indexed on the-graph.
+            const account = accounts[0]?.address?.toLowerCase();
 
             const walletType = getWalletType(label);
             const isHardwareWallet = WalletType.HARDWARE === walletType;
@@ -238,6 +234,12 @@ export const useOnboardV2 = () => {
             const wallets$ = onboard.state.select('wallets');
             const debouncedHandler = debounce(500, handlerBuilder(setState));
             const subscription = wallets$.subscribe(debouncedHandler);
+
+            const previousWalletSelected =
+                window.localStorage.getItem(SELECTED_WALLETS);
+
+            if (previousWalletSelected)
+                connectWallet({ autoSelect: previousWalletSelected });
 
             return () => {
                 console.info(`Unsubscribing update events (onboard V2)`);
