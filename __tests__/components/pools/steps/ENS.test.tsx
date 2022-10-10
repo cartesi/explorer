@@ -134,7 +134,7 @@ describe('Pool ENS step', () => {
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('This step could be skip.')
+                screen.getByText('This step could be skipped.')
             ).toBeInTheDocument();
 
             expect(screen.queryByText('Pool ENS name')).not.toBeInTheDocument();
@@ -153,7 +153,7 @@ describe('Pool ENS step', () => {
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('This step could be skip.')
+                screen.getByText('This step could be skipped.')
             ).toBeInTheDocument();
 
             expect(screen.getByText('Pool ENS name')).toBeInTheDocument();

@@ -95,7 +95,7 @@ const messages = {
         },
     },
     step: {
-        skippable: () => 'This step could be skip.',
+        skippable: () => 'This step could be skipped.',
     },
     notice: {
         problem: (suffix = '') => `We notice a problem${suffix}`,
