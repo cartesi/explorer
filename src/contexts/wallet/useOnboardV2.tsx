@@ -48,6 +48,9 @@ const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
 const buildConfig = (ankrEnabled: boolean): InitOptions => {
+    const mainnetRpcUrl = ankrEnabled
+        ? 'https://rpc.ankr.com/eth'
+        : getRPC('mainnet');
     return {
         wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
         chains: [
@@ -55,7 +58,7 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
                 id: `0x${Network.MAINNET}`,
                 token: 'ETH',
                 label: 'Ethereum Mainnet',
-                rpcUrl: getRPC('mainnet'),
+                rpcUrl: mainnetRpcUrl,
             },
             {
                 id: `0x${Network.GOERLI}`,
