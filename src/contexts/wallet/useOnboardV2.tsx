@@ -30,7 +30,6 @@ import { Network, networks } from '../../utils/networks';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { WalletType } from './definitions';
-import { en } from './i18n';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
