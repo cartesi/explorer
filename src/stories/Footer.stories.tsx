@@ -20,7 +20,9 @@ export default {
     argTypes: {},
 } as ComponentMeta<typeof Footer>;
 
-const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
+const Template: ComponentStory<typeof Footer> = (args: object) => (
+    <Footer {...args} />
+);
 
 export const Standard = Template.bind({});
 Standard.args = {};
