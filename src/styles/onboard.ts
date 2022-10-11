@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { colors } from './foundations/colors';
+import { zIndices } from './foundations/zIndices';
 
 const grayColour = colors.gray[800];
 const white = colors.white;
@@ -20,7 +21,8 @@ export const buildOnboardTheme = (props) => {
         '--onboard-font-family-normal': 'var(--chakra-fonts-body)',
         '--onboard-font-family-semibold': 'var(--chakra-fonts-body)',
         '--onboard-font-family-light': 'var(--chakra-fonts-body)',
-        '--onboard-modal-z-index': 999,
+        '--onboard-modal-z-index': zIndices.xxl,
+        '--onboard-account-select-modal-z-index': zIndices.xxl,
     };
     let darkVars = {};
 

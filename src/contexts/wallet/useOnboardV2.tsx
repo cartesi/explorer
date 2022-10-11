@@ -30,6 +30,7 @@ import { Network, networks } from '../../utils/networks';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { WalletType } from './definitions';
+import { en } from './i18n';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -52,6 +53,14 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
         ? 'https://rpc.ankr.com/eth'
         : getRPC('mainnet');
     return {
+        accountCenter: {
+            desktop: {
+                enabled: false,
+            },
+            mobile: {
+                enabled: false,
+            },
+        },
         wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
         chains: [
             {
@@ -234,7 +243,6 @@ export const useOnboardV2 = () => {
             const wallets$ = onboard.state.select('wallets');
             const debouncedHandler = debounce(500, handlerBuilder(setState));
             const subscription = wallets$.subscribe(debouncedHandler);
-
             const previousWalletSelected =
                 window.localStorage.getItem(SELECTED_WALLETS);
 
@@ -243,7 +251,7 @@ export const useOnboardV2 = () => {
 
             return () => {
                 console.info(`Unsubscribing update events (onboard V2)`);
-                subscription.unsubscribe();
+                subscription?.unsubscribe();
             };
         }
     }, [onboard]);
