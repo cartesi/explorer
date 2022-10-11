@@ -51,6 +51,9 @@ module.exports = {
                     '@ledgerhq/devices/hid-framing': toPath(
                         'node_modules/@ledgerhq/devices/lib/hid-framing'
                     ),
+                    '@toruslabs/torus-embed': toPath(
+                        'node_modules/@toruslabs/torus-embed/dist/torus.umd.min.js'
+                    ),
                 },
             },
         };

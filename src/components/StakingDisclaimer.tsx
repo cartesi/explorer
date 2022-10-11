@@ -31,7 +31,7 @@ export interface StakingDisclaimerProps {
 
 const StakingDisclaimer: FC<StakingDisclaimerProps> = ({ persistanceKey }) => {
     // persistent state of user read disclaimer message, stored in browser localStorage
-    const useDisclaimerState = createPersistedState(persistanceKey);
+    const useDisclaimerState = createPersistedState<boolean>(persistanceKey);
     const [acknowledged, setAcknowledged] = useDisclaimerState(false);
 
     return (
