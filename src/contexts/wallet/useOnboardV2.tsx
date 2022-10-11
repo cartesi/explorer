@@ -170,6 +170,8 @@ interface PropState {
 export const useOnboardV2 = () => {
     const [state, setState] = useState<PropState>({});
     const ankrEnabled = useFlag('ankrEnabled');
+    const [isFirstNetworkChange, setFirstNetworkChange] =
+        useState<boolean>(true);
     const {
         account,
         library,
@@ -221,7 +223,7 @@ export const useOnboardV2 = () => {
         const wallets = await onboard?.disconnectWallet({
             label: connectedWallet.label,
         });
-
+        setFirstNetworkChange(true);
         window.localStorage.removeItem(SELECTED_WALLETS);
         return wallets;
     };
@@ -253,7 +255,31 @@ export const useOnboardV2 = () => {
                 subscription?.unsubscribe();
             };
         }
-    }, [onboard]);
+    }, [onboard, setState]);
+
+    useEffect(() => {
+        if (chainId !== undefined) {
+            const selectedWallet =
+                window.localStorage.getItem(SELECTED_WALLETS);
+            if (selectedWallet?.toLowerCase() === 'walletconnect') {
+                console.log(`Network changed using ${selectedWallet}`);
+                if (!isFirstNetworkChange) {
+                    // Just in case the network is changed,
+                    // The provider will come clean when is the WalletConnect protocol.
+                    window.location.reload();
+                } else {
+                    console.info(
+                        'Skipping reload because it was the first network change'
+                    );
+                    setFirstNetworkChange(false);
+                }
+            } else {
+                console.log(
+                    `Skipping the page reload since is not WalletConnect. The selected one is ${selectedWallet}`
+                );
+            }
+        }
+    }, [chainId]);
 
     return {
         error,
