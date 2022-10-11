@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useFlag, useUnleashContext } from '@unleash/proxy-client-react';
-import { createContext, FC, useEffect } from 'react';
+import { createContext, FC, useEffect, PropsWithChildren } from 'react';
 import { WalletConnectionContextProps } from './definitions';
 import { useOnboardV1 } from './useOnboardV1';
 import { useOnboardV2 } from './useOnboardV2';
@@ -47,7 +47,7 @@ const useOnboard = () => {
 export const WalletConnectionContext =
     createContext<WalletConnectionContextProps>(initialContextState);
 
-export const WalletConnectionProvider: FC = (props) => {
+export const WalletConnectionProvider: FC<PropsWithChildren> = (props) => {
     const {
         library,
         account,
