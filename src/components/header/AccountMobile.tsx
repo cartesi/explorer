@@ -52,7 +52,7 @@ const AccountMobile: FC = () => {
             bg={bgColor}
         >
             <HStack w="full" spacing={4}>
-                <Box flexGrow="1">
+                <Box flexGrow="1" display="flex">
                     <Jazzicon
                         diameter={15}
                         seed={jsNumberForAddress(account)}
@@ -69,7 +69,7 @@ const AccountMobile: FC = () => {
                             truncateStringMobile(ens.address || account)}
                     </TagLabel>
                 </Box>
-                <Box alignSelf="flex-end">
+                <Box alignSelf="center">
                     <ArrowsUpDownIcon
                         style={{
                             height: 23,
