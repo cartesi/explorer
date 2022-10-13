@@ -20,7 +20,7 @@ import { Input } from './components/input';
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 import { fonts } from './foundations/fonts';
-// import { buildOnboardTheme } from './onboardTheme';
+import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
 import { formsTheme } from './formsTheme';
 import { buildOnboardTheme } from './onboard';
 
@@ -31,6 +31,7 @@ const theme = extendTheme({
                 'html, body': {
                     color: props.colorMode === 'dark' ? 'white' : 'gray.800',
                 },
+                ...onboardThemeV1(props),
                 ...buildOnboardTheme(props),
                 ...formsTheme(),
             };
