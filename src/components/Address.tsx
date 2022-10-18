@@ -54,6 +54,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
         hideActions = false,
         noActions = false,
         shouldDisplayFallbackAvatar = false,
+        color,
         ...textProps
     } = props;
 
@@ -106,7 +107,7 @@ const Address: FunctionComponent<AddressProps> = (props) => {
                 )
             )}
             {name && <Text>{name}</Text>}
-            <Text color="gray.900" {...textProps}>
+            <Text color={color} {...textProps}>
                 {label}
             </Text>
             {showActions && !hasCopied && (

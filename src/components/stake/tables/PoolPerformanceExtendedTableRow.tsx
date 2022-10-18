@@ -84,6 +84,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                         bg="blue.50"
                         px="0.5rem"
                         py="0.25rem"
+                        color="gray.900"
                         minWidth="120px"
                         shouldDisplayFallbackAvatar
                     />
