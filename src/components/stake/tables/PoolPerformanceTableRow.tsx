@@ -90,7 +90,6 @@ const PoolPerformanceTableRow: FunctionComponent<
                         py="0.25rem"
                         color="gray.900"
                         minWidth="120px"
-                        color="gray.900"
                         shouldDisplayFallbackAvatar
                     />
 
