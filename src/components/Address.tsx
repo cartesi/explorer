@@ -63,7 +63,8 @@ const Address: FC<AddressProps> = (props) => {
     } = props;
 
     // resolve ENS entry from address
-    const ensEntry = ens && useENS(address);
+    const addressEnsInfo = useENS(address);
+    const ensEntry = ens ? addressEnsInfo : null;
 
     const { hasCopied, onCopy } = useClipboard(address);
     const [hover, setHover] = useState(false);

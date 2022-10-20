@@ -34,7 +34,7 @@ import { PencilIcon } from '../../../components/Icons';
 import { useCartesiToken } from '../../../services/token';
 import { formatCTSI } from '../../../utils/token';
 import { PoolInfo } from '../interfaces';
-import Address from './Address';
+import Address from '../../../components/Address';
 import { useUserNodes } from '../../../graphql/hooks/useNodes';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
@@ -135,7 +135,19 @@ const PoolTable = ({ data }: Props) => {
                             data.map((pool) => (
                                 <Tr key={pool.id}>
                                     <Td>
-                                        <Address address={pool.id} truncated />
+                                        <Address
+                                            ens
+                                            address={pool.id}
+                                            truncated
+                                            borderRadius="full"
+                                            size="md"
+                                            bg="blue.50"
+                                            px="0.5rem"
+                                            py="0.25rem"
+                                            color="gray.900"
+                                            minWidth="120px"
+                                            shouldDisplayFallbackAvatar
+                                        />
                                     </Td>
                                     <Td isNumeric>{pool.totalStaked}</Td>
                                     <Td isNumeric>{pool.totalUsers}</Td>
