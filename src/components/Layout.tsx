@@ -70,7 +70,7 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
 
 const Layout: FC<ComponentProps> = ({ children }) => {
     return (
-        <Flex direction="column" align="center" m="0 auto">
+        <Flex direction="column" align="center" m="0 auto" minHeight="100vh">
             <Header />
             <Box width="100%" paddingTop="100px">
                 <SyncStatus />

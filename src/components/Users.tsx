@@ -10,11 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useState } from 'react';
-import { VStack, HStack, Flex, Select, Text } from '@chakra-ui/react';
+import { VStack, Flex } from '@chakra-ui/react';
 import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
 import Pagination from './Pagination';
 import { UserSort } from '../graphql/models';
+import PerPageSelect from './PerPageSelect';
 
 interface UsersProps {
     chainId: number;
@@ -56,35 +57,15 @@ const Users: FC<UsersProps> = (props) => {
                     overflowX="auto"
                     py={1}
                 >
-                    <HStack mr={{ base: 0, md: 12 }} mb={{ base: 4, md: 0 }}>
-                        <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
-                            Rows per page
-                        </Text>
-                        <Select
-                            value={rowsPerPage}
-                            width="4.625rem"
-                            borderLeft="none"
-                            borderTop="none"
-                            borderRight="none"
-                            borderRadius={0}
-                            fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
-                            onChange={(event) => {
-                                setRowsPerPage(
-                                    Number(event.currentTarget.value)
-                                );
-                                setPageNumber(0);
-                            }}
-                        >
-                            {options.map((option) => (
-                                <option
-                                    key={`rows-per-page-${option}`}
-                                    value={option}
-                                >
-                                    {option}
-                                </option>
-                            ))}
-                        </Select>
-                    </HStack>
+                    <PerPageSelect
+                        value={rowsPerPage}
+                        options={options}
+                        onChange={(event) => {
+                            setRowsPerPage(Number(event.currentTarget.value));
+                            setPageNumber(0);
+                        }}
+                    />
+
                     <Pagination
                         pages={pages}
                         currentPage={pageNumber}

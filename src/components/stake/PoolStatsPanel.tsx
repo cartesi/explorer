@@ -68,7 +68,13 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
 
     const aws = useFlag('aws');
     const apr = useFlag('apr');
+    const stakingPoolCommissionPageEnabled = useFlag(
+        'stakingPoolCommissionPageEnabled'
+    );
     const performanceStatsEnabled = aws && apr;
+    const commissionLink = stakingPoolCommissionPageEnabled
+        ? `/stake/${address}/commissions`
+        : undefined;
 
     return (
         <>
@@ -112,6 +118,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     totalBlocks={totalBlocks}
                 />
                 <CommissionStat
+                    location={commissionLink}
                     commissionPercentage={commissionPercentage}
                     fee={fee}
                 />

@@ -131,6 +131,21 @@ export type StakingPoolFee = {
     created: number;
     lastUpdated: number;
 };
+
+export enum StakingPoolFeeType {
+    GAS_TAX = 'GAS_TAX_COMMISSION',
+    FLAT_RATE = 'FLAT_RATE_COMMISSION',
+}
+
+export type StakingPoolFeeHistory = {
+    id: string;
+    pool: StakingPool;
+    newValue: number;
+    change: number;
+    timestamp: number;
+    feeType: StakingPoolFeeType;
+};
+
 export interface StakingPoolData {
     stakingPool: StakingPool;
 }

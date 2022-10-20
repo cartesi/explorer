@@ -19,7 +19,7 @@ describe('Notification component', () => {
         cleanup();
     });
 
-    it('should display required the required props', () => {
+    it('should display correct title', () => {
         render(<Notification title="That is a notification" />);
 
         expect(screen.getByText('That is a notification')).toBeInTheDocument();

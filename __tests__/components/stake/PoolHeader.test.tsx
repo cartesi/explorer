@@ -16,6 +16,7 @@ import { useWallet } from '../../../src/contexts/wallet';
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 import { WalletConnectionContextProps } from '../../../src/contexts/wallet/definitions';
+import { useFlag } from '@unleash/proxy-client-react';
 
 jest.mock('next/router', () => {
     const originalModule = jest.requireActual('next/router');
@@ -29,6 +30,12 @@ const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 jest.mock('../../../src/contexts/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
+
+jest.mock('@unleash/proxy-client-react', () => ({
+    useUnleashContext: () => jest.fn(),
+    useFlag: jest.fn(),
+}));
+const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
 
 const EPoolHeader = withChakraTheme(PoolHeader);
 
@@ -47,6 +54,8 @@ describe('Pool Header', () => {
         mockUseWallet.mockReturnValue({
             chainId: 129803901,
         } as unknown as WalletConnectionContextProps);
+
+        useFlagStub.mockImplementation(() => true);
     });
 
     afterEach(() => {

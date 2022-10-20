@@ -16,6 +16,7 @@ import NextLink from 'next/link';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
 import { StakingTabNavigation } from './StakingTabNavigation';
+import { useFlag } from '@unleash/proxy-client-react';
 
 interface PoolHeaderProps {
     isManager?: boolean;
@@ -25,6 +26,7 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
     const { chainId } = useWallet();
+    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
 
     return (
         <Box
@@ -40,7 +42,10 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
             >
                 <VStack alignItems="flex-start" pb="5">
                     <HStack alignItems="flex-start">
-                        <NextLink href="/pools" passHref>
+                        <NextLink
+                            href={newPoolListPageEnabled ? '/stake' : '/pools'}
+                            passHref
+                        >
                             <Button
                                 as="a"
                                 leftIcon={<ArrowBackIcon />}

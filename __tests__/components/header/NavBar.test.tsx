@@ -55,7 +55,7 @@ describe('Nav Bar', () => {
     it('Should generate correct default nav links', () => {
         const links = buildLinks({
             newNodeRunnersEnabled: false,
-            newPoolPageEnabled: false,
+            newPoolListPageEnabled: false,
         });
 
         expect(links.length).toBe(4);
@@ -80,7 +80,7 @@ describe('Nav Bar', () => {
     it('Should generate nav link for new staking', () => {
         const links = buildLinks({
             newNodeRunnersEnabled: true,
-            newPoolPageEnabled: true,
+            newPoolListPageEnabled: true,
         });
 
         expect(links.length).toBe(4);

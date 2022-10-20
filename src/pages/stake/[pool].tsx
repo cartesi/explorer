@@ -53,7 +53,7 @@ const blockAverageInterval = (
     return 0;
 };
 
-const poolRedesign = () => {
+const PoolRedesign = () => {
     const { account, chainId } = useWallet();
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
@@ -61,7 +61,7 @@ const poolRedesign = () => {
     const router = useRouter();
     const address = router.query.pool as string;
 
-    // query block number (continuouly)
+    // query block number (continuously)
     const blockNumber = useBlockNumber();
 
     // query pool data
@@ -192,4 +192,4 @@ const poolRedesign = () => {
     );
 };
 
-export default poolRedesign;
+export default PoolRedesign;

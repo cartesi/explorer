@@ -218,7 +218,7 @@ describe('SetAllowance Step', () => {
             ).toBeInTheDocument();
 
             // should call activate method from useWallet hook
-            act(() => {
+            await act(() => {
                 fireEvent.click(screen.getByText('Connect To Wallet'));
             });
 
@@ -331,7 +331,7 @@ describe('SetAllowance Step', () => {
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
 
-            act(() => {
+            await act(() => {
                 fireEvent.change(input, { target: { value: 10000 } });
             });
 
@@ -339,7 +339,9 @@ describe('SetAllowance Step', () => {
                 expect(button.hasAttribute('disabled')).toBe(false)
             );
 
-            fireEvent.click(button);
+            await act(() => {
+                fireEvent.click(button);
+            });
 
             // Emulating hooks changing cartesi-token / transaction state.
             tokenMock.transaction.isOngoing = true;

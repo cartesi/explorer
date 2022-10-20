@@ -30,7 +30,10 @@ export const StakingTabNavigation: FC = () => {
                         leftIcon={<DashboardIcon w="24px" h="24px" />}
                         outline="none"
                         textTransform="none"
-                        isActive={router.pathname === `/stake/[pool]`}
+                        isActive={
+                            router.pathname === `/stake/[pool]` ||
+                            router.pathname === '/stake/[pool]/commissions'
+                        }
                         variant={
                             router.pathname === `/stake/[pool]`
                                 ? 'solid'

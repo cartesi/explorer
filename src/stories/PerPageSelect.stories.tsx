@@ -9,15 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export * from './block';
-export * from './blocks';
-export * from './meta';
-export * from './nodes';
-export * from './poolBalances';
-export * from './stakingPool';
-export * from './stakingPools';
-export * from './poolShareInfoExtended';
-export * from './summary';
-export * from './user';
-export * from './users';
-export * from './stakingPoolFeeHistories';
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import PerPageSelect from '../components/PerPageSelect';
+
+export default {
+    title: 'PerPageSelect',
+    component: PerPageSelect,
+    argTypes: {},
+} as ComponentMeta<typeof PerPageSelect>;
+
+const Template: ComponentStory<typeof PerPageSelect> = (args) => (
+    <PerPageSelect {...args} />
+);
+
+export const Default = Template.bind({});
+Default.args = {
+    value: 10,
+    options: [10, 20, 30],
+    onChange: () => undefined,
+};
