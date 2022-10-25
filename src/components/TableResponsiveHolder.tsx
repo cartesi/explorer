@@ -9,16 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Box, ChakraProps, useConst } from '@chakra-ui/react';
 
 interface TableResponsiveHolderProps {
     children: React.ReactNode;
 }
 
-export const TableResponsiveHolder: FC<TableResponsiveHolderProps> = ({
-    children,
-}) => {
+type Ref = HTMLDivElement;
+
+const Component = ({ children }, ref) => {
     const [state, setState] = useState({
         overflow: false,
         scrolled: false,
@@ -74,7 +74,14 @@ export const TableResponsiveHolder: FC<TableResponsiveHolderProps> = ({
 
     return (
         <Box position="relative" w="100%">
-            <Box overflowX="auto" w="100%" ref={holder}>
+            <Box
+                overflowX="auto"
+                w="100%"
+                ref={(node) => {
+                    holder.current = node;
+                    if (ref) ref.current = node;
+                }}
+            >
                 {children}
             </Box>
             {state.overflow && (
@@ -100,3 +107,7 @@ export const TableResponsiveHolder: FC<TableResponsiveHolderProps> = ({
         </Box>
     );
 };
+export const TableResponsiveHolder = forwardRef<
+    Ref,
+    TableResponsiveHolderProps
+>(Component);
