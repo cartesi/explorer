@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import {
     Table,
     Tbody,
@@ -30,6 +30,8 @@ import {
 } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolPerformanceExtendedTableRow from './PoolPerformanceExtendedTableRow';
+import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
+import { SlideInOut } from '../../animation/SlideInOut';
 
 export interface PoolPerformanceExtendedTableProps {
     chainId: number;
@@ -52,9 +54,12 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
+    const thRef = useRef<HTMLTableCellElement>();
+    const tableRef = useRef<HTMLDivElement>();
+    const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder ref={tableRef}>
             <Table>
                 <Thead>
                     <Tr>
@@ -100,19 +105,17 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                             {sort === 'commissionPercentage' && <SortIcon />}
                         </Th>
 
-                        <Th
-                            isNumeric
-                            position={[
-                                'sticky',
-                                'sticky',
-                                'initial',
-                                'initial',
-                            ]}
-                            top={0}
-                            right={0}
-                        >
+                        <Th ref={thRef} isNumeric>
                             {stakeText}
                         </Th>
+
+                        {threshold.isBelow && (
+                            <Th isNumeric position="sticky" top={0} right={0}>
+                                <SlideInOut display={threshold.isBelow}>
+                                    {stakeText}
+                                </SlideInOut>
+                            </Th>
+                        )}
                     </Tr>
                 </Thead>
 
@@ -132,7 +135,7 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                                 key={pool.id}
                                 chainId={chainId}
                                 pool={pool}
-                                account={account}
+                                keepActionColVisible={threshold.isBelow}
                             />
                         ))
                     ) : (

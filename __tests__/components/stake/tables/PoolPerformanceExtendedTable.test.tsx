@@ -10,7 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+    fireEvent,
+    getByText,
+    getNodeText,
+    prettyDOM,
+    render,
+    screen,
+} from '@testing-library/react';
 import PoolPerformanceExtendedTable, {
     PoolPerformanceExtendedTableProps,
 } from '../../../../src/components/stake/tables/PoolPerformanceExtendedTable';
@@ -48,12 +55,16 @@ describe('Pool Performance Extended Table', () => {
 
     it('Should have required columns', () => {
         renderComponent(defaultProps);
+        const sevenDaysHeader = screen.getByText('7-days %').closest('th');
+        const thirtyDaysHeader = screen.getByText('30-days %').closest('th');
         expect(screen.getByText('Pool Address')).toBeInTheDocument();
         expect(screen.getByText('Total Users')).toBeInTheDocument();
         expect(screen.getByText('Total Staked')).toBeInTheDocument();
         expect(screen.getByText('Total Rewards')).toBeInTheDocument();
-        expect(screen.getByText('7-days % (annual)')).toBeInTheDocument();
-        expect(screen.getByText('30-days % (annual)')).toBeInTheDocument();
+        expect(getByText(sevenDaysHeader, '7-days %')).toBeInTheDocument();
+        expect(getByText(sevenDaysHeader, '(annual)')).toBeInTheDocument();
+        expect(getByText(thirtyDaysHeader, '30-days %')).toBeInTheDocument();
+        expect(getByText(thirtyDaysHeader, '(annual)')).toBeInTheDocument();
         expect(screen.getByText('Configured Commission')).toBeInTheDocument();
         expect(screen.getByText('Accrued Commission')).toBeInTheDocument();
         expect(screen.getByText('Stake/Info')).toBeInTheDocument();
@@ -98,7 +109,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('7-days % (annual)').closest('a');
+        const button = screen.getByText('7-days %').closest('a');
         fireEvent.click(button);
 
         expect(sort).toBe('weekPerformance');
@@ -113,7 +124,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('30-days % (annual)').closest('a');
+        const button = screen.getByText('30-days %').closest('a');
         fireEvent.click(button);
 
         expect(sort).toBe('monthPerformance');
@@ -197,7 +208,7 @@ describe('Pool Performance Extended Table', () => {
         });
 
         const icon = screen
-            .getByText('7-days % (annual)')
+            .getByText('7-days %')
             .closest('th')
             .querySelector('svg');
         expect(icon).toBeInTheDocument();
@@ -210,7 +221,7 @@ describe('Pool Performance Extended Table', () => {
         });
 
         const icon = screen
-            .getByText('30-days % (annual)')
+            .getByText('30-days %')
             .closest('th')
             .querySelector('svg');
         expect(icon).toBeInTheDocument();
