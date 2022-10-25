@@ -65,38 +65,44 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                     <Tr>
                         <Th>Pool Address</Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric whiteSpace="nowrap">
                             <Link onClick={() => onSort('totalUsers')}>
                                 Total Users
                             </Link>
                             {sort === 'totalUsers' && <SortIcon />}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric whiteSpace="nowrap">
                             <Link onClick={() => onSort('amount')}>
                                 Total Staked
                             </Link>
                             {sort === 'amount' && <SortIcon />}
                         </Th>
 
-                        <Th isNumeric>Total Rewards</Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Total Rewards
+                        </Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric whiteSpace="nowrap">
                             <Link onClick={() => onSort('weekPerformance')}>
-                                7-days % (annual)
+                                <Text whiteSpace="nowrap">7-days %</Text>{' '}
+                                (annual)
                             </Link>
                             {sort === 'weekPerformance' && <SortIcon />}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric whiteSpace="nowrap">
                             <Link onClick={() => onSort('monthPerformance')}>
-                                30-days % (annual)
+                                <Text whiteSpace="nowrap">30-days %</Text>{' '}
+                                (annual)
                             </Link>
                             {sort === 'monthPerformance' && <SortIcon />}
                         </Th>
 
-                        <Th>Configured Commission</Th>
-                        <Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Configured Commission
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
                             <Link
                                 onClick={() => onSort('commissionPercentage')}
                             >

@@ -113,13 +113,19 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
             >
                 {pool.totalUsers}
             </Td>
-            <Td isNumeric borderColor={borderColor} data-testid="amount-col">
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="amount-col"
+                whiteSpace="nowrap"
+            >
                 {formatCTSI(pool.amount, 2)} CTSI
             </Td>
             <Td
                 isNumeric
                 borderColor={borderColor}
                 data-testid="total-reward-col"
+                whiteSpace="nowrap"
             >
                 {formatCTSI(pool.userTotalReward, 2)} CTSI
             </Td>
@@ -139,7 +145,11 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                 {numberFormat.format(pool.monthPerformance)} (
                 {numberFormat.format(apr(pool.monthPerformance, 30))})
             </Td>
-            <Td borderColor={borderColor} data-testid="commission-col">
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="commission-col"
+            >
                 {commissionLabel}{' '}
                 {commissionTooltip && (
                     <Tooltip
@@ -154,7 +164,11 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     </Tooltip>
                 )}
             </Td>
-            <Td borderColor={borderColor} data-testid="accrued-commission-col">
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="accrued-commission-col"
+            >
                 {accruedCommissionLabel}
             </Td>
             <Td
