@@ -23,12 +23,14 @@ export interface UserStakingPoolsTableRowProps {
     chainId: number;
     balance: PoolBalance;
     account?: string;
+    keepActionColVisible?: boolean;
 }
 
 const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     chainId,
     account,
     balance,
+    keepActionColVisible,
 }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
     const stakeInfoBg = useColorModeValue('white', 'gray.700');
@@ -79,19 +81,20 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
             <Td
                 isNumeric
                 borderColor={borderColor}
-                position={{ base: 'sticky', md: 'initial' }}
+                position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
-                backgroundColor={[stakeInfoBg, stakeInfoBg, 'transparent']}
+                backgroundColor={stakeInfoBg}
                 padding={0}
                 data-testid="stake-info-col"
             >
                 <Box
-                    shadow={['md', 'md', 'none', 'none']}
+                    transition="all 0.2s ease-in"
+                    shadow={keepActionColVisible ? 'md' : 'none'}
                     padding={[0, 0, 8, 8]}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
-                    display={['flex', 'flex', 'block', 'block']}
+                    display={keepActionColVisible ? 'flex' : 'block'}
                     alignItems="center"
                     justifyContent="center"
                     ml="auto"

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import {
     Table,
     Tbody,
@@ -25,6 +25,8 @@ import {
 import { PoolBalance } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
+import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
+import { SlideInOut } from '../../animation/SlideInOut';
 
 export interface UserStakingPoolsTableProps {
     chainId: number;
@@ -42,9 +44,12 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     const columns = useBreakpointValue([3, 3, 4, 8]);
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
+    const thRef = useRef<HTMLTableCellElement>();
+    const tableRef = useRef<HTMLDivElement>();
+    const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder ref={tableRef}>
             <Table>
                 <Thead>
                     <Tr>
@@ -52,19 +57,16 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                         <Th isNumeric>Unstaked</Th>
                         <Th isNumeric>Staked</Th>
                         <Th isNumeric>% Pool</Th>
-                        <Th
-                            isNumeric
-                            position={[
-                                'sticky',
-                                'sticky',
-                                'initial',
-                                'initial',
-                            ]}
-                            top={0}
-                            right={0}
-                        >
+                        <Th isNumeric ref={thRef}>
                             {stakeText}
                         </Th>
+                        {threshold.isBelow && (
+                            <Th isNumeric position="sticky" top={0} right={0}>
+                                <SlideInOut display={true}>
+                                    {stakeText}
+                                </SlideInOut>
+                            </Th>
+                        )}
                     </Tr>
                 </Thead>
 
@@ -85,6 +87,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                                 chainId={chainId}
                                 balance={balance}
                                 account={account}
+                                keepActionColVisible={threshold.isBelow}
                             />
                         ))
                     ) : (
