@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0] - 2022-10-27
+
+-   Fresh new home page look.
+-   Fix for the positioning of the stake button in the list of pools. That is always visible now.
+-   A new wallet interface is ready to be roll-out.
+-   Fixes in the node-runners page. From landing page to a few updates in the management screens.
+-   UI framework and core render libraries upgraded.
+-   UI fixes for the address in dark mode. The font colour was still black even on dark mode making it invisible.
+
 ## [2.8.3] - 2022-10-08
 
 -   Fix a bug on my staking pools area where the unstake and stake column values were displaying as zero all the time.
@@ -19,11 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.8.1] - 2022-10-07
 
 -   Design adjustment for small screens in the node section for both private node and public pool management.
--   New stake page design is ready to rollout.
+-   New stake page design is ready to roll-out.
 
 ## [2.8.0] - 2022-09-30
 
--   New Node Runners page and workflows are ready for rollout.
+-   New Node Runners page and workflows are ready for roll-out.
 
 ## [2.7.3] - 2022-09-20
 
@@ -55,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.6.0] - 2022-08-04
 
--   New Staking Page workflow is ready to be rollout.
+-   New Staking Page workflow is ready to be roll-out.
 -   Fix for stale data problem spotted on 'My Pools' after staking activities and when the wallet is disconnected. This fix also covers a widget in the home and node-runners page.
 
 ## [2.5.1] - 2022-07-27
@@ -187,7 +196,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.8.3...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.9.0...HEAD
+[2.9.0]: https://github.com/cartesi-corp/explorer/compare/v2.8.3...v2.9.0
 [2.8.3]: https://github.com/cartesi-corp/explorer/compare/v2.8.2...v2.8.3
 [2.8.2]: https://github.com/cartesi-corp/explorer/compare/v2.8.1...v2.8.2
 [2.8.1]: https://github.com/cartesi-corp/explorer/compare/v2.8.0...v2.8.1
