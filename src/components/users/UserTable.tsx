@@ -92,7 +92,7 @@ const UserTable: FC<UserTableProps> = ({
                             <Td colSpan={9} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
-                                    <Text>Loading</Text>
+                                    <Text>Loading...</Text>
                                 </HStack>
                             </Td>
                         </Tr>

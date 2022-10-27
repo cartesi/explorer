@@ -21,3 +21,4 @@ export * from './summary';
 export * from './user';
 export * from './users';
 export * from './stakingPoolFeeHistories';
+export * from './stakingPoolUserHistories';

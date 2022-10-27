@@ -50,21 +50,28 @@ export const poolAmount = (b: PoolBalance): BigNumber => {
 };
 
 const usePoolBalances = (
-    user: string,
+    user?: string,
     pageNumber = 0,
-    sort: PoolBalanceSort = 'shares'
+    sort: PoolBalanceSort = 'shares',
+    perPage = POOLS_PER_PAGE,
+    pool?: string
 ) => {
-    const filter = { user: user?.toLowerCase() || null };
+    const tenMinutesInMs = 600000;
+    const filter = {
+        user: user?.toLowerCase() || undefined,
+        pool: pool?.toLowerCase() || undefined,
+    };
+
     return useQuery<PoolBalancesData, PoolBalancesVars>(POOL_BALANCES, {
         variables: {
-            first: POOLS_PER_PAGE,
+            first: perPage,
             where: filter,
-            skip: pageNumber * POOLS_PER_PAGE,
+            skip: pageNumber * perPage,
             orderBy: sort,
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 600000, // Every 10 minutes
+        pollInterval: tenMinutesInMs,
     });
 };
 

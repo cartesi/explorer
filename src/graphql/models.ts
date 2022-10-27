@@ -217,6 +217,11 @@ export type PoolBalance = {
     stakeTimestamp: number;
 };
 
+export interface PoolBalanceWithAccumulatedShares extends PoolBalance {
+    sharesPercent: number;
+    accumulatedSharesPercent: number;
+}
+
 export type PoolBalancesData = {
     poolBalances: PoolBalance[];
 };
@@ -355,4 +360,18 @@ export interface UserVars {
 
 export interface MetaData {
     _meta: _Meta_;
+}
+
+export enum StakingPoolUserHistoryAction {
+    JOIN = 'JOIN',
+    LEAVE = 'LEAVE',
+}
+
+export interface StakingPoolUserHistory {
+    id: string;
+    timestamp: number;
+    pool?: StakingPool;
+    user: PoolUser;
+    totalUsers: number;
+    action: StakingPoolUserHistoryAction;
 }

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 //If you need to add more setup options before each test, it's common to add them here.
 import '@testing-library/jest-dom/extend-expect';
+import 'jest-canvas-mock';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -20,3 +21,9 @@ Object.defineProperty(window, 'scrollTo', {
     writable: false,
     value: jest.fn().mockImplementation(() => undefined),
 });
+
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    disconnect: jest.fn(),
+}));
