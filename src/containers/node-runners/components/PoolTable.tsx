@@ -175,7 +175,6 @@ const PoolTable = ({ data }: Props) => {
                                                     Manage pool {pool.id}
                                                 </VisuallyHidden>
                                                 <PencilIcon
-                                                    color="white"
                                                     data-testid={`pencil-svg-${pool.id}`}
                                                 />
                                             </Button>
