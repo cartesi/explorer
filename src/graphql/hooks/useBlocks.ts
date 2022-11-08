@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { BLOCKS } from '../queries/blocks';
+import { BLOCKS } from '../queries';
 import { BlocksData, BlocksVars, BlocksWhere } from '../models';
 
 const useBlocks = (where: BlocksWhere = {}, count = 100) => {
-    // normalize to lowercase, because thegraph is all lowercase
+    // normalize to lowercase, because the graph is all lowercase
     where.node = where.node ? where.node.toLowerCase() : undefined;
     where.producer = where.producer ? where.producer.toLowerCase() : undefined;
 

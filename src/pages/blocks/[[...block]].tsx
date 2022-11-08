@@ -122,13 +122,13 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     const [searchKey, setSearchKey] = useState<string>(blockId);
 
     // list of all blocks, unfiltered
-    const all = useBlocks();
+    const all = useBlocks(undefined, 20);
 
     // list of blocks filtered by producer
-    const byProducer = useBlocks({ producer: searchKey });
+    const byProducer = useBlocks({ producer: searchKey }, 20);
 
     // list of blocks filtered by node
-    const byNode = useBlocks({ node: searchKey });
+    const byNode = useBlocks({ node: searchKey }, 20);
 
     return (
         <Layout>
