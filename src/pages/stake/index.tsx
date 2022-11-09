@@ -45,7 +45,7 @@ const Home = () => {
     const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
     const bodyBg = useColorModeValue('gray.80', 'header');
-    const stakingPoolsBg = useColorModeValue('white', 'gray.700');
+    const stakingPoolsBg = useColorModeValue('white', 'gray.800');
     const [search, setSearch] = useState<string>();
     const apr = useFlag('apr');
     const aws = useFlag('aws');
@@ -77,7 +77,7 @@ const Home = () => {
                     </Box>
                 </PageHeader>
 
-                <PagePanel>
+                <PagePanel darkModeColor="gray.800">
                     <PoolsOverview
                         balance={poolBalance}
                         summary={summary}

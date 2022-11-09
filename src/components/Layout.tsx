@@ -47,8 +47,16 @@ export const PageHeader: FC<ComponentProps> = ({ children }) => (
     </Box>
 );
 
-export const PagePanel: FC<ComponentProps> = ({ children, ...restProps }) => {
-    const bg = useColorModeValue('white', 'gray.700');
+export interface PagePanelProps extends ComponentProps {
+    darkModeColor?: string;
+}
+
+export const PagePanel: FC<PagePanelProps> = ({
+    children,
+    darkModeColor = 'gray.700',
+    ...restProps
+}) => {
+    const bg = useColorModeValue('white', darkModeColor);
     const bgHeader = useColorModeValue('white', 'gray.800');
     return (
         <Center

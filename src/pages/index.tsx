@@ -60,7 +60,7 @@ const Home = () => {
     // user account and blockchain information (from metamask or other wallets)
     const { account, chainId } = useWallet();
     const bg = useColorModeValue('gray.80', 'header');
-    const sectionBg = useColorModeValue('white', 'gray.700');
+    const sectionBg = useColorModeValue('white', 'gray.800');
 
     // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();
