@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Table,
     useColorModeValue,
     Thead,
@@ -52,89 +51,86 @@ const NodeTable = () => {
     const [data] = useAtom(nodeInfoDataAtom);
     const { list, loading } = data;
     return (
-        <Box maxHeight="30vh" overflowY="auto">
-            <TableResponsiveHolder>
-                <Table>
-                    <Thead>
+        <TableResponsiveHolder>
+            <Table>
+                <Thead>
+                    <Tr>
+                        <Th>Node Address</Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Total Staked
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Total Rewards
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Block Produced
+                        </Th>
+                        <Th whiteSpace="nowrap">Node Status</Th>
+                        <Th position="sticky" right="0">
+                            Manage
+                        </Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {loading && (
                         <Tr>
-                            <Th>Node Address</Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Total Staked
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Total Rewards
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Block Produced
-                            </Th>
-                            <Th whiteSpace="nowrap">Node Status</Th>
-                            <Th position="sticky" right="0">
-                                Manage
-                            </Th>
+                            <Td colSpan={6}>
+                                <HStack justify="center">
+                                    <Spinner />
+                                    <Text>Loading</Text>
+                                </HStack>
+                            </Td>
                         </Tr>
-                    </Thead>
-                    <Tbody>
-                        {loading && (
-                            <Tr>
-                                <Td colSpan={6}>
-                                    <HStack justify="center">
-                                        <Spinner />
-                                        <Text>Loading</Text>
-                                    </HStack>
+                    )}
+                    {!loading &&
+                        list.map((node) => (
+                            <Tr key={node.id}>
+                                <Td>
+                                    <Address
+                                        ens
+                                        address={node.id}
+                                        truncated
+                                        size="md"
+                                        bg="blue.50"
+                                        px="0.5rem"
+                                        py="0.25rem"
+                                        color="gray.900"
+                                        minWidth="120px"
+                                        shouldDisplayFallbackAvatar
+                                        fallbackAvatar={
+                                            StakeCircledOutlinedIcon
+                                        }
+                                    />
+                                </Td>
+                                <Td isNumeric>{node.totalStaked}</Td>
+                                <Td isNumeric>{node.totalRewards}</Td>
+                                <Td isNumeric>{node.blocksProduced}</Td>
+                                <Td>{node.nodeStatus}</Td>
+                                <Td
+                                    position="sticky"
+                                    right="0"
+                                    bg={bg}
+                                    textAlign="center"
+                                >
+                                    <NextLink
+                                        href={`/node/${node.id}/manage`}
+                                        passHref
+                                    >
+                                        <Button as="a" variant="link">
+                                            <VisuallyHidden>
+                                                Manage node {node.id}
+                                            </VisuallyHidden>
+                                            <PencilIcon
+                                                data-testid={`pencil-svg-${node.id}`}
+                                            />
+                                        </Button>
+                                    </NextLink>
                                 </Td>
                             </Tr>
-                        )}
-                        {!loading &&
-                            list.map((node) => (
-                                <Tr key={node.id}>
-                                    <Td>
-                                        <Address
-                                            ens
-                                            address={node.id}
-                                            truncated
-                                            borderRadius="full"
-                                            size="md"
-                                            bg="blue.50"
-                                            px="0.5rem"
-                                            py="0.25rem"
-                                            color="gray.900"
-                                            minWidth="120px"
-                                            shouldDisplayFallbackAvatar
-                                            fallbackAvatar={
-                                                StakeCircledOutlinedIcon
-                                            }
-                                        />
-                                    </Td>
-                                    <Td isNumeric>{node.totalStaked}</Td>
-                                    <Td isNumeric>{node.totalRewards}</Td>
-                                    <Td isNumeric>{node.blocksProduced}</Td>
-                                    <Td>{node.nodeStatus}</Td>
-                                    <Td
-                                        position="sticky"
-                                        right="0"
-                                        bg={bg}
-                                        textAlign="center"
-                                    >
-                                        <NextLink
-                                            href={`/node/${node.id}/manage`}
-                                            passHref
-                                        >
-                                            <Button as="a" variant="link">
-                                                <VisuallyHidden>
-                                                    Manage node {node.id}
-                                                </VisuallyHidden>
-                                                <PencilIcon
-                                                    data-testid={`pencil-svg-${node.id}`}
-                                                />
-                                            </Button>
-                                        </NextLink>
-                                    </Td>
-                                </Tr>
-                            ))}
-                    </Tbody>
-                </Table>
-            </TableResponsiveHolder>
-        </Box>
+                        ))}
+                </Tbody>
+            </Table>
+        </TableResponsiveHolder>
     );
 };
 

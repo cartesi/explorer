@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Table,
     useColorModeValue,
     Thead,
@@ -75,117 +74,114 @@ const PoolTable = ({ data }: Props) => {
     const bg = useColorModeValue('white', 'gray.800');
 
     return (
-        <Box maxHeight={{ base: '30vh', md: '35vh' }} overflowY="auto">
-            <TableResponsiveHolder>
-                <Table>
-                    <Thead>
+        <TableResponsiveHolder>
+            <Table>
+                <Thead>
+                    <Tr>
+                        <Th>Address</Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            <Link onClick={() => setSortBy('amount')}>
+                                Total Staked
+                            </Link>
+                            {sortBy == 'amount' && <ArrowDownIcon />}
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            <Link onClick={() => setSortBy('totalUsers')}>
+                                Total Users
+                            </Link>
+                            {sortBy == 'totalUsers' && <ArrowDownIcon />}
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Total Rewards
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            <Link
+                                onClick={() =>
+                                    setSortBy('commissionPercentage')
+                                }
+                            >
+                                Commission
+                            </Link>
+                            {sortBy == 'commissionPercentage' && (
+                                <ArrowDownIcon />
+                            )}
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Pool Balance
+                        </Th>
+                        <Th whiteSpace="nowrap">Node Status</Th>
+                        <Th isNumeric whiteSpace="nowrap">
+                            Block Produced
+                        </Th>
+                        <Th position="sticky" right="0">
+                            Manage
+                        </Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {loading && (
                         <Tr>
-                            <Th>Address</Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                <Link onClick={() => setSortBy('amount')}>
-                                    Total Staked
-                                </Link>
-                                {sortBy == 'amount' && <ArrowDownIcon />}
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                <Link onClick={() => setSortBy('totalUsers')}>
-                                    Total Users
-                                </Link>
-                                {sortBy == 'totalUsers' && <ArrowDownIcon />}
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Total Rewards
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                <Link
-                                    onClick={() =>
-                                        setSortBy('commissionPercentage')
-                                    }
-                                >
-                                    Commission
-                                </Link>
-                                {sortBy == 'commissionPercentage' && (
-                                    <ArrowDownIcon />
-                                )}
-                            </Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Pool Balance
-                            </Th>
-                            <Th whiteSpace="nowrap">Node Status</Th>
-                            <Th isNumeric whiteSpace="nowrap">
-                                Block Produced
-                            </Th>
-                            <Th position="sticky" right="0">
-                                Manage
-                            </Th>
+                            <Td colSpan={9}>
+                                <HStack justify="center">
+                                    <Spinner />
+                                    <Text>Loading</Text>
+                                </HStack>
+                            </Td>
                         </Tr>
-                    </Thead>
-                    <Tbody>
-                        {loading && (
-                            <Tr>
-                                <Td colSpan={9}>
-                                    <HStack justify="center">
-                                        <Spinner />
-                                        <Text>Loading</Text>
-                                    </HStack>
+                    )}
+                    {!loading &&
+                        data.map((pool) => (
+                            <Tr key={pool.id}>
+                                <Td>
+                                    <Address
+                                        ens
+                                        address={pool.id}
+                                        truncated
+                                        size="md"
+                                        bg="blue.50"
+                                        px="0.5rem"
+                                        py="0.25rem"
+                                        color="gray.900"
+                                        minWidth="120px"
+                                        shouldDisplayFallbackAvatar
+                                    />
+                                </Td>
+                                <Td isNumeric>{pool.totalStaked}</Td>
+                                <Td isNumeric>{pool.totalUsers}</Td>
+                                <Td isNumeric>{pool.totalRewards}</Td>
+                                <Td isNumeric>{pool.commission}</Td>
+                                <Td isNumeric>
+                                    <PoolBalance address={pool.id} />
+                                </Td>
+                                <Td>
+                                    <NodeStatus ownerAddress={pool.id} />
+                                </Td>
+                                <Td isNumeric>{pool.blocksProduced}</Td>
+                                <Td
+                                    position="sticky"
+                                    right="0"
+                                    bg={bg}
+                                    textAlign="center"
+                                >
+                                    <NextLink
+                                        href={`/pools/${pool.id}/manage`}
+                                        passHref
+                                    >
+                                        <Button as="a" variant="link">
+                                            <VisuallyHidden>
+                                                Manage pool {pool.id}
+                                            </VisuallyHidden>
+                                            <PencilIcon
+                                                data-testid={`pencil-svg-${pool.id}`}
+                                            />
+                                        </Button>
+                                    </NextLink>
                                 </Td>
                             </Tr>
-                        )}
-                        {!loading &&
-                            data.map((pool) => (
-                                <Tr key={pool.id}>
-                                    <Td>
-                                        <Address
-                                            ens
-                                            address={pool.id}
-                                            truncated
-                                            borderRadius="full"
-                                            size="md"
-                                            bg="blue.50"
-                                            px="0.5rem"
-                                            py="0.25rem"
-                                            color="gray.900"
-                                            minWidth="120px"
-                                            shouldDisplayFallbackAvatar
-                                        />
-                                    </Td>
-                                    <Td isNumeric>{pool.totalStaked}</Td>
-                                    <Td isNumeric>{pool.totalUsers}</Td>
-                                    <Td isNumeric>{pool.totalRewards}</Td>
-                                    <Td isNumeric>{pool.commission}</Td>
-                                    <Td isNumeric>
-                                        <PoolBalance address={pool.id} />
-                                    </Td>
-                                    <Td>
-                                        <NodeStatus ownerAddress={pool.id} />
-                                    </Td>
-                                    <Td isNumeric>{pool.blocksProduced}</Td>
-                                    <Td
-                                        position="sticky"
-                                        right="0"
-                                        bg={bg}
-                                        textAlign="center"
-                                    >
-                                        <NextLink
-                                            href={`/pools/${pool.id}/manage`}
-                                            passHref
-                                        >
-                                            <Button as="a" variant="link">
-                                                <VisuallyHidden>
-                                                    Manage pool {pool.id}
-                                                </VisuallyHidden>
-                                                <PencilIcon
-                                                    data-testid={`pencil-svg-${pool.id}`}
-                                                />
-                                            </Button>
-                                        </NextLink>
-                                    </Td>
-                                </Tr>
-                            ))}
-                    </Tbody>
-                </Table>
-            </TableResponsiveHolder>
-        </Box>
+                        ))}
+                </Tbody>
+            </Table>
+        </TableResponsiveHolder>
     );
 };
 interface PoolTableInfoProps {
