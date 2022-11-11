@@ -81,6 +81,7 @@ const SetUpNode = ({
     );
 
     const [state, setState] = useStepState({ inFocus });
+    const linkColor = useColorModeValue('blue.500', 'blue.200');
 
     return (
         <Step
@@ -97,7 +98,7 @@ const SetUpNode = ({
                 <UnorderedList pl={2}>
                     <ListItem>
                         <Link
-                            color="blue.500"
+                            color={linkColor}
                             href="https://docs.docker.com/desktop/mac/install/"
                             target="_blank"
                         >
@@ -106,7 +107,7 @@ const SetUpNode = ({
                     </ListItem>
                     <ListItem>
                         <Link
-                            color="blue.500"
+                            color={linkColor}
                             href="https://docs.docker.com/desktop/windows/install/"
                             target="_blank"
                         >

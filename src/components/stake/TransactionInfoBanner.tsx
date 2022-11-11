@@ -107,7 +107,8 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
         <Alert
             variant="left-accent"
             alignItems="flex-start"
-            boxShadow="sm"
+            borderWidth={1}
+            borderColor="gray.100"
             bg={bg}
             status={status}
             {...props}
