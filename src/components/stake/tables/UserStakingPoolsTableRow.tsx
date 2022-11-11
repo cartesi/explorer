@@ -55,7 +55,6 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     address={balance.pool.id}
                     chainId={chainId}
                     truncated
-                    borderRadius="full"
                     size="md"
                     bg="blue.50"
                     px="0.5rem"

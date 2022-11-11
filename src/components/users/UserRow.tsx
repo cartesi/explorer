@@ -42,7 +42,6 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                     chainId={chainId}
                     responsive
                     truncated
-                    borderRadius="full"
                     size="md"
                     bg="blue.50"
                     px="0.5rem"

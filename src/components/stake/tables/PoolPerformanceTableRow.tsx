@@ -84,7 +84,6 @@ const PoolPerformanceTableRow: FunctionComponent<
                         address={pool.id}
                         chainId={chainId}
                         truncated
-                        borderRadius="full"
                         size="md"
                         bg="blue.50"
                         px="0.5rem"
