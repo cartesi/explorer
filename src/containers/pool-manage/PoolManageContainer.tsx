@@ -60,7 +60,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
     const retiredDisclosure = useDisclosure();
 
     // dark mode support
-    const bg = useColorModeValue('gray.50', 'header');
+    const bg = useColorModeValue('gray.80', 'header');
     const hiredNewNode =
         currentTransaction === 'hire' &&
         pool.transaction?.state === 'confirmed';

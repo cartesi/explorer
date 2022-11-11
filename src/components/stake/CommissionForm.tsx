@@ -147,14 +147,17 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             pointerEvents="none"
                             w={14}
                             h="100%"
-                            children={<Box>%</Box>}
-                        />
+                        >
+                            <Box>%</Box>
+                        </InputRightElement>
                     </InputGroup>
 
                     <Button
                         colorScheme="blue"
                         w={{ base: '100%', md: 'auto' }}
-                        minW="15rem"
+                        minW="10.8125rem"
+                        height="2.875rem"
+                        textTransform="uppercase"
                         isDisabled={
                             Number.isNaN(getValues('value')) ||
                             getValues('value') === currentValue ||
@@ -163,7 +166,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         }
                         onClick={handleSubmit((data) => onSubmit(data.value))}
                     >
-                        UPDATE
+                        Update
                     </Button>
                 </HStack>
 

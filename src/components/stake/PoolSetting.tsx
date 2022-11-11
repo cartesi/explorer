@@ -247,9 +247,10 @@ export const PoolSetting: FC = () => {
                 <Box>
                     <VStack>
                         <Button
-                            bgColor={'orange.100'}
+                            bgColor="orange.100"
                             w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
+                            minW="10.8125rem"
+                            height="2.875rem"
                             leftIcon={<FaBalanceScaleLeft />}
                             isDisabled={!isRebalanceEnabled || isRebalancing}
                             isLoading={isRebalancing}
@@ -357,7 +358,9 @@ export const PoolSetting: FC = () => {
                         <Button
                             colorScheme="blue"
                             w={{ base: '100%', md: 'auto' }}
-                            minW="15rem"
+                            minW="10.8125rem"
+                            height="2.875rem"
+                            textTransform="uppercase"
                             isDisabled={
                                 getValues('ensName') === '' ||
                                 !!touchedFields.ensName ||
@@ -370,7 +373,7 @@ export const PoolSetting: FC = () => {
                                 pool.setName(getValues('ensName'));
                             }}
                         >
-                            UPDATE
+                            Update
                         </Button>
                     </Stack>
 
