@@ -245,7 +245,7 @@ export const PoolSetting: FC = () => {
                 </Box>
 
                 <Box>
-                    <VStack>
+                    <VStack alignItems="flex-end">
                         <Button
                             bgColor="orange.100"
                             w={{ base: '100%', md: 'auto' }}
