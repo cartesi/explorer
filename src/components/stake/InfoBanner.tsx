@@ -24,6 +24,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
+import { AlertStatus } from '@chakra-ui/alert';
 
 export interface IInfoBannerProps extends AlertProps {
     isOpen?: boolean;
@@ -32,6 +33,7 @@ export interface IInfoBannerProps extends AlertProps {
     isExpanded?: boolean;
     icon?: JSX.Element;
     title?: string;
+    status?: AlertStatus;
     content?: JSX.Element | string;
     onToggle?: () => void;
 }
@@ -45,6 +47,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
     title,
     content = '',
     icon: icon = <AlertIcon />,
+    status = 'info',
     ...props
 }) => {
     const { isOpen: isOpenCollapse, onToggle: onToggleCollapse } =
@@ -53,16 +56,36 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
         });
 
     const bg = useColorModeValue('white', 'gray.700');
+    const borderColor =
+        status === 'info'
+            ? 'var(--chakra-colors-blue-500)'
+            : status === 'warning'
+            ? 'var(--chakra-colors-orange-500)'
+            : status === 'error'
+            ? 'var(--chakra-colors-red-500)'
+            : 'var(--chakra-colors-green-500)';
 
     return (
         isOpen && (
             <Alert
+                position="relative"
                 variant="left-accent"
                 alignItems="flex-start"
                 boxShadow="sm"
                 bg={bg}
+                borderLeftWidth={0}
+                status={status}
                 {...props}
             >
+                <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    width="0.25rem"
+                    height="100%"
+                    bg={borderColor}
+                />
+
                 {icon}
 
                 <Box w="full">

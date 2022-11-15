@@ -140,7 +140,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 }}
                 onChange={handleOnChange}
             >
-                <NumberInputField />
+                <NumberInputField borderRadius={0} />
                 <InputRightElement
                     color="gray.300"
                     pointerEvents="none"

@@ -35,16 +35,25 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     maturingLeft = '6 hours',
 }) => {
     const bg = useColorModeValue('white', 'gray.800');
+    const borderColor = maturingBalance.isZero() ? 'gray.450' : 'blue.200';
 
     return (
         <Box
+            position="relative"
             bg={bg}
             p={6}
             pl={7}
             border="1px solid var(--chakra-colors-gray-100)"
-            borderLeftWidth={14}
-            borderLeftColor={maturingBalance.isZero() ? 'gray.450' : 'blue.200'}
         >
+            <Box
+                position="absolute"
+                top={0}
+                left={0}
+                width={4}
+                height="100%"
+                bg={borderColor}
+            />
+
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"

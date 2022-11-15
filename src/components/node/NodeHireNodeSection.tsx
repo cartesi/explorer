@@ -10,7 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useState } from 'react';
-import { Box, Text, Stack, Button, useColorModeValue } from '@chakra-ui/react';
+import {
+    Box,
+    Text,
+    Stack,
+    Button,
+    useColorModeValue,
+    Flex,
+} from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { toBigNumber } from '../../utils/numberParser';
 import { NodeInput, NodeField, evaluateNode } from './inputs/NodeInput';
@@ -59,34 +66,39 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
         >
             <Stack
                 spacing={4}
-                px={[4, 4, 60]}
-                justifySelf="flex-end"
-                justifyContent="flex-end"
-                alignItems="flex-end"
+                px={{ base: 4, md: 'auto' }}
+                justifyContent="center"
+                alignItems="center"
             >
-                <NodeInput
-                    onValidationChange={handleValidation}
-                    onChange={setNodeAddress}
-                    helperText={
-                        errors.nodeAddress?.error
-                            ? null
-                            : 'Please, enter new node address'
-                    }
-                    account={account}
-                    node={node}
-                    styleProps={{
-                        pr: 0,
-                    }}
-                />
-                <InitialFundsInput
-                    onValidationChange={handleValidation}
-                    onChange={setInitialFunds}
-                    max={3}
-                    min={0.001}
-                    styleProps={{
-                        pr: 0,
-                    }}
-                />
+                <Flex width={{ base: '100%', md: '550px' }}>
+                    <NodeInput
+                        onValidationChange={handleValidation}
+                        onChange={setNodeAddress}
+                        helperText={
+                            errors.nodeAddress?.error
+                                ? null
+                                : 'Please, enter new node address'
+                        }
+                        account={account}
+                        node={node}
+                        styleProps={{
+                            pr: 0,
+                        }}
+                    />
+                </Flex>
+
+                <Flex width={{ base: '100%', md: '550px' }}>
+                    <InitialFundsInput
+                        onValidationChange={handleValidation}
+                        onChange={setInitialFunds}
+                        max={3}
+                        min={0.001}
+                        styleProps={{
+                            pr: 0,
+                        }}
+                    />
+                </Flex>
+
                 <Button
                     colorScheme="blue"
                     w={{ base: '100%', md: 'auto' }}
