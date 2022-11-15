@@ -58,6 +58,7 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
                 increaseWaitPeriod={raiseTimeout?.toNumber()}
                 nextIncrease={timeoutTimestamp}
                 maxRaise={maxRaise?.toNumber()}
+                progress={progress}
                 helperText="Commission is set as an amount of gas. This amount is converted to CTSI at the time of block production, by using a gas price from an oracle and a ETH/CTSI price from a price oracle."
                 onSubmit={(value) => {
                     setChangingRate(true);
