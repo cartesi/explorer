@@ -102,13 +102,18 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const hash = innerTransaction?.transaction?.hash;
     const chainId = innerTransaction?.transaction?.chainId;
     const bg = useColorModeValue('white', 'gray.700');
+    const inlineBorderColour = 'gray.100';
 
     return !innerTransaction?.acknowledged ? (
         <Alert
             variant="left-accent"
             alignItems="flex-start"
-            borderWidth={1}
-            borderColor="gray.100"
+            borderBlockStartColor={inlineBorderColour}
+            borderBlockStartWidth={1}
+            borderBlockEndColor={inlineBorderColour}
+            borderBlockEndWidth={1}
+            borderEndColor={inlineBorderColour}
+            borderEndWidth={1}
             bg={bg}
             status={status}
             {...props}
