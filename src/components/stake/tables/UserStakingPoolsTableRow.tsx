@@ -33,7 +33,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     keepActionColVisible,
 }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
-    const stakeInfoBg = useColorModeValue('white', 'gray.700');
+    const stakeInfoBg = useColorModeValue('white', 'gray.800');
     const percentFormatter = new Intl.NumberFormat('en-US', {
         style: 'percent',
         minimumFractionDigits: 0,
