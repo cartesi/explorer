@@ -49,7 +49,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                 position="absolute"
                 top={0}
                 left={0}
-                width={4}
+                width={3}
                 height="100%"
                 bg={borderColor}
             />
