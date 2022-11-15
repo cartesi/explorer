@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2022-11-15
+
+-   The staking pool's new commission page is ready to be roll out.
+-   UI updates done to improve the consistency of dark mode colours between the home and stake pages.
+-   We optimise the render time in the blocks page when doing the initial load of information.
+-   UI updates were applied in the Node Runners landing page. The update targeted the pool's table presentation.
+-   UI updates done in the new pool management screen.
+-   We improved the alerts visibility in the new creation flow for pools and private node that starts in the node runners landing page.
+
 ## [2.9.1] - 2022-11-02
 
 -   Fix visibility on light mode for the pool's table manage icon on node runners page.
@@ -200,7 +209,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.9.1...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.10.0...HEAD
+[2.10.0]: https://github.com/cartesi-corp/explorer/compare/v2.9.1...v2.10.0
 [2.9.1]: https://github.com/cartesi-corp/explorer/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/cartesi-corp/explorer/compare/v2.8.3...v2.9.0
 [2.8.3]: https://github.com/cartesi-corp/explorer/compare/v2.8.2...v2.8.3
