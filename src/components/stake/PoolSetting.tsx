@@ -34,6 +34,7 @@ import {
     Switch,
     Text,
     Tooltip,
+    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
@@ -90,6 +91,7 @@ export const PoolSetting: FC = () => {
     const [commissionSuccess, setCommissionSuccess] = useState<
         ContractTransaction | undefined
     >();
+    const rebalanceColor = useColorModeValue('gray.800', 'header');
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const isRebalanceEnabled =
         pool.amounts?.stake > BigNumber.from(0) ||
@@ -247,10 +249,16 @@ export const PoolSetting: FC = () => {
                 <Box>
                     <VStack alignItems="flex-end">
                         <Button
-                            bgColor="orange.100"
+                            bg="orange.100"
+                            color={rebalanceColor}
+                            _hover={{
+                                color: 'gray.800',
+                                bg: 'gray.200',
+                            }}
                             w={{ base: '100%', md: 'auto' }}
                             minW="10.8125rem"
                             height="2.875rem"
+                            textTransform="uppercase"
                             leftIcon={<FaBalanceScaleLeft />}
                             isDisabled={!isRebalanceEnabled || isRebalancing}
                             isLoading={isRebalancing}
@@ -260,7 +268,7 @@ export const PoolSetting: FC = () => {
                                 setTransactionType('rebalance');
                             }}
                         >
-                            REBALANCE
+                            Rebalance
                         </Button>
 
                         <Flex
