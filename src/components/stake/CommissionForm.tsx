@@ -25,6 +25,7 @@ import {
     Input,
     InputGroup,
     InputRightElement,
+    Stack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
@@ -133,7 +134,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                     </FormLabel>
                 </HStack>
 
-                <HStack mt="0 !important">
+                <Stack direction={['column', 'row']} mt="0 !important">
                     <InputGroup me={6}>
                         <Input
                             size="lg"
@@ -168,7 +169,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                     >
                         Update
                     </Button>
-                </HStack>
+                </Stack>
 
                 {!!errors.value && (
                     <FormErrorMessage>{errors.value?.message}</FormErrorMessage>
