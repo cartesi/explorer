@@ -28,6 +28,7 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
         changeGas,
         transaction,
     } = useGasTaxCommission(pool);
+    const progress = transaction?.receipt?.confirmations || 0;
 
     return (
         <>
@@ -37,6 +38,7 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
                 unit="gas"
                 min={0}
                 maxDigits={0}
+                progress={progress}
                 increaseWaitPeriod={raiseTimeout?.toNumber()}
                 nextIncrease={timeoutTimestamp}
                 maxRaise={maxRaise?.toNumber()}
