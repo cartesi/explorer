@@ -99,22 +99,28 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                     />
                 </Flex>
 
-                <Button
-                    colorScheme="blue"
-                    w={{ base: '100%', md: 'auto' }}
-                    minW="10.813rem"
-                    textTransform="uppercase"
-                    disabled={!isEnabled}
-                    isLoading={isHiring}
-                    onClick={() =>
-                        onHire(nodeAddress, toBigNumber(initialFunds))
-                    }
+                <Flex
+                    width={{ base: '100%', md: '34.375rem' }}
+                    direction="column"
+                    alignItems="flex-end"
                 >
-                    Hire node
-                </Button>
-                <Text fontSize="sm" mt="0 !important">
-                    Approve by wallet transaction
-                </Text>
+                    <Button
+                        colorScheme="blue"
+                        w={{ base: '100%', md: 'auto' }}
+                        minW="10.813rem"
+                        textTransform="uppercase"
+                        disabled={!isEnabled}
+                        isLoading={isHiring}
+                        onClick={() =>
+                            onHire(nodeAddress, toBigNumber(initialFunds))
+                        }
+                    >
+                        Hire node
+                    </Button>
+                    <Text fontSize="sm" mt="0 !important">
+                        Approve by wallet transaction
+                    </Text>
+                </Flex>
             </Stack>
         </Box>
     );
