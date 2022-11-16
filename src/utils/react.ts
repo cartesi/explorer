@@ -53,7 +53,7 @@ export const useTimeLeft = (
     const formatDuration = useCallback((duration, fields) => {
         return humanizeDuration(duration, {
             largest: fields,
-            round: false,
+            round: true,
         });
     }, []);
 
