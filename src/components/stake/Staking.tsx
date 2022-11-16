@@ -71,6 +71,7 @@ export const Staking: FC<StakingProps> = ({
         : 0;
     const unlock = useTimeLeft(stakeUnlock, 2, false);
     const unlockHumanized = useTimeLeft(stakeUnlock, 2, true);
+    const isMaturingDeposit = Date.now() < stakeUnlock;
 
     const infoColor = useColorModeValue('blue.500', 'blue.200');
 
@@ -130,7 +131,7 @@ export const Staking: FC<StakingProps> = ({
                         }
                     />
                 )}
-                {unlock && (
+                {isMaturingDeposit && (
                     <InfoBanner
                         title={`${toCTSI(
                             userPoolBalance
@@ -166,7 +167,7 @@ export const Staking: FC<StakingProps> = ({
 
                 <PoolBalanceSection
                     userPoolBalance={userPoolBalance}
-                    isPoolBalanceLocked={!!unlock}
+                    isPoolBalanceLocked={isMaturingDeposit}
                     onStakeClick={stakeDisclosure.onOpen}
                     onWithdrawClick={withdrawDisclosure.onOpen}
                 />
