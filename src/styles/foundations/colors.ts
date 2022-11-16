@@ -84,4 +84,8 @@ export const colors = {
         800: '#3E1452',
         900: '#1F0A29',
     },
+    yellow: {
+        50: '#FFF2D9',
+        100: '#FFC95C',
+    },
 };

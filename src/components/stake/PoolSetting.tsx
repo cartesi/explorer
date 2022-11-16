@@ -92,6 +92,7 @@ export const PoolSetting: FC = () => {
         ContractTransaction | undefined
     >();
     const rebalanceColor = useColorModeValue('gray.800', 'header');
+    const rebalanceHoverBg = useColorModeValue('yellow.100', 'yellow.50');
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const isRebalanceEnabled =
         pool.amounts?.stake > BigNumber.from(0) ||
@@ -107,6 +108,7 @@ export const PoolSetting: FC = () => {
             : stakingPool?.fee?.gas !== null
             ? 'gasTax'
             : undefined;
+    const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
 
     const {
         register,
@@ -253,14 +255,16 @@ export const PoolSetting: FC = () => {
                             color={rebalanceColor}
                             _hover={{
                                 color: 'gray.800',
-                                bg: 'gray.200',
+                                bg: isRebalanceButtonDisabled
+                                    ? 'gray.200'
+                                    : rebalanceHoverBg,
                             }}
                             w={{ base: '100%', md: 'auto' }}
                             minW="10.8125rem"
                             height="2.875rem"
                             textTransform="uppercase"
                             leftIcon={<FaBalanceScaleLeft />}
-                            isDisabled={!isRebalanceEnabled || isRebalancing}
+                            isDisabled={isRebalanceButtonDisabled}
                             isLoading={isRebalancing}
                             onClick={() => {
                                 pool.rebalance();
