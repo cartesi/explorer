@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   We optimise the render time in the blocks page when doing the initial load of information.
 -   UI updates were applied in the Node Runners landing page. The update targeted the pool's table presentation.
 -   UI updates done in the new pool management screen.
+-   UI updates done to the new node management screen. Mostly visual improvements e.g. input sizes and colours.
 -   We improved the alerts visibility in the new creation flow for pools and private node that starts in the node runners landing page.
 
 ## [2.9.1] - 2022-11-02
