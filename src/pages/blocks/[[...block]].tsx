@@ -34,6 +34,7 @@ import BlocksChart from '../../components/BlocksChart';
 import BlockCard from '../../components/block/BlockCard';
 import SearchInput from '../../components/SearchInput';
 import PageHeader from '../../components/PageHeader';
+import PageHead from '../../components/PageHead';
 
 interface FilterProps {
     label: string;
@@ -132,10 +133,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Blocks</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Cartesi Proof of Stake Blocks" />
 
             <PageHeader title="Blocks">
                 <SearchInput

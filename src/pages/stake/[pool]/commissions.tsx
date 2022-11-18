@@ -25,10 +25,14 @@ import Pagination from '../../../components/Pagination';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
 import PerPageSelect from '../../../components/PerPageSelect';
 import PageHead from '../../../components/PageHead';
+import { useENS } from '../../../services/ens';
+import { formatEnsName } from '../../../utils/stringUtils';
 
 const PoolCommissions = () => {
     const router = useRouter();
     const address = router.query.pool as string;
+    const ensEntry = useENS(address);
+    const formattedAddress = formatEnsName(address, ensEntry?.name);
     const stakingPoolCommissionPageEnabled = useFlag(
         'stakingPoolCommissionPageEnabled'
     );
@@ -76,7 +80,7 @@ const PoolCommissions = () => {
 
     return (
         <Layout>
-            <PageHead title="Pool Commissions" />
+            <PageHead title={`Pool commissions - ${formattedAddress}`} />
 
             <PoolHeader isManager={isManager} />
 

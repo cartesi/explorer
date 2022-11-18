@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { constants } from 'ethers';
@@ -40,6 +39,9 @@ import { PoolActivity } from '../../components/stake/PoolActivity';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
 import { useFlag } from '@unleash/proxy-client-react';
+import { useENS } from '../../services/ens';
+import PageHead from '../../components/PageHead';
+import { formatEnsName } from '../../utils/stringUtils';
 
 const blockAverageInterval = (
     result: QueryResult<BlocksData, BlocksVars>
@@ -54,12 +56,15 @@ const blockAverageInterval = (
 };
 
 const PoolRedesign = () => {
-    const { account, chainId } = useWallet();
+    const { account } = useWallet();
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     // get pool address from path
     const router = useRouter();
     const address = router.query.pool as string;
+
+    const ensEntry = useENS(address);
+    const formattedAddress = formatEnsName(address, ensEntry?.name);
 
     // query block number (continuously)
     const blockNumber = useBlockNumber();
@@ -101,10 +106,7 @@ const PoolRedesign = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Pool Info</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title={`Cartesi pool info - ${formattedAddress}`} />
             <PoolHeader isManager={isManager} />
             <PoolBreadcrumbs currentPage="Overview" />
             <Box

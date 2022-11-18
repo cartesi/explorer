@@ -9,9 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { isString } from 'lodash';
+
 export const truncateString = (str: string): string => {
     if (str && str.length > 9) {
         return `${str.slice(0, 5)}...${str.slice(-4)}`;
     }
     return str;
 };
+
+export const formatEnsName = (
+    address: string,
+    ensName?: string,
+    maxChars = 12
+): string =>
+    isString(ensName)
+        ? ensName
+        : address.length > maxChars
+        ? address.slice(0, maxChars)
+        : address;

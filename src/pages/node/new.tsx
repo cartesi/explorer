@@ -21,23 +21,20 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
-import Head from 'next/head';
 import Layout from '../../components/Layout';
 import CustomizeEthereumNode from '../../components/node/steps/CustomizeEthereumNode';
 import SetUpNode from '../../components/node/steps/SetUpNode';
 import HireNode from '../../components/node/steps/HireNode';
 import SetAllowance from '../../components/node/steps/SetAllowance';
 import { StepGroup } from '../../components/StepGroup';
+import PageHead from '../../components/PageHead';
 
 const NewNode: FC = () => {
     const bg = useColorModeValue('gray.80', 'gray.800');
     const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Create a private node</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Create a Cartesi node" />
 
             <HStack
                 bg="header"

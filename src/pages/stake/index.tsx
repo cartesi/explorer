@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
 import {
     HStack,
     Heading,
@@ -35,6 +34,7 @@ import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import PoolPerformanceExtended from '../../components/stake/PoolPerformanceExtended';
 import PoolPerformance from '../../components/stake/PoolPerformance';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
+import PageHead from '../../components/PageHead';
 
 const Home = () => {
     const router = useRouter();
@@ -59,10 +59,7 @@ const Home = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Pool List</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Join a Cartesi staking pool" />
 
             <Box bg={bg}>
                 <PageHeader>

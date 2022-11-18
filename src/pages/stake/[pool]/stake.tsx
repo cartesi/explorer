@@ -10,8 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect } from 'react';
-import Head from 'next/head';
-
 import Layout from '../../../components/Layout';
 import { Box } from '@chakra-ui/layout';
 import { StakingGuide } from '../../../components/stake/StakingGuide';
@@ -28,6 +26,9 @@ import { BigNumber } from 'ethers';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
 import { useFlag } from '@unleash/proxy-client-react';
+import { useENS } from '../../../services/ens';
+import { formatEnsName } from '../../../utils/stringUtils';
+import PageHead from '../../../components/PageHead';
 
 const PoolRedesignStake = () => {
     const { account, active: isConnected } = useWallet();
@@ -36,6 +37,9 @@ const PoolRedesignStake = () => {
     // get pool address from path
     const router = useRouter();
     const address = router.query.pool as string;
+
+    const ensEntry = useENS(address);
+    const formattedAddress = formatEnsName(address, ensEntry?.name);
 
     // query block number (continuouly)
     const blockNumber = useBlockNumber();
@@ -90,10 +94,7 @@ const PoolRedesignStake = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Stake</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title={`Stake to ${formattedAddress}`} />
             <PoolHeader />
 
             <PoolBreadcrumbs currentPage="Stake" />

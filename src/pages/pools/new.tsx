@@ -21,7 +21,6 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
-import Head from 'next/head';
 import Layout from '../../components/Layout';
 import { StepGroup } from '../../components/StepGroup';
 import CommissionModel from '../../components/pools/steps/CommissionModel';
@@ -29,16 +28,14 @@ import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereu
 import SetUpNode from '../../components/pools/steps/SetUpNode';
 import HireNode from '../../components/pools/steps/HireNode';
 import EthereumNameServer from '../../components/pools/steps/ENS';
+import PageHead from '../../components/PageHead';
 
 const NewNode: FC = () => {
     const bg = useColorModeValue('gray.80', 'gray.800');
     const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Create a public pool</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Create a Cartesi staking pool" />
 
             <HStack
                 bg="header"

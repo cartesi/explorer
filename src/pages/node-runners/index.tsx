@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { useWallet } from '../../contexts/wallet';
 import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
+import PageHead from '../../components/PageHead';
 
 const NewStaking: FC = () => {
     const wallet = useWallet();
@@ -22,10 +22,7 @@ const NewStaking: FC = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Node Runners</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Node Runners - Get started with Cartesi staking" />
             <NodeRunnersContainer wallet={wallet} router={router} />
         </Layout>
     );

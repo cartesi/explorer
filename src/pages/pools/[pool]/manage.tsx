@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect } from 'react';
-import Head from 'next/head';
 import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
@@ -19,6 +18,7 @@ import { useRouter } from 'next/router';
 import { useWallet } from '../../../contexts/wallet';
 import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import Address from '../../../components/Address';
+import PageHead from '../../../components/PageHead';
 
 const PoolNode: FC = () => {
     const { chainId, active } = useWallet();
@@ -31,10 +31,7 @@ const PoolNode: FC = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Manage Public Pool</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Manage a Cartesi pool" />
 
             <HStack
                 bg="header"

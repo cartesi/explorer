@@ -48,6 +48,7 @@ import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import theme from '../../../styles/theme';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
+import PageHead from '../../../components/PageHead';
 
 const ManageNode: FC = () => {
     const router = useRouter();
@@ -174,10 +175,7 @@ const ManageNode: FC = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer - Manage Node</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead title="Manage a Cartesi node" />
 
             <HStack
                 bg="header"

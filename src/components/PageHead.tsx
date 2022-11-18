@@ -1,15 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
-import { isString } from 'lodash';
 
 export interface PageHead {
     name?: string;
-    title?: string;
+    title: string;
+    isHome?: boolean;
 }
 
-const PageHead = ({ name = 'Explorer', title }) => {
-    const formattedTitle =
-        isString(title) && title !== '' ? `${name} - ${title}` : name;
+const PageHead = ({ name = 'Stake CTSI', title, isHome = false }) => {
+    const formattedTitle = isHome ? `${name} - ${title}` : `${title} | ${name}`;
 
     return (
         <Head>

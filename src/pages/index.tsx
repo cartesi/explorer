@@ -10,8 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useState } from 'react';
-import Head from 'next/head';
-
 import { FixedNumber } from 'ethers';
 import {
     HStack,
@@ -55,6 +53,7 @@ import {
 } from '../components/Icons';
 import StakeCard from '../components/stake/StakeCard';
 import { formatNumberValue } from '../utils/numberFormatter';
+import PageHead from '../components/PageHead';
 
 const Home = () => {
     // user account and blockchain information (from metamask or other wallets)
@@ -97,10 +96,10 @@ const Home = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>Explorer</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <PageHead
+                title="Secure the Cartesi network and earn rewards"
+                isHome
+            />
 
             <Box bg={bg}>
                 <Box
