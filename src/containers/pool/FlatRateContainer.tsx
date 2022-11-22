@@ -28,7 +28,6 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
         changeRate,
         transaction,
     } = useFlatRateCommission(pool);
-    const progress = transaction?.receipt?.confirmations || 0;
 
     return (
         <>
@@ -39,7 +38,6 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
                 min={0}
                 max={100}
                 maxDigits={2}
-                progress={progress}
                 increaseWaitPeriod={raiseTimeout?.toNumber()}
                 nextIncrease={timeoutTimestamp}
                 maxRaise={maxRaise?.toNumber() / 100}
