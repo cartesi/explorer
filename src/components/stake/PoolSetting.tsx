@@ -92,7 +92,7 @@ export const PoolSetting: FC = () => {
         ContractTransaction | undefined
     >();
     const rebalanceColor = useColorModeValue('gray.800', 'header');
-    const rebalanceHoverBg = useColorModeValue('yellow.100', 'yellow.50');
+    const rebalanceHoverBg = useColorModeValue('orange.300', 'orange.100');
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const isRebalanceEnabled =
         pool.amounts?.stake > BigNumber.from(0) ||
@@ -251,7 +251,7 @@ export const PoolSetting: FC = () => {
                 <Box>
                     <VStack alignItems="flex-end">
                         <Button
-                            bg="orange.100"
+                            bg="orange.200"
                             color={rebalanceColor}
                             _hover={{
                                 color: 'gray.800',

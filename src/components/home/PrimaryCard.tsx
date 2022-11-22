@@ -34,7 +34,7 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
     return (
         <HStack {...restProps}>
             <Box
-                bg="orange.40"
+                bg="gray.90"
                 w="4.125rem"
                 h="4.125rem"
                 borderRadius="full"

@@ -45,7 +45,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
             <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
-                    bg="orange.40"
+                    bg="gray.90"
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"
