@@ -149,7 +149,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             w={14}
                             h="100%"
                         >
-                            <Box>%</Box>
+                            <Box>{unit}</Box>
                         </InputRightElement>
                     </InputGroup>
 

@@ -18,7 +18,7 @@ import {
     CloseButton,
     Spinner,
 } from '@chakra-ui/react';
-import CommissionForm from '../../components/pools/fee/CommissionForm';
+import CommissionForm from '../../components/stake/CommissionForm';
 import { useGasTaxCommission } from '../../services/pool';
 
 export interface GasTaxContainerProps {
