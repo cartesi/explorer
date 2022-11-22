@@ -64,7 +64,7 @@ const GasBasedCommission = ({
                 }}
                 label="Gas-based commission (Gas)"
                 id="gasBasedCommission"
-                inputRightElement="ETH"
+                inputRightElement="GAS"
                 isInvalid={!isNil(inputErrors)}
                 errorMessage={inputErrors?.message}
             />
