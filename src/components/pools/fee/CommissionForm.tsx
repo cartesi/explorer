@@ -9,24 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import {
     Alert,
     Button,
     Collapse,
     FormControl,
+    FormHelperText,
     FormLabel,
     HStack,
     Text,
     VStack,
     Input,
     InputGroup,
-    Tooltip,
-    Icon,
-    InputRightElement,
-    Box,
-    FormErrorMessage,
-    Stack,
+    InputRightAddon,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
@@ -38,7 +34,6 @@ export interface CommissionFormProps {
     max?: number; // maximum value
     maxRaise: number; // max raise of the value
     maxDigits: number; // max number of decimals digits
-    progress: number;
     nextIncrease?: Date; // when the next increase can happen
     increaseWaitPeriod: number; // seconds
     helperText?: string;
@@ -57,7 +52,6 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
         max,
         maxRaise,
         maxDigits = 2,
-        progress,
         increaseWaitPeriod,
         nextIncrease,
         helperText,
@@ -69,7 +63,6 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
         formState: { errors },
         reset,
         watch,
-        getValues,
     } = useForm<FormData>({
         defaultValues: useMemo(() => ({ value: currentValue }), [currentValue]),
         mode: 'onChange',
@@ -116,68 +109,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
     return (
         <FormControl id="commission" isInvalid={!!errors.value}>
             <VStack align="stretch">
-                <HStack justify="space-between">
-                    <FormLabel>
-                        Pool commission{' '}
-                        <Tooltip
-                            placement="bottom"
-                            label={helperText}
-                            fontSize="small"
-                            bg="black"
-                            color="white"
-                        >
-                            <Icon
-                                pb={1}
-                                width={4}
-                                height={4}
-                                color="gray.600"
-                                role="commission-icon"
-                            />
-                        </Tooltip>
-                    </FormLabel>
-                </HStack>
-
-                <Stack direction={['column', 'row']} mt="0 !important">
-                    <InputGroup me={6}>
-                        <Input
-                            size="lg"
-                            {...register('value', {
-                                valueAsNumber: true,
-                                validate,
-                            })}
-                        />
-                        <InputRightElement
-                            color="gray.300"
-                            pointerEvents="none"
-                            w={14}
-                            h="100%"
-                        >
-                            <Box>ETH</Box>
-                        </InputRightElement>
-                    </InputGroup>
-
-                    <Button
-                        colorScheme="blue"
-                        w={{ base: '100%', md: 'auto' }}
-                        minW="10.8125rem"
-                        height="2.875rem"
-                        textTransform="uppercase"
-                        isDisabled={
-                            Number.isNaN(getValues('value')) ||
-                            getValues('value') === currentValue ||
-                            !!errors.value ||
-                            progress >= 1
-                        }
-                        onClick={handleSubmit((data) => onSubmit(data.value))}
-                    >
-                        Update
-                    </Button>
-                </Stack>
-
-                {!!errors.value && (
-                    <FormErrorMessage>{errors.value?.message}</FormErrorMessage>
-                )}
-
+                <FormLabel>Commission</FormLabel>
                 <Collapse in={value > currentValue}>
                     <Alert status="warning" variant="left-accent">
                         <Text>
@@ -186,6 +118,29 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         </Text>
                     </Alert>
                 </Collapse>
+                <Collapse in={!!errors.value}>
+                    <Alert status="error" variant="left-accent">
+                        <Text>{errors.value?.message}</Text>
+                    </Alert>
+                </Collapse>
+                <HStack>
+                    <InputGroup w={200}>
+                        <Input
+                            {...register('value', {
+                                valueAsNumber: true,
+                                validate,
+                            })}
+                        />
+                        <InputRightAddon children={unit} />
+                    </InputGroup>
+                    <Button
+                        onClick={handleSubmit((data) => onSubmit(data.value))}
+                        size="md"
+                    >
+                        Save
+                    </Button>
+                </HStack>
+                <FormHelperText>{helperText}</FormHelperText>
             </VStack>
         </FormControl>
     );
