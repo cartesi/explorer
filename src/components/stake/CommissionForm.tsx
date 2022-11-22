@@ -149,7 +149,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             w={14}
                             h="100%"
                         >
-                            <Box>{unit}</Box>
+                            <Box>{unit.toUpperCase()}</Box>
                         </InputRightElement>
                     </InputGroup>
 
