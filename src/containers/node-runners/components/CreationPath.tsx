@@ -58,9 +58,13 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             id="pool-creation-card"
                             title="Create a public pool"
                             subtitle="Earn commissions out of the blocks rewards."
-                            iconBg="yellow.100"
+                            iconBg="orange.50"
                             icon={
-                                <AllowanceIcon color="yellow.500" w={6} h={6} />
+                                <AllowanceIcon
+                                    color="light.support.attention"
+                                    w={6}
+                                    h={6}
+                                />
                             }
                             buttonText="CREATE PUBLIC POOL"
                             onButtonClick={() => router.push('/pools/new')}
@@ -78,8 +82,14 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             id="private-node-creation-card"
                             title="Run a private node"
                             subtitle="You are able to stake directly by running your own node to represent your stake."
-                            iconBg="yellow.100"
-                            icon={<WalletIcon color="yellow.500" w={6} h={6} />}
+                            iconBg="orange.50"
+                            icon={
+                                <WalletIcon
+                                    color="light.support.attention"
+                                    w={6}
+                                    h={6}
+                                />
+                            }
                             buttonText={'CREATE MY NODE'}
                             onButtonClick={() => {
                                 router.push('/node/new');
