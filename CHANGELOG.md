@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.11.0] - 2022-11-24
+
+-   Updates applied in the commission input for Gas based pool in the new pool management page.
+-   UI fixes for better visual on dark mode.
+-   Updates applied to the page meta title to improve SEO.
+
 ## [2.10.1] - 2022-11-17
 
 -   Fix the undesired flash message for the deposit maturing message.
@@ -215,7 +221,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.10.1...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...HEAD
+[2.10.1]: https://github.com/cartesi-corp/explorer/compare/v2.11.1...v2.11.0
 [2.10.1]: https://github.com/cartesi-corp/explorer/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/cartesi-corp/explorer/compare/v2.9.1...v2.10.0
 [2.9.1]: https://github.com/cartesi-corp/explorer/compare/v2.9.0...v2.9.1
