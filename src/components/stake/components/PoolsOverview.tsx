@@ -3,7 +3,7 @@ import { Icon } from '@chakra-ui/icons';
 import { HStack, Text, Tooltip, Stack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { Summary } from '../../../graphql/models';
-import { StakedBalanceIcon, PoolsTimer, StakePlusIcon } from '../../Icons';
+import { PoolsIcon, MyPoolsIcon, MyStakeIcon } from '../../Icons';
 import BigNumberText from '../../BigNumberText';
 import CTSIText from '../../CTSIText';
 import StakeCard from '../StakeCard';
@@ -28,7 +28,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
         spacing={6}
     >
         <StakeCard
-            Icon={<StakedBalanceIcon w={8} h={8} />}
+            Icon={<PoolsIcon w={8} h={8} />}
             Title={
                 <HStack>
                     <Text mr={2}># Pools</Text>
@@ -42,7 +42,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
         </StakeCard>
 
         <StakeCard
-            Icon={<PoolsTimer w={7} h={7} />}
+            Icon={<MyPoolsIcon w={7} h={7} />}
             Title={
                 <HStack>
                     <Text mr={2}>My Pools</Text>
@@ -59,7 +59,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
         </StakeCard>
 
         <StakeCard
-            Icon={<StakePlusIcon w={8} h={8} />}
+            Icon={<MyStakeIcon w={8} h={8} />}
             Title={
                 <HStack>
                     <Text mr={2}>My Stake</Text>

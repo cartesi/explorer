@@ -38,7 +38,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
         >
             <HStack spacing={4} align="center" p={4}>
                 <Box
-                    bg="yellow.100"
+                    bg="orange.50"
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -46,7 +46,11 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <StakedBalanceIcon color="yellow.500" w={7} h={7} />
+                    <StakedBalanceIcon
+                        color="light.support.attention"
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"

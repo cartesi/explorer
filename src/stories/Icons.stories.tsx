@@ -53,6 +53,12 @@ import {
     ChevronRightIcon,
     ChevronLeftIcon,
     StakeCircledOutlinedIcon,
+    PoolBalanceHexIcon,
+    EmptyTransactionIcon,
+    RebalanceIcon,
+    MyStakeIcon,
+    MyPoolsIcon,
+    PoolsIcon,
 } from '../components/Icons';
 
 const Icons = () => (
@@ -225,6 +231,30 @@ const Icons = () => (
 
         <div title="StakeCircledOutlinedIcon">
             <StakeCircledOutlinedIcon width={10} height={10} />
+        </div>
+
+        <div title="PoolBalanceHexIcon">
+            <PoolBalanceHexIcon width={10} height={10} />
+        </div>
+
+        <div title="EmptyTransactionIcon">
+            <EmptyTransactionIcon width={10} height={10} />
+        </div>
+
+        <div title="RebalanceIcon">
+            <RebalanceIcon width={10} height={10} />
+        </div>
+
+        <div title="MyStakeIcon">
+            <MyStakeIcon width={10} height={10} />
+        </div>
+
+        <div title="MyPoolsIcon">
+            <MyPoolsIcon width={10} height={10} />
+        </div>
+
+        <div title="PoolsIcon">
+            <PoolsIcon width={10} height={10} />
         </div>
     </div>
 );

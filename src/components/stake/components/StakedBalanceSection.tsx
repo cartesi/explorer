@@ -46,14 +46,18 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg={'yellow.100'}
+                        bg="orange.50"
                         w={14}
                         h={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon color="yellow.500" w={7} h={7} />
+                        <StakedBalanceIcon
+                            color="light.support.attention"
+                            w={7}
+                            h={7}
+                        />
                     </Box>
                     <Box>
                         <Text color={stakedBalanceColor}>

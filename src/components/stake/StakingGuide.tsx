@@ -9,16 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Heading,
-    HStack,
-    Link,
-    Stack,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '../Icons';
 
@@ -27,22 +18,22 @@ export const steps = [
         title: 'Connect Wallet',
         description:
             'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
-        icon: <WalletIcon color="blue.500" w={6} h={6} />,
-        bgColor: 'blue.100',
+        icon: <WalletIcon color="light.support.attention" w={6} h={6} />,
+        bgColor: 'orange.50',
     },
     {
         title: 'Allowance / Deposit',
         description:
             'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
-        icon: <AllowanceIcon color="yellow.500" w={6} h={6} />,
-        bgColor: 'yellow.100',
+        icon: <AllowanceIcon color="light.support.attention" w={6} h={6} />,
+        bgColor: 'orange.50',
     },
     {
         title: 'Stake',
         description:
             'After staking, your deposit will starts contributing to the staking power of the pool.',
-        icon: <StakedBalanceIcon color="green.500" w={6} h={6} />,
-        bgColor: 'green.100',
+        icon: <StakedBalanceIcon color="light.support.attention" w={6} h={6} />,
+        bgColor: 'orange.50',
     },
 ];
 

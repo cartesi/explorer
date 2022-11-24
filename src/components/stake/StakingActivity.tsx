@@ -13,7 +13,6 @@ import {
     Box,
     Heading,
     HStack,
-    Image,
     Spinner,
     Text,
     VStack,
@@ -22,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
-import { CheckCircleIcon } from '../../components/Icons';
+import { CheckCircleIcon, EmptyTransactionIcon } from '../Icons';
 import usePoolActivities, {
     Activity as ActivityType,
 } from '../../graphql/hooks/usePoolActivities';
@@ -172,7 +171,18 @@ export const StakingActivity: FC<Props> = memo(
                             textAlign="center"
                             fontSize="sm"
                         >
-                            <Image src="/images/empty-activity.svg" />
+                            <Box
+                                w={14}
+                                h={14}
+                                borderRadius="full"
+                                display="grid"
+                                placeContent="center"
+                                flexShrink={0}
+                                marginBottom={4}
+                            >
+                                <EmptyTransactionIcon w={16} h={16} />
+                            </Box>
+
                             <Text>
                                 You haven’t had any transaction yet. Start
                                 delegation by depositing.

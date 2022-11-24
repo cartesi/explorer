@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber } from 'ethers';
-import { PoolBalanceIcon } from '../../Icons';
+import { PoolBalanceHexIcon } from '../../Icons';
 import {
     HStack,
     VStack,
@@ -34,7 +34,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4}>
                 <Box
-                    bg="yellow.100"
+                    bg="orange.50"
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -42,7 +42,11 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <PoolBalanceIcon color="yellow.500" w={7} h={7} />
+                    <PoolBalanceHexIcon
+                        color="light.support.attention"
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"

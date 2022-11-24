@@ -78,12 +78,10 @@ describe('Staking Activity', () => {
             activities: [],
         });
 
-        const { container } = renderActivities();
+        renderActivities();
 
         expect(screen.getByText('My staking activities')).toBeInTheDocument();
-        expect(
-            container.querySelector('img[src="/images/empty-activity.svg"]')
-        ).toBeInTheDocument();
+
         expect(
             screen.getByText(
                 'You haven’t had any transaction yet. Start delegation by depositing.'

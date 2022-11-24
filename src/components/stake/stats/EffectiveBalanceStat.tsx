@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber, constants } from 'ethers';
-import { EffectiveBalanceIcon, EyeIcon } from '../../Icons';
+import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
 import {
     HStack,
     VStack,
@@ -29,7 +29,6 @@ import {
     Text,
     StackDivider,
 } from '@chakra-ui/react';
-import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
@@ -88,7 +87,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4} w="full">
                 <Box
-                    bg="yellow.100"
+                    bg="orange.50"
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -96,7 +95,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <EffectiveBalanceIcon color="yellow.500" w={7} h={7} />
+                    <EffectiveBalanceIcon
+                        color="light.support.attention"
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -130,7 +133,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 color="white"
                             >
                                 <Link onClick={onRebalance}>
-                                    <FaBalanceScaleLeft role="rebalance-icon" />
+                                    <RebalanceIcon
+                                        role="rebalance-icon"
+                                        w={6}
+                                        h={6}
+                                    />
                                 </Link>
                             </Tooltip>
                         )}
