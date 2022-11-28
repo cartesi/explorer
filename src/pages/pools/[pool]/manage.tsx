@@ -19,15 +19,30 @@ import { useWallet } from '../../../contexts/wallet';
 import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import Address from '../../../components/Address';
 import PageHead from '../../../components/PageHead';
+import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import { isString } from 'lodash';
 
 const PoolNode: FC = () => {
-    const { chainId, active } = useWallet();
+    const { account, chainId, active } = useWallet();
     const router = useRouter();
     const address = router.query.pool as string;
+    const from = router.query.from as string;
+    const stakingPool = useStakingPoolQuery(address);
+    const isManager = account && account.toLowerCase() === stakingPool?.manager;
+    const backLink =
+        from === 'node-runners'
+            ? '/node-runners'
+            : `/stake/${address}${isString(from) ? `/${from}` : ''}`;
 
     useEffect(() => {
         if (!active) router.replace('/node-runners');
     }, [active, router]);
+
+    useEffect(() => {
+        if (!isManager) {
+            router.replace('/stake');
+        }
+    }, [isManager, router]);
 
     return (
         <Layout>
@@ -39,7 +54,7 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <NextLink href="/node-runners" passHref>
+                <NextLink href={backLink} passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>

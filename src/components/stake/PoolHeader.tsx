@@ -13,16 +13,18 @@ import { ArrowBackIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, VStack, Stack, Button, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useFlag } from '@unleash/proxy-client-react';
+import { isString } from 'lodash';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
 import { StakingTabNavigation } from './StakingTabNavigation';
-import { useFlag } from '@unleash/proxy-client-react';
 
-interface PoolHeaderProps {
+export interface PoolHeaderProps {
+    from?: string;
     isManager?: boolean;
 }
 
-export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
+export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
     const { chainId } = useWallet();
@@ -56,8 +58,15 @@ export const PoolHeader = ({ isManager }: PoolHeaderProps) => {
                                 Staking pool
                             </Button>
                         </NextLink>
+
                         {isManager && (
-                            <NextLink href={`/pools/${address}/edit`} passHref>
+                            <NextLink
+                                href={`/pools/${address}/manage${
+                                    isString(from) ? `?from=${from}` : ''
+                                }`}
+                                passHref
+                                data-testid="pool-management-link"
+                            >
                                 <Button as="a" variant="text" size="sm" pl={0}>
                                     <EditIcon />
                                 </Button>

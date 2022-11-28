@@ -29,8 +29,9 @@ import { useFlag } from '@unleash/proxy-client-react';
 import { useENS } from '../../../services/ens';
 import { formatEnsName } from '../../../utils/stringUtils';
 import PageHead from '../../../components/PageHead';
+import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 
-const PoolRedesignStake = () => {
+const PoolStake = () => {
     const { account, active: isConnected } = useWallet();
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
@@ -41,8 +42,10 @@ const PoolRedesignStake = () => {
     const ensEntry = useENS(address);
     const formattedAddress = formatEnsName(address, ensEntry?.name);
 
-    // query block number (continuouly)
+    // query block number (continuously)
     const blockNumber = useBlockNumber();
+    const stakingPool = useStakingPoolQuery(address);
+    const isManager = account && account.toLowerCase() === stakingPool?.manager;
 
     // query pool data
     const {
@@ -90,12 +93,12 @@ const PoolRedesignStake = () => {
         // When the flag is off, the user is automatically redirected to /pools/:addr
         // The replace method overrides the current URL with the new one.
         if (!newPoolPageEnabled) router.replace(`/pools/${address}`);
-    }, [newPoolPageEnabled]);
+    }, [address, newPoolPageEnabled, router]);
 
     return (
         <Layout>
             <PageHead title={`Stake to ${formattedAddress}`} />
-            <PoolHeader />
+            <PoolHeader isManager={isManager} from="stake" />
 
             <PoolBreadcrumbs currentPage="Stake" />
 
@@ -157,4 +160,4 @@ const PoolRedesignStake = () => {
     );
 };
 
-export default PoolRedesignStake;
+export default PoolStake;

@@ -82,7 +82,7 @@ const PoolCommissions = () => {
         <Layout>
             <PageHead title={`Pool commissions - ${formattedAddress}`} />
 
-            <PoolHeader isManager={isManager} />
+            <PoolHeader isManager={isManager} from="commissions" />
 
             <PoolBreadcrumbs currentPage="Commissions" />
 

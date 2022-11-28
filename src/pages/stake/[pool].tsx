@@ -55,7 +55,7 @@ const blockAverageInterval = (
     return 0;
 };
 
-const PoolRedesign = () => {
+const PoolInfo = () => {
     const { account } = useWallet();
     const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
@@ -102,7 +102,7 @@ const PoolRedesign = () => {
         // When the flag is off, the user is automatically redirected to /pools/:addr
         // The replace method overrides the current URL with the new one.
         if (!newPoolPageEnabled) router.replace(`/pools/${address}`);
-    }, [newPoolPageEnabled]);
+    }, [address, newPoolPageEnabled, router]);
 
     return (
         <Layout>
@@ -194,4 +194,4 @@ const PoolRedesign = () => {
     );
 };
 
-export default PoolRedesign;
+export default PoolInfo;

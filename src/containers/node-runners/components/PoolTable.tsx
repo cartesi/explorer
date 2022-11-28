@@ -164,7 +164,7 @@ const PoolTable = ({ data }: Props) => {
                                     textAlign="center"
                                 >
                                     <NextLink
-                                        href={`/pools/${pool.id}/manage`}
+                                        href={`/pools/${pool.id}/manage?from=node-runners`}
                                         passHref
                                     >
                                         <Button as="a" variant="link">

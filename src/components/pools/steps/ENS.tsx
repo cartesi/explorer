@@ -150,7 +150,9 @@ const Content = () => {
 const { COMPLETED } = StepStatus;
 
 const buildURL = (address: string) =>
-    !isEmpty(address) ? `/pools/${address}/manage` : '/node-runners';
+    !isEmpty(address)
+        ? `/pools/${address}/manage?from=node-runners`
+        : '/node-runners';
 
 const EthereumNameServer = ({
     stepNumber,
