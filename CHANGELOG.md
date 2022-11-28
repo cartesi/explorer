@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.11.0] - 2022-11-24
+## [2.11.0] - 2022-11-28
 
 -   Updates applied in the commission input for Gas based pool in the new pool management page.
 -   UI fixes for better visual on dark mode.
 -   Updates applied to the page meta title to improve SEO.
+-   New set of icons added to the list of pools, staking pool details and stake areas.
 
 ## [2.10.1] - 2022-11-17
 
