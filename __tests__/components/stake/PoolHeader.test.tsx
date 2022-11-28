@@ -39,16 +39,18 @@ const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
 
 const EPoolHeader = withChakraTheme(PoolHeader);
 
+const query = {
+    pool: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
+};
+
 describe('Pool Header', () => {
     // a default configured component
-    const renderComponent = () => render(<EPoolHeader />);
+    const renderComponent = (props = {}) => render(<EPoolHeader {...props} />);
 
     beforeEach(() => {
         // default mock return
         mockUseRouter.mockReturnValue({
-            query: {
-                pool: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
-            },
+            query,
         } as unknown as NextRouter);
 
         mockUseWallet.mockReturnValue({
@@ -66,5 +68,31 @@ describe('Pool Header', () => {
     it('Should display staking pool label', () => {
         renderComponent();
         expect(screen.getByText('Staking pool')).toBeInTheDocument();
+    });
+
+    it('Should display manage link', () => {
+        renderComponent({
+            isManager: true,
+        });
+
+        const link = screen.getByTestId('pool-management-link');
+
+        expect(link).toBeInTheDocument();
+        expect(link.getAttribute('href')).toBe(`/pools/${query.pool}/manage`);
+    });
+
+    it('Should display manage link with "from" query param', () => {
+        const from = 'commissions';
+        renderComponent({
+            from,
+            isManager: true,
+        });
+
+        const link = screen.getByTestId('pool-management-link');
+
+        expect(link).toBeInTheDocument();
+        expect(link.getAttribute('href')).toBe(
+            `/pools/${query.pool}/manage?from=${from}`
+        );
     });
 });

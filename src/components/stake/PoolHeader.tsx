@@ -65,9 +65,14 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                                     isString(from) ? `?from=${from}` : ''
                                 }`}
                                 passHref
-                                data-testid="pool-management-link"
                             >
-                                <Button as="a" variant="text" size="sm" pl={0}>
+                                <Button
+                                    as="a"
+                                    variant="text"
+                                    size="sm"
+                                    pl={0}
+                                    data-testid="pool-management-link"
+                                >
                                     <EditIcon />
                                 </Button>
                             </NextLink>

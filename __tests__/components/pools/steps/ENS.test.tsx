@@ -226,7 +226,7 @@ describe('Pool ENS step', () => {
 
                 expect(onComplete).toHaveBeenCalled();
                 expect(routerPushStub).toHaveBeenCalledWith(
-                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage'
+                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners'
                 );
             });
 
@@ -358,7 +358,7 @@ describe('Pool ENS step', () => {
 
                 // Checking even though the step-state router is controlled the router is still called
                 expect(routerPushStub).toHaveBeenCalledWith(
-                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage'
+                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners'
                 );
             });
 
