@@ -19,7 +19,6 @@ export const useStaking = (user: string) => {
     const staking = useStakingContract();
 
     const blockNumber = useBlockNumber();
-    const transaction = useTransaction();
     const stakeTransaction = useTransaction();
     const unstakeTransaction = useTransaction();
     const withdrawTransaction = useTransaction();

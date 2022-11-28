@@ -14,7 +14,7 @@ import { IStep, useStepState } from '../../../StepGroup';
 import { useState, useEffect } from 'react';
 import { OptionalMappedErrors, ValidationResult } from '../../../BaseInput';
 import { useStakingPoolFactory } from '../../../../services/poolFactory';
-import TransactionBanner from '../../../node/TransactionBanner';
+import TransactionBanner from '../../../TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
 import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';

@@ -26,10 +26,13 @@ import Address from '../Address';
 import { Transaction } from '../../services/transaction';
 import { isFunction } from 'lodash/fp';
 
-export interface ITransactionInfoBannerProps extends AlertProps {
+export interface AlertMessage {
     title?: string;
     failTitle?: string;
     successDescription?: React.ReactNode;
+}
+
+export interface ITransactionInfoBannerProps extends AlertProps, AlertMessage {
     transaction: Transaction<any>;
     onBeginTransaction?: () => void;
     onEndTransaction?: () => void;

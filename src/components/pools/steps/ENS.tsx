@@ -34,7 +34,7 @@ import { useAtom } from 'jotai';
 import { poolAddressAtom } from './CommissionModel';
 import { useWallet } from '../../../contexts/wallet';
 import { useStakingPool } from '../../../services/pool';
-import TransactionBanner from '../../node/TransactionBanner';
+import TransactionBanner from '../../TransactionBanner';
 import { isEmpty } from 'lodash';
 import { trim } from 'lodash/fp';
 import { useRouter } from 'next/router';

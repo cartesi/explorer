@@ -9,14 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
     Box,
     Button,
-    CloseButton,
     Divider,
     Flex,
     FormControl,
@@ -29,7 +25,6 @@ import {
     Input,
     InputGroup,
     Link,
-    Spinner,
     Stack,
     Switch,
     Text,
@@ -43,13 +38,13 @@ import CTSIText from '../CTSIText';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../services/pool';
 import { useForm } from 'react-hook-form';
-import Address from '../Address';
 import { validateEns } from '../../utils/validation';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { BigNumber } from 'ethers';
 import GasTaxContainer from '../../containers/stake/GasTaxContainer';
 import { TransactionType } from '../../types/pool';
+import TransactionBanner from '../TransactionBanner';
 
 const wordingFor = {
     pause: {
@@ -65,12 +60,17 @@ const wordingFor = {
     rebalance: {
         title: 'Rebalancing pool...',
         failTitle: 'Rebalancing the pool failed',
-        successDescription: 'Pool rebalanced! Moving to the next step...',
+        successDescription: 'Pool rebalanced successfully!',
     },
     changeEns: {
         title: 'Changing ENS name...',
         failTitle: 'Changing ENS name failed',
-        successDescription: 'ENS name changed! Moving to the next step...',
+        successDescription: 'ENS name changed successfully!',
+    },
+    commission: {
+        title: 'Updating pool commission...',
+        failTitle: 'Updating pool commission failed',
+        successDescription: 'Pool commission updated successfully!',
     },
 };
 
@@ -80,17 +80,8 @@ export const PoolSetting: FC = () => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const stakingPool = useStakingPoolQuery(address);
-    const [isChangingEns, setChangingEns] = useState<boolean>(false);
-    const [isChangingStaking, setChangingStaking] = useState<boolean>(false);
-    const [isRebalancing, setRebalancing] = useState<boolean>(false);
     const [transactionType, setTransactionType] =
         useState<TransactionType | null>(null);
-    const [commissionError, setCommissionError] = useState<
-        string | undefined
-    >();
-    const [commissionSuccess, setCommissionSuccess] = useState<
-        ContractTransaction | undefined
-    >();
     const rebalanceColor = useColorModeValue('gray.800', 'header');
     const rebalanceHoverBg = useColorModeValue('orange.300', 'orange.100');
     const progress = pool.transaction?.receipt?.confirmations || 0;
@@ -98,16 +89,14 @@ export const PoolSetting: FC = () => {
         pool.amounts?.stake > BigNumber.from(0) ||
         pool.amounts?.unstake > BigNumber.from(0) ||
         pool.amounts?.withdraw > BigNumber.from(0);
-    const isMakingPoolTransaction =
-        !pool.transaction?.acknowledged &&
-        !pool.transaction?.error &&
-        progress === 0;
     const feeType =
         stakingPool?.fee?.commission !== null
             ? 'flatRate'
             : stakingPool?.fee?.gas !== null
             ? 'gasTax'
             : undefined;
+    const isRebalancing =
+        transactionType === 'rebalance' && pool.transaction?.isOngoing;
     const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
 
     const {
@@ -142,100 +131,29 @@ export const PoolSetting: FC = () => {
         validate,
     });
 
-    const onCommissionSuccess = useCallback(
-        (transaction: ContractTransaction) => {
-            setCommissionSuccess(transaction);
-        },
-        []
-    );
-
-    const onCommissionError = useCallback((error: string) => {
-        setCommissionError(error);
-    }, []);
-
-    useEffect(() => {
-        if (pool.transaction?.error || progress >= 1) {
-            setChangingStaking(false);
-            setChangingEns(false);
-            setRebalancing(false);
-        }
-    }, [pool.transaction]);
-
     return (
         <Box
             px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
             pb={{ base: 6, sm: 8, lg: 8 }}
-            fontSize={'xl'}
+            fontSize="xl"
+            mt={16}
         >
-            {(pool.transaction?.error || commissionError) && (
-                <Alert status="warning" variant="left-accent" mt={2}>
-                    <AlertIcon />
-                    <Box flex="1">
-                        <AlertDescription display="block">
-                            {pool.transaction?.error || commissionError}
-                        </AlertDescription>
-                    </Box>
-                </Alert>
-            )}
-
-            {(progress >= 1 || commissionSuccess) && (
-                <Alert status="success" variant="left-accent" mt={2}>
-                    <AlertIcon />
-                    <Box flex="1">
-                        <HStack>
-                            {progress >= 1 &&
-                                pool.transaction?.transaction?.hash && (
-                                    <Address
-                                        address={
-                                            pool.transaction?.transaction?.hash
-                                        }
-                                        type="tx"
-                                        truncated
-                                        chainId={
-                                            pool.transaction?.transaction
-                                                ?.chainId
-                                        }
-                                    />
-                                )}
-
-                            {commissionSuccess && (
-                                <Address
-                                    address={commissionSuccess?.hash}
-                                    type="tx"
-                                    truncated
-                                    chainId={commissionSuccess?.chainId}
-                                />
-                            )}
-                        </HStack>
-                    </Box>
-                </Alert>
-            )}
-
-            {isRebalancing && isMakingPoolTransaction && (
-                <Alert status="info" variant="left-accent">
-                    <Spinner mx={2} />
-                    <Box flex="1">
-                        <AlertDescription display="block">
-                            {wordingFor[transactionType].title}
-                        </AlertDescription>
-                    </Box>
-                    <CloseButton
-                        position="absolute"
-                        right="8px"
-                        top="8px"
-                        onClick={() => {
-                            setRebalancing(false);
-                            pool.transaction?.ack();
-                        }}
-                    />
-                </Alert>
+            {transactionType === 'rebalance' && (
+                <TransactionBanner
+                    title={wordingFor[transactionType].title}
+                    failTitle={wordingFor[transactionType].failTitle}
+                    successDescription={
+                        wordingFor[transactionType].successDescription
+                    }
+                    transaction={pool.transaction}
+                    mb={2}
+                />
             )}
 
             <Stack
                 spacing={4}
                 justifyContent="space-between"
                 alignContent="flex-start"
-                mt={16}
                 mb={10}
                 direction={{ base: 'column', md: 'row' }}
             >
@@ -268,7 +186,6 @@ export const PoolSetting: FC = () => {
                             isLoading={isRebalancing}
                             onClick={() => {
                                 pool.rebalance();
-                                setRebalancing(true);
                                 setTransactionType('rebalance');
                             }}
                         >
@@ -313,16 +230,14 @@ export const PoolSetting: FC = () => {
             {feeType == 'flatRate' && (
                 <FlatRateContainer
                     pool={address}
-                    onSuccess={onCommissionSuccess}
-                    onError={onCommissionError}
+                    alertMessage={wordingFor.commission}
                 />
             )}
 
             {feeType == 'gasTax' && (
                 <GasTaxContainer
                     pool={address}
-                    onSuccess={onCommissionSuccess}
-                    onError={onCommissionError}
+                    alertMessage={wordingFor.commission}
                 />
             )}
 
@@ -332,6 +247,18 @@ export const PoolSetting: FC = () => {
                 alignItems="flex-end"
                 mt={2}
             >
+                {transactionType === 'changeEns' && (
+                    <TransactionBanner
+                        title={wordingFor[transactionType].title}
+                        failTitle={wordingFor[transactionType].failTitle}
+                        successDescription={
+                            wordingFor[transactionType].successDescription
+                        }
+                        transaction={pool.transaction}
+                        mb={2}
+                    />
+                )}
+
                 <FormControl isInvalid={!!errors.ensName}>
                     <HStack justify="space-between">
                         <FormLabel>
@@ -381,7 +308,6 @@ export const PoolSetting: FC = () => {
                             }
                             onClick={() => {
                                 setTransactionType('changeEns');
-                                setChangingEns(true);
                                 pool.setName(getValues('ensName'));
                             }}
                         >
@@ -401,28 +327,21 @@ export const PoolSetting: FC = () => {
                     )}
                 </FormControl>
 
-                {isChangingEns && isMakingPoolTransaction && (
-                    <Alert status="info" variant="left-accent">
-                        <Spinner mx={2} />
-                        <Box flex="1">
-                            <AlertDescription display="block">
-                                {wordingFor[transactionType].title}
-                            </AlertDescription>
-                        </Box>
-                        <CloseButton
-                            position="absolute"
-                            right="8px"
-                            top="8px"
-                            onClick={() => {
-                                setChangingEns(false);
-                                pool.transaction?.ack();
-                            }}
+                <FormControl pt={4}>
+                    {(transactionType === 'pause' ||
+                        transactionType === 'unpause') && (
+                        <TransactionBanner
+                            title={wordingFor[transactionType].title}
+                            failTitle={wordingFor[transactionType].failTitle}
+                            successDescription={
+                                wordingFor[transactionType].successDescription
+                            }
+                            transaction={pool.transaction}
+                            mb={2}
                         />
-                    </Alert>
-                )}
+                    )}
 
-                <FormControl>
-                    <HStack mt={4} justify="space-between">
+                    <HStack justify="space-between">
                         <FormLabel>
                             Staking{' '}
                             <Tooltip
@@ -454,7 +373,6 @@ export const PoolSetting: FC = () => {
                                         ? 'unpause'
                                         : 'pause';
                                     setTransactionType(transactionType);
-                                    setChangingStaking(true);
 
                                     if (pool.paused) {
                                         pool.unpause();
@@ -470,26 +388,6 @@ export const PoolSetting: FC = () => {
                         </InputGroup>
                     </HStack>
                 </FormControl>
-
-                {isChangingStaking && isMakingPoolTransaction && (
-                    <Alert status="info" variant="left-accent">
-                        <Spinner mx={2} />
-                        <Box flex="1">
-                            <AlertDescription display="block">
-                                {wordingFor[transactionType].title}
-                            </AlertDescription>
-                        </Box>
-                        <CloseButton
-                            position="absolute"
-                            right="8px"
-                            top="8px"
-                            onClick={() => {
-                                setChangingStaking(false);
-                                pool.transaction?.ack();
-                            }}
-                        />
-                    </Alert>
-                )}
             </Stack>
 
             <Box mt={10}>

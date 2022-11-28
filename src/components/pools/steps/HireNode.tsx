@@ -28,7 +28,7 @@ import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { ValidationResult, MappedErrors } from '../../BaseInput';
-import TransactionBanner from '../../node/TransactionBanner';
+import TransactionBanner from '../../TransactionBanner';
 import {
     NodeInput,
     NodeField,

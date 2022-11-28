@@ -27,7 +27,7 @@ import { useUserNode } from '../../graphql/hooks/useNodes';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import PoolSetting from '../../components/stake/PoolSetting';
 import { useWallet } from '../../contexts/wallet';
-import TransactionBanner from '../../components/node/TransactionBanner';
+import TransactionBanner from '../../components/TransactionBanner';
 import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
 import { useStakingPool } from '../../services/pool';
 import { isEmpty } from 'lodash/fp';

@@ -9,26 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useState } from 'react';
-import {
-    Alert,
-    AlertDescription,
-    Box,
-    CloseButton,
-    Spinner,
-} from '@chakra-ui/react';
-import { ContractTransaction } from 'ethers';
+import React, { FC } from 'react';
 import CommissionForm from '../../components/stake/CommissionForm';
 import { useFlatRateCommission } from '../../services/pool';
+import TransactionBanner from '../../components/TransactionBanner';
+import { AlertMessage } from '../../components/stake/TransactionInfoBanner';
 
 export interface FlatRateContainerProps {
     pool: string;
-    onSuccess: (transaction: ContractTransaction) => void;
-    onError: (error: string) => void;
+    alertMessage: AlertMessage;
 }
 
 const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
-    const { pool, onSuccess, onError } = props;
+    const { pool, alertMessage } = props;
     const {
         rate,
         maxRaise,
@@ -37,19 +30,16 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
         changeRate,
         transaction,
     } = useFlatRateCommission(pool);
-    const [isChangingRate, setChangingRate] = useState<boolean>(false);
     const progress = transaction?.receipt?.confirmations || 0;
-
-    useEffect(() => {
-        if (transaction?.error) {
-            onError(transaction?.error);
-        } else if (progress >= 1) {
-            onSuccess(transaction?.transaction);
-        }
-    }, [transaction]);
 
     return (
         <>
+            <TransactionBanner
+                {...alertMessage}
+                transaction={transaction}
+                mb={2}
+            />
+
             <CommissionForm
                 currentValue={rate ? rate?.toNumber() / 100 : 0}
                 unit="%"
@@ -61,34 +51,8 @@ const FlatRateContainer: FC<FlatRateContainerProps> = (props) => {
                 maxRaise={maxRaise?.toNumber() / 100}
                 progress={progress}
                 helperText="Commission is set as a fixed percentage of every block reward (CTSI)"
-                onSubmit={(value) => {
-                    setChangingRate(true);
-                    changeRate(value * 100);
-                }}
+                onSubmit={(value) => changeRate(value * 100)}
             />
-
-            {isChangingRate &&
-                !transaction?.acknowledged &&
-                !transaction?.error &&
-                progress === 0 && (
-                    <Alert status="info" variant="left-accent" mt={2}>
-                        <Spinner mx={2} />
-                        <Box flex="1">
-                            <AlertDescription display="block">
-                                Updating pool commission...
-                            </AlertDescription>
-                        </Box>
-                        <CloseButton
-                            position="absolute"
-                            right="8px"
-                            top="8px"
-                            onClick={() => {
-                                setChangingRate(false);
-                                transaction?.ack();
-                            }}
-                        />
-                    </Alert>
-                )}
         </>
     );
 };

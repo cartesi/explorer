@@ -21,7 +21,7 @@ import { toBigNumber } from '../../../utils/numberParser';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { ValidationResult, MappedErrors } from '../../BaseInput';
-import TransactionBanner from '../TransactionBanner';
+import TransactionBanner from '../../TransactionBanner';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
 import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';

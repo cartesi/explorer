@@ -9,26 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useState } from 'react';
-import { ContractTransaction } from 'ethers';
-import {
-    Alert,
-    AlertDescription,
-    Box,
-    CloseButton,
-    Spinner,
-} from '@chakra-ui/react';
+import React, { FC } from 'react';
 import CommissionForm from '../../components/stake/CommissionForm';
 import { useGasTaxCommission } from '../../services/pool';
+import TransactionBanner from '../../components/TransactionBanner';
+import { AlertMessage } from '../../components/stake/TransactionInfoBanner';
 
 export interface GasTaxContainerProps {
     pool: string;
-    onSuccess: (transaction: ContractTransaction) => void;
-    onError: (error: string) => void;
+    alertMessage: AlertMessage;
 }
 
 const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
-    const { pool, onSuccess, onError } = props;
+    const { pool, alertMessage } = props;
     const {
         gas,
         maxRaise,
@@ -37,19 +30,16 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
         changeGas,
         transaction,
     } = useGasTaxCommission(pool);
-    const [isChangingRate, setChangingRate] = useState<boolean>(false);
     const progress = transaction?.receipt?.confirmations || 0;
-
-    useEffect(() => {
-        if (transaction?.error) {
-            onError(transaction?.error);
-        } else if (progress >= 1) {
-            onSuccess(transaction?.transaction);
-        }
-    }, [transaction]);
 
     return (
         <>
+            <TransactionBanner
+                {...alertMessage}
+                transaction={transaction}
+                mb={2}
+            />
+
             <CommissionForm
                 currentValue={gas ? gas?.toNumber() : 0}
                 unit="gas"
@@ -60,34 +50,8 @@ const GasTaxContainer: FC<GasTaxContainerProps> = (props) => {
                 maxRaise={maxRaise?.toNumber()}
                 progress={progress}
                 helperText="Commission is set as an amount of gas. This amount is converted to CTSI at the time of block production, by using a gas price from an oracle and a ETH/CTSI price from a price oracle."
-                onSubmit={(value) => {
-                    setChangingRate(true);
-                    changeGas(value);
-                }}
+                onSubmit={changeGas}
             />
-
-            {isChangingRate &&
-                !transaction?.acknowledged &&
-                !transaction?.error &&
-                progress === 0 && (
-                    <Alert status="info" variant="left-accent" mt={2}>
-                        <Spinner mx={2} />
-                        <Box flex="1">
-                            <AlertDescription display="block">
-                                Updating pool commission...
-                            </AlertDescription>
-                        </Box>
-                        <CloseButton
-                            position="absolute"
-                            right="8px"
-                            top="8px"
-                            onClick={() => {
-                                setChangingRate(false);
-                                transaction?.ack();
-                            }}
-                        />
-                    </Alert>
-                )}
         </>
     );
 };

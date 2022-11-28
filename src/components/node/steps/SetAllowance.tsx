@@ -40,7 +40,7 @@ import {
 } from '../../BaseInput';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import TransactionBanner from '../TransactionBanner';
+import TransactionBanner from '../../TransactionBanner';
 import { Notification } from '../../Notification';
 import ConnectWallet from '../../header/ConnectWallet';
 
