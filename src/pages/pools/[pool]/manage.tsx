@@ -40,9 +40,9 @@ const PoolNode: FC = () => {
 
     useEffect(() => {
         if (!isManager) {
-            router.replace('/stake');
+            router.replace(`/stake/${address}`);
         }
-    }, [isManager, router]);
+    }, [isManager, router, address]);
 
     return (
         <Layout>
