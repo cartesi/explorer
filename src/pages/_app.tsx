@@ -12,12 +12,12 @@
 import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import { TrackingProvider } from '../contexts/tracker';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 import theme from '../styles/theme';
 import { Fonts } from '../components/Fonts';
+import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
@@ -41,11 +41,11 @@ const App = ({ Component, pageProps }: AppProps) => {
             <Fonts />
             <FeatureFlagProvider>
                 <Web3Container>
-                    <TrackingProvider>
+                    <GA4TrackerProvider>
                         <ApolloContainer>
                             <Component {...pageProps} />
                         </ApolloContainer>
-                    </TrackingProvider>
+                    </GA4TrackerProvider>
                 </Web3Container>
             </FeatureFlagProvider>
         </ChakraProvider>
