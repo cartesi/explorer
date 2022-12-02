@@ -93,13 +93,13 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     padding={[0, 0, 8, 8]}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
-                    display={keepActionColVisible ? 'flex' : 'block'}
+                    display="flex"
                     alignItems="center"
                     justifyContent="center"
                     ml="auto"
                 >
                     <NextLink href={`/stake/${balance.pool.id}`} passHref>
-                        <Link mr={[0, 0, 3]} data-testid="stake-info-link">
+                        <Link data-testid="stake-info-link">
                             <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>
