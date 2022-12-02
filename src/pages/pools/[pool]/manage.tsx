@@ -20,7 +20,7 @@ import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageC
 import Address from '../../../components/Address';
 import PageHead from '../../../components/PageHead';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-import { isString } from 'lodash';
+import { isObject, isString } from 'lodash';
 
 const PoolNode: FC = () => {
     const { account, chainId, active } = useWallet();
@@ -39,10 +39,10 @@ const PoolNode: FC = () => {
     }, [active, router]);
 
     useEffect(() => {
-        if (!isManager) {
+        if (isObject(stakingPool) && !isManager) {
             router.replace(`/stake/${address}`);
         }
-    }, [isManager, router, address]);
+    }, [stakingPool, isManager, router, address]);
 
     return (
         <Layout>
