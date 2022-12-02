@@ -28,13 +28,17 @@ export interface UserRowProps {
 }
 
 const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
-    const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
+    const backgroundColor = useColorModeValue('white', 'gray.800');
+    const backgroundHoverColor = useColorModeValue('WhiteSmoke', 'gray.700');
     const borderColor = useColorModeValue('gray.100', 'header');
-    const stakeInfoBg = useColorModeValue('white', 'gray.700');
     const isPool = isObject(user.pool);
 
     return (
-        <Tr key={user.id} _hover={{ backgroundColor }}>
+        <Tr
+            key={user.id}
+            backgroundColor={backgroundColor}
+            _hover={{ backgroundColor: backgroundHoverColor }}
+        >
             <Td borderColor={borderColor}>
                 <Address
                     ens
@@ -69,7 +73,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                 position={{ base: 'sticky', md: 'initial' }}
                 top={0}
                 right={0}
-                backgroundColor={{ base: stakeInfoBg, md: 'transparent' }}
+                backgroundColor="inherit"
                 padding={0}
                 data-testid="stake-info-col"
             >
