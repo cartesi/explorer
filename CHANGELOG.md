@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.0] - 2022-12-05
+
+-   The staking pool's new users page feature is ready to be roll out.
+-   Pool managers when clicking the edit button in the staking pool page are now redirected to the new management screen instead of the old one. Also, the back button in the management screen knows where to go back to.
+-   Migration from universal analytics to google analytics 4 a.k.a GA4 is done. Google will sunset universal analytics in 2023.
+-   The transaction alerts for the pool settings area in the new management screen were updated. They all comply with the new design.
+-   Alignment fixes in the pool tables for the action column (e.g. stake / info) on Home and Stake pages on small screens.
+-   UI update in the Home page producers table when dark mode is active. The action column had a different colour shade.
+
 ## [2.11.0] - 2022-11-28
 
 -   Updates applied in the commission input for Gas based pool in the new pool management page.
@@ -222,7 +231,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...HEAD
+[2.12.0]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/cartesi-corp/explorer/compare/v2.10.1...v2.11.0
 [2.10.1]: https://github.com/cartesi-corp/explorer/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/cartesi-corp/explorer/compare/v2.9.1...v2.10.0
