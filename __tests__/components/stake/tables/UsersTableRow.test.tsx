@@ -74,7 +74,7 @@ describe('Users Table Row', () => {
         renderComponent(defaultProps);
 
         expect(
-            screen.getAllByText(`${balance.sharesPercent}%`).length > 0
+            screen.getAllByText(`${balance.sharesPercent * 100}%`).length > 0
         ).toBe(true);
     });
 
@@ -83,7 +83,7 @@ describe('Users Table Row', () => {
 
         expect(
             screen.getAllByText(
-                `${truncateNumber(balance.accumulatedSharesPercent)}%`
+                `${truncateNumber(balance.accumulatedSharesPercent * 100)}%`
             ).length > 0
         ).toBe(true);
     });

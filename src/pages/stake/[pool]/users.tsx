@@ -136,14 +136,12 @@ const PoolUsers = () => {
     const { poolBalances = [] } = balances.data ?? {};
     const totalPages = Math.ceil(totalUsers / rowsPerPage);
 
-    const truncateNumber = (num) => Math.trunc(num * 100) / 100;
-
     const allBalancesData = useMemo(
         () =>
             list
                 .map((balance) => ({
                     ...balance,
-                    sharesPercent: truncateNumber(userShare(balance) * 100),
+                    sharesPercent: userShare(balance),
                 }))
                 .reduce(
                     (accumulator, balance, index) => [

@@ -10,7 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Td, Tr, useColorModeValue } from '@chakra-ui/react';
+import {
+    Icon,
+    Td,
+    Tooltip,
+    Tr,
+    useColorModeValue,
+    Text,
+} from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import Address from '../../Address';
@@ -70,7 +77,14 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
             </Td>
 
             <Td borderColor={borderColor} data-testid="shares-col" isNumeric>
-                {balance.sharesPercent}%
+                <Text as="span">
+                    {truncateNumber(balance.sharesPercent * 100)}%
+                </Text>
+                <Text as="span" verticalAlign="text-top" marginStart={1}>
+                    <Tooltip label={`Unformatted: ${balance.sharesPercent} %`}>
+                        <Icon />
+                    </Tooltip>
+                </Text>
             </Td>
 
             <Td
@@ -78,7 +92,7 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                 data-testid="accumulated-shared-col"
                 isNumeric
             >
-                {truncateNumber(balance.accumulatedSharesPercent)}%
+                {truncateNumber(balance.accumulatedSharesPercent * 100)}%
             </Td>
         </Tr>
     );
