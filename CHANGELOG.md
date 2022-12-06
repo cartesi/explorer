@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.12.0] - 2022-12-05
+## [2.12.0] - 2022-12-06
 
 -   The staking pool's new users page feature is ready to be roll out.
+-   Added support to the new Gnosis Sage a.k.a Safe official URL. https://app.safe.global/
 -   Pool managers when clicking the edit button in the staking pool page are now redirected to the new management screen instead of the old one. Also, the back button in the management screen knows where to go back to.
 -   Migration from universal analytics to google analytics 4 a.k.a GA4 is done. Google will sunset universal analytics in 2023.
 -   The transaction alerts for the pool settings area in the new management screen were updated. They all comply with the new design.
