@@ -52,7 +52,12 @@ export const TestComponent = () => {
     );
 };
 
-type WalletName = 'Metamask' | 'Ledger' | 'WalletConnect' | 'Gnosis Safe';
+type WalletName =
+    | 'Metamask'
+    | 'Ledger'
+    | 'WalletConnect'
+    | 'Gnosis Safe'
+    | 'Safe';
 interface EmulateForProps {
     name: WalletName;
     account: string;
@@ -97,6 +102,15 @@ export const emulateFor = ({
         case 'Gnosis Safe':
             wallet({
                 name: 'Gnosis Safe',
+                type: 'sdk',
+                provider: jest.fn(),
+                icons: {},
+            });
+            break;
+
+        case 'Safe':
+            wallet({
+                name: 'Safe',
                 type: 'sdk',
                 provider: jest.fn(),
                 icons: {},

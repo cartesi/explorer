@@ -36,9 +36,10 @@ const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
-const hardwareWallets = ['ledger'];
-const sdkWallets = ['gnosis safe'];
-const injectedWallets = ['metamask', 'coinbase'];
+const hardwareWallets = new Set(['ledger']);
+const gnosisSafeLabels = ['gnosis safe', 'safe'];
+const sdkWallets = new Set([...gnosisSafeLabels]);
+const injectedWallets = new Set(['metamask', 'coinbase']);
 const supportedNetworks = map(parseInt)(keys(networks));
 
 const injectedWallet = injectedModule();
@@ -89,11 +90,11 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
  */
 const getWalletType = (label = ''): WalletType | null => {
     const name = label.toLocaleLowerCase();
-    return contains(name, injectedWallets)
+    return injectedWallets.has(name)
         ? WalletType.INJECTED
-        : contains(name, hardwareWallets)
+        : hardwareWallets.has(name)
         ? WalletType.HARDWARE
-        : contains(name, sdkWallets)
+        : sdkWallets.has(name)
         ? WalletType.SDK
         : null;
 };
@@ -124,7 +125,8 @@ const handlerBuilder =
             const walletType = getWalletType(label);
             const isHardwareWallet = WalletType.HARDWARE === walletType;
             const isGnosisSafe =
-                WalletType.SDK === walletType && label === 'Gnosis Safe';
+                WalletType.SDK === walletType &&
+                contains(label.toLowerCase(), gnosisSafeLabels);
 
             const error = checkNetwork(chainId);
 
