@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Layout from '../../../components/Layout';
 import { Box } from '@chakra-ui/layout';
 import { StakingGuide } from '../../../components/stake/StakingGuide';
@@ -25,7 +25,6 @@ import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useENS } from '../../../services/ens';
 import { formatEnsName } from '../../../utils/stringUtils';
 import PageHead from '../../../components/PageHead';
@@ -33,7 +32,6 @@ import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 
 const PoolStake = () => {
     const { account, active: isConnected } = useWallet();
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     // get pool address from path
     const router = useRouter();
@@ -88,12 +86,6 @@ const PoolStake = () => {
             unstake(stakedShares);
         }
     };
-
-    useEffect(() => {
-        // When the flag is off, the user is automatically redirected to /pools/:addr
-        // The replace method overrides the current URL with the new one.
-        if (!newPoolPageEnabled) router.replace(`/pools/${address}`);
-    }, [address, newPoolPageEnabled, router]);
 
     return (
         <Layout>

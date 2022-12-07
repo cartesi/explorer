@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { constants } from 'ethers';
@@ -38,7 +38,6 @@ import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
 import { PoolActivity } from '../../components/stake/PoolActivity';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useENS } from '../../services/ens';
 import PageHead from '../../components/PageHead';
 import { formatEnsName } from '../../utils/stringUtils';
@@ -57,7 +56,6 @@ const blockAverageInterval = (
 
 const PoolInfo = () => {
     const { account } = useWallet();
-    const newPoolPageEnabled = useFlag('newPoolPageEnabled');
 
     // get pool address from path
     const router = useRouter();
@@ -97,12 +95,6 @@ const PoolInfo = () => {
     });
 
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
-
-    useEffect(() => {
-        // When the flag is off, the user is automatically redirected to /pools/:addr
-        // The replace method overrides the current URL with the new one.
-        if (!newPoolPageEnabled) router.replace(`/pools/${address}`);
-    }, [address, newPoolPageEnabled, router]);
 
     return (
         <Layout>
