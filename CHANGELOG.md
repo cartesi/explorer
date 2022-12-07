@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.1] - 2022-12-07
+
+-   Fix the counting at "my pools" banner information. When the wallet was disconnected it was returning the first 50 balances without any user account filtering.
+
 ## [2.12.0] - 2022-12-06
 
 -   The staking pool's new users page feature is ready to be roll out.
@@ -232,7 +236,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.1...HEAD
+[2.12.1]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...v2.12.1
 [2.12.0]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/cartesi-corp/explorer/compare/v2.10.1...v2.11.0
 [2.10.1]: https://github.com/cartesi-corp/explorer/compare/v2.10.0...v2.10.1
