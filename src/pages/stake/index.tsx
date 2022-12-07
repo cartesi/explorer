@@ -17,6 +17,7 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
+import { constants } from 'ethers';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useRouter } from 'next/router';
 import Layout, {
@@ -40,7 +41,7 @@ const Home = () => {
     const router = useRouter();
     const { account, chainId, active } = useWallet();
     const summary = useSummary();
-    const balances = usePoolBalances(account);
+    const balances = usePoolBalances(account || constants.AddressZero);
     const poolBalance = useTotalPoolBalance(account);
     const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
