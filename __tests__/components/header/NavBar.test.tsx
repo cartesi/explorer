@@ -55,7 +55,6 @@ describe('Nav Bar', () => {
     it('Should generate correct default nav links', () => {
         const links = buildLinks({
             newNodeRunnersEnabled: false,
-            newPoolListPageEnabled: false,
         });
 
         expect(links.length).toBe(4);
@@ -64,9 +63,9 @@ describe('Nav Bar', () => {
         expect(links[0].label).toBe('Home');
         expect(links[0].href).toBe('/');
 
-        expect(links[1].key).toBe('pools');
+        expect(links[1].key).toBe('stake');
         expect(links[1].label).toBe('Stake');
-        expect(links[1].href).toBe('/pools');
+        expect(links[1].href).toBe('/stake');
 
         expect(links[2].key).toBe('staking');
         expect(links[2].label).toBe('Node Runners');
@@ -80,7 +79,6 @@ describe('Nav Bar', () => {
     it('Should generate nav link for new staking', () => {
         const links = buildLinks({
             newNodeRunnersEnabled: true,
-            newPoolListPageEnabled: true,
         });
 
         expect(links.length).toBe(4);

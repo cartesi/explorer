@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     HStack,
     Heading,
@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 import { constants } from 'ethers';
 import { useFlag } from '@unleash/proxy-client-react';
-import { useRouter } from 'next/router';
 import Layout, {
     PageBody,
     PageHeader,
@@ -38,12 +37,10 @@ import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import PageHead from '../../components/PageHead';
 
 const Home = () => {
-    const router = useRouter();
     const { account, chainId, active } = useWallet();
     const summary = useSummary();
     const balances = usePoolBalances(account || constants.AddressZero);
     const poolBalance = useTotalPoolBalance(account);
-    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
     const bg = useColorModeValue('gray.80', 'header');
     const bodyBg = useColorModeValue('gray.80', 'header');
     const stakingPoolsBg = useColorModeValue('white', 'gray.800');
@@ -51,12 +48,6 @@ const Home = () => {
     const apr = useFlag('apr');
     const aws = useFlag('aws');
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
-
-    useEffect(() => {
-        if (!newPoolListPageEnabled) {
-            router.replace('/pools');
-        }
-    }, [newPoolListPageEnabled, router]);
 
     return (
         <Layout>

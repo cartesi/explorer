@@ -13,7 +13,6 @@ import { ArrowBackIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, VStack, Stack, Button, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { useFlag } from '@unleash/proxy-client-react';
 import { isString } from 'lodash';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
@@ -28,7 +27,6 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
     const { chainId } = useWallet();
-    const newPoolListPageEnabled = useFlag('newPoolListPageEnabled');
 
     return (
         <Box
@@ -44,10 +42,7 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
             >
                 <VStack alignItems="flex-start" pb="5">
                     <HStack alignItems="flex-start">
-                        <NextLink
-                            href={newPoolListPageEnabled ? '/stake' : '/pools'}
-                            passHref
-                        >
+                        <NextLink href="/stake" passHref>
                             <Button
                                 as="a"
                                 leftIcon={<ArrowBackIcon />}
