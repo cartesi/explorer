@@ -95,7 +95,8 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     width={['80px', '80px', 'auto', 'auto']}
                     display="flex"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent={{ base: 'center', lg: 'flex-end' }}
+                    mr={{ base: 0, lg: 4 }}
                     ml="auto"
                 >
                     <NextLink href={`/stake/${balance.pool.id}`} passHref>

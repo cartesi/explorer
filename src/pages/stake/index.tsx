@@ -153,7 +153,7 @@ const Home = () => {
                                 />
                             </HStack>
 
-                            <VStack w="100%" pb={10}>
+                            <VStack w="calc(100% - 1px)" pb={10}>
                                 {apr && aws ? (
                                     <PoolPerformanceExtended
                                         chainId={chainId}
