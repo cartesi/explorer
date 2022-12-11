@@ -214,12 +214,7 @@ const Home = () => {
                                                         Refers to the total
                                                         market value of a
                                                         cryptocurrency’s
-                                                        circulating supply. It
-                                                        is similar to the stock
-                                                        market’s measurement of
-                                                        multiplying price per
-                                                        share by shares readily
-                                                        available in the market.
+                                                        circulating supply.
                                                     </Text>
                                                 </>
                                             }
@@ -244,7 +239,7 @@ const Home = () => {
                                     <Flex alignItems="center">
                                         <Text mr={2}>Circ. Supply</Text>
                                         <Tooltip
-                                            label="The amount of coins that are circulating in the market and are tradeable by the public. It is comparable to looking at shares readily available in the market."
+                                            label="The amount of coins that are circulating in the market and are tradeable by the public."
                                             placement="top"
                                         >
                                             <Icon />
