@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.3] - 2022-12-13
+
+-   Update home page tooltip copy.
+-   Fix UI issues for desktop on stake page.
+-   Removed code that supported the old pool list page.
+-   Removed code that supported the old staking pool page.
+
 ## [2.12.2] - 2022-12-12
 
 -   Update a few tooltip information in the home page.
@@ -240,7 +247,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...HEAD
+[2.12.3]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...v2.12.3
 [2.12.2]: https://github.com/cartesi-corp/explorer/compare/v2.12.1...v2.12.2
 [2.12.1]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...v2.12.1
 [2.12.0]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...v2.12.0
