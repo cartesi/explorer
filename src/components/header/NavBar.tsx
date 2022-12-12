@@ -23,7 +23,6 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useWallet } from '../../contexts/wallet';
 import Account from './Account';
 import AccountMobile from './AccountMobile';
@@ -31,32 +30,28 @@ import ConnectWallet from './ConnectWallet';
 import Logo from './Logo';
 import SelectedChain from './SelectedChain';
 
-export const buildLinks = ({ newNodeRunnersEnabled }) => {
-    const links = [
-        {
-            key: 'home',
-            label: 'Home',
-            href: '/',
-        },
-        {
-            key: 'stake',
-            label: 'Stake',
-            href: '/stake',
-        },
-        {
-            key: newNodeRunnersEnabled ? 'runners' : 'staking',
-            label: 'Node Runners',
-            href: newNodeRunnersEnabled ? '/node-runners' : '/staking',
-        },
-        {
-            key: 'blocks',
-            label: 'Blocks',
-            href: '/blocks',
-        },
-    ];
-
-    return links;
-};
+export const buildLinks = () => [
+    {
+        key: 'home',
+        label: 'Home',
+        href: '/',
+    },
+    {
+        key: 'stake',
+        label: 'Stake',
+        href: '/stake',
+    },
+    {
+        key: 'runners',
+        label: 'Node Runners',
+        href: '/node-runners',
+    },
+    {
+        key: 'blocks',
+        label: 'Blocks',
+        href: '/blocks',
+    },
+];
 
 export interface NavLinkProps {
     href: string;
@@ -81,8 +76,7 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => (
 const NavBar: FC<FlexProps> = (props) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
-    const newNodeRunnersEnabled = useFlag('newNodeRunnersEnabled');
-    const links = buildLinks({ newNodeRunnersEnabled });
+    const links = buildLinks();
     const wallet = useWallet();
     const { isOpen, onOpen, onClose } = useDisclosure();
 

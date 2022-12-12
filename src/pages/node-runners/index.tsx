@@ -16,7 +16,7 @@ import { useWallet } from '../../contexts/wallet';
 import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
 import PageHead from '../../components/PageHead';
 
-const NewStaking: FC = () => {
+const NodeRunners: FC = () => {
     const wallet = useWallet();
     const router = useRouter();
 
@@ -28,4 +28,4 @@ const NewStaking: FC = () => {
     );
 };
 
-export default NewStaking;
+export default NodeRunners;

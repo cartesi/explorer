@@ -53,9 +53,7 @@ describe('Nav Bar', () => {
     });
 
     it('Should generate correct default nav links', () => {
-        const links = buildLinks({
-            newNodeRunnersEnabled: false,
-        });
+        const links = buildLinks();
 
         expect(links.length).toBe(4);
 
@@ -67,25 +65,13 @@ describe('Nav Bar', () => {
         expect(links[1].label).toBe('Stake');
         expect(links[1].href).toBe('/stake');
 
-        expect(links[2].key).toBe('staking');
+        expect(links[2].key).toBe('runners');
         expect(links[2].label).toBe('Node Runners');
-        expect(links[2].href).toBe('/staking');
+        expect(links[2].href).toBe('/node-runners');
 
         expect(links[3].key).toBe('blocks');
         expect(links[3].label).toBe('Blocks');
         expect(links[3].href).toBe('/blocks');
-    });
-
-    it('Should generate nav link for new staking', () => {
-        const links = buildLinks({
-            newNodeRunnersEnabled: true,
-        });
-
-        expect(links.length).toBe(4);
-
-        expect(links[2].key).toBe('runners');
-        expect(links[2].label).toBe('Node Runners');
-        expect(links[2].href).toBe('/node-runners');
     });
 
     it('Should display children', () => {
