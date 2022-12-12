@@ -93,6 +93,7 @@ export const useNode = (address: string): Node => {
             const authorized1 = pos1
                 ? await workerManager.isAuthorized(address, pos1.address)
                 : false;
+
             setUser(user);
             setAvailable(available);
             setPending(pending);
