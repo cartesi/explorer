@@ -239,7 +239,7 @@ const Home = () => {
                                     <Flex alignItems="center">
                                         <Text mr={2}>Circ. Supply</Text>
                                         <Tooltip
-                                            label="The amount of coins that are circulating in the market and are tradeable by the public."
+                                            label="The number of coins that are currently circulating in the market and are able to be purchased or sold."
                                             placement="top"
                                         >
                                             <Icon />
