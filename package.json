@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "@apollo/client": "3.4.13",
-        "@cartesi/pos": "1.1.2",
+        "@cartesi/pos": "2.0.0",
         "@cartesi/pos-1.0": "npm:@cartesi/pos@1.0.0",
         "@cartesi/staking-pool": "1.0.0",
         "@cartesi/token": "1.3.0",
