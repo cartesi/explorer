@@ -37,6 +37,7 @@ export const NODES = gql`
                 balance
             }
             timestamp
+            retirementTimestamp
             status
             totalBlocks
             totalReward
