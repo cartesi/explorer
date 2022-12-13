@@ -33,8 +33,10 @@ import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
 import { NodeHireNodeSection } from './NodeHireNodeSection';
 import { truncateString } from '../../utils/stringUtils';
+import { NodeRetiredHistory } from './NodeRetiredHistory';
 
 export interface INodeInfoSection {
+    account: string;
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
@@ -47,6 +49,7 @@ export interface INodeInfoSection {
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
+    account,
     address,
     userBalance,
     nodeBalance,
@@ -227,6 +230,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     />
                 </>
             )}
+            <NodeRetiredHistory address={account} />
         </>
     );
 };
