@@ -16,7 +16,7 @@ import { constants } from 'ethers';
 import { NodeStatus } from '../../services/node';
 
 export const NODES_PER_PAGE = 10;
-
+export const DEFAULT_SORT = 'timestamp';
 const useNodes = (
     pageNumber: number,
     id: string = undefined,
@@ -48,20 +48,20 @@ type Options = { where?: WhereClause };
 export const useUserNodes = (
     owner: string,
     count = NODES_PER_PAGE,
-    opts?: Options
+    opts?: Options,
+    sort = DEFAULT_SORT
 ) => {
     // if no owner, use address zero, so no nodes are returned
     owner = owner || constants.AddressZero;
 
     // convert to lowercase because backend is all lowercase
     owner = owner.toLowerCase();
-
     return useQuery<NodesData, NodesVars>(NODES, {
         variables: {
             first: count,
             where: { owner, ...opts?.where },
             skip: 0,
-            orderBy: 'timestamp',
+            orderBy: sort,
             orderDirection: 'desc',
         },
     });
