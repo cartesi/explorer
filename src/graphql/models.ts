@@ -267,6 +267,7 @@ export type Node = {
     id: string;
     owner: User;
     timestamp: number;
+    retirementTimestamp: number;
     status: string;
     totalBlocks: number;
     totalReward: string;
