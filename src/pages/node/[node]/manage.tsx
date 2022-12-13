@@ -49,6 +49,7 @@ import { TransactionInfoBanner } from '../../../components/stake/TransactionInfo
 import theme from '../../../styles/theme';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import PageHead from '../../../components/PageHead';
+import { NodeRetiredHistory } from '../../../components/node/NodeRetiredHistory';
 
 const ManageNode: FC = () => {
     const router = useRouter();
@@ -323,6 +324,7 @@ const ManageNode: FC = () => {
                     </Box>
                 ) : (
                     <NodeInfoSection
+                        account={account}
                         address={activeWorker}
                         userBalance={userBalance}
                         nodeBalance={node.balance}
@@ -351,7 +353,6 @@ const ManageNode: FC = () => {
                         }}
                     />
                 )}
-
                 <Stack
                     direction={{ base: 'column', md: 'row' }}
                     justifyContent="space-between"
