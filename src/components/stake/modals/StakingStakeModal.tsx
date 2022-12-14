@@ -70,7 +70,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     };
 
     useEffect(() => {
-        if (isOpen) {
+        if (!isOpen) {
             setStakedValue(BigNumber.from(0));
         }
     }, [isOpen]);

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon } from '@chakra-ui/icons';
 import {
     Button,
     HStack,
@@ -83,7 +82,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const inputFocusRef = useRef();
 
     useEffect(() => {
-        if (isOpen) {
+        if (!isOpen) {
             setOutputDeposit(BigNumber.from(0));
         }
     }, [isOpen]);
