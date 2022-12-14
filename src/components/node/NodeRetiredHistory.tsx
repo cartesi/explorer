@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
 import {
     Accordion,
     AccordionItem,
@@ -51,7 +51,8 @@ const History: FC<HistoryProps> = memo(
     }
 );
 export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
-    const userNodes = useUserNodes(
+    const [list, updateList] = useState(null);
+    const { data, loading } = useUserNodes(
         address,
         3,
         {
@@ -59,6 +60,11 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
         },
         'retirementTimestamp'
     );
+    useEffect(() => {
+        if (data) {
+            updateList(data?.nodes);
+        }
+    }, [loading]);
     return (
         <Box mt={8} mb={10}>
             <Accordion allowToggle>
@@ -99,19 +105,18 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
                                     </Tr>
                                 </Thead>
                                 <Tbody fontSize="md">
-                                    {userNodes.data &&
-                                        userNodes?.data.nodes.map(
-                                            (history, index) => (
-                                                <History
-                                                    key={index}
-                                                    index={index}
-                                                    address={history.id}
-                                                    retirementTimestamp={
-                                                        history.retirementTimestamp
-                                                    }
-                                                />
-                                            )
-                                        )}
+                                    {list &&
+                                        list.length > 0 &&
+                                        list.map((history, index) => (
+                                            <History
+                                                key={index}
+                                                index={index}
+                                                address={history.id}
+                                                retirementTimestamp={
+                                                    history.retirementTimestamp
+                                                }
+                                            />
+                                        ))}
                                 </Tbody>
                             </Table>
                         </TableContainer>
