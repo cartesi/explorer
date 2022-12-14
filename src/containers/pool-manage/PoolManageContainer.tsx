@@ -55,15 +55,11 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
 
     const node = useNode(activeWorker);
 
-    const [currentTransaction, setCurrentTransaction] = useState<any>(null);
-    const [transactionBanners, setTransactionBanners] = useState<any>({});
     const retiredDisclosure = useDisclosure();
 
     // dark mode support
     const bg = useColorModeValue('gray.80', 'header');
-    const hiredNewNode =
-        currentTransaction === 'hire' &&
-        pool.transaction?.state === 'confirmed';
+    const hiredNewNode = pool.hireTransaction?.state === 'confirmed';
 
     useEffect(() => {
         if (isEmpty(hiringAddress)) return;
@@ -89,55 +85,40 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                 bg={bg}
             >
                 <VStack spacing={4} alignItems="stretch">
-                    {transactionBanners?.deposit && (
-                        <TransactionBanner
-                            title="Setting deposit..."
-                            failTitle="Error setting deposit"
-                            successDescription="New deposit set successfully."
-                            transaction={
-                                currentTransaction === 'deposit'
-                                    ? node.transaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.retire && (
-                        <TransactionBanner
-                            title="Retiring Node..."
-                            failTitle="Error retiring the node"
-                            successDescription="Node retired successfully."
-                            transaction={
-                                currentTransaction === 'retire'
-                                    ? pool.transaction
-                                    : null
-                            }
-                        />
-                    )}
-                    {transactionBanners?.hire && (
-                        <TransactionBanner
-                            title="Hiring node..."
-                            failTitle="Error hiring node"
-                            successDescription={
-                                <>
-                                    <Text fontSize="sm">
-                                        <chakra.span
-                                            fontWeight="bold"
-                                            fontSize="sm"
-                                        >
-                                            Congratulations!
-                                        </chakra.span>{' '}
-                                        You hire a new node for your pool
-                                        successfully.
-                                    </Text>
-                                </>
-                            }
-                            transaction={
-                                currentTransaction === 'hire'
-                                    ? pool.transaction
-                                    : null
-                            }
-                        />
-                    )}
+                    <TransactionBanner
+                        title="Setting deposit..."
+                        failTitle="Error setting deposit"
+                        successDescription="New deposit set successfully."
+                        transaction={node.transaction}
+                    />
+
+                    <TransactionBanner
+                        title="Retiring Node..."
+                        failTitle="Error retiring the node"
+                        successDescription="Node retired successfully."
+                        transaction={pool.retireTransaction}
+                    />
+
+                    <TransactionBanner
+                        title="Hiring node..."
+                        failTitle="Error hiring node"
+                        successDescription={
+                            <>
+                                <Text fontSize="sm">
+                                    <chakra.span
+                                        fontWeight="bold"
+                                        fontSize="sm"
+                                    >
+                                        Congratulations!
+                                    </chakra.span>{' '}
+                                    You hire a new node for your pool
+                                    successfully.
+                                </Text>
+                            </>
+                        }
+                        transaction={pool.hireTransaction}
+                    />
+
                     {retiredDisclosure.isOpen && (
                         <NodeRetiredBanner
                             onClose={retiredDisclosure.onClose}
@@ -181,33 +162,11 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                         userBalance={userBalance}
                         nodeBalance={node.balance}
                         isRetired={node.retired}
-                        isHiring={pool.transaction?.isOngoing}
-                        isRetiring={
-                            currentTransaction === 'retire' &&
-                            pool.transaction?.isOngoing
-                        }
-                        onRetire={(address) => {
-                            setCurrentTransaction('retire');
-                            setTransactionBanners((t) => ({
-                                ...t,
-                                retire: true,
-                            }));
-                            pool.retire(address);
-                        }}
-                        onDeposit={(amount) => {
-                            setCurrentTransaction('deposit');
-                            setTransactionBanners({
-                                ...transactionBanners,
-                                deposit: true,
-                            });
-                            node.transfer(amount);
-                        }}
+                        isHiring={pool.hireTransaction?.isOngoing}
+                        isRetiring={pool.retireTransaction?.isOngoing}
+                        onRetire={pool.retire}
+                        onDeposit={node.transfer}
                         onHire={(nodeAddress, funds) => {
-                            setCurrentTransaction('hire');
-                            setTransactionBanners({
-                                ...transactionBanners,
-                                hire: true,
-                            });
                             setHiringAddress(nodeAddress);
                             pool.hire(nodeAddress, funds);
                         }}

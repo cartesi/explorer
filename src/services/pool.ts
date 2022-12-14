@@ -36,6 +36,17 @@ export interface StakingPool {
     shares: BigNumber;
     amount: BigNumber;
     transaction: Transaction<any>;
+    depositTransaction: Transaction<any>;
+    stakeTransaction: Transaction<any>;
+    unstakeTransaction: Transaction<any>;
+    withdrawTransaction: Transaction<any>;
+    setNameTransaction: Transaction<any>;
+    pauseTransaction: Transaction<any>;
+    unpauseTransaction: Transaction<any>;
+    hireTransaction: Transaction<any>;
+    cancelHireTransaction: Transaction<any>;
+    retireTransaction: Transaction<any>;
+    rebalanceTransaction: Transaction<any>;
     stakedShares: BigNumber;
     balance: BigNumber;
     withdrawBalance: BigNumber;
@@ -72,6 +83,39 @@ export const useStakingPool = (
     // keep track of a transaction
     const transaction = useTransaction<void>();
 
+    // dedicated deposit transaction
+    const depositTransaction = useTransaction<void>();
+
+    // dedicated stake transaction
+    const stakeTransaction = useTransaction<void>();
+
+    // dedicated unstake transaction
+    const unstakeTransaction = useTransaction<void>();
+
+    // dedicated withdraw transaction
+    const withdrawTransaction = useTransaction<void>();
+
+    // dedicated set name transaction
+    const setNameTransaction = useTransaction<void>();
+
+    // dedicated pause transaction
+    const pauseTransaction = useTransaction<void>();
+
+    // dedicated unpause transaction
+    const unpauseTransaction = useTransaction<void>();
+
+    // dedicated hire transaction
+    const hireTransaction = useTransaction<void>();
+
+    // dedicated cancelHire transaction
+    const cancelHireTransaction = useTransaction<void>();
+
+    // dedicated retire transaction
+    const retireTransaction = useTransaction<void>();
+
+    // dedicated rebalance transaction
+    const rebalanceTransaction = useTransaction<void>();
+
     // user amount of shares staked
     const [stakedShares, setStakedShares] = useState<BigNumber>(constants.Zero);
 
@@ -84,7 +128,7 @@ export const useStakingPool = (
     // period to wait before staking
     const [lockTime, setLockTime] = useState<BigNumber>(constants.Zero);
 
-    // instant when user can deposited
+    // instant when user can deposit
     const [depositTimestamp, setDepositTimestamp] = useState<Date>(null);
 
     // instant when user can stake
@@ -143,67 +187,100 @@ export const useStakingPool = (
 
     const deposit = (amount: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.deposit(amount));
+            const nextTransaction = pool.deposit(amount);
+
+            transaction.set(nextTransaction);
+            depositTransaction.set(nextTransaction);
         }
     };
 
     const stake = (amount: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.stake(amount));
+            const nextTransaction = pool.stake(amount);
+
+            transaction.set(nextTransaction);
+            stakeTransaction.set(nextTransaction);
         }
     };
 
     const unstake = (shares: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.unstake(shares));
+            const nextTransaction = pool.unstake(shares);
+
+            transaction.set(nextTransaction);
+            unstakeTransaction.set(nextTransaction);
         }
     };
 
     const withdraw = (amount: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.withdraw(amount));
+            const nextTransaction = pool.withdraw(amount);
+
+            transaction.set(nextTransaction);
+            withdrawTransaction.set(nextTransaction);
         }
     };
 
     const setName = (name: string) => {
         if (pool) {
-            transaction.set(pool.setName(name));
+            const nextTransaction = pool.setName(name);
+
+            transaction.set(nextTransaction);
+            setNameTransaction.set(nextTransaction);
         }
     };
 
     const pause = () => {
         if (pool) {
-            transaction.set(pool.pause());
+            const nextTransaction = pool.pause();
+
+            transaction.set(nextTransaction);
+            pauseTransaction.set(nextTransaction);
         }
     };
 
     const unpause = () => {
         if (pool) {
-            transaction.set(pool.unpause());
+            const nextTransaction = pool.unpause();
+
+            transaction.set(nextTransaction);
+            unpauseTransaction.set(nextTransaction);
         }
     };
 
     const hire = (worker: string, amount: BigNumberish) => {
         if (pool) {
-            transaction.set(pool.hire(worker, { value: amount }));
+            const nextTransaction = pool.hire(worker, { value: amount });
+
+            transaction.set(nextTransaction);
+            hireTransaction.set(nextTransaction);
         }
     };
 
     const cancelHire = (worker: string) => {
         if (pool) {
-            transaction.set(pool.cancelHire(worker));
+            const nextTransaction = pool.cancelHire(worker);
+
+            transaction.set(nextTransaction);
+            cancelHireTransaction.set(nextTransaction);
         }
     };
 
     const retire = (worker: string) => {
         if (pool) {
-            transaction.set(pool.retire(worker));
+            const nextTransaction = pool.retire(worker);
+
+            transaction.set(nextTransaction);
+            retireTransaction.set(nextTransaction);
         }
     };
 
     const rebalance = () => {
         if (pool) {
-            transaction.set(pool.rebalance());
+            const nextTransaction = pool.rebalance();
+
+            transaction.set(nextTransaction);
+            rebalanceTransaction.set(nextTransaction);
         }
     };
 
@@ -212,6 +289,17 @@ export const useStakingPool = (
         shares,
         amount,
         transaction,
+        depositTransaction,
+        stakeTransaction,
+        unstakeTransaction,
+        withdrawTransaction,
+        setNameTransaction,
+        pauseTransaction,
+        unpauseTransaction,
+        hireTransaction,
+        cancelHireTransaction,
+        retireTransaction,
+        rebalanceTransaction,
         stakedShares,
         balance,
         withdrawBalance,

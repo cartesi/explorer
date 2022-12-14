@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
     Box,
     Button,
@@ -43,7 +43,6 @@ import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import { BigNumber } from 'ethers';
 import GasTaxContainer from '../../containers/stake/GasTaxContainer';
-import { TransactionType } from '../../types/pool';
 import TransactionBanner from '../TransactionBanner';
 
 const wordingFor = {
@@ -80,8 +79,6 @@ export const PoolSetting: FC = () => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const stakingPool = useStakingPoolQuery(address);
-    const [transactionType, setTransactionType] =
-        useState<TransactionType | null>(null);
     const rebalanceColor = useColorModeValue('gray.800', 'header');
     const rebalanceHoverBg = useColorModeValue('orange.300', 'orange.100');
     const progress = pool.transaction?.receipt?.confirmations || 0;
@@ -95,8 +92,7 @@ export const PoolSetting: FC = () => {
             : stakingPool?.fee?.gas !== null
             ? 'gasTax'
             : undefined;
-    const isRebalancing =
-        transactionType === 'rebalance' && pool.transaction?.isOngoing;
+    const isRebalancing = pool.rebalanceTransaction?.isOngoing;
     const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
 
     const {
@@ -138,17 +134,13 @@ export const PoolSetting: FC = () => {
             fontSize="xl"
             mt={16}
         >
-            {transactionType === 'rebalance' && (
-                <TransactionBanner
-                    title={wordingFor[transactionType].title}
-                    failTitle={wordingFor[transactionType].failTitle}
-                    successDescription={
-                        wordingFor[transactionType].successDescription
-                    }
-                    transaction={pool.transaction}
-                    mb={2}
-                />
-            )}
+            <TransactionBanner
+                title={wordingFor.rebalance.title}
+                failTitle={wordingFor.rebalance.failTitle}
+                successDescription={wordingFor.rebalance.successDescription}
+                transaction={pool.rebalanceTransaction}
+                mb={2}
+            />
 
             <Stack
                 spacing={4}
@@ -184,10 +176,7 @@ export const PoolSetting: FC = () => {
                             leftIcon={<FaBalanceScaleLeft />}
                             isDisabled={isRebalanceButtonDisabled}
                             isLoading={isRebalancing}
-                            onClick={() => {
-                                pool.rebalance();
-                                setTransactionType('rebalance');
-                            }}
+                            onClick={pool.rebalance}
                         >
                             Rebalance
                         </Button>
@@ -247,17 +236,13 @@ export const PoolSetting: FC = () => {
                 alignItems="flex-end"
                 mt={2}
             >
-                {transactionType === 'changeEns' && (
-                    <TransactionBanner
-                        title={wordingFor[transactionType].title}
-                        failTitle={wordingFor[transactionType].failTitle}
-                        successDescription={
-                            wordingFor[transactionType].successDescription
-                        }
-                        transaction={pool.transaction}
-                        mb={2}
-                    />
-                )}
+                <TransactionBanner
+                    title={wordingFor.changeEns.title}
+                    failTitle={wordingFor.changeEns.failTitle}
+                    successDescription={wordingFor.changeEns.successDescription}
+                    transaction={pool.setNameTransaction}
+                    mb={2}
+                />
 
                 <FormControl isInvalid={!!errors.ensName}>
                     <HStack justify="space-between">
@@ -306,10 +291,7 @@ export const PoolSetting: FC = () => {
                                 !!errors.ensName ||
                                 progress >= 1
                             }
-                            onClick={() => {
-                                setTransactionType('changeEns');
-                                pool.setName(getValues('ensName'));
-                            }}
+                            onClick={() => pool.setName(getValues('ensName'))}
                         >
                             Update
                         </Button>
@@ -328,18 +310,23 @@ export const PoolSetting: FC = () => {
                 </FormControl>
 
                 <FormControl pt={4}>
-                    {(transactionType === 'pause' ||
-                        transactionType === 'unpause') && (
-                        <TransactionBanner
-                            title={wordingFor[transactionType].title}
-                            failTitle={wordingFor[transactionType].failTitle}
-                            successDescription={
-                                wordingFor[transactionType].successDescription
-                            }
-                            transaction={pool.transaction}
-                            mb={2}
-                        />
-                    )}
+                    <TransactionBanner
+                        title={wordingFor.pause.title}
+                        failTitle={wordingFor.pause.failTitle}
+                        successDescription={wordingFor.pause.successDescription}
+                        transaction={pool.pauseTransaction}
+                        mb={2}
+                    />
+
+                    <TransactionBanner
+                        title={wordingFor.unpause.title}
+                        failTitle={wordingFor.unpause.failTitle}
+                        successDescription={
+                            wordingFor.unpause.successDescription
+                        }
+                        transaction={pool.unpauseTransaction}
+                        mb={2}
+                    />
 
                     <HStack justify="space-between">
                         <FormLabel>
@@ -369,11 +356,6 @@ export const PoolSetting: FC = () => {
                                 defaultChecked
                                 isChecked={!pool.paused}
                                 onChange={() => {
-                                    const transactionType = pool.paused
-                                        ? 'unpause'
-                                        : 'pause';
-                                    setTransactionType(transactionType);
-
                                     if (pool.paused) {
                                         pool.unpause();
                                     } else {

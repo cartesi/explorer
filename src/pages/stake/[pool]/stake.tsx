@@ -47,22 +47,20 @@ const PoolStake = () => {
 
     // query pool data
     const {
-        // amount,
-        // amounts,
         stakedShares,
-        // paused,
         balance: userBalance,
-        // withdrawBalance,
         depositTimestamp,
+        withdrawTransaction,
         lockTime,
-        transaction,
+        depositTransaction,
+        stakeTransaction,
+        unstakeTransaction,
         amountToShares,
         sharesToAmount,
         deposit,
         stake,
         unstake,
         withdraw,
-        // rebalance,
     } = useStakingPool(address, account);
 
     const stakedBalance = sharesToAmount(stakedShares);
@@ -130,7 +128,10 @@ const PoolStake = () => {
                         depositTimestamp={depositTimestamp}
                         lockTime={Number(lockTime)}
                         tokenTransaction={tokenTransaction}
-                        poolTransaction={transaction}
+                        depositTransaction={depositTransaction}
+                        withdrawTransaction={withdrawTransaction}
+                        stakeTransaction={stakeTransaction}
+                        unstakeTransaction={unstakeTransaction}
                     />
                 )}
             </Box>
