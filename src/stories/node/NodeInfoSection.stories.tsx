@@ -39,3 +39,19 @@ NodeInfo.args = {
     ...defaultProps,
     isOwned: true,
 };
+
+export const NodeAuthorize = Template.bind({});
+NodeAuthorize.args = {
+    ...defaultProps,
+    isAuthorized: false,
+    onAuthorize: () =>
+        alert('Wallet signature confirmation would open instead! =)'),
+};
+
+export const NodeAuthorizing = Template.bind({});
+NodeAuthorizing.args = {
+    ...defaultProps,
+    isAuthorizing: true,
+    isAuthorized: false,
+    onAuthorize: () => null,
+};
