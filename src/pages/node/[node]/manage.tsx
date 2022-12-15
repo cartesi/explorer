@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect, useRef, useState } from 'react';
-import Head from 'next/head';
 import {
     Box,
     Button,
@@ -49,6 +48,8 @@ import { TransactionInfoBanner } from '../../../components/stake/TransactionInfo
 import theme from '../../../styles/theme';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import PageHead from '../../../components/PageHead';
+import { useMessages } from '../../../utils/messages';
+import TransactionBanner from '../../../components/TransactionBanner';
 
 const ManageNode: FC = () => {
     const router = useRouter();
@@ -229,15 +230,26 @@ const ManageNode: FC = () => {
                 pb={4}
             >
                 <VStack spacing={4} alignItems="stretch">
-                    <TransactionInfoBanner
+                    <TransactionBanner
                         title="Setting allowance..."
                         failTitle="Error setting allowance"
                         successDescription="New allowance set successfully."
                         transaction={tokenTransaction}
                     />
 
+                    {currentTransaction === 'authorize' && (
+                        <TransactionBanner
+                            title={useMessages('node.authorize.authorizing')}
+                            failTitle={useMessages('node.authorize.fail')}
+                            successDescription={useMessages(
+                                'node.authorize.success'
+                            )}
+                            transaction={node.transaction}
+                        />
+                    )}
+
                     {isDepositAlertActive && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Setting deposit..."
                             failTitle="Error setting deposit"
                             successDescription="New deposit set successfully."
@@ -247,7 +259,7 @@ const ManageNode: FC = () => {
                     )}
 
                     {isRetireAlertActive && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Retiring Node..."
                             failTitle="Error retiring the node"
                             successDescription="Node retired successfully."
@@ -265,7 +277,7 @@ const ManageNode: FC = () => {
                     )}
 
                     {isHireAlertActive && (
-                        <TransactionInfoBanner
+                        <TransactionBanner
                             title="Hiring node..."
                             failTitle="Error hiring node"
                             successDescription="Node hired successfully."
@@ -328,6 +340,15 @@ const ManageNode: FC = () => {
                         isRetired={isRetired}
                         isRetiring={isRetiring}
                         isHiring={isHiring}
+                        isAuthorizing={
+                            currentTransaction === 'authorize' &&
+                            node.transaction.isOngoing
+                        }
+                        isAuthorized={node.authorized}
+                        onAuthorize={() => {
+                            setCurrentTransaction('authorize');
+                            node.authorize();
+                        }}
                         onRetire={() => {
                             setCurrentTransaction('retire');
                             setRetireAlertActive(true);
