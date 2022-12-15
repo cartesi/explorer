@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.4] - 2022-12-16
+
+-   Update calculation for CTSI staked on staking pool users page. A wallet connection is not required to see the total CTSI staked by each address.
+
 ## [2.12.3] - 2022-12-13
 
 -   Update home page tooltip copy.
@@ -247,7 +251,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...HEAD
+[2.12.4]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...v2.12.4
 [2.12.3]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...v2.12.3
 [2.12.2]: https://github.com/cartesi-corp/explorer/compare/v2.12.1...v2.12.2
 [2.12.1]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...v2.12.1
