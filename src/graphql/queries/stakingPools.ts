@@ -58,3 +58,11 @@ export const STAKING_POOLS = gql`
         }
     }
 `;
+
+export const STAKING_POOLS_IDS = gql`
+    query getPools($where: StakingPool_filter) {
+        stakingPools(where: $where) {
+            id
+        }
+    }
+`;

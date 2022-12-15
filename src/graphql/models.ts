@@ -376,3 +376,16 @@ export interface StakingPoolUserHistory {
     totalUsers: number;
     action: StakingPoolUserHistoryAction;
 }
+
+// ENS definitions
+type ResolvedAddress = {
+    id: string;
+};
+
+export type Domain = {
+    id: string;
+    name: string;
+    labelName: string;
+    createdAt: number;
+    resolvedAddress: ResolvedAddress;
+};
