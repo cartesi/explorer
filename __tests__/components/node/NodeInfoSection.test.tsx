@@ -25,6 +25,7 @@ const defaultProps = {
     onRetire: null,
     onHire: null,
     onDeposit: null,
+    onAuthorize: null,
 };
 jest.mock('../../../src/graphql/hooks/useNodes');
 jest.mock('@chakra-ui/react', () => {
@@ -113,5 +114,31 @@ describe('NodeInfoSection component', () => {
             .getByText('Retire node')
             .closest('button');
         expect(retireNodeButton.hasAttribute('disabled')).toBe(false);
+    });
+
+    it('should display Authorize button when node is not authorized to interact with PoS contract', () => {
+        render(
+            <NodeInfoSection
+                {...defaultProps}
+                isAuthorized={false}
+                onAuthorize={jest.fn()}
+            />
+        );
+
+        expect(screen.getByText('Authorize')).toBeInTheDocument();
+    });
+
+    it('should while authorizing disable the button and display a loading text', () => {
+        render(
+            <NodeInfoSection
+                {...defaultProps}
+                isAuthorizing
+                isAuthorized={false}
+            />
+        );
+
+        const btn = screen.getByText('authorizing').closest('button');
+
+        expect(btn.hasAttribute('disabled')).toBe(true);
     });
 });

@@ -43,9 +43,12 @@ export interface INodeInfoSection {
     isHiring?: boolean;
     isRetired?: boolean;
     isRetiring?: boolean;
+    isAuthorizing?: boolean;
+    isAuthorized?: boolean;
     onRetire: (nodeAddress: string) => void;
     onDeposit: (funds: BigNumber) => void;
     onHire: (nodeAddress: string, funds: BigNumber) => void;
+    onAuthorize?: () => void;
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
@@ -56,9 +59,12 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     isHiring = false,
     isRetired = false,
     isRetiring = false,
+    isAuthorizing = false,
+    isAuthorized = true,
     onRetire,
     onDeposit,
     onHire,
+    onAuthorize,
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
@@ -216,6 +222,23 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     >
                         Retire node
                     </Button>
+
+                    {!isAuthorized ? (
+                        <Button
+                            onClick={onAuthorize}
+                            isLoading={isAuthorizing}
+                            loadingText="authorizing"
+                            bgColor={buttonBg}
+                            w={{ base: 'auto' }}
+                            px={{ base: 4, md: 6 }}
+                            minWidth={{ base: 'auto', md: '173px' }}
+                            fontWeight="bold"
+                            textTransform="uppercase"
+                            me={2}
+                        >
+                            Authorize
+                        </Button>
+                    ) : null}
 
                     <NodeRetireModal
                         address={address}
