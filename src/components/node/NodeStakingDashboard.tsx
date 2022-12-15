@@ -31,7 +31,6 @@ import { NodeAllowanceModal } from './modals/NodeAllowanceModal';
 export interface NodeStakingDashboardProps extends StackProps {
     balance: BigNumber; // wallet balance
     allowance: BigNumber; // ERC20 allowance
-    userBalance: BigNumber; // user pool balance
     userETHBalance: BigNumber; // user ETH balance
     onApprove: (amount: BigNumberish) => void;
 }

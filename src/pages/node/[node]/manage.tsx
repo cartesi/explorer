@@ -59,7 +59,6 @@ const ManageNode: FC = () => {
 
     // user ETH balance
     const userBalance = useBalance(account);
-    const userETHBalance = useBalance(account);
 
     const {
         staking,
@@ -213,8 +212,7 @@ const ManageNode: FC = () => {
                     position="relative"
                 >
                     <NodeStakingDashboard
-                        userBalance={userBalance}
-                        userETHBalance={userETHBalance}
+                        userETHBalance={userBalance}
                         balance={balance}
                         allowance={allowance}
                         onApprove={(amount) => {
