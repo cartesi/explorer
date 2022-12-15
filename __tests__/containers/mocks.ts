@@ -51,6 +51,7 @@ const generateNodeData = (): { data: NodesData } => ({
                     totalReward: '0',
                 },
                 status: 'Owned',
+                retirementTimestamp: null,
                 timestamp: 1656483324,
                 totalBlocks: 1,
                 totalReward: '10000000000000000000',
@@ -124,10 +125,37 @@ const generateStakingPoolsData = (): { data: StakingPoolsData } => ({
     },
 });
 
+const nodeRetiredHistoryData = (): { data: NodesData } => ({
+    data: {
+        nodes: [
+            {
+                id: '0x43551627aafca2f871d4b23d438257b8fcf741d6',
+                owner: {
+                    balance: '6000000000000000000000',
+                    id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+                    maturingBalance: '4000000000000000000000',
+                    maturingTimestamp: 1670819220,
+                    releasingBalance: '0',
+                    releasingTimestamp: 0,
+                    stakedBalance: '2000000000000000000000',
+                    totalBlocks: 0,
+                    totalReward: '0',
+                },
+                status: 'Retired',
+                timestamp: 1670477832,
+                retirementTimestamp: 1670485824,
+                totalBlocks: 0,
+                totalReward: '0',
+            },
+        ],
+    },
+});
+
 export {
     buildUseUserNodesReturn,
     buildUseStakingPoolsReturn,
     buildUseCartesiTokenReturn,
     generateNodeData,
     generateStakingPoolsData,
+    nodeRetiredHistoryData,
 };
