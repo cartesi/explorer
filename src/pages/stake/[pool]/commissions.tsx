@@ -25,14 +25,25 @@ import Pagination from '../../../components/Pagination';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
 import PerPageSelect from '../../../components/PerPageSelect';
 import PageHead from '../../../components/PageHead';
-import { useENS } from '../../../services/ens';
-import { formatEnsName } from '../../../utils/stringUtils';
 
-const PoolCommissions = () => {
+import {
+    Context,
+    ENSStaticProps,
+    getENSStaticProps,
+    getPoolsStaticPaths,
+} from '../../../utils/staticGeneration';
+
+export async function getStaticPaths() {
+    return getPoolsStaticPaths();
+}
+
+export async function getStaticProps(context: Context) {
+    return getENSStaticProps(context);
+}
+
+const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
-    const ensEntry = useENS(address);
-    const formattedAddress = formatEnsName(address, ensEntry?.name);
     const stakingPoolCommissionPageEnabled = useFlag(
         'stakingPoolCommissionPageEnabled'
     );

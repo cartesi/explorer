@@ -42,9 +42,21 @@ import {
 import SearchInput from '../../../components/SearchInput';
 import useStakingPoolUserHistories from '../../../graphql/hooks/useStakingPoolUserHistories';
 import UsersChart from '../../../components/stake/UsersChart';
-import { useENS } from '../../../services/ens';
-import { formatEnsName } from '../../../utils/stringUtils';
 import PageHead from '../../../components/PageHead';
+import {
+    Context,
+    ENSStaticProps,
+    getENSStaticProps,
+    getPoolsStaticPaths,
+} from '../../../utils/staticGeneration';
+
+export async function getStaticPaths() {
+    return getPoolsStaticPaths();
+}
+
+export async function getStaticProps(context: Context) {
+    return getENSStaticProps(context);
+}
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -55,7 +67,7 @@ export interface AugmentedPoolBalance extends PoolBalance {
     accumulatedShares: string;
 }
 
-const PoolUsers = () => {
+const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     const bg = useColorModeValue('gray.80', 'header');
     const sectionBg = useColorModeValue('white', 'gray.800');
     const { account, chainId } = useWallet();
@@ -63,8 +75,6 @@ const PoolUsers = () => {
     const router = useRouter();
     const address = router.query.pool as string;
     const stakingPool = useStakingPoolQuery(address);
-    const ensEntry = useENS(address);
-    const formattedAddress = formatEnsName(address, ensEntry?.name);
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [search, setSearch] = useState<string | undefined>(undefined);

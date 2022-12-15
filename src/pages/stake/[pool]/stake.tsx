@@ -25,20 +25,32 @@ import { useWallet } from '../../../contexts/wallet';
 import { BigNumber } from 'ethers';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useENS } from '../../../services/ens';
-import { formatEnsName } from '../../../utils/stringUtils';
 import PageHead from '../../../components/PageHead';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import {
+    Context,
+    ENSStaticProps,
+    getENSStaticProps,
+    getPoolsStaticPaths,
+} from '../../../utils/staticGeneration';
 
-const PoolStake = () => {
+export async function getStaticPaths() {
+    return getPoolsStaticPaths();
+}
+
+export async function getStaticProps(context: Context) {
+    return getENSStaticProps(context);
+}
+
+const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
     const { account, active: isConnected } = useWallet();
 
     // get pool address from path
     const router = useRouter();
     const address = router.query.pool as string;
 
-    const ensEntry = useENS(address);
-    const formattedAddress = formatEnsName(address, ensEntry?.name);
+    // const ensEntry = useENS(address);
+    // const formattedAddress = formatEnsName(address, ensEntry?.name);
 
     // query block number (continuously)
     const blockNumber = useBlockNumber();

@@ -38,9 +38,21 @@ import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
 import { PoolActivity } from '../../components/stake/PoolActivity';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
-import { useENS } from '../../services/ens';
 import PageHead from '../../components/PageHead';
-import { formatEnsName } from '../../utils/stringUtils';
+import {
+    Context,
+    ENSStaticProps,
+    getENSStaticProps,
+    getPoolsStaticPaths,
+} from '../../utils/staticGeneration';
+
+export async function getStaticPaths() {
+    return getPoolsStaticPaths();
+}
+
+export async function getStaticProps(context: Context) {
+    return getENSStaticProps(context);
+}
 
 const blockAverageInterval = (
     result: QueryResult<BlocksData, BlocksVars>
@@ -54,15 +66,12 @@ const blockAverageInterval = (
     return 0;
 };
 
-const PoolInfo = () => {
+const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
     const { account } = useWallet();
 
     // get pool address from path
     const router = useRouter();
     const address = router.query.pool as string;
-
-    const ensEntry = useENS(address);
-    const formattedAddress = formatEnsName(address, ensEntry?.name);
 
     // query block number (continuously)
     const blockNumber = useBlockNumber();
