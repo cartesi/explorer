@@ -28,6 +28,11 @@ const messages = {
             notMine: () => 'Looks like that node is already owned.',
         },
         retired: () => 'This node is already retired.',
+        authorize: {
+            authorizing: () => 'Authorizing node to use new PoS...',
+            success: () => 'Node authorized with success!',
+            fail: () => 'Node authorization failed!',
+        },
     },
     deposit: {
         maxAllowed: (amount: number, token = 'ETH') =>

@@ -52,6 +52,29 @@ describe('useMessages hook', () => {
             const { result } = renderHook(() => useMessages('node.retired'));
             expect(result.current).toEqual('This node is already retired.');
         });
+
+        it('should have a message when authorizing a node', () => {
+            const { result } = renderHook(() =>
+                useMessages('node.authorize.authorizing')
+            );
+            expect(result.current).toEqual(
+                'Authorizing node to use new PoS...'
+            );
+        });
+
+        it('should have a message when authorize action fails', () => {
+            const { result } = renderHook(() =>
+                useMessages('node.authorize.fail')
+            );
+            expect(result.current).toEqual('Node authorization failed!');
+        });
+
+        it('should have a message when authorize action succeed', () => {
+            const { result } = renderHook(() =>
+                useMessages('node.authorize.success')
+            );
+            expect(result.current).toEqual('Node authorized with success!');
+        });
     });
 
     describe('Messages on deposit context', () => {
