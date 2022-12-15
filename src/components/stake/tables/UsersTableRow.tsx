@@ -22,7 +22,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import Address from '../../Address';
 import { formatCTSI } from '../../../utils/token';
-import { useStakingPool } from '../../../services/pool';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     hourCycle: 'h23',
@@ -35,14 +34,24 @@ export interface UsersTableRowProps {
     balance: PoolBalanceWithAccumulatedShares;
 }
 
+const calculateStakedCTSI = (
+    balance: PoolBalanceWithAccumulatedShares
+): BigNumber => {
+    const uShares = BigNumber.from(balance.shares ?? 0);
+    const pAmount = BigNumber.from(balance.pool.amount ?? 0);
+    const pShares = BigNumber.from(balance.pool.shares ?? 1);
+
+    return uShares.mul(pAmount).div(pShares);
+};
+
 const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
     const borderColor = useColorModeValue('gray.100', 'header');
-    const { sharesToAmount } = useStakingPool(balance.pool.id, balance.user.id);
     const formattedStakeTime = dateTimeFormat.format(
         balance.stakeTimestamp * 1000
     );
-    const stakedBalance = sharesToAmount(BigNumber.from(balance.shares));
+
+    const stakedBalance = calculateStakedCTSI(balance);
     const truncateNumber = (num) => Math.trunc(num * 100) / 100;
 
     return (
