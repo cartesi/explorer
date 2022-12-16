@@ -36,7 +36,7 @@ import { truncateString } from '../../utils/stringUtils';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
 
 export interface INodeInfoSection {
-    account: string;
+    account?: string;
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;

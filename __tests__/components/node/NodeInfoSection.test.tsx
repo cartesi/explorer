@@ -13,10 +13,12 @@ import { render, screen, cleanup } from '@testing-library/react';
 import { useMediaQuery } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
+import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
+import { buildUseUserNodesReturn } from '../../containers/mocks';
 import { truncateString } from '../../../src/utils/stringUtils';
-
 const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {
+    account: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
     address: '0xb00299b573a9deee20e6a242416188d1033e325f',
     userBalance: BigNumber.from('0x029799b68c5fbbd4'),
     nodeBalance: BigNumber.from('0x029799b68c5fbbd4'),
@@ -24,7 +26,7 @@ const defaultProps = {
     onHire: null,
     onDeposit: null,
 };
-
+jest.mock('../../../src/graphql/hooks/useNodes');
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
     return {
@@ -37,10 +39,14 @@ jest.mock('@chakra-ui/react', () => {
 const mockUseMediaQuery = useMediaQuery as jest.MockedFunction<
     typeof useMediaQuery
 >;
+const useUserNodeStub = useUserNodes as jest.MockedFunction<
+    typeof useUserNodes
+>;
 
 describe('NodeInfoSection component', () => {
     beforeEach(() => {
         mockUseMediaQuery.mockReturnValue([true]);
+        useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
     });
 
     afterEach(() => {
@@ -69,12 +75,6 @@ describe('NodeInfoSection component', () => {
         expect(
             screen.getByText(truncateString(defaultProps.address))
         ).toBeInTheDocument();
-    });
-
-    it('should render node info section', () => {
-        render(<NodeInfoSection {...defaultProps} />);
-
-        expect(screen.getByText('Node Address')).toBeInTheDocument();
     });
 
     it('should render node hire form', () => {

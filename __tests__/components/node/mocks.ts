@@ -97,6 +97,8 @@ const initialNodeState: Node = {
     transaction: buildTransaction(),
     transfer: jest.fn(),
     user: '',
+    ready: false,
+    error: '',
 };
 
 const ownedNode: Node = {
