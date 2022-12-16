@@ -169,7 +169,7 @@ interface PropState {
     onboard?: OnboardAPI;
 }
 
-export const useOnboardV2 = () => {
+export const useOnboard = () => {
     const [state, setState] = useState<PropState>({});
     const ankrEnabled = useFlag('ankrEnabled');
     const [isFirstNetworkChange, setFirstNetworkChange] =

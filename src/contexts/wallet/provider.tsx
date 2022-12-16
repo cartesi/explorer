@@ -9,11 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useFlag, useUnleashContext } from '@unleash/proxy-client-react';
+import { useUnleashContext } from '@unleash/proxy-client-react';
 import { createContext, FC, useEffect, PropsWithChildren } from 'react';
 import { WalletConnectionContextProps } from './definitions';
-import { useOnboardV1 } from './useOnboardV1';
-import { useOnboardV2 } from './useOnboardV2';
+import { useOnboard } from './useOnboard';
 
 const initialContextState = {
     active: false,
@@ -21,27 +20,6 @@ const initialContextState = {
     activate: async () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     deactivate: () => {},
-};
-
-const useOnboard = () => {
-    const v2Enabled = useFlag('onboardV2Enabled');
-    const v1 = useOnboardV1();
-    const v2 = useOnboardV2();
-
-    useEffect(() => {
-        const prevWallet = v2Enabled ? v1 : v2;
-        if (prevWallet.active) {
-            console.info(
-                `Wallet provider switched\n Disconnecting the previous one (${
-                    v2Enabled ? 'Onboard V1' : 'Onboard V2'
-                })`
-            );
-
-            prevWallet.disconnectWallet();
-        }
-    }, [v2Enabled, v1, v2]);
-
-    return v2Enabled ? v2 : v1;
 };
 
 export const WalletConnectionContext =

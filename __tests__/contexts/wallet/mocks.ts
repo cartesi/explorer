@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended';
-import { useOnboardV2 } from '../../../src/contexts/wallet/useOnboardV2';
+import { useOnboard } from '../../../src/contexts/wallet/useOnboard';
 import { ReturnOf } from '../../test-utilities';
 
-type UseOnboardV2Return = ReturnOf<typeof useOnboardV2>;
+type UseOnboardV2Return = ReturnOf<typeof useOnboard>;
 
 const buildUseOnboardV2Ret = () => mock<UseOnboardV2Return>();
 
