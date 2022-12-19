@@ -46,8 +46,6 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     disclosure,
     onDepositFunds,
 }) => {
-    if (!userBalance) return null;
-
     const { isOpen, onClose } = disclosure;
     const [output, setOutput] = useState<BigNumber>(constants.Zero);
     const [fundsValue, setFundsValue] = useState<any>(0);
@@ -72,7 +70,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
         return valueFormatted;
     };
 
-    const userETHBalance = toETH(userBalance);
+    const userETHBalance = toETH(userBalance ?? constants.Zero);
 
     useEffect(() => {
         if (!isOpen) {
