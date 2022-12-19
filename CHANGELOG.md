@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.12.4] - 2022-12-16
+## [2.12.4] - 2022-12-19
 
--   Update calculation for CTSI staked on staking pool users page. A wallet connection is not required to see the total CTSI staked by each address.
+-   We updated the calculation for CTSI staked on staking pool users page. A wallet connection is not required to see the total CTSI staked by each address.
+-   We fixed a problem on stake page. Where the input inside the modal for deposit and stake would be stale after the user closed it. That forced the user to erase the value and type again so the button would be enabled again.
+-   We removed the code that supported the old node-runners page
+-   We removed the code that supported the old pool management and creation screens.
 
 ## [2.12.3] - 2022-12-13
 
