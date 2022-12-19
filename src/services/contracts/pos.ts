@@ -14,6 +14,8 @@ import {
     StakingImpl,
     PoSV2FactoryImpl__factory,
     PoSV2FactoryImpl,
+    PoS__factory,
+    PoS,
 } from '@cartesi/pos';
 
 import mainnet from '@cartesi/pos/export/abi/mainnet.json';
@@ -22,6 +24,7 @@ import goerli from '@cartesi/pos/export/abi/goerli.json';
 import localhost from './localhost.json';
 
 import { ChainMap, useContract } from '.';
+import { useFlag } from '@unleash/proxy-client-react';
 
 const abis: ChainMap = {
     1: mainnet,
@@ -33,10 +36,14 @@ export const useStakingContract = (): StakingImpl => {
     return useContract(StakingImpl__factory.connect, abis, 'StakingImpl');
 };
 
-export const usePoSContract = (): PoSV2FactoryImpl => {
-    return useContract(
+export const usePoSContract = (): PoSV2FactoryImpl | PoS => {
+    const posV2Enabled = useFlag('posV2Enabled');
+    const posV2FactoryImpl = useContract(
         PoSV2FactoryImpl__factory.connect,
         abis,
         'PoSV2FactoryImpl'
     );
+
+    const pos = useContract(PoS__factory.connect, abis, 'PoS');
+    return posV2Enabled ? posV2FactoryImpl : pos;
 };
