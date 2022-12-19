@@ -17,6 +17,9 @@ const messages = {
             disconnected: () => 'Your wallet is disconnected',
         },
     },
+    pos: {
+        v2: () => 'Proof of Staking Version 2',
+    },
     node: {
         owned: {
             mine: () => 'Looks like you already own that node.',
@@ -32,6 +35,20 @@ const messages = {
             authorizing: () => 'Authorizing node to use new PoS...',
             success: () => 'Node authorized with success!',
             fail: () => 'Node authorization failed!',
+            pos: {
+                steps: {
+                    title: () =>
+                        'Here is what you need to do in case you did not migrate your node yet.',
+                    one: () =>
+                        'Enter the management screen of your private node.',
+                    two: () =>
+                        'You should see an AUTHORIZE button in the node section.',
+                    three: () =>
+                        'Click AUTHORIZE and confirm the transaction with your wallet.',
+                    four: () =>
+                        'Once confirmed, congratulations you are officially using the PoS v2.',
+                },
+            },
         },
     },
     deposit: {

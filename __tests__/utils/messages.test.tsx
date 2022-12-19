@@ -75,6 +75,42 @@ describe('useMessages hook', () => {
             );
             expect(result.current).toEqual('Node authorized with success!');
         });
+
+        describe('PoS v2 migration steps', () => {
+            it('should have a list of messages to educate users how to do the authorization', () => {
+                const { result: stepOne } = renderHook(() =>
+                    useMessages('node.authorize.pos.steps.one')
+                );
+                const { result: stepTwo } = renderHook(() =>
+                    useMessages('node.authorize.pos.steps.two')
+                );
+                const { result: stepThree } = renderHook(() =>
+                    useMessages('node.authorize.pos.steps.three')
+                );
+                const { result: stepFour } = renderHook(() =>
+                    useMessages('node.authorize.pos.steps.four')
+                );
+                expect(stepOne.current).toEqual(
+                    'Enter the management screen of your private node.'
+                );
+                expect(stepTwo.current).toEqual(
+                    'You should see an AUTHORIZE button in the node section.'
+                );
+                expect(stepThree.current).toEqual(
+                    'Click AUTHORIZE and confirm the transaction with your wallet.'
+                );
+                expect(stepFour.current).toEqual(
+                    'Once confirmed, congratulations you are officially using the PoS v2.'
+                );
+            });
+        });
+    });
+
+    describe('Messages on pos context', () => {
+        it('should return a message for pos version 2', () => {
+            const { result } = renderHook(() => useMessages('pos.v2'));
+            expect(result.current).toEqual('Proof of Staking Version 2');
+        });
     });
 
     describe('Messages on deposit context', () => {
