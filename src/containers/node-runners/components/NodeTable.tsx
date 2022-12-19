@@ -25,6 +25,8 @@ import {
     Spinner,
     Button,
     VisuallyHidden,
+    Box,
+    useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import Address from '../../../components/Address';
@@ -36,6 +38,11 @@ import {
 import Block from './Block';
 import { useAtom } from 'jotai';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
+import { Notification } from '../../../components/Notification';
+import { OrderedContent } from '../../../components/OrderedContent';
+import { useFlag } from '@unleash/proxy-client-react';
+import { useEffect } from 'react';
+import { useMessages } from '../../../utils/messages';
 
 interface TableInfo {
     boxProps?: BoxProps;
@@ -134,13 +141,76 @@ const NodeTable = () => {
     );
 };
 
+const SHOW_POS_V2_ALERT = 'showPoSV2AlertForPrivateNode';
+
+const useGetShowAlertFromLocalStorage = () => {
+    const fromLocalStorage = localStorage.getItem(SHOW_POS_V2_ALERT);
+    const value = fromLocalStorage ? JSON.parse(fromLocalStorage) : true;
+    const handleDontShowAgain = () =>
+        localStorage.setItem(SHOW_POS_V2_ALERT, 'false');
+
+    return {
+        value,
+        handleDontShowAgain,
+    };
+};
+
 const NodeTableBlock = ({ boxProps }: TableInfo) => {
     const [bg] = useStyle();
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
+    const posV2Enabled = useFlag('posV2Enabled');
+    const { value, handleDontShowAgain } = useGetShowAlertFromLocalStorage();
+    const showAlert = posV2Enabled && value;
+    const { isOpen, onClose, onOpen } = useDisclosure({
+        defaultIsOpen: showAlert,
+    });
+
+    const notificationTitle = useMessages('pos.v2');
+    const authorizeTitle = useMessages('node.authorize.pos.steps.title');
+    const authorizeSteps = [
+        useMessages('node.authorize.pos.steps.one'),
+        useMessages('node.authorize.pos.steps.two'),
+        useMessages('node.authorize.pos.steps.three'),
+        useMessages('node.authorize.pos.steps.four'),
+    ];
+
+    useEffect(() => {
+        showAlert ? onOpen() : onClose();
+    }, [showAlert, onClose, onOpen]);
 
     return (
         hasPrivateNode && (
             <Block bg={bg} {...boxProps}>
+                <Box py="2">
+                    {isOpen && (
+                        <Notification
+                            status="warning"
+                            title={notificationTitle}
+                            subtitle={
+                                <OrderedContent
+                                    title={authorizeTitle}
+                                    orderedItems={authorizeSteps}
+                                    stackProps={{ px: 0, py: 3 }}
+                                />
+                            }
+                            onClose={() => onClose()}
+                        >
+                            <Button
+                                position="absolute"
+                                bottom={{ base: 3, md: 5 }}
+                                right={5}
+                                size="sm"
+                                onClick={() => {
+                                    onClose();
+                                    handleDontShowAgain();
+                                }}
+                                variant="link"
+                            >
+                                Don't show again
+                            </Button>
+                        </Notification>
+                    )}
+                </Box>
                 <Stack justify="space-between" direction={'row'}>
                     <Heading
                         fontSize="2xl"

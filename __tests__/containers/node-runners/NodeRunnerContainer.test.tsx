@@ -14,7 +14,6 @@ import {
     cleanup,
     findByText,
     fireEvent,
-    getByRole,
     getByTestId,
     getByText,
     render,
@@ -36,6 +35,8 @@ import {
 } from '../mocks';
 import { ENSEntry, useENS } from '../../../src/services/ens';
 import { useCartesiToken } from '../../../src/services/token';
+import { useFlag } from '@unleash/proxy-client-react';
+import { useMessages } from '../../../src/utils/messages';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
 const useENSMod = '../../../src/services/ens';
@@ -44,6 +45,15 @@ jest.mock('../../../src/services/token', () => {
     return {
         __esModule: true,
         useCartesiToken: jest.fn(),
+    };
+});
+
+jest.mock('@unleash/proxy-client-react', () => {
+    const original = jest.requireActual('@unleash/proxy-client-react');
+    return {
+        __esModule: true,
+        ...original,
+        useFlag: jest.fn(),
     };
 });
 
@@ -76,6 +86,8 @@ const useCartesiTokenStub = useCartesiToken as jest.MockedFunction<
     typeof useCartesiToken
 >;
 
+const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
+
 const ENodeRunnerContainer = withChakraTheme(NodeRunnersContainer);
 
 const buildWallet = (): UseWallet => ({
@@ -97,6 +109,7 @@ describe('NodeRunners container (Landing Page)', () => {
             push: jest.fn(),
         };
 
+        useFlagStub.mockReturnValue(false);
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
         useStakingPoolsStub.mockReturnValue(buildUseStakingPoolsReturn());
         useENSStub.mockReturnValue({} as ENSEntry);
@@ -482,6 +495,76 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(
                     screen.queryByText('Run a private node')
                 ).not.toBeInTheDocument();
+            });
+
+            describe('with PoS V2 feature flag enabled', () => {
+                it('should display an message to help with steps to migrate', () => {
+                    const mock = buildUseUserNodesReturn();
+                    mock.data = generateNodeData().data;
+                    useUserNodeStub.mockReturnValue(mock);
+                    useFlagStub.mockReturnValue(true);
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    expect(
+                        screen.getByText(useMessages('pos.v2'))
+                    ).toBeInTheDocument();
+                    expect(
+                        screen.getByText(
+                            useMessages('node.authorize.pos.steps.title')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('node.authorize.pos.steps.one')
+                        )
+                    ).toBeInTheDocument();
+                    expect(
+                        screen.getByText(
+                            useMessages('node.authorize.pos.steps.two')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('node.authorize.pos.steps.three')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('node.authorize.pos.steps.four')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(`Don't show again`)
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen
+                            .getByRole('alert')
+                            .querySelector('button[role="close-button"]')
+                    ).toBeInTheDocument();
+                });
+            });
+
+            describe('with PoS V2 feature flag disabled', () => {
+                it('should not display the migration message', async () => {
+                    const mock = buildUseUserNodesReturn();
+                    mock.data = generateNodeData().data;
+                    useUserNodeStub.mockReturnValue(mock);
+                    // default is returning false.
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    expect(
+                        screen.queryByText(useMessages('pos.v2'))
+                    ).not.toBeInTheDocument();
+                });
             });
         });
 

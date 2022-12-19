@@ -16,6 +16,8 @@ import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import { buildUseUserNodesReturn } from '../../containers/mocks';
 import { truncateString } from '../../../src/utils/stringUtils';
+import { useFlag } from '@unleash/proxy-client-react';
+
 const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {
     account: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
@@ -28,6 +30,16 @@ const defaultProps = {
     onAuthorize: null,
 };
 jest.mock('../../../src/graphql/hooks/useNodes');
+
+jest.mock('@unleash/proxy-client-react', () => {
+    const original = jest.requireActual('@unleash/proxy-client-react');
+    return {
+        __esModule: true,
+        ...original,
+        useFlag: jest.fn(),
+    };
+});
+
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
     return {
@@ -44,10 +56,13 @@ const useUserNodeStub = useUserNodes as jest.MockedFunction<
     typeof useUserNodes
 >;
 
+const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
+
 describe('NodeInfoSection component', () => {
     beforeEach(() => {
         mockUseMediaQuery.mockReturnValue([true]);
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
+        useFlagStub.mockReturnValue(false);
     });
 
     afterEach(() => {
