@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, memo, useState, useEffect } from 'react';
+import React, { FC, memo } from 'react';
 import {
     Accordion,
     AccordionItem,
@@ -26,33 +26,47 @@ import {
     Th,
     Td,
     Text,
+    useMediaQuery,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
-export interface INodeRetiredHistory {
+import { truncateString } from '../../utils/stringUtils';
+export interface NodeRetiredHistoryProps {
     address: string;
 }
 interface HistoryProps {
-    index: number;
     address: string;
     retirementTimestamp: number;
 }
 
 const History: FC<HistoryProps> = memo(
-    ({ index, address, retirementTimestamp }) => {
+    ({ address, retirementTimestamp, ...restProps }) => {
+        const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
         const formattedTime = new Date(
             retirementTimestamp * 1000
         ).toUTCString();
+        const formattedAddress = isLargerThan554
+            ? address
+            : truncateString(address);
         return (
-            <Tr borderBottom="1px solid #E3E3E5" key={index}>
-                <Td>{address}</Td>
+            <Tr
+                borderBottomWidth="1px"
+                borderBottomColor="gray.200"
+                borderBottomStyle="solid"
+                {...restProps}
+            >
+                <Td>{formattedAddress}</Td>
                 <Td>{formattedTime}</Td>
             </Tr>
         );
     }
 );
-export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
-    const [list, updateList] = useState(null);
-    const { data, loading } = useUserNodes(
+export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
+    address,
+}) => {
+    const textColor = useColorModeValue('gray.400', 'white');
+    const borderColor = useColorModeValue('black', 'white');
+    const { data } = useUserNodes(
         address,
         3,
         {
@@ -60,11 +74,6 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
         },
         'retirementTimestamp'
     );
-    useEffect(() => {
-        if (data) {
-            updateList(data?.nodes);
-        }
-    }, [loading]);
     return (
         <Box mt={8} mb={10}>
             <Accordion allowToggle>
@@ -72,9 +81,11 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
                     <AccordionButton
                         borderTop="none"
                         borderBottom="none"
-                        borderLeft="1px solid #000"
-                        paddingX="1rem"
-                        minH="2rem"
+                        borderLeftWidth="1px"
+                        borderLeftColor={borderColor}
+                        borderLeftStyle="solid"
+                        paddingX={4}
+                        minH={8}
                     >
                         <Flex alignItems="center" columnGap={4}>
                             <Text fontSize="xl">Node History</Text>
@@ -83,8 +94,12 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
                     </AccordionButton>
                     <AccordionPanel px={0}>
                         <TableContainer>
-                            <Table variant="unstyled" color="gray.400">
-                                <Thead borderBottom="1px solid #E3E3E5">
+                            <Table variant="unstyled" color={textColor}>
+                                <Thead
+                                    borderBottomWidth="1px"
+                                    borderBottomColor="gray.200"
+                                    borderBottomStyle="solid"
+                                >
                                     <Tr>
                                         <Th>
                                             <Text
@@ -105,15 +120,14 @@ export const NodeRetiredHistory: FC<INodeRetiredHistory> = ({ address }) => {
                                     </Tr>
                                 </Thead>
                                 <Tbody fontSize="md">
-                                    {list &&
-                                        list.length > 0 &&
-                                        list.map((history, index) => (
+                                    {data?.nodes &&
+                                        data?.nodes.length > 0 &&
+                                        data.nodes.map((node) => (
                                             <History
-                                                key={index}
-                                                index={index}
-                                                address={history.id}
+                                                key={node.id}
+                                                address={node.id}
                                                 retirementTimestamp={
-                                                    history.retirementTimestamp
+                                                    node.retirementTimestamp
                                                 }
                                             />
                                         ))}

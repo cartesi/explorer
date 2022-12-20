@@ -49,7 +49,6 @@ import { TransactionInfoBanner } from '../../../components/stake/TransactionInfo
 import theme from '../../../styles/theme';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
 import PageHead from '../../../components/PageHead';
-import { NodeRetiredHistory } from '../../../components/node/NodeRetiredHistory';
 
 const ManageNode: FC = () => {
     const router = useRouter();
