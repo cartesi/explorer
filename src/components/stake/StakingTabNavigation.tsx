@@ -11,7 +11,7 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { DashboardIcon, StakeIcon } from '../Icons';
+import { SimpleChartIcon, StakeIcon } from '../Icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -27,7 +27,7 @@ export const StakingTabNavigation: FC = () => {
                 <NextLink href={`/stake/${address}`}>
                     <Button
                         py={{ lg: 7 }}
-                        leftIcon={<DashboardIcon w="24px" h="24px" />}
+                        leftIcon={<SimpleChartIcon w="24px" h="24px" />}
                         outline="none"
                         textTransform="none"
                         isActive={

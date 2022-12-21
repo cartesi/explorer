@@ -9,13 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ArrowBackIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, VStack, Stack, Button, HStack } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import {
+    Box,
+    VStack,
+    Stack,
+    Button,
+    HStack,
+    useBreakpointValue,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { isString } from 'lodash';
 import { useWallet } from '../../contexts/wallet';
 import AddressText from '../AddressText';
+import { SettingsIcon } from '../Icons';
 import { StakingTabNavigation } from './StakingTabNavigation';
 
 export interface PoolHeaderProps {
@@ -27,6 +35,7 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
     const { chainId } = useWallet();
+    const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
 
     return (
         <Box
@@ -53,6 +62,14 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                                 Staking pool
                             </Button>
                         </NextLink>
+                    </HStack>
+
+                    <HStack>
+                        <AddressText
+                            address={address}
+                            chainId={chainId}
+                            fontSize={['xl', '2xl']}
+                        />
 
                         {isManager && (
                             <NextLink
@@ -67,18 +84,13 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                                     size="sm"
                                     pl={0}
                                     data-testid="pool-management-link"
+                                    title="Manage pool"
                                 >
-                                    <EditIcon />
+                                    <SettingsIcon w={iconSize} h={iconSize} />
                                 </Button>
                             </NextLink>
                         )}
                     </HStack>
-
-                    <AddressText
-                        address={address}
-                        chainId={chainId}
-                        fontSize={['xl', '2xl']}
-                    />
                 </VStack>
 
                 <StakingTabNavigation />

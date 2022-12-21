@@ -144,6 +144,21 @@ const PoolTable = ({ data }: Props) => {
                                         color="gray.900"
                                         minWidth="120px"
                                         shouldDisplayFallbackAvatar
+                                        renderLabel={(label) => (
+                                            <NextLink
+                                                href={`/stake/${pool.id}`}
+                                                passHref
+                                            >
+                                                <Button
+                                                    as="a"
+                                                    variant="text"
+                                                    px={0}
+                                                    title="Pool info"
+                                                >
+                                                    {label}
+                                                </Button>
+                                            </NextLink>
+                                        )}
                                     />
                                 </Td>
                                 <Td isNumeric>{pool.totalStaked}</Td>

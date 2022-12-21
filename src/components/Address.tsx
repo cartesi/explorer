@@ -42,6 +42,7 @@ export interface AddressProps extends TextProps {
     noActions?: boolean;
     shouldDisplayFallbackAvatar?: boolean;
     fallbackAvatar?: FC<IconProps>;
+    renderLabel?: (label: React.ReactNode) => React.ReactNode;
 }
 
 const Address: FC<AddressProps> = (props) => {
@@ -57,6 +58,7 @@ const Address: FC<AddressProps> = (props) => {
         noActions = false,
         shouldDisplayFallbackAvatar = false,
         fallbackAvatar,
+        renderLabel = (children) => <>{children}</>,
         color,
         fontSize,
         ...restProps
@@ -78,7 +80,8 @@ const Address: FC<AddressProps> = (props) => {
         lg: true,
         xl: false,
     });
-
+    const linkMargin = useBreakpointValue({ base: 7, sm: 0 });
+    const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
     const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
 
     const label =
@@ -117,14 +120,20 @@ const Address: FC<AddressProps> = (props) => {
                 )
             )}
             {name && <Text>{name}</Text>}
-            <Text color={color} fontSize={fontSize} {...restProps}>
-                {label}
-            </Text>
+
+            {renderLabel(
+                <Text color={color} fontSize={fontSize} {...restProps}>
+                    {label}
+                </Text>
+            )}
+
             {showActions && !hasCopied && (
                 <Link display="flex">
                     <CopyIcon
                         onClick={onCopy}
                         fontSize={fontSize}
+                        w={iconSize}
+                        h={iconSize}
                         data-testid="copy-icon"
                     />
                 </Link>
@@ -135,6 +144,9 @@ const Address: FC<AddressProps> = (props) => {
                     <ExternalLinkIcon
                         fontSize={fontSize}
                         data-testid="external-link-icon"
+                        mr={linkMargin}
+                        w={iconSize}
+                        h={iconSize}
                     />
                 </Link>
             )}

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, useEffect } from 'react';
-import { Box, Heading, Stack, HStack, Text } from '@chakra-ui/react';
+import { Box, Heading, Stack, HStack, Text, Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../../components/Layout';
@@ -21,6 +21,7 @@ import Address from '../../../components/Address';
 import PageHead from '../../../components/PageHead';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import { isObject, isString } from 'lodash';
+import { SimpleChartIcon } from '../../../components/Icons';
 
 const PoolNode: FC = () => {
     const { account, chainId, active } = useWallet();
@@ -57,7 +58,7 @@ const PoolNode: FC = () => {
                 <NextLink href={backLink} passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
-                        <Text>Back</Text>
+                        <Text>Back to pool management list</Text>
                     </Box>
                 </NextLink>
             </HStack>
@@ -71,13 +72,27 @@ const PoolNode: FC = () => {
                 <Stack alignItems={'flex-start'} direction={'row'}>
                     <Heading as="h1" fontSize={{ base: '4xl', xl: '5xl' }}>
                         {address && (
-                            <Address
-                                address={address}
-                                chainId={chainId}
-                                ens
-                                truncated
-                                fontSize={'3xl'}
-                            />
+                            <HStack>
+                                <Address
+                                    address={address}
+                                    chainId={chainId}
+                                    ens
+                                    truncated
+                                    fontSize={'3xl'}
+                                />
+
+                                <NextLink href={`/stake/${address}`} passHref>
+                                    <Button
+                                        as="a"
+                                        variant="text"
+                                        size="sm"
+                                        pl={0}
+                                        title="Pool info"
+                                    >
+                                        <SimpleChartIcon w={7} h={7} />
+                                    </Button>
+                                </NextLink>
+                            </HStack>
                         )}
                     </Heading>
                 </Stack>

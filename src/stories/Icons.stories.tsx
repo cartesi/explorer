@@ -59,6 +59,8 @@ import {
     MyStakeIcon,
     MyPoolsIcon,
     PoolsIcon,
+    SimpleChartIcon,
+    SettingsIcon,
 } from '../components/Icons';
 
 const Icons = () => (
@@ -255,6 +257,14 @@ const Icons = () => (
 
         <div title="PoolsIcon">
             <PoolsIcon width={10} height={10} />
+        </div>
+
+        <div title="SimpleChartIcon">
+            <SimpleChartIcon width={10} height={10} />
+        </div>
+
+        <div title="SettingsIcon">
+            <SettingsIcon width={10} height={10} />
         </div>
     </div>
 );
