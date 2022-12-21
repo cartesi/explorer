@@ -89,7 +89,7 @@ const PoolNode: FC = () => {
                                         pl={0}
                                         title="Pool info"
                                     >
-                                        <SimpleChartIcon w={7} h={7} />
+                                        <SimpleChartIcon w={6} h={6} />
                                     </Button>
                                 </NextLink>
                             </HStack>
