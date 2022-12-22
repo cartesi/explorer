@@ -238,7 +238,7 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     return (
         <Layout>
             <PageHead title={`Pool users - ${formattedAddress}`} />
-            <PoolHeader isManager={isManager} />
+            <PoolHeader isManager={isManager} from="users" />
             <PoolBreadcrumbs currentPage="Users" />
 
             <Box bg={bg}>
