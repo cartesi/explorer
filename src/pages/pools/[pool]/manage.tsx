@@ -30,10 +30,14 @@ const PoolNode: FC = () => {
     const from = router.query.from as string;
     const stakingPool = useStakingPoolQuery(address);
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
+    const hasFrom = isString(from);
     const backLink =
         from === 'node-runners'
             ? '/node-runners'
-            : `/stake/${address}${isString(from) ? `/${from}` : ''}`;
+            : `/stake/${address}${hasFrom ? `/${from}` : ''}`;
+    const backText = backLink.includes('node-runners')
+        ? 'Back to pool management list'
+        : `Back to pool ${hasFrom ? from : 'info'}`;
 
     useEffect(() => {
         if (!active) router.replace('/node-runners');
@@ -58,7 +62,7 @@ const PoolNode: FC = () => {
                 <NextLink href={backLink} passHref>
                     <Box as="a" display="flex" alignItems="center">
                         <Box as={AiOutlineLeft} mr={1} />
-                        <Text>Back to pool management list</Text>
+                        <Text>{backText}</Text>
                     </Box>
                 </NextLink>
             </HStack>
