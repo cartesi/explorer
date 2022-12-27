@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2022-12-28
+
+-   We added support to PoS v2. But it will only be deployed, and rollout will come later. [Feature flagged]
+-   We removed the code that supported the old onboard-js version 1.
+-   We added a new node history feature for private node and pool management in the node section. Users can see the last three retired nodes.
+-   We added code changes for page generation using ISR to improve SEO results for staking pools with an ENS name.
+-   We changed the rendering behaviour of the staking pool page when using an invalid address. Now a not found page is rendered instead, and that avoids confusion and possibly misleading.
+
 ## [2.12.4] - 2022-12-19
 
 -   We updated the calculation for CTSI staked on staking pool users page. A wallet connection is not required to see the total CTSI staked by each address.
@@ -254,7 +262,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...v3.0.0
 [2.12.4]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...v2.12.4
 [2.12.3]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...v2.12.3
 [2.12.2]: https://github.com/cartesi-corp/explorer/compare/v2.12.1...v2.12.2
