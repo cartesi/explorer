@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Network } from './networks';
-import { STAKING_POOLS_IDS } from '../graphql/queries';
+import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { createApollo } from '../services/apollo';
 import ensClient from '../services/apolloENSClient';
 import { DOMAINS } from '../graphql/queries/ensDomains';
@@ -47,7 +47,7 @@ export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
 
     return {
         paths,
-        fallback: true,
+        fallback: 'blocking',
     };
 }
 
@@ -58,15 +58,32 @@ export type Context = {
 };
 
 export async function getENSStaticProps({ params }: Context) {
-    const { data } = await ensClient.query({
-        query: DOMAINS,
-        variables: {
-            first: 1,
-            where: { resolvedAddress: params.pool },
-            orderBy: 'createdAt',
-            orderDirection: 'desc',
-        },
-    });
+    const [poolQ, ensQ] = await Promise.all([
+        awsClient.query({
+            query: STAKING_POOL,
+            variables: {
+                id: params.pool,
+            },
+        }),
+        ensClient.query({
+            query: DOMAINS,
+            variables: {
+                first: 1,
+                where: { resolvedAddress: params.pool },
+                orderBy: 'createdAt',
+                orderDirection: 'desc',
+            },
+        }),
+    ]);
+
+    const {
+        data: { stakingPool },
+    } = poolQ;
+
+    // In case the pool does not exist we say to nextJS to return a 404 page
+    if (!stakingPool) return { notFound: true };
+
+    const { data } = ensQ;
 
     const domain: Domain = data.domains[0];
 

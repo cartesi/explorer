@@ -49,9 +49,6 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
 
-    // const ensEntry = useENS(address);
-    // const formattedAddress = formatEnsName(address, ensEntry?.name);
-
     // query block number (continuously)
     const blockNumber = useBlockNumber();
     const stakingPool = useStakingPoolQuery(address);
