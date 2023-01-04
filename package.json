@@ -10,6 +10,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:ci": "turbo run test:ci",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {

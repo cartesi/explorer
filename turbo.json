@@ -10,6 +10,24 @@
     },
     "dev": {
       "cache": false
+    },
+    "test": {
+      "outputs": [],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "__test__/**/*.ts",
+        "__test__/**/*.tsx"
+      ]
+    },
+    "test:ci": {
+      "outputs": ["coverage/**"],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "__test__/**/*.ts",
+        "__test__/**/*.tsx"
+      ]
     }
   }
 }

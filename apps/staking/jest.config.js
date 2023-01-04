@@ -23,8 +23,7 @@ module.exports = {
         '^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i': `<rootDir>/__mocks__/fileMock.js`,
 
         // Handle module aliases
-        '^@/components/(.*)$': '<rootDir>/components/$1',
-        uuid: '<rootDir>/node_modules/uuid/dist/umd/uuid.min.js',
+        uuid: '<rootDir>/../../node_modules/uuid/dist/umd/uuid.min.js',
     },
     testMatch: [
         '**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)',
