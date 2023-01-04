@@ -1,95 +1,66 @@
-# Cartesi Explorer
+# Explorer
 
-This web application shows several informations about Cartesi Proof of Stake:
+This is a monorepo holding up two explorer applications from Cartesi. One is the well established Staking platform where users can participate in the network running they own private node, becoming a pool manager and/or also becoming a staking delegator. The second application is the new Rollup's explorer that will support Dapp developers.
 
--   node public address
--   node balance
--   current node owner
--   action to claim a node through metamask
--   action to release a node from the current owner
+## What's inside?
 
-## Running locally
+This turborepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
 
-This is a [Next.js](https://nextjs.org) application which uses smart contracts deployed by the [pos-dlib](https://github.com/cartesi/pos-dlib) and [staking-pool](https://github.com/cartesi/staking-pool) projects.
-In order to run the application locally you need to:
+### Apps and Packages
 
-1. Run a localhost hardhat node with all contracts deployed
-2. Run a local graph node reading from the local hardhat node and deploy the subgraph
-3. Run the application
-4. Open application in browser and switch to a local network in MetaMask
+- `rollups`: The new rollups explorer App that is [Next.js](https://nextjs.org/) app
+- `staking`: The staking explorer also a [Next.js](https://nextjs.org/) app
+- `ui`: House to core react components shared by both `rollups` and `staking` applications
+- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
-### Running a local hardhat node
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-This can be done from the [staking-pool](https://github.com/cartesi/staking-pool) project by running:
+### Utilities
 
-```
-$ cd staking-pool
-$ yarn start --export ../explorer/src/services/contracts/localhost.json
-```
+This turborepo has some additional tools already setup for you:
 
-This will run a local hardhat node running at http://127.0.0.1:8545/ and deploy all smart contracts.
-Among the contracts are:
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
 
--   CartesiToken: the CTSI token contract. Minter is the first account, and holds 1B tokens initially.
--   StakingImpl: the staking contract.
--   WorkerManagerAuthManagerImpl: used to hire worker nodes.
--   PoS: proof of stake smart contract, holds the chains. Starts with no chain created.
--   StakingPoolFactoryImpl: factory of new staking pools.
+### Build
 
-### Running a local graph node
-
-The application uses a subgraph powered by thegraph to consolidate blockchain information and serve using a GraphQL endpoint.
-
--   Clone the graph node from [GitHub](git@github.com:graphprotocol/graph-node.git).
--   Copy the file `docker/docker-compose.yml` to `docker/docker-compose-localhost.yml`
--   Modify line [20](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L20) to `ethereum: 'localhost:http://host.docker.internal:8545/'`
--   Modify line [27](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L27) to `./data_localhost/ipfs:/data/ipfs`
--   Modify line [38](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L38) to `./data_localhost/postgres:/var/lib/postgresql/data`
-
-Then run:
+To build all apps and packages, run the following command:
 
 ```
-$ cd docker
-$ docker-compose -f docker-compose-localhost.yml up
+yarn run build
 ```
 
-Every time you reset your local hardhat node you will need to delete the `data_localhost` folder that is created by the `docker-compose` command before running it again.
+### Develop
 
-The next step is the deploy the subgraph to the local graph node.
-Checkout the subgraph project from [GitHub](https://github.com/cartesi-corp/subgraph).
-Then yarn link the project to the local `staking-pool` project by running `yarn link` at the `staking-pool` project and than `yarn link @cartesi/staking-pool` at the `subgraph` project.
-
-Then run the following commands:
+To develop all apps and packages, run the following command:
 
 ```
-$ yarn prepare:localhost
-$ yarn create:localhost
-$ yarn deploy:localhost
+yarn run dev
 ```
 
-### Environment variables
+> Note: When running turborepo tasks like `dev` or `build` it will run rollups and staking in parallel. e.g. when you want only to do `dev` on staking app, you should filter the task
 
-There are two files in the explorer project the`.env.development` and `.env.production`. They set default values e.g. config for [Unleash](https://www.getunleash.io/) that is our feature-flag provider. You can create a file called `.env.development.local` that is gitignored so you can add your secrets there.
-
-The next step is to create an account on [Infura](https://infura.io/). Create a project so you can have access to a _PROJECT ID_.
-
-On your `.env.development.local` set the following var:
-
--   NEXT_PUBLIC_PROJECT_ID=your_project_id_goes_here
-
-<br>
-
-> You can read more about **nextJS** env vars [here](https://nextjs.org/docs/basic-features/environment-variables)
-
-### Run the application
-
-Simply run:
+The filtering should be by the **name** inside the package.json of the targeted `apps/*`
 
 ```
-$ yarn dev
+yarn run dev --filter @cartesi/explorer
 ```
 
-### Open application and setup MetaMask
+or
 
-Open the application in your browser at http://localhost:3000
-Open MetaMask and switch to a network configured to the url http://localhost:8545 and Chain ID 31337.
+```
+yarn run dev --filter @cartesi/web-rollups
+```
+
+## Turborepo Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Pipelines](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)

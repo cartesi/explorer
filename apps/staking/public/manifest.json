@@ -1,0 +1,17 @@
+{
+    "name": "Cartesi Explorer",
+    "iconPath": "images/logo.svg",
+    "description": "A place where you can stake your CTSI and much more.",
+    "providedBy": { "name": "Cartesi", "url": "https://explorer.cartesi.io" },
+    "theme_color": "black",
+    "background_color": "white",
+    "display": "standalone",
+    "start_url": ".",
+    "icons": [
+        {
+            "src": "favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ]
+}

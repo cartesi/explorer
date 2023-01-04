@@ -1,0 +1,40 @@
+{
+    "name": "@cartesi/web-rollups",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "build:next": "next build",
+        "export:next": "next export",
+        "build": "run-s codegen build:next",
+        "export": "run-s codegen build:next export:next",
+        "build-storybook": "build-storybook -s ./public",
+        "codegen": "graphql-codegen",
+        "chromatic": "chromatic --exit-zero-on-changes",
+        "dev": "next dev",
+        "lint": "eslint --color --ext .ts src/",
+        "lint:fix": "yarn lint --fix",
+        "start": "next start"
+    },
+    "dependencies": {
+        "@cartesi/rollups": "0.6.0",
+        "next": "12.3.1",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "ui": "*",
+        "urql": "3.0.3"
+    },
+    "devDependencies": {
+        "@graphql-codegen/cli": "^2.16.2",
+        "@graphql-codegen/typed-document-node": "^2.3.11",
+        "@graphql-codegen/typescript": "^2.8.6",
+        "@graphql-codegen/typescript-operations": "^2.5.11",
+        "@graphql-codegen/typescript-urql": "^3.7.3",
+        "@graphql-typed-document-node/core": "^3.1.1",
+        "eslint-config-custom": "*",
+        "npm-run-all": "^4.1.5",
+        "tsconfig": "*",
+        "typescript": "4.9.4",
+        "next-transpile-modules": "9.0.0",
+        "eslint": "7.32.0"
+    }
+}

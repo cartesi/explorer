@@ -1,0 +1,12 @@
+schema:
+    - ./graphql/schema.graphql
+    - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
+documents:
+    - ./graphql/queries.graphql
+    - ./graphql/rollups.graphql
+generates:
+    ./src/generated/graphql/index.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-urql
