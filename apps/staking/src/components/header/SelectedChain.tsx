@@ -12,7 +12,7 @@
 import React, { FC } from 'react';
 import Chain from './Chain';
 import { TagProps } from '@chakra-ui/react';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export interface SelectedChainProps extends TagProps {
     showMainnet?: boolean;

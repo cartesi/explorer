@@ -19,7 +19,7 @@ import {
     useWorkerManagerContract,
 } from './contracts';
 import { Transaction, useTransaction } from './transaction';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export type NodeStatus = 'available' | 'owned' | 'retired' | 'pending' | 'none';
 export interface Node {

@@ -23,7 +23,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import Account from './Account';
 import AccountMobile from './AccountMobile';
 import ConnectWallet from './ConnectWallet';
@@ -50,11 +50,6 @@ export const buildLinks = () => [
         key: 'blocks',
         label: 'Blocks',
         href: '/blocks',
-    },
-    {
-        key: 'rollups',
-        label: 'Rollups',
-        href: '/rollups',
     },
 ];
 

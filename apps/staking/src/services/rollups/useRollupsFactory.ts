@@ -16,7 +16,7 @@ import {
     CartesiDAppFactory__factory,
 } from '@cartesi/rollups';
 import { useNetwork } from './useNetwork';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export const useRollupsFactory = (): CartesiDAppFactory | undefined => {
     const [factory, setFactory] = useState<CartesiDAppFactory | undefined>();

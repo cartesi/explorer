@@ -15,7 +15,7 @@ import NextLink from 'next/link';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../../components/Layout';
 import { useRouter } from 'next/router';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import Address from '../../../components/Address';
 import PageHead from '../../../components/PageHead';

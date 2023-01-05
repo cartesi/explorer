@@ -24,7 +24,7 @@ import {
     RollupsFacet,
     RollupsFacet__factory,
 } from '@cartesi/rollups';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export interface RollupsContracts {
     rollupsContract: RollupsFacet;

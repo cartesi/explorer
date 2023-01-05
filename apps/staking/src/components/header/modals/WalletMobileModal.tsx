@@ -25,7 +25,7 @@ import {
     UseDisclosureProps,
 } from '@chakra-ui/react';
 import { DisconnectIcon, CopyIcon, SwitchIcon, CloseIcon } from '../../Icons';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useENS } from '../../../services/ens';
 
 export interface IWalletMobileModalProps {

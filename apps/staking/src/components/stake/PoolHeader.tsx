@@ -21,7 +21,7 @@ import {
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { isString } from 'lodash';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import AddressText from '../AddressText';
 import { SettingsIcon } from '../Icons';
 import { StakingTabNavigation } from './StakingTabNavigation';

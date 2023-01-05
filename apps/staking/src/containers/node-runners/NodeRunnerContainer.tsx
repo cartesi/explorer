@@ -11,7 +11,7 @@
 import { Box, Stack, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextRouter } from 'next/router';
 import { useEffect } from 'react';
-import { UseWallet } from '../../contexts/wallet';
+import { UseWallet } from '@explorer/wallet';
 import PoolTable from './components/PoolTable';
 import NodeTable from './components/NodeTable';
 import useStakingPools from '../../graphql/hooks/useStakingPools';

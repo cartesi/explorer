@@ -14,7 +14,7 @@ import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export interface IDepositSection {
     userWalletBalance: BigNumber;

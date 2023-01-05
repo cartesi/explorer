@@ -15,7 +15,7 @@ import {
     PoolActivityList,
     IPoolActivityListProps,
 } from '../../../src/components/stake/PoolActivityList';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { withChakraTheme } from '../../test-utilities';
 import usePoolActivities, {
     Activity,
@@ -33,7 +33,7 @@ const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
 
-jest.mock('../../../src/contexts/wallet');
+jest.mock('@explorer/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const EPoolActivityList =

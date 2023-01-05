@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export const useBalance = (address: string, deps: any[] = []): BigNumber => {
     const { library } = useWallet();

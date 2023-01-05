@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 import {
     WorkerManagerAuthManagerImpl__factory,

@@ -12,7 +12,7 @@
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
 import PageHead from '../../components/PageHead';
 

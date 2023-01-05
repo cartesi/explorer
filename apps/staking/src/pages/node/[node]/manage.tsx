@@ -36,7 +36,7 @@ import Layout from '../../../components/Layout';
 import { useTimeLeft } from '../../../utils/react';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useNode } from '../../../services/node';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
 import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
 import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';

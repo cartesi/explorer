@@ -15,7 +15,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
-import theme from '../styles/theme';
+import { theme } from '@explorer/ui';
+
 import { Fonts } from '../components/Fonts';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import { useRouter } from 'next/router';

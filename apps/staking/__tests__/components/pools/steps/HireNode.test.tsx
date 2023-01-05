@@ -18,7 +18,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/pools/steps/HireNode';
@@ -31,7 +31,7 @@ import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
 import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = `../../../../src/contexts/wallet`;
+const walletMod = '@explorer/wallet';
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 const stakingPoolMod = '../../../../src/services/pool';

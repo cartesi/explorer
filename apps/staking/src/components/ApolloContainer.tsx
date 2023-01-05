@@ -12,7 +12,7 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../services/apollo';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 const ApolloContainer = ({ children }) => {
     const { chainId } = useWallet();

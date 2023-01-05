@@ -21,7 +21,7 @@ import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateStringMobile } from '../../utils/stringUtilsMobile';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { ArrowsUpDownIcon } from '../Icons';
 import { WalletMobileModal } from './modals/WalletMobileModal';
 

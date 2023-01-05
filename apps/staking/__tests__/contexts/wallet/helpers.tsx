@@ -1,5 +1,5 @@
 import { isFunction } from 'lodash/fp';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 /**
  * Helper test component to support testing the provider.

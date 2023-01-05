@@ -17,9 +17,9 @@ import {
     IDepositSection,
 } from '../../../../src/components/stake/components/DepositSection';
 import { withChakraTheme } from '../../../test-utilities';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
-jest.mock('../../../../src/contexts/wallet');
+jest.mock('@explorer/wallet');
 
 const defaultValue = '10000000000000000000000000000';
 const defaultOnDepositClick = () => undefined;

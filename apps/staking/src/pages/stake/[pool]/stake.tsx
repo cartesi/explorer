@@ -21,7 +21,7 @@ import { useStakingPool } from '../../../services/pool';
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useCartesiToken } from '../../../services/token';
 import { useRouter } from 'next/router';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';

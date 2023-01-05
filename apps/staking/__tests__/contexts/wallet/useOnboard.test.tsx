@@ -11,14 +11,13 @@
 
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { useUnleashContext } from '@unleash/proxy-client-react';
-import { WalletConnectionProvider } from '../../../src/contexts/wallet';
+import { WalletConnectionProvider, useWallet } from '@explorer/wallet';
 import { TestComponent } from './helpers';
-import { useOnboard } from '../../../src/contexts/wallet/useOnboard';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useOnboard } from '@explorer/wallet/src/useOnboard';
 import { buildMockUseOnboardV2Return } from './mocks';
 import { Network } from '../../../src/utils/networks';
 
-const walletMod = '../../../src/contexts/wallet';
+const walletMod = '@explorer/wallet';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
@@ -40,7 +39,7 @@ jest.mock('@unleash/proxy-client-react', () => {
     };
 });
 
-jest.mock('../../../src/contexts/wallet/useOnboard');
+jest.mock('@explorer/wallet/src/useOnboard');
 jest.mock('@chakra-ui/react');
 
 const useOnboardStub = useOnboard as jest.MockedFunction<typeof useOnboard>;

@@ -18,7 +18,7 @@ import React, {
 } from 'react';
 import { Router } from 'next/router';
 import ReactGA from 'react-ga';
-import { useWallet } from './wallet';
+import { useWallet } from '@explorer/wallet';
 
 const TrackingID = 'UA-124332259-9';
 const CustomDimensions = {

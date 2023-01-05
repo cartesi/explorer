@@ -32,7 +32,7 @@ import { useMessages } from '../../../utils/messages';
 import { OrderedContent } from '../../OrderedContent';
 import { useAtom } from 'jotai';
 import { poolAddressAtom } from './CommissionModel';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useStakingPool } from '../../../services/pool';
 import TransactionBanner from '../../TransactionBanner';
 import { isEmpty } from 'lodash';

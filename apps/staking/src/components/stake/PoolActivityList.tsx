@@ -32,7 +32,7 @@ import usePoolActivities, {
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { formatValue } from '../../utils/numberFormatter';
 import Address from '../Address';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,

@@ -14,7 +14,7 @@ import { isEmpty, omit } from 'lodash/fp';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 import { useNode, NodeStatus } from '../../../services/node';
 import { toBigNumber } from '../../../utils/numberParser';

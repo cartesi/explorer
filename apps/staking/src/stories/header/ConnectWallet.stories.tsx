@@ -12,7 +12,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import ConnectWallet from '../../components/header/ConnectWallet';
-import { UnsupportedNetworkError } from '../../contexts/wallet';
+import { UnsupportedNetworkError } from '@explorer/wallet';
 
 export default {
     title: 'Header/ConnectWallet',

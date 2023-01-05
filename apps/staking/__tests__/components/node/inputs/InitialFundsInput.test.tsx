@@ -16,12 +16,12 @@ import {
     render,
     screen,
 } from '@testing-library/react';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { InitialFundsInput } from '../../../../src/components/node/inputs/InitialFundsInput';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 
-const walletMod = `../../../../src/contexts/wallet`;
+const walletMod = `@explorer/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 
 jest.mock(walletMod, () => {

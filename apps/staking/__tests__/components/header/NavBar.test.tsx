@@ -11,13 +11,13 @@
 
 import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import NavBar, {
     buildLinks,
     NavLink,
 } from '../../../src/components/header/NavBar';
 
-const walletMod = `../../../src/contexts/wallet`;
+const walletMod = `@explorer/wallet`;
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
 jest.mock('@unleash/proxy-client-react', () => ({
@@ -55,7 +55,7 @@ describe('Nav Bar', () => {
     it('Should generate correct default nav links', () => {
         const links = buildLinks();
 
-        expect(links.length).toBe(5);
+        expect(links.length).toBe(4);
 
         expect(links[0].key).toBe('home');
         expect(links[0].label).toBe('Home');
@@ -72,10 +72,6 @@ describe('Nav Bar', () => {
         expect(links[3].key).toBe('blocks');
         expect(links[3].label).toBe('Blocks');
         expect(links[3].href).toBe('/blocks');
-
-        expect(links[4].key).toBe('rollups');
-        expect(links[4].label).toBe('Rollups');
-        expect(links[4].href).toBe('/rollups');
     });
 
     it('Should display children', () => {

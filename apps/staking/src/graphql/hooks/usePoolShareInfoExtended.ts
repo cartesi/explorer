@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useExtendedApollo } from '../../services/apollo';
 import { PoolShareInfoExtendedData, StakingPoolsVars } from '../models';
 import { POOL_SHARE_INFO_EXTENDED } from '../queries';

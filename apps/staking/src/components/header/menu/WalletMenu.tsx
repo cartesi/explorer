@@ -23,7 +23,7 @@ import {
 import React, { FC } from 'react';
 import { DisconnectIcon, CopyIcon, SwitchIcon } from '../../Icons';
 import { useENS } from '../../../services/ens';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 const WalletMenu: FC = () => {
     const { account, library, isHardwareWallet, selectAccount, deactivate } =

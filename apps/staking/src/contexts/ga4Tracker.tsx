@@ -11,7 +11,7 @@
 
 import { createContext, ReactNode, useState, useEffect } from 'react';
 import ReactGA from 'react-ga4';
-import { useWallet } from './wallet';
+import { useWallet } from '@explorer/wallet';
 
 const measurementID = 'G-0J9KC579GV';
 

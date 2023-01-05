@@ -12,10 +12,10 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { PoolHeader } from '../../../src/components/stake/PoolHeader';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
-import { WalletConnectionContextProps } from '../../../src/contexts/wallet/definitions';
+import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
 import { useFlag } from '@unleash/proxy-client-react';
 
 jest.mock('next/router', () => {
@@ -28,7 +28,7 @@ jest.mock('next/router', () => {
 });
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
-jest.mock('../../../src/contexts/wallet');
+jest.mock('@explorer/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('@unleash/proxy-client-react', () => ({

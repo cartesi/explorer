@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { WalletConnectionProvider } from '../contexts/wallet';
+import { WalletConnectionProvider } from '@explorer/wallet';
 
 const Web3Container = ({ children }) => {
     return <WalletConnectionProvider>{children}</WalletConnectionProvider>;

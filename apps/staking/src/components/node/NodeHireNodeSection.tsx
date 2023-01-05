@@ -18,6 +18,7 @@ import {
     useColorModeValue,
     Flex,
 } from '@chakra-ui/react';
+import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { toBigNumber } from '../../utils/numberParser';
 import { NodeInput, NodeField, evaluateNode } from './inputs/NodeInput';
@@ -25,7 +26,6 @@ import { MappedErrors, ValidationResult } from '../BaseInput';
 import { DepositField, InitialFundsInput } from './inputs/InitialFundsInput';
 import { isEmpty, omit } from 'lodash/fp';
 import { useNode } from '../../services/node';
-import { useWallet } from '../../contexts/wallet';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;

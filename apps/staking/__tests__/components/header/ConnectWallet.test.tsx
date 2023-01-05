@@ -15,7 +15,7 @@ import ConnectWallet, {
     ConnectWalletProps,
 } from '../../../src/components/header/ConnectWallet';
 import { withChakraTheme } from '../../test-utilities';
-import { UnsupportedNetworkError } from '../../../src/contexts/wallet';
+import { UnsupportedNetworkError } from '@explorer/wallet';
 
 const defaultWallet = {
     error: null,

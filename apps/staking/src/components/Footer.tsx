@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import React, { ReactNode } from 'react';
 import {
     Box,

@@ -1,6 +1,6 @@
 import { renderHook, act, cleanup, waitFor } from '@testing-library/react';
 import { ContractTransaction } from 'ethers';
-import { useWallet } from '../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 import { confirmations, Network } from '../../src/utils/networks';
 import {
@@ -9,7 +9,7 @@ import {
     buildContractReceiptEvent,
 } from './mocks';
 
-const walletMod = '../../src/contexts/wallet';
+const walletMod = '@explorer/wallet';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);

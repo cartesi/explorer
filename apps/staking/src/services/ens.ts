@@ -11,7 +11,7 @@
 
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export interface ENSEntry {
     address: string;

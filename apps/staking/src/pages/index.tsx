@@ -34,7 +34,7 @@ import { useMarketInformation } from '../services/market';
 import { useCartesiToken } from '../services/token';
 import { useBlockNumber } from '../services/eth';
 import { useStaking } from '../services/staking';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { getRewardRate } from '../utils/reward';
 import { toCTSI } from '../utils/token';
 import CTSIText from '../components/CTSIText';

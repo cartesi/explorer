@@ -18,7 +18,7 @@ import {
     AlertTitle,
 } from '@chakra-ui/alert';
 import { Box } from '@chakra-ui/layout';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { Network } from '../utils/networks';
 import { includes } from 'lodash/fp';
 

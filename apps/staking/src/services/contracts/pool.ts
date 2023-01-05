@@ -29,7 +29,7 @@ import goerli from '@cartesi/staking-pool/export/abi/goerli.json';
 import localhost from './localhost.json';
 
 import { ChainMap, useContract, useContractFromAddress } from '.';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 const abis: ChainMap = {
     1: mainnet,

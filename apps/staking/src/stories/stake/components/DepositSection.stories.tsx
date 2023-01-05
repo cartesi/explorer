@@ -13,7 +13,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { DepositSection } from '../../../components/stake/components/DepositSection';
 import { BigNumber } from 'ethers';
-import { WalletConnectionContext } from '../../../contexts/wallet/provider';
+import { WalletConnectionContext } from '@explorer/wallet';
 
 const defaultValue = '10000000000000000000000000000';
 

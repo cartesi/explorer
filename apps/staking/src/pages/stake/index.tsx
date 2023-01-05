@@ -25,7 +25,7 @@ import Layout, {
     PagePanel,
 } from '../../components/Layout';
 import useSummary from '../../graphql/hooks/useSummary';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import SearchInput from '../../components/SearchInput';
 import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import PoolsOverview from '../../components/stake/components/PoolsOverview';

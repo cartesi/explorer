@@ -11,7 +11,7 @@
 // under the License.
 
 import { useEffect, useState } from 'react';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export type Chain = {
     id: string;

@@ -1,6 +1,6 @@
 import { forwardRef } from '@chakra-ui/react';
 import { LegacyRef, Ref } from 'react';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
 import ConnectWallet from '../../header/ConnectWallet';
 import { Notification } from '../../Notification';

@@ -32,7 +32,7 @@ import { useBlockNumber } from '../../services/eth';
 import { useCartesiToken } from '../../services/token';
 import { useStaking } from '../../services/staking';
 import { useStakingPool } from '../../services/pool';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
 import { PoolActivity } from '../../components/stake/PoolActivity';

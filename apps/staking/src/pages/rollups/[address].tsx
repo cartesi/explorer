@@ -19,7 +19,7 @@ import Layout, { PageBody, PageHeader } from '../../components/Layout';
 import RollupsGraphQLProvider from '../../containers/rollups/RollupsGraphQLProvider';
 import { AddInput } from '../../containers/rollups/AddInput';
 import { Notices } from '../../containers/rollups/Notices';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import AddressText from '../../components/AddressText';
 import { DApp } from '../../containers/rollups/DApp';
 

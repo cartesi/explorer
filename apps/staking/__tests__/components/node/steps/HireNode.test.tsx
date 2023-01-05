@@ -18,7 +18,7 @@ import {
     findByText,
 } from '@testing-library/react';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/node/steps/HireNode';
@@ -26,7 +26,7 @@ import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../mocks';
 import { useAtom } from 'jotai';
 
-const walletMod = `../../../../src/contexts/wallet`;
+const walletMod = `@explorer/wallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 

@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { serializeError } from 'eth-rpc-errors';
 import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
 import { confirmations } from '../utils/networks';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import {
     allPass,
     anyPass,

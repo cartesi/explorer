@@ -21,7 +21,7 @@ import {
     waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
-import { UseWallet } from '../../../src/contexts/wallet';
+import { UseWallet } from '@explorer/wallet';
 import { NextRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';

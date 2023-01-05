@@ -26,7 +26,7 @@ import { isEmpty, isFunction, omit, isNil } from 'lodash/fp';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
 import { useMessages } from '../../../utils/messages';

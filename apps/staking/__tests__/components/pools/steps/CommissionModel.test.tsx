@@ -20,7 +20,7 @@ import {
 } from '@testing-library/react';
 import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
 import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
 import { buildContractReceipt } from '../../node/mocks';
 import { useAtom } from 'jotai';
@@ -29,7 +29,7 @@ import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
-const walletMod = '../../../../src/contexts/wallet';
+const walletMod = '@explorer/wallet';
 const stepGroupMod = '../../../../src/components/StepGroup';
 
 jest.mock(stepGroupMod, () => {

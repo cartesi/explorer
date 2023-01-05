@@ -27,7 +27,7 @@ import { isArray, isObject, uniqueId } from 'lodash';
 import Layout from '../../../components/Layout';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import UsersTable from '../../../components/stake/tables/UsersTable';
 import Pagination from '../../../components/Pagination';

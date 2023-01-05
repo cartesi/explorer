@@ -22,7 +22,7 @@ import {
 import { isEmpty, isFunction, isNil } from 'lodash/fp';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useBalance } from '../../../services/eth';
 import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';

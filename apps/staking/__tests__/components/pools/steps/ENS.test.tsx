@@ -8,7 +8,7 @@ import {
     screen,
 } from '@testing-library/react';
 
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../../../src/services/pool';
@@ -19,7 +19,7 @@ import ENS from '../../../../src/components/pools/steps/ENS';
 import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = `../../../../src/contexts/wallet`;
+const walletMod = '@explorer/wallet';
 const stakingPoolMod = '../../../../src/services/pool';
 const stepGroupMod = '../../../../src/components/StepGroup';
 

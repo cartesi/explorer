@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended';
-import { useOnboard } from '../../../src/contexts/wallet/useOnboard';
+import { useOnboard } from '@explorer/wallet/src/useOnboard';
 import { ReturnOf } from '../../test-utilities';
 
 type UseOnboardV2Return = ReturnOf<typeof useOnboard>;

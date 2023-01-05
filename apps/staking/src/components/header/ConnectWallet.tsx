@@ -11,7 +11,7 @@
 
 import React, { FC } from 'react';
 import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
-import { UnsupportedNetworkError, UseWallet } from '../../contexts/wallet';
+import { UnsupportedNetworkError, UseWallet } from '@explorer/wallet';
 
 export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;

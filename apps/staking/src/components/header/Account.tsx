@@ -23,7 +23,7 @@ import React, { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateString } from '../../utils/stringUtils';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import WalletMenu from './menu/WalletMenu';
 import { PaginationIcon } from '../Icons';
 

@@ -16,7 +16,7 @@ import {
     IPoolActivityProps,
 } from '../../../src/components/stake/PoolActivity';
 import { withChakraTheme } from '../../test-utilities';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
@@ -32,7 +32,7 @@ const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
-jest.mock('../../../src/contexts/wallet');
+jest.mock('@explorer/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const EPoolActivity = withChakraTheme<IPoolActivityProps>(PoolActivity);

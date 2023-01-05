@@ -17,7 +17,7 @@ import { isArray } from 'lodash';
 import Layout from '../../../components/Layout';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import useStakingPoolFeeHistories from '../../../graphql/hooks/useStakingPoolFeeHistories';
 import PoolCommissionsTable from '../../../components/stake/tables/PoolCommissionsTable';

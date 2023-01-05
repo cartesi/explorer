@@ -17,7 +17,7 @@ import {
     StakingPoolSortExtended,
 } from '../models';
 import { useExtendedApollo } from '../../services/apollo';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export const POOLS_PER_PAGE = 50;
 

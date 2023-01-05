@@ -13,7 +13,7 @@ import React from 'react';
 import { cleanup, render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextRouter, useRouter } from 'next/router';
-import { useWallet } from '../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
 import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance';
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
@@ -38,7 +38,7 @@ jest.mock('next/router', () => {
 
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
-jest.mock('../../../src/contexts/wallet');
+jest.mock('@explorer/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('../../../src/graphql/hooks/useTotalPoolBalance');

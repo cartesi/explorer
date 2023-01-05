@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { useWallet } from '../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
 import { WalletIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';

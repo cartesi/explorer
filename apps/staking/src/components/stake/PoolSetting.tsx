@@ -33,7 +33,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
-import { useWallet } from '../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import CTSIText from '../CTSIText';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../services/pool';

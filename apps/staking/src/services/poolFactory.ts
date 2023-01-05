@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useStakingPoolFactoryContract } from './contracts';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
-import { useWallet } from '../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 
 export const useStakingPoolFactory = () => {
     const poolFactory = useStakingPoolFactoryContract();

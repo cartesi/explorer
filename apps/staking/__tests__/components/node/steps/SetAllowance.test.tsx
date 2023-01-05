@@ -9,7 +9,7 @@ import {
     findByText,
 } from '@testing-library/react';
 import SetAllowance from '../../../../src/components/node/steps/SetAllowance';
-import { useWallet } from '../../../../src/contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { useStaking } from '../../../../src/services/staking';
 import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
@@ -18,7 +18,7 @@ import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = `../../../../src/contexts/wallet`;
+const walletMod = `@explorer/wallet`;
 const servicesStakingMod = `../../../../src/services/staking`;
 const servicesTokenMod = `../../../../src/services/token`;
 

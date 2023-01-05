@@ -20,7 +20,7 @@ import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
 import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
-import { useWallet } from '../../../../contexts/wallet';
+import { useWallet } from '@explorer/wallet';
 import { atom, useAtom } from 'jotai';
 import { WalletDisconnectedNotification } from '../WalletDisconnectedNotification';
 
