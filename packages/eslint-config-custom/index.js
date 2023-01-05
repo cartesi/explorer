@@ -29,6 +29,7 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",
+    "no-undef": "off",
   },
   settings: {
     react: {

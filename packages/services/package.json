@@ -1,0 +1,27 @@
+{
+    "name": "@explorer/services",
+    "version": "0.0.0",
+    "main": "./src/index.tsx",
+    "types": "./src/index.tsx",
+    "scripts": {
+        "lint": "TIMING=1 eslint \"**/*.ts*\""
+    },
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "ethers": "5.4.7"
+    },
+    "devDependencies": {
+        "eslint": "7.32.0",
+        "eslint-config-custom": "*",
+        "tsconfig": "*",
+        "typescript": "^4.9.0",
+        "@explorer/prettier-config": "*",
+        "@types/react": "^18.0.21",
+        "@types/react-dom": "^18.0.6",
+        "@typechain/ethers-v5": "^7.1.2"
+    },
+    "dependencies": {
+        "@explorer/wallet": "*"
+    }
+}
