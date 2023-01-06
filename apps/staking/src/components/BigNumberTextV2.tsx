@@ -10,14 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import {
-    Heading,
-    Box,
-    FlexProps,
-    HStack,
-    SystemProps,
-    Text,
-} from '@chakra-ui/react';
+import { Heading, Box, FlexProps, HStack, Text } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { Icon } from '@chakra-ui/icons';
