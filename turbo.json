@@ -11,6 +11,13 @@
     "dev": {
       "cache": false
     },
+    "build-storybook": {
+      "outputs": ["dist/**", "storybook-static/**"]
+    },
+    "storybook": {
+      "outputs": [],
+      "inputs": ["src/stories/**/*.tsx", "src/stories/**/*.ts"]
+    },
     "test": {
       "outputs": [],
       "inputs": [

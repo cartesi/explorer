@@ -52,10 +52,16 @@ module.exports = {
                     '@emotion/core': toPath('node_modules/@emotion/react'),
                     'emotion-theming': toPath('node_modules/@emotion/react'),
                     '@ledgerhq/devices/hid-framing': toPath(
-                        'node_modules/@ledgerhq/devices/lib/hid-framing'
+                        '../../node_modules/@ledgerhq/devices/lib/hid-framing'
+                    ),
+                    '@ledgerhq/cryptoassets/data/erc20-signatures': toPath(
+                        '../../node_modules/@ledgerhq/cryptoassets/lib/data/erc20-signatures'
+                    ),
+                    '@ledgerhq/cryptoassets/data/eip712': toPath(
+                        '../../node_modules/@ledgerhq/cryptoassets/lib/data/eip712'
                     ),
                     '@toruslabs/torus-embed': toPath(
-                        'node_modules/@toruslabs/torus-embed/dist/torus.umd.min.js'
+                        '../../node_modules/@toruslabs/torus-embed/dist/torus.umd.min.js'
                     ),
                 },
             },

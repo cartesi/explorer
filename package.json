@@ -12,6 +12,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
+    "build-storybook": "turbo run build-storybook",
+    "storybook": "turbo run storybook",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
@@ -23,12 +25,13 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@chakra-ui/icons": "2.0.15",
-    "@chakra-ui/react": "2.4.6",
-    "@emotion/react": "11.10.5",
-    "@emotion/styled": "11.10.5",
+    "@chakra-ui/icons": "2.0.10",
+    "@chakra-ui/react": "2.3.4",
+    "@chakra-ui/theme-tools": "2.0.11",
+    "@emotion/react": "11.6.0",
+    "@emotion/styled": "11.6.0",
     "@unleash/proxy-client-react": "3.3.0",
-    "framer-motion": "8.1.7",
+    "framer-motion": "^4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "unleash-proxy-client": "2.2.1"

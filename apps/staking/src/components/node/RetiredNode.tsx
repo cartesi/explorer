@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Alert,
     AlertIcon,
@@ -18,9 +17,9 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
+import { AddressText, BigNumberText } from '@explorer/ui';
 import { BigNumber } from 'ethers';
-import BigNumberText from '../BigNumberText';
-import AddressText from '../AddressText';
+import { FC } from 'react';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
 
 type RetiredNodeProps = {

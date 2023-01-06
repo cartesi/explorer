@@ -19,7 +19,6 @@
         "@explorer/prettier-config": "*"
     },
     "dependencies": {
-        "@chakra-ui/theme-tools": "^2.0.16",
         "react-jazzicon": "1.0.4",
         "@explorer/wallet": "*",
         "@explorer/utils": "*",

@@ -12,17 +12,17 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
     Box,
-    VStack,
-    Stack,
     Button,
     HStack,
+    Stack,
     useBreakpointValue,
+    VStack,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import NextLink from 'next/link';
-import { isString } from 'lodash';
+import { AddressText } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
-import AddressText from '../AddressText';
+import { isString } from 'lodash';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { SettingsIcon } from '../Icons';
 import { StakingTabNavigation } from './StakingTabNavigation';
 

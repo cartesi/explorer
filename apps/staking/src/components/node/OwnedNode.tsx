@@ -9,36 +9,35 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
+    Checkbox,
     FormControl,
     FormErrorMessage,
     FormHelperText,
     FormLabel,
     HStack,
-    Stack,
-    Text,
-    VStack,
-    useDisclosure,
-    Link,
-    Checkbox,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
     Input,
     InputGroup,
     InputRightAddon,
+    Link,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Text,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { FC, useState } from 'react';
 
+import { AddressText, BigNumberText } from '@explorer/ui';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
-import BigNumberText from '../BigNumberText';
-import AddressText from '../AddressText';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
 
 type OwnedNodeProps = {
