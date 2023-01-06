@@ -9,13 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import NavBar, { HeaderLink } from './header/NavBar';
-import theme from '../styles/theme';
-import { FC } from 'react';
+import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
+import { FC, ReactNode } from 'react';
 
-export type Props = { links: HeaderLink[] };
-const Header: FC<Props> = ({ links }) => {
-    return <NavBar w="100%" zIndex={theme.zIndices.xxl} links={links} />;
+type Props = { children: ReactNode };
+
+export const PageLayout: FC<Props> = ({ children }) => {
+    return (
+        <Layout
+            footerContracts={[]}
+            footerLinks={[]}
+            headerLinks={[{ href: '/', key: 'home', label: 'Home' }]}
+        >
+            {children}
+        </Layout>
+    );
 };
 
-export default Header;
+export { PageBody, PageHeader, PagePanel };

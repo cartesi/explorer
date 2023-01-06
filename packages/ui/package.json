@@ -10,6 +10,7 @@
     "devDependencies": {
         "@types/react": "^18.0.21",
         "@types/react-dom": "^18.0.6",
+        "@types/humanize-duration": "3.25.1",
         "eslint": "^7.32.0",
         "eslint-config-custom": "*",
         "react": "^18.2.0",
@@ -22,6 +23,9 @@
         "react-jazzicon": "1.0.4",
         "@explorer/wallet": "*",
         "@explorer/utils": "*",
-        "@explorer/services": "*"
+        "@explorer/services": "*",
+        "humanize-duration": "3.27.0",
+        "ethers": "5.4.7",
+        "react-icons": "4.6.0"
     }
 }
