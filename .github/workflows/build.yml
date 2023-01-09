@@ -6,13 +6,12 @@ jobs:
         steps:
             - name: Check out code
               uses: actions/checkout@v3
-            
+
             - name: Setup Node.js environment
               uses: actions/setup-node@v3
-                with:
+              with:
                   node-version: 16
-                  
-            cache: 'yarn'
+                  cache: 'yarn'
 
             - name: Install Dependencies
               run: yarn install --frozen-lockfile
@@ -24,9 +23,11 @@ jobs:
               run: yarn lint
 
             - name: Run Tests
-              run: yarn test
+              run: yarn test:ci
 
             - name: Coveralls
               uses: coverallsapp/github-action@master
               with:
+                  path-to-lcov: 'apps/staking/coverage/lcov.info'
+                  base-path: 'apps/staking'
                   github-token: ${{ secrets.GITHUB_TOKEN }}
