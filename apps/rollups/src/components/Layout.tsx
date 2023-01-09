@@ -26,7 +26,7 @@ export const PageLayout: FC<Props> = ({ children }) => {
     const rollupsFactory = useRollupsFactory();
     const contracts: FooterContract[] = [
         {
-            name: 'Rollup DApp Factory',
+            name: 'DApp Factory',
             address: rollupsFactory?.address,
         },
     ];

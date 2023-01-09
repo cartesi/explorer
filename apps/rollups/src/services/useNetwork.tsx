@@ -10,8 +10,8 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { useEffect, useState } from 'react';
 import { useWallet } from '@explorer/wallet';
+import { useEffect, useState } from 'react';
 
 export type Chain = {
     id: string;
@@ -69,6 +69,25 @@ export interface Network {
 }
 
 const networks: Record<number, Network> = {};
+
+// TODO: Revisit how to load ABI generated for local-development.
+/**
+ * CODE REFERENCE FROM STAKING
+ * Fetches the localhost.json file for local-node development that is available as a public static file
+ * @returns
+ */
+// const getLocalABI = async () => {
+//     if (!fetchedLocalABI) {
+//         const { data } = await axios.get('/abi/localhost.json');
+//         if (isObject(data)) {
+//             fetchedLocalABI = true;
+//             // guessing the configuration is correct
+//             abi.localhost = data as ChainAbi;
+//         }
+//     }
+
+//     return abi.localhost;
+// };
 /*
 if (process.env.NODE_ENV === 'development') {
     networks['0x7a69'] = {
