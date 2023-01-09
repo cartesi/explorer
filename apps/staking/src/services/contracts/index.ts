@@ -9,35 +9,33 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
-import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
 import { useWallet } from '@explorer/wallet';
+import { Signer } from 'ethers';
+import { useEffect, useState } from 'react';
 
-import {
-    WorkerManagerAuthManagerImpl__factory,
-    WorkerManagerAuthManagerImpl,
-} from '@cartesi/util';
 import {
     CartesiToken,
     CartesiToken__factory,
     SimpleFaucet,
     SimpleFaucet__factory,
 } from '@cartesi/token';
+import {
+    WorkerManagerAuthManagerImpl,
+    WorkerManagerAuthManagerImpl__factory,
+} from '@cartesi/util';
 
-import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_goerli from '@cartesi/util/export/abi/goerli.json';
+import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 
-import token_mainnet from '@cartesi/token/export/abi/mainnet.json';
 import token_goerli from '@cartesi/token/export/abi/goerli.json';
+import token_mainnet from '@cartesi/token/export/abi/mainnet.json';
 
 import localhost from './localhost.json';
 
+import * as pool from './pool';
 import * as pos from './pos';
 import * as pos1 from './pos-1.0';
-import * as pool from './pool';
-import axios from 'axios';
-import { isObject } from 'lodash/fp';
 
 export interface ContractAbi {
     address: string;
@@ -79,25 +77,6 @@ const tokenAbis: ChainMap = {
     1: token_mainnet,
     5: token_goerli,
     31337: abi.localhost,
-};
-
-const fetchLocalABI = process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true';
-let fetchedLocalABI = false;
-/**
- * Fetches the localhost.json file for local-node development that is available as a public static file
- * @returns
- */
-const getLocalABI = async () => {
-    if (!fetchedLocalABI) {
-        const { data } = await axios.get('/abi/localhost.json');
-        if (isObject(data)) {
-            fetchedLocalABI = true;
-            // guessing the configuration is correct
-            abi.localhost = data as ChainAbi;
-        }
-    }
-
-    return abi.localhost;
 };
 
 export const getAddress = (
@@ -157,13 +136,6 @@ export function useContract<C>(
             setContract(undefined);
         }
     }, [library, chainId]);
-
-    useEffect(() => {
-        console.count(`should fetch local ABI - ${fetchLocalABI}`);
-        if (fetchLocalABI) {
-            getLocalABI();
-        }
-    }, []);
 
     return contract;
 }
