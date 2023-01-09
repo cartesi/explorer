@@ -10,22 +10,22 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Text,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalContent,
-    ModalOverlay,
-    HStack,
     Box,
-    useClipboard,
-    Link,
     Flex,
     Heading,
+    HStack,
+    Link,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Text,
+    useClipboard,
 } from '@chakra-ui/react';
-import { DisconnectIcon, CopyIcon, SwitchIcon, CloseIcon } from '../../Icons';
-import { useWallet } from '@explorer/wallet';
 import { useENS } from '@explorer/services';
+import { useWallet } from '@explorer/wallet';
+import { CloseIcon, CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
 
 export interface IWalletMobileModalProps {
     isOpen: boolean;
@@ -40,6 +40,8 @@ export const WalletMobileModal = ({
         useWallet();
     const ens = useENS(account ?? '');
     const { hasCopied, onCopy } = useClipboard(account ?? '');
+    const showModalBody =
+        account && library && selectAccount && isHardwareWallet;
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} size={'xs'} isCentered>
@@ -127,49 +129,42 @@ export const WalletMobileModal = ({
                             </HStack>
                         </ModalBody>
                     )}
-                    {account &&
-                        library &&
-                        selectAccount &&
-                        isHardwareWallet && (
-                            <ModalBody
-                                borderBottom="1px"
-                                borderColor={'gray.100'}
-                                py={5}
-                                paddingBottom={4}
-                            >
-                                <HStack
-                                    w="full"
-                                    spacing={4}
-                                    alignItems="center"
-                                >
-                                    <Box flexGrow="1">
-                                        <Heading m={0} size="sm">
-                                            <Flex align="baseline">
-                                                <Box
-                                                    onClick={selectAccount}
-                                                    aria-label="Switch accounts"
-                                                    title="Switch accounts"
-                                                    fontSize={16}
-                                                    fontWeight={400}
-                                                >
-                                                    Switch account
-                                                </Box>
-                                            </Flex>
-                                        </Heading>
-                                    </Box>
-                                    <Box alignSelf="flex-end">
-                                        <SwitchIcon
-                                            onClick={selectAccount}
-                                            aria-label="Switch accounts"
-                                            style={{
-                                                height: 18,
-                                                width: 18,
-                                            }}
-                                        />
-                                    </Box>
-                                </HStack>
-                            </ModalBody>
-                        )}
+                    {showModalBody && (
+                        <ModalBody
+                            borderBottom="1px"
+                            borderColor={'gray.100'}
+                            py={5}
+                            paddingBottom={4}
+                        >
+                            <HStack w="full" spacing={4} alignItems="center">
+                                <Box flexGrow="1">
+                                    <Heading m={0} size="sm">
+                                        <Flex align="baseline">
+                                            <Box
+                                                onClick={selectAccount}
+                                                aria-label="Switch accounts"
+                                                title="Switch accounts"
+                                                fontSize={16}
+                                                fontWeight={400}
+                                            >
+                                                Switch account
+                                            </Box>
+                                        </Flex>
+                                    </Heading>
+                                </Box>
+                                <Box alignSelf="flex-end">
+                                    <SwitchIcon
+                                        onClick={selectAccount}
+                                        aria-label="Switch accounts"
+                                        style={{
+                                            height: 18,
+                                            width: 18,
+                                        }}
+                                    />
+                                </Box>
+                            </HStack>
+                        </ModalBody>
+                    )}
                 </ModalContent>
             </Modal>
         </>

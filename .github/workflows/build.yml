@@ -4,19 +4,27 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-
-            - name: Code format check
-              run: npx prettier@2.7.1 --check "src/**/*.{ts,tsx}"
+            - name: Check out code
+              uses: actions/checkout@v3
+            
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v3
+                with:
+                  node-version: 16
+                  
+            cache: 'yarn'
 
             - name: Install Dependencies
               run: yarn install --frozen-lockfile
+
+            - name: Code format check
+              run: yarn format:check
 
             - name: Linting
               run: yarn lint
 
             - name: Run Tests
-              run: yarn test:ci
+              run: yarn test
 
             - name: Coveralls
               uses: coverallsapp/github-action@master

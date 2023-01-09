@@ -17,8 +17,8 @@ import {
     AlertTitle,
     SimpleGrid,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
-import { DApp } from '../../generated/graphql';
+import { FC } from 'react';
+import { DApp } from '../generated/graphql';
 import DAppCard from './DAppCard';
 
 export interface DAppsProps {

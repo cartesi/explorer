@@ -14,6 +14,7 @@
     "test:ci": "turbo run test:ci",
     "build-storybook": "turbo run build-storybook",
     "storybook": "turbo run storybook",
+    "format:check": "prettier --check \"**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
