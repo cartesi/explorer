@@ -34,6 +34,7 @@ import {
     Notification,
     PageBody,
     PagePanel,
+    Pagination,
 } from '@explorer/ui';
 import { FC, useState } from 'react';
 import DAppCard from '../../components/DAppCard';
@@ -44,14 +45,63 @@ export interface DAppFactoryProps {
     chainId: number;
 }
 
+type SummaryProps = { dappCount: number; inputCount: number };
+
+const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
+    <Stack
+        direction={['column', 'column', 'row', 'row']}
+        justify="space-evenly"
+        w="100%"
+        p={[5, 5, 10, 10]}
+        px={['6vw', '6vw', '12vw', '12vw']}
+        spacing={6}
+    >
+        <Banner
+            Icon={<Box as={DappIcon} w={8} h={8} />}
+            Title={
+                <HStack>
+                    <Text># DApps</Text>
+                    <Tooltip
+                        label="Total number of DApps instantiated"
+                        placement="top"
+                    >
+                        <Icon />
+                    </Tooltip>
+                </HStack>
+            }
+        >
+            <BigNumberText value={dappCount}></BigNumberText>
+        </Banner>
+        <Banner
+            Icon={<Box as={InputIcon} w={8} h={8} />}
+            Title={
+                <HStack>
+                    <Text># Inputs</Text>
+                    <Tooltip
+                        label="Total number of inputs processed"
+                        placement="top"
+                    >
+                        <Icon />
+                    </Tooltip>
+                </HStack>
+            }
+        >
+            <BigNumberText value={inputCount}></BigNumberText>
+        </Banner>
+    </Stack>
+);
+
 export const DAppFactory: FC<DAppFactoryProps> = (props) => {
     const { address, chainId } = props;
-    const bg = useColorModeValue('gray.80', 'header');
+    // Pagination component is zero-based
+    const [pageNumber, setPageNumber] = useState<number>(0);
+    const bg = useColorModeValue('white', 'gray.800');
     const dappsBodyBg = useColorModeValue('white', 'gray.700');
     const [search, setSearch] = useState<string>('');
     const [orderBy, setOrderBy] = useState<DApp_OrderBy>(
         DApp_OrderBy.ActivityTimestamp
     );
+    const DAPPS_PER_PAGE = 10;
 
     // query GraphQL
     const [result] = useFactoryDAppsQuery({
@@ -59,58 +109,24 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
             id: address,
             orderBy,
             search: search.length % 2 == 1 ? `0${search}` : search,
+            first: DAPPS_PER_PAGE,
+            skip: DAPPS_PER_PAGE * (pageNumber + 1),
         },
     });
     const { data, fetching, error } = result;
+
+    const totalPages = Math.ceil(
+        (data?.dappFactory?.dappCount ?? DAPPS_PER_PAGE) / DAPPS_PER_PAGE ?? 0
+    );
+
     return (
         <Box bg={bg}>
             <PagePanel>
                 {data?.dappFactory && (
-                    <Stack
-                        direction={['column', 'column', 'row', 'row']}
-                        justify="space-evenly"
-                        w="100%"
-                        p={[5, 5, 10, 10]}
-                        px={['6vw', '6vw', '12vw', '12vw']}
-                        spacing={6}
-                    >
-                        <Banner
-                            Icon={<Box as={DappIcon} w={8} h={8} />}
-                            Title={
-                                <HStack>
-                                    <Text># DApps</Text>
-                                    <Tooltip
-                                        label="Total number of DApps instantiated"
-                                        placement="top"
-                                    >
-                                        <Icon />
-                                    </Tooltip>
-                                </HStack>
-                            }
-                        >
-                            <BigNumberText
-                                value={data.dappFactory?.dappCount}
-                            ></BigNumberText>
-                        </Banner>
-                        <Banner
-                            Icon={<Box as={InputIcon} w={8} h={8} />}
-                            Title={
-                                <HStack>
-                                    <Text># Inputs</Text>
-                                    <Tooltip
-                                        label="Total number of inputs processed"
-                                        placement="top"
-                                    >
-                                        <Icon />
-                                    </Tooltip>
-                                </HStack>
-                            }
-                        >
-                            <BigNumberText
-                                value={data.dappFactory?.inputCount}
-                            ></BigNumberText>
-                        </Banner>
-                    </Stack>
+                    <DappsSummary
+                        dappCount={data.dappFactory.dappCount}
+                        inputCount={data.dappFactory.inputCount}
+                    />
                 )}
             </PagePanel>
             <PageBody p={0}>
@@ -158,24 +174,46 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                         </Select>
                     </HStack>
                     {data && data.dappFactory && (
-                        <SimpleGrid
-                            columns={{ base: 1, md: 2, xl: 3 }}
-                            spacing={4}
-                        >
-                            {data.dappFactory.dapps.map(
-                                ({ id, inputCount, deploymentTimestamp }) => (
-                                    <DAppCard
-                                        key={id}
-                                        address={id}
-                                        chainId={chainId}
-                                        date={
-                                            new Date(deploymentTimestamp * 1000)
-                                        }
-                                        inputCount={inputCount}
-                                    />
-                                )
-                            )}
-                        </SimpleGrid>
+                        <>
+                            <SimpleGrid
+                                columns={{ base: 1, md: 2, xl: 3 }}
+                                spacing={4}
+                            >
+                                {data.dappFactory.dapps.map(
+                                    ({
+                                        id,
+                                        inputCount,
+                                        deploymentTimestamp,
+                                    }) => (
+                                        <DAppCard
+                                            key={id}
+                                            address={id}
+                                            chainId={chainId}
+                                            date={
+                                                new Date(
+                                                    deploymentTimestamp * 1000
+                                                )
+                                            }
+                                            inputCount={inputCount}
+                                        />
+                                    )
+                                )}
+                            </SimpleGrid>
+                            <Box
+                                display="flex"
+                                justifyContent="flex-end"
+                                alignItems="center"
+                                mt={2}
+                            >
+                                {fetching && <Spinner size="md" me={3} />}
+                                <Pagination
+                                    currentPage={pageNumber}
+                                    showPageNumbers
+                                    onPageClick={setPageNumber}
+                                    pages={totalPages}
+                                />
+                            </Box>
+                        </>
                     )}
                 </Box>
             </PageBody>

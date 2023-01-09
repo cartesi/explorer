@@ -36,12 +36,11 @@ export interface RollupsContracts {
 
 export const useRollups = (address: string): RollupsContracts | undefined => {
     const [contracts, setContracts] = useState<RollupsContracts | undefined>();
-    const wallet = useWallet();
+    const { library } = useWallet();
 
     useEffect(() => {
         const connect = async (): Promise<RollupsContracts> => {
-            const provider = wallet.library;
-            const signer = provider.getSigner();
+            const signer = library.getSigner();
 
             const rollupsContract = RollupsFacet__factory.connect(
                 address,
@@ -69,11 +68,11 @@ export const useRollups = (address: string): RollupsContracts | undefined => {
                 etherPortalContract,
             };
         };
-        if (wallet) {
+        if (library) {
             connect().then((contracts) => {
                 setContracts(contracts);
             });
         }
-    }, [wallet, address]);
+    }, [library, address]);
     return contracts;
 };

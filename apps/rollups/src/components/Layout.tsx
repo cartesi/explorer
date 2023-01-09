@@ -9,16 +9,43 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
+import {
+    FooterContract,
+    FooterLink,
+    Layout,
+    PageBody,
+    PageHeader,
+    PagePanel,
+} from '@explorer/ui';
 import { FC, ReactNode } from 'react';
+import { useRollupsFactory } from '../services/useRollupsFactory';
 
 type Props = { children: ReactNode };
 
 export const PageLayout: FC<Props> = ({ children }) => {
+    const rollupsFactory = useRollupsFactory();
+    const contracts: FooterContract[] = [
+        {
+            name: 'Rollup DApp Factory',
+            address: rollupsFactory?.address,
+        },
+    ];
+
+    const links: FooterLink[] = [
+        {
+            href: 'https://docs.cartesi.io/new-to-cartesi/overview/',
+            label: 'The Blockchain OS',
+        },
+        {
+            label: 'Rollups Overview',
+            href: 'https://docs.cartesi.io/cartesi-rollups/overview/',
+        },
+    ];
+
     return (
         <Layout
-            footerContracts={[]}
-            footerLinks={[]}
+            footerContracts={contracts}
+            footerLinks={links}
             headerLinks={[{ href: '/', key: 'home', label: 'Home' }]}
         >
             {children}

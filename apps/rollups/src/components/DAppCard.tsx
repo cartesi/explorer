@@ -10,7 +10,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
 import { Address, Card, DappIcon } from '@explorer/ui';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -25,6 +25,10 @@ export interface DAppCardProps extends BoxProps {
 const DAppCard: FC<DAppCardProps> = (props) => {
     const { address, chainId, inputCount, date } = props;
     const router = useRouter();
+    const boxShadow = useColorModeValue(
+        '0px 0px 3px rgba(0, 0, 0, 0.1)',
+        '0px 0px 3px rgba(255, 255, 255, 0.3)'
+    );
 
     return (
         <Card
@@ -54,6 +58,7 @@ const DAppCard: FC<DAppCardProps> = (props) => {
                 textAlign: 'center',
                 spacing: 8,
             }}
+            boxShadow={boxShadow}
         />
     );
 };

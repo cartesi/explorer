@@ -7,14 +7,22 @@ query dapps {
     }
 }
 
-query factoryDApps($id: ID!, $orderBy: DApp_orderBy!, $search: Bytes) {
+query factoryDApps(
+    $id: ID!
+    $orderBy: DApp_orderBy!
+    $search: Bytes
+    $first: Int
+    $skip: Int
+) {
     dappFactory(id: $id) {
         dappCount
         inputCount
         dapps(
             orderBy: $orderBy
             orderDirection: desc
+            first: $first
             where: { id_contains: $search }
+            skip: $skip
         ) {
             id
             inputCount

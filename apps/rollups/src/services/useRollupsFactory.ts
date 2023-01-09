@@ -10,13 +10,13 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { useEffect, useState } from 'react';
 import {
     CartesiDAppFactory,
     CartesiDAppFactory__factory,
 } from '@cartesi/rollups';
-import { useNetwork } from './useNetwork';
 import { useWallet } from '@explorer/wallet';
+import { useEffect, useState } from 'react';
+import { useNetwork } from './useNetwork';
 
 export const useRollupsFactory = (): CartesiDAppFactory | undefined => {
     const [factory, setFactory] = useState<CartesiDAppFactory | undefined>();
