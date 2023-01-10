@@ -9,24 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { Center, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
 import React, { FC } from 'react';
 import {
-    Box,
-    Center,
-    Flex,
-    Text,
-    VStack,
-    useBreakpointValue,
-    useColorModeValue,
-    StackProps,
-} from '@chakra-ui/react';
-import Header from './Header';
-import Footer from './Footer';
+    useCartesiTokenContract,
+    usePoSContract,
+    useSimpleFaucetContract,
+    useStakingContract,
+    useStakingPoolFactoryContract,
+    useWorkerManagerContract,
+} from '../services/contracts';
 import SyncStatus from './SyncStatus';
-
-interface ComponentProps {
-    children: React.ReactNode;
-}
 
 export const ResponsiveDebug: FC = () => {
     const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
@@ -41,52 +35,101 @@ export const ResponsiveDebug: FC = () => {
     );
 };
 
-export const PageHeader: FC<ComponentProps> = ({ children }) => (
-    <Box w="100%" bg="gray.900" color="white" px="6vw" py={5}>
-        {children}
-    </Box>
-);
+export { PageHeader, PagePanel, PageBody };
 
-export interface PagePanelProps extends ComponentProps {
-    darkModeColor?: string;
+interface ComponentProps {
+    children: React.ReactNode;
 }
 
-export const PagePanel: FC<PagePanelProps> = ({
-    children,
-    darkModeColor = 'gray.700',
-    ...restProps
-}) => {
-    const bg = useColorModeValue('white', darkModeColor);
-    const bgHeader = useColorModeValue('white', 'gray.800');
+const headerLinks = [
+    {
+        key: 'home',
+        label: 'Home',
+        href: '/',
+    },
+    {
+        key: 'stake',
+        label: 'Stake',
+        href: '/stake',
+    },
+    {
+        key: 'runners',
+        label: 'Node Runners',
+        href: '/node-runners',
+    },
+    {
+        key: 'blocks',
+        label: 'Blocks',
+        href: '/blocks',
+    },
+];
+
+const PageLayout: FC<ComponentProps> = ({ children }) => {
+    const pos = usePoSContract();
+    const token = useCartesiTokenContract();
+    const faucet = useSimpleFaucetContract();
+    const staking = useStakingContract();
+    const workerManager = useWorkerManagerContract();
+    const poolFactory = useStakingPoolFactoryContract();
+
+    const links = [
+        {
+            label: 'Audit Report',
+            href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
+        },
+        {
+            label: 'CTSI Reserve Mining',
+            href: 'https://cartesi.io/en/mine/',
+        },
+        {
+            label: 'How to Run a Node',
+            href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
+        },
+        {
+            label: 'FAQ',
+            href: 'https://github.com/cartesi/noether/wiki/FAQ',
+        },
+    ];
+
+    const contracts = [
+        {
+            name: 'Token',
+            address: token?.address,
+        },
+        {
+            name: 'Faucet',
+            address: faucet?.address,
+        },
+        {
+            name: 'PoS',
+            address: pos?.address,
+        },
+        {
+            name: 'Staking',
+            address: staking?.address,
+        },
+        {
+            name: 'Worker Manager',
+            address: workerManager?.address,
+        },
+        {
+            name: 'Pool Factory',
+            address: poolFactory?.address,
+        },
+    ];
+
     return (
-        <Center
-            bgGradient={`linear(to-b, gray.900 0%, gray.900 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
-            {...restProps}
+        <Layout
+            headerLinks={headerLinks}
+            footerContracts={contracts}
+            footerLinks={links}
         >
-            <Box bg={bg} w="100%" shadow="md">
-                {children}
-            </Box>
-        </Center>
-    );
-};
-
-export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
-    <VStack px="6vw" py={5} align="stretch" {...restProps}>
-        {children}
-    </VStack>
-);
-
-const Layout: FC<ComponentProps> = ({ children }) => {
-    return (
-        <Flex direction="column" align="center" m="0 auto" minHeight="100vh">
-            <Header />
-            <Box width="100%" paddingTop="100px">
+            <>
                 <SyncStatus />
                 {children}
-            </Box>
-            <Footer />
-        </Flex>
+            </>
+        </Layout>
     );
 };
 
-export default Layout;
+export default PageLayout;

@@ -10,6 +10,7 @@ export { default as BigNumberText } from './BigNumberText';
 export * from './Card';
 export * from './Fonts';
 export * from './Footer';
+export { default as Footer } from './Footer';
 export * from './Header';
 export { default as Header } from './Header';
 export * from './Icons';

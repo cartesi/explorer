@@ -9,19 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
     Center,
     Flex,
+    StackProps,
     Text,
-    VStack,
     useBreakpointValue,
     useColorModeValue,
-    StackProps,
+    VStack,
 } from '@chakra-ui/react';
+import React, { FC } from 'react';
+import Footer, { FooterContract, FooterLink } from './Footer';
 import Header from './Header';
-import Footer, { FooterContract, FooterLink, FooterProps } from './Footer';
 import { HeaderLink } from './header/NavBar';
 
 interface ComponentProps {
@@ -93,8 +93,6 @@ const Layout: FC<LayoutProps> = ({
         <Flex direction="column" align="center" m="0 auto" minHeight="100vh">
             <Header links={headerLinks} />
             <Box width="100%" paddingTop="100px">
-                {/* Make changes to the staking Layout to include the SyncStatus as children*/}
-                {/* <SyncStatus /> */}
                 {children}
             </Box>
             <Footer contracts={footerContracts} links={footerLinks} />
