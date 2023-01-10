@@ -6,13 +6,24 @@ This is a monorepo holding up two explorer applications from Cartesi. One is the
 
 This turborepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
 
+## Package Installation
+
+You can add, remove and upgrade packages from within your monorepo using your package manager's built-in commands:
+
+`yarn workspace <workspace> add <package>`
+
+> Refer to Turborepo [package-installation](https://turbo.build/repo/docs/handbook/package-installation) session for more information.
+
 ### Apps and Packages
 
-- `rollups`: The new rollups explorer App that is [Next.js](https://nextjs.org/) app
-- `staking`: The staking explorer also a [Next.js](https://nextjs.org/) app
-- `ui`: House to core react components shared by both `rollups` and `staking` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+-   `rollups`: The new rollups explorer App that is [Next.js](https://nextjs.org/) app
+-   `staking`: The staking explorer also a [Next.js](https://nextjs.org/) app
+-   `ui`: House to core react components shared by both [rollups](./apps//rollups/) and [staking](./apps//staking/) applications.
+-   `services`: Holds common logic to share between apps e.g ENS service.
+-   `utils`: Holds utilities used inside the packages and also Apps.
+-   `wallet`: Holds common implementation of a web3 wallet to be shared between apps.
+-   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+-   `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -20,17 +31,19 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 This turborepo has some additional tools already setup for you:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+-   [TypeScript](https://www.typescriptlang.org/) for static type checking
+-   [ESLint](https://eslint.org/) for code linting
+-   [Prettier](https://prettier.io) for code formatting
 
 ### Build
 
-To build all apps and packages, run the following command:
+To build all apps, run the following command:
 
 ```
 yarn run build
 ```
+
+> Note: We are not building the packages since it is only for internal use. **The transpilation/compilation is delegated to the application using the package.** _That may change in the future._
 
 ### Develop
 
@@ -42,7 +55,7 @@ yarn run dev
 
 > Note: When running turborepo tasks like `dev` or `build` it will run rollups and staking in parallel. e.g. when you want only to do `dev` on staking app, you should filter the task
 
-The filtering should be by the **name** inside the package.json of the targeted `apps/*`
+The filtering should be done by the **name** inside the package.json of the targeted `apps/*`
 
 ```
 yarn run dev --filter @cartesi/explorer
@@ -58,9 +71,9 @@ yarn run dev --filter @cartesi/web-rollups
 
 Learn more about the power of Turborepo:
 
-- [Pipelines](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+-   [Pipelines](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+-   [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+-   [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+-   [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+-   [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+-   [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
