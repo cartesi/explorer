@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 
-import { Fonts } from '../components/Fonts';
+import { Fonts } from '@explorer/ui';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
