@@ -9,20 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CopyIcon } from '@chakra-ui/icons';
-import StakeCard from '../../components/stake/StakeCard';
+import { Banner } from '@explorer/ui';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 export default {
-    title: 'Stake/StakeCard',
-    component: StakeCard,
+    title: 'Banner',
+    component: Banner,
     argTypes: {},
-} as ComponentMeta<typeof StakeCard>;
+} as ComponentMeta<typeof Banner>;
 
-const Template: ComponentStory<typeof StakeCard> = (args) => (
-    <StakeCard {...args} />
-);
+const Template: ComponentStory<typeof Banner> = (args) => <Banner {...args} />;
 
 const defaultProps = {
     Icon: <CopyIcon w={5} h={5} />,

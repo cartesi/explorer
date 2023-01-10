@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
 import { Icon } from '@chakra-ui/icons';
-import { HStack, Text, Tooltip, Stack } from '@chakra-ui/react';
+import { HStack, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Banner } from '@explorer/ui';
 import { BigNumber } from 'ethers';
+import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
-import { PoolsIcon, MyPoolsIcon, MyStakeIcon } from '../../Icons';
 import BigNumberText from '../../BigNumberText';
 import CTSIText from '../../CTSIText';
-import StakeCard from '../StakeCard';
+import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
 
 export interface PoolsOverviewProps {
     balance: BigNumber;
@@ -27,7 +27,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
         px={['6vw', '6vw', '12vw', '12vw']}
         spacing={6}
     >
-        <StakeCard
+        <Banner
             Icon={<PoolsIcon w={8} h={8} />}
             Title={
                 <HStack>
@@ -39,9 +39,9 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             }
         >
             <BigNumberText value={summary?.totalPools} />
-        </StakeCard>
+        </Banner>
 
-        <StakeCard
+        <Banner
             Icon={<MyPoolsIcon w={7} h={7} />}
             Title={
                 <HStack>
@@ -56,9 +56,9 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             }
         >
             <BigNumberText value={poolBalancesCount} />
-        </StakeCard>
+        </Banner>
 
-        <StakeCard
+        <Banner
             Icon={<MyStakeIcon w={8} h={8} />}
             Title={
                 <HStack>
@@ -77,7 +77,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                     maximumFractionDigits: 2,
                 }}
             />
-        </StakeCard>
+        </Banner>
     </Stack>
 );
 

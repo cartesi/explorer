@@ -9,11 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import { Banner, BannerProps } from '@explorer/ui';
 import { render, screen } from '@testing-library/react';
-import StakeCard, {
-    StakeCardProps,
-} from '../../../src/components/stake/StakeCard';
 import { withChakraTheme } from '../../test-utilities';
 
 const defaultProps = {
@@ -22,9 +19,9 @@ const defaultProps = {
     children: <span>Children</span>,
 };
 
-const Component = withChakraTheme<StakeCardProps>(StakeCard);
+const Component = withChakraTheme<BannerProps>(Banner);
 
-describe('StakeCard', () => {
+describe('Banner', () => {
     const renderComponent = (props) =>
         render(<Component {...props}>{props.children}</Component>);
 

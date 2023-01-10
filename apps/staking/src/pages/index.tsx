@@ -9,51 +9,51 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
-import { FixedNumber } from 'ethers';
+import { Icon } from '@chakra-ui/icons';
 import {
+    Box,
+    Flex,
+    Heading,
     HStack,
+    SimpleGrid,
+    Stack,
     Text,
     Tooltip,
+    useColorModeValue,
     Wrap,
     WrapItem,
-    SimpleGrid,
-    Heading,
-    Box,
-    Stack,
-    Flex,
-    useColorModeValue,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/icons';
-import Layout from '../components/Layout';
+import { Banner } from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
+import { FixedNumber } from 'ethers';
+import { useState } from 'react';
 import BlockMiniCard from '../components/block/BlockMiniCard';
+import CTSIText from '../components/CTSIText';
+import MarketInfoPanel from '../components/home/MarketInfoPanel';
+import PrimaryCard from '../components/home/PrimaryCard';
+import {
+    ActiveNodeIcon,
+    ChartIcon,
+    CircleSupplyIcon,
+    GridIcon,
+    MarketCapICon,
+    PrizeIcon,
+    TotalStakedIcon,
+} from '../components/Icons';
+import Layout from '../components/Layout';
+import PageHead from '../components/PageHead';
+import SearchInput from '../components/SearchInput';
 import Users from '../components/Users';
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
-import { useMarketInformation } from '../services/market';
-import { useCartesiToken } from '../services/token';
+import useTotalPoolBalance from '../graphql/hooks/useTotalPoolBalance';
 import { useBlockNumber } from '../services/eth';
+import { useMarketInformation } from '../services/market';
 import { useStaking } from '../services/staking';
-import { useWallet } from '@explorer/wallet';
+import { useCartesiToken } from '../services/token';
+import { formatNumberValue } from '../utils/numberFormatter';
 import { getRewardRate } from '../utils/reward';
 import { toCTSI } from '../utils/token';
-import CTSIText from '../components/CTSIText';
-import MarketInfoPanel from '../components/home/MarketInfoPanel';
-import SearchInput from '../components/SearchInput';
-import useTotalPoolBalance from '../graphql/hooks/useTotalPoolBalance';
-import PrimaryCard from '../components/home/PrimaryCard';
-import {
-    ChartIcon,
-    MarketCapICon,
-    CircleSupplyIcon,
-    ActiveNodeIcon,
-    PrizeIcon,
-    GridIcon,
-    TotalStakedIcon,
-} from '../components/Icons';
-import StakeCard from '../components/stake/StakeCard';
-import { formatNumberValue } from '../utils/numberFormatter';
-import PageHead from '../components/PageHead';
 
 const Home = () => {
     // user account and blockchain information (from metamask or other wallets)
@@ -269,7 +269,7 @@ const Home = () => {
                         }}
                         flexWrap="wrap"
                     >
-                        <StakeCard
+                        <Banner
                             Title={
                                 <Flex alignItems="center">
                                     <Text mr={2}># Active Nodes</Text>
@@ -293,8 +293,8 @@ const Home = () => {
                             <Text fontWeight="bold">
                                 {formatNumberValue(summary?.totalNodes || 0)}
                             </Text>
-                        </StakeCard>
-                        <StakeCard
+                        </Banner>
+                        <Banner
                             Title={
                                 <Flex alignItems="center">
                                     <Text mr={2}>Total Staked (CTSI)</Text>
@@ -331,8 +331,8 @@ const Home = () => {
                                     CTSI
                                 </Text>
                             </Text>
-                        </StakeCard>
-                        <StakeCard
+                        </Banner>
+                        <Banner
                             Title={
                                 <Flex alignItems="center">
                                     <Text mr={2}>
@@ -371,8 +371,8 @@ const Home = () => {
                                     %
                                 </Text>
                             </Text>
-                        </StakeCard>
-                        <StakeCard
+                        </Banner>
+                        <Banner
                             Title={
                                 <Flex alignItems="center">
                                     <Text mr={2}>Participation Rate</Text>
@@ -409,7 +409,7 @@ const Home = () => {
                                     %
                                 </Text>
                             </Text>
-                        </StakeCard>
+                        </Banner>
                     </Flex>
                 </Box>
 
