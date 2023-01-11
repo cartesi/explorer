@@ -58,13 +58,13 @@ yarn run dev
 The filtering should be done by the **name** inside the package.json of the targeted `apps/*`
 
 ```
-yarn run dev --filter @cartesi/explorer
+yarn run dev --filter staking
 ```
 
 or
 
 ```
-yarn run dev --filter @cartesi/web-rollups
+yarn run dev --filter rollups
 ```
 
 ## Turborepo Useful Links
