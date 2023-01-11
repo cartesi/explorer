@@ -9,17 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Network } from './networks';
+import { InferGetStaticPropsType } from 'next';
+import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
+import { DOMAINS } from '../graphql/queries/ensDomains';
 import { createApollo } from '../services/apollo';
 import ensClient from '../services/apolloENSClient';
-import { DOMAINS } from '../graphql/queries/ensDomains';
-import { Domain } from '../graphql/models';
+import { Network } from './networks';
 import { formatEnsName } from './stringUtils';
-import { InferGetStaticPropsType } from 'next';
 
-// using AWS and Mainnet
+// using AWS for Mainnet/Goerli
 const awsClient = createApollo(Network.MAINNET, true);
+const goerliAWS = createApollo(Network.GOERLI, true);
 
 type PoolId = {
     pool: string;
@@ -58,8 +59,14 @@ export type Context = {
 };
 
 export async function getENSStaticProps({ params }: Context) {
-    const [poolQ, ensQ] = await Promise.all([
-        awsClient.query({
+    const [poolQ, goerliPoolQ, ensQ] = await Promise.all([
+        awsClient.query<StakingPoolData>({
+            query: STAKING_POOL,
+            variables: {
+                id: params.pool,
+            },
+        }),
+        goerliAWS.query<StakingPoolData>({
             query: STAKING_POOL,
             variables: {
                 id: params.pool,
@@ -76,12 +83,11 @@ export async function getENSStaticProps({ params }: Context) {
         }),
     ]);
 
-    const {
-        data: { stakingPool },
-    } = poolQ;
+    const goerliStakingPool = goerliPoolQ.data.stakingPool;
+    const mainnetStakingPool = poolQ.data.stakingPool;
 
     // In case the pool does not exist we say to nextJS to return a 404 page
-    if (!stakingPool) return { notFound: true };
+    if (!goerliStakingPool && !mainnetStakingPool) return { notFound: true };
 
     const { data } = ensQ;
 
