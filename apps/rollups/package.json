@@ -1,12 +1,10 @@
 {
-    "name": "@cartesi/web-rollups",
+    "name": "rollups",
     "version": "1.0.0",
     "private": true,
-    "scripts": {
-        "build:next": "next build",
-        "export:next": "next export",
-        "build": "run-s codegen build:next",
-        "export": "run-s codegen build:next export:next",
+    "scripts": {        
+        "build": "next build",
+        "export": "next export",
         "codegen": "graphql-codegen",
         "dev": "next dev",
         "lint": "eslint --color --ext .ts --ext .tsx src/",

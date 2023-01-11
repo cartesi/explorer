@@ -1,5 +1,5 @@
 {
-    "name": "@cartesi/explorer",
+    "name": "staking",
     "version": "1.2.0",
     "private": true,
     "scripts": {
