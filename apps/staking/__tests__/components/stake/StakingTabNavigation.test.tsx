@@ -24,6 +24,8 @@ jest.mock('next/router', () => {
     };
 });
 
+const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
+
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 const EStakingTabNavigation = withChakraTheme(StakingTabNavigation);
@@ -36,7 +38,7 @@ describe('Staking Tab Navigation', () => {
         // default mock return
         mockUseRouter.mockReturnValue({
             query: {
-                pool: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
+                pool: address,
             },
         } as unknown as NextRouter);
     });
@@ -51,8 +53,88 @@ describe('Staking Tab Navigation', () => {
         expect(screen.getByText('Pool Info')).toBeInTheDocument();
     });
 
+    it('Should lead to pool info page', () => {
+        renderComponent();
+        expect(screen.getByText('Pool Info').getAttribute('href')).toBe(
+            `/stake/${address}`
+        );
+    });
+
     it('Should display stake label', () => {
         renderComponent();
         expect(screen.getByText('Stake')).toBeInTheDocument();
+    });
+
+    it('Should lead to pool stake page', () => {
+        renderComponent();
+        expect(screen.getByText('Stake').getAttribute('href')).toBe(
+            `/stake/${address}/stake`
+        );
+    });
+
+    it('Should activate stake tab', () => {
+        mockUseRouter.mockReturnValue({
+            query: {
+                pool: address,
+            },
+            pathname: '/stake/[pool]/stake',
+        } as unknown as NextRouter);
+
+        renderComponent();
+
+        expect(screen.getByText('Stake').getAttribute('data-active')).toBe('');
+        expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
+            null
+        );
+    });
+
+    it('Should activate pool info tab', () => {
+        mockUseRouter.mockReturnValue({
+            query: {
+                pool: address,
+            },
+            pathname: '/stake/[pool]',
+        } as unknown as NextRouter);
+
+        const { rerender } = renderComponent();
+
+        expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
+            ''
+        );
+        expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
+            null
+        );
+
+        mockUseRouter.mockReturnValue({
+            query: {
+                pool: address,
+            },
+            pathname: '/stake/[pool]/users',
+        } as unknown as NextRouter);
+
+        rerender(<EStakingTabNavigation />);
+
+        expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
+            ''
+        );
+        expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
+            null
+        );
+
+        mockUseRouter.mockReturnValue({
+            query: {
+                pool: address,
+            },
+            pathname: '/stake/[pool]/commissions',
+        } as unknown as NextRouter);
+
+        rerender(<EStakingTabNavigation />);
+
+        expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
+            ''
+        );
+        expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
+            null
+        );
     });
 });

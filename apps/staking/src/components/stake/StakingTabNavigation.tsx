@@ -11,65 +11,57 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { SimpleChartIcon, StakeIcon } from '../Icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { SimpleChartIcon, StakeIcon } from '../Icons';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');
     const color = useColorModeValue('gray.900', 'white');
     const router = useRouter();
     const address = router.query.pool as string;
+    const isStakeTabActive = router.pathname === '/stake/[pool]/stake';
+    const isPoolInfoTabActive = !isStakeTabActive;
+    const tabs = [
+        {
+            href: `/stake/${address}`,
+            Icon: SimpleChartIcon,
+            text: 'Pool Info',
+            isActive: isPoolInfoTabActive,
+            variant: isPoolInfoTabActive ? 'solid' : 'ghost',
+        },
+        {
+            href: `/stake/${address}/stake`,
+            Icon: StakeIcon,
+            text: 'Stake',
+            isActive: isStakeTabActive,
+            variant: isStakeTabActive ? 'solid' : 'ghost',
+        },
+    ];
 
     return (
-        <>
-            <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
-                <NextLink href={`/stake/${address}`}>
+        <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
+            {tabs.map((tab) => (
+                <NextLink key={tab.href} href={tab.href} passHref>
                     <Button
                         py={{ lg: 7 }}
-                        leftIcon={<SimpleChartIcon w="24px" h="24px" />}
                         outline="none"
                         textTransform="none"
-                        isActive={
-                            router.pathname === `/stake/[pool]` ||
-                            router.pathname === '/stake/[pool]/commissions'
-                        }
-                        variant={
-                            router.pathname === `/stake/[pool]`
-                                ? 'solid'
-                                : 'ghost'
-                        }
-                        _hover={{ bg: 'transparent' }}
-                        _active={{
-                            bg: bg,
-                            color: color,
+                        _hover={{
+                            bg: 'transparent',
                         }}
+                        _active={{
+                            bg,
+                            color,
+                        }}
+                        leftIcon={<tab.Icon w="24px" h="24px" />}
+                        isActive={tab.isActive}
+                        variant={tab.variant}
                     >
-                        Pool Info
+                        {tab.text}
                     </Button>
                 </NextLink>
-                <NextLink href={`/stake/${address}/stake`}>
-                    <Button
-                        py={{ lg: 7 }}
-                        leftIcon={<StakeIcon w="24px" h="24px" />}
-                        outline="none"
-                        textTransform="none"
-                        isActive={router.pathname === `/stake/[pool]/stake`}
-                        variant={
-                            router.pathname === `/stake/[pool]/stake`
-                                ? 'solid'
-                                : 'ghost'
-                        }
-                        _hover={{ bg: 'transparent' }}
-                        _active={{
-                            bg: bg,
-                            color: color,
-                        }}
-                    >
-                        Stake
-                    </Button>
-                </NextLink>
-            </HStack>
-        </>
+            ))}
+        </HStack>
     );
 };
