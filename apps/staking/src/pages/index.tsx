@@ -128,16 +128,19 @@ const Home = () => {
                         shouldWrapChildren
                     >
                         <CTSIText
-                          value={balance}
-                          pt={{ base: 4, md: 0 }}
-                          pr={{ base: 2, sm: 10, md: 16 }}
+                            value={balance}
+                            pt={{ base: 4, md: 0 }}
+                            pr={{ base: 2, sm: 10, md: 16 }}
                         >
                             <Text color="white" mb={2}>
                                 Wallet Balance
                             </Text>
                         </CTSIText>
 
-                        <CTSIText value={stakedBalance.add(poolBalance)} pt={{ base: 4, md: 0 }}>
+                        <CTSIText
+                            value={stakedBalance.add(poolBalance)}
+                            pt={{ base: 4, md: 0 }}
+                        >
                             <HStack mb={2}>
                                 <Text color="white">Staked Balance</Text>
                                 <Tooltip
