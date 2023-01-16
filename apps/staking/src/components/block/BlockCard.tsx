@@ -51,6 +51,7 @@ const BlockCard: FC<BlockCardProps> = (props) => {
             </Box>
             <Image
                 src={tinyGraphUrl(block)}
+                alt="Block image"
                 boxSize={['0', '50px', '120px', '160px']}
             />
         </HStack>

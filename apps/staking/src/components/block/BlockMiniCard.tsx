@@ -102,6 +102,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                         src={tinyGraphUrl(block, 0)}
                         maxWidth="100%"
                         h="auto"
+                        alt="Block image"
                     />
                 </Box>
             </Flex>

@@ -127,30 +127,27 @@ const Home = () => {
                         pl={{ base: 0, md: '6vw' }}
                         shouldWrapChildren
                     >
-                        <WrapItem
-                            pt={{ base: 4, md: 0 }}
-                            pr={{ base: 2, sm: 10, md: 16 }}
+                        <CTSIText
+                          value={balance}
+                          pt={{ base: 4, md: 0 }}
+                          pr={{ base: 2, sm: 10, md: 16 }}
                         >
-                            <CTSIText value={balance}>
-                                <Text color="white" mb={2}>
-                                    Wallet Balance
-                                </Text>
-                            </CTSIText>
-                        </WrapItem>
+                            <Text color="white" mb={2}>
+                                Wallet Balance
+                            </Text>
+                        </CTSIText>
 
-                        <WrapItem pt={{ base: 4, md: 0 }}>
-                            <CTSIText value={stakedBalance.add(poolBalance)}>
-                                <HStack mb={2}>
-                                    <Text color="white">Staked Balance</Text>
-                                    <Tooltip
-                                        label="This includes direct staking and pool staking."
-                                        placement="top"
-                                    >
-                                        <Icon />
-                                    </Tooltip>
-                                </HStack>
-                            </CTSIText>
-                        </WrapItem>
+                        <CTSIText value={stakedBalance.add(poolBalance)} pt={{ base: 4, md: 0 }}>
+                            <HStack mb={2}>
+                                <Text color="white">Staked Balance</Text>
+                                <Tooltip
+                                    label="This includes direct staking and pool staking."
+                                    placement="top"
+                                >
+                                    <Icon />
+                                </Tooltip>
+                            </HStack>
+                        </CTSIText>
                     </Wrap>
                 </Box>
 

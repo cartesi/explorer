@@ -111,6 +111,7 @@ const Address: FC<AddressProps> = (props) => {
                     src={ensEntry.avatar}
                     boxSize="42px"
                     objectFit="contain"
+                    alt={`${ensEntry.name} avatar`}
                     onError={() => setAvatarError(true)}
                 />
             ) : (
