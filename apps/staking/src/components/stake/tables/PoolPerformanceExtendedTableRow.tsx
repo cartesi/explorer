@@ -192,7 +192,7 @@ const PoolPerformanceExtendedTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <NextLink href={`/stake/${pool.id}`} passHref>
-                        <Link data-testid="stake-info-link">
+                        <Link data-testid="stake-info-link" title="Stake info">
                             <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>

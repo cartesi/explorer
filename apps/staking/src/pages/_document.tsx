@@ -17,7 +17,9 @@ export default class Document extends NextDocument {
     render() {
         return (
             <Html lang="en">
-                <Head />
+                <Head>
+                    <title>Stake CTSI</title>
+                </Head>
                 <body>
                     <ColorModeScript
                         initialColorMode={theme.config.initialColorMode}

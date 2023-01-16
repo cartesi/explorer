@@ -16,7 +16,7 @@ import { Box, BoxProps, Link } from '@chakra-ui/react';
 const Logo: FC<BoxProps> = (props) => (
     <Box {...props}>
         <NextLink href="/" passHref>
-            <Link _focus={{ outline: 'none' }}>
+            <Link _focus={{ outline: 'none' }} title="Cartesi logo">
                 <svg
                     id="logo"
                     xmlns="http://www.w3.org/2000/svg"

@@ -129,7 +129,7 @@ const Address: FC<AddressProps> = (props) => {
             )}
 
             {showActions && !hasCopied && (
-                <Link display="flex">
+                <Link display="flex" title="Copy">
                     <CopyIcon
                         onClick={onCopy}
                         fontSize={fontSize}
@@ -141,7 +141,12 @@ const Address: FC<AddressProps> = (props) => {
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
-                <Link href={externalLink} display="flex" isExternal>
+                <Link
+                    href={externalLink}
+                    display="flex"
+                    isExternal
+                    title="External link"
+                >
                     <ExternalLinkIcon
                         fontSize={fontSize}
                         data-testid="external-link-icon"
