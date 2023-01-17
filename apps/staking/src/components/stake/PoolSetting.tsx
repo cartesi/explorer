@@ -31,8 +31,11 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
+import { Notification } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
+import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
+import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
@@ -40,6 +43,8 @@ import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import GasTaxContainer from '../../containers/stake/GasTaxContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import { useStakingPool } from '../../services/pool';
+import { useStakingPoolFactory } from '../../services/poolFactory';
+import { getMessages } from '../../utils/messages';
 import { validateEns } from '../../utils/validation';
 import CTSIText from '../CTSIText';
 import TransactionBanner from '../TransactionBanner';
@@ -70,16 +75,32 @@ const wordingFor = {
         failTitle: 'Updating pool commission failed',
         successDescription: 'Pool commission updated successfully!',
     },
-};
+    update: {
+        title: getMessages('pool.update.v2.update'),
+        failTitle: getMessages('pool.update.v2.fail'),
+        successDescription: getMessages('pool.update.v2.success'),
+    },
+} as const;
 
 type PoolSettingsProps = {
     address: string;
 };
 
+const hasTwoValues = pipe([size, equals(2)]);
+
+const isSamePoS = (p1: string, p2: string): boolean => {
+    return allPass([
+        hasTwoValues,
+        ([head, tail]: string[]) => equals(head, tail),
+    ])([p1, p2]);
+};
+
 export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
+    const posV2Enabled = useFlag('posV2Enabled');
     const stakingPool = useStakingPoolQuery(address);
+    const poolFactory = useStakingPoolFactory();
     const rebalanceColor = useColorModeValue('gray.800', 'header');
     const rebalanceHoverBg = useColorModeValue('orange.300', 'orange.100');
     const progress = pool.transaction?.receipt?.confirmations || 0;
@@ -95,6 +116,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
             : undefined;
     const isRebalancing = pool.rebalanceTransaction?.isOngoing;
     const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
+    const hasSamePoS = isSamePoS(pool.pos, poolFactory.pos);
+    const displayPoSV2Alert = posV2Enabled && poolFactory.ready && !hasSamePoS;
 
     const {
         register,
@@ -216,6 +239,32 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     </VStack>
                 </Box>
             </Stack>
+
+            <TransactionBanner
+                transaction={pool.updateTransaction}
+                title={wordingFor.update.title}
+                failTitle={wordingFor.update.failTitle}
+                successDescription={wordingFor.update.successDescription}
+                mb={2}
+            />
+
+            {displayPoSV2Alert && (
+                <Notification
+                    title="Pool manager action"
+                    subtitle="upgrade your staking pool to use the new PoS version 2"
+                    status="warning"
+                    mb={3}
+                >
+                    <Button
+                        colorScheme="blue"
+                        mt="1rem !important"
+                        isLoading={pool?.updateTransaction?.isOngoing}
+                        onClick={pool?.update}
+                    >
+                        Update
+                    </Button>
+                </Notification>
+            )}
 
             {feeType == 'flatRate' && (
                 <FlatRateContainer
