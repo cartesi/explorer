@@ -264,6 +264,33 @@ describe('useMessages hook', () => {
                 );
             });
         });
+
+        describe('For update', () => {
+            it('should return a message for success state', () => {
+                const { result } = renderHook(() =>
+                    useMessages('pool.update.v2.success')
+                );
+                expect(result.current).toEqual(
+                    'Pool updated to use PoS v2 with success!'
+                );
+            });
+
+            it('should return a message when failure state', () => {
+                const { result } = renderHook(() =>
+                    useMessages('pool.update.v2.fail')
+                );
+                expect(result.current).toEqual('Pool update failed!');
+            });
+
+            it('should return a message for updating state', () => {
+                const { result } = renderHook(() =>
+                    useMessages('pool.update.v2.update')
+                );
+                expect(result.current).toEqual(
+                    'Updating pool to use PoS v2...'
+                );
+            });
+        });
     });
 
     describe('Messages for general purporse', () => {

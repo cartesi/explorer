@@ -115,6 +115,13 @@ const messages = {
             howItWorks: () =>
                 `Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:`,
         },
+        update: {
+            v2: {
+                success: () => 'Pool updated to use PoS v2 with success!',
+                fail: () => 'Pool update failed!',
+                update: () => 'Updating pool to use PoS v2...',
+            },
+        },
     },
     step: {
         skippable: () => 'This step could be skipped.',
@@ -161,3 +168,8 @@ export const useMessages = (path: MessagePath, ...params: any[]): string => {
     const messFunc = pathOr(() => '', path, messages);
     return messFunc(...params);
 };
+
+/**
+ * Alias to useMessages but not in Hook naming convention
+ */
+export const getMessages = useMessages;
