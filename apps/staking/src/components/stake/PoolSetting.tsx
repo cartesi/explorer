@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
     Button,
@@ -32,17 +31,17 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { FaBalanceScaleLeft } from 'react-icons/fa';
 import { useWallet } from '@explorer/wallet';
-import CTSIText from '../CTSIText';
-import { useRouter } from 'next/router';
-import { useStakingPool } from '../../services/pool';
-import { useForm } from 'react-hook-form';
-import { validateEns } from '../../utils/validation';
-import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
-import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import { BigNumber } from 'ethers';
+import { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import { FaBalanceScaleLeft } from 'react-icons/fa';
+import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import GasTaxContainer from '../../containers/stake/GasTaxContainer';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import { useStakingPool } from '../../services/pool';
+import { validateEns } from '../../utils/validation';
+import CTSIText from '../CTSIText';
 import TransactionBanner from '../TransactionBanner';
 
 const wordingFor = {
@@ -73,9 +72,11 @@ const wordingFor = {
     },
 };
 
-export const PoolSetting: FC = () => {
-    const router = useRouter();
-    const address = router.query.pool as string;
+type PoolSettingsProps = {
+    address: string;
+};
+
+export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const stakingPool = useStakingPoolQuery(address);

@@ -9,28 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useState } from 'react';
 import {
     Box,
-    Stack,
-    Heading,
-    VStack,
-    useColorModeValue,
     chakra,
-    Text,
-    useDisclosure,
+    Heading,
     Spinner,
+    Stack,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
+import { useWallet } from '@explorer/wallet';
+import { isEmpty } from 'lodash/fp';
+import { FC, useEffect, useState } from 'react';
+import { NodeInfoSection } from '../../components/node/NodeInfoSection';
+import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
+import PoolSetting from '../../components/stake/PoolSetting';
+import TransactionBanner from '../../components/TransactionBanner';
+import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useBalance } from '../../services/eth';
 import { useNode } from '../../services/node';
-import { useUserNode } from '../../graphql/hooks/useNodes';
-import { NodeInfoSection } from '../../components/node/NodeInfoSection';
-import PoolSetting from '../../components/stake/PoolSetting';
-import { useWallet } from '@explorer/wallet';
-import TransactionBanner from '../../components/TransactionBanner';
-import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
 import { useStakingPool } from '../../services/pool';
-import { isEmpty } from 'lodash/fp';
 
 export interface PoolManageContainerProps {
     address: string;
@@ -174,7 +174,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                     />
                 )}
             </Box>
-            <PoolSetting />
+            <PoolSetting address={address} />
         </>
     );
 };

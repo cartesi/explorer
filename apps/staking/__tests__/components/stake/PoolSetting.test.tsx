@@ -9,34 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, render, screen, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { NextRouter, useRouter } from 'next/router';
 import { useWallet } from '@explorer/wallet';
+import { act, cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { BigNumber } from 'ethers';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
-import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance';
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
+import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance';
 import { useStakingPoolFactory } from '../../../src/services/poolFactory';
 import { withChakraTheme } from '../../test-utilities';
 import { buildUseStakingPoolFactoryReturn } from '../pools/mocks';
-import { BigNumber } from 'ethers';
 
 const pool = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const poolFactoryPath = '../../../src/services/poolFactory';
 const totalPoolBalance = '100000000000000000000000000000000';
-
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
-    return {
-        __esModule: true,
-        ...originalModule,
-        useRouter: jest.fn(),
-    };
-});
-
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 jest.mock('@explorer/wallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
@@ -67,15 +54,9 @@ const mockUseStakingPoolFactory = useStakingPoolFactory as jest.MockedFunction<
 const EPoolSetting = withChakraTheme(PoolSetting);
 
 describe('PoolSetting', () => {
-    const renderComponent = () => render(<EPoolSetting />);
+    const renderComponent = () => render(<EPoolSetting address={pool} />);
 
     beforeEach(() => {
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool,
-            },
-        } as unknown as NextRouter);
-
         mockUseWallet.mockReturnValue({
             account,
             active: true,
