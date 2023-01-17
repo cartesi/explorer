@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
 import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
-import { useBlockNumber } from './eth';
+import { useEffect, useState } from 'react';
 import {
-    useStakingPoolContract,
     useFeeContract,
     useFlatRateCommissionContract,
     useGasTaxCommissionContract,
+    useStakingPoolContract,
 } from './contracts';
+import { useBlockNumber } from './eth';
 import { Transaction, useTransaction } from './transaction';
 
 export interface StakingPoolCommission {
@@ -46,6 +46,7 @@ export interface StakingPool {
     hireTransaction: Transaction<any>;
     cancelHireTransaction: Transaction<any>;
     retireTransaction: Transaction<any>;
+    updateTransaction: Transaction<any>;
     rebalanceTransaction: Transaction<any>;
     stakedShares: BigNumber;
     balance: BigNumber;
@@ -55,6 +56,7 @@ export interface StakingPool {
     paused: Boolean;
     amounts: Amounts;
     lockTime: BigNumber;
+    pos: string;
     deposit: (amount: BigNumberish) => void;
     stake: (amount: BigNumberish) => void;
     unstake: (shares: BigNumberish) => void;
@@ -66,6 +68,7 @@ export interface StakingPool {
     cancelHire: (worker: string) => void;
     retire: (worker: string) => void;
     rebalance: () => void;
+    update: () => void;
     sharesToAmount: (s: BigNumber) => BigNumber;
     amountToShares: (a: BigNumber) => BigNumber;
 }
@@ -113,6 +116,9 @@ export const useStakingPool = (
     // dedicated retire transaction
     const retireTransaction = useTransaction<void>();
 
+    // dedicated update transaction
+    const updateTransaction = useTransaction<void>();
+
     // dedicated rebalance transaction
     const rebalanceTransaction = useTransaction<void>();
 
@@ -142,6 +148,9 @@ export const useStakingPool = (
         constants.Zero
     );
 
+    // The PoS setup in the staking pool;
+    const [pos, setPoS] = useState<string>(null);
+
     // flag if pool is paused for new stakes
     const [paused, setPaused] = useState<Boolean>(false);
 
@@ -166,6 +175,7 @@ export const useStakingPool = (
         if (pool && account) {
             pool.shares().then(setShares);
             pool.amount().then(setAmount);
+            pool.pos().then(setPoS);
             pool.userBalance(account).then((b) => {
                 setStakedShares(b.shares);
                 setDepositTimestamp(
@@ -284,10 +294,19 @@ export const useStakingPool = (
         }
     };
 
+    const update = () => {
+        if (pool) {
+            const t = pool.update();
+            transaction.set(t);
+            updateTransaction.set(t);
+        }
+    };
+
     return {
         address,
         shares,
         amount,
+        pos,
         transaction,
         depositTransaction,
         stakeTransaction,
@@ -299,6 +318,7 @@ export const useStakingPool = (
         hireTransaction,
         cancelHireTransaction,
         retireTransaction,
+        updateTransaction,
         rebalanceTransaction,
         stakedShares,
         balance,
@@ -321,6 +341,7 @@ export const useStakingPool = (
         rebalance,
         sharesToAmount,
         amountToShares,
+        update,
     };
 };
 
