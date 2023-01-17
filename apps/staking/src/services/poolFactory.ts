@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useWallet } from '@explorer/wallet';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useStakingPoolFactoryContract } from './contracts';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
-import { useWallet } from '@explorer/wallet';
 
 export const useStakingPoolFactory = () => {
     const poolFactory = useStakingPoolFactoryContract();
@@ -38,6 +38,7 @@ export const useStakingPoolFactory = () => {
     const [paused, setPaused] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
     const [loading, setLoading] = useState<Boolean>(true);
+    const [pos, setPoS] = useState<string | null>(null);
 
     const createFlatRateCommission = (commission: number) => {
         if (poolFactory) {
@@ -74,6 +75,11 @@ export const useStakingPoolFactory = () => {
                     setLoading(false);
                 });
             });
+
+            // Read the PoS address set up in the Factory.
+            poolFactory.pos().then((pos) => {
+                setPoS(pos);
+            });
         }
     }, [poolFactory, account, blockNumber]);
 
@@ -84,5 +90,6 @@ export const useStakingPoolFactory = () => {
         paused,
         ready,
         transaction,
+        pos,
     };
 };
