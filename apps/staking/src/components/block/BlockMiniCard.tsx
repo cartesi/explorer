@@ -101,7 +101,8 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     <Image
                         src={tinyGraphUrl(block, 0)}
                         maxWidth="100%"
-                        h="auto"
+                        width={100}
+                        height={100}
                         alt="Block image"
                     />
                 </Box>

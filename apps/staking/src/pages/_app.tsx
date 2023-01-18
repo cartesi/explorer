@@ -19,6 +19,7 @@ import ApolloContainer from '../components/ApolloContainer';
 
 import { Fonts } from '@explorer/ui';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
+import PageHead from '../components/PageHead';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
@@ -39,6 +40,10 @@ const App = ({ Component, pageProps }: AppProps) => {
 
     return (
         <ChakraProvider theme={theme}>
+            <PageHead
+                title="Stake CTSI"
+                description="Secure the Cartesi network and earn rewards"
+            />
             <Fonts />
             <FeatureFlagProvider>
                 <Web3Container>
