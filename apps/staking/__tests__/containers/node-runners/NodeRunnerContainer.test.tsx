@@ -10,22 +10,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { UseWallet } from '@explorer/wallet';
 import {
+    act,
     cleanup,
     findByText,
     fireEvent,
+    getByRole,
     getByTestId,
     getByText,
     render,
     screen,
     waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
-import { UseWallet } from '@explorer/wallet';
+import { useFlag } from '@unleash/proxy-client-react';
 import { NextRouter } from 'next/router';
-import { withChakraTheme } from '../../test-utilities';
+import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
+import { ENSEntry, useENS } from '../../../src/services/ens';
+import { useCartesiToken } from '../../../src/services/token';
+import { useMessages } from '../../../src/utils/messages';
+import { withChakraTheme } from '../../test-utilities';
 import {
     buildUseCartesiTokenReturn,
     buildUseStakingPoolsReturn,
@@ -33,10 +39,6 @@ import {
     generateNodeData,
     generateStakingPoolsData,
 } from '../mocks';
-import { ENSEntry, useENS } from '../../../src/services/ens';
-import { useCartesiToken } from '../../../src/services/token';
-import { useFlag } from '@unleash/proxy-client-react';
-import { useMessages } from '../../../src/utils/messages';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
 const useENSMod = '../../../src/services/ens';
@@ -119,6 +121,7 @@ describe('NodeRunners container (Landing Page)', () => {
     afterEach(() => {
         cleanup();
         jest.clearAllMocks();
+        localStorage.clear();
     });
 
     describe('when wallet is connected', () => {
@@ -398,6 +401,120 @@ describe('NodeRunners container (Landing Page)', () => {
 
                 expect(screen.getByText('Loading')).toBeInTheDocument();
             });
+
+            describe('with PoS V2 feature flag enabled', () => {
+                it('should display a warning banner with steps to upgrade the pool', () => {
+                    const mock = buildUseStakingPoolsReturn();
+                    mock.data = generateStakingPoolsData().data;
+                    useStakingPoolsStub.mockReturnValue(mock);
+                    useFlagStub.mockReturnValue(true);
+
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    expect(
+                        screen.getByText(useMessages('pos.v2'))
+                    ).toBeInTheDocument();
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.title')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.one')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.two')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.three')
+                        )
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.four')
+                        )
+                    ).toBeInTheDocument();
+                });
+
+                it('should close the banner when clicking the close button', () => {
+                    const mock = buildUseStakingPoolsReturn();
+                    mock.data = generateStakingPoolsData().data;
+                    useStakingPoolsStub.mockReturnValue(mock);
+                    useFlagStub.mockReturnValue(true);
+
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    // Checking the banner is rendered
+                    expect(
+                        screen.getByText(useMessages('pos.v2'))
+                    ).toBeInTheDocument();
+
+                    const alert = screen.getByTestId('bannerPoolPoSV2');
+
+                    act(() => {
+                        fireEvent.click(getByRole(alert, 'close-button'));
+                    });
+
+                    expect(
+                        screen.queryByText(useMessages('pos.v2'))
+                    ).not.toBeInTheDocument();
+                });
+
+                it('should close the banner when clicking the dont-show-again', () => {
+                    const mock = buildUseStakingPoolsReturn();
+                    mock.data = generateStakingPoolsData().data;
+                    useStakingPoolsStub.mockReturnValue(mock);
+                    useFlagStub.mockReturnValue(true);
+
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    // Checking the banner is rendered
+                    expect(
+                        screen.getByText(useMessages('pos.v2'))
+                    ).toBeInTheDocument();
+
+                    act(() => {
+                        fireEvent.click(screen.getByText("Don't show again"));
+                    });
+
+                    expect(
+                        screen.queryByText(useMessages('pos.v2'))
+                    ).not.toBeInTheDocument();
+                });
+            });
+
+            describe('with PoS V2 feature flag disabled', () => {
+                it('should not display the warning banner with steps to migrate the pool', () => {
+                    const mock = buildUseStakingPoolsReturn();
+                    mock.data = generateStakingPoolsData().data;
+                    useStakingPoolsStub.mockReturnValue(mock);
+
+                    render(
+                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                    );
+
+                    expect(
+                        screen.queryByText(
+                            useMessages('pool.update.pos.steps.title')
+                        )
+                    ).not.toBeInTheDocument();
+                });
+            });
         });
 
         describe('When user has a private node', () => {
@@ -498,7 +615,7 @@ describe('NodeRunners container (Landing Page)', () => {
             });
 
             describe('with PoS V2 feature flag enabled', () => {
-                it('should display an message to help with steps to migrate', () => {
+                it('should display a message to help with steps to migrate private node', () => {
                     const mock = buildUseUserNodesReturn();
                     mock.data = generateNodeData().data;
                     useUserNodeStub.mockReturnValue(mock);
@@ -552,7 +669,7 @@ describe('NodeRunners container (Landing Page)', () => {
             });
 
             describe('with PoS V2 feature flag disabled', () => {
-                it('should not display the migration message', async () => {
+                it('should not display the migration message for private node', async () => {
                     const mock = buildUseUserNodesReturn();
                     mock.data = generateNodeData().data;
                     useUserNodeStub.mockReturnValue(mock);

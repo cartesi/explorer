@@ -10,39 +10,40 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Table,
-    useColorModeValue,
-    Thead,
-    Th,
-    Tr,
-    Tbody,
-    Td,
-    Text,
+    Box,
     BoxProps,
-    Stack,
+    Button,
     Heading,
     HStack,
     Spinner,
-    Button,
-    VisuallyHidden,
-    Box,
+    Stack,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    useColorModeValue,
     useDisclosure,
+    VisuallyHidden,
 } from '@chakra-ui/react';
+import { useFlag } from '@unleash/proxy-client-react';
+import { useAtom } from 'jotai';
 import NextLink from 'next/link';
+import { useEffect } from 'react';
 import Address from '../../../components/Address';
-import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import {
     PencilIcon,
     StakeCircledOutlinedIcon,
 } from '../../../components/Icons';
-import Block from './Block';
-import { useAtom } from 'jotai';
-import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
 import { Notification } from '../../../components/Notification';
 import { OrderedContent } from '../../../components/OrderedContent';
-import { useFlag } from '@unleash/proxy-client-react';
-import { useEffect } from 'react';
+import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useMessages } from '../../../utils/messages';
+import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
+import Block from './Block';
+import useDontShowAgain from './useDontShowAgain';
 
 interface TableInfo {
     boxProps?: BoxProps;
@@ -143,23 +144,11 @@ const NodeTable = () => {
 
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForPrivateNode';
 
-const useGetShowAlertFromLocalStorage = () => {
-    const fromLocalStorage = localStorage.getItem(SHOW_POS_V2_ALERT);
-    const value = fromLocalStorage ? JSON.parse(fromLocalStorage) : true;
-    const handleDontShowAgain = () =>
-        localStorage.setItem(SHOW_POS_V2_ALERT, 'false');
-
-    return {
-        value,
-        handleDontShowAgain,
-    };
-};
-
 const NodeTableBlock = ({ boxProps }: TableInfo) => {
     const [bg] = useStyle();
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const posV2Enabled = useFlag('posV2Enabled');
-    const { value, handleDontShowAgain } = useGetShowAlertFromLocalStorage();
+    const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
     const showAlert = posV2Enabled && value;
     const { isOpen, onClose, onOpen } = useDisclosure({
         defaultIsOpen: showAlert,

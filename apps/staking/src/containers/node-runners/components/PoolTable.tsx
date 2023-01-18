@@ -9,40 +9,48 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
+    Box,
+    BoxProps,
+    Button,
+    Heading,
+    HStack,
+    Link,
+    Spinner,
+    Stack,
     Table,
-    useColorModeValue,
-    Thead,
-    Th,
-    Tr,
     Tbody,
     Td,
-    Stack,
-    Heading,
-    Button,
-    HStack,
-    Spinner,
     Text,
+    Th,
+    Thead,
+    Tr,
+    useColorModeValue,
+    useDisclosure,
     VisuallyHidden,
-    Link,
-    BoxProps,
 } from '@chakra-ui/react';
+import { Notification } from '@explorer/ui';
+import { useFlag } from '@unleash/proxy-client-react';
+import { useAtom } from 'jotai';
 import NextLink from 'next/link';
-import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
-import { PencilIcon } from '../../../components/Icons';
-import { useCartesiToken } from '../../../services/token';
-import { formatCTSI } from '../../../utils/token';
-import { PoolInfo } from '../interfaces';
+import { useEffect } from 'react';
 import Address from '../../../components/Address';
+import { PencilIcon } from '../../../components/Icons';
+import { OrderedContent } from '../../../components/OrderedContent';
+import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useUserNodes } from '../../../graphql/hooks/useNodes';
-import { ArrowDownIcon } from '@chakra-ui/icons';
+import { useCartesiToken } from '../../../services/token';
+import { useMessages } from '../../../utils/messages';
+import { formatCTSI } from '../../../utils/token';
 import {
     poolDataFetchingAtom,
     poolInfoListAtom,
     poolSortByAtom,
 } from '../atoms';
-import { useAtom } from 'jotai';
+import { PoolInfo } from '../interfaces';
 import Block from './Block';
+import useDontShowAgain from './useDontShowAgain';
 
 interface Props {
     data: PoolInfo[];
@@ -203,13 +211,65 @@ interface PoolTableInfoProps {
     boxProps?: BoxProps;
 }
 
+const SHOW_POS_V2_ALERT = 'showPoSV2AlertForStakingPool';
 const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const bg = useColorModeValue('white', 'gray.800');
     const [pools] = useAtom(poolInfoListAtom);
 
+    const posV2Enabled = useFlag('posV2Enabled');
+    const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
+    const showAlert = posV2Enabled && value;
+    const { isOpen, onClose, onOpen } = useDisclosure({
+        defaultIsOpen: showAlert,
+    });
+
+    const notificationTitle = useMessages('pos.v2');
+    const updateTitle = useMessages('pool.update.pos.steps.title');
+    const updateSteps = [
+        useMessages('pool.update.pos.steps.one'),
+        useMessages('pool.update.pos.steps.two'),
+        useMessages('pool.update.pos.steps.three'),
+        useMessages('pool.update.pos.steps.four'),
+    ];
+
+    useEffect(() => {
+        showAlert ? onOpen() : onClose();
+    }, [showAlert, onClose, onOpen]);
+
     return (
         pools?.length > 0 && (
             <Block bg={bg} {...boxProps}>
+                <Box py="2">
+                    {isOpen && (
+                        <Notification
+                            data-testid="bannerPoolPoSV2"
+                            status="warning"
+                            title={notificationTitle}
+                            subtitle={
+                                <OrderedContent
+                                    orderedItems={updateSteps}
+                                    title={updateTitle}
+                                    stackProps={{ px: 0, py: 3 }}
+                                />
+                            }
+                            onClose={() => onClose()}
+                        >
+                            <Button
+                                position="absolute"
+                                bottom={{ base: 3, md: 5 }}
+                                right={5}
+                                size="sm"
+                                onClick={() => {
+                                    onClose();
+                                    handleDontShowAgain();
+                                }}
+                                variant="link"
+                            >
+                                Don't show again
+                            </Button>
+                        </Notification>
+                    )}
+                </Box>
                 <Stack
                     justify="space-between"
                     direction={'row'}

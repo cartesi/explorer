@@ -121,6 +121,19 @@ const messages = {
                 fail: () => 'Pool update failed!',
                 update: () => 'Updating pool to use PoS v2...',
             },
+            pos: {
+                steps: {
+                    title: () =>
+                        'Here is what you need to do in case you did not upgrade your pool(s) yet.',
+                    one: () =>
+                        'Enter the management screen of your staking pool.',
+                    two: () => 'Go to the Pool Settings area at the bottom.',
+                    three: () =>
+                        'Read the warning message, click update and sign the transaction with your wallet.',
+                    four: () =>
+                        'Once the transaction is confirmed, congratulations the staking pool is using the new PoS',
+                },
+            },
         },
     },
     step: {

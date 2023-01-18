@@ -103,6 +103,40 @@ describe('useMessages hook', () => {
                     'Once confirmed, congratulations you are officially using the PoS v2.'
                 );
             });
+
+            it('should have a list of messages to educate the users to upgrate the staking pool', () => {
+                const { result: title } = renderHook(() =>
+                    useMessages('pool.update.pos.steps.title')
+                );
+                const { result: stepOne } = renderHook(() =>
+                    useMessages('pool.update.pos.steps.one')
+                );
+                const { result: stepTwo } = renderHook(() =>
+                    useMessages('pool.update.pos.steps.two')
+                );
+                const { result: stepThree } = renderHook(() =>
+                    useMessages('pool.update.pos.steps.three')
+                );
+                const { result: stepFour } = renderHook(() =>
+                    useMessages('pool.update.pos.steps.four')
+                );
+
+                expect(title.current).toEqual(
+                    'Here is what you need to do in case you did not upgrade your pool(s) yet.'
+                );
+                expect(stepOne.current).toEqual(
+                    'Enter the management screen of your staking pool.'
+                );
+                expect(stepTwo.current).toEqual(
+                    'Go to the Pool Settings area at the bottom.'
+                );
+                expect(stepThree.current).toEqual(
+                    'Read the warning message, click update and sign the transaction with your wallet.'
+                );
+                expect(stepFour.current).toEqual(
+                    'Once the transaction is confirmed, congratulations the staking pool is using the new PoS'
+                );
+            });
         });
     });
 
