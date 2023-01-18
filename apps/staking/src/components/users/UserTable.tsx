@@ -20,13 +20,13 @@ import {
     Th,
     Tr,
     Td,
-    Link,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
+import { GhostButton } from '@explorer/ui';
 
 export interface UserTableProps {
     chainId: number;
@@ -54,23 +54,38 @@ const UserTable: FC<UserTableProps> = ({
                         <Th>User</Th>
 
                         <Th isNumeric>
-                            <Link onClick={() => onSort('totalBlocks')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('totalBlocks')}
+                            >
                                 Block Produced
-                            </Link>
+                            </GhostButton>
                             {sort == 'totalBlocks' && <ArrowDownIcon />}
                         </Th>
 
                         <Th isNumeric>
-                            <Link onClick={() => onSort('balance')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('balance')}
+                            >
                                 Total Staked
-                            </Link>
+                            </GhostButton>
                             {sort == 'balance' && <ArrowDownIcon />}
                         </Th>
 
                         <Th isNumeric>
-                            <Link onClick={() => onSort('totalReward')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('totalReward')}
+                            >
                                 Total Rewards
-                            </Link>
+                            </GhostButton>
                             {sort == 'totalReward' && <ArrowDownIcon />}
                         </Th>
 

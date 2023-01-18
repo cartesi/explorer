@@ -20,7 +20,6 @@ import {
     Thead,
     HStack,
     Spinner,
-    Link,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
@@ -29,6 +28,7 @@ import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolPerformanceTableRow from './PoolPerformanceTableRow';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
 import { SlideInOut } from '../../animation/SlideInOut';
+import { GhostButton } from '@explorer/ui';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
@@ -59,16 +59,26 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                         <Th>Pool Address</Th>
 
                         <Th isNumeric>
-                            <Link onClick={() => onSort('totalUsers')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('totalUsers')}
+                            >
                                 Total Users
-                            </Link>
+                            </GhostButton>
                             {sort == 'totalUsers' && <ArrowDownIcon />}
                         </Th>
 
                         <Th isNumeric>
-                            <Link onClick={() => onSort('amount')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('amount')}
+                            >
                                 Total Staked
-                            </Link>
+                            </GhostButton>
                             {sort == 'amount' && <ArrowDownIcon />}
                         </Th>
 
@@ -76,11 +86,14 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
 
                         <Th>Configured Commission</Th>
                         <Th>
-                            <Link
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
                                 onClick={() => onSort('commissionPercentage')}
                             >
                                 Accrued Commission
-                            </Link>{' '}
+                            </GhostButton>{' '}
                             {sort == 'commissionPercentage' && (
                                 <ArrowDownIcon />
                             )}

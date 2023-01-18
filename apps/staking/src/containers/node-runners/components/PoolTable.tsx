@@ -30,7 +30,7 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import { Notification } from '@explorer/ui';
+import { Notification, GhostButton } from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
@@ -88,28 +88,41 @@ const PoolTable = ({ data }: Props) => {
                     <Tr>
                         <Th>Address</Th>
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => setSortBy('amount')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => setSortBy('amount')}
+                            >
                                 Total Staked
-                            </Link>
+                            </GhostButton>
                             {sortBy == 'amount' && <ArrowDownIcon />}
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => setSortBy('totalUsers')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => setSortBy('totalUsers')}
+                            >
                                 Total Users
-                            </Link>
+                            </GhostButton>
                             {sortBy == 'totalUsers' && <ArrowDownIcon />}
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
                             Total Rewards
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
                                 onClick={() =>
                                     setSortBy('commissionPercentage')
                                 }
                             >
                                 Commission
-                            </Link>
+                            </GhostButton>
                             {sortBy == 'commissionPercentage' && (
                                 <ArrowDownIcon />
                             )}

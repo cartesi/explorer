@@ -20,10 +20,10 @@ import {
     Thead,
     HStack,
     Spinner,
-    Link,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
+import { GhostButton } from '@explorer/ui';
 import {
     StakingPoolFlat,
     StakingPoolSortExtended,
@@ -46,7 +46,6 @@ const SortIcon = () => <ArrowDownIcon data-testid="sort-icon" />;
 
 const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
     chainId,
-    account,
     data,
     loading,
     sort,
@@ -66,16 +65,26 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                         <Th>Pool Address</Th>
 
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => onSort('totalUsers')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('totalUsers')}
+                            >
                                 Total Users
-                            </Link>
+                            </GhostButton>
                             {sort === 'totalUsers' && <SortIcon />}
                         </Th>
 
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => onSort('amount')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('amount')}
+                            >
                                 Total Staked
-                            </Link>
+                            </GhostButton>
                             {sort === 'amount' && <SortIcon />}
                         </Th>
 
@@ -84,18 +93,28 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                         </Th>
 
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => onSort('weekPerformance')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('weekPerformance')}
+                            >
                                 <Text whiteSpace="nowrap">7-days %</Text>{' '}
                                 (annual)
-                            </Link>
+                            </GhostButton>
                             {sort === 'weekPerformance' && <SortIcon />}
                         </Th>
 
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link onClick={() => onSort('monthPerformance')}>
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
+                                onClick={() => onSort('monthPerformance')}
+                            >
                                 <Text whiteSpace="nowrap">30-days %</Text>{' '}
                                 (annual)
-                            </Link>
+                            </GhostButton>
                             {sort === 'monthPerformance' && <SortIcon />}
                         </Th>
 
@@ -103,11 +122,14 @@ const PoolPerformanceExtendedTable: FC<PoolPerformanceExtendedTableProps> = ({
                             Configured Commission
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
-                            <Link
+                            <GhostButton
+                                fontSize="xs"
+                                fontWeight="bold"
+                                _hover={{ color: 'blue.400' }}
                                 onClick={() => onSort('commissionPercentage')}
                             >
                                 Accrued Commission
-                            </Link>{' '}
+                            </GhostButton>{' '}
                             {sort === 'commissionPercentage' && <SortIcon />}
                         </Th>
 
