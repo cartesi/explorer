@@ -98,6 +98,7 @@ const Home = () => {
         <Layout>
             <PageHead
                 title="Secure the Cartesi network and earn rewards"
+                description="Secure the Cartesi network and earn rewards"
                 isHome
             />
 

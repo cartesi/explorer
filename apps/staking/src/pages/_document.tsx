@@ -19,6 +19,10 @@ export default class Document extends NextDocument {
             <Html lang="en">
                 <Head>
                     <title>Stake CTSI</title>
+                    <meta
+                        name="description"
+                        content="Secure the Cartesi network and earn rewards"
+                    />
                 </Head>
                 <body>
                     <ColorModeScript

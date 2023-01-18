@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, FunctionComponent, useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {
     Button,

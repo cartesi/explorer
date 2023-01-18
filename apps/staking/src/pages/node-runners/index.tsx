@@ -22,7 +22,10 @@ const NodeRunners: FC = () => {
 
     return (
         <Layout>
-            <PageHead title="Node Runners - Get started with Cartesi staking" />
+            <PageHead
+                title="Node Runners - Get started with Cartesi staking"
+                description="Node Runners - Get started with Cartesi staking"
+            />
             <NodeRunnersContainer wallet={wallet} router={router} />
         </Layout>
     );

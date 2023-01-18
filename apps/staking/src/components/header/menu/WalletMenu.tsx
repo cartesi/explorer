@@ -15,7 +15,6 @@ import {
     MenuList,
     Flex,
     useClipboard,
-    Link,
     Text,
     useColorModeValue,
     useColorMode,
@@ -31,7 +30,7 @@ const WalletMenu: FC = () => {
     const ens = useENS(account);
     const { hasCopied, onCopy } = useClipboard(account);
     const color = useColorModeValue('black', 'white');
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
     if (!account) {
         return null;
@@ -59,16 +58,14 @@ const WalletMenu: FC = () => {
                             >
                                 {ens.address}
                             </Text>
-                            <Link>
-                                <CopyIcon
-                                    onClick={onCopy}
-                                    style={{
-                                        height: 19,
-                                        width: 19,
-                                    }}
-                                    color={color}
-                                />
-                            </Link>
+                            <CopyIcon
+                                onClick={onCopy}
+                                style={{
+                                    height: 19,
+                                    width: 19,
+                                }}
+                                color={color}
+                            />
                         </Flex>
                     ) : (
                         <Flex>
@@ -83,19 +80,17 @@ const WalletMenu: FC = () => {
                             >
                                 {ens.address}
                             </Box>
-                            <Link>
-                                <CopyIcon
-                                    onClick={onCopy}
-                                    style={{
-                                        height: 19,
-                                        width: 19,
-                                    }}
-                                    color={color}
-                                    _hover={{
-                                        color: color,
-                                    }}
-                                />
-                            </Link>
+                            <CopyIcon
+                                onClick={onCopy}
+                                style={{
+                                    height: 19,
+                                    width: 19,
+                                }}
+                                color={color}
+                                _hover={{
+                                    color: color,
+                                }}
+                            />
                         </Flex>
                     )}
                 </MenuItem>

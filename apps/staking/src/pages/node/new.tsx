@@ -34,7 +34,10 @@ const NewNode: FC = () => {
     const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Layout>
-            <PageHead title="Create a Cartesi node" />
+            <PageHead
+                title="Create a Cartesi node"
+                description="Create a Cartesi node"
+            />
 
             <HStack
                 bg="header"

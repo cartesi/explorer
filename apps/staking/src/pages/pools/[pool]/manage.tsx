@@ -51,7 +51,10 @@ const PoolNode: FC = () => {
 
     return (
         <Layout>
-            <PageHead title="Manage a Cartesi pool" />
+            <PageHead
+                title="Manage a Cartesi pool"
+                description="Manage a Cartesi pool"
+            />
 
             <HStack
                 bg="header"

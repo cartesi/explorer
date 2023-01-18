@@ -107,7 +107,10 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
 
     return (
         <Layout>
-            <PageHead title={`Cartesi pool info - ${formattedAddress}`} />
+            <PageHead
+                title={`Cartesi pool info - ${formattedAddress}`}
+                description={`Cartesi pool info - ${formattedAddress}`}
+            />
             <PoolHeader isManager={isManager} />
             <PoolBreadcrumbs currentPage="Overview" />
             <Box

@@ -175,7 +175,10 @@ const ManageNode: FC = () => {
 
     return (
         <Layout>
-            <PageHead title="Manage a Cartesi node" />
+            <PageHead
+                title="Manage a Cartesi node"
+                description="Manage a Cartesi node"
+            />
 
             <HStack
                 bg="header"

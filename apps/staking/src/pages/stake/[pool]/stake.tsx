@@ -96,7 +96,10 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
 
     return (
         <Layout>
-            <PageHead title={`Stake to ${formattedAddress}`} />
+            <PageHead
+                title={`Stake to ${formattedAddress}`}
+                description={`Stake to ${formattedAddress}`}
+            />
             <PoolHeader isManager={isManager} from="stake" />
 
             <PoolBreadcrumbs currentPage="Stake" />

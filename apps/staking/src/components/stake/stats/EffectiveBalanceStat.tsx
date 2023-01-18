@@ -18,7 +18,6 @@ import {
     useColorModeValue,
     Box,
     StackProps,
-    Link,
     Icon,
     Popover,
     PopoverBody,
@@ -32,6 +31,7 @@ import {
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
+import { GhostButton } from '@explorer/ui';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -124,6 +124,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                         >
                             <Icon role="balance-icon" w={3.5} h={3.5} />
                         </Tooltip>
+
                         {needRebalance && (
                             <Tooltip
                                 label={rebalanceLabel}
@@ -132,13 +133,19 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 bg="black"
                                 color="white"
                             >
-                                <Link onClick={onRebalance}>
+                                <GhostButton
+                                    _hover={{
+                                        background: 'transparent',
+                                        color: 'blue.400',
+                                    }}
+                                    onClick={onRebalance}
+                                >
                                     <RebalanceIcon
                                         role="rebalance-icon"
                                         w={6}
                                         h={6}
                                     />
-                                </Link>
+                                </GhostButton>
                             </Tooltip>
                         )}
                     </HStack>

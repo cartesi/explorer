@@ -19,3 +19,4 @@ export { default as Layout } from './Layout';
 export * from './Notification';
 export { default as Pagination } from './Pagination';
 export type { PaginationProps } from './Pagination';
+export * from './GhostButton';

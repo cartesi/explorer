@@ -14,7 +14,6 @@ import {
     Flex,
     Heading,
     HStack,
-    Link,
     Modal,
     ModalBody,
     ModalContent,
@@ -77,16 +76,14 @@ export const WalletMobileModal = ({ disclosure, isOpen, onClose }) => {
                             </Box>
                             <Box>
                                 {!hasCopied && (
-                                    <Link>
-                                        <CopyIcon
-                                            onClick={onCopy}
-                                            style={{
-                                                height: 19,
-                                                width: 19,
-                                                marginLeft: 10,
-                                            }}
-                                        />
-                                    </Link>
+                                    <CopyIcon
+                                        onClick={onCopy}
+                                        style={{
+                                            height: 19,
+                                            width: 19,
+                                            marginLeft: 10,
+                                        }}
+                                    />
                                 )}
                                 {hasCopied && <Text fontSize="xs">Copied</Text>}
                             </Box>

@@ -35,7 +35,10 @@ const NewNode: FC = () => {
     const linkColor = useColorModeValue('gray', 'gray.100');
     return (
         <Layout>
-            <PageHead title="Create a Cartesi staking pool" />
+            <PageHead
+                title="Create a Cartesi staking pool"
+                description="Create a Cartesi staking pool"
+            />
 
             <HStack
                 bg="header"

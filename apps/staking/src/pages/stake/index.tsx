@@ -51,7 +51,10 @@ const Home = () => {
 
     return (
         <Layout>
-            <PageHead title="Join a Cartesi staking pool" />
+            <PageHead
+                title="Join a Cartesi staking pool"
+                description="Join a Cartesi staking pool"
+            />
 
             <Box bg={bg}>
                 <PageHeader>

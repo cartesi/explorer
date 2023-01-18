@@ -81,7 +81,10 @@ const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
 
     return (
         <Layout>
-            <PageHead title={`Pool commissions - ${formattedAddress}`} />
+            <PageHead
+                title={`Pool commissions - ${formattedAddress}`}
+                description={`Pool commissions - ${formattedAddress}`}
+            />
 
             <PoolHeader isManager={isManager} from="commissions" />
 

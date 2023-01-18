@@ -17,6 +17,7 @@ import {
     Button,
     ButtonProps,
 } from '@chakra-ui/react';
+import { GhostButton } from '@explorer/ui';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 export interface PaginationProps {
@@ -63,7 +64,7 @@ const Pagination: FC<PaginationProps> = (props) => {
     return (
         <HStack maxWidth="100%">
             {hasMultiplePages && (
-                <ArrowButton
+                <GhostButton
                     mr={2}
                     onClick={() => {
                         if (isAfterFirstPage) {
@@ -77,7 +78,7 @@ const Pagination: FC<PaginationProps> = (props) => {
                             isAfterFirstPage ? activeArrowBg : inactiveArrowBg
                         }
                     />
-                </ArrowButton>
+                </GhostButton>
             )}
 
             {showPageNumbers ? (
@@ -127,7 +128,7 @@ const Pagination: FC<PaginationProps> = (props) => {
             )}
 
             {hasMultiplePages && (
-                <ArrowButton
+                <GhostButton
                     marginInline={0}
                     ml={2}
                     onClick={() => {
@@ -142,7 +143,7 @@ const Pagination: FC<PaginationProps> = (props) => {
                             isBeforeLastPage ? activeArrowBg : inactiveArrowBg
                         }
                     />
-                </ArrowButton>
+                </GhostButton>
             )}
         </HStack>
     );
@@ -176,27 +177,5 @@ const PageLink = ({ currentPage, index, onPageClick }) => {
         </Button>
     );
 };
-
-const ArrowButton: FC<ButtonProps> = ({ children, ...restProps }) => (
-    <Button
-        variant="ghost"
-        p={0}
-        minW="auto"
-        minH="auto"
-        userSelect="none"
-        _hover={{
-            background: 'transparent',
-        }}
-        _focus={{
-            background: 'transparent',
-        }}
-        _active={{
-            background: 'transparent',
-        }}
-        {...restProps}
-    >
-        {children}
-    </Button>
-);
 
 export default Pagination;
