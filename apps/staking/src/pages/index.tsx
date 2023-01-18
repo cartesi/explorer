@@ -316,7 +316,7 @@ const Home = () => {
                             mt={5}
                             alignSelf="stretch"
                         >
-                            <Text
+                            <Box
                                 fontWeight="bold"
                                 display="flex"
                                 alignItems="flex-end"
@@ -331,7 +331,7 @@ const Home = () => {
                                 <Text fontSize={14} ml={3} mb={0.5}>
                                     CTSI
                                 </Text>
-                            </Text>
+                            </Box>
                         </Banner>
                         <Banner
                             Title={
@@ -356,7 +356,7 @@ const Home = () => {
                             mt={5}
                             alignSelf="stretch"
                         >
-                            <Text
+                            <Box
                                 fontWeight="bold"
                                 display="flex"
                                 alignItems="flex-end"
@@ -371,7 +371,7 @@ const Home = () => {
                                 <Text fontSize={14} ml={3} mb={0.5}>
                                     %
                                 </Text>
-                            </Text>
+                            </Box>
                         </Banner>
                         <Banner
                             Title={
@@ -394,7 +394,7 @@ const Home = () => {
                             mt={5}
                             alignSelf="stretch"
                         >
-                            <Text
+                            <Box
                                 fontWeight="bold"
                                 display="flex"
                                 alignItems="flex-end"
@@ -409,7 +409,7 @@ const Home = () => {
                                 <Text fontSize={14} ml={3} mb={0.5}>
                                     %
                                 </Text>
-                            </Text>
+                            </Box>
                         </Banner>
                     </Flex>
                 </Box>

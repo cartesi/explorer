@@ -2,9 +2,9 @@ export const CartesiIcon = `<svg id="onboard-cartesi-icon" class="h-6 w-6 fill-c
 export const CartesiLogo = `<svg
                 id="onboard-cartesi-logo"
                 xmlns="http://www.w3.org/2000/svg"
-                width={152}
-                height={51.706}
-                viewBox="0 0 152 51.706"                
+                width="152px"
+                height="52px"
+                viewBox="0 0 152 52"                
                 style="fill:var(--onboard-black)"
             >
                 <path

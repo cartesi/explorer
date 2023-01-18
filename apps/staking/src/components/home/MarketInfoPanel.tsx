@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { HStack, Text, TextProps, VStack } from '@chakra-ui/react';
+import { HStack, Text, TextProps, VStack, Box } from '@chakra-ui/react';
 
 export type MarketInfoUnit = 'USD' | 'CTSI';
 
@@ -39,9 +39,9 @@ const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
 
     return (
         <VStack align="flex-start">
-            <Text fontSize="md" {...textProps}>
+            <Box fontSize="md" {...textProps}>
                 {label}
-            </Text>
+            </Box>
             {value && (
                 <HStack align="baseline">
                     <Text
