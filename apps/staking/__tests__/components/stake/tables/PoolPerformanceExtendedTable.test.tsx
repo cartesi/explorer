@@ -79,7 +79,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('Total Users').closest('a');
+        const button = screen.getByText('Total Users').closest('button');
         fireEvent.click(button);
 
         expect(sort).toBe('totalUsers');
@@ -94,7 +94,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('Total Staked').closest('a');
+        const button = screen.getByText('Total Staked').closest('button');
         fireEvent.click(button);
 
         expect(sort).toBe('amount');
@@ -109,7 +109,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('7-days %').closest('a');
+        const button = screen.getByText('7-days %').closest('button');
         fireEvent.click(button);
 
         expect(sort).toBe('weekPerformance');
@@ -124,7 +124,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('30-days %').closest('a');
+        const button = screen.getByText('30-days %').closest('button');
         fireEvent.click(button);
 
         expect(sort).toBe('monthPerformance');
@@ -139,7 +139,7 @@ describe('Pool Performance Extended Table', () => {
             },
         });
 
-        const button = screen.getByText('Accrued Commission').closest('a');
+        const button = screen.getByText('Accrued Commission').closest('button');
         fireEvent.click(button);
 
         expect(sort).toBe('commissionPercentage');
