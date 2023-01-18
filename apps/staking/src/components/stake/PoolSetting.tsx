@@ -254,6 +254,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     subtitle="upgrade your staking pool to use the new PoS version 2"
                     status="warning"
                     mb={3}
+                    data-testid="posV2Alert"
                 >
                     <Button
                         colorScheme="blue"
