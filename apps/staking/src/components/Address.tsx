@@ -11,6 +11,7 @@
 
 import React, { FC, useState } from 'react';
 import {
+    Button,
     HStack,
     IconProps,
     Image,
@@ -129,15 +130,27 @@ const Address: FC<AddressProps> = (props) => {
             )}
 
             {showActions && !hasCopied && (
-                <Link display="flex" title="Copy">
-                    <CopyIcon
-                        onClick={onCopy}
-                        fontSize={fontSize}
-                        w={iconSize}
-                        h={iconSize}
-                        data-testid="copy-icon"
-                    />
-                </Link>
+                <Button
+                    variant="ghost"
+                    display="flex"
+                    p={0}
+                    _hover={{ background: 'transparent', color: 'blue.400' }}
+                    _focus={{
+                        background: 'transparent',
+                        color: 'blue.400',
+                    }}
+                    _active={{
+                        background: 'transparent',
+                        color: 'blue.400',
+                    }}
+                    minW="auto"
+                    minH="auto"
+                    title="Copy"
+                    onClick={onCopy}
+                    data-testid="copy-icon"
+                >
+                    <CopyIcon fontSize={fontSize} w={iconSize} h={iconSize} />
+                </Button>
             )}
             {hasCopied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (

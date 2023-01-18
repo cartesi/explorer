@@ -10,7 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { HStack, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+    HStack,
+    Text,
+    useColorModeValue,
+    Button,
+    ButtonProps,
+} from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 export interface PaginationProps {
@@ -57,19 +63,21 @@ const Pagination: FC<PaginationProps> = (props) => {
     return (
         <HStack maxWidth="100%">
             {hasMultiplePages && (
-                <Link mr={2}>
+                <ArrowButton
+                    mr={2}
+                    onClick={() => {
+                        if (isAfterFirstPage) {
+                            onPageClick(currentPage - 1);
+                        }
+                    }}
+                >
                     <ChevronLeftIcon
                         display="flex"
                         color={
                             isAfterFirstPage ? activeArrowBg : inactiveArrowBg
                         }
-                        onClick={() => {
-                            if (isAfterFirstPage) {
-                                onPageClick(currentPage - 1);
-                            }
-                        }}
                     />
-                </Link>
+                </ArrowButton>
             )}
 
             {showPageNumbers ? (
@@ -119,19 +127,22 @@ const Pagination: FC<PaginationProps> = (props) => {
             )}
 
             {hasMultiplePages && (
-                <Link marginInline={0} ml={2}>
+                <ArrowButton
+                    marginInline={0}
+                    ml={2}
+                    onClick={() => {
+                        if (isBeforeLastPage) {
+                            onPageClick(currentPage + 1);
+                        }
+                    }}
+                >
                     <ChevronRightIcon
                         display="flex"
                         color={
                             isBeforeLastPage ? activeArrowBg : inactiveArrowBg
                         }
-                        onClick={() => {
-                            if (isBeforeLastPage) {
-                                onPageClick(currentPage + 1);
-                            }
-                        }}
                     />
-                </Link>
+                </ArrowButton>
             )}
         </HStack>
     );
@@ -141,11 +152,12 @@ const PageLink = ({ currentPage, index, onPageClick }) => {
     const bg = useColorModeValue('gray.80', 'header');
 
     return (
-        <Link
-            onClick={() => onPageClick(index)}
+        <Button
+            variant="ghost"
             borderRadius="full"
             minW={10}
             h={10}
+            p={0}
             alignItems="center"
             justifyContent="center"
             display="flex"
@@ -156,12 +168,35 @@ const PageLink = ({ currentPage, index, onPageClick }) => {
                 backgroundColor: bg,
             }}
             backgroundColor={currentPage === index ? bg : 'transparent'}
+            onClick={() => onPageClick(index)}
         >
             <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
                 {index + 1}
             </Text>
-        </Link>
+        </Button>
     );
 };
+
+const ArrowButton: FC<ButtonProps> = ({ children, ...restProps }) => (
+    <Button
+        variant="ghost"
+        p={0}
+        minW="auto"
+        minH="auto"
+        userSelect="none"
+        _hover={{
+            background: 'transparent',
+        }}
+        _focus={{
+            background: 'transparent',
+        }}
+        _active={{
+            background: 'transparent',
+        }}
+        {...restProps}
+    >
+        {children}
+    </Button>
+);
 
 export default Pagination;
