@@ -89,7 +89,10 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                 >
                     {isObject(user.pool) ? (
                         <NextLink href={`/stake/${user.id}`} passHref>
-                            <Link data-testid="stake-info-link">
+                            <Link
+                                data-testid="stake-info-link"
+                                title="Stake/info"
+                            >
                                 <StakeIcon w={8} h={8} />
                             </Link>
                         </NextLink>

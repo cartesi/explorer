@@ -66,6 +66,7 @@ const Pagination: FC<PaginationProps> = (props) => {
             {hasMultiplePages && (
                 <GhostButton
                     mr={2}
+                    title="Previous page"
                     onClick={() => {
                         if (isAfterFirstPage) {
                             onPageClick(currentPage - 1);
@@ -131,6 +132,7 @@ const Pagination: FC<PaginationProps> = (props) => {
                 <GhostButton
                     marginInline={0}
                     ml={2}
+                    title="Next page"
                     onClick={() => {
                         if (isBeforeLastPage) {
                             onPageClick(currentPage + 1);
