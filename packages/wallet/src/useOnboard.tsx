@@ -23,9 +23,10 @@ import ledgerModule from '@web3-onboard/ledger';
 import walletConnectModule from '@web3-onboard/walletconnect';
 import coinbaseWalletModule from '@web3-onboard/coinbase';
 import gnosisModule from '@web3-onboard/gnosis';
-import { Network, networks } from '@explorer/utils';
+import { Chain, AppMetadata } from '@web3-onboard/common';
+import { Network } from '@explorer/utils';
 import { ethers } from 'ethers';
-import { contains, debounce, keys, map, pick } from 'lodash/fp';
+import { contains, debounce, pick } from 'lodash/fp';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
@@ -40,7 +41,6 @@ const hardwareWallets = new Set(['ledger']);
 const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
-const supportedNetworks = map(parseInt)(keys(networks));
 
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
@@ -48,10 +48,48 @@ const walletConnect = walletConnectModule();
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
-const buildConfig = (ankrEnabled: boolean): InitOptions => {
-    const mainnetRpcUrl = ankrEnabled
-        ? 'https://rpc.ankr.com/eth'
-        : getRPC('mainnet');
+const convertToHex = (num: number): string => num.toString(16);
+
+export const buildConfig = (
+    ankrEnabled: boolean,
+    chainIds: string[],
+    appMetaData: Partial<AppMetadata> = {}
+): InitOptions => {
+    const chains: Chain[] = [
+        {
+            id: `0x${convertToHex(Network.MAINNET)}`,
+            token: 'ETH',
+            label: 'Ethereum Mainnet',
+            rpcUrl: ankrEnabled
+                ? 'https://rpc.ankr.com/eth'
+                : getRPC('mainnet'),
+        },
+        {
+            id: `0x${convertToHex(Network.GOERLI)}`,
+            token: 'ETH',
+            label: 'Goerli Testnet',
+            rpcUrl: getRPC('goerli'),
+        },
+        {
+            id: `0x${convertToHex(Network.ARBITRUM_GOERLI)}`,
+            token: 'ETH',
+            label: 'Arbitrum Goerli Testnet',
+            rpcUrl: getRPC('arbitrum-goerli'),
+        },
+        {
+            id: `0x${convertToHex(Network.POLYGON_MUMBAI)}`,
+            token: 'MATIC',
+            label: 'Polygon Mumbai',
+            rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
+        },
+        {
+            id: `0x${convertToHex(Network.LOCAL)}`,
+            token: 'ETH',
+            label: 'localhost',
+            rpcUrl: 'http://localhost:8545',
+        },
+    ].filter((c) => chainIds.includes(c.id));
+
     return {
         accountCenter: {
             desktop: {
@@ -62,31 +100,12 @@ const buildConfig = (ankrEnabled: boolean): InitOptions => {
             },
         },
         wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
-        chains: [
-            {
-                id: `0x${Network.MAINNET.toString(16)}`,
-                token: 'ETH',
-                label: 'Ethereum Mainnet',
-                rpcUrl: mainnetRpcUrl,
-            },
-            {
-                id: `0x${Network.GOERLI.toString(16)}`,
-                token: 'ETH',
-                label: 'Goerli Testnet',
-                rpcUrl: getRPC('goerli'),
-            },
-            {
-                id: `0x${Network.ARBITRUM_GOERLI.toString(16)}`,
-                token: 'ETH',
-                label: 'Arbitrum Goerli Testnet',
-                rpcUrl: getRPC('arbitrum-goerli'),
-            },
-        ],
+        chains,
         appMetadata: {
             name: 'Cartesi Blockchain Explorer',
             logo: CartesiLogo,
             icon: CartesiIcon,
-            description: 'A place where you can stake your CTSI and much more.',
+            ...appMetaData,
         },
     };
 };
@@ -105,7 +124,10 @@ const getWalletType = (label = ''): WalletType | null => {
         : null;
 };
 
-const checkNetwork = (chainId: number): Error | null | undefined => {
+export const checkNetwork = (
+    chainId: number,
+    supportedNetworks: number[]
+): Error | null | undefined => {
     let error;
 
     if (chainId) {
@@ -118,12 +140,12 @@ const checkNetwork = (chainId: number): Error | null | undefined => {
 };
 
 const handlerBuilder =
-    (stateUpdateCb: Dispatch<SetStateAction<PropState>>) =>
+    (stateUpdateCb: Dispatch<SetStateAction<PropState>>, chainIds: string[]) =>
     (wallets: WalletState[]) => {
         const [connectedWallet] = wallets;
         if (connectedWallet?.provider) {
             const { label, chains, accounts } = connectedWallet;
-            const chainId = parseInt(chains[0]?.id, 16);
+            const chainId = parseInt(chains[0]?.id);
             // Keep account info as lowercase to match
             // how that is indexed on the-graph.
             const account = accounts[0]?.address?.toLowerCase();
@@ -134,7 +156,8 @@ const handlerBuilder =
                 WalletType.SDK === walletType &&
                 contains(label.toLowerCase(), gnosisSafeLabels);
 
-            const error = checkNetwork(chainId);
+            const chainIdsAsNumbers = chainIds.map((id) => parseInt(id, 16));
+            const error = checkNetwork(chainId, chainIdsAsNumbers);
 
             console.info(
                 `Account: ${account}\nChain id: ${chainId}\nWallet Label: ${label}`
@@ -178,7 +201,12 @@ interface PropState {
     onboard?: OnboardAPI;
 }
 
-export const useOnboard = () => {
+export interface UseOnboardProps {
+    chainIds: string[];
+    appMetaData?: Partial<AppMetadata>;
+}
+
+export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
     const [state, setState] = useState<PropState>({});
     const ankrEnabled = useFlag('ankrEnabled');
     const [isFirstNetworkChange, setFirstNetworkChange] =
@@ -206,14 +234,21 @@ export const useOnboard = () => {
     ) => {
         const wallets = await onboard?.connectWallet(options);
         const [connectedWallet] = wallets ?? [];
+        const mainNetId = `0x${convertToHex(Network.MAINNET)}`;
+
         if (connectedWallet) {
             window.localStorage.setItem(
                 SELECTED_WALLETS,
                 connectedWallet.label
             );
 
-            // Check and prompt the user to switch to mainnet
-            onboard?.setChain({ chainId: `0x${Network.MAINNET}` });
+            // Check if MainNet is supported and this is prod/staging, then prompt the user to switch to MainNet
+            if (
+                chainIds.includes(mainNetId) &&
+                process.env.NODE_ENV !== 'development'
+            ) {
+                onboard?.setChain({ chainId: mainNetId });
+            }
         }
 
         if (connectedWallet?.provider) {
@@ -246,14 +281,19 @@ export const useOnboard = () => {
     };
 
     useEffect(() => {
-        const onboard = Onboard(buildConfig(ankrEnabled));
+        const onboard = Onboard(
+            buildConfig(ankrEnabled, chainIds, appMetaData)
+        );
         setState((state) => ({ ...state, onboard }));
     }, []);
 
     useEffect(() => {
         if (onboard) {
             const wallets$ = onboard.state.select('wallets');
-            const debouncedHandler = debounce(500, handlerBuilder(setState));
+            const debouncedHandler = debounce(
+                500,
+                handlerBuilder(setState, chainIds)
+            );
             const subscription = wallets$.subscribe(debouncedHandler);
             const previousWalletSelected =
                 window.localStorage.getItem(SELECTED_WALLETS);

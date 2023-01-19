@@ -13,26 +13,22 @@ export enum Network {
     MAINNET = 1,
     GOERLI = 5,
     LOCAL = 31337,
-    ARBITRUM_GOERLI = 421613,
 }
 
 export const networks = {
     1: 'mainnet',
     5: 'goerli',
     31337: 'localhost',
-    421613: 'arbitrum-goerli',
 };
 
 export const confirmations = {
     1: 3,
     5: 1,
     31337: 1,
-    421613: 1,
 };
 
 export const etherscanLinks = {
     1: 'https://etherscan.io',
     5: 'https://goerli.etherscan.io',
     31337: null,
-    421613: 'https://goerli.arbiscan.io',
 };

@@ -14,6 +14,7 @@ export const Network = {
     GOERLI: 5,
     LOCAL: 31337,
     ARBITRUM_GOERLI: 421613,
+    POLYGON_MUMBAI: 80001,
 } as const;
 
 export const networks = {
@@ -21,6 +22,7 @@ export const networks = {
     5: 'goerli',
     31337: 'localhost',
     421613: 'arbitrum-goerli',
+    80001: 'polygon-mumbai',
 };
 
 export const confirmations = {
@@ -28,6 +30,7 @@ export const confirmations = {
     5: 1,
     31337: 1,
     421613: 1,
+    80001: 1,
 };
 
 export const etherscanLinks = {
@@ -35,4 +38,5 @@ export const etherscanLinks = {
     5: 'https://goerli.etherscan.io',
     31337: null,
     421613: 'https://goerli.arbiscan.io',
+    80001: 'https://mumbai.polygonscan.com',
 };

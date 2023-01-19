@@ -18,22 +18,17 @@ import {
     AlertTitle,
 } from '@chakra-ui/alert';
 import { Box } from '@chakra-ui/layout';
-import { useWallet } from '@explorer/wallet';
-import { Network } from '../utils/networks';
-import { includes } from 'lodash/fp';
 
 const threshold = 25;
-const excludedNetworks = [Network.ARBITRUM_GOERLI];
 
 const SyncStatus = () => {
     // read block number from metamask
     const blockNumber = useBlockNumber();
-    const { chainId, active } = useWallet();
 
-    // read block number from thegraph
+    // read block number from the graph
     const meta = useMeta();
 
-    // we have issues if thegraph says we have issues, or the block offset is more than `threshold (25)`
+    // we have issues if the graph says we have issues, or the block offset is more than `threshold (25)`
     const issues =
         meta &&
         blockNumber > 0 &&
@@ -41,11 +36,10 @@ const SyncStatus = () => {
             Math.abs(meta.block.number - blockNumber) > threshold);
     const title = meta?.hasIndexingErrors
         ? 'Indexing errors'
-        : 'Syncronization delay';
+        : 'Synchronization delay';
     const delay = blockNumber - meta?.block?.number;
-    const ignoreIssues = includes(chainId, excludedNetworks);
 
-    return issues && !ignoreIssues ? (
+    return issues ? (
         <Box px="6vw" bg="gray.900">
             <Alert status="error">
                 <AlertIcon />

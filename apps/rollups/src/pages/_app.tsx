@@ -11,7 +11,6 @@
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { Fonts, theme } from '@explorer/ui';
-import { WalletConnectionProvider } from '@explorer/wallet';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
@@ -25,9 +24,9 @@ const FeatureFlagProvider = dynamic(
     }
 );
 
-// const Web3Container = dynamic(() => import('../components/Web3Container'), {
-//     ssr: false,
-// });
+const Web3Container = dynamic(() => import('../components/Web3Container'), {
+    ssr: false,
+});
 
 const GraphProvider = ({ children }: { children: ReactNode }) => {
     const network = useNetwork();
@@ -41,11 +40,11 @@ const App = ({ Component, pageProps }: AppProps) => {
         <ChakraProvider theme={theme}>
             <Fonts />
             <FeatureFlagProvider>
-                <WalletConnectionProvider>
+                <Web3Container>
                     <GraphProvider>
                         <Component {...pageProps} />
                     </GraphProvider>
-                </WalletConnectionProvider>
+                </Web3Container>
             </FeatureFlagProvider>
         </ChakraProvider>
     );

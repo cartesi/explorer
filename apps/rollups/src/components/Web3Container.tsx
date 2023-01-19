@@ -11,15 +11,13 @@
 
 import React from 'react';
 import { WalletConnectionProvider } from '@explorer/wallet';
-import { networks } from '../utils/networks';
+import networks from '../services/useNetwork';
 
 const Web3Container = ({ children }) => {
-    const chainIds = Object.keys(networks).map(
-        (key) => `0x${Number(key).toString(16)}`
-    );
+    const chainIds = Object.keys(networks).map((key) => networks[key].chain.id);
     const appMetaData = {
-        name: 'Cartesi Blockchain Explorer',
-        description: 'A place where you can stake your CTSI and much more.',
+        name: 'Cartesi Blockchain Rollups',
+        description: 'A place where you can view instantiated DApps.',
     };
 
     return (

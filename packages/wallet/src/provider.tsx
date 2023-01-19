@@ -12,20 +12,25 @@
 import { useUnleashContext } from '@unleash/proxy-client-react';
 import { createContext, FC, useEffect, PropsWithChildren } from 'react';
 import { WalletConnectionContextProps } from './definitions';
-import { useOnboard } from './useOnboard';
+import { useOnboard, UseOnboardProps } from './useOnboard';
 
 const initialContextState = {
     active: false,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    activate: async () => {},
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    deactivate: () => {},
+    activate: async () => undefined,
+    deactivate: () => undefined,
 };
 
 export const WalletConnectionContext =
     createContext<WalletConnectionContextProps>(initialContextState);
 
-export const WalletConnectionProvider: FC<PropsWithChildren> = (props) => {
+export interface WalletConnectionProviderProps
+    extends PropsWithChildren,
+        UseOnboardProps {}
+
+export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
+    props
+) => {
+    const { children, chainIds, appMetaData } = props;
     const {
         library,
         account,
@@ -39,7 +44,7 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = (props) => {
         connectWallet,
         disconnectWallet,
         selectAccount,
-    } = useOnboard();
+    } = useOnboard({ chainIds, appMetaData });
 
     const updateUnleashCtx = useUnleashContext();
 
@@ -61,7 +66,6 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = (props) => {
               library,
               account,
               chainId,
-              error,
               selectAccount,
               isHardwareWallet,
               isGnosisSafe,
@@ -73,7 +77,7 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = (props) => {
 
     return (
         <WalletConnectionContext.Provider value={value}>
-            {props.children}
+            {children}
         </WalletConnectionContext.Provider>
     );
 };

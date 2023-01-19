@@ -68,7 +68,53 @@ export interface Network {
     chain: Chain;
 }
 
-const networks: Record<number, Network> = {};
+export const networks: Record<number, Network> = {
+    [0x5]: {
+        name: 'Goerli',
+        chainId: 5,
+        graphql: (address, env = 'staging') =>
+            `https://${address}.goerli.rollups.${env}.cartesi.io/graphql`,
+        explorer: new Explorer('https://goerli.etherscan.io'),
+        deployment: (contract) =>
+            require(`@cartesi/rollups/deployments/goerli/${contract}.json`),
+        chain: {
+            id: '0x5',
+            token: 'ETH',
+            label: 'Goerli',
+            rpcUrl: 'https://rpc.ankr.com/eth_goerli',
+        },
+    },
+    [0x66eed]: {
+        name: 'Arbitrum Goerli',
+        chainId: 421613,
+        graphql: (address, env = 'staging') =>
+            `https://${address}.arbitrum-goerli.rollups.${env}.cartesi.io/graphql`,
+        explorer: new Explorer('https://goerli.arbiscan.io'),
+        deployment: (contract) =>
+            require(`@cartesi/rollups/deployments/arbitrum_goerli/${contract}.json`),
+        chain: {
+            id: '0x66EED',
+            token: 'ETH',
+            label: 'Arbitrum Goerli',
+            rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc/',
+        },
+    },
+    [0x13881]: {
+        name: 'Polygon Mumbai',
+        chainId: 80001,
+        graphql: (address, env = 'staging') =>
+            `https://${address}.polygon-mumbai.rollups.${env}.cartesi.io/graphql`,
+        explorer: new Explorer('https://mumbai.polygonscan.com'),
+        deployment: (contract) =>
+            require(`@cartesi/rollups/deployments/polygon_mumbai/${contract}.json`),
+        chain: {
+            id: '0x13881',
+            token: 'MATIC',
+            label: 'Polygon Mumbai',
+            rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
+        },
+    },
+};
 
 // TODO: Revisit how to load ABI generated for local-development.
 /**
@@ -106,53 +152,6 @@ if (process.env.NODE_ENV === 'development') {
     };
 }
 */
-networks[0x5] = {
-    name: 'Goerli',
-    chainId: 5,
-    graphql: (address, env = 'staging') =>
-        `https://${address}.goerli.rollups.${env}.cartesi.io/graphql`,
-    explorer: new Explorer('https://goerli.etherscan.io'),
-    deployment: (contract) =>
-        require(`@cartesi/rollups/deployments/goerli/${contract}.json`),
-    chain: {
-        id: '0x5',
-        token: 'ETH',
-        label: 'Goerli',
-        rpcUrl: 'https://rpc.ankr.com/eth_goerli',
-    },
-};
-
-networks[0x66eed] = {
-    name: 'Arbitrum Goerli',
-    chainId: 421613,
-    graphql: (address, env = 'staging') =>
-        `https://${address}.arbitrum-goerli.rollups.${env}.cartesi.io/graphql`,
-    explorer: new Explorer('https://goerli.arbiscan.io'),
-    deployment: (contract) =>
-        require(`@cartesi/rollups/deployments/arbitrum_goerli/${contract}.json`),
-    chain: {
-        id: '0x66EED',
-        token: 'ETH',
-        label: 'Arbitrum Goerli',
-        rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc/',
-    },
-};
-
-networks[0x13881] = {
-    name: 'Polygon Mumbai',
-    chainId: 80001,
-    graphql: (address, env = 'staging') =>
-        `https://${address}.polygon-mumbai.rollups.${env}.cartesi.io/graphql`,
-    explorer: new Explorer('https://mumbai.polygonscan.com'),
-    deployment: (contract) =>
-        require(`@cartesi/rollups/deployments/polygon_mumbai/${contract}.json`),
-    chain: {
-        id: '0x13881',
-        token: 'MATIC',
-        label: 'Polygon Mumbai',
-        rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
-    },
-};
 
 export const useNetwork = (): Network | undefined => {
     const [network, setNetwork] = useState<Network | undefined>();
