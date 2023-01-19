@@ -21,12 +21,11 @@ const PageHead: FC<PageHead> = ({
     return (
         <Head>
             <title>{formattedTitle}</title>
-
             {hasDescription && (
                 <meta name="description" content={description} />
             )}
-
             <link rel="icon" href="/favicon.ico" />
+            <link rel="preconnect" href="https://tinygraphs.cartesi.io" />.
         </Head>
     );
 };
