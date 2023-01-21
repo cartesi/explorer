@@ -285,7 +285,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             buildConfig(ankrEnabled, chainIds, appMetaData)
         );
         setState((state) => ({ ...state, onboard }));
-    }, [ankrEnabled, appMetaData, chainIds]);
+    }, []);
 
     useEffect(() => {
         if (onboard) {
