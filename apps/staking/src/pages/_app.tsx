@@ -8,16 +8,13 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-import { ChakraProvider } from '@chakra-ui/react';
-import { theme } from '@explorer/ui';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 import TagManager from 'react-gtm-module';
-import ApolloContainer from '../components/ApolloContainer';
-
+import { theme } from '@explorer/ui';
 import { Fonts } from '@explorer/ui';
+import ApolloContainer from '../components/ApolloContainer';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import PageHead from '../components/PageHead';
 
