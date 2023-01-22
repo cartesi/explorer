@@ -12,11 +12,21 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Fonts, theme } from '@explorer/ui';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 import GraphQLProvider from '../containers/rollups/GraphQLProvider';
 import { useNetwork } from '../services/useNetwork';
-import FeatureFlagProvider from '../components/FeatureFlagProvider';
-import Web3Container from '../components/Web3Container';
+
+const FeatureFlagProvider = dynamic(
+    () => import('../components/FeatureFlagProvider'),
+    {
+        ssr: false,
+    }
+);
+
+const Web3Container = dynamic(() => import('../components/Web3Container'), {
+    ssr: false,
+});
 
 const GraphProvider = ({ children }: { children: ReactNode }) => {
     const network = useNetwork();
