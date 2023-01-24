@@ -9,18 +9,44 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { some } from 'lodash/fp';
 import { InferGetStaticPropsType } from 'next';
 import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { DOMAINS } from '../graphql/queries/ensDomains';
 import { createApollo } from '../services/apollo';
 import ensClient from '../services/apolloENSClient';
+import { config } from './featureFlags';
 import { Network } from './networks';
 import { formatEnsName } from './stringUtils';
 
-// using AWS for Mainnet/Goerli
-const awsClient = createApollo(Network.MAINNET, true);
-const goerliAWS = createApollo(Network.GOERLI, true);
+const proxyURL = `${config.url}?appName=${config.appName}&environment=${config.environment}`;
+
+const isEnabled = async (name: string): Promise<boolean> => {
+    console.log('CHECKING THE FEATURE_FLAG PROXY');
+    const resp = await fetch(proxyURL, {
+        method: 'GET',
+        headers: { Authorization: config.clientKey },
+    }).then((resp) => resp.json());
+    const toggles = resp.toggles;
+
+    return some({ name, enabled: true }, toggles);
+};
+
+const getGraphQLClients = async () => {
+    const isAWSEnabled = await isEnabled('aws');
+
+    console.log(
+        `Using ${
+            isAWSEnabled ? 'AWS API' : 'the-graph hosted services'
+        } to fetch data`
+    );
+
+    return {
+        mainnetClient: createApollo(Network.MAINNET, isAWSEnabled),
+        goerliClient: createApollo(Network.GOERLI, isAWSEnabled),
+    };
+};
 
 type PoolId = {
     pool: string;
@@ -35,7 +61,8 @@ type PoolStaticPathsRet = {
 const inSeconds = 60 * 60 * 24;
 
 export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
-    const { data } = await awsClient.query({
+    const { mainnetClient } = await getGraphQLClients();
+    const { data } = await mainnetClient.query({
         query: STAKING_POOLS_IDS,
         variables: {
             where: {
@@ -59,14 +86,15 @@ export type Context = {
 };
 
 export async function getENSStaticProps({ params }: Context) {
+    const { goerliClient, mainnetClient } = await getGraphQLClients();
     const [poolQ, goerliPoolQ, ensQ] = await Promise.all([
-        awsClient.query<StakingPoolData>({
+        mainnetClient.query<StakingPoolData>({
             query: STAKING_POOL,
             variables: {
                 id: params.pool,
             },
         }),
-        goerliAWS.query<StakingPoolData>({
+        goerliClient.query<StakingPoolData>({
             query: STAKING_POOL,
             variables: {
                 id: params.pool,
