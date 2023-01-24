@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2023-01-25
+
+-   Added support to PoS v2 for pool manager to be able to update their pools. That is only a deployment and rollout will be coming later. [Feature Flagged]
+-   Added the-graph hosted service subgraph to our incremental static regeneration strategy.
+
 ## [3.0.0] - 2022-12-28
 
 -   We added support to PoS v2. But it will only be deployed, and rollout will come later. [Feature flagged]
@@ -262,7 +267,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.0.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/cartesi-corp/explorer/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...v3.0.0
 [2.12.4]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...v2.12.4
 [2.12.3]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...v2.12.3
