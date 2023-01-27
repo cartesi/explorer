@@ -12,31 +12,30 @@
 import { EditIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
-    Button,
-    IconButton,
-    useDisclosure,
-    Tooltip,
     Icon,
+    IconButton,
+    Stack,
+    Text,
+    Tooltip,
+    useColorModeValue,
+    useDisclosure,
     useMediaQuery,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { isEmpty } from 'lodash';
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { truncateString } from '../../utils/stringUtils';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
 import { NodeHireNodeSection } from './NodeHireNodeSection';
-import { truncateString } from '../../utils/stringUtils';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
 
 export interface INodeInfoSection {
-    account?: string;
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
@@ -52,7 +51,6 @@ export interface INodeInfoSection {
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
-    account,
     address,
     userBalance,
     nodeBalance,
@@ -253,7 +251,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     />
                 </>
             )}
-            <NodeRetiredHistory address={account} />
+            <NodeRetiredHistory address={address} />
         </>
     );
 };

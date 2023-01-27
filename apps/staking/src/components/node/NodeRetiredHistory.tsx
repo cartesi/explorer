@@ -9,26 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, memo } from 'react';
 import {
     Accordion,
-    AccordionItem,
     AccordionButton,
-    AccordionPanel,
     AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
     Box,
     Flex,
-    TableContainer,
     Table,
-    Thead,
+    TableContainer,
     Tbody,
-    Tr,
-    Th,
     Td,
     Text,
-    useMediaQuery,
+    Th,
+    Thead,
+    Tr,
     useColorModeValue,
+    useMediaQuery,
 } from '@chakra-ui/react';
+import { useWallet } from '@explorer/wallet';
+import { useRouter } from 'next/router';
+import { FC, memo } from 'react';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
 import { truncateString } from '../../utils/stringUtils';
 export interface NodeRetiredHistoryProps {
@@ -64,10 +66,14 @@ const History: FC<HistoryProps> = memo(
 export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
     address,
 }) => {
+    const { account } = useWallet();
     const textColor = useColorModeValue('gray.400', 'white');
     const borderColor = useColorModeValue('black', 'white');
+    const router = useRouter();
+    const nodeOrPool = router.route.split('/')[1];
+    const owner = nodeOrPool === 'node' ? account : address;
     const { data } = useUserNodes(
-        address,
+        owner,
         3,
         {
             where: { status: 'Retired' },
