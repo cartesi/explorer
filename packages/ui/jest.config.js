@@ -2,7 +2,6 @@
 module.exports = {
     collectCoverageFrom: [
         '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
-        '!<rootDir>/src/graphql/models.ts',
         '!<rootDir>/src/stories/**',
         '!<rootDir>/src/styles/**',
         '!**/*.d.ts',
