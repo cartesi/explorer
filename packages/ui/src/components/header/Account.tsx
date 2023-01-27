@@ -27,7 +27,7 @@ import { useWallet } from '@explorer/wallet';
 import WalletMenu from './menu/WalletMenu';
 import { PaginationIcon } from '../Icons';
 
-const Account: FC = () => {
+export const Account: FC = () => {
     const { account } = useWallet();
     const ens = useENS(account ?? '');
     const bgColor = useColorModeValue('white', 'gray.700');
@@ -98,5 +98,3 @@ const Account: FC = () => {
         </Tag>
     );
 };
-
-export default Account;

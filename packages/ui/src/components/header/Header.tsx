@@ -9,13 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import NavBar, { HeaderLink } from './header/NavBar';
-import theme from '../styles/theme';
 import { FC } from 'react';
+import { NavBar, HeaderLink } from './NavBar';
+import theme from '../../styles/theme';
 
 export type Props = { links: HeaderLink[] };
-const Header: FC<Props> = ({ links }) => {
+export const Header: FC<Props> = ({ links }) => {
     return <NavBar w="100%" zIndex={theme.zIndices.xxl} links={links} />;
 };
-
-export default Header;

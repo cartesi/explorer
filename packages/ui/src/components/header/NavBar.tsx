@@ -24,10 +24,10 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useWallet } from '@explorer/wallet';
-import Account from './Account';
+import { Account } from './Account';
 import AccountMobile from './AccountMobile';
-import ConnectWallet from './ConnectWallet';
-import Logo from './Logo';
+import { ConnectWallet } from './ConnectWallet';
+import { Logo } from './Logo';
 import SelectedChain from './SelectedChain';
 
 export interface NavLinkProps {
@@ -60,7 +60,7 @@ export interface NavBarProps extends FlexProps {
     links: HeaderLink[];
 }
 
-const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
+export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
     // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const wallet = useWallet();
@@ -145,5 +145,3 @@ const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
         </Box>
     );
 };
-
-export default NavBar;

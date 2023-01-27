@@ -13,7 +13,7 @@ import { FC } from 'react';
 import NextLink from 'next/link';
 import { Box, BoxProps, Link } from '@chakra-ui/react';
 
-const Logo: FC<BoxProps> = (props) => (
+export const Logo: FC<BoxProps> = (props) => (
     <Box {...props}>
         <NextLink href="/" passHref>
             <Link _focus={{ outline: 'none' }} title="Cartesi logo">
@@ -173,5 +173,3 @@ const Logo: FC<BoxProps> = (props) => (
         </NextLink>
     </Box>
 );
-
-export default Logo;

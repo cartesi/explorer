@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Footer, { FooterContract, FooterLink } from './Footer';
-import Header from './Header';
+import { Header } from './header';
 import { HeaderLink } from './header/NavBar';
 
 interface ComponentProps {

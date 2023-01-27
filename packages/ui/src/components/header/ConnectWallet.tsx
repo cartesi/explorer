@@ -17,7 +17,7 @@ export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
 }
 
-const ConnectWallet: FC<ConnectWalletProps> = (props) => {
+export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
     const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
@@ -44,5 +44,3 @@ const ConnectWallet: FC<ConnectWalletProps> = (props) => {
         </Box>
     );
 };
-
-export default ConnectWallet;
