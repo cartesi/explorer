@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
-import Address from '../../Address';
+import { Address } from '@explorer/ui';
 import { formatCTSI } from '../../../utils/token';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {

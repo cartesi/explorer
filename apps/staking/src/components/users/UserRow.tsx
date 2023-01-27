@@ -12,14 +12,14 @@
 import React, { FC } from 'react';
 import { Tr, Td, useColorModeValue, Box, Link, Text } from '@chakra-ui/react';
 import { User } from '../../graphql/models';
-import Address from '../../components/Address';
-import { formatCTSI } from '../../utils/token';
-import NextLink from 'next/link';
 import {
+    Address,
     StakeCircledIcon,
     StakeCircledOutlinedIcon,
     StakeIcon,
-} from '../Icons';
+} from '@explorer/ui';
+import { formatCTSI } from '../../utils/token';
+import NextLink from 'next/link';
 import { isObject } from 'lodash';
 
 export interface UserRowProps {

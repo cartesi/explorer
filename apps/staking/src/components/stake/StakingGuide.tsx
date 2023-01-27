@@ -11,7 +11,7 @@
 
 import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '../Icons';
+import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '@explorer/ui';
 
 export const steps = [
     {

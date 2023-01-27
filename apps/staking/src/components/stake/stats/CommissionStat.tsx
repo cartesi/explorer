@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, ReactChild, ReactFragment } from 'react';
-import { PoolCommisionIcon } from '../../Icons';
+import { PoolCommisionIcon } from '@explorer/ui';
 import {
     HStack,
     useColorModeValue,

@@ -22,7 +22,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
-import Address from '../Address';
+import { Address } from '@explorer/ui';
 import { Transaction } from '../../services/transaction';
 import { isFunction } from 'lodash/fp';
 

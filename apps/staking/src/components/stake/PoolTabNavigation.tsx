@@ -14,7 +14,7 @@ import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { SettingsIcon } from '@chakra-ui/icons';
-import { DashboardIcon, StakeIcon } from '../Icons';
+import { DashboardIcon, StakeIcon } from '@explorer/ui';
 
 export const PoolTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');

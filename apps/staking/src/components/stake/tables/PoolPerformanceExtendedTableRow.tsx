@@ -23,9 +23,8 @@ import {
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
 import { StakingPoolFlat } from '../../../graphql/models';
-import Address from '../../../components/Address';
+import { Address, StakeIcon } from '@explorer/ui';
 import { formatCTSI } from '../../../utils/token';
-import { StakeIcon } from '../../Icons';
 import labels from '../../../utils/labels';
 
 export interface PoolPerformanceExtendedTableRowProps {

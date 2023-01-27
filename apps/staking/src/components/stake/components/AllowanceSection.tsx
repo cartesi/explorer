@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon } from '@chakra-ui/icons';
 import {
     Box,
     Text,
@@ -25,7 +24,7 @@ import {
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../../pools/staking/CTSI';
-import { PencilIconWhite } from '../../Icons';
+import { PencilIconWhite } from '@explorer/ui';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;

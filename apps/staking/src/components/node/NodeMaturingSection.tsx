@@ -22,7 +22,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { TimeIcon } from '../Icons';
+import { TimeIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeMaturingSection {

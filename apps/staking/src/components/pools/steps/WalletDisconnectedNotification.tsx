@@ -1,9 +1,8 @@
 import { forwardRef } from '@chakra-ui/react';
-import { LegacyRef, Ref } from 'react';
+import { LegacyRef } from 'react';
 import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
-import ConnectWallet from '../../header/ConnectWallet';
-import { Notification } from '../../Notification';
+import { Notification, ConnectWallet } from '@explorer/ui';
 
 /**
  * A warning notification when wallet is disconnected along with a connect wallet action button.

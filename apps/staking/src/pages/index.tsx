@@ -23,15 +23,8 @@ import {
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
-import { Banner } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
-import { FixedNumber } from 'ethers';
-import { useState } from 'react';
-import BlockMiniCard from '../components/block/BlockMiniCard';
-import CTSIText from '../components/CTSIText';
-import MarketInfoPanel from '../components/home/MarketInfoPanel';
-import PrimaryCard from '../components/home/PrimaryCard';
 import {
+    Banner,
     ActiveNodeIcon,
     ChartIcon,
     CircleSupplyIcon,
@@ -39,7 +32,14 @@ import {
     MarketCapICon,
     PrizeIcon,
     TotalStakedIcon,
-} from '../components/Icons';
+} from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
+import { FixedNumber } from 'ethers';
+import { useState } from 'react';
+import BlockMiniCard from '../components/block/BlockMiniCard';
+import CTSIText from '../components/CTSIText';
+import MarketInfoPanel from '../components/home/MarketInfoPanel';
+import PrimaryCard from '../components/home/PrimaryCard';
 import Layout from '../components/Layout';
 import PageHead from '../components/PageHead';
 import SearchInput from '../components/SearchInput';

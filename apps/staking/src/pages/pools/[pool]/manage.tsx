@@ -17,11 +17,10 @@ import Layout from '../../../components/Layout';
 import { useRouter } from 'next/router';
 import { useWallet } from '@explorer/wallet';
 import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
-import Address from '../../../components/Address';
+import { Address, SimpleChartIcon } from '@explorer/ui';
 import PageHead from '../../../components/PageHead';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import { isObject, isString } from 'lodash';
-import { SimpleChartIcon } from '../../../components/Icons';
 
 const PoolNode: FC = () => {
     const { account, chainId, active } = useWallet();

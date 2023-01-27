@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber } from 'ethers';
-import { PoolBalanceHexIcon } from '../../Icons';
+import { PoolBalanceHexIcon } from '@explorer/ui';
 import {
     HStack,
     VStack,

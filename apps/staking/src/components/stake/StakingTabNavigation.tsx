@@ -11,9 +11,9 @@
 
 import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
+import { SimpleChartIcon, StakeIcon } from '@explorer/ui';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { SimpleChartIcon, StakeIcon } from '../Icons';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');

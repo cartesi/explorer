@@ -16,8 +16,7 @@ import { PoolBalance } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
 import { useStakingPool } from '../../../services/pool';
-import { StakeIcon } from '../../Icons';
-import Address from '../../Address';
+import { Address, StakeIcon } from '@explorer/ui';
 
 export interface UserStakingPoolsTableRowProps {
     chainId: number;

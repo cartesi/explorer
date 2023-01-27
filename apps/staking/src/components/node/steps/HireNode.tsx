@@ -25,8 +25,7 @@ import TransactionBanner from '../../TransactionBanner';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
 import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';
-import { Notification } from '../../Notification';
-import ConnectWallet from '../../header/ConnectWallet';
+import { Notification, ConnectWallet } from '@explorer/ui';
 import { useMessages } from '../../../utils/messages';
 
 type Validation = ValidationResult<NodeField | DepositField>;

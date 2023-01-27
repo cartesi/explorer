@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ChartIcon } from '../../components/Icons';
+import { ChartIcon } from '@explorer/ui';
 
 import PrimaryCard from '../../components/home/PrimaryCard';
 

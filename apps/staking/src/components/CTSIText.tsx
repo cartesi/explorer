@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import BigNumberText, { BigNumberTextProps } from './BigNumberText';
+import { BigNumberText, BigNumberTextProps } from '@explorer/ui';
 
 const CTSIText: FC<BigNumberTextProps> = (props) => {
     return <BigNumberText unit="ctsi" {...props} />;

@@ -26,7 +26,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
-import BigNumberText from '../BigNumberText';
+import { BigNumberText } from '@explorer/ui';
 
 type AvailableNodeProps = {
     balance: BigNumber; // user ETH balance

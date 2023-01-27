@@ -41,7 +41,7 @@ import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 import CTSI from '../../pools/staking/CTSI';
-import { CheckCircleIcon, PencilIconWhite } from '../../Icons';
+import { CheckCircleIcon, PencilIconWhite } from '@explorer/ui';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;

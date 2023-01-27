@@ -21,7 +21,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-import Address from '../Address';
+import { Address } from '@explorer/ui';
 import { Block } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
 

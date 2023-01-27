@@ -31,7 +31,7 @@ import usePoolActivities, {
 } from '../../graphql/hooks/usePoolActivities';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { formatValue } from '../../utils/numberFormatter';
-import Address from '../Address';
+import { Address } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {

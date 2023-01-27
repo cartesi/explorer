@@ -75,7 +75,7 @@ const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
                 </HStack>
             }
         >
-            <BigNumberText value={dappCount}></BigNumberText>
+            <BigNumberText value={dappCount} />
         </Banner>
         <Banner
             Icon={<Box as={InputIcon} w={8} h={8} />}
@@ -91,7 +91,7 @@ const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
                 </HStack>
             }
         >
-            <BigNumberText value={inputCount}></BigNumberText>
+            <BigNumberText value={inputCount} />
         </Banner>
     </Stack>
 );

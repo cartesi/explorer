@@ -1,12 +1,16 @@
 import { Icon } from '@chakra-ui/icons';
 import { HStack, Stack, Text, Tooltip } from '@chakra-ui/react';
-import { Banner } from '@explorer/ui';
+import {
+    Banner,
+    BigNumberText,
+    MyPoolsIcon,
+    MyStakeIcon,
+    PoolsIcon,
+} from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
-import BigNumberText from '../../BigNumberText';
 import CTSIText from '../../CTSIText';
-import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
 
 export interface PoolsOverviewProps {
     balance: BigNumber;

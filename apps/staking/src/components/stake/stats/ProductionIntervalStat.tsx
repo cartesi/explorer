@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC, ReactChild, ReactFragment } from 'react';
-import { PoolProductionIntervalIcon } from '../../../components/Icons';
+import { PoolProductionIntervalIcon } from '@explorer/ui';
 import {
     HStack,
     useColorModeValue,

@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
-import { CheckCircleIcon, EmptyTransactionIcon } from '../Icons';
+import { CheckCircleIcon, EmptyTransactionIcon } from '@explorer/ui';
 import usePoolActivities, {
     Activity as ActivityType,
 } from '../../graphql/hooks/usePoolActivities';

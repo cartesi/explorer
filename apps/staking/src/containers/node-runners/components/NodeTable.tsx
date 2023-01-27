@@ -32,12 +32,12 @@ import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { useEffect } from 'react';
-import Address from '../../../components/Address';
 import {
+    Address,
     PencilIcon,
     StakeCircledOutlinedIcon,
-} from '../../../components/Icons';
-import { Notification } from '../../../components/Notification';
+    Notification,
+} from '@explorer/ui';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useMessages } from '../../../utils/messages';

@@ -30,7 +30,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { FC, Fragment } from 'react';
-import { FilterIcon } from '../Icons';
+import { FilterIcon } from '@explorer/ui';
 
 export interface IPoolFiltersProps {
     filters: any;

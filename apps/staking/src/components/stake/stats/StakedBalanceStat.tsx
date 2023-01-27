@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber } from 'ethers';
-import { StakedBalanceIcon } from '../../Icons';
+import { StakedBalanceIcon } from '@explorer/ui';
 import {
     HStack,
     VStack,

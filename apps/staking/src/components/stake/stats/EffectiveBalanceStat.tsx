@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { BigNumber, constants } from 'ethers';
-import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
+import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '@explorer/ui';
 import {
     HStack,
     VStack,

@@ -275,9 +275,7 @@ export default {
     argTypes: {},
 } as ComponentMeta<typeof Icons>;
 
-const Template: ComponentStory<typeof Icons> = (args: object) => (
-    <Icons {...args} />
-);
+const Template: ComponentStory<typeof Icons> = () => <Icons />;
 
 export const Default = Template.bind({});
 Default.args = {};

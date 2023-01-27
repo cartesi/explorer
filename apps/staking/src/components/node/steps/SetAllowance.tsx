@@ -41,8 +41,7 @@ import {
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../../TransactionBanner';
-import { Notification } from '../../Notification';
-import ConnectWallet from '../../header/ConnectWallet';
+import { Notification, ConnectWallet } from '@explorer/ui';
 
 const useStyle = () => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');

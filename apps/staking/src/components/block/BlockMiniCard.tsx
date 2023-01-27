@@ -24,7 +24,7 @@ import {
 import { TimeIcon } from '@chakra-ui/icons';
 import humanizeDuration from 'humanize-duration';
 
-import Address from '../Address';
+import { Address } from '@explorer/ui';
 import { Block } from '../../graphql/models';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 

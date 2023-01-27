@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { memo, FC, ReactChild, ReactFragment } from 'react';
-import { PoolPerformanceIcon } from '../../Icons';
+import { PoolPerformanceIcon } from '@explorer/ui';
 import {
     HStack,
     useColorModeValue,

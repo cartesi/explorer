@@ -20,7 +20,7 @@ import {
     HStack,
     Spinner,
 } from '@chakra-ui/react';
-import Address from './Address';
+import { Address } from '@explorer/ui';
 import { Transaction } from '../services/transaction';
 
 export interface TransactionFeedbackProps<R> {

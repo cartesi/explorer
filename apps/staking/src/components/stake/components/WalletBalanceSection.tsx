@@ -25,7 +25,7 @@ import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
-import { WalletIcon } from '../../Icons';
+import { WalletIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IWalletBalanceSectionProps {

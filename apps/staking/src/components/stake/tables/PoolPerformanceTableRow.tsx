@@ -23,10 +23,9 @@ import {
 import NextLink from 'next/link';
 import { LockIcon } from '@chakra-ui/icons';
 import { StakingPool } from '../../../graphql/models';
-import Address from '../../../components/Address';
+import { Address, StakeIcon } from '@explorer/ui';
 import { formatCTSI } from '../../../utils/token';
 import labels from '../../../utils/labels';
-import { StakeIcon } from '../../Icons';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;

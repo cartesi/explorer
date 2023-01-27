@@ -11,30 +11,20 @@
 
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import Pagination from '../components/Pagination';
+import { WalletMobileModal } from '../../../components/header/modals/WalletMobileModal';
 
 export default {
-    title: 'Pagination',
-    component: Pagination,
+    title: 'Header/Modals/WalletMobileModal',
+    component: WalletMobileModal,
     argTypes: {},
-} as ComponentMeta<typeof Pagination>;
+} as ComponentMeta<typeof WalletMobileModal>;
 
-const Template: ComponentStory<typeof Pagination> = (args) => (
-    <Pagination {...args} />
+const Template: ComponentStory<typeof WalletMobileModal> = (args) => (
+    <WalletMobileModal {...args} />
 );
 
-export const FirstPage = Template.bind({});
-FirstPage.args = { pages: 5, currentPage: 1 };
-
-export const MiddlePage = Template.bind({});
-MiddlePage.args = { pages: 5, currentPage: 3 };
-
-export const LastPage = Template.bind({});
-LastPage.args = { pages: 5, currentPage: 5 };
-
-export const OnePage = Template.bind({});
-OnePage.args = { pages: 1 };
-
-export const NoPages = Template.bind({});
-NoPages.args = { pages: 0 };
+export const Default = Template.bind({});
+Default.args = {
+    isOpen: true,
+    onClose: () => undefined,
+};

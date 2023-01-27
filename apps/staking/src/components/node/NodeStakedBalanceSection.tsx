@@ -21,7 +21,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { StakedBalanceIcon } from '../Icons';
+import { StakedBalanceIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeStakedBalanceSection {

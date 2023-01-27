@@ -22,7 +22,7 @@ import {
 import React, { FC } from 'react';
 import Footer, { FooterContract, FooterLink } from './Footer';
 import { Header } from './header';
-import { HeaderLink } from './header/NavBar';
+import { HeaderLink } from './header';
 
 interface ComponentProps {
     children: React.ReactNode;

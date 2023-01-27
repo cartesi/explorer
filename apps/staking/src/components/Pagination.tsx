@@ -10,15 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import {
-    HStack,
-    Text,
-    useColorModeValue,
-    Button,
-    ButtonProps,
-} from '@chakra-ui/react';
-import { GhostButton } from '@explorer/ui';
-import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { HStack, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon, GhostButton } from '@explorer/ui';
 
 export interface PaginationProps {
     currentPage: number;

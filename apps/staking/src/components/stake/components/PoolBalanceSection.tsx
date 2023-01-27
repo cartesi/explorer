@@ -23,7 +23,7 @@ import {
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { PoolBalanceIcon } from '../../Icons';
+import { PoolBalanceIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IPoolBalanceSectionProps {

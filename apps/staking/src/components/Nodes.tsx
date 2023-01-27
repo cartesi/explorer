@@ -12,7 +12,7 @@
 import { useState } from 'react';
 import useNodes, { NODES_PER_PAGE } from '../graphql/hooks/useNodes';
 import { Summary } from '../graphql/models';
-import Address from './Address';
+import { Address } from '@explorer/ui';
 import { formatCTSI } from '../utils/token';
 
 interface NodesProps {

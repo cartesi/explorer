@@ -30,13 +30,11 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import { Notification, GhostButton } from '@explorer/ui';
+import { Notification, Address, GhostButton, PencilIcon } from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { useEffect } from 'react';
-import Address from '../../../components/Address';
-import { PencilIcon } from '../../../components/Icons';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useUserNodes } from '../../../graphql/hooks/useNodes';
