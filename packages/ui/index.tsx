@@ -1,2 +1,2 @@
-export { default as theme } from './styles/theme';
-export * from './components';
+export { default as theme } from './src/styles/theme';
+export * from './src/components';

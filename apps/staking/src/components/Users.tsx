@@ -13,7 +13,7 @@ import React, { FC, useState } from 'react';
 import { VStack, Flex } from '@chakra-ui/react';
 import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
-import Pagination from './Pagination';
+import { Pagination } from '@explorer/ui';
 import { UserSort } from '../graphql/models';
 import PerPageSelect from './PerPageSelect';
 

@@ -20,7 +20,7 @@ import { useWallet } from '@explorer/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import useStakingPoolFeeHistories from '../../../graphql/hooks/useStakingPoolFeeHistories';
 import PoolCommissionsTable from '../../../components/stake/tables/PoolCommissionsTable';
-import Pagination from '../../../components/Pagination';
+import { Pagination } from '@explorer/ui';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
 import PerPageSelect from '../../../components/PerPageSelect';
 import PageHead from '../../../components/PageHead';

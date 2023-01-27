@@ -28,7 +28,7 @@ import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
 import { useWallet } from '@explorer/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import UsersTable from '../../../components/stake/tables/UsersTable';
-import Pagination from '../../../components/Pagination';
+import { Pagination } from '@explorer/ui';
 import usePoolBalances, {
     userShare,
 } from '../../../graphql/hooks/usePoolBalances';

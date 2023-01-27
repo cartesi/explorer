@@ -14,7 +14,7 @@ import { VStack } from '@chakra-ui/react';
 
 import useStakingPools from '../../graphql/hooks/useStakingPools';
 import { StakingPoolSort } from '../../graphql/models';
-import Pagination from '../../components/Pagination';
+import { Pagination } from '@explorer/ui';
 import PoolPerformanceTable from './tables/PoolPerformanceTable';
 
 interface PoolPerformanceProps {
