@@ -36,6 +36,7 @@ import { NodeHireNodeSection } from './NodeHireNodeSection';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
 
 export interface INodeInfoSection {
+    account?: string;
     address: string;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
@@ -51,6 +52,7 @@ export interface INodeInfoSection {
 }
 
 export const NodeInfoSection: FC<INodeInfoSection> = ({
+    account,
     address,
     userBalance,
     nodeBalance,
@@ -251,7 +253,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     />
                 </>
             )}
-            <NodeRetiredHistory address={address} />
+            <NodeRetiredHistory address={account} />
         </>
     );
 };
