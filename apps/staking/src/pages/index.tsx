@@ -185,7 +185,7 @@ const Home = () => {
                             minWidth="calc(33.33% - 0.8rem)"
                         >
                             <MarketInfoPanel
-                                label="CTSI Price"
+                                label={<Text>CTSI Price</Text>}
                                 value={marketInformation?.price}
                                 unit="USD"
                             />
