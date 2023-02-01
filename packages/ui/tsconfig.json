@@ -2,9 +2,9 @@
     "extends": "tsconfig/react-library.json",
     "include": ["."],
     "exclude": ["dist", "build", "node_modules"],
-    "esModuleInterop": true,
     "compilerOptions": {
         "resolveJsonModule": true,
-        "forceConsistentCasingInFileNames": false
+        "forceConsistentCasingInFileNames": false,
+        "esModuleInterop": true
     }
 }

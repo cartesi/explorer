@@ -5,7 +5,7 @@
     "types": "./index.tsx",
     "license": "MIT",
     "scripts": {
-        "storybook": "start-storybook -p 6006",
+        "storybook": "start-storybook -p 6007",
         "test": "jest",
         "test:ci": "jest --runInBand --coverage",
         "lint": "TIMING=1 eslint \"**/*.ts*\""

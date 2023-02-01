@@ -1,7 +1,8 @@
 {
     "extends": "tsconfig/nextjs.json",
     "compilerOptions": {
-        "strict": false
+        "strict": false,
+        "esModuleInterop": true
     },
     "exclude": ["node_modules"],
     "include": [

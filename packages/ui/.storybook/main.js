@@ -15,6 +15,7 @@ const toPath = (_path) => path.join(process.cwd(), _path);
 module.exports = {
     features: {
         postcss: false,
+        buildStoriesJson: true,
     },
     stories: [
         '../src/stories/**/*.stories.mdx',

@@ -28,7 +28,7 @@ import { Account } from './Account';
 import AccountMobile from './AccountMobile';
 import { ConnectWallet } from './ConnectWallet';
 import { Logo } from './Logo';
-import SelectedChain from './SelectedChain';
+import { SelectedChain } from './SelectedChain';
 
 export interface NavLinkProps {
     href: string;

@@ -13,8 +13,16 @@ const path = require('path');
 const toPath = (_path) => path.join(process.cwd(), _path);
 
 module.exports = {
+    refs: {
+        '@explorer/ui': {
+            title: 'Explorer UI',
+            url: 'http://localhost:6007',
+        },
+    },
+    staticDirs: ['../public'],
     features: {
         postcss: false,
+        buildStoriesJson: true,
     },
     stories: [
         '../src/**/*.stories.mdx',

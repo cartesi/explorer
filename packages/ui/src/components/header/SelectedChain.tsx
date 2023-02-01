@@ -10,15 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC } from 'react';
-import Chain from './Chain';
 import { TagProps } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
+import Chain from './Chain';
 
 export interface SelectedChainProps extends TagProps {
     showMainnet?: boolean;
 }
 
-const SelectedChain: FC<SelectedChainProps> = ({
+export const SelectedChain: FC<SelectedChainProps> = ({
     showMainnet = false,
     ...tagProps
 }) => {
@@ -28,5 +28,3 @@ const SelectedChain: FC<SelectedChainProps> = ({
     // render component
     return <Chain chainId={chainId} showMainnet={showMainnet} {...tagProps} />;
 };
-
-export default SelectedChain;
