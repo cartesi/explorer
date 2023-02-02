@@ -28,8 +28,6 @@ import {
     useColorModeValue,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
-import { useRouter } from 'next/router';
 import { FC, memo } from 'react';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
 import { truncateString } from '../../utils/stringUtils';
@@ -66,14 +64,10 @@ const History: FC<HistoryProps> = memo(
 export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
     address,
 }) => {
-    const { account } = useWallet();
     const textColor = useColorModeValue('gray.400', 'white');
     const borderColor = useColorModeValue('black', 'white');
-    const router = useRouter();
-    const nodeOrPool = router.route.split('/')[1];
-    const owner = nodeOrPool === 'node' ? account : address;
     const { data } = useUserNodes(
-        owner,
+        address,
         3,
         {
             where: { status: 'Retired' },

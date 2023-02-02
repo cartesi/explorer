@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useRef, useState } from 'react';
 import {
     Box,
     Button,
@@ -25,31 +24,32 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 
-import { useBalance, useBlockNumber } from '../../../services/eth';
-import { useStaking } from '../../../services/staking';
-import { useCartesiToken } from '../../../services/token';
-import Layout from '../../../components/Layout';
-import { useTimeLeft } from '../../../utils/react';
-import { useUserNode } from '../../../graphql/hooks/useNodes';
-import { useNode } from '../../../services/node';
 import { useWallet } from '@explorer/wallet';
-import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
+import Layout from '../../../components/Layout';
+import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
+import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
+import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
 import { NodeMaturingSection } from '../../../components/node/NodeMaturingSection';
 import { NodeReleasingSection } from '../../../components/node/NodeReleasingSection';
-import { NodeInfoSection } from '../../../components/node/NodeInfoSection';
-import { NodeStakedBalanceSection } from '../../../components/node/NodeStakedBalanceSection';
-import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
-import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
-import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
-import theme from '../../../styles/theme';
 import { NodeRetiredBanner } from '../../../components/node/NodeRetiredBanner';
+import { NodeStakedBalanceSection } from '../../../components/node/NodeStakedBalanceSection';
+import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashboard';
 import PageHead from '../../../components/PageHead';
-import { useMessages } from '../../../utils/messages';
+import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import TransactionBanner from '../../../components/TransactionBanner';
+import { useUserNode } from '../../../graphql/hooks/useNodes';
+import { useBalance, useBlockNumber } from '../../../services/eth';
+import { useNode } from '../../../services/node';
+import { useStaking } from '../../../services/staking';
+import { useCartesiToken } from '../../../services/token';
+import theme from '../../../styles/theme';
+import { useMessages } from '../../../utils/messages';
+import { useTimeLeft } from '../../../utils/react';
 
 const ManageNode: FC = () => {
     const router = useRouter();
@@ -336,7 +336,7 @@ const ManageNode: FC = () => {
                     </Box>
                 ) : (
                     <NodeInfoSection
-                        account={account}
+                        ownerAccount={account}
                         address={activeWorker}
                         userBalance={userBalance}
                         nodeBalance={node.balance}
