@@ -9,18 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
-import { BigNumber, BigNumberish } from 'ethers';
-import { StackProps, SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid, StackProps } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
+import { BigNumber, BigNumberish } from 'ethers';
+import { FC } from 'react';
 import { StakingPoolFee } from '../../graphql/models';
-import StakedBalanceStat from './stats/StakedBalanceStat';
+import CommissionStat from './stats/CommissionStat';
 import EffectiveBalanceStat from './stats/EffectiveBalanceStat';
 import PoolBalanceStat from './stats/PoolBalanceStat';
-import UsersStat from './stats/UsersStat';
-import ProductionIntervalStat from './stats/ProductionIntervalStat';
-import CommissionStat from './stats/CommissionStat';
 import PoolPerformanceStat from './stats/PoolPerformanceStat';
+import ProductionIntervalStat from './stats/ProductionIntervalStat';
+import StakedBalanceStat from './stats/StakedBalanceStat';
+import UsersStat from './stats/UsersStat';
 
 export interface PoolStatsPanelProps extends StackProps {
     address: string;
@@ -68,13 +68,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
 
     const aws = useFlag('aws');
     const apr = useFlag('apr');
-    const stakingPoolCommissionPageEnabled = useFlag(
-        'stakingPoolCommissionPageEnabled'
-    );
     const performanceStatsEnabled = aws && apr;
-    const commissionLink = stakingPoolCommissionPageEnabled
-        ? `/stake/${address}/commissions`
-        : undefined;
 
     return (
         <>
@@ -121,7 +115,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     totalBlocks={totalBlocks}
                 />
                 <CommissionStat
-                    location={commissionLink}
+                    location={`/stake/${address}/commissions`}
                     commissionPercentage={commissionPercentage}
                     fee={fee}
                 />

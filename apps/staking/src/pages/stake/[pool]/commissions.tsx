@@ -12,7 +12,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Flex } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { isArray } from 'lodash';
 import Layout from '../../../components/Layout';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
@@ -44,9 +43,6 @@ export async function getStaticProps(context: Context) {
 const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
     const router = useRouter();
     const address = router.query.pool as string;
-    const stakingPoolCommissionPageEnabled = useFlag(
-        'stakingPoolCommissionPageEnabled'
-    );
     const { account } = useWallet();
     const stakingPool = useStakingPoolQuery(address);
     const [dataPageNumber, setDataPageNumber] = useState<number>(0);
@@ -67,12 +63,6 @@ const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
     const perPageOptions = Array.from({ length: 3 }).map(
         (item, index) => (index + 1) * 10
     );
-
-    useEffect(() => {
-        if (!stakingPoolCommissionPageEnabled) {
-            router.replace(`/stake/${address}`);
-        }
-    }, [stakingPoolCommissionPageEnabled, router, address]);
 
     useEffect(() => {
         if (isArray(data?.stakingPoolFeeHistories)) {
