@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useMemo, useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {
     Box,
@@ -21,7 +20,6 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { DateTime } from 'luxon';
 import { isArray, isObject, uniqueId } from 'lodash';
 import Layout from '../../../components/Layout';
@@ -71,7 +69,6 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     const bg = useColorModeValue('gray.80', 'header');
     const sectionBg = useColorModeValue('white', 'gray.800');
     const { account, chainId } = useWallet();
-    const stakingPoolUserPageEnabled = useFlag('stakingPoolUserPageEnabled');
     const router = useRouter();
     const address = router.query.pool as string;
     const stakingPool = useStakingPoolQuery(address);
@@ -186,12 +183,6 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
             }),
         [poolBalances, allBalancesData]
     );
-
-    useEffect(() => {
-        if (!stakingPoolUserPageEnabled) {
-            router.replace(`/stake/${address}`);
-        }
-    }, [stakingPoolUserPageEnabled, router, address]);
 
     useEffect(() => {
         if (isArray(allBalances.data?.poolBalances)) {

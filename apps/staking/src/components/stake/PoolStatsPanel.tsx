@@ -75,10 +75,6 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
     const commissionLink = stakingPoolCommissionPageEnabled
         ? `/stake/${address}/commissions`
         : undefined;
-    const stakingPoolUserPageEnabled = useFlag('stakingPoolUserPageEnabled');
-    const usersLink = stakingPoolUserPageEnabled
-        ? `/stake/${address}/users`
-        : undefined;
 
     return (
         <>
@@ -116,7 +112,10 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                 spacing={5}
                 role="commission-stat"
             >
-                <UsersStat location={usersLink} totalUsers={totalUsers} />
+                <UsersStat
+                    location={`/stake/${address}/users`}
+                    totalUsers={totalUsers}
+                />
                 <ProductionIntervalStat
                     productionInterval={productionInterval}
                     totalBlocks={totalBlocks}
