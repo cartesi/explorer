@@ -27,9 +27,8 @@ import {
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 import { FC } from 'react';
-import { StakingPool } from '../../services/pool';
 import { truncateString } from '../../utils/stringUtils';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
@@ -38,7 +37,6 @@ import { NodeRetiredHistory } from './NodeRetiredHistory';
 export interface INodeInfoSection {
     ownerAccount?: string;
     address: string;
-    pool?: StakingPool;
     userBalance: BigNumber;
     nodeBalance: BigNumber;
     isHiring?: boolean;
@@ -55,7 +53,6 @@ export interface INodeInfoSection {
 export const NodeInfoSection: FC<INodeInfoSection> = ({
     ownerAccount,
     address,
-    pool = null,
     userBalance,
     nodeBalance,
     isHiring = false,
@@ -77,7 +74,6 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
     const retireModal = useDisclosure();
     const depositModal = useDisclosure();
-    const owner = isObject(pool) ? pool.address : ownerAccount;
     const isNodeHireSectionVisible = isRetired || isHiring || isEmpty(address);
     const formattedAddress = isLargerThan554
         ? address
@@ -255,7 +251,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                     />
                 </>
             )}
-            <NodeRetiredHistory address={owner} />
+            <NodeRetiredHistory address={ownerAccount} />
         </>
     );
 };

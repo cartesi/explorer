@@ -160,7 +160,6 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                     <NodeInfoSection
                         ownerAccount={address}
                         address={activeWorker}
-                        pool={pool}
                         userBalance={userBalance}
                         nodeBalance={node.balance}
                         isRetired={node.retired}
