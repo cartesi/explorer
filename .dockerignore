@@ -1,0 +1,6 @@
+.github
+.next
+.vscode
+node_modules
+out
+npm-debug.log

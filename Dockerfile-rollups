@@ -1,0 +1,40 @@
+FROM node:18-alpine AS tbuilder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+RUN yarn global add turbo
+COPY . .
+RUN turbo prune --scope=rollups --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM node:18-alpine AS deps
+# Add dependencies for some yarn installs.
+RUN apk add --no-cache git openssh
+# Add dependencies for node-gyp.
+RUN apk add --no-cache g++ make python3 py3-pip
+# Add dependency for turbo
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+# First install dependencies. 
+COPY .gitignore .gitignore
+COPY --from=tbuilder /app/out/json ./
+COPY --from=tbuilder /app/out/yarn.lock ./yarn.lock
+RUN yarn install
+
+FROM node:18-alpine AS builder
+# Add dependency for turbo
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+COPY --from=deps /app/ ./
+# Copy the pruned App.
+COPY --from=tbuilder /app/out/full/ .
+# Disabling telemetry during build
+ENV NEXT_TELEMETRY_DISABLED 1
+# turbo task export has the graphql codegen and build as dependsOn tasks. It will generate a static version of the Rollups.
+RUN yarn export --filter=rollups
+
+FROM nginx
+COPY --from=builder /app/apps/rollups/out /usr/share/nginx/html
+VOLUME [ "/usr/share/nginx/html/abi" ]
