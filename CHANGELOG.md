@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2023-02-16
+
+-   `Staking`
+    -   Changes applied to enhance our scores on SEO, Accessibility and best practices based on lighthouse report for desktop.
+    -   A fix was applied to keep the pool-info tab selected when the user access the staking pool users page.
+    -   A fix was applied to the staking pool management screen. Now managers will see correctly the nodes retired by the pool and not the private nodes managers themselves had retired if any.
+    -   Maintenance work done;
+        -   Feature flags for staking pool users and commission pages were retired.
+        -   Upgrade dependencies with special attention to the Luxon update that solves a High severity vulnerability.
+
 ## [3.1.0] - 2023-01-25
 
 -   Added support to PoS v2 for pool manager to be able to update their pools. That is only a deployment and rollout will be coming later. [Feature Flagged]
@@ -267,7 +277,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.1.0...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/cartesi-corp/explorer/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/cartesi-corp/explorer/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...v3.0.0
 [2.12.4]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...v2.12.4
