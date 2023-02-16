@@ -1,43 +1,46 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "codegen": {
-      "outputs": ["src/generated/**"]
-    },
-    "build": {
-      "dependsOn": ["^build", "codegen"],
-      "outputs": ["dist/**", ".next/**"]
-    },
-    "lint": {
-      "outputs": []
-    },
-    "dev": {
-      "cache": false
-    },
-    "build-storybook": {
-      "outputs": ["dist/**", "storybook-static/**"]
-    },
-    "storybook": {
-      "outputs": [],
-      "inputs": ["src/stories/**/*.tsx", "src/stories/**/*.ts"]
-    },
-    "test": {
-      "outputs": [],
-      "inputs": [
-        "src/**/*.tsx",
-        "src/**/*.ts",
-        "__test__/**/*.ts",
-        "__test__/**/*.tsx"
-      ]
-    },
-    "test:ci": {
-      "outputs": ["coverage/**"],
-      "inputs": [
-        "src/**/*.tsx",
-        "src/**/*.ts",
-        "__test__/**/*.ts",
-        "__test__/**/*.tsx"
-      ]
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "codegen": {
+            "outputs": ["src/generated/**"]
+        },
+        "export": {
+            "dependsOn": ["build", "codegen"]
+        },
+        "build": {
+            "dependsOn": ["^build", "codegen"],
+            "outputs": ["dist/**", ".next/**"]
+        },
+        "lint": {
+            "outputs": []
+        },
+        "dev": {
+            "cache": false
+        },
+        "build-storybook": {
+            "outputs": ["dist/**", "storybook-static/**"]
+        },
+        "storybook": {
+            "outputs": [],
+            "inputs": ["src/stories/**/*.tsx", "src/stories/**/*.ts"]
+        },
+        "test": {
+            "outputs": [],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "__test__/**/*.ts",
+                "__test__/**/*.tsx"
+            ]
+        },
+        "test:ci": {
+            "outputs": ["coverage/**"],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "__test__/**/*.ts",
+                "__test__/**/*.tsx"
+            ]
+        }
     }
-  }
 }
