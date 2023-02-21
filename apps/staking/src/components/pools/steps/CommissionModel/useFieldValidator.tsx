@@ -32,7 +32,7 @@ const useFieldValidator = <FormValidatorType, ValidationResultType>({
             message: useMessages('field.isRequired'),
         },
         ...options,
-    });
+    } as RegisterOptions);
 
     const inputErrors = errors[fieldName as string];
 
