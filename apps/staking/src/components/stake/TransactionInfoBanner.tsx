@@ -134,12 +134,11 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                             type="tx"
                             truncated
                             chainId={chainId}
-                            alignSelf="flex-start"
                         />
                     )}
                 </HStack>
 
-                <AlertDescription display="block" mt={2}>
+                <AlertDescription display="block">
                     {isError && error ? error : ''}
                     {isSuccess && !isError ? successDescription : ''}
                 </AlertDescription>
