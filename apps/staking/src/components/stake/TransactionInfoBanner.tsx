@@ -125,7 +125,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
             {status !== 'info' && <AlertIcon />}
             <Box flex="1">
                 <HStack>
-                    <AlertTitle>
+                    <AlertTitle alignSelf="flex-start">
                         {isError && failTitle ? failTitle : title}
                     </AlertTitle>
                     {hash && (
@@ -134,11 +134,12 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                             type="tx"
                             truncated
                             chainId={chainId}
+                            alignSelf="flex-start"
                         />
                     )}
                 </HStack>
 
-                <AlertDescription display="block">
+                <AlertDescription display="block" mt={2}>
                     {isError && error ? error : ''}
                     {isSuccess && !isError ? successDescription : ''}
                 </AlertDescription>
