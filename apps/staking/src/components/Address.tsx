@@ -124,7 +124,12 @@ const Address: FC<AddressProps> = (props) => {
             {name && <Text>{name}</Text>}
 
             {renderLabel(
-                <Text color={color} fontSize={fontSize} {...restProps}>
+                <Text
+                    color={color}
+                    fontSize={fontSize}
+                    lineHeight={1}
+                    {...restProps}
+                >
                     {label}
                 </Text>
             )}
@@ -144,7 +149,7 @@ const Address: FC<AddressProps> = (props) => {
                         color: 'blue.400',
                     }}
                     minW="auto"
-                    minH="auto"
+                    h="auto"
                     title="Copy"
                     onClick={onCopy}
                     data-testid="copy-icon"
