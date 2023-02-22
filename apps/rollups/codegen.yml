@@ -1,6 +1,7 @@
 schema:
     - ./graphql/schema.graphql
     - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
+    - https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli
 documents:
     - ./graphql/queries.graphql
     - ./graphql/rollups.graphql
