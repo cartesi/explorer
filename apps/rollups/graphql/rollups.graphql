@@ -10,7 +10,7 @@ query dapps {
 query factoryDApps(
     $id: ID!
     $orderBy: DApp_orderBy!
-    $search: Bytes
+    $where_dapp: DApp_filter
     $first: Int
     $skip: Int
 ) {
@@ -21,7 +21,7 @@ query factoryDApps(
             orderBy: $orderBy
             orderDirection: desc
             first: $first
-            where: { id_contains: $search }
+            where: $where_dapp
             skip: $skip
         ) {
             id

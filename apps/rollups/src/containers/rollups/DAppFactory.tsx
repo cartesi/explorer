@@ -37,8 +37,13 @@ import {
     Pagination,
 } from '@explorer/ui';
 import { FC, useState } from 'react';
+import { UseQueryArgs } from 'urql';
 import DAppCard from '../../components/DAppCard';
-import { DApp_OrderBy, useFactoryDAppsQuery } from '../../generated/graphql';
+import {
+    DApp_OrderBy,
+    FactoryDAppsQueryVariables,
+    useFactoryDAppsQuery,
+} from '../../generated/graphql';
 
 export interface DAppFactoryProps {
     address: string;
@@ -91,6 +96,44 @@ const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
     </Stack>
 );
 
+type BuildOptionsProps = {
+    address: string;
+    orderBy: DApp_OrderBy;
+    first: number;
+    skip?: number;
+    search?: string;
+};
+
+type Options = Omit<UseQueryArgs<FactoryDAppsQueryVariables>, 'query'>;
+/**
+ * that is an query option builder mainly to deal with search param being empty. All the other
+ * properties are standard setup with no custom logic.
+ * @param {BuildOptionsProps}
+ * @returns {Options}
+ */
+const buildOptions = ({
+    address,
+    orderBy,
+    first,
+    skip,
+    search,
+}: BuildOptionsProps): Options => {
+    const options: Options = {
+        variables: {
+            id: address?.toLowerCase(),
+            orderBy,
+            first,
+            skip,
+        },
+    };
+
+    if (search.length % 2 === 1) {
+        options.variables.where_dapp.id = search;
+    }
+
+    return options;
+};
+
 export const DAppFactory: FC<DAppFactoryProps> = (props) => {
     const { address, chainId } = props;
     // Pagination component is zero-based
@@ -102,17 +145,17 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
         DApp_OrderBy.ActivityTimestamp
     );
     const DAPPS_PER_PAGE = 10;
-
     // query GraphQL
-    const [result] = useFactoryDAppsQuery({
-        variables: {
-            id: address,
+    const [result] = useFactoryDAppsQuery(
+        buildOptions({
+            address: address?.toLowerCase(),
             orderBy,
-            search: search.length % 2 == 1 ? `0${search}` : search,
+            search,
             first: DAPPS_PER_PAGE,
-            skip: DAPPS_PER_PAGE * (pageNumber + 1),
-        },
-    });
+            skip: DAPPS_PER_PAGE * pageNumber,
+        })
+    );
+
     const { data, fetching, error } = result;
 
     const totalPages = Math.ceil(
