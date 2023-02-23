@@ -9,12 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { Staking, StakingProps } from '../../../src/components/stake/Staking';
-import { withChakraTheme } from '../../test-utilities';
 import { Transaction } from '../../../src/services/transaction';
+import { withChakraTheme } from '../../test-utilities';
 
 const defaultValue = '10000000000000000000000000000';
 
@@ -45,8 +44,11 @@ const defaultProps = {
     onWithdraw: () => undefined,
     onStake: () => undefined,
     onUnstake: () => undefined,
-    poolTransaction: defaultTransaction,
     tokenTransaction: defaultTransaction,
+    depositTransaction: defaultTransaction,
+    withdrawTransaction: defaultTransaction,
+    stakeTransaction: defaultTransaction,
+    unstakeTransaction: defaultTransaction,
 };
 
 const EStaking = withChakraTheme<StakingProps>(Staking);

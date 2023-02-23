@@ -9,14 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { BigNumber } from 'ethers';
+import { parseUnits } from 'ethers/lib/utils';
 import {
-    StakingUnstakeModal,
     IStakingUnstakeModalProps,
+    StakingUnstakeModal,
 } from '../../../../src/components/stake/modals/StakingUnstakeModal';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '100000000000000000000000';
 
@@ -65,22 +65,41 @@ describe('Staking Unstake Modal', () => {
         expect(mockOnClick).toHaveBeenCalledTimes(1);
     });
 
-    it('Should invoke onSave callback', () => {
-        let isSavedTriggered = false;
+    it('Should invoke onSave callback for full amount', () => {
+        const onSave = jest.fn();
         const { getByRole } = render(
-            <EStakingUnstakeModal
-                {...defaultProps}
-                onSave={() => {
-                    isSavedTriggered = true;
-                }}
-            />
+            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />
         );
 
         const button = getByRole('unstake-button');
 
         fireEvent.click(button);
 
-        expect(isSavedTriggered).toBe(true);
+        expect(onSave).toHaveBeenCalledTimes(1);
+        expect(onSave).toHaveBeenCalledWith('full');
+    });
+
+    it('Should invoke onSave callback after partial amount is set', async () => {
+        const onSave = jest.fn();
+        const { getByRole, getByText } = render(
+            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />
+        );
+
+        const input = getByText('Partial amount')
+            .closest('label')
+            .querySelector('input');
+
+        fireEvent.click(input);
+
+        const numberInput = getByRole('spinbutton');
+
+        fireEvent.change(numberInput, { target: { value: '10000' } });
+
+        const button = getByRole('unstake-button');
+        fireEvent.click(button);
+
+        expect(onSave).toHaveBeenCalled();
+        expect(onSave).toHaveBeenCalledWith('partial', parseUnits('10000', 18));
     });
 
     it('Should disable stake button when partial amount is selected', () => {

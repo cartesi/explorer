@@ -10,37 +10,38 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Box,
     Button,
-    FormControl,
-    VStack,
-    Text,
     Collapse,
-    Radio,
-    RadioGroup,
-    Stack,
+    Divider,
+    FormControl,
+    HStack,
     Modal,
-    ModalHeader,
-    ModalCloseButton,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalOverlay,
+    Radio,
+    RadioGroup,
+    Stack,
+    Text,
     UseDisclosureProps,
-    Box,
-    HStack,
-    Divider,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useState, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
+import { Operation } from '../../../types/stake';
 import { CTSINumberInput } from '../CTSINumberInput';
 
+export type RemovalAction = 'full' | 'partial';
 export interface IStakingUnstakeModalProps {
     isOpen: boolean;
     stakedBalance: BigNumber;
     disclosure: UseDisclosureProps;
     onClose: () => void;
-    onSave: (newUnstake: BigNumber) => void;
+    onSave: (op: Operation, newUnstake?: BigNumber) => void;
 }
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
@@ -50,7 +51,8 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     onClose,
     onSave,
 }) => {
-    const [unstakeFullAmount, setUnstakeFullAmount] = useState<string>('full');
+    const [unstakeFullAmount, setUnstakeFullAmount] =
+        useState<Operation>('full');
     const inputRef = useRef<HTMLInputElement>(null);
 
     const stakeBalanceFormatted = parseFloat(formatUnits(stakedBalance, 18));
@@ -102,11 +104,8 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                             size="lg"
                                             value="full"
                                             colorScheme="blue"
-                                            onChange={(e) => {
-                                                setUnstakeFullAmount(
-                                                    e.target.value
-                                                );
-
+                                            onChange={() => {
+                                                setUnstakeFullAmount('full');
                                                 setOutputUnstake(
                                                     constants.Zero
                                                 );
@@ -118,10 +117,8 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                             size="lg"
                                             value="partial"
                                             colorScheme="blue"
-                                            onChange={(e) => {
-                                                setUnstakeFullAmount(
-                                                    e.target.value
-                                                );
+                                            onChange={() => {
+                                                setUnstakeFullAmount('partial');
                                                 inputRef.current?.focus();
                                             }}
                                         >
@@ -164,11 +161,9 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         unstakeFullAmount !== 'full'
                                     }
                                     onClick={() => {
-                                        if (unstakeFullAmount === 'full') {
-                                            onSave(stakedBalance);
-                                        } else {
-                                            onSave(outputUnstake);
-                                        }
+                                        unstakeFullAmount === 'full'
+                                            ? onSave('full')
+                                            : onSave('partial', outputUnstake);
 
                                         disclosure.onClose();
                                         onClose();

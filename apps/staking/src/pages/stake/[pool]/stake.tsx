@@ -9,24 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import Layout from '../../../components/Layout';
 import { Box } from '@chakra-ui/layout';
-import { StakingGuide } from '../../../components/stake/StakingGuide';
 import { useColorModeValue } from '@chakra-ui/react';
-import { StakingActivity } from '../../../components/stake/StakingActivity';
-import { Staking } from '../../../components/stake/Staking';
-import { StakingDashboard } from '../../../components/stake/StakingDashboard';
-import { useStakingPool } from '../../../services/pool';
-import { useBalance, useBlockNumber } from '../../../services/eth';
-import { useCartesiToken } from '../../../services/token';
-import { useRouter } from 'next/router';
 import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
-import { PoolHeader } from '../../../components/stake/PoolHeader';
-import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
+import { useRouter } from 'next/router';
+import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
+import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
+import { PoolHeader } from '../../../components/stake/PoolHeader';
+import { Staking } from '../../../components/stake/Staking';
+import { StakingActivity } from '../../../components/stake/StakingActivity';
+import { StakingDashboard } from '../../../components/stake/StakingDashboard';
+import { StakingGuide } from '../../../components/stake/StakingGuide';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import { useBalance, useBlockNumber } from '../../../services/eth';
+import { useStakingPool } from '../../../services/pool';
+import { useCartesiToken } from '../../../services/token';
+import { Operation } from '../../../types/stake';
 import {
     Context,
     ENSStaticProps,
@@ -84,11 +84,11 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
 
     const bg = useColorModeValue('gray.80', 'header');
 
-    const onUnstake = (amount?: BigNumber) => {
-        if (amount) {
+    const onUnstake = (action: Operation, amount?: BigNumber) => {
+        if (action === 'partial' && amount) {
             // convert CTSI to shares
             unstake(amountToShares(amount));
-        } else {
+        } else if (action === 'full') {
             // full unstake
             unstake(stakedShares);
         }

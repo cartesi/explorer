@@ -16,22 +16,23 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { BigNumber, BigNumberish } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
+import { FC } from 'react';
+import { Transaction } from '../../services/transaction';
+import { Operation } from '../../types/stake';
+import { useTimeLeft } from '../../utils/react';
 import { TimerIcon } from '../Icons';
+import TransactionBanner from '../TransactionBanner';
+import { DepositSection } from './components/DepositSection';
+import { PoolBalanceSection } from './components/PoolBalanceSection';
+import { StakedBalanceSection } from './components/StakedBalanceSection';
+import { StakingInstructions } from './components/StakingInstructions';
 import { InfoBanner } from './InfoBanner';
 import { StakingDepositModal } from './modals/StakingDepositModal';
 import { StakingStakeModal } from './modals/StakingStakeModal';
 import { StakingUnstakeModal } from './modals/StakingUnstakeModal';
 import { StakingWithdrawModal } from './modals/StakingWithdrawModal';
-import { BigNumber, BigNumberish } from 'ethers';
-import { Transaction } from '../../services/transaction';
-import { useTimeLeft } from '../../utils/react';
-import { formatUnits } from 'ethers/lib/utils';
-import { PoolBalanceSection } from './components/PoolBalanceSection';
-import { StakedBalanceSection } from './components/StakedBalanceSection';
-import { StakingInstructions } from './components/StakingInstructions';
-import { DepositSection } from './components/DepositSection';
-import TransactionBanner from '../TransactionBanner';
 
 export interface StakingProps extends StackProps {
     userWalletBalance: BigNumber; // wallet balance
@@ -45,7 +46,7 @@ export interface StakingProps extends StackProps {
     onDeposit: (amount: BigNumberish) => void;
     onWithdraw: (amount: BigNumberish) => void;
     onStake: (amount: BigNumberish) => void;
-    onUnstake: (amount?: BigNumberish) => void;
+    onUnstake: (op: Operation, amount?: BigNumberish) => void;
     tokenTransaction: Transaction<any>;
     depositTransaction: Transaction<any>;
     withdrawTransaction: Transaction<any>;
