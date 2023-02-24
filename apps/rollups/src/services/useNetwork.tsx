@@ -165,7 +165,7 @@ if (process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true') {
                 loadLocalAbi()
                     .then((localAbi: ChainAbi) => {
                         resolve(
-                            localAbi.contracts[
+                            localAbi.contracts?.[
                                 contract
                             ] as unknown as Deployment
                         );
