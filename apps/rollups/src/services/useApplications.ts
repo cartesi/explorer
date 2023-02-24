@@ -30,25 +30,29 @@ export const useApplications = (): Applications => {
     useEffect(() => {
         if (factory && network) {
             // query the factory for all applications
-            const deployment = network.deployment('CartesiDAppFactory');
-            const deployBlock = deployment?.receipt?.blockNumber;
+            network.deployment('CartesiDAppFactory').then((deployment) => {
+                const deployBlock = deployment?.receipt?.blockNumber;
 
-            // set loading
-            setApplications({ loading: true, applications: [] });
+                // set loading
+                setApplications({ loading: true, applications: [] });
 
-            // query blockchain for all applications
-            factory
-                .queryFilter(factory.filters.ApplicationCreated(), deployBlock)
-                .then((events) => {
-                    const applications = {
-                        loading: false,
-                        applications: events.map((e) => e.args.application),
-                    };
-                    setApplications(applications);
-                })
-                .catch(() => {
-                    setApplications({ loading: false, applications: [] });
-                });
+                // query blockchain for all applications
+                factory
+                    .queryFilter(
+                        factory.filters.ApplicationCreated(),
+                        deployBlock
+                    )
+                    .then((events) => {
+                        const applications = {
+                            loading: false,
+                            applications: events.map((e) => e.args.application),
+                        };
+                        setApplications(applications);
+                    })
+                    .catch(() => {
+                        setApplications({ loading: false, applications: [] });
+                    });
+            });
         } else {
             setApplications({ loading: false, applications: [] });
         }

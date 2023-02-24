@@ -12,6 +12,7 @@
 
 import { useWallet } from '@explorer/wallet';
 import { useEffect, useState } from 'react';
+import { ChainAbi } from 'staking/src/services/contracts';
 
 export type Chain = {
     id: string;
@@ -64,9 +65,38 @@ export interface Network {
     chainId: number;
     explorer?: Explorer;
     graphql: (address: string, env?: string) => string;
-    deployment: (contract: string) => Deployment | undefined;
+    deployment: (contract: string) => Promise<Deployment | undefined>;
     chain: Chain;
 }
+
+class Abi {
+    private val = null;
+
+    get localhost() {
+        return this.val;
+    }
+
+    set localhost(value) {
+        this.val = value;
+    }
+}
+
+const abi = new Abi();
+
+export const loadLocalAbi = (): Promise<ChainAbi> => {
+    return new Promise((resolve, reject) => {
+        fetch('/abi/localhost.json')
+            .then((res) => res.json())
+            .then((localAbi) => {
+                if (typeof localAbi === 'object' && localAbi !== null) {
+                    abi.localhost = localAbi;
+                }
+
+                resolve(localAbi);
+            })
+            .catch((err) => reject(err));
+    });
+};
 
 export const networks: Record<number, Network> = {
     [0x5]: {
@@ -76,7 +106,7 @@ export const networks: Record<number, Network> = {
             `https://${address}.goerli.rollups.${env}.cartesi.io/graphql`,
         explorer: new Explorer('https://goerli.etherscan.io'),
         deployment: (contract) =>
-            require(`@cartesi/rollups/deployments/goerli/${contract}.json`),
+            import(`@cartesi/rollups/deployments/goerli/${contract}.json`),
         chain: {
             id: '0x5',
             token: 'ETH',
@@ -91,7 +121,9 @@ export const networks: Record<number, Network> = {
             `https://${address}.arbitrum-goerli.rollups.${env}.cartesi.io/graphql`,
         explorer: new Explorer('https://goerli.arbiscan.io'),
         deployment: (contract) =>
-            require(`@cartesi/rollups/deployments/arbitrum_goerli/${contract}.json`),
+            import(
+                `@cartesi/rollups/deployments/arbitrum_goerli/${contract}.json`
+            ),
         chain: {
             id: '0x66EED',
             token: 'ETH',
@@ -106,7 +138,9 @@ export const networks: Record<number, Network> = {
             `https://${address}.polygon-mumbai.rollups.${env}.cartesi.io/graphql`,
         explorer: new Explorer('https://mumbai.polygonscan.com'),
         deployment: (contract) =>
-            require(`@cartesi/rollups/deployments/polygon_mumbai/${contract}.json`),
+            import(
+                `@cartesi/rollups/deployments/polygon_mumbai/${contract}.json`
+            ),
         chain: {
             id: '0x13881',
             token: 'MATIC',
@@ -116,33 +150,29 @@ export const networks: Record<number, Network> = {
     },
 };
 
-// TODO: Revisit how to load ABI generated for local-development.
-/**
- * CODE REFERENCE FROM STAKING
- * Fetches the localhost.json file for local-node development that is available as a public static file
- * @returns
- */
-// const getLocalABI = async () => {
-//     if (!fetchedLocalABI) {
-//         const { data } = await axios.get('/abi/localhost.json');
-//         if (isObject(data)) {
-//             fetchedLocalABI = true;
-//             // guessing the configuration is correct
-//             abi.localhost = data as ChainAbi;
-//         }
-//     }
-
-//     return abi.localhost;
-// };
-/*
-if (process.env.NODE_ENV === 'development') {
-    networks['0x7a69'] = {
+if (process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true') {
+    networks[0x7a69] = {
         name: 'localhost',
         chainId: 31337,
         explorer: undefined,
         graphql: () => 'http://localhost:4000/graphql',
-        deployment: (contract) =>
-            require(`../../../deployments/localhost/${contract}.json`),
+        deployment: (contract) => {
+            if (abi.localhost) {
+                return abi.localhost.contracts?.[contract];
+            }
+
+            return new Promise((resolve, reject) => {
+                loadLocalAbi()
+                    .then((localAbi: ChainAbi) => {
+                        resolve(
+                            localAbi.contracts[
+                                contract
+                            ] as unknown as Deployment
+                        );
+                    })
+                    .catch((err) => reject(err));
+            });
+        },
         chain: {
             id: '0x7a69',
             token: 'ETH',
@@ -151,7 +181,6 @@ if (process.env.NODE_ENV === 'development') {
         },
     };
 }
-*/
 
 export const useNetwork = (): Network | undefined => {
     const [network, setNetwork] = useState<Network | undefined>();

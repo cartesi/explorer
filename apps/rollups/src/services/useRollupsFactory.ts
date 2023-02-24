@@ -27,17 +27,18 @@ export const useRollupsFactory = (): CartesiDAppFactory | undefined => {
         if (network && wallet?.library) {
             const provider = wallet.library;
             const signer = provider.getSigner();
-            const deployment = network.deployment('CartesiDAppFactory');
-            if (deployment) {
-                setFactory(
-                    CartesiDAppFactory__factory.connect(
-                        deployment.address,
-                        signer
-                    )
-                );
-            } else {
-                setFactory(undefined);
-            }
+            network.deployment('CartesiDAppFactory').then((deployment) => {
+                if (deployment) {
+                    setFactory(
+                        CartesiDAppFactory__factory.connect(
+                            deployment.address,
+                            signer
+                        )
+                    );
+                } else {
+                    setFactory(undefined);
+                }
+            });
         } else {
             setFactory(undefined);
         }
