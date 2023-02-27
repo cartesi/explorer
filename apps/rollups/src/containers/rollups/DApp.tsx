@@ -32,6 +32,7 @@ import {
 import { Notification } from '@explorer/ui';
 import { ethers } from 'ethers';
 import { FC, useState } from 'react';
+import ReactJson from 'react-json-view';
 import { useDappQuery } from '../../generated/graphql';
 import { DappStats } from './DappStats';
 
@@ -107,16 +108,17 @@ interface ItemProps<T> {
 }
 
 const hexToString = (hex: string) => {
-    let str = '';
-    const tHex = hex.replace('0x', '');
-    if (!ethers.utils.isHexString(hex)) {
-        return hex;
-    } else {
-        for (let i = 0; i < tHex.length; i += 2) {
-            str += String.fromCharCode(parseInt(tHex.substring(i, i + 2), 16));
-        }
-    }
+    const str = ethers.utils.toUtf8String(hex);
     return str;
+};
+
+const hexToJSON = (hex: string) => {
+    const str = ethers.utils.toUtf8String(hex);
+    try {
+        return JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
 };
 
 type PayloadAs = 'hex' | 'text' | 'json';
@@ -125,6 +127,8 @@ const transformPayload = (as: PayloadAs, payload: string) => {
     switch (as) {
         case 'text':
             return hexToString(payload);
+        case 'json':
+            return hexToJSON(payload);
         default:
             return payload;
     }
@@ -147,7 +151,7 @@ const InputContent = ({
     const hasPrev = pos > 0;
 
     if (!item) return null;
-    const payload = transformPayload(payloadAs, item.node.payload);
+    let payload = transformPayload(payloadAs, item.node.payload);
 
     return (
         <Box width="full" py={2} px={3}>
@@ -192,12 +196,24 @@ const InputContent = ({
                 >
                     <option value="hex">Hex</option>
                     <option value="text">Text</option>
+                    <option value="json">JSON</option>
                 </Select>
             </HStack>
-            <Textarea width="full" value={payload} readOnly />
+            {payloadAs === 'json' ? (
+                <ReactJson
+                    src={payload}
+                    name={null}
+                    onAdd={(add) => (payload = add.new_value)}
+                    onEdit={(edit) => (payload = edit.updated_src)}
+                    onDelete={(del) => (payload = del.updated_src)}
+                />
+            ) : (
+                <Textarea width="full" value={payload} readOnly />
+            )}
         </Box>
     );
 };
+
 interface InputsProps {
     count: number;
     inputs: Edge<Input>[];
