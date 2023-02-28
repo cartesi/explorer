@@ -146,6 +146,7 @@ const InputContent = ({
 }: InputContentProps<Report | Notice | Voucher>) => {
     const [pos, updatePos] = useState<number>(0);
     const [payloadAs, setPayloadAs] = useState<PayloadAs>('hex');
+    const jsonTheme = useColorModeValue('rjv-default', 'ocean');
     const item = items[pos];
     const hasNext = pos + 1 < items.length;
     const hasPrev = pos > 0;
@@ -199,7 +200,7 @@ const InputContent = ({
                 </Select>
             </HStack>
             {payloadAs === 'json' ? (
-                <ReactJson src={payload} name={null} />
+                <ReactJson src={payload} name={null} theme={jsonTheme} />
             ) : (
                 <Textarea width="full" value={payload} readOnly />
             )}
