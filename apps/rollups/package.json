@@ -18,6 +18,7 @@
         "eth-chains": "0.3.5",
         "graphql": "15.6.0",
         "next": "12.3.1",
+        "react-json-view": "1.21.3",
         "urql": "3.0.3"
     },
     "devDependencies": {
@@ -31,7 +32,6 @@
         "eslint-config-custom": "*",
         "next-transpile-modules": "9.0.0",
         "npm-run-all": "^4.1.5",
-        "react-json-view": "latest",
         "tsconfig": "*",
         "typescript": "4.9.4"
     }
