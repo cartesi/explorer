@@ -9,7 +9,6 @@
 // WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 // License for the specific language governing permissions and limitations
 // under the License.
-
 import { SearchIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -31,10 +30,11 @@ import {
 } from '@chakra-ui/react';
 import { Notification } from '@explorer/ui';
 import { ethers } from 'ethers';
+import dynamic from 'next/dynamic';
 import { FC, useState } from 'react';
-import ReactJson from 'react-json-view';
 import { useDappQuery } from '../../generated/graphql';
 import { DappStats } from './DappStats';
+const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
 type PageInfo = {
     startCursor: string;
@@ -149,9 +149,8 @@ const InputContent = ({
     const item = items[pos];
     const hasNext = pos + 1 < items.length;
     const hasPrev = pos > 0;
-
     if (!item) return null;
-    let payload = transformPayload(payloadAs, item.node.payload);
+    const payload = transformPayload(payloadAs, item.node.payload);
 
     return (
         <Box width="full" py={2} px={3}>
@@ -200,13 +199,7 @@ const InputContent = ({
                 </Select>
             </HStack>
             {payloadAs === 'json' ? (
-                <ReactJson
-                    src={payload}
-                    name={null}
-                    onAdd={(add) => (payload = add.new_value)}
-                    onEdit={(edit) => (payload = edit.updated_src)}
-                    onDelete={(del) => (payload = del.updated_src)}
-                />
+                <ReactJson src={payload} name={null} />
             ) : (
                 <Textarea width="full" value={payload} readOnly />
             )}
