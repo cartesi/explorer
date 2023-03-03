@@ -10,7 +10,8 @@
         "lint": "eslint --color --ext .ts --ext .tsx src/",
         "lint:fix": "yarn lint --fix",
         "start": "next start",
-        "test": "jest"
+        "test": "jest",
+        "start:mock": "ts-node graphql/mock/server.ts"
     },
     "dependencies": {
         "@cartesi/rollups": "0.9.0-alpha.4",
@@ -26,22 +27,27 @@
         "urql": "3.0.3"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^2.16.2",
-        "@graphql-codegen/typed-document-node": "^2.3.11",
-        "@graphql-codegen/typescript": "^2.8.6",
-        "@graphql-codegen/typescript-operations": "^2.5.11",
-        "@graphql-codegen/typescript-urql": "^3.7.3",
-        "@graphql-typed-document-node/core": "^3.1.1",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
-        "eslint": "7.32.0",
-        "eslint-config-custom": "*",
         "jest": "^29.0.3",
         "jest-canvas-mock": "^2.4.0",
         "jest-environment-jsdom": "^29.0.3",
         "jest-mock-extended": "^2.0.6",
+        "@graphql-codegen/cli": "2.16.2",
+        "@graphql-codegen/typed-document-node": "2.3.11",
+        "@graphql-codegen/typescript": "2.8.6",
+        "@graphql-codegen/typescript-operations": "2.5.11",
+        "@graphql-codegen/typescript-urql": "3.7.3",
+        "@graphql-tools/mock": "8.7.18",
+        "@graphql-tools/schema": "9.0.16",
+        "@graphql-typed-document-node/core": "3.1.1",
+        "casual": "1.6.2",
+        "eslint": "7.32.0",
+        "eslint-config-custom": "*",
+        "graphql-yoga": "3.7.0",
         "next-transpile-modules": "9.0.0",
-        "npm-run-all": "^4.1.5",
+        "npm-run-all": "4.1.5",
+        "ts-node": "10.9.1",
         "tsconfig": "*",
         "typescript": "4.9.4"
     }
