@@ -157,7 +157,8 @@ const PoolPerformanceTableRow: FunctionComponent<
                 <Box
                     transition="all 0.2s ease-in"
                     shadow={keepActionColVisible ? 'md' : 'none'}
-                    padding={[0, 0, 8, 8]}
+                    paddingY={[0, 0, 8, 8]}
+                    paddingX={[0, 0, '48px', '48px']}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
                     display="flex"

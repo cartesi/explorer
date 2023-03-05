@@ -21,6 +21,7 @@ import {
     HStack,
     Spinner,
     useBreakpointValue,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';
@@ -50,6 +51,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const thRef = useRef<HTMLTableCellElement>();
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
+    const borderColor = useColorModeValue('white', 'gray.700');
 
     return (
         <TableResponsiveHolder ref={tableRef}>
@@ -103,7 +105,20 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                             {stakeText}
                         </Th>
                         {threshold.isBelow && (
-                            <Th isNumeric position={'sticky'} top={0} right={0}>
+                            <Th
+                                isNumeric
+                                position="sticky"
+                                top={0}
+                                right={0}
+                                minWidth={{ base: '80px', md: '127px' }}
+                                height="73px"
+                                padding={0}
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderColor={borderColor}
+                                borderBottomWidth={[0, '1px', 0, 0]}
+                            >
                                 <SlideInOut display={true}>
                                     {stakeText}
                                 </SlideInOut>
