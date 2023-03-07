@@ -158,7 +158,7 @@ if (process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true') {
         graphql: () => 'http://localhost:4000/graphql',
         deployment: (contract) => {
             if (abi.localhost) {
-                return abi.localhost.contracts?.[contract];
+                return Promise.resolve(abi.localhost.contracts?.[contract]);
             }
 
             return new Promise((resolve, reject) => {
