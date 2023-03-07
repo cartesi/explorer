@@ -17,12 +17,68 @@ import {
     useClipboard,
     Text,
     useColorModeValue,
-    useColorMode,
+    MenuItemProps,
+    IconProps,
 } from '@chakra-ui/react';
-import { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { DisconnectIcon, CopyIcon, SwitchIcon } from '../../Icons';
 import { useENS } from '@explorer/services';
 import { useWallet } from '@explorer/wallet';
+
+interface WalletMenuItemProps extends MenuItemProps {
+    children: React.ReactNode;
+}
+
+const WalletMenuItem: FC<WalletMenuItemProps> = ({
+    children,
+    ...restProps
+}) => (
+    <MenuItem
+        justifyContent="flex-end"
+        borderBottom="1px"
+        borderColor="gray.100"
+        padding={3}
+        {...restProps}
+    >
+        {children}
+    </MenuItem>
+);
+
+interface WalletMenuActionItemProps {
+    title: string;
+    color: string;
+    Icon: FC<IconProps>;
+    onClick: () => void;
+}
+
+const WalletMenuActionItem: FC<WalletMenuActionItemProps> = ({
+    title,
+    color,
+    Icon,
+    onClick,
+}) => (
+    <Flex>
+        <Box
+            title={title}
+            aria-label={title}
+            px={4}
+            fontSize={16}
+            fontWeight={400}
+            color={color}
+            onClick={onClick}
+        >
+            {title}
+        </Box>
+
+        <Icon
+            aria-label={title}
+            width="18px"
+            height="18px"
+            color={color}
+            onClick={onClick}
+        />
+    </Flex>
+);
 
 const WalletMenu: FC = () => {
     const { account, library, isHardwareWallet, selectAccount, deactivate } =
@@ -30,155 +86,78 @@ const WalletMenu: FC = () => {
     const ens = useENS(account ?? '');
     const { hasCopied, onCopy } = useClipboard(account ?? '');
     const color = useColorModeValue('black', 'white');
-    const { colorMode } = useColorMode();
+    const backgroundColor = useColorModeValue('blue.50', 'gray.700');
+    const addressHoverColor = useColorModeValue(undefined, {
+        color: 'white',
+    });
+    const copyIconColor = useColorModeValue(undefined, { color });
+    const menuItems = useMemo(() => {
+        const items = [];
 
-    if (!account) {
-        return null;
-    }
+        if (account && library) {
+            items.push({
+                title: 'Disconnect account',
+                Icon: DisconnectIcon,
+                onClick: deactivate,
+            });
+        }
+
+        if (account && library && selectAccount && isHardwareWallet) {
+            items.push({
+                title: 'Switch account',
+                Icon: SwitchIcon,
+                onClick: selectAccount,
+            });
+        }
+
+        return items;
+    }, [account, library, isHardwareWallet, deactivate, selectAccount]);
 
     return (
-        <MenuList borderRadius="0" p={0}>
-            {!hasCopied ? (
-                <MenuItem
-                    justifyContent={'flex-end'}
-                    borderBottom="1px"
-                    borderColor={'gray.100'}
-                    padding={3}
-                    backgroundColor={
-                        colorMode === 'light' ? 'blue.50' : 'gray.700'
-                    }
-                >
-                    {colorMode === 'light' ? (
+        <>
+            {typeof account === 'string' && (
+                <MenuList borderRadius="0" p={0}>
+                    <WalletMenuItem backgroundColor={backgroundColor}>
                         <Flex>
                             <Text
                                 fontSize={14}
                                 fontWeight={400}
-                                px={4}
+                                pl={2}
+                                pr={4}
                                 color={color}
+                                _hover={addressHoverColor}
                             >
                                 {ens.address}
                             </Text>
 
-                            <CopyIcon
-                                onClick={onCopy}
-                                style={{
-                                    height: 19,
-                                    width: 19,
-                                }}
-                                color={color}
-                            />
+                            {hasCopied ? (
+                                <Text
+                                    fontSize="sm"
+                                    lineHeight="20px"
+                                    color={color}
+                                >
+                                    Copied
+                                </Text>
+                            ) : (
+                                <CopyIcon
+                                    width="20px"
+                                    height="20px"
+                                    color={color}
+                                    _hover={copyIconColor}
+                                    onClick={onCopy}
+                                />
+                            )}
                         </Flex>
-                    ) : (
-                        <Flex>
-                            <Box
-                                fontSize={14}
-                                fontWeight={400}
-                                px={4}
-                                color={color}
-                                _hover={{
-                                    color: 'white',
-                                }}
-                            >
-                                {ens.address}
-                            </Box>
+                    </WalletMenuItem>
 
-                            <CopyIcon
-                                onClick={onCopy}
-                                style={{
-                                    height: 19,
-                                    width: 19,
-                                }}
-                                color={color}
-                                _hover={{
-                                    color: color,
-                                }}
-                            />
-                        </Flex>
-                    )}
-                </MenuItem>
-            ) : (
-                <MenuItem
-                    justifyContent={'flex-end'}
-                    borderBottom="1px"
-                    borderColor={'gray.100'}
-                    padding={3}
-                    backgroundColor={
-                        colorMode === 'light' ? 'blue.50' : 'gray.700'
-                    }
-                >
-                    <Flex>
-                        <Box fontSize={14} fontWeight={400} color={color}>
-                            {ens.address}
-                        </Box>
-                        <Text fontSize="sm" pl={1} height="5" color={color}>
-                            Copied
-                        </Text>
-                    </Flex>
-                </MenuItem>
+                    {menuItems.map((item) => (
+                        <WalletMenuItem key={item.title}>
+                            <WalletMenuActionItem color={color} {...item} />
+                        </WalletMenuItem>
+                    ))}
+                </MenuList>
             )}
-            {account && library && (
-                <MenuItem
-                    justifyContent={'flex-end'}
-                    borderBottom="1px"
-                    borderColor={'gray.100'}
-                    padding={3}
-                >
-                    <Flex>
-                        <Box
-                            onClick={deactivate}
-                            aria-label="Disconnect wallet"
-                            title="Disconnect wallet"
-                            px={4}
-                            fontSize={16}
-                            fontWeight={400}
-                            color={color}
-                        >
-                            Disconnect account
-                        </Box>
-                        <DisconnectIcon
-                            onClick={deactivate}
-                            aria-label="Disconnect wallet"
-                            style={{
-                                height: 18,
-                                width: 18,
-                            }}
-                            color={color}
-                        />
-                    </Flex>
-                </MenuItem>
-            )}
-            {account && library && selectAccount && isHardwareWallet && (
-                <MenuItem
-                    justifyContent={'flex-end'}
-                    borderBottom="1px"
-                    borderColor={'gray.100'}
-                    padding={3}
-                >
-                    <Flex>
-                        <Box
-                            onClick={selectAccount}
-                            aria-label="Switch accounts"
-                            title="Switch accounts"
-                            px={4}
-                            fontSize={16}
-                            fontWeight={400}
-                            color={color}
-                        >
-                            Switch account
-                        </Box>
-                        <SwitchIcon
-                            onClick={selectAccount}
-                            aria-label="Switch accounts"
-                            style={{
-                                height: 18,
-                                width: 18,
-                            }}
-                            color={color}
-                        />
-                    </Flex>
-                </MenuItem>
-            )}
-        </MenuList>
+        </>
     );
 };
 

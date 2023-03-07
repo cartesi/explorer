@@ -46,9 +46,10 @@ const AccountMobile: FC = () => {
             borderRadius="0"
             colorScheme="gray"
             h={10}
-            onClick={() => onOpenWalletMobileModal()}
-            key={'xs'}
+            onClick={onOpenWalletMobileModal}
+            key="xs"
             bg={bgColor}
+            cursor="pointer"
         >
             <HStack w="full" spacing={4}>
                 <Box flexGrow="1" display="flex">
@@ -58,22 +59,18 @@ const AccountMobile: FC = () => {
                     />
                     <TagLabel
                         px={2}
-                        style={{
-                            fontSize: 14,
-                            fontWeight: 400,
-                        }}
+                        fontSize="14px"
+                        fontWeight={400}
                         color={color}
                     >
                         {ens.name ||
                             truncateStringMobile(ens.address || account)}
                     </TagLabel>
                 </Box>
-                <Box alignSelf="center">
+                <Box alignSelf="flex-end">
                     <ArrowsUpDownIcon
-                        style={{
-                            height: 23,
-                            width: 24,
-                        }}
+                        width="24px"
+                        height="23px"
                         color={color}
                     />
                 </Box>

@@ -41,23 +41,26 @@ export const WalletMobileModal = ({
     const { hasCopied, onCopy } = useClipboard(account ?? '');
     const showModalBody =
         account && library && selectAccount && isHardwareWallet;
+
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} size={'xs'} isCentered>
+            <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered>
                 <ModalOverlay />
-                <ModalContent borderRadius="0" p={0} minH="auto">
-                    <HStack w="full" spacing={2} alignItems="center">
+                <ModalContent borderRadius="0" minH="auto">
+                    <HStack w="full" pt={0} spacing={2} alignItems="center">
                         <Box flexGrow="2">
-                            <ModalHeader>Your account</ModalHeader>
+                            <ModalHeader pt="1rem !important">
+                                Your account
+                            </ModalHeader>
                         </Box>
-                        <Box flexGrow="1" paddingLeft="10">
+                        <Box flexGrow="1" cursor="pointer" paddingLeft="10">
                             <CloseIcon onClick={onClose} />
                         </Box>
                     </HStack>
 
                     <ModalBody
                         borderBottom="1px"
-                        borderColor={'gray.100'}
+                        borderColor="gray.100"
                         backgroundColor="grey.80"
                         py={4}
                         paddingBottom={4}
@@ -65,9 +68,7 @@ export const WalletMobileModal = ({
                         <HStack w="full" spacing={4} alignItems="center">
                             <Box flexGrow="1">
                                 <HStack>
-                                    <Text fontSize="xs" color={'gray10'}>
-                                        Current wallet
-                                    </Text>
+                                    <Text fontSize="xs">Current wallet</Text>
                                 </HStack>
                                 <Heading m={0} size="sm">
                                     <Flex align="baseline">
@@ -76,24 +77,24 @@ export const WalletMobileModal = ({
                                 </Heading>
                             </Box>
                             <Box>
-                                {!hasCopied && (
+                                {hasCopied ? (
+                                    <Text fontSize="xs">Copied</Text>
+                                ) : (
                                     <CopyIcon
                                         onClick={onCopy}
-                                        style={{
-                                            height: 19,
-                                            width: 19,
-                                            marginLeft: 10,
-                                        }}
+                                        cursor="pointer"
+                                        height="19px"
+                                        width="19px"
+                                        ml="0.625rem"
                                     />
                                 )}
-                                {hasCopied && <Text fontSize="xs">Copied</Text>}
                             </Box>
                         </HStack>
                     </ModalBody>
                     {account && library && (
                         <ModalBody
                             borderBottom="1px"
-                            borderColor={'gray.100'}
+                            borderColor="gray.100"
                             py={5}
                             paddingBottom={4}
                         >
@@ -105,6 +106,7 @@ export const WalletMobileModal = ({
                                                 onClick={deactivate}
                                                 aria-label="Disconnect wallet"
                                                 title="Disconnect wallet"
+                                                cursor="pointer"
                                                 fontSize={16}
                                                 fontWeight={400}
                                             >
@@ -117,10 +119,9 @@ export const WalletMobileModal = ({
                                     <DisconnectIcon
                                         onClick={deactivate}
                                         aria-label="Disconnect wallet"
-                                        style={{
-                                            height: 18,
-                                            width: 18,
-                                        }}
+                                        cursor="pointer"
+                                        height="18px"
+                                        width="18px"
                                     />
                                 </Box>
                             </HStack>
@@ -129,7 +130,7 @@ export const WalletMobileModal = ({
                     {showModalBody && (
                         <ModalBody
                             borderBottom="1px"
-                            borderColor={'gray.100'}
+                            borderColor="gray.100"
                             py={5}
                             paddingBottom={4}
                         >
@@ -153,10 +154,8 @@ export const WalletMobileModal = ({
                                     <SwitchIcon
                                         onClick={selectAccount}
                                         aria-label="Switch accounts"
-                                        style={{
-                                            height: 18,
-                                            width: 18,
-                                        }}
+                                        width="18px"
+                                        height="18px"
                                     />
                                 </Box>
                             </HStack>
