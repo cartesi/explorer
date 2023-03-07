@@ -127,8 +127,8 @@ const buildOptions = ({
         },
     };
 
-    if (search.length % 2 === 1) {
-        options.variables.where_dapp.id = search;
+    if (search && search.length > 0) {
+        options.variables.where_dapp = { id: search };
     }
 
     return options;
