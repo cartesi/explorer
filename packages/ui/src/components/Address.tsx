@@ -9,8 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import {
+    Button,
     HStack,
     IconProps,
     Image,
@@ -20,11 +21,10 @@ import {
     useBreakpointValue,
     useClipboard,
     useMediaQuery,
-    Button,
 } from '@chakra-ui/react';
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { etherscanLinks, truncateString, Network } from '@explorer/utils';
 import { useENS } from '@explorer/services';
+import { etherscanLinks, Network, truncateString } from '@explorer/utils';
+import React, { FC, useState } from 'react';
 import { StakeCircledIcon } from './Icons';
 
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
@@ -127,7 +127,12 @@ const Address: FC<AddressProps> = (props) => {
             {name && <Text>{name}</Text>}
 
             {renderLabel(
-                <Text color={color} fontSize={fontSize} {...restProps}>
+                <Text
+                    color={color}
+                    fontSize={fontSize}
+                    lineHeight={1}
+                    {...restProps}
+                >
                     {label}
                 </Text>
             )}
@@ -147,7 +152,7 @@ const Address: FC<AddressProps> = (props) => {
                         color: 'blue.400',
                     }}
                     minW="auto"
-                    minH="auto"
+                    h="auto"
                     title="Copy"
                     onClick={onCopy}
                     data-testid="copy-icon"

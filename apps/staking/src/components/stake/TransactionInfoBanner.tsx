@@ -21,10 +21,10 @@ import {
     Spinner,
     useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC, useEffect, useState } from 'react';
 import { Address } from '@explorer/ui';
-import { Transaction } from '../../services/transaction';
 import { isFunction } from 'lodash/fp';
+import React, { FC, useEffect, useState } from 'react';
+import { Transaction } from '../../services/transaction';
 
 export interface AlertMessage {
     title?: string;
@@ -134,6 +134,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                             type="tx"
                             truncated
                             chainId={chainId}
+                            alignItems="flex-start"
                         />
                     )}
                 </HStack>
