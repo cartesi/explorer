@@ -9,14 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BigNumber } from 'ethers';
 import EffectiveBalanceStat, {
     EffectiveBalanceStatProps,
 } from '../../../../src/components/stake/stats/EffectiveBalanceStat';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '10000000000000000000000000000';
 const defaultProps = {
@@ -40,6 +39,10 @@ describe('Effective Balance Stat', () => {
     // a default configured component
     const renderComponent = () =>
         render(<EEffectiveBalanceStat {...defaultProps} />);
+
+    afterEach(() => {
+        cleanup();
+    });
 
     it('Should display effective balance label', () => {
         renderComponent();

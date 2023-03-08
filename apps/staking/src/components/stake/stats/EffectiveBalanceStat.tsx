@@ -9,29 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
-import { BigNumber, constants } from 'ethers';
-import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '@explorer/ui';
 import {
-    HStack,
-    VStack,
-    useColorModeValue,
     Box,
-    StackProps,
+    Button,
+    HStack,
     Icon,
     Popover,
     PopoverBody,
     PopoverContent,
     PopoverTrigger,
-    Button,
-    Tooltip,
-    Text,
     StackDivider,
+    StackProps,
+    Text,
+    Tooltip,
+    useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
+import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '@explorer/ui';
+import { BigNumber, constants } from 'ethers';
+import { FC } from 'react';
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
-import { GhostButton } from '@explorer/ui';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -133,7 +132,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 bg="black"
                                 color="white"
                             >
-                                <GhostButton
+                                <Box
                                     _hover={{
                                         background: 'transparent',
                                         color: 'blue.400',
@@ -145,7 +144,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                         w={6}
                                         h={6}
                                     />
-                                </GhostButton>
+                                </Box>
                             </Tooltip>
                         )}
                     </HStack>
