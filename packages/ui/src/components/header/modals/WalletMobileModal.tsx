@@ -24,6 +24,7 @@ import {
 } from '@chakra-ui/react';
 import { useENS } from '@explorer/services';
 import { useWallet } from '@explorer/wallet';
+import { flow } from 'lodash/fp';
 import { CloseIcon, CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
 
 export interface IWalletMobileModalProps {
@@ -41,6 +42,7 @@ export const WalletMobileModal = ({
     const { hasCopied, onCopy } = useClipboard(account ?? '');
     const showModalBody =
         account && library && selectAccount && isHardwareWallet;
+    const disconnect = flow([deactivate, onClose]);
 
     return (
         <>
@@ -103,7 +105,7 @@ export const WalletMobileModal = ({
                                     <Heading m={0} size="sm">
                                         <Flex align="baseline">
                                             <Box
-                                                onClick={deactivate}
+                                                onClick={disconnect}
                                                 aria-label="Disconnect wallet"
                                                 title="Disconnect wallet"
                                                 cursor="pointer"
@@ -117,7 +119,7 @@ export const WalletMobileModal = ({
                                 </Box>
                                 <Box alignSelf="flex-end">
                                     <DisconnectIcon
-                                        onClick={deactivate}
+                                        onClick={disconnect}
                                         aria-label="Disconnect wallet"
                                         cursor="pointer"
                                         height="18px"
