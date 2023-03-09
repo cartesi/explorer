@@ -24,6 +24,7 @@ import {
     Stack,
     Text,
     Tooltip,
+    Flex,
     useColorModeValue,
 } from '@chakra-ui/react';
 import {
@@ -218,44 +219,58 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                     </HStack>
                     {data && data.dappFactory && (
                         <>
-                            <SimpleGrid
-                                columns={{ base: 1, md: 2, xl: 3 }}
-                                spacing={4}
-                            >
-                                {data.dappFactory.dapps.map(
-                                    ({
-                                        id,
-                                        inputCount,
-                                        deploymentTimestamp,
-                                    }) => (
-                                        <DAppCard
-                                            key={id}
-                                            address={id}
-                                            chainId={chainId}
-                                            date={
-                                                new Date(
-                                                    deploymentTimestamp * 1000
-                                                )
-                                            }
-                                            inputCount={inputCount}
+                            {data.dappFactory.dapps.length > 0 ? (
+                                <>
+                                    <SimpleGrid
+                                        columns={{ base: 1, md: 2, xl: 3 }}
+                                        spacing={4}
+                                    >
+                                        {data.dappFactory.dapps.map(
+                                            ({
+                                                id,
+                                                inputCount,
+                                                deploymentTimestamp,
+                                            }) => (
+                                                <DAppCard
+                                                    key={id}
+                                                    address={id}
+                                                    chainId={chainId}
+                                                    date={
+                                                        new Date(
+                                                            deploymentTimestamp *
+                                                                1000
+                                                        )
+                                                    }
+                                                    inputCount={inputCount}
+                                                />
+                                            )
+                                        )}
+                                    </SimpleGrid>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="flex-end"
+                                        alignItems="center"
+                                        mt={2}
+                                    >
+                                        {fetching && (
+                                            <Spinner size="md" me={3} />
+                                        )}
+                                        <Pagination
+                                            currentPage={pageNumber}
+                                            showPageNumbers
+                                            onPageClick={setPageNumber}
+                                            pages={totalPages}
                                         />
-                                    )
-                                )}
-                            </SimpleGrid>
-                            <Box
-                                display="flex"
-                                justifyContent="flex-end"
-                                alignItems="center"
-                                mt={2}
-                            >
-                                {fetching && <Spinner size="md" me={3} />}
-                                <Pagination
-                                    currentPage={pageNumber}
-                                    showPageNumbers
-                                    onPageClick={setPageNumber}
-                                    pages={totalPages}
-                                />
-                            </Box>
+                                    </Box>
+                                </>
+                            ) : (
+                                <Flex
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    No items
+                                </Flex>
+                            )}
                         </>
                     )}
                 </Box>
