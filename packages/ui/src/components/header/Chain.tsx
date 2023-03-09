@@ -9,14 +9,32 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
 import { Tag, TagLabel, TagProps } from '@chakra-ui/react';
 import { chains } from 'eth-chains';
+import { FC } from 'react';
 
 const colorSchemes: { [k: number]: string } = {
     1: 'teal', // mainnet
     5: 'blue', // goerli
-    421613: 'darkblue', // arbitrum-goerli
+    421613: 'yellow', // arbitrum-goerli
+    31337: 'gray', //localhost
+};
+
+type CustomChains = {
+    [k: number]: { name: string };
+};
+
+// eth-chains don't have the info on this chain-ids yet, so we curate the output.
+const customChains: CustomChains = {
+    31337: { name: 'Local' },
+    421613: { name: 'Arb görli' },
+};
+
+const getChainInfo = (chainId: number) => {
+    const chain = customChains[chainId] || chains.get(chainId);
+    return {
+        name: chain?.name,
+    };
 };
 
 export interface ChainProps extends TagProps {
@@ -33,7 +51,7 @@ const Chain: FC<ChainProps> = (props) => {
     }
 
     // get chain additional information
-    const chain = chains.get(chainId);
+    const chain = getChainInfo(chainId);
 
     // colors matching metamask colors
     const defaultColorScheme = 'gray';
@@ -54,7 +72,7 @@ const Chain: FC<ChainProps> = (props) => {
             colorScheme={colorSchemes[chainId] || defaultColorScheme}
             {...tagProps}
         >
-            <TagLabel>{chain.network}</TagLabel>
+            <TagLabel>{chain.name}</TagLabel>
         </Tag>
     );
 };

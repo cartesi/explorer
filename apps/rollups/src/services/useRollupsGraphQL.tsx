@@ -10,6 +10,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
+import { isEmpty } from 'lodash/fp';
 import { useMemo } from 'react';
 import { Client, createClient } from 'urql';
 import { useNetwork } from './useNetwork';
@@ -17,7 +18,7 @@ import { useNetwork } from './useNetwork';
 export const useRollupsGraphQL = (address: string, manualUrl?: string) => {
     const network = useNetwork();
     return useMemo<Client | null>(() => {
-        if (!network) {
+        if (!network || !address || isEmpty(manualUrl)) {
             return null;
         }
         // Guess generate URL if only address is available

@@ -21,6 +21,7 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { GrGraphQl } from 'react-icons/gr';
 import { Provider } from 'urql';
+import { useNetwork } from '../../services/useNetwork';
 import { useRollupsGraphQL } from '../../services/useRollupsGraphQL';
 
 type Props = {
@@ -29,27 +30,19 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const networks: Record<number, string> = {
-    5: 'goerli',
-    421613: 'arbitrum-goerli',
-};
-
-const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
+const GraphQLProvider: FC<Props> = ({ children, address }) => {
     const barBgColor = useColorModeValue('white', 'header');
-    const [url, setUrl] = useState<string>();
+    const network = useNetwork();
+    const [url, setUrl] = useState<string>('');
     const client = useRollupsGraphQL(address, url);
-    console.log(url);
 
     useEffect(() => {
-        const networkName = networks[chainId];
-        const env = 'staging';
-        const url = `https://${address}.${networkName}.rollups.${env}.cartesi.io/graphql`;
-        setUrl(url);
-    }, [address, chainId]);
+        if (network) {
+            const url = network.graphql(address);
+            setUrl(url);
+        }
+    }, [network, address]);
 
-    if (!client) {
-        return <div />;
-    }
     return (
         <VStack align="stretch">
             <InputGroup
@@ -63,7 +56,7 @@ const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
                 </InputLeftAddon>
                 <Input value={url} onChange={(e) => setUrl(e.target.value)} />
             </InputGroup>
-            <Provider value={client}>{children}</Provider>
+            {client && <Provider value={client}>{children}</Provider>}
         </VStack>
     );
 };
