@@ -18,6 +18,7 @@
         "@explorer/wallet": "*",
         "eth-chains": "0.3.5",
         "graphql": "15.6.0",
+        "lodash": "4.17.21",
         "next": "12.3.1",
         "react-json-view": "1.21.3",
         "urql": "3.0.3"
