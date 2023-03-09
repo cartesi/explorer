@@ -19,6 +19,7 @@ type Props = {
 };
 
 const urls: Record<number, string> = {};
+urls[31337] = 'http://localhost:8000/subgraphs/name/cartesi/rollups';
 urls[5] = 'https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli';
 urls[421613] =
     'https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli';
