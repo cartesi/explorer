@@ -23,7 +23,10 @@ export const useRollupsGraphQL = (address: string, manualUrl?: string) => {
         }
         // Guess generate URL if only address is available
         // If manual-URL is passed down (usually is a user input) that will used instead
-        const url = manualUrl ?? network.graphql(address);
+        const url =
+            typeof manualUrl === 'undefined' || manualUrl === ''
+                ? network.graphql(address)
+                : manualUrl;
         console.log(`${manualUrl} - ${url}`);
         return createClient({ url });
     }, [network, address, manualUrl]);
