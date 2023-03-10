@@ -45,6 +45,7 @@ import {
     FactoryDAppsQueryVariables,
     useFactoryDAppsQuery,
 } from '../../generated/graphql';
+import { DAppsList } from '../../components/DAppsList';
 
 export interface DAppFactoryProps {
     address: string;
@@ -137,7 +138,6 @@ const buildOptions = ({
 
 export const DAppFactory: FC<DAppFactoryProps> = (props) => {
     const { address, chainId } = props;
-    // Pagination component is zero-based
     const [pageNumber, setPageNumber] = useState<number>(0);
     const bg = useColorModeValue('white', 'gray.800');
     const dappsBodyBg = useColorModeValue('white', 'gray.700');
@@ -146,8 +146,7 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
         DApp_OrderBy.ActivityTimestamp
     );
     const DAPPS_PER_PAGE = 10;
-    // query GraphQL
-    const [result] = useFactoryDAppsQuery(
+    const [{ data, fetching, error }] = useFactoryDAppsQuery(
         buildOptions({
             address: address?.toLowerCase(),
             orderBy,
@@ -155,12 +154,6 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
             first: DAPPS_PER_PAGE,
             skip: DAPPS_PER_PAGE * pageNumber,
         })
-    );
-
-    const { data, fetching, error } = result;
-
-    const totalPages = Math.ceil(
-        (data?.dappFactory?.dappCount ?? DAPPS_PER_PAGE) / DAPPS_PER_PAGE ?? 0
     );
 
     return (
@@ -217,61 +210,15 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                             </option>
                         </Select>
                     </HStack>
+
                     {data && data.dappFactory && (
-                        <>
-                            {data.dappFactory.dapps.length > 0 ? (
-                                <>
-                                    <SimpleGrid
-                                        columns={{ base: 1, md: 2, xl: 3 }}
-                                        spacing={4}
-                                    >
-                                        {data.dappFactory.dapps.map(
-                                            ({
-                                                id,
-                                                inputCount,
-                                                deploymentTimestamp,
-                                            }) => (
-                                                <DAppCard
-                                                    key={id}
-                                                    address={id}
-                                                    chainId={chainId}
-                                                    date={
-                                                        new Date(
-                                                            deploymentTimestamp *
-                                                                1000
-                                                        )
-                                                    }
-                                                    inputCount={inputCount}
-                                                />
-                                            )
-                                        )}
-                                    </SimpleGrid>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="flex-end"
-                                        alignItems="center"
-                                        mt={2}
-                                    >
-                                        {fetching && (
-                                            <Spinner size="md" me={3} />
-                                        )}
-                                        <Pagination
-                                            currentPage={pageNumber}
-                                            showPageNumbers
-                                            onPageClick={setPageNumber}
-                                            pages={totalPages}
-                                        />
-                                    </Box>
-                                </>
-                            ) : (
-                                <Flex
-                                    justifyContent="center"
-                                    alignItems="center"
-                                >
-                                    No items
-                                </Flex>
-                            )}
-                        </>
+                        <DAppsList
+                            chainId={chainId}
+                            pageNumber={pageNumber}
+                            fetching={fetching}
+                            dappFactory={data.dappFactory}
+                            onChangePageNumber={setPageNumber}
+                        />
                     )}
                 </Box>
             </PageBody>
