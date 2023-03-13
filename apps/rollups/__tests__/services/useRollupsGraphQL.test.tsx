@@ -11,10 +11,11 @@
 
 import { renderHook, cleanup } from '@testing-library/react';
 import { useWallet } from '@explorer/wallet';
-import { Explorer, useNetwork } from '../../src/services/useNetwork';
+import { useNetwork } from '../../src/services/useNetwork';
 import { useRollupsGraphQL } from '../../src/services/useRollupsGraphQL';
+import { networks } from '../../src/services/useNetwork';
 
-const walletMod = `@explorer/wallet`;
+const walletMod = '@explorer/wallet';
 const networkMod = '../../src/services/useNetwork';
 
 jest.mock(walletMod, () => {
@@ -46,22 +47,7 @@ const defaultUseWalletData = {
     chainId: 3,
 };
 
-const defaultNetwork = {
-    name: 'Goerli',
-    chainId: 5,
-    graphql: (address) => {
-        return `https://${address}.goerli.rollups.staging.cartesi.io/graphql`;
-    },
-    explorer: new Explorer('https://goerli.etherscan.io'),
-    deployment: (contract) =>
-        require(`@cartesi/rollups/deployments/goerli/${contract}.json`),
-    chain: {
-        id: '0x5',
-        token: 'ETH',
-        label: 'Goerli',
-        rpcUrl: 'https://rpc.ankr.com/eth_goerli',
-    },
-};
+const defaultNetwork = networks[0x5];
 
 describe('useRollupsGraphQL hook', () => {
     beforeEach(() => {

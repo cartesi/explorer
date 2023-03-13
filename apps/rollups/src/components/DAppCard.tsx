@@ -23,7 +23,7 @@ export interface DAppCardProps extends BoxProps {
 }
 
 const DAppCard: FC<DAppCardProps> = (props) => {
-    const { address, chainId, inputCount, date } = props;
+    const { address, chainId, inputCount, date, ...restProps } = props;
     const router = useRouter();
     const boxShadow = useColorModeValue(
         '0px 0px 3px rgba(0, 0, 0, 0.1)',
@@ -32,6 +32,7 @@ const DAppCard: FC<DAppCardProps> = (props) => {
 
     return (
         <Card
+            {...restProps}
             key={address}
             direction="column"
             alignItems="center"

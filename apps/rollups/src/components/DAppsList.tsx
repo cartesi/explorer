@@ -10,9 +10,9 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
+import { FC } from 'react';
 import { Box, SimpleGrid, Spinner, Flex } from '@chakra-ui/react';
 import { Pagination } from '@explorer/ui';
-import { FC } from 'react';
 import DAppCard from './DAppCard';
 
 export interface DApp {
@@ -51,7 +51,7 @@ export const DAppsList: FC<DAppsListProps> = (props) => {
     return (
         <>
             {dappFactory.dapps.length > 0 ? (
-                <>
+                <div data-testid="dapps-list">
                     <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={4}>
                         {dappFactory.dapps.map(
                             ({ id, inputCount, deploymentTimestamp }) => (
@@ -61,6 +61,7 @@ export const DAppsList: FC<DAppsListProps> = (props) => {
                                     chainId={chainId}
                                     date={new Date(deploymentTimestamp * 1000)}
                                     inputCount={inputCount}
+                                    data-testid="dapps-list-card"
                                 />
                             )
                         )}
@@ -72,16 +73,23 @@ export const DAppsList: FC<DAppsListProps> = (props) => {
                         alignItems="center"
                         mt={2}
                     >
-                        {fetching && <Spinner size="md" me={3} />}
+                        {fetching && (
+                            <Spinner
+                                size="md"
+                                me={3}
+                                data-testid="dapps-list-spinner"
+                            />
+                        )}
 
                         <Pagination
                             currentPage={pageNumber}
+                            pages={totalPages}
+                            data-testid="dapps-list-pagination"
                             showPageNumbers
                             onPageClick={onChangePageNumber}
-                            pages={totalPages}
                         />
                     </Box>
-                </>
+                </div>
             ) : (
                 <Flex justifyContent="center" alignItems="center">
                     No items

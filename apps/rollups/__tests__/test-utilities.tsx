@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ChakraProvider } from '@chakra-ui/react';
 import { FunctionComponent } from 'react';
-import theme from '../src/styles/theme';
+import { ChakraProvider } from '@chakra-ui/react';
+import { theme } from '@explorer/ui';
 
 /**
  * A HOC for tests where the component uses any of our custom theme properties e.g. color grey.support

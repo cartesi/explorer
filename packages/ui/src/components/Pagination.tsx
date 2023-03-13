@@ -35,6 +35,7 @@ const Pagination: FC<PaginationProps> = (props) => {
         showPageNumbers = false,
         maxPageNumbers = 5,
         onPageClick,
+        ...restProps
     } = props;
     const isAfterFirstPage = currentPage > 0;
     const isBeforeLastPage = currentPage < pages - 1;
@@ -62,7 +63,7 @@ const Pagination: FC<PaginationProps> = (props) => {
     }, [pageNumbers, currentPage, pages, maxPageNumbers]);
 
     return (
-        <HStack maxWidth="100%">
+        <HStack maxWidth="100%" {...restProps}>
             {hasMultiplePages && (
                 <GhostButton
                     mr={2}
