@@ -22,8 +22,8 @@ export interface DApp {
 }
 
 export interface DAppFactory {
-    dappCount: number;
     dapps: DApp[];
+    dappCount: number;
 }
 
 export interface DAppsListProps {
