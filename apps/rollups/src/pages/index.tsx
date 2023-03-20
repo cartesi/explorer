@@ -11,7 +11,7 @@
 // under the License.
 
 import { Box, Heading } from '@chakra-ui/react';
-import { Address, Notification } from '@explorer/ui';
+import { Notification } from '@explorer/ui';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { PageBody, PageHeader, PageLayout } from '../components/Layout';
@@ -24,7 +24,6 @@ const Home: NextPage = () => {
     const network = useNetwork();
 
     return (
-        // <GraphQLProvider chainId={network?.chainId}>
         <PageLayout>
             <Head>
                 <title>Explorer - Rollups</title>
@@ -33,14 +32,6 @@ const Home: NextPage = () => {
             <PageHeader>
                 <Box px={{ base: '6vw', xl: '6vw' }}>
                     <Heading fontWeight="normal">Rollups DApps</Heading>
-                    {factory && (
-                        <Address
-                            address={factory.address}
-                            chainId={network?.chainId}
-                            name="instantiated by"
-                            truncated
-                        />
-                    )}
                 </Box>
             </PageHeader>
 
@@ -61,7 +52,6 @@ const Home: NextPage = () => {
                 />
             )}
         </PageLayout>
-        // </GraphQLProvider>
     );
 };
 

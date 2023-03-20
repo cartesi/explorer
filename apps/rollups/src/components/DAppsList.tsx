@@ -21,13 +21,9 @@ export interface DApp {
     deploymentTimestamp: any;
 }
 
-export interface DAppFactory {
-    dapps: DApp[];
-    dappCount: number;
-}
-
 export interface DAppsListProps {
-    dappFactory: DAppFactory;
+    dapps: DApp[];
+    dappsCount: number;
     chainId: number;
     fetching: boolean;
     pageNumber: number;
@@ -37,23 +33,22 @@ export interface DAppsListProps {
 
 export const DAppsList: FC<DAppsListProps> = (props) => {
     const {
-        dappFactory,
+        dapps,
+        dappsCount,
         chainId,
         fetching,
         pageNumber,
         perPage = 10,
         onChangePageNumber,
     } = props;
-    const totalPages = Math.ceil(
-        (dappFactory?.dappCount ?? perPage) / perPage ?? 0
-    );
+    const totalPages = Math.ceil((dappsCount ?? perPage) / perPage ?? 0);
 
     return (
         <>
-            {dappFactory.dapps.length > 0 ? (
+            {dapps.length > 0 ? (
                 <div data-testid="dapps-list">
                     <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={4}>
-                        {dappFactory.dapps.map(
+                        {dapps.map(
                             ({ id, inputCount, deploymentTimestamp }) => (
                                 <DAppCard
                                     key={id}

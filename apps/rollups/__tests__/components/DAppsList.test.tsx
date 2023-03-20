@@ -22,10 +22,8 @@ const dapps = Array.from({ length: 3 }).map((_, index) => ({
 }));
 
 const defaultProps = {
-    dappFactory: {
-        dapps,
-        dappCount: dapps.length,
-    },
+    dapps,
+    dappsCount: dapps.length,
     chainId: 5,
     fetching: false,
     pageNumber: 0,
@@ -39,16 +37,7 @@ describe('DAppsList component', () => {
     });
 
     it('should render empty state', () => {
-        render(
-            <Component
-                {...defaultProps}
-                dappFactory={{
-                    dapps: [],
-                    dappCount: 0,
-                }}
-            />
-        );
-
+        render(<Component {...defaultProps} dapps={[]} dappsCount={0} />);
         expect(screen.getByText('No items')).toBeInTheDocument();
     });
 
@@ -64,7 +53,6 @@ describe('DAppsList component', () => {
 
     it('should render correct number of cards', () => {
         render(<Component {...defaultProps} />);
-
         expect(screen.getAllByTestId('dapps-list-card').length).toBe(
             dapps.length
         );

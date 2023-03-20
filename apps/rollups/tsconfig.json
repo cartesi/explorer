@@ -1,15 +1,17 @@
 {
-    "extends": "tsconfig/nextjs.json",
-    "compilerOptions": {
-        "strict": false,
-        "isolatedModules": false
-    },
-    "exclude": ["node_modules"],
-    "include": [
-        "additional.d.ts",
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "next.config.js"
-    ]
+  "extends": "tsconfig/nextjs.json",
+  "compilerOptions": {
+    "strict": false,
+    "isolatedModules": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "additional.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js"
+  ]
 }

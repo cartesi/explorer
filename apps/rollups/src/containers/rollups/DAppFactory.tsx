@@ -37,12 +37,14 @@ import {
     PagePanel,
     Pagination,
 } from '@explorer/ui';
-import { FC, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { UseQueryArgs } from 'urql';
 import DAppCard from '../../components/DAppCard';
 import {
     DApp_OrderBy,
     FactoryDAppsQueryVariables,
+    useDappFactoriesQuery,
+    useDappsQuery,
     useFactoryDAppsQuery,
 } from '../../generated/graphql';
 import { DAppsList } from '../../components/DAppsList';
@@ -98,46 +100,8 @@ const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
     </Stack>
 );
 
-type BuildOptionsProps = {
-    address: string;
-    orderBy: DApp_OrderBy;
-    first: number;
-    skip?: number;
-    search?: string;
-};
-
-type Options = Omit<UseQueryArgs<FactoryDAppsQueryVariables>, 'query'>;
-/**
- * that is an query option builder mainly to deal with search param being empty. All the other
- * properties are standard setup with no custom logic.
- * @param {BuildOptionsProps}
- * @returns {Options}
- */
-const buildOptions = ({
-    address,
-    orderBy,
-    first,
-    skip,
-    search,
-}: BuildOptionsProps): Options => {
-    const options: Options = {
-        variables: {
-            id: address?.toLowerCase(),
-            orderBy,
-            first,
-            skip,
-        },
-    };
-
-    if (search && search.length > 0) {
-        options.variables.where_dapp = { id: search };
-    }
-
-    return options;
-};
-
 export const DAppFactory: FC<DAppFactoryProps> = (props) => {
-    const { address, chainId } = props;
+    const { chainId } = props;
     const [pageNumber, setPageNumber] = useState<number>(0);
     const bg = useColorModeValue('white', 'gray.800');
     const dappsBodyBg = useColorModeValue('white', 'gray.700');
@@ -146,23 +110,38 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
         DApp_OrderBy.ActivityTimestamp
     );
     const DAPPS_PER_PAGE = 10;
-    const [{ data, fetching, error }] = useFactoryDAppsQuery(
-        buildOptions({
-            address: address?.toLowerCase(),
+    const [dAppsResult] = useDappsQuery({
+        variables: {
             orderBy,
-            search,
             first: DAPPS_PER_PAGE,
             skip: DAPPS_PER_PAGE * pageNumber,
-        })
+            where_dapp:
+                search && search.length > 0 ? { id: search } : undefined,
+        },
+    });
+
+    const [dAppsFactoriesResult] = useDappFactoriesQuery();
+    const dAppsFactories = useMemo(
+        () => dAppsFactoriesResult?.data?.dappFactories ?? [],
+        [dAppsFactoriesResult?.data?.dappFactories]
     );
+    const dappsCount = dAppsFactories.reduce(
+        (accumulator, factory) => accumulator + factory.dappCount,
+        0
+    );
+    const dappsInputs = dAppsFactories.reduce(
+        (accumulator, factory) => accumulator + factory.inputCount,
+        0
+    );
+    const hasFactories = dAppsFactories.length > 0;
 
     return (
         <Box bg={bg}>
             <PagePanel>
-                {data?.dappFactory && (
+                {hasFactories && (
                     <DappsSummary
-                        dappCount={data.dappFactory.dappCount}
-                        inputCount={data.dappFactory.inputCount}
+                        dappCount={dappsCount}
+                        inputCount={dappsInputs}
                     />
                 )}
             </PagePanel>
@@ -173,15 +152,15 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                     px={{ md: '12vw', xl: '12vw' }}
                     py={{ base: 10 }}
                 >
-                    {error && (
+                    {dAppsResult.error && (
                         <Notification
                             status="error"
                             title="Error fetching DApps!"
-                            subtitle={error.message}
+                            subtitle={dAppsResult.error?.message}
                         />
                     )}
                     <HStack justifyContent="flex-end" spacing={2} mb={5}>
-                        {fetching && <Spinner size="md" />}
+                        {dAppsResult.fetching && <Spinner size="md" />}
                         <InputGroup width={300} bg={dappsBodyBg}>
                             <InputLeftElement>
                                 <SearchIcon />
@@ -211,12 +190,13 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                         </Select>
                     </HStack>
 
-                    {data && data.dappFactory && (
+                    {dAppsResult && dAppsResult.data?.dapps && (
                         <DAppsList
+                            dapps={dAppsResult.data.dapps}
+                            dappsCount={dappsCount}
                             chainId={chainId}
                             pageNumber={pageNumber}
-                            fetching={fetching}
-                            dappFactory={data.dappFactory}
+                            fetching={dAppsResult.fetching}
                             onChangePageNumber={setPageNumber}
                         />
                     )}
