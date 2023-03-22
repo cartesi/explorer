@@ -47,9 +47,12 @@ export interface DappsProps {
     chainId: number;
 }
 
-type SummaryProps = { dappCount: number; inputCount: number };
+export interface SummaryProps {
+    dappCount: number;
+    inputCount: number;
+}
 
-const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
+export const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
     <Stack
         direction={['column', 'column', 'row', 'row']}
         justify="space-evenly"
@@ -71,9 +74,11 @@ const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
                     </Tooltip>
                 </HStack>
             }
+            data-testid="dapps-summary-dapps-count"
         >
             <BigNumberText value={dappCount} />
         </Banner>
+
         <Banner
             Icon={<Box as={InputIcon} w={8} h={8} />}
             Title={
@@ -87,40 +92,44 @@ const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
                     </Tooltip>
                 </HStack>
             }
+            data-testid="dapps-summary-input-count"
         >
             <BigNumberText value={inputCount} />
         </Banner>
     </Stack>
 );
 
-interface DappsFiltersProps {
+export interface DappsFiltersProps {
     orderBy: DApp_OrderBy;
     fetching: boolean;
     onChangeSearch: (search: string) => void;
     onChangeOrderBy: (orderBy: DApp_OrderBy) => void;
 }
 
-const DappsFilters: FC<DappsFiltersProps> = (props) => {
+export const dappsFilterOptions = [
+    {
+        label: 'Recent Activity',
+        value: DApp_OrderBy.ActivityTimestamp,
+    },
+    {
+        label: 'Number of Activity',
+        value: DApp_OrderBy.InputCount,
+    },
+    {
+        label: 'Newest',
+        value: DApp_OrderBy.DeploymentTimestamp,
+    },
+];
+
+export const DappsFilters: FC<DappsFiltersProps> = (props) => {
     const { orderBy, fetching, onChangeSearch, onChangeOrderBy } = props;
     const dappsBodyBg = useColorModeValue('white', 'gray.700');
-    const options = [
-        {
-            label: 'Recent Activity',
-            value: DApp_OrderBy.ActivityTimestamp,
-        },
-        {
-            label: 'Number of Activity',
-            value: DApp_OrderBy.InputCount,
-        },
-        {
-            label: 'Newest',
-            value: DApp_OrderBy.DeploymentTimestamp,
-        },
-    ];
 
     return (
         <HStack justifyContent="flex-end" spacing={2} mb={5}>
-            {fetching && <Spinner size="md" />}
+            {fetching && (
+                <Spinner size="md" data-testid="dapps-filters-spinner" />
+            )}
 
             <InputGroup width={300} bg={dappsBodyBg}>
                 <InputLeftElement>
@@ -137,11 +146,12 @@ const DappsFilters: FC<DappsFiltersProps> = (props) => {
                 value={orderBy}
                 bg={dappsBodyBg}
                 width={250}
+                data-testid="dapps-filters-order-by"
                 onChange={(event) =>
                     onChangeOrderBy(event.target.value as DApp_OrderBy)
                 }
             >
-                {options.map((option) => (
+                {dappsFilterOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>
