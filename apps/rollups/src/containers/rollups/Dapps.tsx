@@ -19,12 +19,10 @@ import {
     InputGroup,
     InputLeftElement,
     Select,
-    SimpleGrid,
     Spinner,
     Stack,
     Text,
     Tooltip,
-    Flex,
     useColorModeValue,
 } from '@chakra-ui/react';
 import {
@@ -35,28 +33,23 @@ import {
     Notification,
     PageBody,
     PagePanel,
-    Pagination,
 } from '@explorer/ui';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { UseQueryArgs } from 'urql';
-import DAppCard from '../../components/DAppCard';
+import { FC, useMemo, useState } from 'react';
 import {
     DApp_OrderBy,
-    FactoryDAppsQueryVariables,
     useDappFactoriesQuery,
     useDappsQuery,
-    useFactoryDAppsQuery,
 } from '../../generated/graphql';
 import { DAppsList } from '../../components/DAppsList';
 
-export interface DAppFactoryProps {
+export interface DappsProps {
     address: string;
     chainId: number;
 }
 
 type SummaryProps = { dappCount: number; inputCount: number };
 
-const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
+const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
     <Stack
         direction={['column', 'column', 'row', 'row']}
         justify="space-evenly"
@@ -100,26 +93,82 @@ const DappsSummary = ({ dappCount, inputCount }: SummaryProps) => (
     </Stack>
 );
 
-export const DAppFactory: FC<DAppFactoryProps> = (props) => {
+interface DappsFiltersProps {
+    orderBy: DApp_OrderBy;
+    fetching: boolean;
+    onChangeSearch: (search: string) => void;
+    onChangeOrderBy: (orderBy: DApp_OrderBy) => void;
+}
+
+const DappsFilters: FC<DappsFiltersProps> = (props) => {
+    const { orderBy, fetching, onChangeSearch, onChangeOrderBy } = props;
+    const dappsBodyBg = useColorModeValue('white', 'gray.700');
+    const options = [
+        {
+            label: 'Recent Activity',
+            value: DApp_OrderBy.ActivityTimestamp,
+        },
+        {
+            label: 'Number of Activity',
+            value: DApp_OrderBy.InputCount,
+        },
+        {
+            label: 'Newest',
+            value: DApp_OrderBy.DeploymentTimestamp,
+        },
+    ];
+
+    return (
+        <HStack justifyContent="flex-end" spacing={2} mb={5}>
+            {fetching && <Spinner size="md" />}
+
+            <InputGroup width={300} bg={dappsBodyBg}>
+                <InputLeftElement>
+                    <SearchIcon />
+                </InputLeftElement>
+
+                <Input
+                    placeholder="Search"
+                    onChange={(event) => onChangeSearch(event.target.value)}
+                />
+            </InputGroup>
+
+            <Select
+                value={orderBy}
+                bg={dappsBodyBg}
+                width={250}
+                onChange={(event) =>
+                    onChangeOrderBy(event.target.value as DApp_OrderBy)
+                }
+            >
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </Select>
+        </HStack>
+    );
+};
+
+export const Dapps: FC<DappsProps> = (props) => {
     const { chainId } = props;
     const [pageNumber, setPageNumber] = useState<number>(0);
     const bg = useColorModeValue('white', 'gray.800');
-    const dappsBodyBg = useColorModeValue('white', 'gray.700');
     const [search, setSearch] = useState<string>('');
     const [orderBy, setOrderBy] = useState<DApp_OrderBy>(
         DApp_OrderBy.ActivityTimestamp
     );
-    const DAPPS_PER_PAGE = 10;
+    const perPage = 10;
     const [dAppsResult] = useDappsQuery({
         variables: {
             orderBy,
-            first: DAPPS_PER_PAGE,
-            skip: DAPPS_PER_PAGE * pageNumber,
+            first: perPage,
+            skip: perPage * pageNumber,
             where_dapp:
                 search && search.length > 0 ? { id: search } : undefined,
         },
     });
-
     const [dAppsFactoriesResult] = useDappFactoriesQuery();
     const dAppsFactories = useMemo(
         () => dAppsFactoriesResult?.data?.dappFactories ?? [],
@@ -137,14 +186,15 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
 
     return (
         <Box bg={bg}>
-            <PagePanel>
-                {hasFactories && (
+            {hasFactories && (
+                <PagePanel>
                     <DappsSummary
                         dappCount={dappsCount}
                         inputCount={dappsInputs}
                     />
-                )}
-            </PagePanel>
+                </PagePanel>
+            )}
+
             <PageBody p={0}>
                 <Box
                     shadow="md"
@@ -159,36 +209,13 @@ export const DAppFactory: FC<DAppFactoryProps> = (props) => {
                             subtitle={dAppsResult.error?.message}
                         />
                     )}
-                    <HStack justifyContent="flex-end" spacing={2} mb={5}>
-                        {dAppsResult.fetching && <Spinner size="md" />}
-                        <InputGroup width={300} bg={dappsBodyBg}>
-                            <InputLeftElement>
-                                <SearchIcon />
-                            </InputLeftElement>
-                            <Input
-                                placeholder="Search"
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </InputGroup>
-                        <Select
-                            width={250}
-                            value={orderBy}
-                            onChange={(event) =>
-                                setOrderBy(event.target.value as DApp_OrderBy)
-                            }
-                            bg={dappsBodyBg}
-                        >
-                            <option value={DApp_OrderBy.ActivityTimestamp}>
-                                Recent Activity
-                            </option>
-                            <option value={DApp_OrderBy.InputCount}>
-                                Number of Activity
-                            </option>
-                            <option value={DApp_OrderBy.DeploymentTimestamp}>
-                                Newest
-                            </option>
-                        </Select>
-                    </HStack>
+
+                    <DappsFilters
+                        orderBy={orderBy}
+                        fetching={dAppsResult.fetching}
+                        onChangeSearch={setSearch}
+                        onChangeOrderBy={setOrderBy}
+                    />
 
                     {dAppsResult && dAppsResult.data?.dapps && (
                         <DAppsList

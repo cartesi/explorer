@@ -12,14 +12,13 @@
 
 import { Box, Heading } from '@chakra-ui/react';
 import { Notification } from '@explorer/ui';
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import { PageBody, PageHeader, PageLayout } from '../components/Layout';
-import { DAppFactory } from '../containers/rollups/DAppFactory';
+import { Dapps } from '../containers/rollups/Dapps';
 import { useNetwork } from '../services/useNetwork';
 import { useRollupsFactory } from '../services/useRollupsFactory';
 
-const Home: NextPage = () => {
+const Home = () => {
     const factory = useRollupsFactory();
     const network = useNetwork();
 
@@ -29,6 +28,7 @@ const Home: NextPage = () => {
                 <title>Explorer - Rollups</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
             <PageHeader>
                 <Box px={{ base: '6vw', xl: '6vw' }}>
                     <Heading fontWeight="normal">Rollups DApps</Heading>
@@ -46,10 +46,7 @@ const Home: NextPage = () => {
             )}
 
             {factory && network?.chainId && (
-                <DAppFactory
-                    chainId={network?.chainId}
-                    address={factory.address}
-                />
+                <Dapps chainId={network?.chainId} address={factory.address} />
             )}
         </PageLayout>
     );
