@@ -106,6 +106,7 @@ const Address: FC<AddressProps> = (props) => {
         <HStack
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+            data-testid="address"
         >
             {ensEntry?.avatar && !hasAvatarError ? (
                 <Image
