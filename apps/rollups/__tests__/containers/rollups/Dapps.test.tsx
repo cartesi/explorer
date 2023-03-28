@@ -12,21 +12,14 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { withChakraTheme } from '../../test-utilities';
 import {
-    DappsSummary,
-    DappsFilters,
     dappsFilterOptions,
+    DappsFilters,
+    DappsSummary,
 } from '../../../src/containers/rollups/Dapps';
 import { DApp_OrderBy } from '../../../src/generated/graphql';
 
 const DappsSummaryComponent = withChakraTheme(DappsSummary);
-
 const DappsFiltersComponent = withChakraTheme(DappsFilters);
-
-const dapps = Array.from({ length: 3 }).map((_, index) => ({
-    id: String(index + 1),
-    inputCount: index + 1,
-    deploymentTimestamp: Math.floor(Date.now() / 1000),
-}));
 
 describe('DApps', () => {
     describe('DappsSummary component', () => {
@@ -91,7 +84,7 @@ describe('DApps', () => {
             expect(onChangeSearch).toBeCalledWith(nextSearch);
         });
 
-        it('invokes onChangeSearch when search is changed', () => {
+        it('invokes onChangeSearch when orderBy is changed', () => {
             const onChangeOrderBy = jest.fn();
             render(
                 <DappsFiltersComponent
