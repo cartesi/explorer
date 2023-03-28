@@ -126,7 +126,9 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                     <Text fontSize={fontSize} lineHeight={1}>
                         {valueLabel}
                     </Text>
-                    {unit && value && <Text fontSize="small">{unitLabel}</Text>}
+                    {unit && unitLabel && (
+                        <Text fontSize="sm">{unitLabel}</Text>
+                    )}
                 </>
             </HStack>
             {countdown && countdown.timeLeft && (
