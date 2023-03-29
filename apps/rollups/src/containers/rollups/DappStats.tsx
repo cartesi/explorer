@@ -82,7 +82,7 @@ export const DappStats: FC<DappStatsProps> = ({
                     <HStack>
                         <Text># Notices</Text>
                         <Tooltip
-                            label="Total number of notices emmited"
+                            label="Total number of notices emitted"
                             placement="top"
                             isOpen={noticesTooltip.isOpen}
                         >
@@ -99,7 +99,7 @@ export const DappStats: FC<DappStatsProps> = ({
                     <HStack>
                         <Text># Reports</Text>
                         <Tooltip
-                            label="Total number of reports emmited"
+                            label="Total number of reports emitted"
                             placement="top"
                             isOpen={reportsTooltip.isOpen}
                         >
@@ -116,7 +116,7 @@ export const DappStats: FC<DappStatsProps> = ({
                     <HStack>
                         <Text># Vouchers</Text>
                         <Tooltip
-                            label="Total number of vouchers emmited"
+                            label="Total number of vouchers emitted"
                             placement="top"
                             isOpen={vouchersTooltip.isOpen}
                         >

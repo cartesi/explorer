@@ -127,7 +127,12 @@ const BigNumberText: FC<BigNumberTextProps> = (props) => {
                         {valueLabel}
                     </Text>
                     {unit && unitLabel && (
-                        <Text fontSize="sm">{unitLabel}</Text>
+                        <Text
+                            fontSize="sm"
+                            data-testid="big-number-text-unit-label"
+                        >
+                            {unitLabel}
+                        </Text>
                     )}
                 </>
             </HStack>
