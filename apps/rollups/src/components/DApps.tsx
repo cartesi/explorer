@@ -39,11 +39,12 @@ export const DApps: FC<DAppsProps> = (props) => {
                             inputCount={dapp.inputCount}
                             date={new Date(dapp.activityTimestamp)}
                             chainId={chainId}
+                            data-testid="dapps-card"
                         />
                     ))}
                 </SimpleGrid>
             )}
-            {dapps.length == 0 && (
+            {dapps.length === 0 && (
                 <Alert status="info">
                     <AlertIcon />
                     <AlertTitle>No DApps instantiated</AlertTitle>
