@@ -84,7 +84,7 @@ describe('DApps', () => {
             expect(onChangeSearch).toBeCalledWith(nextSearch);
         });
 
-        it('invokes onChangeSearch when orderBy is changed', () => {
+        it('invokes onChangeOrderBy when orderBy is changed', () => {
             const onChangeOrderBy = jest.fn();
             render(
                 <DappsFiltersComponent
