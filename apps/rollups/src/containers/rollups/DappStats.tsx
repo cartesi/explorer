@@ -52,7 +52,10 @@ export const DappStats: FC<DappStatsProps> = ({
                             placement="top"
                             isOpen={isOpen}
                         >
-                            <Icon onClick={onToggle} />
+                            <Icon
+                                data-testid="epochs-icon"
+                                onClick={onToggle}
+                            />
                         </Tooltip>
                     </HStack>
                 }
@@ -69,7 +72,10 @@ export const DappStats: FC<DappStatsProps> = ({
                             placement="top"
                             isOpen={inputsTooltip.isOpen}
                         >
-                            <Icon onClick={inputsTooltip.onToggle} />
+                            <Icon
+                                data-testid="inputs-icon"
+                                onClick={inputsTooltip.onToggle}
+                            />
                         </Tooltip>
                     </HStack>
                 }
@@ -86,7 +92,10 @@ export const DappStats: FC<DappStatsProps> = ({
                             placement="top"
                             isOpen={noticesTooltip.isOpen}
                         >
-                            <Icon onClick={noticesTooltip.onToggle} />
+                            <Icon
+                                data-testid="notices-icon"
+                                onClick={noticesTooltip.onToggle}
+                            />
                         </Tooltip>
                     </HStack>
                 }

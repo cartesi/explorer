@@ -11,7 +11,6 @@
 
 import {
     FooterContract,
-    FooterLink,
     Layout,
     PageBody,
     PageHeader,
@@ -20,7 +19,22 @@ import {
 import { FC, ReactNode } from 'react';
 import { useRollupsFactory } from '../services/useRollupsFactory';
 
-type Props = { children: ReactNode };
+export interface Props {
+    children: ReactNode;
+}
+
+export const headerLinks = [{ href: '/', key: 'home', label: 'Home' }];
+
+export const footerLinks = [
+    {
+        label: 'The Blockchain OS',
+        href: 'https://docs.cartesi.io/new-to-cartesi/overview/',
+    },
+    {
+        label: 'Rollups Overview',
+        href: 'https://docs.cartesi.io/cartesi-rollups/overview/',
+    },
+];
 
 export const PageLayout: FC<Props> = ({ children }) => {
     const rollupsFactory = useRollupsFactory();
@@ -31,22 +45,11 @@ export const PageLayout: FC<Props> = ({ children }) => {
         },
     ];
 
-    const links: FooterLink[] = [
-        {
-            href: 'https://docs.cartesi.io/new-to-cartesi/overview/',
-            label: 'The Blockchain OS',
-        },
-        {
-            label: 'Rollups Overview',
-            href: 'https://docs.cartesi.io/cartesi-rollups/overview/',
-        },
-    ];
-
     return (
         <Layout
+            headerLinks={headerLinks}
+            footerLinks={footerLinks}
             footerContracts={contracts}
-            footerLinks={links}
-            headerLinks={[{ href: '/', key: 'home', label: 'Home' }]}
         >
             {children}
         </Layout>
