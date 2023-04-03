@@ -51,11 +51,37 @@ describe('DappStats container', () => {
         expect(screen.getByText(text)).toBeInTheDocument();
     });
 
-    it('should display inputs tooltip', async () => {
+    it('should display reports tooltip', async () => {
+        render(<Component {...defaultProps} />);
+        const text = 'Total number of reports emitted';
+
+        const icon = screen.getByTestId('reports-icon');
+        await act(() => {
+            userEvent.click(icon);
+        });
+
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
+    });
+
+    it('should display notices tooltip', async () => {
         render(<Component {...defaultProps} />);
         const text = 'Total number of notices emitted';
 
         const icon = screen.getByTestId('notices-icon');
+        await act(() => {
+            userEvent.click(icon);
+        });
+
+        await screen.findByText(text);
+        expect(screen.getByText(text)).toBeInTheDocument();
+    });
+
+    it('should display vouchers tooltip', async () => {
+        render(<Component {...defaultProps} />);
+        const text = 'Total number of vouchers emitted';
+
+        const icon = screen.getByTestId('vouchers-icon');
         await act(() => {
             userEvent.click(icon);
         });

@@ -112,7 +112,10 @@ export const DappStats: FC<DappStatsProps> = ({
                             placement="top"
                             isOpen={reportsTooltip.isOpen}
                         >
-                            <Icon onClick={reportsTooltip.onToggle} />
+                            <Icon
+                                data-testid="reports-icon"
+                                onClick={reportsTooltip.onToggle}
+                            />
                         </Tooltip>
                     </HStack>
                 }
@@ -129,7 +132,10 @@ export const DappStats: FC<DappStatsProps> = ({
                             placement="top"
                             isOpen={vouchersTooltip.isOpen}
                         >
-                            <Icon onClick={vouchersTooltip.onToggle} />
+                            <Icon
+                                data-testid="vouchers-icon"
+                                onClick={vouchersTooltip.onToggle}
+                            />
                         </Tooltip>
                     </HStack>
                 }
