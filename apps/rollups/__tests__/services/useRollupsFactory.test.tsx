@@ -95,7 +95,7 @@ describe('useRollupsFactory hook', () => {
         expect(factory.result.current).toBe(undefined);
     });
 
-    it('should ***', async () => {
+    it('should invoke the network deployment function when network and wallet exist', async () => {
         const connectValue = 'connect';
         CartesiDAppFactory__factory.connect = (): CartesiDAppFactory =>
             connectValue as unknown as CartesiDAppFactory;
