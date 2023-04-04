@@ -9,21 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    renderHook,
-    cleanup,
-    waitFor,
-    screen,
-    act,
-} from '@testing-library/react';
+import { renderHook, cleanup, waitFor } from '@testing-library/react';
 import { useWallet } from '@explorer/wallet';
 import { CartesiDAppFactory__factory } from '@cartesi/rollups';
 import { useNetwork } from '../../src/services/useNetwork';
 import { useRollupsFactory } from '../../src/services/useRollupsFactory';
 import { networks } from '../../src/services/useNetwork';
 import { JsonRpcSigner } from '@ethersproject/providers/src.ts/json-rpc-provider';
-import { Provider, Web3Provider } from '@ethersproject/providers';
-import { Signer } from 'ethers';
+import { Web3Provider } from '@ethersproject/providers';
 import { CartesiDAppFactory } from '@cartesi/rollups/dist/src/types/contracts/CartesiDAppFactory';
 
 const walletMod = '@explorer/wallet';
