@@ -13,25 +13,19 @@
 import { useEffect, useState } from 'react';
 
 import {
-    ERC20PortalFacet,
-    ERC20PortalFacet__factory,
-    EtherPortalFacet,
-    EtherPortalFacet__factory,
-    InputFacet,
-    InputFacet__factory,
-    OutputFacet,
-    OutputFacet__factory,
-    RollupsFacet,
-    RollupsFacet__factory,
+    ERC20Portal,
+    ERC20Portal__factory,
+    EtherPortal,
+    EtherPortal__factory,
+    InputBox,
+    InputBox__factory,
 } from '@cartesi/rollups';
 import { useWallet } from '@explorer/wallet';
 
 export interface RollupsContracts {
-    rollupsContract: RollupsFacet;
-    inputContract: InputFacet;
-    outputContract: OutputFacet;
-    erc20PortalContract: ERC20PortalFacet;
-    etherPortalContract: EtherPortalFacet;
+    inputContract: InputBox;
+    erc20PortalContract: ERC20Portal;
+    etherPortalContract: EtherPortal;
 }
 
 export const useRollups = (address: string): RollupsContracts | undefined => {
@@ -42,28 +36,18 @@ export const useRollups = (address: string): RollupsContracts | undefined => {
         const connect = async (): Promise<RollupsContracts> => {
             const signer = library.getSigner();
 
-            const rollupsContract = RollupsFacet__factory.connect(
+            const inputContract = InputBox__factory.connect(address, signer);
+            const erc20PortalContract = ERC20Portal__factory.connect(
                 address,
                 signer
             );
-            const inputContract = InputFacet__factory.connect(address, signer);
-            const outputContract = OutputFacet__factory.connect(
-                address,
-                signer
-            );
-            const erc20PortalContract = ERC20PortalFacet__factory.connect(
-                address,
-                signer
-            );
-            const etherPortalContract = EtherPortalFacet__factory.connect(
+            const etherPortalContract = EtherPortal__factory.connect(
                 address,
                 signer
             );
 
             return {
-                rollupsContract,
                 inputContract,
-                outputContract,
                 erc20PortalContract,
                 etherPortalContract,
             };

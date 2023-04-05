@@ -40,21 +40,11 @@ query factoryDApps(
     }
 }
 
-query dappFactories(
-    $orderBy: DAppFactory_orderBy
-    $where_dapp: DAppFactory_filter
-    $first: Int
-    $skip: Int
-) {
-    dappFactories(
-        orderBy: $orderBy
-        orderDirection: desc
-        first: $first
-        where: $where_dapp
-        skip: $skip
-    ) {
-        id
-        inputCount
+query dashboard($id: ID!) {
+    dashboard(id: $id) {
+        id,
+        factoryCount
         dappCount
+        inputCount
     }
 }

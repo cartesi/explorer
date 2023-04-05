@@ -34,11 +34,11 @@ import {
     PageBody,
     PagePanel,
 } from '@explorer/ui';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import {
     DApp_OrderBy,
-    useDappFactoriesQuery,
     useDappsQuery,
+    useDashboardQuery,
 } from '../../generated/graphql';
 import { DAppsList } from '../../components/DAppsList';
 
@@ -179,20 +179,15 @@ export const Dapps: FC<DappsProps> = (props) => {
                 search && search.length > 0 ? { id: search } : undefined,
         },
     });
-    const [dAppsFactoriesResult] = useDappFactoriesQuery();
-    const dAppsFactories = useMemo(
-        () => dAppsFactoriesResult?.data?.dappFactories ?? [],
-        [dAppsFactoriesResult?.data?.dappFactories]
-    );
-    const dappsCount = dAppsFactories.reduce(
-        (accumulator, factory) => accumulator + factory.dappCount,
-        0
-    );
-    const dappsInputs = dAppsFactories.reduce(
-        (accumulator, factory) => accumulator + factory.inputCount,
-        0
-    );
-    const hasFactories = dAppsFactories.length > 0;
+    const [dashboardResult] = useDashboardQuery({
+        variables: {
+            id: String(1),
+        },
+    });
+
+    const dappsCount = dashboardResult.data?.dashboard?.dappCount ?? 0;
+    const dappsInputs = dashboardResult.data?.dashboard?.inputCount ?? 0;
+    const hasFactories = dashboardResult.data?.dashboard?.factoryCount ?? 0;
 
     return (
         <Box bg={bg}>
