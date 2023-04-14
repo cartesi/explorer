@@ -12,15 +12,19 @@
 
 import { Box, Heading } from '@chakra-ui/react';
 import { Notification } from '@explorer/ui';
+import { Network } from '@explorer/utils';
 import Head from 'next/head';
 import { PageBody, PageHeader, PageLayout } from '../components/Layout';
 import { Dapps } from '../containers/rollups/Dapps';
+import { LocalDAppList } from '../containers/rollups/LocalDApps';
 import { useNetwork } from '../services/useNetwork';
 import { useRollupsFactory } from '../services/useRollupsFactory';
 
 const Home = () => {
     const factory = useRollupsFactory();
     const network = useNetwork();
+    const localDevEnabled = process.env.NEXT_PUBLIC_DAPP_LOCAL_DEV === 'true';
+    const isUsingLocalBlockchain = network?.chainId === Network.LOCAL;
 
     return (
         <PageLayout>
@@ -45,9 +49,11 @@ const Home = () => {
                 </PageBody>
             )}
 
-            {factory && network?.chainId && (
+            {localDevEnabled && isUsingLocalBlockchain ? (
+                <LocalDAppList chainId={network?.chainId} />
+            ) : factory && network?.chainId ? (
                 <Dapps chainId={network?.chainId} address={factory.address} />
-            )}
+            ) : null}
         </PageLayout>
     );
 };

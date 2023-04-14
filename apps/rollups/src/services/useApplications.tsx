@@ -43,6 +43,7 @@ export const useApplications = (): Applications => {
                         deployBlock
                     )
                     .then((events) => {
+                        console.log(events);
                         const applications = {
                             loading: false,
                             applications: events.map((e) => e.args.application),
