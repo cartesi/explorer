@@ -21,7 +21,6 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { GrGraphQl } from 'react-icons/gr';
 import { Provider } from 'urql';
-import { useNetwork } from '../../services/useNetwork';
 import { useRollupsGraphQL } from '../../services/useRollupsGraphQL';
 
 type Props = {
@@ -30,19 +29,32 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const GraphQLProvider: FC<Props> = ({ children, address }) => {
+const networks: Record<number, string> = {
+    5: 'goerli',
+    421613: 'arbitrum-goerli',
+};
+
+const port = process.env.PORT || 4000;
+const shouldUseMock = process.env.NEXT_PUBLIC_USE_GRAPHQL_MOCK === 'true';
+
+const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
     const barBgColor = useColorModeValue('white', 'header');
-    const network = useNetwork();
-    const [url, setUrl] = useState<string>('');
+    const [url, setUrl] = useState<string>();
     const client = useRollupsGraphQL(address, url);
+    console.log(url);
 
     useEffect(() => {
-        if (network) {
-            const url = network.graphql(address);
-            setUrl(url);
-        }
-    }, [network, address]);
+        const networkName = networks[chainId];
+        const env = 'staging';
+        const url = shouldUseMock
+            ? `http://localhost:${port}/graphql`
+            : `https://${address}.${networkName}.rollups.${env}.cartesi.io/graphql`;
+        setUrl(url);
+    }, [address, chainId]);
 
+    if (!client) {
+        return <div />;
+    }
     return (
         <VStack align="stretch">
             <InputGroup
@@ -56,7 +68,7 @@ const GraphQLProvider: FC<Props> = ({ children, address }) => {
                 </InputLeftAddon>
                 <Input value={url} onChange={(e) => setUrl(e.target.value)} />
             </InputGroup>
-            {client && <Provider value={client}>{children}</Provider>}
+            <Provider value={client}>{children}</Provider>
         </VStack>
     );
 };
