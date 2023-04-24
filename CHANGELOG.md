@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.0] - 2023-04-24
+## [3.3.0] - 2023-04-25
 
 -   Added JSON view support for DApp detail view on Rollups.
 -   Maintenance applied to shared code and internal dependencies, e.g. update version.
 -   Applied fix to DApp address search on rollups main page.
 -   Added support to listing DApp of different versions.
 -   Applied a fix on how we deal logically with a zero value in the new React version.
+-   Removed the old google analytics called universal analytics.
 
 ## [3.2.2] - 2023-03-01
 
