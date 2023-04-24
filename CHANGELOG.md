@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2023-04-24
+
+-   Added JSON view support for DApp detail view on Rollups.
+-   Maintenance applied to shared code and internal dependencies, e.g. update version.
+-   Applied fix to DApp address search on rollups main page.
+-   Added support to listing DApp of different versions.
+-   Applied a fix on how we deal logically with a zero value in the new React version.
+
 ## [3.2.2] - 2023-03-01
 
 -   `Staking`
@@ -287,7 +295,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.2.2...HEAD
+[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.3.0...HEAD
+[3.3.0]: https://github.com/cartesi-corp/explorer/compare/v3.2.2...v3.3.0
 [3.2.2]: https://github.com/cartesi-corp/explorer/compare/v3.2.1...v3.2.2
 [3.2.1]: https://github.com/cartesi-corp/explorer/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/cartesi-corp/explorer/compare/v3.1.0...v3.2.0
