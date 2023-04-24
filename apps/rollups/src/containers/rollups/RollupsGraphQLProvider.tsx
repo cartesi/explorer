@@ -34,7 +34,7 @@ const networks: Record<number, string> = {
     421613: 'arbitrum-goerli',
 };
 
-const port = process.env.PORT || 4000;
+const mockPort = 4000;
 const shouldUseMock = process.env.NEXT_PUBLIC_USE_GRAPHQL_MOCK === 'true';
 
 const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
@@ -47,7 +47,7 @@ const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
         const networkName = networks[chainId];
         const env = 'staging';
         const url = shouldUseMock
-            ? `http://localhost:${port}/graphql`
+            ? `http://localhost:${mockPort}/graphql`
             : `https://${address}.${networkName}.rollups.${env}.cartesi.io/graphql`;
         setUrl(url);
     }, [address, chainId]);
