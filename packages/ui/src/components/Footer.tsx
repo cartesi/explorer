@@ -122,7 +122,10 @@ const Footer: FC<FooterProps> = ({ contracts, links }) => {
                     justify={{ md: 'space-between' }}
                     align={{ md: 'center' }}
                 >
-                    <Text>© 2021 Cartesi Pte. Ltd. All rights reserved</Text>
+                    <Text>
+                        © {new Date().getFullYear()} Cartesi Foundation Ltd. All
+                        rights reserved
+                    </Text>
                     <Stack direction={'row'} spacing={6}>
                         <SocialButton
                             label={'Twitter'}
