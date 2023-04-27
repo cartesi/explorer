@@ -14,3 +14,26 @@ This is a [Next.js v12](https://nextjs.org) based web app that also uses graphQL
 1. Make sure you ran the `yarn install` in the root folder of this monorepo to guarantee all things are installed and created (symlinks) as expected.
 2. Then in this subdirectory you can run `yarn codegen` to generate the graphQL code and then `yarn dev`
 3. Open the application in browser and switch your metamask wallet to a supported network i.e. **goerli, Arbitrum Goerli or Polygon Mumbai**.
+
+## GraphQL Mock Server
+
+The rollups project also has a graphQL mock server to provide means to work in the **DApp details page**. That graphQL data comes from the DApp itself, but they're not always available (i.e. unreliable) and sometimes things will change drastically in the `backend` side of the DApp but it is still under development, hence the mock server is here to unblock the UI development.
+
+In order to use the mock GraphQL api, you need to:
+
+Set the environment variable on [_.env.development_](./.env.development)
+
+```env
+NEXT_PUBLIC_USE_GRAPHQL_MOCK=true
+```
+
+Run the following command from the `apps/rollups` folder:
+
+```shell
+yarn run start:mock
+Server running on: http://localhost:4000/graphql
+```
+
+After this, the data displayed in the UI will start coming from the mock server instead of staging/production APIs.
+
+The mock server files reside in [_rollups/graphql/mock_ ](./graphql/mock). The custom-scalars file there can be used to add new scalars or tweak existing ones based on your dev needs.
