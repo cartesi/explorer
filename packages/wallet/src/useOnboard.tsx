@@ -88,6 +88,12 @@ export const buildConfig = (
             label: 'localhost',
             rpcUrl: 'http://localhost:8545',
         },
+        {
+            id: `0x${convertToHex(Network.SEPOLIA)}`,
+            token: 'ETH',
+            label: 'Sepolia Testnet',
+            rpcUrl: getRPC('sepolia'),
+        },
     ].filter((c) => chainIds.includes(c.id));
 
     return {

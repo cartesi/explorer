@@ -13,22 +13,19 @@ export enum Network {
     MAINNET = 1,
     GOERLI = 5,
     LOCAL = 31337,
+    SEPOLIA = 11155111,
 }
 
 export const networks = {
     1: 'mainnet',
     5: 'goerli',
     31337: 'localhost',
+    11155111: 'sepolia',
 };
 
 export const confirmations = {
     1: 3,
     5: 1,
     31337: 1,
-};
-
-export const etherscanLinks = {
-    1: 'https://etherscan.io',
-    5: 'https://goerli.etherscan.io',
-    31337: null,
+    11155111: 1,
 };

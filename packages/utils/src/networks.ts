@@ -15,6 +15,7 @@ export const Network = {
     LOCAL: 31337,
     ARBITRUM_GOERLI: 421613,
     POLYGON_MUMBAI: 80001,
+    SEPOLIA: 11155111,
 } as const;
 
 export const networks = {
@@ -23,6 +24,7 @@ export const networks = {
     31337: 'localhost',
     421613: 'arbitrum-goerli',
     80001: 'polygon-mumbai',
+    11155111: 'sepolia',
 };
 
 export const confirmations = {
@@ -31,6 +33,7 @@ export const confirmations = {
     31337: 1,
     421613: 1,
     80001: 1,
+    11155111: 1,
 };
 
 export const etherscanLinks = {
@@ -39,4 +42,5 @@ export const etherscanLinks = {
     31337: null,
     421613: 'https://goerli.arbiscan.io',
     80001: 'https://mumbai.polygonscan.com',
+    11155111: 'https://sepolia.etherscan.io',
 };
