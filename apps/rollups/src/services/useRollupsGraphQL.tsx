@@ -18,15 +18,12 @@ import { useNetwork } from './useNetwork';
 export const useRollupsGraphQL = (address: string, manualUrl?: string) => {
     const network = useNetwork();
     return useMemo<Client | null>(() => {
-        if (!network || !address || isEmpty(manualUrl)) {
+        if (!network || !address) {
             return null;
         }
         // Guess generate URL if only address is available
-        // If manual-URL is passed down (usually is a user input) that will used instead
-        const url =
-            typeof manualUrl === 'undefined' || manualUrl === ''
-                ? network.graphql(address)
-                : manualUrl;
+        // If manual-URL is passed down (usually is a user input) that will be used instead
+        const url = isEmpty(manualUrl) ? network.graphql(address) : manualUrl;
         console.log(`${manualUrl} - ${url}`);
         return createClient({ url });
     }, [network, address, manualUrl]);
