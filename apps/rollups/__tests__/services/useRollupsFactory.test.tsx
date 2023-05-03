@@ -17,7 +17,7 @@ import { useRollupsFactory } from '../../src/services/useRollupsFactory';
 import { networks } from '../../src/services/useNetwork';
 import { JsonRpcSigner } from '@ethersproject/providers/src.ts/json-rpc-provider';
 import { Web3Provider } from '@ethersproject/providers';
-import { CartesiDAppFactory } from '@cartesi/rollups/dist/src/types/contracts/CartesiDAppFactory';
+import { CartesiDAppFactory } from '@cartesi/rollups';
 
 const walletMod = '@explorer/wallet';
 const networkMod = '../../src/services/useNetwork';

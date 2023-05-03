@@ -19,7 +19,7 @@ import {
 import { Client } from 'urql';
 import { withChakraTheme } from '../../test-utilities';
 import GraphQLProvider from '../../../src/containers/rollups/RollupsGraphQLProvider';
-import { useNetwork } from '../../../src/services/useNetwork';
+import { Network, useNetwork } from '../../../src/services/useNetwork';
 import { useRollupsGraphQL } from '../../../src/services/useRollupsGraphQL';
 
 jest.mock('urql', () => {
@@ -75,13 +75,13 @@ describe('GraphQLProvider container', () => {
     });
 
     it('should set correct address and url when changing url', () => {
-        mockUseNetwork.mockReturnValue(undefined);
-        mockUseRollupsGraphQL.mockReturnValue(undefined);
-
+        mockUseNetwork.mockReturnValue({} as Network);
+        mockUseRollupsGraphQL.mockReturnValue({} as Client);
         const mockedUseRollupsGraphQL = jest.fn();
-        mockUseRollupsGraphQL.mockImplementation(mockedUseRollupsGraphQL);
 
         const { container } = render(<Component {...defaultProps} />);
+        mockUseRollupsGraphQL.mockImplementation(mockedUseRollupsGraphQL);
+
         const url = 'https://google.com';
         const input = container.querySelector('input');
 

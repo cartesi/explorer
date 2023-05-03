@@ -39,7 +39,7 @@ const shouldUseMock = process.env.NEXT_PUBLIC_USE_GRAPHQL_MOCK === 'true';
 
 const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
     const barBgColor = useColorModeValue('white', 'header');
-    const [url, setUrl] = useState<string>();
+    const [url, setUrl] = useState<string>('');
     const client = useRollupsGraphQL(address, url);
     console.log(url);
 
