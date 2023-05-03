@@ -11,6 +11,7 @@
         "lint:fix": "yarn lint --fix",
         "start": "next start",
         "test": "jest",
+        "test:ci": "jest --runInBand --coverage",
         "start:mock": "ts-node graphql/mock/server.ts"
     },
     "dependencies": {
