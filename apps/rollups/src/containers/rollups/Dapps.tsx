@@ -35,12 +35,12 @@ import {
     PagePanel,
 } from '@explorer/ui';
 import { FC, useState } from 'react';
+import { DAppsList } from '../../components/DAppsList';
 import {
     DApp_OrderBy,
     useDappsQuery,
     useDashboardQuery,
 } from '../../generated/graphql';
-import { DAppsList } from '../../components/DAppsList';
 
 export interface DappsProps {
     address: string;
@@ -187,7 +187,7 @@ export const Dapps: FC<DappsProps> = (props) => {
 
     const dappsCount = dashboardResult.data?.dashboard?.dappCount ?? 0;
     const dappsInputs = dashboardResult.data?.dashboard?.inputCount ?? 0;
-    const hasFactories = dashboardResult.data?.dashboard?.factoryCount ?? 0;
+    const hasFactories = dashboardResult.data?.dashboard?.factoryCount ?? false;
 
     return (
         <Box bg={bg}>
@@ -215,23 +215,25 @@ export const Dapps: FC<DappsProps> = (props) => {
                         />
                     )}
 
-                    <DappsFilters
-                        orderBy={orderBy}
-                        fetching={dAppsResult.fetching}
-                        onChangeSearch={setSearch}
-                        onChangeOrderBy={setOrderBy}
-                    />
+                    {!dAppsResult.error && dAppsResult.data?.dapps ? (
+                        <>
+                            <DappsFilters
+                                orderBy={orderBy}
+                                fetching={dAppsResult.fetching}
+                                onChangeSearch={setSearch}
+                                onChangeOrderBy={setOrderBy}
+                            />
 
-                    {dAppsResult && dAppsResult.data?.dapps && (
-                        <DAppsList
-                            dapps={dAppsResult.data.dapps}
-                            dappsCount={dappsCount}
-                            chainId={chainId}
-                            pageNumber={pageNumber}
-                            fetching={dAppsResult.fetching}
-                            onChangePageNumber={setPageNumber}
-                        />
-                    )}
+                            <DAppsList
+                                dapps={dAppsResult.data.dapps}
+                                dappsCount={dappsCount}
+                                chainId={chainId}
+                                pageNumber={pageNumber}
+                                fetching={dAppsResult.fetching}
+                                onChangePageNumber={setPageNumber}
+                            />
+                        </>
+                    ) : null}
                 </Box>
             </PageBody>
         </Box>
