@@ -150,7 +150,7 @@ export const networks: Record<number, Network> = {
     },
 };
 
-if (process.env.NEXT_PUBLIC_FETCH_LOCAL_ABI === 'true') {
+if (process.env.NEXT_PUBLIC_DAPP_LOCAL_DEV === 'true') {
     networks[0x7a69] = {
         name: 'localhost',
         chainId: 31337,
