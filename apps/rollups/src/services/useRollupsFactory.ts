@@ -14,6 +14,11 @@ import {
     CartesiDAppFactory,
     CartesiDAppFactory__factory,
 } from '@cartesi/rollups';
+
+import {
+    CartesiDAppFactory as V08Factory,
+    CartesiDAppFactory__factory as v08_factory,
+} from '@cartesi/rollups-0.8';
 import { useWallet } from '@explorer/wallet';
 import { useEffect, useState } from 'react';
 import { useNetwork } from './useNetwork';
@@ -44,4 +49,45 @@ export const useRollupsFactory = (): CartesiDAppFactory | undefined => {
         }
     }, [network, wallet]);
     return factory;
+};
+
+interface LegacyFactory {
+    v08Factory: V08Factory;
+}
+
+/**
+ * A hook to be used when dealing with old CartesiDAppFactory.
+ * That provides the local development with support to get information about created DApps.
+ * @returns old version factories
+ */
+export const useRollupLegacyFactories = () => {
+    const [legacyFactories, setLegacyFactories] = useState<
+        LegacyFactory | undefined
+    >();
+    const wallet = useWallet();
+    const network = useNetwork();
+    useEffect(() => {
+        if (network && wallet?.library) {
+            const provider = wallet.library;
+            const signer = provider.getSigner();
+            network.deployment('CartesiDAppFactory').then((deployment) => {
+                if (deployment) {
+                    const v08Factory = v08_factory.connect(
+                        deployment.address,
+                        signer
+                    );
+
+                    setLegacyFactories({
+                        v08Factory,
+                    });
+                } else {
+                    setLegacyFactories(undefined);
+                }
+            });
+        } else {
+            setLegacyFactories(undefined);
+        }
+    }, [network, wallet]);
+
+    return legacyFactories;
 };
