@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Cartesi Pte. Ltd.
+// Copyright (C) 2023 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export type { UseWallet } from './useWallet';
-export { useWallet } from './useWallet';
-export { WalletConnectionProvider, WalletConnectionContext } from './provider';
+export type { Web3Provider } from './definitions';
 export { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
+export { WalletConnectionContext, WalletConnectionProvider } from './provider';
+export { useWallet } from './useWallet';
+export type { UseWallet } from './useWallet';

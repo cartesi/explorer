@@ -16,7 +16,7 @@ export enum WalletType {
     SDK = 'sdk',
     INJECTED = 'injected',
 }
-
+export type { Web3Provider };
 export interface WalletConnectionContextProps {
     account?: string;
     chainId?: number;
