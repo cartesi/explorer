@@ -21,17 +21,13 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { GrGraphQl } from 'react-icons/gr';
 import { Provider } from 'urql';
+import { networks } from '../../services/useNetwork';
 import { useRollupsGraphQL } from '../../services/useRollupsGraphQL';
 
 type Props = {
     address: string;
     chainId: number;
     children?: React.ReactNode;
-};
-
-const networks: Record<number, string> = {
-    5: 'goerli',
-    421613: 'arbitrum-goerli',
 };
 
 const mockPort = 4000;
@@ -41,14 +37,13 @@ const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
     const barBgColor = useColorModeValue('white', 'header');
     const [url, setUrl] = useState<string>('');
     const client = useRollupsGraphQL(address, url);
-    console.log(url);
 
     useEffect(() => {
-        const networkName = networks[chainId];
+        const network = networks[chainId];
         const env = 'staging';
         const url = shouldUseMock
             ? `http://localhost:${mockPort}/graphql`
-            : `https://${address}.${networkName}.rollups.${env}.cartesi.io/graphql`;
+            : network?.graphql(address, env);
         setUrl(url);
     }, [address, chainId]);
 
