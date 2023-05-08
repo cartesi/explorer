@@ -12,7 +12,21 @@
 
 import { useWallet } from '@explorer/wallet';
 import { useEffect, useState } from 'react';
-import { ChainAbi } from 'staking/src/services/contracts';
+
+interface ContractAbi {
+    address: string;
+    abi: any[];
+}
+
+interface ContractMap {
+    [name: string]: ContractAbi;
+}
+
+interface ChainAbi {
+    name: string;
+    chainId: string;
+    contracts: ContractMap;
+}
 
 export type Chain = {
     id: string;
