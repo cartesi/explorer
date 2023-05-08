@@ -32,6 +32,10 @@ COPY --from=deps /app/ ./
 COPY --from=tbuilder /app/out/full/ .
 # Disabling telemetry during build
 ENV NEXT_TELEMETRY_DISABLED 1
+# Adding a default ARG value to true, therefore to build Rollups app with local_development mode active.
+# Could be overriden when building a new image using the command --build-arg=boolean_value
+ARG LOCAL_DEV=true
+ENV NEXT_PUBLIC_DAPP_LOCAL_DEV=$LOCAL_DEV
 # turbo task export has the graphql codegen and build as dependsOn tasks. It will generate a static version of the Rollups.
 RUN yarn export --filter=rollups
 
