@@ -17,7 +17,8 @@
         "build-storybook": "turbo run build-storybook",
         "storybook": "turbo run storybook",
         "format:check": "prettier --check \"**/*.{ts,tsx}\"",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "coveralls": "mkdir coverage && ./node_modules/.bin/lcov-result-merger './!(node_modules)**/**/coverage/lcov.info' './coverage/lcov.info' --prepend-source-files"
     },
     "devDependencies": {
         "eslint-config-custom": "*",
@@ -35,6 +36,7 @@
         "@emotion/styled": "11.6.0",
         "@unleash/proxy-client-react": "3.3.0",
         "framer-motion": "^4",
+        "lcov-result-merger": "^4.1.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "unleash-proxy-client": "2.2.1"
