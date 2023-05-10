@@ -9,17 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
-import {
-    CartesiDAppFactory,
-    CartesiDAppFactory__factory,
-} from '@cartesi/rollups';
+import { CartesiDAppFactory } from '@cartesi/rollups';
+import { act, cleanup, renderHook, waitFor } from '@testing-library/react';
+import { useInputBoxMeta } from '../../src/services/contracts/inputBox';
+import { buildInputFacetMeta } from '../../src/services/contracts/inputFacet';
 import { useApplications } from '../../src/services/useApplications';
 import { networks, useNetwork } from '../../src/services/useNetwork';
-import { useRollupsFactory } from '../../src/services/useRollupsFactory';
+import {
+    useRollupLegacyFactories,
+    useRollupsFactory,
+} from '../../src/services/useRollupsFactory';
+import {
+    buildApplicationCreatedEvent,
+    buildInputFacetMetaReturn,
+    buildUseInputBoxMetaReturn,
+    buildUseRollupFactoryReturn,
+    buildUseRollupLegacyFactoriesReturn,
+} from './mocks';
 
 const networkMod = '../../src/services/useNetwork';
 const rollupsMod = '../../src/services/useRollupsFactory';
+const inputFacetMod = '../../src/services/contracts/inputFacet';
+const inputBoxMod = '../../src/services/contracts/inputBox';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
 jest.mock(networkMod, () => {
@@ -37,6 +48,25 @@ jest.mock(rollupsMod, () => {
         __esModule: true,
         ...originalModule,
         useRollupsFactory: jest.fn(),
+        useRollupLegacyFactories: jest.fn(),
+    };
+});
+
+jest.mock(inputFacetMod, () => {
+    const originalModule = jest.requireActual(inputFacetMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        buildInputFacetMeta: jest.fn(),
+    };
+});
+
+jest.mock(inputBoxMod, () => {
+    const originalModule = jest.requireActual(inputBoxMod);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useInputBoxMeta: jest.fn(),
     };
 });
 
@@ -44,10 +74,45 @@ const mockUseNetwork = useNetwork as jest.MockedFunction<typeof useNetwork>;
 const mockUseRollupsFactory = useRollupsFactory as jest.MockedFunction<
     typeof useRollupsFactory
 >;
+const mockUseRollupsLegacyFactories =
+    useRollupLegacyFactories as jest.MockedFunction<
+        typeof useRollupLegacyFactories
+    >;
+const mockBuildInputFacetMeta = buildInputFacetMeta as jest.MockedFunction<
+    typeof buildInputFacetMeta
+>;
+
+const mockUseInputBoxMeta = useInputBoxMeta as jest.MockedFunction<
+    typeof useInputBoxMeta
+>;
 
 const defaultNetwork = networks[0x5];
 
-describe('useApplications hook', () => {
+describe('useApplications Hook', () => {
+    beforeEach(() => {
+        mockUseRollupsLegacyFactories.mockReturnValue(
+            buildUseRollupLegacyFactoriesReturn()
+        );
+
+        mockUseInputBoxMeta.mockReturnValue(buildUseInputBoxMetaReturn());
+        mockUseRollupsFactory.mockReturnValue(buildUseRollupFactoryReturn());
+        mockBuildInputFacetMeta.mockReturnValue(buildInputFacetMetaReturn());
+        mockUseNetwork.mockReturnValue({
+            ...defaultNetwork,
+            deployment: () => {
+                return Promise.resolve({
+                    address: account,
+                    transaction: null,
+                    receipt: null,
+                    transactionHash: null,
+                });
+            },
+        });
+
+        // Keep the tests log clean.
+        jest.spyOn(console, 'log').mockImplementation(jest.fn());
+    });
+
     afterEach(() => {
         cleanup();
         jest.clearAllMocks();
@@ -60,6 +125,7 @@ describe('useApplications hook', () => {
         const applications = renderHook(() => useApplications());
         expect(applications.result.current.loading).toBe(false);
         expect(applications.result.current.applications.length).toBe(0);
+        expect(applications.result.current.error).not.toBeDefined();
     });
 
     it("should set correct application state when when rollups factory doesn't exist", () => {
@@ -69,27 +135,11 @@ describe('useApplications hook', () => {
         const applications = renderHook(() => useApplications());
         expect(applications.result.current.loading).toBe(false);
         expect(applications.result.current.applications.length).toBe(0);
+        expect(applications.result.current.error).not.toBeDefined();
     });
 
     it('should invoke the network deployment function when network and rollups factory exist', async () => {
-        const connectValue = 'connect';
-        CartesiDAppFactory__factory.connect = (): CartesiDAppFactory =>
-            connectValue as unknown as CartesiDAppFactory;
-
         let isDeploymentCalled = false;
-        mockUseRollupsFactory.mockReturnValue({
-            queryFilter: () => ({
-                then: function () {
-                    return this;
-                },
-                catch: function () {
-                    return this;
-                },
-            }),
-            filters: {
-                ApplicationCreated: () => [],
-            },
-        } as unknown as CartesiDAppFactory);
         mockUseNetwork.mockReturnValue({
             ...defaultNetwork,
             deployment: () => {
@@ -103,10 +153,135 @@ describe('useApplications hook', () => {
             },
         });
 
-        await waitFor(() => {
-            renderHook(() => useApplications());
+        await act(async () => {
+            waitFor(() => {
+                renderHook(() => useApplications());
+            });
         });
 
         expect(isDeploymentCalled).toBe(true);
+    });
+
+    it('should retrieve DApp (v0.9) information directly from smartcontract', async () => {
+        const factory = buildUseRollupFactoryReturn();
+        factory.queryFilter = jest.fn(() =>
+            Promise.resolve<any>([buildApplicationCreatedEvent()])
+        );
+
+        mockUseRollupsFactory.mockReturnValue(factory);
+
+        const { result } = renderHook(() => useApplications());
+        const currentResult = result.current;
+
+        await waitFor(() => expect(result.current).not.toBe(currentResult));
+
+        expect(result.current.applications).toHaveLength(1);
+        expect(result.current.applications[0]).toHaveProperty(
+            'factoryVersion',
+            '0.9'
+        );
+        expect(result.current.applications[0]).toHaveProperty(
+            'address',
+            '0x64'
+        );
+        expect(result.current.applications[0]).toHaveProperty(
+            'deploymentTimestamp'
+        );
+        expect(result.current.applications[0].inputs.length).toBe(2);
+    });
+
+    it('should provide error in case of failure when fetching applications data', async () => {
+        const factory = buildUseRollupFactoryReturn();
+        factory.queryFilter = jest.fn(() =>
+            Promise.reject(new Error('Network unresponsive'))
+        );
+
+        mockUseRollupsFactory.mockReturnValue(factory);
+
+        const { result } = renderHook(() => useApplications());
+        const currentResult = result.current;
+
+        await waitFor(() => expect(result.current).not.toBe(currentResult));
+
+        expect(result.current.applications).toHaveLength(0);
+        expect(result.current.error).toEqual(new Error('Network unresponsive'));
+    });
+
+    it('should log error when fails to retrieve inputs, but keep the inputs as an empty list', async () => {
+        const factory = buildUseRollupFactoryReturn();
+        factory.queryFilter = jest.fn(() =>
+            Promise.resolve<any>([buildApplicationCreatedEvent()])
+        );
+        mockUseRollupsFactory.mockReturnValue(factory);
+
+        const inputBoxMeta = buildUseInputBoxMetaReturn();
+        inputBoxMeta.getInputs = jest.fn(() =>
+            Promise.reject(new Error('not found'))
+        );
+        mockUseInputBoxMeta.mockReturnValue(inputBoxMeta);
+        const errorLog = jest
+            .spyOn(console, 'error')
+            .mockImplementation(jest.fn());
+
+        const { result } = renderHook(() => useApplications());
+        const currentResult = result.current;
+
+        await waitFor(() => expect(result.current).not.toBe(currentResult));
+
+        expect(result.current.applications).toHaveLength(1);
+        expect(result.current.applications[0].inputs).toHaveLength(0);
+        expect(errorLog).toHaveBeenCalledWith(new Error('not found'));
+    });
+
+    describe('Legacy factories (v0.8)', () => {
+        it('should return information about DApps created for legacy factory', async () => {
+            const factory = buildUseRollupLegacyFactoriesReturn();
+            factory.v08Factory.queryFilter = jest.fn(() =>
+                Promise.resolve<any>([buildApplicationCreatedEvent()])
+            );
+            mockUseRollupsLegacyFactories.mockReturnValue(factory);
+
+            const { result } = renderHook(() => useApplications());
+            const currentResult = result.current;
+
+            await waitFor(() => expect(result.current).not.toBe(currentResult));
+
+            expect(result.current.error).not.toBeDefined();
+            expect(result.current.applications).toHaveLength(1);
+            expect(result.current.applications[0]).toHaveProperty(
+                'factoryVersion',
+                '0.8'
+            );
+            expect(result.current.applications[0]).toHaveProperty(
+                'address',
+                '0x64'
+            );
+            expect(result.current.applications[0]).toHaveProperty(
+                'deploymentTimestamp'
+            );
+            expect(
+                result.current.applications[0].inputs.length
+            ).toBeGreaterThan(0);
+        });
+
+        it('should provide inputs as an empty list in case of failure on fetching inputs', async () => {
+            const facet = buildInputFacetMetaReturn();
+            facet.getInputs.mockRejectedValue(new Error('failure'));
+            mockBuildInputFacetMeta.mockReturnValue(facet);
+
+            const factory = buildUseRollupLegacyFactoriesReturn();
+            factory.v08Factory.queryFilter = jest.fn(() =>
+                Promise.resolve<any>([buildApplicationCreatedEvent()])
+            );
+            mockUseRollupsLegacyFactories.mockReturnValue(factory);
+
+            const { result } = renderHook(useApplications);
+            const currResult = result.current;
+
+            await waitFor(() => expect(result.current).not.toBe(currResult));
+
+            expect(result.current.applications).toHaveLength(1);
+            expect(result.current.applications[0].inputs).toEqual([]);
+        });
     });
 });
