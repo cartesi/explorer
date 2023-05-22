@@ -9,20 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
-import { render, screen } from '@testing-library/react';
+import { Table, Tbody } from '@chakra-ui/react';
+import { cleanup, render, screen } from '@testing-library/react';
+import { useFlag } from '@unleash/proxy-client-react';
+import { FC } from 'react';
 import PoolPerformanceTableRow, {
     PoolPerformanceTableRowProps,
 } from '../../../../src/components/stake/tables/PoolPerformanceTableRow';
-import stakingPoolsData from '../../../../src/stories/stake/tables/stakingPoolsData';
 import { StakingPool } from '../../../../src/graphql/models';
-import { Table, Tbody } from '@chakra-ui/react';
+import stakingPoolsData, {
+    stakingPoolWithPerformance,
+} from '../../../stubs/stakingPoolsData';
 import { withChakraTheme } from '../../../test-utilities';
 
 jest.mock('next/link', () => ({ children, ...props }) => {
     const { passHref, ...restProps } = props;
     return <div {...restProps}>{children}</div>;
 });
+
+jest.mock('@unleash/proxy-client-react', () => ({
+    useFlag: jest.fn(),
+}));
+
+const useFlagMock = useFlag as jest.MockedFunction<typeof useFlag>;
 
 const [pool] = stakingPoolsData as unknown as StakingPool[];
 
@@ -45,6 +54,14 @@ const ThemedComponent =
 
 describe('Pool Performance Table Row', () => {
     const renderComponent = (props) => render(<ThemedComponent {...props} />);
+
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false);
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
 
     it('Should have required columns', () => {
         renderComponent(defaultProps);
@@ -101,5 +118,25 @@ describe('Pool Performance Table Row', () => {
         expect(() => screen.getByTestId('paused-tooltip-icon')).toThrow(
             'Unable to find an element'
         );
+    });
+
+    describe('When using newPerformanceEnabled on', () => {
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true);
+        });
+
+        it('it should render two new columns for monthly and weekly performance', async () => {
+            renderComponent({
+                ...defaultProps,
+                pool: stakingPoolWithPerformance,
+            });
+
+            expect(
+                screen.getByTestId('week-performance-col')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByTestId('month-performance-col')
+            ).toBeInTheDocument();
+        });
     });
 });
