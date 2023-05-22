@@ -30,6 +30,8 @@ export default [
             totalBlocks: 0,
             totalReward: '0',
         },
+        weeklyPerformance: [],
+        monthlyPerformance: [],
     },
     {
         __typename: 'StakingPool',
@@ -62,6 +64,8 @@ export default [
             totalBlocks: 0,
             totalReward: '0',
         },
+        weeklyPerformance: [],
+        monthlyPerformance: [],
     },
     {
         __typename: 'StakingPool',
@@ -94,5 +98,29 @@ export default [
             totalBlocks: 0,
             totalReward: '0',
         },
+        weeklyPerformance: [
+            {
+                id: '0x0da9e2d30d8ebf0214aca2e7807f77ce9e7f44e5-2785',
+                performance: '0.000819118099476506929751532537298',
+                timestamp: '1684383947',
+            },
+            {
+                id: '0x0da9e2d30d8ebf0214aca2e7807f77ce9e7f44e5-2784',
+                performance: '0.003341616585983614889200935045401',
+                timestamp: '1683767519',
+            },
+        ],
+        monthlyPerformance: [
+            {
+                id: '0x0da9e2d30d8ebf0214aca2e7807f77ce9e7f44e5-641',
+                performance: '0.000637091855148394278695636417898',
+                timestamp: '1684613147',
+            },
+            {
+                id: '0x0da9e2d30d8ebf0214aca2e7807f77ce9e7f44e5-640',
+                performance: '0.011403388455890271173229002579603',
+                timestamp: '1681932683',
+            },
+        ],
     },
 ];
