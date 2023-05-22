@@ -9,27 +9,28 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useRef } from 'react';
+import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
+    HStack,
+    Spinner,
     Table,
     Tbody,
     Td,
     Text,
-    Tr,
     Th,
     Thead,
-    HStack,
-    Spinner,
+    Tr,
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { ArrowDownIcon } from '@chakra-ui/icons';
-import { StakingPool, StakingPoolSort } from '../../../graphql/models';
-import { TableResponsiveHolder } from '../../TableResponsiveHolder';
-import PoolPerformanceTableRow from './PoolPerformanceTableRow';
-import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
-import { SlideInOut } from '../../animation/SlideInOut';
 import { GhostButton } from '@explorer/ui';
+import { useFlag } from '@unleash/proxy-client-react';
+import { FC, useRef } from 'react';
+import { StakingPool, StakingPoolSort } from '../../../graphql/models';
+import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
+import { TableResponsiveHolder } from '../../TableResponsiveHolder';
+import { SlideInOut } from '../../animation/SlideInOut';
+import PoolPerformanceTableRow from './PoolPerformanceTableRow';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
@@ -52,7 +53,8 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
     const borderColor = useColorModeValue('white', 'gray.700');
-
+    const newPerformanceEnabled = useFlag('newPerformanceEnabled');
+    const colSpans = newPerformanceEnabled ? 11 : 9;
     return (
         <TableResponsiveHolder ref={tableRef}>
             <Table>
@@ -85,6 +87,26 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                         </Th>
 
                         <Th isNumeric>Total Rewards</Th>
+
+                        {newPerformanceEnabled && (
+                            <>
+                                <Th
+                                    isNumeric
+                                    whiteSpace="nowrap"
+                                    data-testid=""
+                                >
+                                    <Text whiteSpace="nowrap">
+                                        7-days % (Annual)
+                                    </Text>
+                                </Th>
+
+                                <Th isNumeric whiteSpace="nowrap">
+                                    <Text whiteSpace="nowrap">
+                                        30-days % (Annual)
+                                    </Text>
+                                </Th>
+                            </>
+                        )}
 
                         <Th>Configured Commission</Th>
                         <Th>
@@ -130,7 +152,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                 <Tbody>
                     {loading ? (
                         <Tr>
-                            <Td colSpan={9} textAlign="center">
+                            <Td colSpan={colSpans} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
@@ -148,7 +170,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                         ))
                     ) : (
                         <Tr>
-                            <Td colSpan={9} textAlign="center">
+                            <Td colSpan={colSpans} textAlign="center">
                                 <Text>No items</Text>
                             </Td>
                         </Tr>

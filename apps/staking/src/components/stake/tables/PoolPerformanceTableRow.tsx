@@ -21,6 +21,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Address, StakeIcon } from '@explorer/ui';
+import { useFlag } from '@unleash/proxy-client-react';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
 import { FunctionComponent } from 'react';
@@ -39,11 +40,49 @@ const numberFormat = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
 });
 
+const apr = (value: number, days: number) =>
+    Math.pow(Math.pow(value + 1, 1 / days), 365) - 1;
+
+type PerformanceProps = {
+    weekly?: string;
+    monthly?: string;
+};
+
+const parseOrDefault = (value?: string) => (value ? parseFloat(value) : 0.0);
+
+const Performance = ({ weekly, monthly }: PerformanceProps) => {
+    const borderColor = useColorModeValue('gray.100', 'header');
+    const parsedWeekly = parseOrDefault(weekly);
+    const parsedMonthly = parseOrDefault(monthly);
+
+    return (
+        <>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="week-performance-col"
+            >
+                {numberFormat.format(parsedWeekly)} (
+                {numberFormat.format(apr(parsedWeekly, 7))})
+            </Td>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="month-performance-col"
+            >
+                {numberFormat.format(parsedMonthly)} (
+                {numberFormat.format(apr(parsedMonthly, 30))})
+            </Td>
+        </>
+    );
+};
+
 const PoolPerformanceTableRow: FunctionComponent<
     PoolPerformanceTableRowProps
 > = ({ chainId, pool, keepActionColVisible }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
     const stakeInfoBg = useColorModeValue('white', 'gray.800');
+    const newPerformanceEnabled = useFlag('newPerformanceEnabled');
 
     // accrued commission
     const accruedCommissionLabel =
@@ -76,7 +115,7 @@ const PoolPerformanceTableRow: FunctionComponent<
     }
 
     return (
-        <Tr key={pool.id} data-testid="pool-performance-table-row">
+        <Tr key={pool.id} id={pool.id} data-testid="pool-performance-table-row">
             <Td borderColor={borderColor} data-testid="address-col">
                 <HStack>
                     <Address

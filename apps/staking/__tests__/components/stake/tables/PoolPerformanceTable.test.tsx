@@ -9,14 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+    cleanup,
+    findByTestId,
+    fireEvent,
+    getByText,
+    render,
+    screen,
+} from '@testing-library/react';
+import { useFlag } from '@unleash/proxy-client-react';
 import PoolPerformanceTable, {
     PoolPerformanceTableProps,
 } from '../../../../src/components/stake/tables/PoolPerformanceTable';
-import stakingPoolsData from '../../../../src/stories/stake/tables/stakingPoolsData';
-import { withChakraTheme } from '../../../test-utilities';
 import { StakingPool, StakingPoolSort } from '../../../../src/graphql/models';
+import stakingPoolsData from '../../../stubs/stakingPoolsData';
+import { withChakraTheme } from '../../../test-utilities';
 
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
@@ -27,6 +34,10 @@ jest.mock('@chakra-ui/react', () => {
     };
 });
 
+jest.mock('@unleash/proxy-client-react', () => ({
+    useFlag: jest.fn(),
+}));
+
 const defaultProps = {
     account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
     chainId: 5,
@@ -36,11 +47,21 @@ const defaultProps = {
     onSort: () => undefined,
 };
 
+const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
+
 const Component =
     withChakraTheme<PoolPerformanceTableProps>(PoolPerformanceTable);
 
 describe('Pool Performance Table', () => {
     const renderComponent = (props) => render(<Component {...props} />);
+
+    beforeEach(() => {
+        useFlagStub.mockReturnValue(false);
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
 
     it('Should have required columns', () => {
         renderComponent(defaultProps);
@@ -164,5 +185,51 @@ describe('Pool Performance Table', () => {
             .closest('th')
             .querySelector('svg');
         expect(icon).toBeInTheDocument();
+    });
+
+    describe('When using newPerformanceEnabled on', () => {
+        beforeEach(() => {
+            useFlagStub.mockReturnValue(true);
+        });
+
+        it('Should present two new performance columns', () => {
+            renderComponent(defaultProps);
+            expect(screen.getByText(`7-days % (Annual)`)).toBeInTheDocument();
+            expect(screen.getByText(`30-days % (Annual)`)).toBeInTheDocument();
+        });
+
+        it('should present the weekly and monthly performance', async () => {
+            renderComponent(defaultProps);
+            const address = '0x0da...44e5';
+            const row = (await screen.findByText(address)).closest('tr');
+
+            const weeklyVal = await findByTestId(row, 'week-performance-col');
+            const monthlyVal = await findByTestId(row, 'month-performance-col');
+
+            expect(
+                await getByText(weeklyVal, '0.08% (4.36%)')
+            ).toBeInTheDocument();
+            expect(
+                await getByText(monthlyVal, '1.14% (14.79%)')
+            ).toBeInTheDocument();
+        });
+
+        it('Should present default 0 % for pools without performance', async () => {
+            renderComponent(defaultProps);
+            const address = '0x050...d5c7';
+            const firstRow = (await screen.findByText(address)).closest('tr');
+
+            const weekOne = await findByTestId(
+                firstRow,
+                'week-performance-col'
+            );
+            const monthOne = await findByTestId(
+                firstRow,
+                'month-performance-col'
+            );
+
+            expect(await getByText(weekOne, '0% (0%)')).toBeInTheDocument();
+            expect(await getByText(monthOne, '0% (0%)')).toBeInTheDocument();
+        });
     });
 });
