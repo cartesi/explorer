@@ -9,23 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import { LockIcon } from '@chakra-ui/icons';
 import {
+    Box,
     HStack,
     Icon,
+    Link,
     Td,
     Tooltip,
     Tr,
     useColorModeValue,
-    Box,
-    Link,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { LockIcon } from '@chakra-ui/icons';
-import { StakingPool } from '../../../graphql/models';
 import { Address, StakeIcon } from '@explorer/ui';
-import { formatCTSI } from '../../../utils/token';
+import { first, last } from 'lodash/fp';
+import NextLink from 'next/link';
+import { FunctionComponent } from 'react';
+import { StakingPool } from '../../../graphql/models';
 import labels from '../../../utils/labels';
+import { formatCTSI } from '../../../utils/token';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;
@@ -126,6 +127,14 @@ const PoolPerformanceTableRow: FunctionComponent<
             >
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
             </Td>
+
+            {newPerformanceEnabled && (
+                <Performance
+                    key={`perf-${pool.id}`}
+                    weekly={first(pool.weeklyPerformance)?.performance}
+                    monthly={last(pool.monthlyPerformance)?.performance}
+                />
+            )}
             <Td borderColor={borderColor} data-testid="commission-col">
                 {commissionLabel}{' '}
                 {commissionTooltip && (
