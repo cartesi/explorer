@@ -100,15 +100,20 @@ export async function getENSStaticProps({ params }: Context) {
                 id: params.pool,
             },
         }),
-        ensClient.query({
-            query: DOMAINS,
-            variables: {
-                first: 1,
-                where: { resolvedAddress: params.pool },
-                orderBy: 'createdAt',
-                orderDirection: 'desc',
-            },
-        }),
+        ensClient
+            .query({
+                query: DOMAINS,
+                variables: {
+                    first: 1,
+                    where: { resolvedAddress: params.pool },
+                    orderBy: 'createdAt',
+                    orderDirection: 'desc',
+                },
+            })
+            .catch((e) => {
+                console.log(`problem with ENS: ${e.message}`);
+                return { data: { domains: [] } };
+            }),
     ]);
 
     const goerliStakingPool = goerliPoolQ.data.stakingPool;
@@ -119,7 +124,7 @@ export async function getENSStaticProps({ params }: Context) {
 
     const { data } = ensQ;
 
-    const domain: Domain = data.domains[0];
+    const domain: Domain = data?.domains[0];
 
     const formattedAddress = formatEnsName(params.pool, domain?.name);
 
