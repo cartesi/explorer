@@ -26,6 +26,7 @@ export type UserSort =
     | 'totalBlocks';
 export type PoolBalanceSort = 'shares' | 'released';
 export type PoolShareValueSort = 'timestamp';
+export type OrderDirection = 'desc' | 'asc';
 
 interface Nodes<T> {
     nodes: T[];
@@ -77,6 +78,12 @@ export interface UsersVars {
     orderDirection: string;
 }
 
+type Performance = {
+    id: string;
+    performance: string;
+    timestamp: number;
+};
+
 export type StakingPool = {
     id: string;
     manager: string;
@@ -89,6 +96,8 @@ export type StakingPool = {
     commissionPercentage: number;
     paused: boolean;
     timestamp: number;
+    weeklyPerformance: Performance[];
+    monthlyPerformance: Performance[];
 };
 
 export type StakingPoolFlat = {
@@ -196,12 +205,34 @@ export interface StakingPoolsExtendedData {
     allStakingPools: Nodes<StakingPoolFlat>;
 }
 
+export interface StakingPoolsExtendedVars {
+    first: number;
+    skip: number;
+    where: any;
+    orderBy: string;
+    orderDirection?: OrderDirection;
+}
+
+type PerformanceSort = 'timestamp';
+
+type PerformanceFilter = {
+    timestamp_gte?: number;
+    performance_not?: number;
+};
 export interface StakingPoolsVars {
     first: number;
     skip: number;
     where: any;
     orderBy: string;
-    orderDirection?: string;
+    orderDirection?: OrderDirection;
+    firstWeeklyPerf: number;
+    monthlyOrderBy: PerformanceSort;
+    monthlyOrderDirection: OrderDirection;
+    firstMonthlyPerf: number;
+    weeklyOrderBy: PerformanceSort;
+    weeklyOrderDirection: OrderDirection;
+    whereWeekly: PerformanceFilter;
+    whereMonthly: PerformanceFilter;
 }
 
 export type PoolUser = {

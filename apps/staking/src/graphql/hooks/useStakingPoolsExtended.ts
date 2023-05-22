@@ -10,14 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { STAKING_POOLS_EXTENDED } from '../queries/stakingPoolsExtended';
-import {
-    StakingPoolsExtendedData,
-    StakingPoolsVars,
-    StakingPoolSortExtended,
-} from '../models';
-import { useExtendedApollo } from '../../services/apollo';
 import { useWallet } from '@explorer/wallet';
+import { useExtendedApollo } from '../../services/apollo';
+import {
+    StakingPoolSortExtended,
+    StakingPoolsExtendedData,
+    StakingPoolsExtendedVars,
+} from '../models';
+import { STAKING_POOLS_EXTENDED } from '../queries/stakingPoolsExtended';
 
 export const POOLS_PER_PAGE = 50;
 
@@ -39,7 +39,7 @@ const useStakingPoolsExtended = (
     const filter = id ? { id: id.toLowerCase() } : {};
     const order = orderBy[sort];
     const client = useExtendedApollo(chainId);
-    return useQuery<StakingPoolsExtendedData, StakingPoolsVars>(
+    return useQuery<StakingPoolsExtendedData, StakingPoolsExtendedVars>(
         STAKING_POOLS_EXTENDED,
         {
             variables: {

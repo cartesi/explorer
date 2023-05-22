@@ -15,9 +15,17 @@ export const STAKING_POOLS = gql`
     query stakingPools(
         $first: Int
         $skip: Int
+        $firstWeeklyPerf: Int
+        $firstMonthlyPerf: Int
         $where: StakingPool_filter
         $orderBy: StakingPool_orderBy
+        $monthlyOrderBy: MonthlyPoolPerformance_orderBy
+        $weeklyOrderBy: WeeklyPoolPerformance_orderBy
         $orderDirection: OrderDirection
+        $weeklyOrderDirection: OrderDirection
+        $monthlyOrderDirection: OrderDirection
+        $whereWeekly: WeeklyPoolPerformance_filter
+        $whereMonthly: MonthlyPoolPerformance_filter
     ) {
         stakingPools(
             first: $first
@@ -54,6 +62,26 @@ export const STAKING_POOLS = gql`
                 balance
                 totalBlocks
                 totalReward
+            }
+            monthlyPerformance(
+                first: $firstMonthlyPerf
+                orderDirection: $monthlyOrderDirection
+                orderBy: $monthlyOrderBy
+                where: $whereMonthly
+            ) {
+                id
+                performance
+                timestamp
+            }
+            weeklyPerformance(
+                first: $firstWeeklyPerf
+                orderDirection: $weeklyOrderDirection
+                orderBy: $weeklyOrderBy
+                where: $whereWeekly
+            ) {
+                id
+                performance
+                timestamp
             }
         }
     }

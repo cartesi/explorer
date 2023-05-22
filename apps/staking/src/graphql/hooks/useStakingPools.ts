@@ -10,10 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { STAKING_POOLS } from '../queries/stakingPools';
-import { StakingPoolsData, StakingPoolsVars, StakingPoolSort } from '../models';
-import { filter, isEmpty, pipe, reduce } from 'lodash/fp';
+import { getUnixTime, startOfDay, sub } from 'date-fns';
 import { toPairs } from 'lodash';
+import { filter, isEmpty, pipe, reduce } from 'lodash/fp';
+import {
+    OrderDirection,
+    StakingPoolSort,
+    StakingPoolsData,
+    StakingPoolsVars,
+} from '../models';
+import { STAKING_POOLS } from '../queries/stakingPools';
 
 export const POOLS_PER_PAGE = 50;
 
@@ -30,7 +36,7 @@ interface UseStakingPoolProps {
 }
 
 // sort directions for each criteria
-const directions = {
+const directions: Record<string, OrderDirection> = {
     totalUsers: 'desc',
     amount: 'desc',
     commissionPercentage: 'asc',
@@ -54,6 +60,10 @@ const valuesToLowerCase: (a: WhereClause) => WhereClause = pipe(
     reduce(reducer, {} as WhereClause)
 );
 
+const pastDays = (days: number) => sub(Date.now(), { days });
+
+const getPastDaysInSeconds = pipe(pastDays, startOfDay, getUnixTime);
+
 const useStakingPools = ({
     sort = 'commissionPercentage',
     where,
@@ -67,6 +77,20 @@ const useStakingPools = ({
             skip: pageNumber * POOLS_PER_PAGE,
             orderBy: sort,
             orderDirection: directions[sort],
+            firstMonthlyPerf: 2,
+            firstWeeklyPerf: 2,
+            monthlyOrderBy: 'timestamp',
+            weeklyOrderBy: 'timestamp',
+            monthlyOrderDirection: 'desc',
+            weeklyOrderDirection: 'desc',
+            whereMonthly: {
+                performance_not: 0,
+                timestamp_gte: getPastDaysInSeconds(60),
+            },
+            whereWeekly: {
+                performance_not: 0,
+                timestamp_gte: getPastDaysInSeconds(7),
+            },
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 600000, // Every 10 minutes
