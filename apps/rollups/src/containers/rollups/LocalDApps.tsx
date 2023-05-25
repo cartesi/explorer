@@ -41,7 +41,7 @@ export interface LocalDAppListProps {
 
 type SummaryProps = { dappCount: number; inputCount: number };
 
-const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => (
+export const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => (
     <Stack
         direction={['column', 'column', 'row', 'row']}
         justify="space-evenly"
@@ -59,7 +59,7 @@ const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => (
                         label="Total number of DApps instantiated"
                         placement="top"
                     >
-                        <Icon />
+                        <Icon data-testid="dapps-summary-dapps-count" />
                     </Tooltip>
                 </HStack>
             }
@@ -75,7 +75,7 @@ const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => (
                         label="Total number of inputs processed"
                         placement="top"
                     >
-                        <Icon />
+                        <Icon data-testid="dapps-summary-input-count" />
                     </Tooltip>
                 </HStack>
             }
@@ -113,7 +113,12 @@ export const LocalDAppList: FC<LocalDAppListProps> = (props) => {
                     )}
 
                     <HStack justifyContent="flex-end" spacing={2} mb={5}>
-                        {loading && <Spinner size="md" />}
+                        {loading && (
+                            <Spinner
+                                size="md"
+                                data-testid="local-dapp-list-spinner"
+                            />
+                        )}
                     </HStack>
 
                     {applications?.length > 0 ? (

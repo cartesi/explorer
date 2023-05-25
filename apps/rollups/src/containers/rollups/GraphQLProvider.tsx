@@ -18,11 +18,12 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const urls: Record<number, string> = {};
-urls[31337] = 'http://localhost:8000/subgraphs/name/cartesi/rollups';
-urls[5] = 'https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli';
-urls[421613] =
-    'https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli';
+export const urls: Record<number, string> = {
+    [31337]: 'http://localhost:8000/subgraphs/name/cartesi/rollups',
+    [5]: 'https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli',
+    [421613]:
+        'https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli',
+};
 
 const GraphQLProvider: FC<Props> = ({ children, chainId }) => {
     const client: Client | undefined = useMemo(
