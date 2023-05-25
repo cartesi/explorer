@@ -108,8 +108,7 @@ interface ItemProps<T> {
 }
 
 const hexToString = (hex: string) => {
-    const str = ethers.utils.toUtf8String(hex);
-    return str;
+    return ethers.utils.toUtf8String(hex);
 };
 
 const hexToJSON = (hex: string) => {
@@ -134,13 +133,11 @@ const transformPayload = (as: PayloadAs, payload: string) => {
     }
 };
 interface InputContentProps<D> {
-    count: number;
     items: Edge<D>[];
     label: string;
 }
 
 const InputContent = ({
-    count,
     items,
     label,
 }: InputContentProps<Report | Notice | Voucher>) => {
@@ -254,20 +251,11 @@ const Inputs: FC<InputsProps> = ({ count, inputs }) => {
             </HStack>
 
             <SimpleGrid columns={{ base: 1 }}>
-                <InputContent
-                    count={input.node.notices.totalCount}
-                    items={input.node.notices.edges}
-                    label="Notice"
-                />
+                <InputContent items={input.node.notices.edges} label="Notice" />
+
+                <InputContent items={input.node.reports.edges} label="Report" />
 
                 <InputContent
-                    count={input.node.reports.totalCount}
-                    items={input.node.reports.edges}
-                    label="Report"
-                />
-
-                <InputContent
-                    count={input.node.vouchers.totalCount}
                     items={input.node.vouchers.edges}
                     label="Voucher"
                 />
@@ -294,14 +282,8 @@ const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
     );
 };
 
-export interface DAppProps {
-    address: string;
-    chainId: number;
-}
-
-export const DApp: FC<DAppProps> = (props) => {
-    const { address, chainId } = props;
-    const [search, setSearch] = useState<string>('');
+export const DApp = () => {
+    const [, setSearch] = useState<string>('');
     const bg = useColorModeValue('gray.80', 'header');
 
     const [result] = useDappQuery({

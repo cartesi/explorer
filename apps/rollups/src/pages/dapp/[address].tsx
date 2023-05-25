@@ -63,7 +63,7 @@ const Rollups = () => {
                 address={address as string}
                 chainId={wallet?.chainId}
             >
-                <DApp address={address as string} chainId={wallet?.chainId} />
+                <DApp />
             </RollupsGraphQLProvider>
         </PageLayout>
     );

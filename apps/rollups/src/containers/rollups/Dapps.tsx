@@ -126,7 +126,12 @@ export const DappsFilters: FC<DappsFiltersProps> = (props) => {
     const dappsBodyBg = useColorModeValue('white', 'gray.700');
 
     return (
-        <HStack justifyContent="flex-end" spacing={2} mb={5}>
+        <HStack
+            justifyContent="flex-end"
+            spacing={2}
+            mb={5}
+            data-testid="dapps-filters"
+        >
             {fetching && (
                 <Spinner size="md" data-testid="dapps-filters-spinner" />
             )}
@@ -192,7 +197,7 @@ export const Dapps: FC<DappsProps> = (props) => {
     return (
         <Box bg={bg}>
             {hasFactories && (
-                <PagePanel>
+                <PagePanel data-testid="dapps-summary">
                     <DappsSummary
                         dappCount={dappsCount}
                         inputCount={dappsInputs}

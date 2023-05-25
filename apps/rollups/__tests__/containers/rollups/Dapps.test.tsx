@@ -9,19 +9,210 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+    act,
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+} from '@testing-library/react';
 import { withChakraTheme } from '../../test-utilities';
 import {
     dappsFilterOptions,
     DappsFilters,
     DappsSummary,
+    Dapps,
 } from '../../../src/containers/rollups/Dapps';
-import { DApp_OrderBy } from '../../../src/generated/graphql';
+import {
+    DApp_OrderBy,
+    DappsQuery,
+    useDappsQuery,
+    useDashboardQuery,
+} from '../../../src/generated/graphql';
+import { UseQueryResponse } from 'urql';
+import { CombinedError, Operation } from '@urql/core';
+
+const path = '../../../src/generated/graphql';
+jest.mock(path, () => {
+    const originalModule = jest.requireActual(path);
+    return {
+        __esModule: true,
+        ...originalModule,
+        useDappsQuery: jest.fn(),
+        useDashboardQuery: jest.fn(),
+    };
+});
 
 const DappsSummaryComponent = withChakraTheme(DappsSummary);
 const DappsFiltersComponent = withChakraTheme(DappsFilters);
+const DappsComponent = withChakraTheme(Dapps);
+
+const mockUseDappsQuery = useDappsQuery as jest.MockedFunction<
+    typeof useDappsQuery
+>;
+const mockUseDashboardQuery = useDashboardQuery as jest.MockedFunction<
+    typeof useDashboardQuery
+>;
+
+const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 
 describe('DApps', () => {
+    describe('Dapps component', () => {
+        beforeEach(() => {
+            mockUseDappsQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                },
+                () => undefined,
+            ]);
+            mockUseDashboardQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                },
+                () => undefined,
+            ]);
+        });
+
+        afterEach(() => {
+            cleanup();
+            jest.resetAllMocks();
+        });
+
+        it('should display dapps summary', () => {
+            mockUseDashboardQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    data: {
+                        dashboard: {
+                            id: '1',
+                            factoryCount: 1,
+                            dappCount: 0,
+                            inputCount: 0,
+                        },
+                    },
+                },
+                () => undefined,
+            ]);
+
+            const { rerender } = render(
+                <DappsComponent chainId={5} address={address} />
+            );
+            expect(screen.getByTestId('dapps-summary')).toBeInTheDocument();
+
+            mockUseDashboardQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                },
+                () => undefined,
+            ]);
+            rerender(<DappsComponent chainId={5} address={address} />);
+
+            expect(() => screen.getByTestId('dapps-summary')).toThrow(
+                'Unable to find an element'
+            );
+        });
+
+        it('should display error', () => {
+            mockUseDappsQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    error: {
+                        message: 'Error',
+                    } as CombinedError,
+                },
+                () => undefined,
+            ]);
+
+            const { rerender } = render(
+                <DappsComponent chainId={5} address={address} />
+            );
+            expect(
+                screen.getByText('Error fetching DApps!')
+            ).toBeInTheDocument();
+
+            mockUseDappsQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                },
+                () => undefined,
+            ]);
+            rerender(<DappsComponent chainId={5} address={address} />);
+
+            expect(() => screen.getByText('Error fetching DApps!')).toThrow(
+                'Unable to find an element'
+            );
+        });
+
+        it('should display dapps filters and list', () => {
+            mockUseDappsQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    data: {
+                        dapps: [
+                            {
+                                id: '1',
+                                deploymentTimestamp:
+                                    new Date().getTime() / 1000,
+                                activityTimestamp: new Date().getTime() / 1000,
+                                factory: {
+                                    id: '2',
+                                },
+                                inputCount: 0,
+                            },
+                        ],
+                    },
+                },
+                () => undefined,
+            ]);
+
+            render(<DappsComponent chainId={5} address={address} />);
+            expect(screen.getByTestId('dapps-filters')).toBeInTheDocument();
+            expect(screen.getByTestId('dapps-list')).toBeInTheDocument();
+        });
+
+        it('should not display dapps filters and list when error has occurred', () => {
+            mockUseDappsQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    error: {
+                        message: 'Error',
+                    } as CombinedError,
+                    data: {
+                        dapps: [
+                            {
+                                id: '1',
+                                deploymentTimestamp:
+                                    new Date().getTime() / 1000,
+                                activityTimestamp: new Date().getTime() / 1000,
+                                factory: {
+                                    id: '2',
+                                },
+                                inputCount: 0,
+                            },
+                        ],
+                    },
+                },
+                () => undefined,
+            ]);
+
+            render(<DappsComponent chainId={5} address={address} />);
+            expect(() => screen.getByTestId('dapps-filters')).toThrow(
+                'Unable to find an element'
+            );
+            expect(() => screen.getByTestId('dapps-list')).toThrow(
+                'Unable to find an element'
+            );
+        });
+    });
+
     describe('DappsSummary component', () => {
         it('should render correct labels', () => {
             render(<DappsSummaryComponent dappCount={0} inputCount={0} />);
