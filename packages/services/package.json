@@ -4,7 +4,7 @@
     "main": "./src/index.tsx",
     "types": "./src/index.tsx",
     "scripts": {
-        "lint": "TIMING=1 eslint \"**/*.ts*\""
+        "lint": "TIMING=1 eslint --ext .tsx,.ts src/"
     },
     "peerDependencies": {
         "react": "^18.2.0",

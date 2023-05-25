@@ -8,7 +8,7 @@
         "storybook": "start-storybook -p 6007",
         "test": "jest",
         "test:ci": "jest --runInBand --coverage",
-        "lint": "TIMING=1 eslint \"**/*.ts*\""
+        "lint": "TIMING=1 eslint --ext .tsx,.ts src/"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-methods": "^7.18.6",
