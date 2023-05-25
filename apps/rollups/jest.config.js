@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = {
     collectCoverageFrom: [
-        '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
+        '<rootDir>/src/!(pages)**/*.{js,jsx,ts,tsx}',
         '!**/node_modules/**',
     ],
     coverageReporters: ['lcov', 'text-summary'],
