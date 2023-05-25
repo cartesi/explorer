@@ -52,7 +52,7 @@ const Home = () => {
             {localDevEnabled && isUsingLocalBlockchain ? (
                 <LocalDAppList chainId={network?.chainId} />
             ) : factory && network?.chainId ? (
-                <Dapps chainId={network?.chainId} address={factory.address} />
+                <Dapps chainId={network?.chainId} />
             ) : null}
         </PageLayout>
     );
