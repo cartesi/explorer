@@ -66,6 +66,8 @@ const SocialButton = ({
     );
 };
 
+export const cartesiTwitterLink = 'https://twitter.com/cartesiproject';
+
 export type FooterLink = { label: string; href: string };
 export type FooterContract = { name: string; address?: string };
 
@@ -74,7 +76,7 @@ export type FooterProps = {
     contracts: FooterContract[];
 };
 
-const Footer: FC<FooterProps> = ({ contracts, links }) => {
+const Footer: FC<FooterProps> = ({ links, contracts }) => {
     const { chainId } = useWallet();
 
     return (
@@ -127,10 +129,7 @@ const Footer: FC<FooterProps> = ({ contracts, links }) => {
                         rights reserved
                     </Text>
                     <Stack direction={'row'} spacing={6}>
-                        <SocialButton
-                            label={'Twitter'}
-                            href="http://twitter.com/cartesiproject"
-                        >
+                        <SocialButton label="Twitter" href={cartesiTwitterLink}>
                             <FaTwitter />
                         </SocialButton>
                     </Stack>

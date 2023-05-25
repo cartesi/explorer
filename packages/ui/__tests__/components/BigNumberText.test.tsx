@@ -45,4 +45,29 @@ describe('BigNumberText component', () => {
             'Unable to find an element by: [data-testid="big-number-text-unit-label"]'
         );
     });
+
+    it('should display countdown when related props are provided', () => {
+        const timeLeft = 1000;
+        const timeLabel = 'Countdown';
+        renderComponent({
+            countdown: {
+                timeLeft,
+                timeLabel,
+            },
+        });
+
+        expect(
+            screen.getByText(`${timeLabel} ${timeLeft}`)
+        ).toBeInTheDocument();
+    });
+
+    it('should not display countdown when related props are missing', () => {
+        const timeLeft = 1000;
+        const timeLabel = 'Countdown';
+        renderComponent();
+
+        expect(() => screen.getByText(`${timeLabel} ${timeLeft}`)).toThrow(
+            'Unable to find an element'
+        );
+    });
 });

@@ -9,13 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    HStack,
-    Text,
-    useColorModeValue,
-    Button,
-    ButtonProps,
-} from '@chakra-ui/react';
+import { HStack, Text, useColorModeValue, Button } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 import { GhostButton } from './GhostButton';
@@ -152,13 +146,17 @@ const Pagination: FC<PaginationProps> = (props) => {
     );
 };
 
-type PageLinkProps = {
+export type PageLinkProps = {
     currentPage: number;
     index: number;
     onPageClick: (n: number) => void;
 };
 
-const PageLink = ({ currentPage, index, onPageClick }: PageLinkProps) => {
+export const PageLink = ({
+    currentPage,
+    index,
+    onPageClick,
+}: PageLinkProps) => {
     const bg = useColorModeValue('gray.80', 'header');
 
     return (

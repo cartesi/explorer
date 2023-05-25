@@ -14,23 +14,30 @@ import { FC } from 'react';
 import { IconType } from 'react-icons';
 import Address from './Address';
 
-export interface PoolIdProps extends TextProps {
-    address: string;
+export interface AddressTextProps extends TextProps {
     chainId: number;
+    address?: string;
     icon?: IconType;
 }
 
-const AddressText: FC<PoolIdProps> = (props) => {
-    const { address, chainId, children, icon } = props;
+const AddressText: FC<AddressTextProps> = (props) => {
+    const { children, chainId, address, icon } = props;
 
     return (
         <Flex align="baseline" justify="space-between" direction="column">
             <HStack>
-                {icon && <Icon as={icon} color={props.color} />}
+                {icon && (
+                    <Icon
+                        as={icon}
+                        color={props.color}
+                        data-testid="address-text-icon"
+                    />
+                )}
                 {children}
             </HStack>
-            <HStack align="baseline">
-                {address && (
+
+            {address && (
+                <HStack align="baseline">
                     <Address
                         address={address}
                         chainId={chainId}
@@ -38,8 +45,8 @@ const AddressText: FC<PoolIdProps> = (props) => {
                         truncated
                         fontSize={props.fontSize || '3xl'}
                     />
-                )}
-            </HStack>
+                </HStack>
+            )}
         </Flex>
     );
 };
