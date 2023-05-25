@@ -3,6 +3,8 @@ module.exports = {
     collectCoverageFrom: [
         '<rootDir>/src/!(pages)**/*.{js,jsx,ts,tsx}',
         '!**/node_modules/**',
+        '!<rootDir>/src/pages/**',
+        '!<rootDir>/src/generated/**',
     ],
     coverageReporters: ['lcov', 'text-summary'],
     coverageDirectory: '<rootDir>/coverage',
