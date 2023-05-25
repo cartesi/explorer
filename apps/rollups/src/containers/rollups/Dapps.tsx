@@ -43,7 +43,6 @@ import {
 } from '../../generated/graphql';
 
 export interface DappsProps {
-    address: string;
     chainId: number;
 }
 

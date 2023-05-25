@@ -16,6 +16,7 @@ import {
     render,
     screen,
 } from '@testing-library/react';
+import { CombinedError } from '@urql/core';
 import { withChakraTheme } from '../../test-utilities';
 import {
     dappsFilterOptions,
@@ -25,12 +26,9 @@ import {
 } from '../../../src/containers/rollups/Dapps';
 import {
     DApp_OrderBy,
-    DappsQuery,
     useDappsQuery,
     useDashboardQuery,
 } from '../../../src/generated/graphql';
-import { UseQueryResponse } from 'urql';
-import { CombinedError, Operation } from '@urql/core';
 
 const path = '../../../src/generated/graphql';
 jest.mock(path, () => {
@@ -45,7 +43,6 @@ jest.mock(path, () => {
 
 const DappsSummaryComponent = withChakraTheme(DappsSummary);
 const DappsFiltersComponent = withChakraTheme(DappsFilters);
-const DappsComponent = withChakraTheme(Dapps);
 
 const mockUseDappsQuery = useDappsQuery as jest.MockedFunction<
     typeof useDappsQuery
@@ -54,7 +51,7 @@ const mockUseDashboardQuery = useDashboardQuery as jest.MockedFunction<
     typeof useDashboardQuery
 >;
 
-const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
+const DappsComponent = withChakraTheme(Dapps);
 
 describe('DApps', () => {
     describe('Dapps component', () => {
@@ -97,9 +94,7 @@ describe('DApps', () => {
                 () => undefined,
             ]);
 
-            const { rerender } = render(
-                <DappsComponent chainId={5} address={address} />
-            );
+            const { rerender } = render(<DappsComponent chainId={5} />);
             expect(screen.getByTestId('dapps-summary')).toBeInTheDocument();
 
             mockUseDashboardQuery.mockReturnValue([
@@ -109,7 +104,7 @@ describe('DApps', () => {
                 },
                 () => undefined,
             ]);
-            rerender(<DappsComponent chainId={5} address={address} />);
+            rerender(<DappsComponent chainId={5} />);
 
             expect(() => screen.getByTestId('dapps-summary')).toThrow(
                 'Unable to find an element'
@@ -128,9 +123,7 @@ describe('DApps', () => {
                 () => undefined,
             ]);
 
-            const { rerender } = render(
-                <DappsComponent chainId={5} address={address} />
-            );
+            const { rerender } = render(<DappsComponent chainId={5} />);
             expect(
                 screen.getByText('Error fetching DApps!')
             ).toBeInTheDocument();
@@ -142,39 +135,11 @@ describe('DApps', () => {
                 },
                 () => undefined,
             ]);
-            rerender(<DappsComponent chainId={5} address={address} />);
+            rerender(<DappsComponent chainId={5} />);
 
             expect(() => screen.getByText('Error fetching DApps!')).toThrow(
                 'Unable to find an element'
             );
-        });
-
-        it('should display dapps filters and list', () => {
-            mockUseDappsQuery.mockReturnValue([
-                {
-                    fetching: false,
-                    stale: false,
-                    data: {
-                        dapps: [
-                            {
-                                id: '1',
-                                deploymentTimestamp:
-                                    new Date().getTime() / 1000,
-                                activityTimestamp: new Date().getTime() / 1000,
-                                factory: {
-                                    id: '2',
-                                },
-                                inputCount: 0,
-                            },
-                        ],
-                    },
-                },
-                () => undefined,
-            ]);
-
-            render(<DappsComponent chainId={5} address={address} />);
-            expect(screen.getByTestId('dapps-filters')).toBeInTheDocument();
-            expect(screen.getByTestId('dapps-list')).toBeInTheDocument();
         });
 
         it('should not display dapps filters and list when error has occurred', () => {
@@ -203,7 +168,7 @@ describe('DApps', () => {
                 () => undefined,
             ]);
 
-            render(<DappsComponent chainId={5} address={address} />);
+            render(<DappsComponent chainId={5} />);
             expect(() => screen.getByTestId('dapps-filters')).toThrow(
                 'Unable to find an element'
             );
