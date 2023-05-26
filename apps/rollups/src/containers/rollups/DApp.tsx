@@ -112,7 +112,7 @@ const hexToString = (hex: string) => {
 };
 
 export const hexToJSON = (hex: string) => {
-    const str = ethers.utils.toUtf8String(hex);
+    const str = hexToString(hex);
     try {
         return JSON.parse(str);
     } catch (e) {
@@ -122,7 +122,7 @@ export const hexToJSON = (hex: string) => {
 
 type PayloadAs = 'hex' | 'text' | 'json';
 
-const transformPayload = (as: PayloadAs, payload: string) => {
+export const transformPayload = (as: PayloadAs, payload: string) => {
     switch (as) {
         case 'text':
             return hexToString(payload);
@@ -291,7 +291,7 @@ export const Inputs: FC<InputsProps> = ({ count, inputs }) => {
 export const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
     const bg = useColorModeValue('white', 'gray.800');
     return (
-        <VStack bg={bg} alignItems="flex-start">
+        <VStack bg={bg} alignItems="flex-start" data-testid="epoch-item">
             <Box
                 width="100%"
                 textAlign="center"

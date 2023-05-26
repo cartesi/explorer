@@ -13,18 +13,19 @@ import React from 'react';
 import { WalletConnectionProvider } from '@explorer/wallet';
 import networks from '../services/useNetwork';
 
-const Web3Container = ({ children }) => {
-    const chainIds = Object.keys(networks).map((key) => networks[key].chain.id);
-    const appMetaData = {
-        name: 'Cartesi Blockchain Rollups',
-        description: 'A place where you can view instantiated DApps.',
-    };
+export const chainIds = Object.keys(networks).map(
+    (key) => networks[key].chain.id
+);
 
-    return (
-        <WalletConnectionProvider chainIds={chainIds} appMetaData={appMetaData}>
-            {children}
-        </WalletConnectionProvider>
-    );
+export const appMetaData = {
+    name: 'Cartesi Blockchain Rollups',
+    description: 'A place where you can view instantiated DApps.',
 };
+
+const Web3Container = ({ children }) => (
+    <WalletConnectionProvider chainIds={chainIds} appMetaData={appMetaData}>
+        {children}
+    </WalletConnectionProvider>
+);
 
 export default Web3Container;

@@ -13,8 +13,9 @@ import {
     Inputs,
     EpochItem,
     DApp,
+    transformPayload,
 } from '../../../src/containers/rollups/DApp';
-import { useDappQuery } from '../../../src/generated/graphql';
+import { DappQuery, useDappQuery } from '../../../src/generated/graphql';
 import { withChakraTheme } from '../../test-utilities';
 import { CombinedError } from '@urql/core';
 
@@ -61,88 +62,74 @@ const inputContentProps = {
 };
 
 const InputsComponent = withChakraTheme(Inputs);
-const inputItems = [
-    {
-        cursor: '2',
-        node: {
-            id: '1',
-            index: 0,
-            msgSender: '0x912d9dfa80c617e5e9ef4f43eca01a05cc2123e1',
-            timestamp: new Date().getTime() / 1000,
-            blockNumber: 7704915,
-            notices: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                },
+const edge = {
+    cursor: '2',
+    node: {
+        id: '1',
+        index: 0,
+        msgSender: '0x912d9dfa80c617e5e9ef4f43eca01a05cc2123e1',
+        timestamp: new Date().getTime() / 1000,
+        blockNumber: 7704915,
+        notices: {
+            edges: [],
+            totalCount: 17,
+            pageInfo: {
+                startCursor: '',
+                endCursor: '',
+                hasNextPage: false,
+                hasPreviousPage: false,
             },
-            reports: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                },
+        },
+        reports: {
+            edges: [],
+            totalCount: 17,
+            pageInfo: {
+                startCursor: '',
+                endCursor: '',
+                hasNextPage: false,
+                hasPreviousPage: false,
             },
-            vouchers: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
+        },
+        vouchers: {
+            edges: [],
+            totalCount: 17,
+            pageInfo: {
+                startCursor: '',
+                endCursor: '',
+                hasNextPage: false,
+                hasPreviousPage: false,
+            },
+        },
+        inputs: {
+            totalCount: 0,
+            edges: [
+                {
+                    cursor: '2',
+                    node: {
+                        id: '1',
+                        index: 0,
+                        notices: {
+                            edges: [],
+                        },
+                        reports: {
+                            edges: [],
+                        },
+                        vouchers: {
+                            edges: [],
+                        },
+                    },
                 },
+            ],
+            pageInfo: {
+                startCursor: '',
+                endCursor: '',
+                hasNextPage: false,
+                hasPreviousPage: false,
             },
         },
     },
-    {
-        cursor: '2',
-        node: {
-            id: '1',
-            index: 0,
-            msgSender: '0x912d9dfa80c617e5e9ef4f43eca01a05cc2123e1',
-            timestamp: new Date().getTime() / 1000,
-            blockNumber: 7704915,
-            notices: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                },
-            },
-            reports: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                },
-            },
-            vouchers: {
-                edges: [],
-                totalCount: 17,
-                pageInfo: {
-                    startCursor: '',
-                    endCursor: '',
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                },
-            },
-        },
-    },
-];
+};
+const inputItems = [edge, edge];
 const inputsProps = {
     inputs: inputItems,
     count: inputItems.length,
@@ -161,53 +148,30 @@ const epochItemProps = {
                 hasNextPage: false,
                 hasPreviousPage: false,
             },
-            edges: [
-                {
-                    cursor: '2',
-                    node: {
-                        id: '1',
-                        index: 0,
-                        msgSender: '0x912d9dfa80c617e5e9ef4f43eca01a05cc2123e1',
-                        timestamp: new Date().getTime() / 1000,
-                        blockNumber: 7704915,
-                        notices: {
-                            edges: [],
-                            totalCount: 17,
-                            pageInfo: {
-                                startCursor: '',
-                                endCursor: '',
-                                hasNextPage: false,
-                                hasPreviousPage: false,
-                            },
-                        },
-                        reports: {
-                            edges: [],
-                            totalCount: 17,
-                            pageInfo: {
-                                startCursor: '',
-                                endCursor: '',
-                                hasNextPage: false,
-                                hasPreviousPage: false,
-                            },
-                        },
-                        vouchers: {
-                            edges: [],
-                            totalCount: 17,
-                            pageInfo: {
-                                startCursor: '',
-                                endCursor: '',
-                                hasNextPage: false,
-                                hasPreviousPage: false,
-                            },
-                        },
-                    },
-                },
-            ],
+            edges: [edge],
         },
     },
 };
 
 const DAppComponent = withChakraTheme(DApp);
+const dAppQueryData = {
+    epochs: {
+        totalCount: 1,
+        edges: [edge],
+    },
+    inputs: {
+        totalCount: 0,
+    },
+    notices: {
+        totalCount: 0,
+    },
+    reports: {
+        totalCount: 0,
+    },
+    vouchers: {
+        totalCount: 0,
+    },
+} as unknown as DappQuery;
 
 describe('DApp container', () => {
     describe('DApp component', () => {
@@ -227,21 +191,21 @@ describe('DApp container', () => {
         });
 
         it('should display error message', () => {
+            const errorMessage =
+                'Warning: There was an error while fetching Dapps.';
             mockUseDappQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
                     error: {
-                        message: 'Error',
+                        message: errorMessage,
                     } as CombinedError,
                 },
                 () => undefined,
             ]);
             render(<DAppComponent />);
 
-            expect(
-                screen.getByText('Error fetching Dapps!')
-            ).toBeInTheDocument();
+            expect(screen.getByText(errorMessage)).toBeInTheDocument();
         });
 
         it('should display spinner while fetching', () => {
@@ -255,6 +219,22 @@ describe('DApp container', () => {
             render(<DAppComponent />);
 
             expect(screen.getByTestId('dapp-spinner')).toBeInTheDocument();
+        });
+
+        it('should display epoch items', () => {
+            mockUseDappQuery.mockReturnValue([
+                {
+                    fetching: true,
+                    stale: false,
+                    data: dAppQueryData,
+                },
+                () => undefined,
+            ]);
+            render(<DAppComponent />);
+
+            expect(screen.getAllByTestId('epoch-item').length).toBe(
+                dAppQueryData.epochs.edges.length
+            );
         });
     });
 
@@ -466,12 +446,19 @@ describe('DApp container', () => {
         });
     });
 
-    describe('JSON Visual Interactive', () => {
-        it('Should return the converted payload as true', () => {
+    describe('utils', () => {
+        it('should return the converted payload as true', () => {
             expect(hexToJSON(PAYLOAD_JSON)).toBeTruthy();
         });
-        it('Should return the converted payload as false', () => {
+
+        it('should return the converted payload as false', () => {
             expect(hexToJSON(PAYLOAD_STRING)).toBeFalsy();
+        });
+
+        it('should transform payload', () => {
+            expect(JSON.stringify(transformPayload('json', PAYLOAD_JSON))).toBe(
+                JSON.stringify(hexToJSON(PAYLOAD_JSON))
+            );
         });
     });
 });
