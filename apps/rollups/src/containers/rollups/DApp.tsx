@@ -16,7 +16,7 @@ import {
     ButtonGroup,
     Heading,
     HStack,
-    Input,
+    Input as ChakraInput,
     InputGroup,
     InputLeftElement,
     Select,
@@ -111,7 +111,7 @@ const hexToString = (hex: string) => {
     return ethers.utils.toUtf8String(hex);
 };
 
-const hexToJSON = (hex: string) => {
+export const hexToJSON = (hex: string) => {
     const str = ethers.utils.toUtf8String(hex);
     try {
         return JSON.parse(str);
@@ -132,12 +132,12 @@ const transformPayload = (as: PayloadAs, payload: string) => {
             return payload;
     }
 };
-interface InputContentProps<D> {
+export interface InputContentProps<D> {
     items: Edge<D>[];
     label: string;
 }
 
-const InputContent = ({
+export const InputContent = ({
     items,
     label,
 }: InputContentProps<Report | Notice | Voucher>) => {
@@ -147,34 +147,45 @@ const InputContent = ({
     const item = items[pos];
     const hasNext = pos + 1 < items.length;
     const hasPrev = pos > 0;
-    if (!item) return null;
+
+    if (!item) {
+        return null;
+    }
+
     const payload = transformPayload(payloadAs, item.node.payload);
 
     return (
         <Box width="full" py={2} px={3}>
             <HStack width="full" py={2}>
                 <Text>{label}</Text>
-                <Tag size="md">{pos + 1}</Tag>
+                <Tag size="md" data-testid="input-content-position">
+                    {pos + 1}
+                </Tag>
+
                 <ButtonGroup variant="ghost" spacing={3}>
                     <Button
-                        isDisabled={!hasPrev}
-                        onClick={() => updatePos((state) => state - 1)}
                         size="sm"
                         colorScheme="blue"
                         textTransform="uppercase"
+                        data-testid="input-content-prev-button"
+                        isDisabled={!hasPrev}
+                        onClick={() => updatePos((state) => state - 1)}
                     >
                         prev
                     </Button>
+
                     <Button
-                        isDisabled={!hasNext}
-                        onClick={() => updatePos((state) => state + 1)}
                         size="sm"
                         colorScheme="blue"
                         textTransform="uppercase"
+                        data-testid="input-content-next-button"
+                        isDisabled={!hasNext}
+                        onClick={() => updatePos((state) => state + 1)}
                     >
                         next
                     </Button>
                 </ButtonGroup>
+
                 <Text width="full" textAlign="right">
                     Total {items.length}
                 </Text>
@@ -183,34 +194,40 @@ const InputContent = ({
             <HStack>
                 <Text>As:</Text>
                 <Select
+                    value={payloadAs}
                     width="xs"
                     variant="unstyled"
                     onChange={(e) => {
                         const value = e.target.value;
                         setPayloadAs(value as PayloadAs);
                     }}
-                    value={payloadAs}
                 >
                     <option value="hex">Hex</option>
                     <option value="text">Text</option>
                     <option value="json">JSON</option>
                 </Select>
             </HStack>
+
             {payloadAs === 'json' ? (
                 <ReactJson src={payload} name={null} theme={jsonTheme} />
             ) : (
-                <Textarea width="full" value={payload} readOnly />
+                <Textarea
+                    data-testid="input-content-textarea"
+                    width="full"
+                    value={payload}
+                    readOnly
+                />
             )}
         </Box>
     );
 };
 
-interface InputsProps {
+export interface InputsProps {
     count: number;
     inputs: Edge<Input>[];
 }
 
-const Inputs: FC<InputsProps> = ({ count, inputs }) => {
+export const Inputs: FC<InputsProps> = ({ count, inputs }) => {
     const [pos, updatePos] = useState<number>(0);
     const input = inputs[pos];
     const hasNext = pos + 1 < count;
@@ -222,25 +239,32 @@ const Inputs: FC<InputsProps> = ({ count, inputs }) => {
                 <Text fontWeight="bold" fontSize="lg">
                     Input
                 </Text>
-                <Tag size="md" variant="solid" bg="blue.200">
+                <Tag
+                    size="md"
+                    variant="solid"
+                    bg="blue.200"
+                    data-testid="inputs-position"
+                >
                     {pos + 1}
                 </Tag>
                 <ButtonGroup variant="ghost" spacing={3}>
                     <Button
-                        isDisabled={!hasPrev}
-                        onClick={() => updatePos((state) => state - 1)}
                         size="sm"
                         colorScheme="blue"
                         textTransform="uppercase"
+                        data-testid="inputs-prev-button"
+                        isDisabled={!hasPrev}
+                        onClick={() => updatePos((state) => state - 1)}
                     >
                         prev
                     </Button>
                     <Button
-                        isDisabled={!hasNext}
-                        onClick={() => updatePos((state) => state + 1)}
                         size="sm"
                         colorScheme="blue"
                         textTransform="uppercase"
+                        data-testid="inputs-next-button"
+                        isDisabled={!hasNext}
+                        onClick={() => updatePos((state) => state + 1)}
                     >
                         next
                     </Button>
@@ -264,7 +288,7 @@ const Inputs: FC<InputsProps> = ({ count, inputs }) => {
     );
 };
 
-const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
+export const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
     const bg = useColorModeValue('white', 'gray.800');
     return (
         <VStack bg={bg} alignItems="flex-start">
@@ -285,7 +309,6 @@ const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
 export const DApp = () => {
     const [, setSearch] = useState<string>('');
     const bg = useColorModeValue('gray.80', 'header');
-
     const [result] = useDappQuery({
         variables: {},
     });
@@ -320,12 +343,14 @@ export const DApp = () => {
                     />
                 )}
                 <HStack justifyContent="flex-end">
-                    {fetching && <Spinner size="md" />}
+                    {fetching && (
+                        <Spinner data-testid="dapp-spinner" size="md" />
+                    )}
                     <InputGroup width={300}>
                         <InputLeftElement>
                             <SearchIcon />
                         </InputLeftElement>
-                        <Input
+                        <ChakraInput
                             placeholder="Search"
                             onChange={(e) => setSearch(e.target.value)}
                         />

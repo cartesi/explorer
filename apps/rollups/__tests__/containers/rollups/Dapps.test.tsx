@@ -53,7 +53,7 @@ const mockUseDashboardQuery = useDashboardQuery as jest.MockedFunction<
 
 const DappsComponent = withChakraTheme(Dapps);
 
-describe('DApps', () => {
+describe('DApps container', () => {
     describe('Dapps component', () => {
         beforeEach(() => {
             mockUseDappsQuery.mockReturnValue([
