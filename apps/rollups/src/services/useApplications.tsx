@@ -30,7 +30,7 @@ interface NetworkError extends Error {
 export interface Applications {
     loading: boolean;
     applications: Application[];
-    error?;
+    error?: NetworkError;
 }
 interface Application {
     factoryVersion: string;

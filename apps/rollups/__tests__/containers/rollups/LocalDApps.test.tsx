@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { withChakraTheme } from '../../test-utilities';
 import {
@@ -100,8 +100,13 @@ describe('LocalDApps container', () => {
         });
 
         it('should display alert only when error has occurred', () => {
+            const errorMessage = 'Error ABC';
             mockUseApplications.mockReturnValue({
-                error: true,
+                error: {
+                    code: 1,
+                    name: 'Error',
+                    message: errorMessage,
+                },
                 loading: true,
                 applications: [],
             });
@@ -109,24 +114,24 @@ describe('LocalDApps container', () => {
             const { rerender } = render(
                 <LocalDAppListComponent {...localDappListProps} />
             );
-            const text = 'Error trying to fetch data from local blockchain';
 
-            expect(screen.getByText(text)).toBeInTheDocument();
+            expect(screen.getByText(errorMessage)).toBeInTheDocument();
 
             mockUseApplications.mockReturnValue({
-                error: false,
+                error: null,
                 loading: false,
                 applications: [],
             });
 
             rerender(<LocalDAppListComponent {...localDappListProps} />);
 
-            expect(() => screen.getByText(text)).toThrow(
+            expect(() => screen.getByText(errorMessage)).toThrow(
                 'Unable to find an element'
             );
         });
 
         it('should display applications', () => {
+            const errorMessage = 'Error XYZ';
             const applications = [
                 {
                     factoryVersion: '0.9',
@@ -137,7 +142,11 @@ describe('LocalDApps container', () => {
             ];
 
             mockUseApplications.mockReturnValue({
-                error: true,
+                error: {
+                    code: 1,
+                    name: 'Error',
+                    message: errorMessage,
+                },
                 loading: true,
                 applications,
             });
@@ -151,7 +160,7 @@ describe('LocalDApps container', () => {
 
         it('should display no items', () => {
             mockUseApplications.mockReturnValue({
-                error: false,
+                error: null,
                 loading: false,
                 applications: [],
             });
