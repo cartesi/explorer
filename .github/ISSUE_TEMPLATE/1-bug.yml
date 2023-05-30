@@ -1,6 +1,6 @@
 name: 🐛 Bug Report
 description: This form is to report a bug
-labels: ['bug']
+labels: ['type:bug']
 body:
     - type: markdown
       attributes:
