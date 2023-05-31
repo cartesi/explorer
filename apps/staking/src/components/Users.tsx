@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { VStack, Flex } from '@chakra-ui/react';
 import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
@@ -60,7 +60,7 @@ const Users: FC<UsersProps> = (props) => {
                     <PerPageSelect
                         value={rowsPerPage}
                         options={options}
-                        onChange={(event) => {
+                        onChange={(event: ChangeEvent<HTMLSelectElement>) => {
                             setRowsPerPage(Number(event.currentTarget.value));
                             setPageNumber(0);
                         }}

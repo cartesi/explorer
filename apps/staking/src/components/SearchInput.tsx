@@ -27,7 +27,10 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const { placeholder = 'Search', onSearchChange, ...rest } = props;
     return (
         <InputGroup {...rest}>
-            <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
+            <InputLeftElement pointerEvents="none">
+                <SearchIcon />
+            </InputLeftElement>
+
             <Input placeholder={placeholder} onChange={onSearchChange} />
         </InputGroup>
     );

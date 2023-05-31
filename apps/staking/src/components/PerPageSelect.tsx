@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import React, { FC } from 'react';
 import { Select, SelectProps, Text, HStack } from '@chakra-ui/react';
 
-export interface PerPageSelect extends SelectProps {
+export interface PerPageSelectProps extends SelectProps {
     options: number[];
     onChange: (event: React.ChangeEvent) => void;
 }
 
-const PerPageSelect = (props) => {
+const PerPageSelect: FC<PerPageSelectProps> = (props) => {
     const { value, options, onChange, ...restProps } = props;
 
     return (

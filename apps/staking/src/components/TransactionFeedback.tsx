@@ -68,6 +68,7 @@ const TransactionFeedback = <R extends unknown>(
                 position="absolute"
                 right="8px"
                 top="8px"
+                data-testid="transaction-feedback-close-button"
                 onClick={() => transaction?.ack()}
             />
         </Alert>
