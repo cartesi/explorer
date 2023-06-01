@@ -45,7 +45,12 @@ const BlockTable: FC<BlockTableProps> = (props) => {
     const addressColor = useColorModeValue('gray.800', 'white');
 
     return (
-        <Table {...tableProps} variant="clear" size="sm">
+        <Table
+            {...tableProps}
+            variant="clear"
+            size="sm"
+            data-testid="block-table"
+        >
             <Tbody>
                 <Tr bg={highlight === 'id' && highlightColor}>
                     <Th>Block {highlight}</Th>

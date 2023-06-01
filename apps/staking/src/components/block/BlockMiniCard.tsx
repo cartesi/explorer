@@ -104,6 +104,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                         width={100}
                         height={100}
                         alt="Block image"
+                        data-testid="block-image"
                     />
                 </Box>
             </Flex>
