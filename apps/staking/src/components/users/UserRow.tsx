@@ -38,6 +38,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
             key={user.id}
             backgroundColor={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
+            data-testid="user-row"
         >
             <Td borderColor={borderColor}>
                 <Address

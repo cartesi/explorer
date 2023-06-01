@@ -23,6 +23,7 @@ export interface MarketInfoProps extends TextProps {
 
 const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
     const { fractionDigits = 4, label, value, unit, ...textProps } = props;
+
     const numberFormat =
         unit == 'USD'
             ? new Intl.NumberFormat('en-US', {
