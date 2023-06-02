@@ -24,7 +24,7 @@ export interface NameFormProps {
 }
 
 const NameForm: FC<NameFormProps> = ({ onSetName }) => {
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>('');
 
     return (
         <FormControl id="poolName">

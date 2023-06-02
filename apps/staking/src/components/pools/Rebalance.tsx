@@ -29,6 +29,7 @@ const Rebalance: FC<RebalanceProps> = (props) => {
         <HStack {...stackProps}>
             <IconButton
                 aria-label="Rebalance"
+                data-testid="rebalance-button"
                 disabled={disabled}
                 onClick={onRebalance}
                 icon={<FaBalanceScaleLeft />}
