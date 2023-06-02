@@ -131,7 +131,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                                 validate,
                             })}
                         />
-                        <InputRightAddon children={unit} />
+                        <InputRightAddon>{unit}</InputRightAddon>
                     </InputGroup>
                     <Button
                         onClick={handleSubmit((data) => onSubmit(data.value))}
