@@ -18,8 +18,9 @@ export type MarketInformation = {
     circulatingSupply?: number;
 };
 
+export const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+
 export const useMarketInformation = () => {
-    const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
     const [marketInformation, setMarketInformation] =
         useState<MarketInformation>({});
     const [loading, setLoading] = useState<boolean>(false);

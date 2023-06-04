@@ -28,27 +28,34 @@ export interface IChainData {
     networkId: number;
 }
 
+export const allChainsUrl = 'https://chainid.network/chains.json';
+
 export async function getAllChains(): Promise<IChainData[]> {
-    const response = await axios.get('https://chainid.network/chains.json');
+    const response = await axios.get(allChainsUrl);
     return response.data;
 }
 
+export const getChainUrl = (chainId: number) =>
+    `https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/eip155-${chainId}.json`;
+
+export const chainErrorData = {
+    name: 'Private',
+    chain: 'Private',
+    network: 'Private',
+    rpc: [],
+    faucets: [],
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    infoURL: '',
+    shortName: 'private',
+};
+
 export async function getChain(chainId: number): Promise<IChainData> {
     try {
-        const response = await axios.get(
-            `https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/chains/eip155-${chainId}.json`
-        );
+        const response = await axios.get(getChainUrl(chainId));
         return response.data;
     } catch (e) {
         return {
-            name: 'Private',
-            chain: 'Private',
-            network: 'Private',
-            rpc: [],
-            faucets: [],
-            nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-            infoURL: '',
-            shortName: 'private',
+            ...chainErrorData,
             chainId: chainId,
             networkId: chainId,
         };
