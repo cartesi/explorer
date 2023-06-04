@@ -13,15 +13,15 @@ import { createContext, ReactNode, useState, useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import { useWallet } from '@explorer/wallet';
 
-const measurementID = 'G-0J9KC579GV';
+export const measurementID = 'G-0J9KC579GV';
 
 // in GA4 that is the property configured to be collected from the event.
-const CustomDimensions = {
+export const CustomDimensions = {
     WalletName: 'wallet_name',
 };
 
 // take only the first 8 chars from address for tracking purposes
-const anonymizeUser = (account: string) => account?.substring(2, 10);
+export const anonymizeUser = (account: string) => account?.substring(2, 10);
 
 interface TrackingProviderProps {
     children?: ReactNode;
@@ -52,7 +52,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
                 isInitialised: true,
                 hasUser,
             }));
-            // in case we dont have the user initially,
+            // in case we don't have the user initially,
         } else if (isInitialised && !hasUser) {
             ReactGA.set({ userId: anonymizeUser(account) });
             setAnalytics((prev) => ({
@@ -60,7 +60,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
                 hasUser: !!account,
             }));
         }
-    }, [account]);
+    }, [account, analytics]);
 
     useEffect(() => {
         const { isInitialised } = analytics;
@@ -70,7 +70,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
             };
             ReactGA.event('Wallet Selection', params);
         }
-    }, [walletName]);
+    }, [analytics, walletName]);
 
     // is returning nothing as context-value at the moment
     return (

@@ -11,9 +11,10 @@
 
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
+// Mainnet
+export const uri = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
+
 const createENSApollo = (): ApolloClient<any> => {
-    // Mainnet
-    const uri = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({
