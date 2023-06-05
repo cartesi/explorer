@@ -11,7 +11,7 @@
 
 import { useQuery } from '@apollo/client';
 import { MetaData } from '../models';
-import { META } from '../queries/meta';
+import { META } from '../queries';
 
 const useMeta = () => {
     const { data } = useQuery<MetaData>(META, {

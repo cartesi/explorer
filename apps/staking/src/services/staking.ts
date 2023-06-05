@@ -17,12 +17,10 @@ import { useTransaction } from './transaction';
 
 export const useStaking = (user: string) => {
     const staking = useStakingContract();
-
     const blockNumber = useBlockNumber();
     const stakeTransaction = useTransaction();
     const unstakeTransaction = useTransaction();
     const withdrawTransaction = useTransaction();
-
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
         constants.Zero
     );
