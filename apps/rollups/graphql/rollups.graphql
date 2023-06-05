@@ -4,7 +4,13 @@ query dapps(
     $first: Int
     $skip: Int
 ) {
-    dapps(orderBy: $orderBy orderDirection: desc first: $first where: $where_dapp skip: $skip) {
+    dapps(
+        orderBy: $orderBy
+        orderDirection: desc
+        first: $first
+        where: $where_dapp
+        skip: $skip
+    ) {
         id
         inputCount
         deploymentTimestamp
@@ -42,9 +48,18 @@ query factoryDApps(
 
 query dashboard($id: ID!) {
     dashboard(id: $id) {
-        id,
+        id
         factoryCount
         dappCount
         inputCount
+    }
+}
+
+query dappVersion($id: ID!) {
+    dapp(id: $id) {
+        id
+        factory {
+            version
+        }
     }
 }

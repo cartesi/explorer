@@ -20,6 +20,7 @@
         "@cartesi/rollups-0.8": "npm:@cartesi/rollups@0.8.2",
         "@explorer/ui": "*",
         "@explorer/wallet": "*",
+        "@graphql-tools/load-files": "^6.6.1",
         "eth-chains": "0.3.5",
         "ethers": "5.4.7",
         "graphql": "15.6.0",
