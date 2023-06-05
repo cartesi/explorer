@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { NODES } from '../queries/nodes';
+import { NODES } from '../queries';
 import { NodesData, NodesVars } from '../models';
 import { constants } from 'ethers';
 import { NodeStatus } from '../../services/node';

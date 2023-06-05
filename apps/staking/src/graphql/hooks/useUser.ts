@@ -11,7 +11,7 @@
 
 import { useQuery } from '@apollo/client';
 import { UserData, UserVars } from '../models';
-import { USER } from '../queries/user';
+import { USER } from '../queries';
 
 const useUser = (id: string) => {
     const { data } = useQuery<UserData, UserVars>(USER, {

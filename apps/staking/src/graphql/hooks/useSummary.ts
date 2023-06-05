@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { SUMMARY } from '../queries/summary';
+import { SUMMARY } from '../queries';
 import { Summary, SummaryData, SummaryVars } from '../models';
 
 const useSummary = (): Summary => {

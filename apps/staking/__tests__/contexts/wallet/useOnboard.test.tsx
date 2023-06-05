@@ -15,7 +15,7 @@ import { WalletConnectionProvider, useWallet } from '@explorer/wallet';
 import { TestComponent } from './helpers';
 import { useOnboard } from '@explorer/wallet/src/useOnboard';
 import { buildMockUseOnboardV2Return } from './mocks';
-import { Network } from '../../../src/utils/networks';
+import { Network, networks } from '../../../src/utils/networks';
 
 const walletMod = '@explorer/wallet';
 
@@ -57,9 +57,13 @@ const walletMock = {
     chainId: Network.MAINNET,
 };
 
+const chainIds = Object.keys(networks).map(
+    (key) => `0x${Number(key).toString(16)}`
+);
+
 describe('Wallet Provider', () => {
     const Component = () => (
-        <WalletConnectionProvider>
+        <WalletConnectionProvider chainIds={chainIds}>
             <TestComponent />
         </WalletConnectionProvider>
     );
