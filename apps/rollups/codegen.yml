@@ -1,12 +1,21 @@
-schema:
-    - ./graphql/schema.graphql
-    - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
-    - https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli
-documents:
-    - ./graphql/queries.graphql
-    - ./graphql/rollups.graphql
 generates:
-    ./src/generated/graphql/index.ts:
+    ./src/generated/graphql/0.8/index.ts:
+        schema:
+            - ./graphql/schema/0.8/schema.graphql
+            - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
+            - https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli
+        documents:
+            - ./graphql/queries.graphql
+            - ./graphql/rollups.graphql
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-urql
+    ./src/generated/graphql/0.9/index.ts:
+        schema:
+            - ./graphql/schema/0.9/schema.graphql
+        documents:
+            - ./graphql/documents/rollups-v09.graphql
         plugins:
             - typescript
             - typescript-operations

@@ -1,0 +1,65 @@
+query inputEdge {
+    inputs {
+        edges {
+            cursor
+            node {
+                index
+                notices {
+                    totalCount
+                    pageInfo {
+                        startCursor
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                    }
+                    edges {
+                        cursor
+                        node {
+                            index
+                            payload
+                        }
+                    }
+                }
+                vouchers {
+                    totalCount
+                    pageInfo {
+                        startCursor
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                    }
+                    edges {
+                        cursor
+                        node {
+                            index
+                            payload
+                        }
+                    }
+                }
+                reports {
+                    totalCount
+                    pageInfo {
+                        startCursor
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                    }
+                    edges {
+                        cursor
+                        node {
+                            index
+                            payload
+                        }
+                    }
+                }
+            }
+        }
+        totalCount
+        pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}
