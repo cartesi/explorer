@@ -15,11 +15,11 @@ import {
     DApp,
     transformPayload,
 } from '../../../src/containers/rollups/DApp';
-import { DappQuery, useDappQuery } from '../../../src/generated/graphql';
+import { DappQuery, useDappQuery } from '../../../src/generated/graphql/0.8/';
 import { withChakraTheme } from '../../test-utilities';
 import { CombinedError } from '@urql/core';
 
-const path = '../../../src/generated/graphql';
+const path = '../../../src/generated/graphql/0.8/';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
     return {
@@ -203,7 +203,7 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
-            render(<DAppComponent />);
+            render(<DAppComponent address={''} chainId={0} />);
 
             expect(screen.getByText(errorMessage)).toBeInTheDocument();
         });
@@ -216,7 +216,7 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
-            render(<DAppComponent />);
+            render(<DAppComponent address={''} chainId={0} />);
 
             expect(screen.getByTestId('dapp-spinner')).toBeInTheDocument();
         });
@@ -230,7 +230,7 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
-            render(<DAppComponent />);
+            render(<DAppComponent address={''} chainId={0} />);
 
             expect(screen.getAllByTestId('epoch-item').length).toBe(
                 dAppQueryData.epochs.edges.length

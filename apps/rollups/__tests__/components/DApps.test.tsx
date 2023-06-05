@@ -12,7 +12,7 @@
 import { render, screen } from '@testing-library/react';
 import { withChakraTheme } from '../test-utilities';
 import { DApps, DAppsProps } from '../../src/components/DApps';
-import { DApp } from '../../src/generated/graphql';
+import { DApp } from '../../src/generated/graphql/0.8';
 
 const Component = withChakraTheme<DAppsProps>(DApps);
 

@@ -11,8 +11,8 @@
 
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { withChakraTheme } from '../../test-utilities';
 import { DappStats } from '../../../src/containers/rollups/DappStats';
+import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(DappStats);
 
@@ -23,8 +23,20 @@ const defaultProps = {
     reports: 40,
     vouchers: 50,
 };
+const v09Props = {
+    epochs: null,
+    inputs: 20,
+    notices: 30,
+    reports: 40,
+    vouchers: 50,
+};
 
 describe('DappStats container', () => {
+    it('should not display epoch tooltip on v0.9 and newer', async () => {
+        render(<Component {...v09Props} />);
+        const icon = screen.queryAllByTestId('epochs-icon');
+        expect(icon).toHaveLength(0);
+    });
     it('should display epochs tooltip', async () => {
         render(<Component {...defaultProps} />);
         const text = 'Total number of epochs';
