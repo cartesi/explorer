@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 2023-06-05
+
+-   `Staking`
+    -   Code changes to start consuming staking pool performance information from Subgraph.
+    -   Added configuration related to Sepolia network.
+-   `rollups`
+    -   Added changes to support local DApp development.
+    -   Added docker file to generate explorer-rollups images and documentation with more details.
+    -   Applied fixes and also increased test coverage.
+
 ## [3.3.0] - 2023-04-25
 
 -   Added JSON view support for DApp detail view on Rollups.
@@ -296,49 +306,50 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi-corp/explorer/compare/v3.3.0...HEAD
-[3.3.0]: https://github.com/cartesi-corp/explorer/compare/v3.2.2...v3.3.0
-[3.2.2]: https://github.com/cartesi-corp/explorer/compare/v3.2.1...v3.2.2
-[3.2.1]: https://github.com/cartesi-corp/explorer/compare/v3.2.0...v3.2.1
-[3.2.0]: https://github.com/cartesi-corp/explorer/compare/v3.1.0...v3.2.0
-[3.1.0]: https://github.com/cartesi-corp/explorer/compare/v3.0.0...v3.1.0
-[3.0.0]: https://github.com/cartesi-corp/explorer/compare/v2.12.4...v3.0.0
-[2.12.4]: https://github.com/cartesi-corp/explorer/compare/v2.12.3...v2.12.4
-[2.12.3]: https://github.com/cartesi-corp/explorer/compare/v2.12.2...v2.12.3
-[2.12.2]: https://github.com/cartesi-corp/explorer/compare/v2.12.1...v2.12.2
-[2.12.1]: https://github.com/cartesi-corp/explorer/compare/v2.12.0...v2.12.1
-[2.12.0]: https://github.com/cartesi-corp/explorer/compare/v2.11.0...v2.12.0
-[2.11.0]: https://github.com/cartesi-corp/explorer/compare/v2.10.1...v2.11.0
-[2.10.1]: https://github.com/cartesi-corp/explorer/compare/v2.10.0...v2.10.1
-[2.10.0]: https://github.com/cartesi-corp/explorer/compare/v2.9.1...v2.10.0
-[2.9.1]: https://github.com/cartesi-corp/explorer/compare/v2.9.0...v2.9.1
-[2.9.0]: https://github.com/cartesi-corp/explorer/compare/v2.8.3...v2.9.0
-[2.8.3]: https://github.com/cartesi-corp/explorer/compare/v2.8.2...v2.8.3
-[2.8.2]: https://github.com/cartesi-corp/explorer/compare/v2.8.1...v2.8.2
-[2.8.1]: https://github.com/cartesi-corp/explorer/compare/v2.8.0...v2.8.1
-[2.8.0]: https://github.com/cartesi-corp/explorer/compare/v2.7.3...v2.8.0
-[2.7.3]: https://github.com/cartesi-corp/explorer/compare/v2.7.2...v2.7.3
-[2.7.2]: https://github.com/cartesi-corp/explorer/compare/v2.7.1...v2.7.2
-[2.7.1]: https://github.com/cartesi-corp/explorer/compare/v2.7.0...v2.7.1
-[2.7.0]: https://github.com/cartesi-corp/explorer/compare/v2.6.2...v2.7.0
-[2.6.2]: https://github.com/cartesi-corp/explorer/compare/v2.6.1...v2.6.2
-[2.6.1]: https://github.com/cartesi-corp/explorer/compare/v2.6.0...v2.6.1
-[2.6.0]: https://github.com/cartesi-corp/explorer/compare/v2.5.1...v2.6.0
-[2.5.1]: https://github.com/cartesi-corp/explorer/compare/v2.5.0...v2.5.1
-[2.5.0]: https://github.com/cartesi-corp/explorer/compare/v2.4.4...v2.5.0
-[2.4.4]: https://github.com/cartesi-corp/explorer/compare/v2.4.3...v2.4.4
-[2.4.3]: https://github.com/cartesi-corp/explorer/compare/v2.4.2...v2.4.3
-[2.4.2]: https://github.com/cartesi-corp/explorer/compare/v2.4.1...v2.4.2
-[2.4.1]: https://github.com/cartesi-corp/explorer/compare/v2.4.0...v2.4.1
-[2.4.0]: https://github.com/cartesi-corp/explorer/compare/v2.3.0...v2.4.0
-[2.3.0]: https://github.com/cartesi-corp/explorer/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/cartesi-corp/explorer/compare/v2.1.0...v2.2.0
-[2.1.0]: https://github.com/cartesi-corp/explorer/compare/v2.0.5...v2.1.0
-[2.0.5]: https://github.com/cartesi-corp/explorer/compare/v2.0.4...v2.0.5
-[2.0.4]: https://github.com/cartesi-corp/explorer/compare/v2.0.3...v2.0.4
-[2.0.3]: https://github.com/cartesi-corp/explorer/compare/v2.0.2...v2.0.3
-[2.0.2]: https://github.com/cartesi-corp/explorer/compare/v2.0.1...v2.0.2
-[2.0.1]: https://github.com/cartesi-corp/explorer/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/cartesi-corp/explorer/compare/v1.1.0...v2.0.0
-[1.1.0]: https://github.com/cartesi-corp/explorer/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/cartesi-corp/explorer/releases/tag/v1.0.0
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.4.0...HEAD
+[3.4.0]: https://github.com/cartesi/explorer/compare/v3.3.0...v3.4.0
+[3.3.0]: https://github.com/cartesi/explorer/compare/v3.2.2...v3.3.0
+[3.2.2]: https://github.com/cartesi/explorer/compare/v3.2.1...v3.2.2
+[3.2.1]: https://github.com/cartesi/explorer/compare/v3.2.0...v3.2.1
+[3.2.0]: https://github.com/cartesi/explorer/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/cartesi/explorer/compare/v3.0.0...v3.1.0
+[3.0.0]: https://github.com/cartesi/explorer/compare/v2.12.4...v3.0.0
+[2.12.4]: https://github.com/cartesi/explorer/compare/v2.12.3...v2.12.4
+[2.12.3]: https://github.com/cartesi/explorer/compare/v2.12.2...v2.12.3
+[2.12.2]: https://github.com/cartesi/explorer/compare/v2.12.1...v2.12.2
+[2.12.1]: https://github.com/cartesi/explorer/compare/v2.12.0...v2.12.1
+[2.12.0]: https://github.com/cartesi/explorer/compare/v2.11.0...v2.12.0
+[2.11.0]: https://github.com/cartesi/explorer/compare/v2.10.1...v2.11.0
+[2.10.1]: https://github.com/cartesi/explorer/compare/v2.10.0...v2.10.1
+[2.10.0]: https://github.com/cartesi/explorer/compare/v2.9.1...v2.10.0
+[2.9.1]: https://github.com/cartesi/explorer/compare/v2.9.0...v2.9.1
+[2.9.0]: https://github.com/cartesi/explorer/compare/v2.8.3...v2.9.0
+[2.8.3]: https://github.com/cartesi/explorer/compare/v2.8.2...v2.8.3
+[2.8.2]: https://github.com/cartesi/explorer/compare/v2.8.1...v2.8.2
+[2.8.1]: https://github.com/cartesi/explorer/compare/v2.8.0...v2.8.1
+[2.8.0]: https://github.com/cartesi/explorer/compare/v2.7.3...v2.8.0
+[2.7.3]: https://github.com/cartesi/explorer/compare/v2.7.2...v2.7.3
+[2.7.2]: https://github.com/cartesi/explorer/compare/v2.7.1...v2.7.2
+[2.7.1]: https://github.com/cartesi/explorer/compare/v2.7.0...v2.7.1
+[2.7.0]: https://github.com/cartesi/explorer/compare/v2.6.2...v2.7.0
+[2.6.2]: https://github.com/cartesi/explorer/compare/v2.6.1...v2.6.2
+[2.6.1]: https://github.com/cartesi/explorer/compare/v2.6.0...v2.6.1
+[2.6.0]: https://github.com/cartesi/explorer/compare/v2.5.1...v2.6.0
+[2.5.1]: https://github.com/cartesi/explorer/compare/v2.5.0...v2.5.1
+[2.5.0]: https://github.com/cartesi/explorer/compare/v2.4.4...v2.5.0
+[2.4.4]: https://github.com/cartesi/explorer/compare/v2.4.3...v2.4.4
+[2.4.3]: https://github.com/cartesi/explorer/compare/v2.4.2...v2.4.3
+[2.4.2]: https://github.com/cartesi/explorer/compare/v2.4.1...v2.4.2
+[2.4.1]: https://github.com/cartesi/explorer/compare/v2.4.0...v2.4.1
+[2.4.0]: https://github.com/cartesi/explorer/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/cartesi/explorer/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/cartesi/explorer/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/cartesi/explorer/compare/v2.0.5...v2.1.0
+[2.0.5]: https://github.com/cartesi/explorer/compare/v2.0.4...v2.0.5
+[2.0.4]: https://github.com/cartesi/explorer/compare/v2.0.3...v2.0.4
+[2.0.3]: https://github.com/cartesi/explorer/compare/v2.0.2...v2.0.3
+[2.0.2]: https://github.com/cartesi/explorer/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/cartesi/explorer/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/cartesi/explorer/compare/v1.1.0...v2.0.0
+[1.1.0]: https://github.com/cartesi/explorer/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/cartesi/explorer/releases/tag/v1.0.0
