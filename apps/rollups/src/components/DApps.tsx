@@ -18,7 +18,7 @@ import {
     SimpleGrid,
 } from '@chakra-ui/react';
 import { FC } from 'react';
-import { DApp } from '../generated/graphql';
+import { DApp } from '../generated/graphql/0.8';
 import DAppCard from './DAppCard';
 
 export interface DAppsProps {

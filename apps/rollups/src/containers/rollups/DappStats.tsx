@@ -20,7 +20,7 @@ import {
 import { MdTimer } from 'react-icons/md';
 
 export interface DappStatsProps {
-    epochs: number;
+    epochs: number | null;
     inputs: number;
     notices: number;
     reports: number;
@@ -42,26 +42,28 @@ export const DappStats: FC<DappStatsProps> = ({
 
     return (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={3}>
-            <Banner
-                Icon={<Box as={MdTimer} w={8} h={8} />}
-                Title={
-                    <HStack>
-                        <Text># Epochs</Text>
-                        <Tooltip
-                            label="Total number of epochs"
-                            placement="top"
-                            isOpen={isOpen}
-                        >
-                            <Icon
-                                data-testid="epochs-icon"
-                                onClick={onToggle}
-                            />
-                        </Tooltip>
-                    </HStack>
-                }
-            >
-                <BigNumberText value={epochs} />
-            </Banner>
+            {epochs && (
+                <Banner
+                    Icon={<Box as={MdTimer} w={8} h={8} />}
+                    Title={
+                        <HStack>
+                            <Text># Epochs</Text>
+                            <Tooltip
+                                label="Total number of epochs"
+                                placement="top"
+                                isOpen={isOpen}
+                            >
+                                <Icon
+                                    data-testid="epochs-icon"
+                                    onClick={onToggle}
+                                />
+                            </Tooltip>
+                        </HStack>
+                    }
+                >
+                    <BigNumberText value={epochs} />
+                </Banner>
+            )}
             <Banner
                 Icon={<Box as={InputIcon} w={8} h={8} />}
                 Title={
