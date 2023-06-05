@@ -14,9 +14,9 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Heading,
-    HStack,
     Input as ChakraInput,
+    HStack,
+    Heading,
     InputGroup,
     InputLeftElement,
     Select,
@@ -25,14 +25,18 @@ import {
     Tag,
     Text,
     Textarea,
-    useColorModeValue,
     VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { Notification } from '@explorer/ui';
 import { ethers } from 'ethers';
 import dynamic from 'next/dynamic';
 import { FC, useState } from 'react';
-import { useDappQuery } from '../../generated/graphql';
+import {
+    useDappQuery,
+    useDappVersionQuery,
+} from '../../generated/graphql/0.8/';
+import { useInputEdgeQuery } from '../../generated/graphql/0.9';
 import { DappStats } from './DappStats';
 const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
@@ -65,24 +69,24 @@ type Proof = {
 };
 
 type Notice = {
-    id: string;
+    id?: string;
     index: number;
     proof?: Proof;
-    keccak: string;
+    keccak?: string;
     payload: string;
 };
 
 type Report = {
-    id: string;
+    id?: string;
     index: number;
     payload: string;
 };
 
 type Voucher = {
-    id: string;
+    id?: string;
     index: number;
     proof?: Proof;
-    destination: string;
+    destination?: string;
     payload: string;
 };
 
@@ -112,7 +116,7 @@ const hexToString = (hex: string) => {
 };
 
 export const hexToJSON = (hex: string) => {
-    const str = hexToString(hex);
+    const str = ethers.utils.toUtf8String(hex);
     try {
         return JSON.parse(str);
     } catch (e) {
@@ -134,6 +138,7 @@ export const transformPayload = (as: PayloadAs, payload: string) => {
 };
 export interface InputContentProps<D> {
     items: Edge<D>[];
+    count?: number;
     label: string;
 }
 
@@ -306,14 +311,90 @@ export const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
     );
 };
 
-export const DApp = () => {
-    const [, setSearch] = useState<string>('');
+interface NodeProps<T> {
+    node: T;
+}
+
+type Node = {
+    index: number;
+    notices: {
+        totalCount: number;
+        pageInfo: any;
+        edges: Edge<Notice>[];
+    };
+    reports: {
+        totalCount: number;
+        pageInfo: any;
+        edges: Edge<Report>[];
+    };
+    vouchers: {
+        totalCount: number;
+        pageInfo: any;
+        edges: Edge<Voucher>[];
+    };
+};
+
+const InputEdgeItem: FC<NodeProps<Node>> = ({ node }) => {
+    const bg = useColorModeValue('white', 'gray.800');
+    return (
+        <VStack bg={bg} alignItems="flex-start">
+            <Box
+                width="100%"
+                textAlign="center"
+                bg="blue.100"
+                py={2}
+                color="black"
+            >
+                <Heading fontSize="2xl">Input {node.index}</Heading>
+            </Box>
+            <Box px={3} py={2} width="full">
+                <SimpleGrid columns={{ base: 1 }}>
+                    <InputContent
+                        count={node.notices.totalCount}
+                        items={node.notices.edges}
+                        label="Notice"
+                    />
+
+                    <InputContent
+                        count={node.reports.totalCount}
+                        items={node.reports.edges}
+                        label="Report"
+                    />
+
+                    <InputContent
+                        count={node.vouchers.totalCount}
+                        items={node.vouchers.edges}
+                        label="Voucher"
+                    />
+                </SimpleGrid>
+            </Box>
+        </VStack>
+    );
+};
+
+export interface DAppProps {
+    address: string;
+    chainId: number;
+}
+
+export const DApp: FC<DAppProps> = (props) => {
+    const { address, chainId } = props;
+    const [search, setSearch] = useState<string>('');
     const bg = useColorModeValue('gray.80', 'header');
     const [result] = useDappQuery({
         variables: {},
     });
-    const { data, fetching, error } = result;
+    const [inputEdge] = useInputEdgeQuery({
+        variables: {},
+    });
 
+    const [dappVersionResult] = useDappVersionQuery({
+        variables: {
+            id: address?.toLowerCase(),
+        },
+    });
+    const { data, fetching, error } = result;
+    const version = dappVersionResult.data?.dapp?.factory?.version ?? '0.8';
     return (
         <>
             <Box
@@ -322,7 +403,11 @@ export const DApp = () => {
             >
                 {data && (
                     <DappStats
-                        epochs={data.epochs.totalCount}
+                        epochs={
+                            Number(version) >= 0.9
+                                ? null
+                                : data.epochs.totalCount
+                        }
                         inputs={data.inputs.totalCount}
                         notices={data.notices.totalCount}
                         reports={data.reports.totalCount}
@@ -357,9 +442,16 @@ export const DApp = () => {
                     </InputGroup>
                 </HStack>
                 <SimpleGrid columns={1} spacing="5" py={4}>
-                    {data?.epochs.edges.map((epoch) => (
-                        <EpochItem item={epoch.node} key={epoch.cursor} />
-                    ))}
+                    {Number(version) >= 0.9
+                        ? inputEdge.data?.inputs.edges.map((edge) => (
+                              <InputEdgeItem
+                                  node={edge.node}
+                                  key={edge.cursor}
+                              />
+                          ))
+                        : data?.epochs.edges.map((epoch) => (
+                              <EpochItem item={epoch.node} key={epoch.cursor} />
+                          ))}
                 </SimpleGrid>
             </Box>
         </>
