@@ -12,7 +12,7 @@
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { useWallet } from '@explorer/wallet';
 import { isAddress } from '@ethersproject/address';
-import { useBalance } from '../../src/services/eth';
+import { useBalance, useBlockNumber } from '../../src/services/eth';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
 import { BigNumber } from 'ethers';
@@ -59,45 +59,79 @@ describe('eth service', () => {
         jest.clearAllMocks();
     });
 
-    it('should return undefined balance if library is not defined', async () => {
-        mockUseWallet.mockReturnValue({
-            ...walletData,
-            library: undefined,
-        } as unknown as WalletConnectionContextProps);
-        const { result } = renderHook(() => useBalance(address));
+    describe('useBalance hook', () => {
+        it('should return undefined balance if library is not defined', async () => {
+            mockUseWallet.mockReturnValue({
+                ...walletData,
+                library: undefined,
+            } as unknown as WalletConnectionContextProps);
+            const { result } = renderHook(() => useBalance(address));
 
-        await waitFor(() => {
-            expect(result.current).toBe(undefined);
+            await waitFor(() => {
+                expect(result.current).toBe(undefined);
+            });
+        });
+
+        it('should return undefined balance if address is not valid', async () => {
+            mockUseWallet.mockReturnValue(
+                walletData as unknown as WalletConnectionContextProps
+            );
+            mockedIsAddress.mockReturnValue(false);
+            const { result } = renderHook(() => useBalance(address));
+
+            await waitFor(() => {
+                expect(result.current).toBe(undefined);
+            });
+        });
+
+        it('should return correct balance if address is valid', async () => {
+            const balance = BigNumber.from('10000000000');
+            mockUseWallet.mockReturnValue({
+                ...walletData,
+                library: {
+                    ...walletData.library,
+                    getBalance: () => Promise.resolve(balance),
+                },
+            } as unknown as WalletConnectionContextProps);
+
+            mockedIsAddress.mockReturnValue(true);
+            const { result } = renderHook(() => useBalance(address));
+
+            await waitFor(() => {
+                expect(result.current).toStrictEqual(balance);
+            });
         });
     });
 
-    it('should return undefined balance if address is not valid', async () => {
-        mockUseWallet.mockReturnValue(
-            walletData as unknown as WalletConnectionContextProps
-        );
-        mockedIsAddress.mockReturnValue(false);
-        const { result } = renderHook(() => useBalance(address));
+    describe('useBlockNumber hook', () => {
+        it('should return zero block number if library is not defined', async () => {
+            mockUseWallet.mockReturnValue({
+                ...walletData,
+                library: undefined,
+            } as unknown as WalletConnectionContextProps);
+            const { result } = renderHook(() => useBlockNumber());
 
-        await waitFor(() => {
-            expect(result.current).toBe(undefined);
+            await waitFor(() => {
+                expect(result.current).toBe(0);
+            });
         });
-    });
 
-    it('should return correct balance if address is valid', async () => {
-        const balance = BigNumber.from('10000000000');
-        mockUseWallet.mockReturnValue({
-            ...walletData,
-            library: {
-                ...walletData.library,
-                getBalance: () => Promise.resolve(balance),
-            },
-        } as unknown as WalletConnectionContextProps);
+        it('should return correct block number if library is defined', async () => {
+            const blockNumber = 10;
+            mockUseWallet.mockReturnValue({
+                ...walletData,
+                library: {
+                    ...walletData.library,
+                    getBlockNumber: () => Promise.resolve(blockNumber),
+                    on: jest.fn(),
+                    removeListener: jest.fn(),
+                },
+            } as unknown as WalletConnectionContextProps);
+            const { result } = renderHook(() => useBlockNumber());
 
-        mockedIsAddress.mockReturnValue(true);
-        const { result } = renderHook(() => useBalance(address));
-
-        await waitFor(() => {
-            expect(result.current).toStrictEqual(balance);
+            await waitFor(() => {
+                expect(result.current).toStrictEqual(blockNumber);
+            });
         });
     });
 });

@@ -16,10 +16,30 @@ import {
     getChainUrl,
     getChain,
     chainErrorData,
+    convertChainIdToNetworkId,
+    convertNetworkIdToChainId,
+    getChainByChainId,
+    getChainByKeyValue,
+    getChainByNetworkId,
+    IChainData,
 } from '../../src/services/chain';
 
 jest.mock('axios');
 const mockAxiosGet = axios.get as jest.MockedFunction<typeof axios.get>;
+const allChains = [
+    {
+        name: 'ethereum',
+    },
+    {
+        name: 'polygon',
+    },
+    {
+        name: 'arbitrum',
+    },
+    {
+        name: 'optimism',
+    },
+] as unknown as IChainData[];
 
 describe('chain service', () => {
     it('should invoke GET http request with correct endpoint', async () => {
@@ -60,5 +80,107 @@ describe('chain service', () => {
             chainId: chainId,
             networkId: chainId,
         });
+    });
+
+    it('should return networkId when invoking convertChainIdToNetworkId function', async () => {
+        const chainId = 5;
+        const networkId = 2;
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: {
+                    networkId,
+                },
+            });
+        });
+
+        const result = await convertChainIdToNetworkId(chainId);
+
+        expect(result).toBe(networkId);
+    });
+
+    it('should return networkId when invoking getChainByChainId function', async () => {
+        const chainId = 5;
+        const networkId = 2;
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: {
+                    networkId,
+                },
+            });
+        });
+
+        const result = await getChainByChainId(chainId);
+
+        expect(result.networkId).toBe(networkId);
+    });
+
+    it('should return correct chainData when invoking getChainByKeyValue function', async () => {
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: allChains,
+            });
+        });
+
+        const key = 'name';
+        const value = 'ethereum';
+        const result = await getChainByKeyValue(key, value);
+
+        expect(result).toStrictEqual(allChains.find((c) => c[key] === value));
+    });
+
+    it('should throw error when invoking getChainByKeyValue function with key/value that does not match any chain', async () => {
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: allChains,
+            });
+        });
+
+        const key = 'name';
+        const value = 'test-abc';
+
+        try {
+            await getChainByKeyValue(key, value);
+        } catch (e) {
+            expect(e.message).toBe(`No chain found matching ${key}=${value}`);
+        }
+    });
+
+    it('should return correct chainData when invoking getChainByNetworkId function', async () => {
+        const networkId = 1;
+        const chains = allChains.map((chain, index) => ({
+            ...chain,
+            networkId: index + 1,
+        }));
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: chains,
+            });
+        });
+
+        const result = await getChainByNetworkId(networkId);
+
+        expect(result).toStrictEqual(
+            chains.find((c) => c.networkId === networkId)
+        );
+    });
+
+    it('should return correct chainData when invoking convertNetworkIdToChainId function', async () => {
+        const networkId = 1;
+        const chains = allChains.map((chain, index) => ({
+            ...chain,
+            networkId: index + 1,
+            chainId: index + 1,
+        }));
+        mockAxiosGet.mockImplementation(() => {
+            return Promise.resolve({
+                data: chains,
+            });
+        });
+
+        const result = await convertNetworkIdToChainId(networkId);
+
+        expect(result).toStrictEqual(
+            chains.find((c) => c.networkId === networkId).chainId
+        );
     });
 });
