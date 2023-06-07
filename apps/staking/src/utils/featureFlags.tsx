@@ -42,7 +42,7 @@ const WhenReady = ({ children }: Props) => {
                 justifyContent="center"
                 style={{ position: 'fixed' }}
             >
-                <Spinner size="xl" />
+                <Spinner data-testid="when-ready-spinner" size="xl" />
             </VStack>
         );
     }

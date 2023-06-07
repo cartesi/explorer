@@ -7,7 +7,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { formatEnsName } from '../../src/utils/stringUtils';
+import { formatEnsName, truncateString } from '../../src/utils/stringUtils';
 
 describe('StringUtils functions', () => {
     it('should format ens name', () => {
@@ -20,6 +20,17 @@ describe('StringUtils functions', () => {
         const maxChars = 12;
         expect(formatEnsName(address, ensName, maxChars)).toBe(
             address.slice(0, maxChars)
+        );
+    });
+
+    it('should truncate string', () => {
+        expect(truncateString('')).toBe('');
+        expect(truncateString('abc')).toBe('abc');
+        expect(truncateString('abc-xyz')).toBe('abc-xyz');
+
+        const validStr = 'abcdefghigklonp';
+        expect(truncateString(validStr)).toBe(
+            `${validStr.slice(0, 5)}...${validStr.slice(-4)}`
         );
     });
 });
