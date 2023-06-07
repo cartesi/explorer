@@ -78,7 +78,7 @@ const AvailableNode: FC<AvailableNodeProps> = ({ balance, onHire }) => {
                                 validate: validate,
                             })}
                         />
-                        <InputRightAddon children="ETH" />
+                        <InputRightAddon>ETH</InputRightAddon>
                     </InputGroup>
                     {!errors.deposit && (
                         <FormHelperText>

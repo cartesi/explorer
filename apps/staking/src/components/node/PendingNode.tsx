@@ -54,6 +54,7 @@ const PendingNode: FC<PendingNodeProps> = ({
                         onClick={onCancelHire}
                         colorScheme="blue"
                         width="full"
+                        data-testid="cancel-hire-button"
                     >
                         Cancel Hire
                     </Button>
