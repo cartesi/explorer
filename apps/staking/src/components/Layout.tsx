@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Center, Text, useBreakpointValue } from '@chakra-ui/react';
 import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
 import React, { FC } from 'react';
 import {
@@ -22,26 +21,13 @@ import {
 } from '../services/contracts';
 import SyncStatus from './SyncStatus';
 
-export const ResponsiveDebug: FC = () => {
-    const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
-    const size = useBreakpointValue(['sm', 'md', 'lg', 'xl']);
-    const index = useBreakpointValue([0, 1, 2, 3]);
-    return (
-        <Center w="100%" minH={50} bg={color}>
-            <Text>
-                {size} [{index}]
-            </Text>
-        </Center>
-    );
-};
-
 export { PageHeader, PagePanel, PageBody };
 
 interface ComponentProps {
     children: React.ReactNode;
 }
 
-const headerLinks = [
+export const headerLinks = [
     {
         key: 'home',
         label: 'Home',
@@ -64,6 +50,25 @@ const headerLinks = [
     },
 ];
 
+export const footerLinks = [
+    {
+        label: 'Audit Report',
+        href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
+    },
+    {
+        label: 'CTSI Reserve Mining',
+        href: 'https://cartesi.io/en/mine/',
+    },
+    {
+        label: 'How to Run a Node',
+        href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
+    },
+    {
+        label: 'FAQ',
+        href: 'https://github.com/cartesi/noether/wiki/FAQ',
+    },
+];
+
 const PageLayout: FC<ComponentProps> = ({ children }) => {
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
@@ -71,25 +76,6 @@ const PageLayout: FC<ComponentProps> = ({ children }) => {
     const staking = useStakingContract();
     const workerManager = useWorkerManagerContract();
     const poolFactory = useStakingPoolFactoryContract();
-
-    const links = [
-        {
-            label: 'Audit Report',
-            href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
-        },
-        {
-            label: 'CTSI Reserve Mining',
-            href: 'https://cartesi.io/en/mine/',
-        },
-        {
-            label: 'How to Run a Node',
-            href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
-        },
-        {
-            label: 'FAQ',
-            href: 'https://github.com/cartesi/noether/wiki/FAQ',
-        },
-    ];
 
     const contracts = [
         {
@@ -122,7 +108,7 @@ const PageLayout: FC<ComponentProps> = ({ children }) => {
         <Layout
             headerLinks={headerLinks}
             footerContracts={contracts}
-            footerLinks={links}
+            footerLinks={footerLinks}
         >
             <>
                 <SyncStatus />
