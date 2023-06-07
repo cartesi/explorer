@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 /**
- * Converts the time in milisseconds to seconds (unix timestamp).
+ * Converts the time in milliseconds to seconds (unix timestamp).
  * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#get_the_number_of_seconds_since_the_ecmascript_epoch
  * @param numberInMillis
  * @returns
@@ -19,7 +19,7 @@ const parseToUnixTime = (numberInMillis: number): number =>
     Math.floor(numberInMillis / 1000);
 
 /**
- * Converts valid time in milisseconds or Date to seconds (unix timestamp).
+ * Converts valid time in milliseconds or Date to seconds (unix timestamp).
  * @param v
  */
 export function toUnixTimestamp(v: number): number;
