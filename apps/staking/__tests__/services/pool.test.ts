@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { renderHook, waitFor } from '@testing-library/react';
 import {
     useFlatRateCommission,
     useGasTaxCommission,
@@ -23,16 +22,11 @@ import {
     useGasTaxCommissionContract,
     useStakingPoolContract,
 } from '../../src/services/contracts';
-import { useStakingPoolFactory } from '../../src/services/poolFactory';
 import { useTransaction, Transaction } from '../../src/services/transaction';
-import { Web3Provider } from '@ethersproject/providers';
-import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
-import { useStakingPoolFactoryContract } from '../../src/services/contracts';
 import {
     Fee,
     FlatRateCommission,
     GasTaxCommission,
-    StakingPoolFactoryImpl,
     StakingPoolImpl,
 } from '@cartesi/staking-pool';
 import { act } from 'react-dom/test-utils';
