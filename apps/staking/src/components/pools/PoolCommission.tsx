@@ -11,12 +11,9 @@
 
 import React, { FC } from 'react';
 import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
-import { ethers } from 'ethers';
 import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
 import { StakingPool } from '../../graphql/models';
-import { useStakingPoolCommission } from '../../services/pool';
-import labels from '../../utils/labels';
 
 export interface PoolCommissionProps extends TextProps {
     pool: StakingPool;
@@ -32,45 +29,25 @@ const numberFormat = new Intl.NumberFormat('en-US', {
 
 const PoolCommission: FC<PoolCommissionProps> = (props) => {
     const { pool, direction = 'column', icon, label, ...textProps } = props;
-
-    // commission simulation
-    // XXX: 2900 should not be here
-    const reward = ethers.utils.parseUnits('2900', 18);
-    const nextCommission = useStakingPoolCommission(pool.id, reward);
-
-    // historical commission
-    // accured commission
-    const accuredCommissionLabel =
+    const accruedCommissionLabel =
         pool.commissionPercentage !== null
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
+    const commissionLabel = pool.fee.commission
+        ? `${(pool.fee.commission / 100).toFixed(2)} %`
+        : `${pool.fee.gas} Gas`;
 
-    // commission label
-    let commissionLabel = '';
-    if (pool.fee.commission) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (pool.fee.gas) {
-        commissionLabel = `${pool.fee.gas} Gas`;
-    }
-
-    // calculate commission for next block, by calling the fee contract
-    const nextCommissionLabel = nextCommission.value
-        ? `(${(nextCommission.value * 100).toFixed(2)} %)`
-        : '';
-
-    // commission help tooptip
-    let commissionTooltip: string = undefined;
-    if (pool.fee.commission) {
-        commissionTooltip = labels.flatRateCommission;
-    } else if (pool.fee.gas) {
-        commissionTooltip = labels.gasTaxCommission;
-    }
-
-    const valueLabel = `${accuredCommissionLabel} (${commissionLabel})`;
+    const valueLabel = `${accruedCommissionLabel} (${commissionLabel})`;
     return (
         <Flex direction={direction} align="baseline" justify="space-between">
             <HStack>
-                {icon && <Icon as={icon} color={props.color} />}
+                {icon && (
+                    <Icon
+                        data-testid="pool-commission-icon"
+                        as={icon}
+                        color={props.color}
+                    />
+                )}
                 <Text {...textProps}>{label}</Text>
             </HStack>
             <HStack align="baseline">

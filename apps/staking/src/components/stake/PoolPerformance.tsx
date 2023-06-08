@@ -11,11 +11,11 @@
 
 import React, { FC, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
-
 import useStakingPools from '../../graphql/hooks/useStakingPools';
 import { StakingPoolSort } from '../../graphql/models';
 import { Pagination } from '@explorer/ui';
 import PoolPerformanceTable from './tables/PoolPerformanceTable';
+import { isString } from 'lodash';
 
 interface PoolPerformanceProps {
     chainId: number;
@@ -30,6 +30,7 @@ const PoolPerformance: FC<PoolPerformanceProps> = ({
 }) => {
     const [sort, setSort] = useState<StakingPoolSort>('commissionPercentage');
     const [pageNumber, setPageNumber] = useState<number>(0);
+    const hasSearch = isString(search) && search !== '';
     const { data, loading } = useStakingPools({
         sort,
         pageNumber,
@@ -47,10 +48,11 @@ const PoolPerformance: FC<PoolPerformanceProps> = ({
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />
-            {!search && (
+            {!hasSearch && (
                 <Pagination
                     pages={pages}
                     currentPage={pageNumber}
+                    data-testid="pool-performance-pagination"
                     onPageClick={setPageNumber}
                 />
             )}

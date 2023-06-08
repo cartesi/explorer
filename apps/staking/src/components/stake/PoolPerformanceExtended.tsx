@@ -16,6 +16,7 @@ import useStakingPoolPerformanceExtended from '../../graphql/hooks/useStakingPoo
 import { StakingPoolSortExtended } from '../../graphql/models';
 import { Pagination } from '@explorer/ui';
 import PoolPerformanceExtendedTable from './tables/PoolPerformanceExtendedTable';
+import { isString } from 'lodash';
 
 interface PoolPerformanceExtendedProps {
     chainId: number;
@@ -34,6 +35,7 @@ const PoolPerformanceExtended: FC<PoolPerformanceExtendedProps> = ({
         'commissionPercentage'
     );
     const [pageNumber, setPageNumber] = useState<number>(0);
+    const hasSearch = isString(search) && search !== '';
     const { data, loading } = useStakingPoolPerformanceExtended(
         pageNumber,
         search,
@@ -50,10 +52,11 @@ const PoolPerformanceExtended: FC<PoolPerformanceExtendedProps> = ({
                 sort={sort}
                 onSort={(order) => setSort(order)}
             />
-            {!search && (
+            {!hasSearch && (
                 <Pagination
                     pages={pages}
                     currentPage={pageNumber}
+                    data-testid="pool-performance-extended-pagination"
                     onPageClick={setPageNumber}
                 />
             )}
