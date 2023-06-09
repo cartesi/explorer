@@ -39,7 +39,12 @@ describe('useBlocks hook', () => {
 
         expect(implementation).toHaveBeenCalledWith(BLOCKS, {
             variables: {
+                count: 100,
                 skip: 0,
+                where: {
+                    producer: undefined,
+                    node: undefined,
+                },
             },
             pollInterval: 30000,
             notifyOnNetworkStatusChange: true,
