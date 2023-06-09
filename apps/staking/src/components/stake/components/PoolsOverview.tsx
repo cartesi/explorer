@@ -37,7 +37,11 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                 <HStack>
                     <Text mr={1}># Pools</Text>
                     <Tooltip label="Total number of pools" placement="top">
-                        <Icon w={4} h={4} />
+                        <Icon
+                            data-testid="pools-overview-total-tooltip"
+                            w={4}
+                            h={4}
+                        />
                     </Tooltip>
                 </HStack>
             }
@@ -54,7 +58,11 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                         label="Number of pools user staked"
                         placement="top"
                     >
-                        <Icon w={4} h={4} />
+                        <Icon
+                            data-testid="pools-overview-balances-tooltip"
+                            w={4}
+                            h={4}
+                        />
                     </Tooltip>
                 </HStack>
             }
@@ -68,7 +76,11 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                 <HStack>
                     <Text mr={1}>My Stake</Text>
                     <Tooltip label="Total user stake in pools" placement="top">
-                        <Icon w={4} h={4} />
+                        <Icon
+                            data-testid="pools-overview-stake-tooltip"
+                            w={4}
+                            h={4}
+                        />
                     </Tooltip>
                 </HStack>
             }
