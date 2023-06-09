@@ -17,7 +17,10 @@ interface SectionHeadingProps {
     children: React.ReactNode;
 }
 
-const SectionHeading: FC<SectionHeadingProps> = ({ children }) => {
+const SectionHeading: FC<SectionHeadingProps> = ({
+    children,
+    ...restProps
+}) => {
     const borderLeftColor = useColorModeValue('gray.900', 'gray.200');
     return (
         <Heading
@@ -29,6 +32,7 @@ const SectionHeading: FC<SectionHeadingProps> = ({ children }) => {
             paddingLeft={3}
             size="lg"
             fontWeight="normal"
+            {...restProps}
         >
             {children}
         </Heading>
