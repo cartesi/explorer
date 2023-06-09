@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { cleanup, render, screen } from '@testing-library/react';
+import { useFlag } from '@unleash/proxy-client-react';
 import PoolPerformanceExtended from '../../../src/components/stake/PoolPerformanceExtended';
 import useStakingPoolsExtended from '../../../src/graphql/hooks/useStakingPoolsExtended';
 import { useVisibilityThreshold } from '../../../src/utils/hooks/useVisibilityThreshold';
@@ -24,6 +25,17 @@ jest.mock('../../../src/graphql/hooks/useStakingPoolsExtended');
 jest.mock('../../../src/utils/hooks/useVisibilityThreshold', () => ({
     useVisibilityThreshold: jest.fn(),
 }));
+
+jest.mock('@unleash/proxy-client-react', () => {
+    const originalModule = jest.requireActual('@unleash/proxy-client-react');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useFlag: jest.fn(),
+    };
+});
+
+const mockedUseFlag = useFlag as jest.MockedFunction<typeof useFlag>;
 
 const mockedUseStakingPools = useStakingPoolsExtended as jest.MockedFunction<
     typeof useStakingPoolsExtended
@@ -50,6 +62,8 @@ describe('PoolPerformanceExtended component', () => {
         mockedUseVisibilityThreshold.mockReturnValue({
             isBelow: false,
         });
+
+        mockedUseFlag.mockReturnValue(false);
     });
 
     afterEach(() => {
