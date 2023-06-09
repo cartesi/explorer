@@ -46,7 +46,7 @@ const Stats: FunctionComponent<StatsProps> = (props) => {
                         bg="black"
                         color="white"
                     >
-                        <Icon />
+                        <Icon data-testid="stats-tooltip-icon" />
                     </Tooltip>
                 )}
             </HStack>
