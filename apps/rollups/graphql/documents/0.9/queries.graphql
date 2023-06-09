@@ -63,3 +63,18 @@ query inputEdge {
         }
     }
 }
+
+query dapp {
+    inputs {
+        totalCount
+    }
+    vouchers {
+        totalCount
+    }
+    notices {
+        totalCount
+    }
+    reports {
+        totalCount
+    }
+}

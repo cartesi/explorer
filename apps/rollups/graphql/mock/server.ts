@@ -1,17 +1,18 @@
-import { loadFilesSync } from '@graphql-tools/load-files';
-import { mergeTypeDefs } from '@graphql-tools/merge';
 import { addMocksToSchema } from '@graphql-tools/mock';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { readFileSync } from 'fs';
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
 import { join } from 'path';
 import { BigInt, Float, Int, String } from './custom-scalars';
-const typesArray = loadFilesSync(join(__dirname, '../schema'), {
-    recursive: true,
-});
-const typeDefs = mergeTypeDefs(typesArray);
+const typeDefs = readFileSync(
+    join(process.cwd(), 'graphql/schema/0.9/schema.graphql'),
+    {
+        encoding: 'utf-8',
+    }
+);
 const schema = makeExecutableSchema({ typeDefs });
-console.log(join(__dirname, '../schema'));
+
 const mocks = {
     BigInt,
     Int,
