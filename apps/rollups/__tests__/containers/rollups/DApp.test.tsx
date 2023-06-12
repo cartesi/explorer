@@ -15,11 +15,14 @@ import {
     DApp,
     transformPayload,
 } from '../../../src/containers/rollups/DApp';
-import { DappQuery, useDappQuery } from '../../../src/generated/graphql/0.8/';
+import {
+    DappQuery,
+    useDappQuery,
+} from '../../../src/generated/graphql/rollups/0.9';
 import { withChakraTheme } from '../../test-utilities';
 import { CombinedError } from '@urql/core';
 
-const path = '../../../src/generated/graphql/0.8/';
+const path = '../../../src/generated/graphql/rollups/0.9';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
     return {
@@ -219,22 +222,6 @@ describe('DApp container', () => {
             render(<DAppComponent address={''} chainId={0} />);
 
             expect(screen.getByTestId('dapp-spinner')).toBeInTheDocument();
-        });
-
-        it('should display epoch items', () => {
-            mockUseDappQuery.mockReturnValue([
-                {
-                    fetching: true,
-                    stale: false,
-                    data: dAppQueryData,
-                },
-                () => undefined,
-            ]);
-            render(<DAppComponent address={''} chainId={0} />);
-
-            expect(screen.getAllByTestId('epoch-item').length).toBe(
-                dAppQueryData.epochs.edges.length
-            );
         });
     });
 

@@ -28,9 +28,9 @@ import {
     DApp_OrderBy,
     useDappsQuery,
     useDashboardQuery,
-} from '../../../src/generated/graphql/0.8';
+} from '../../../src/generated/graphql/subgraph';
 
-const path = '../../../src/generated/graphql/0.8/';
+const path = '../../../src/generated/graphql/subgraph/';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
     return {
