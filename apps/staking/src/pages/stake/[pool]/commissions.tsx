@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Flex } from '@chakra-ui/react';
 import { isArray } from 'lodash';
@@ -112,7 +112,9 @@ const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
                         <PerPageSelect
                             value={rowsPerPage}
                             options={perPageOptions}
-                            onChange={(event) => {
+                            onChange={(
+                                event: ChangeEvent<HTMLSelectElement>
+                            ) => {
                                 setRowsPerPage(
                                     Number(event.currentTarget.value)
                                 );
