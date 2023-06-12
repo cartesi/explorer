@@ -34,9 +34,8 @@ import dynamic from 'next/dynamic';
 import { FC, useState } from 'react';
 import {
     useDappQuery,
-    useDappVersionQuery,
-} from '../../generated/graphql/0.8/';
-import { useInputEdgeQuery } from '../../generated/graphql/0.9';
+    useInputEdgeQuery,
+} from '../../generated/graphql/rollups/0.9';
 import { DappStats } from './DappStats';
 const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
@@ -388,13 +387,7 @@ export const DApp: FC<DAppProps> = (props) => {
         variables: {},
     });
 
-    const [dappVersionResult] = useDappVersionQuery({
-        variables: {
-            id: address?.toLowerCase(),
-        },
-    });
     const { data, fetching, error } = result;
-    const version = dappVersionResult.data?.dapp?.factory?.version ?? '0.8';
     return (
         <>
             <Box
@@ -403,11 +396,6 @@ export const DApp: FC<DAppProps> = (props) => {
             >
                 {data && (
                     <DappStats
-                        epochs={
-                            Number(version) >= 0.9
-                                ? null
-                                : data.epochs.totalCount
-                        }
                         inputs={data.inputs.totalCount}
                         notices={data.notices.totalCount}
                         reports={data.reports.totalCount}
@@ -442,16 +430,10 @@ export const DApp: FC<DAppProps> = (props) => {
                     </InputGroup>
                 </HStack>
                 <SimpleGrid columns={1} spacing="5" py={4}>
-                    {Number(version) >= 0.9
-                        ? inputEdge.data?.inputs.edges.map((edge) => (
-                              <InputEdgeItem
-                                  node={edge.node}
-                                  key={edge.cursor}
-                              />
-                          ))
-                        : data?.epochs.edges.map((epoch) => (
-                              <EpochItem item={epoch.node} key={epoch.cursor} />
-                          ))}
+                    {inputEdge.data &&
+                        inputEdge.data.inputs.edges.map((edge) => (
+                            <InputEdgeItem node={edge.node} key={edge.cursor} />
+                        ))}
                 </SimpleGrid>
             </Box>
         </>

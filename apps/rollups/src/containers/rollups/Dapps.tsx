@@ -40,7 +40,7 @@ import {
     DApp_OrderBy,
     useDappsQuery,
     useDashboardQuery,
-} from '../../generated//graphql/0.8';
+} from '../../generated//graphql/subgraph';
 
 export interface DappsProps {
     chainId: number;
