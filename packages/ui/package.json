@@ -45,7 +45,7 @@
         "eth-chains": "1.0.0",
         "ethers": "5.4.7",
         "humanize-duration": "3.27.0",
-        "react-icons": "4.6.0",
+        "react-icons": "4.9.0",
         "react-jazzicon": "1.0.4"
     }
 }
