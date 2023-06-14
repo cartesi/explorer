@@ -11,6 +11,7 @@
 
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
+    Flex,
     HStack,
     Spinner,
     Table,
@@ -63,27 +64,33 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                         <Th>Pool Address</Th>
 
                         <Th isNumeric>
-                            <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
-                                onClick={() => onSort('totalUsers')}
-                            >
-                                Total Users
-                            </GhostButton>
-                            {sort == 'totalUsers' && <ArrowDownIcon />}
+                            <Flex direction={'row'} alignItems={'center'}>
+                                <GhostButton
+                                    marginRight={'2'}
+                                    fontSize="xs"
+                                    fontWeight="bold"
+                                    _hover={{ color: 'blue.400' }}
+                                    onClick={() => onSort('totalUsers')}
+                                >
+                                    Total Users
+                                </GhostButton>
+                                {sort == 'totalUsers' && <ArrowDownIcon />}
+                            </Flex>
                         </Th>
 
                         <Th isNumeric>
-                            <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
-                                onClick={() => onSort('amount')}
-                            >
-                                Total Staked
-                            </GhostButton>
-                            {sort == 'amount' && <ArrowDownIcon />}
+                            <Flex direction={'row'} alignItems={'center'}>
+                                <GhostButton
+                                    marginRight={'2'}
+                                    fontSize="xs"
+                                    fontWeight="bold"
+                                    _hover={{ color: 'blue.400' }}
+                                    onClick={() => onSort('amount')}
+                                >
+                                    Total Staked
+                                </GhostButton>
+                                {sort == 'amount' && <ArrowDownIcon />}
+                            </Flex>
                         </Th>
 
                         <Th isNumeric>Total Rewards</Th>
@@ -110,17 +117,22 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
 
                         <Th>Configured Commission</Th>
                         <Th>
-                            <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
-                                onClick={() => onSort('commissionPercentage')}
-                            >
-                                Accrued Commission
-                            </GhostButton>{' '}
-                            {sort == 'commissionPercentage' && (
-                                <ArrowDownIcon />
-                            )}
+                            <Flex direction={'row'} alignItems={'center'}>
+                                <GhostButton
+                                    marginRight={'2'}
+                                    fontSize="xs"
+                                    fontWeight="bold"
+                                    _hover={{ color: 'blue.400' }}
+                                    onClick={() =>
+                                        onSort('commissionPercentage')
+                                    }
+                                >
+                                    Accrued Commission
+                                </GhostButton>{' '}
+                                {sort == 'commissionPercentage' && (
+                                    <ArrowDownIcon />
+                                )}
+                            </Flex>
                         </Th>
 
                         <Th isNumeric position="initial" ref={thRef}>
