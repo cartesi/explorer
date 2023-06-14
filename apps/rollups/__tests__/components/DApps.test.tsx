@@ -10,9 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { withChakraTheme } from '../test-utilities';
 import { DApps, DAppsProps } from '../../src/components/DApps';
-import { DApp } from '../../src/generated/graphql/0.8';
+import { DApp } from '../../src/generated/graphql/subgraph';
+import { withChakraTheme } from '../test-utilities';
 
 const Component = withChakraTheme<DAppsProps>(DApps);
 
