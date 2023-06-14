@@ -48,7 +48,7 @@ const walletConnect = walletConnectModule();
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
-const convertToHex = (num: number): string => num.toString(16);
+export const convertToHex = (num: number): string => num.toString(16);
 
 export const buildConfig = (
     ankrEnabled: boolean,
@@ -119,7 +119,7 @@ export const buildConfig = (
 /**
  * Check what type of wallet is based on its label e.g. Ledger
  */
-const getWalletType = (label = ''): WalletType | null => {
+export const getWalletType = (label = ''): WalletType | null => {
     const name = label.toLocaleLowerCase();
     return injectedWallets.has(name)
         ? WalletType.INJECTED
@@ -145,7 +145,7 @@ export const checkNetwork = (
     return error;
 };
 
-const handlerBuilder =
+export const handlerBuilder =
     (stateUpdateCb: Dispatch<SetStateAction<PropState>>, chainIds: string[]) =>
     (wallets: WalletState[]) => {
         const [connectedWallet] = wallets;
