@@ -6,7 +6,7 @@ This is a monorepo holding up two explorer applications from Cartesi. One is the
 
 This monorepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager and is controlled by [turborepo](https://turbo.build/repo).
 
-## Package Installation
+### Package Installation
 
 You can add, remove and upgrade packages from within your monorepo using your package manager's built-in commands:
 
@@ -72,6 +72,17 @@ yarn run build
 ```
 
 > Note: We are not building the packages since it is only for internal use. **The transpilation/compilation is delegated to the application using the package.** _That may change in the future._
+
+### Release
+
+The project use **tags** that represent releases, including a branch to signal cloud providers to update the production code (e.g. Staking).
+
+That is as follows:
+
+-   Combined tag name `v` + SemVer format **tag** (e.g. v3.4.0) to pinpoint repository state on a given production release.
+-   A different **tag** format for rollups, i.e. `rollups@0.9.0`, is used to initiate the process of releasing docker images with specific versions that match the versioning other rollups projects are using for unison sake.
+
+> The process initiated for rollups docker image generation is a [GitHub Action](./.github/workflows/docker-rollups.yml)
 
 ## Turborepo Useful Links
 
