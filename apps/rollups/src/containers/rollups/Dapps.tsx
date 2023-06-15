@@ -37,6 +37,7 @@ import {
 import { FC, useState } from 'react';
 import { DAppsList } from '../../components/DAppsList';
 import {
+    DAppStatus,
     DApp_OrderBy,
     useDappsQuery,
     useDashboardQuery,
@@ -174,13 +175,20 @@ export const Dapps: FC<DappsProps> = (props) => {
         DApp_OrderBy.ActivityTimestamp
     );
     const perPage = 10;
+
+    const status = DAppStatus.CreatedByFactory;
     const [dAppsResult] = useDappsQuery({
         variables: {
             orderBy,
             first: perPage,
             skip: perPage * pageNumber,
             where_dapp:
-                search && search.length > 0 ? { id: search } : undefined,
+                search && search.length > 0
+                    ? {
+                          id: search,
+                          status,
+                      }
+                    : { status },
         },
     });
     const [dashboardResult] = useDashboardQuery({
