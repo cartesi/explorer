@@ -4,7 +4,7 @@ This is a monorepo holding up two explorer applications from Cartesi. One is the
 
 ## What's inside?
 
-This turborepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
+This monorepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager and is controlled by [turborepo](https://turbo.build/repo).
 
 ## Package Installation
 
@@ -35,16 +35,6 @@ This turborepo has some additional tools already setup for you:
 -   [ESLint](https://eslint.org/) for code linting
 -   [Prettier](https://prettier.io) for code formatting
 
-### Build
-
-To build all apps, run the following command:
-
-```
-yarn run build
-```
-
-> Note: We are not building the packages since it is only for internal use. **The transpilation/compilation is delegated to the application using the package.** _That may change in the future._
-
 ### Develop
 
 To develop all apps and packages, run the following command:
@@ -68,9 +58,20 @@ yarn run dev --filter rollups
 ```
 
 ### Test coverage reporting
+
 We are using [Coveralls](https://coveralls.io/) as a reporting tool for our tests' coverage. Each workspace that has tests, generates coverage report for them as well using the `test:ci` npm script. At each build we merge coverage reports for all workspaces, and then send the merged report to Coveralls.
 
 To include a new workspace that has tests in the merged coverage report, all you need to do is provide in its dedicated `package.json` file the `test:ci` script (found in existing workspaces).
+
+### Build
+
+To build all apps, run the following command:
+
+```
+yarn run build
+```
+
+> Note: We are not building the packages since it is only for internal use. **The transpilation/compilation is delegated to the application using the package.** _That may change in the future._
 
 ## Turborepo Useful Links
 
