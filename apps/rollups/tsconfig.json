@@ -7,7 +7,7 @@
     },
     "compilerOptions": {
         "strict": false,
-        "isolatedModules": false
+        "isolatedModules": true
     },
     "exclude": ["node_modules"],
     "include": [
