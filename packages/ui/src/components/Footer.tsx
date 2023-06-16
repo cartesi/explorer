@@ -66,8 +66,6 @@ const SocialButton = ({
     );
 };
 
-export const cartesiTwitterLink = 'https://twitter.com/cartesiproject';
-
 export type FooterLink = { label: string; href: string };
 export type FooterContract = { name: string; address?: string };
 
@@ -129,7 +127,10 @@ const Footer: FC<FooterProps> = ({ links, contracts }) => {
                         rights reserved
                     </Text>
                     <Stack direction={'row'} spacing={6}>
-                        <SocialButton label="Twitter" href={cartesiTwitterLink}>
+                        <SocialButton
+                            label="Twitter"
+                            href="https://twitter.com/cartesiproject"
+                        >
                             <FaTwitter />
                         </SocialButton>
                     </Stack>

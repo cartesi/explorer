@@ -9,12 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
-import { NavBar, NavLink } from '../../../src/components';
+import { useWallet } from '@explorer/wallet/src/useWallet';
+import { NavBar, NavLink } from '../../../src/components/header/NavBar';
 
-const walletMod = `@explorer/wallet`;
+const walletMod = `@explorer/wallet/src/useWallet`;
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
 jest.mock('@unleash/proxy-client-react', () => ({

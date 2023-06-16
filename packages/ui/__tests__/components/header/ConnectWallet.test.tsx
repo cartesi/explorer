@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ConnectWallet, ConnectWalletProps } from '../../../src/components';
+import { ConnectWallet } from '../../../src/components/header/ConnectWallet';
 import { withChakraTheme } from '../../test-utilities';
 import { UnsupportedNetworkError } from '@explorer/wallet';
 
@@ -22,12 +21,11 @@ const defaultWallet = {
     deactivate: () => Promise.resolve(),
 };
 
-const Component = withChakraTheme<ConnectWalletProps>(ConnectWallet);
+const Component = withChakraTheme(ConnectWallet);
 
 describe('Connect Wallet', () => {
     // a default configured component
-    const renderComponent = (props: ConnectWalletProps) =>
-        render(<Component {...props} />);
+    const renderComponent = (props: any) => render(<Component {...props} />);
 
     it('Should display connect to wallet label', () => {
         renderComponent({

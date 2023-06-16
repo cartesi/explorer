@@ -11,7 +11,7 @@
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { Notification } from '../../src/components';
+import { Notification } from '../../src/components/Notification';
 import { withChakraTheme } from '../test-utilities';
 
 describe('Notification component', () => {

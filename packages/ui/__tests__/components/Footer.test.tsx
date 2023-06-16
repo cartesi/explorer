@@ -10,10 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { Footer, FooterProps, cartesiTwitterLink } from '../../src/components';
+import Footer from '../../src/components/Footer';
 import { withChakraTheme } from '../test-utilities';
 
-const Component = withChakraTheme<FooterProps>(Footer);
+const Component = withChakraTheme(Footer);
 const defaultProps = {
     links: [
         { label: 'Google', href: 'https://google.com' },
@@ -54,7 +54,7 @@ describe('Footer component', () => {
     it('should display Cartesi twitter link', () => {
         const { container } = render(<Component {...defaultProps} />);
         const twitterLink = container.querySelector(
-            `a[href="${cartesiTwitterLink}"]`
+            `a[href="https://twitter.com/cartesiproject"]`
         );
         const isLinkInDom =
             typeof twitterLink === 'object' && twitterLink !== null;

@@ -9,15 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { useClipboard } from '@chakra-ui/react';
 import Address, { AddressProps } from '../../src/components/Address';
-import { ENSEntry, useENS } from '@explorer/services';
+import { ENSEntry, useENS } from '@explorer/services/src/ens';
 import { withChakraTheme } from '../test-utilities';
-import { StakePlusIcon } from '../../src/components';
+import { StakePlusIcon } from '../../src/components/Icons';
 
-jest.mock('@explorer/services', () => {
+jest.mock('@explorer/services/src/ens', () => {
     const original = jest.requireActual('@explorer/services');
     return {
         __esModule: true,
