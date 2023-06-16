@@ -9,15 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Banner, { BannerProps } from '../../src/components/Banner';
+import Banner from '../../src/components/Banner';
 import { withChakraTheme } from '../test-utilities';
 
 const defaultProps = {
     Title: <span>Title</span>,
 };
-const Component = withChakraTheme<BannerProps>(Banner);
+const Component = withChakraTheme(Banner);
 
 describe('Banner component', () => {
     const renderComponent = (props = {}) =>

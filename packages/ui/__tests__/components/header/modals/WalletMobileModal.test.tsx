@@ -9,12 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import {
-    WalletMobileModal,
-    IWalletMobileModalProps,
-} from '../../../../src/components/header/modals/WalletMobileModal';
+import { WalletMobileModal } from '../../../../src/components/header/modals/WalletMobileModal';
 import { withChakraTheme } from '../../../test-utilities';
 
 const defaultProps = {
@@ -25,8 +21,7 @@ const defaultProps = {
     onClose: () => undefined,
 };
 
-const EWalletMobileModal =
-    withChakraTheme<IWalletMobileModalProps>(WalletMobileModal);
+const EWalletMobileModal = withChakraTheme(WalletMobileModal);
 
 describe('Staking Pool Allowance Modal', () => {
     // a default configured component

@@ -9,16 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { withChakraTheme } from '../test-utilities';
-import { BigNumberText, BigNumberTextProps } from '../../src/components';
+import BigNumberText from '../../src/components/BigNumberText';
 
 const defaultProps = {
     value: 10,
 };
 
-const Component = withChakraTheme<BigNumberTextProps>(BigNumberText);
+const Component = withChakraTheme(BigNumberText);
 
 describe('BigNumberText component', () => {
     const renderComponent = (props = {}) =>

@@ -9,17 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { useClipboard } from '@chakra-ui/react';
 import { FaCoins } from 'react-icons/fa';
-import AddressText, {
-    AddressTextProps,
-} from '../../src/components/AddressText';
-import { ENSEntry, useENS } from '@explorer/services';
+import AddressText from '../../src/components/AddressText';
+import { ENSEntry, useENS } from '@explorer/services/src/ens';
 import { withChakraTheme } from '../test-utilities';
 
-jest.mock('@explorer/services', () => {
+jest.mock('@explorer/services/src/ens', () => {
     const original = jest.requireActual('@explorer/services');
     return {
         __esModule: true,
@@ -46,7 +43,7 @@ const defaultUseClipboardProps = {
     hasCopied: false,
     onCopy: () => undefined,
 };
-const Component = withChakraTheme<AddressTextProps>(AddressText);
+const Component = withChakraTheme(AddressText);
 const mockUseENS = useENS as jest.MockedFunction<typeof useENS>;
 const mockUseClipboard = useClipboard as jest.MockedFunction<
     typeof useClipboard

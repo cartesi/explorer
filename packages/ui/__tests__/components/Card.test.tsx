@@ -10,10 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { Card, CardProps } from '../../src/components';
+import { Card } from '../../src/components/Card';
 import { withChakraTheme } from '../test-utilities';
 
-const ECard = withChakraTheme<CardProps>(Card);
+const ECard = withChakraTheme(Card);
 
 describe('Card component', () => {
     beforeEach(() => {
