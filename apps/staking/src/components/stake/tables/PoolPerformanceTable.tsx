@@ -25,7 +25,6 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { GhostButton } from '@explorer/ui';
-import { useFlag } from '@unleash/proxy-client-react';
 import { FC, useRef } from 'react';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
@@ -54,8 +53,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
     const borderColor = useColorModeValue('white', 'gray.700');
-    const newPerformanceEnabled = useFlag('newPerformanceEnabled');
-    const colSpans = newPerformanceEnabled ? 11 : 9;
+    const colSpans = 11;
     return (
         <TableResponsiveHolder ref={tableRef}>
             <Table>
@@ -95,25 +93,13 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
 
                         <Th isNumeric>Total Rewards</Th>
 
-                        {newPerformanceEnabled && (
-                            <>
-                                <Th
-                                    isNumeric
-                                    whiteSpace="nowrap"
-                                    data-testid=""
-                                >
-                                    <Text whiteSpace="nowrap">
-                                        7-days % (Annual)
-                                    </Text>
-                                </Th>
+                        <Th isNumeric whiteSpace="nowrap" data-testid="">
+                            <Text whiteSpace="nowrap">7-days % (Annual)</Text>
+                        </Th>
 
-                                <Th isNumeric whiteSpace="nowrap">
-                                    <Text whiteSpace="nowrap">
-                                        30-days % (Annual)
-                                    </Text>
-                                </Th>
-                            </>
-                        )}
+                        <Th isNumeric whiteSpace="nowrap">
+                            <Text whiteSpace="nowrap">30-days % (Annual)</Text>
+                        </Th>
 
                         <Th>Configured Commission</Th>
                         <Th>
