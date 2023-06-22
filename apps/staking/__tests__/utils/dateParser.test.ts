@@ -7,7 +7,11 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { toUnixTimestamp } from '../../src/utils/dateParser';
+import { differenceInDays } from 'date-fns';
+import {
+    getPastDaysInSeconds,
+    toUnixTimestamp,
+} from '../../src/utils/dateParser';
 
 describe('dateParser util', () => {
     it('should parse milliseconds', () => {
@@ -20,5 +24,33 @@ describe('dateParser util', () => {
         expect(toUnixTimestamp(time)).toEqual(
             Math.floor(time.getTime() / 1000)
         );
+    });
+
+    describe('date manipulation', () => {
+        const today = new Date(1687417813360);
+
+        beforeEach(() => {
+            jest.spyOn(Date, 'now').mockImplementation(() => today.getTime());
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should return past days in seconds (7 days ago)', () => {
+            const resultInSeconds = getPastDaysInSeconds(7);
+
+            expect(
+                differenceInDays(today, new Date(resultInSeconds * 1000))
+            ).toEqual(7);
+        });
+
+        it('should return past days in seconds (30 days ago)', () => {
+            const resultInSeconds = getPastDaysInSeconds(30);
+
+            expect(
+                differenceInDays(today, new Date(resultInSeconds * 1000))
+            ).toEqual(30);
+        });
     });
 });
