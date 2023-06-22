@@ -34,17 +34,17 @@ const isEnabled = async (name: string): Promise<boolean> => {
 };
 
 const getGraphQLClients = async () => {
-    const isAWSEnabled = await isEnabled('aws');
+    const isChainstackEnabled = await isEnabled('chainstackEnabled');
 
     console.log(
         `Using ${
-            isAWSEnabled ? 'AWS API' : 'the-graph hosted services'
+            isChainstackEnabled ? 'Chainstack API' : 'the-graph hosted services'
         } to fetch data`
     );
 
     return {
-        mainnetClient: createApollo(Network.MAINNET, isAWSEnabled),
-        goerliClient: createApollo(Network.GOERLI, isAWSEnabled),
+        mainnetClient: createApollo(Network.MAINNET, isChainstackEnabled),
+        goerliClient: createApollo(Network.GOERLI, isChainstackEnabled),
     };
 };
 
