@@ -9,17 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PoolCommissionsTable, {
     PoolCommissionsTableProps,
 } from '../../../../src/components/stake/tables/PoolCommissionsTable';
+import { StakingPoolFeeHistory } from '../../../../src/graphql/models';
 import commissionsData from '../../../../src/stories/stake/tables/commissionsData';
 import { withChakraTheme } from '../../../test-utilities';
-import {
-    StakingPoolFlat,
-    StakingPoolSortExtended,
-} from '../../../../src/graphql/models';
 
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
@@ -30,12 +26,13 @@ jest.mock('@chakra-ui/react', () => {
     };
 });
 
+type Commission = Omit<StakingPoolFeeHistory, 'pool' | 'feeType'>;
+
 const defaultProps = {
     account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
     chainId: 5,
     loading: false,
-    sort: 'commissionPercentage' as StakingPoolSortExtended,
-    data: commissionsData as unknown as StakingPoolFlat[],
+    data: commissionsData as Commission[],
     onSort: () => undefined,
 };
 
