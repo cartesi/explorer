@@ -9,32 +9,30 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState } from 'react';
 import {
+    Box,
     HStack,
     Heading,
-    Box,
-    useColorModeValue,
     VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
+import { useWallet } from '@explorer/wallet';
 import { constants } from 'ethers';
-import { useFlag } from '@unleash/proxy-client-react';
+import { useState } from 'react';
 import Layout, {
     PageBody,
     PageHeader,
     PagePanel,
 } from '../../components/Layout';
-import useSummary from '../../graphql/hooks/useSummary';
-import { useWallet } from '@explorer/wallet';
+import PageHead from '../../components/PageHead';
 import SearchInput from '../../components/SearchInput';
-import usePoolBalances from '../../graphql/hooks/usePoolBalances';
+import PoolPerformance from '../../components/stake/PoolPerformance';
 import PoolsOverview from '../../components/stake/components/PoolsOverview';
 import UserStakingPoolsTable from '../../components/stake/tables/UserStakingPoolsTable';
+import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
-import PoolPerformanceExtended from '../../components/stake/PoolPerformanceExtended';
-import PoolPerformance from '../../components/stake/PoolPerformance';
+import useSummary from '../../graphql/hooks/useSummary';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
-import PageHead from '../../components/PageHead';
 
 const Home = () => {
     const { account, chainId, active } = useWallet();
@@ -45,8 +43,6 @@ const Home = () => {
     const bodyBg = useColorModeValue('gray.80', 'header');
     const stakingPoolsBg = useColorModeValue('white', 'gray.800');
     const [search, setSearch] = useState<string>();
-    const apr = useFlag('apr');
-    const aws = useFlag('aws');
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
 
     return (
@@ -157,20 +153,11 @@ const Home = () => {
                             </HStack>
 
                             <VStack w="calc(100% - 1px)" pb={10}>
-                                {apr && aws ? (
-                                    <PoolPerformanceExtended
-                                        chainId={chainId}
-                                        pages={pages}
-                                        account={account}
-                                        search={search}
-                                    />
-                                ) : (
-                                    <PoolPerformance
-                                        chainId={chainId}
-                                        pages={pages}
-                                        search={search}
-                                    />
-                                )}
+                                <PoolPerformance
+                                    chainId={chainId}
+                                    pages={pages}
+                                    search={search}
+                                />
                             </VStack>
                         </Box>
                     </Box>

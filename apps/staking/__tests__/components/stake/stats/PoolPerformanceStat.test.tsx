@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import { QueryResult } from '@apollo/client';
 import { cleanup, render, screen } from '@testing-library/react';
 import PoolPerformanceStat, {
     PoolPerformanceStatProps,
 } from '../../../../src/components/stake/stats/PoolPerformanceStat';
-import { withChakraTheme } from '../../../test-utilities';
-import usePoolShareInfoExtended from '../../../../src/graphql/hooks/usePoolShareInfoExtended';
+import useStakingPoolPerformance from '../../../../src/graphql/hooks/useStakingPoolPerformance';
 import {
-    PoolShareInfoExtendedData,
-    StakingPoolsVars,
+    StakingPoolPerformanceData,
+    StakingPoolPerformanceVars,
 } from '../../../../src/graphql/models';
-import { QueryResult } from '@apollo/client';
+import { withChakraTheme } from '../../../test-utilities';
 
-jest.mock('../../../../src/graphql/hooks/usePoolShareInfoExtended');
-const mockUsePoolShareInfoExtended =
-    usePoolShareInfoExtended as jest.MockedFunction<
-        typeof usePoolShareInfoExtended
+jest.mock('../../../../src/graphql/hooks/useStakingPoolPerformance');
+
+const mockUseStakingPoolPerformance =
+    useStakingPoolPerformance as jest.MockedFunction<
+        typeof useStakingPoolPerformance
     >;
 
 const defaultAddress = 'Angel Karaliichev 1 str.';
@@ -37,18 +37,12 @@ const EPoolPerformanceStat =
 const mockedHook = {
     loading: false,
     data: {
-        allStakingPools: {
-            nodes: [
-                {
-                    id: '1',
-                    weekPerformance: 0,
-                    monthPerformance: 0,
-                    shareValue: 0,
-                },
-            ],
+        performance: {
+            monthly: [{ id: '2', performance: '0.00', timestamp: 1682164800 }],
+            weekly: [{ id: '1', performance: '0.00', timestamp: 1686744000 }],
         },
     },
-} as QueryResult<PoolShareInfoExtendedData, Partial<StakingPoolsVars>>;
+} as QueryResult<StakingPoolPerformanceData, StakingPoolPerformanceVars>;
 
 describe('Pool Performance Stat', () => {
     // a default configured component
@@ -62,7 +56,7 @@ describe('Pool Performance Stat', () => {
 
     beforeEach(() => {
         // default mock return
-        mockUsePoolShareInfoExtended.mockReturnValue(mockedHook);
+        mockUseStakingPoolPerformance.mockReturnValue(mockedHook);
     });
 
     afterEach(() => {
