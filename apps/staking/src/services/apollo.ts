@@ -9,11 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useMemo } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { useFlag } from '@unleash/proxy-client-react';
-import { Network } from '../utils/networks';
+import { useMemo } from 'react';
 import { Environment } from '../utils/environment';
+import { Network } from '../utils/networks';
 
 const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
@@ -22,24 +22,16 @@ const hostedUris = {
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
 };
 
-const AWS_URL =
+const mainnetURL =
     Environment.PRODUCTION === process.env.NEXT_PUBLIC_ENVIRONMENT
-        ? 'https://thegraph.cartesi.io'
-        : 'https://thegraph.staging.cartesi.io';
+        ? 'https://ethereum-mainnet.graph-eu.p2pify.com/75d339525576cdbd7ff93e11ff2ffdc7/pos'
+        : 'https://ethereum-mainnet.graph-eu.p2pify.com/8d17b395563b06f244441ad91b0d4c04/pos-preview';
 
-const subgraphBaseUrl = `${AWS_URL}/subgraphs/name/cartesi`;
-const awsUris = {
-    1: `${subgraphBaseUrl}/pos`,
-    5: `${subgraphBaseUrl}/pos-goerli`,
+const chainstackURI = {
+    1: mainnetURL,
+    5: 'https://ethereum-goerli.graph-eu.p2pify.com/a76ae69498820dfffde048a21229ff89/pos-goerli',
     31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
-};
-
-const extendedBaseUrl = `${AWS_URL}/extended`;
-const extendedUris = {
-    1: `${extendedBaseUrl}/mainnet/graphql`,
-    5: `${extendedBaseUrl}/goerli/graphql`,
-    31337: 'http://localhost:5001/graphql',
-};
+} as const;
 
 const mergeUniqueSort = (fieldName: string) => {
     return (existing: any[] = [], incoming: any[], { readField }) => {
@@ -65,20 +57,22 @@ const mergeUniqueSort = (fieldName: string) => {
 
 export const createApollo = (
     chainId: number,
-    aws: boolean
+    chainstack: boolean
 ): ApolloClient<any> => {
-    let uri = aws ? awsUris[chainId] : hostedUris[chainId];
+    let uri = chainstack ? chainstackURI[chainId] : hostedUris[chainId];
 
     // default to mainnet
-    uri = uri || (aws ? awsUris[Network.MAINNET] : hostedUris[Network.MAINNET]);
+    uri =
+        uri ||
+        (chainstack
+            ? chainstackURI[Network.MAINNET]
+            : hostedUris[Network.MAINNET]);
 
     const ssrMode = typeof window === 'undefined';
 
     return new ApolloClient({
         ssrMode,
-        link: new HttpLink({
-            uri,
-        }),
+        uri,
         cache: new InMemoryCache({
             typePolicies: {
                 Query: {
@@ -94,24 +88,7 @@ export const createApollo = (
     });
 };
 
-export const createExtendedApollo = (chainId: number): ApolloClient<any> => {
-    const uri = extendedUris[chainId] || extendedUris[Network.MAINNET];
-    const ssrMode = typeof window === 'undefined';
-
-    return new ApolloClient({
-        ssrMode,
-        link: new HttpLink({
-            uri,
-        }),
-        cache: new InMemoryCache(),
-    });
-};
-
 export const useApollo = (chainId: number): ApolloClient<any> => {
-    const aws = useFlag('aws');
-    return useMemo(() => createApollo(chainId, aws), [chainId, aws]);
-};
-
-export const useExtendedApollo = (chainId: number): ApolloClient<any> => {
-    return useMemo(() => createExtendedApollo(chainId), [chainId]);
+    const enabled = useFlag('chainstackEnabled');
+    return useMemo(() => createApollo(chainId, enabled), [chainId, enabled]);
 };
