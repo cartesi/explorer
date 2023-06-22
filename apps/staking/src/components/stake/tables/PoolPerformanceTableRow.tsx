@@ -21,7 +21,6 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Address, StakeIcon } from '@explorer/ui';
-import { useFlag } from '@unleash/proxy-client-react';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
 import { FunctionComponent } from 'react';
@@ -82,7 +81,6 @@ const PoolPerformanceTableRow: FunctionComponent<
 > = ({ chainId, pool, keepActionColVisible }) => {
     const borderColor = useColorModeValue('gray.100', 'header');
     const stakeInfoBg = useColorModeValue('white', 'gray.800');
-    const newPerformanceEnabled = useFlag('newPerformanceEnabled');
 
     // accrued commission
     const accruedCommissionLabel =
@@ -167,13 +165,12 @@ const PoolPerformanceTableRow: FunctionComponent<
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
             </Td>
 
-            {newPerformanceEnabled && (
-                <Performance
-                    key={`perf-${pool.id}`}
-                    weekly={first(pool.weeklyPerformance)?.performance}
-                    monthly={last(pool.monthlyPerformance)?.performance}
-                />
-            )}
+            <Performance
+                key={`perf-${pool.id}`}
+                weekly={first(pool.weeklyPerformance)?.performance}
+                monthly={last(pool.monthlyPerformance)?.performance}
+            />
+
             <Td borderColor={borderColor} data-testid="commission-col">
                 {commissionLabel}{' '}
                 {commissionTooltip && (
