@@ -1,5 +1,8 @@
 // Copyright (C) 2022 Cartesi Pte. Ltd.
 
+import { getUnixTime, startOfDay, sub } from 'date-fns';
+import { pipe } from 'lodash/fp';
+
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
 // Foundation, either version 3 of the License, or (at your option) any later
@@ -33,3 +36,7 @@ export function toUnixTimestamp(v: unknown): number {
             `Supported types are [Date, number]. number needs to be a valid timestamp in milliseconds.`
         );
 }
+
+const pastDays = (days: number) => sub(Date.now(), { days });
+
+export const getPastDaysInSeconds = pipe(pastDays, startOfDay, getUnixTime);

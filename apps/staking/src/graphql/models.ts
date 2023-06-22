@@ -10,10 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export type StakingPoolSort = 'totalUsers' | 'amount' | 'commissionPercentage';
-export type StakingPoolSortExtended =
-    | StakingPoolSort
-    | 'weekPerformance'
-    | 'monthPerformance';
 
 export type UserSort =
     | 'stakedBalance'
@@ -100,39 +96,6 @@ export type StakingPool = {
     monthlyPerformance: Performance[];
 };
 
-export type StakingPoolFlat = {
-    id: string;
-    manager: string;
-    amount: string;
-    shares: string;
-    totalUsers: number;
-    totalCommission: string;
-    commissionPercentage: number;
-    paused: boolean;
-    timestamp: number;
-    feeId: string;
-    feeCommission: number;
-    feeGas: number;
-    feeCreated: string;
-    feeLastUpdated: string;
-    userStakedBalance: string;
-    userMaturingBalance: string;
-    userMaturingTimestamp: string;
-    userReleasingBalance: string;
-    userReleasingTimestamp: string;
-    userBalance: string;
-    userTotalBlocks: number;
-    userTotalReward: string;
-    shareValue: number;
-    weekShareValue: number;
-    weekShareTimestamp: string;
-    monthShareValue: number;
-    monthShareTimestamp: string;
-    performance: number;
-    weekPerformance: number;
-    monthPerformance: number;
-};
-
 export type StakingPoolFee = {
     id: string;
     commission: number;
@@ -197,20 +160,25 @@ export interface StakingPoolVars {
     id: string;
 }
 
+export interface StakingPoolPerformanceVars {
+    pool: string;
+    first: number;
+    orderDirection: OrderDirection;
+    weeklyOrderBy: PerformanceSort;
+    monthlyOrderBy: PerformanceSort;
+    whereMonthly: PerformanceFilter;
+    whereWeekly: PerformanceFilter;
+}
+
+export interface StakingPoolPerformanceData {
+    performance: {
+        weekly: Performance[];
+        monthly: Performance[];
+    };
+}
+
 export interface StakingPoolsData {
     stakingPools: StakingPool[];
-}
-
-export interface StakingPoolsExtendedData {
-    allStakingPools: Nodes<StakingPoolFlat>;
-}
-
-export interface StakingPoolsExtendedVars {
-    first: number;
-    skip: number;
-    where: any;
-    orderBy: string;
-    orderDirection?: OrderDirection;
 }
 
 type PerformanceSort = 'timestamp';
@@ -270,17 +238,6 @@ export type PoolShareValue = {
     pool?: StakingPool;
     timestamp: number;
     value: string;
-};
-
-export type PoolShareInfoExtended = {
-    id: string;
-    weekPerformance: number;
-    monthPerformance: number;
-    shareValue: number;
-};
-
-export type PoolShareInfoExtendedData = {
-    allStakingPools: Nodes<PoolShareInfoExtended>;
 };
 
 export type PoolShareValuesData = {
