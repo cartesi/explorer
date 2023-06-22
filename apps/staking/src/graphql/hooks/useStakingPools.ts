@@ -10,9 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useQuery } from '@apollo/client';
-import { getUnixTime, startOfDay, sub } from 'date-fns';
 import { toPairs } from 'lodash';
 import { filter, isEmpty, pipe, reduce } from 'lodash/fp';
+import { getPastDaysInSeconds } from '../../utils/dateParser';
 import {
     OrderDirection,
     StakingPoolSort,
@@ -59,10 +59,6 @@ const valuesToLowerCase: (a: WhereClause) => WhereClause = pipe(
     filter(notEmptyValues),
     reduce(reducer, {} as WhereClause)
 );
-
-const pastDays = (days: number) => sub(Date.now(), { days });
-
-const getPastDaysInSeconds = pipe(pastDays, startOfDay, getUnixTime);
 
 const useStakingPools = ({
     sort = 'commissionPercentage',
