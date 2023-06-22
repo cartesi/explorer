@@ -9,21 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { memo, FC, ReactChild, ReactFragment } from 'react';
-import { PoolPerformanceIcon } from '@explorer/ui';
-import {
-    HStack,
-    useColorModeValue,
-    Box,
-    Icon,
-    Tooltip,
-    Text,
-} from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import {
+    Box,
+    HStack,
+    Icon,
+    Text,
+    Tooltip,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { PoolPerformanceIcon } from '@explorer/ui';
+import { pathOr } from 'lodash/fp';
 import NextLink from 'next/link';
-import BigNumberTextV2 from '../../BigNumberTextV2';
+import { FC, ReactChild, ReactFragment, memo } from 'react';
 import ConditionalWrapper from '../../../components/ConditionalWrapper';
-import usePoolShareInfoExtended from '../../../graphql/hooks/usePoolShareInfoExtended';
+import useStakingPoolPerformance from '../../../graphql/hooks/useStakingPoolPerformance';
+import BigNumberTextV2 from '../../BigNumberTextV2';
 
 export interface PoolPerformanceStatProps {
     address: string;
@@ -33,12 +34,15 @@ export interface PoolPerformanceStatProps {
 const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
     ({ address, location }: PoolPerformanceStatProps) => {
         const bgBlocks = useColorModeValue('blue.50', 'gray.900');
-        const { data, loading } = usePoolShareInfoExtended(address);
+        const { loading, data } = useStakingPoolPerformance(address);
+
         if (loading) return null;
 
-        const { weekPerformance } = data.allStakingPools?.nodes[0] || {
-            weekPerformance: 0,
-        };
+        const weekPerformance = pathOr(
+            0,
+            'performance.weekly[0].performance',
+            data
+        );
 
         return (
             <ConditionalWrapper

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { SimpleGrid, StackProps } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
 import { StakingPoolFee } from '../../graphql/models';
@@ -66,10 +65,6 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
         onRebalance,
     } = props;
 
-    const aws = useFlag('aws');
-    const apr = useFlag('apr');
-    const performanceStatsEnabled = aws && apr;
-
     return (
         <>
             <SimpleGrid
@@ -119,9 +114,8 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     commissionPercentage={commissionPercentage}
                     fee={fee}
                 />
-                {performanceStatsEnabled && (
-                    <PoolPerformanceStat address={address} />
-                )}
+
+                <PoolPerformanceStat address={address} />
             </SimpleGrid>
         </>
     );
