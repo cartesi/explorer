@@ -7,21 +7,18 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
+import { CombinedError } from '@urql/core';
+import { Provider, createClient } from 'urql';
 import {
-    hexToJSON,
+    DApp,
+    EpochItem,
     InputContent,
     Inputs,
-    EpochItem,
-    DApp,
+    hexToJSON,
     transformPayload,
 } from '../../../src/containers/rollups/DApp';
-import {
-    DappQuery,
-    useDappQuery,
-} from '../../../src/generated/graphql/rollups/0.9';
+import { useDappQuery } from '../../../src/generated/graphql/rollups/0.9';
 import { withChakraTheme } from '../../test-utilities';
-import { CombinedError } from '@urql/core';
-
 const path = '../../../src/generated/graphql/rollups/0.9';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
@@ -35,6 +32,9 @@ jest.mock(path, () => {
 const mockUseDappQuery = useDappQuery as jest.MockedFunction<
     typeof useDappQuery
 >;
+
+// Create a mock client
+const mockClient = createClient({ url: '/graphql' });
 
 const PAYLOAD_STRING = '0x496d616765206e6f74206c6f61646564';
 const PAYLOAD_JSON =
@@ -156,29 +156,10 @@ const epochItemProps = {
     },
 };
 
-const DAppComponent = withChakraTheme(DApp);
-const dAppQueryData = {
-    epochs: {
-        totalCount: 1,
-        edges: [edge],
-    },
-    inputs: {
-        totalCount: 0,
-    },
-    notices: {
-        totalCount: 0,
-    },
-    reports: {
-        totalCount: 0,
-    },
-    vouchers: {
-        totalCount: 0,
-    },
-} as unknown as DappQuery;
-
 describe('DApp container', () => {
     describe('DApp component', () => {
         beforeEach(() => {
+            mockUseDappQuery.mockClear();
             mockUseDappQuery.mockReturnValue([
                 {
                     fetching: false,
@@ -193,7 +174,7 @@ describe('DApp container', () => {
             jest.resetAllMocks();
         });
 
-        it('should display error message', () => {
+        it('should display error message', async () => {
             const errorMessage =
                 'Warning: There was an error while fetching Dapps.';
             mockUseDappQuery.mockReturnValue([
@@ -206,12 +187,17 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
-            render(<DAppComponent address={''} chainId={0} />);
-
+            await act(() => {
+                render(
+                    <Provider value={mockClient}>
+                        <DApp address={''} chainId={0} />
+                    </Provider>
+                );
+            });
             expect(screen.getByText(errorMessage)).toBeInTheDocument();
         });
 
-        it('should display spinner while fetching', () => {
+        it('should display spinner while fetching', async () => {
             mockUseDappQuery.mockReturnValue([
                 {
                     fetching: true,
@@ -219,7 +205,13 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
-            render(<DAppComponent address={''} chainId={0} />);
+            await act(() => {
+                render(
+                    <Provider value={mockClient}>
+                        <DApp address={''} chainId={0} />
+                    </Provider>
+                );
+            });
 
             expect(screen.getByTestId('dapp-spinner')).toBeInTheDocument();
         });
@@ -227,7 +219,9 @@ describe('DApp container', () => {
 
     describe('InputContent component', () => {
         it('should display label', () => {
-            render(<InputContentComponent {...inputContentProps} />);
+            act(() => {
+                render(<InputContentComponent {...inputContentProps} />);
+            });
 
             expect(
                 screen.getByText(inputContentProps.label)
