@@ -9,15 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, cleanup, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
-import { CartesiDAppFactory__factory } from '@cartesi/rollups';
-import { useNetwork } from '../../src/services/useNetwork';
-import { useRollupsFactory } from '../../src/services/useRollupsFactory';
-import { networks } from '../../src/services/useNetwork';
-import { JsonRpcSigner } from '@ethersproject/providers/src.ts/json-rpc-provider';
+import {
+    CartesiDAppFactory,
+    CartesiDAppFactory__factory,
+} from '@cartesi/rollups';
 import { Web3Provider } from '@ethersproject/providers';
-import { CartesiDAppFactory } from '@cartesi/rollups';
+import { JsonRpcSigner } from '@ethersproject/providers/src.ts/json-rpc-provider';
+import { useWallet } from '@explorer/wallet';
+import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { networks, useNetwork } from '../../src/services/useNetwork';
+import { useRollupsFactory } from '../../src/services/useRollupsFactory';
 
 const walletMod = '@explorer/wallet';
 const networkMod = '../../src/services/useNetwork';
@@ -112,7 +114,7 @@ describe('useRollupsFactory hook', () => {
                 getSigner: (): JsonRpcSigner =>
                     'signer' as unknown as JsonRpcSigner,
             } as Web3Provider,
-        });
+        } as unknown as WalletConnectionContextProps);
 
         await waitFor(() => {
             renderHook(() => useRollupsFactory());

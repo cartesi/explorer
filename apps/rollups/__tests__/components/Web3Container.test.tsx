@@ -10,14 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 //
+import { WalletConnectionProvider } from '@explorer/wallet/src/provider';
 import { render, screen } from '@testing-library/react';
-import { WalletConnectionProvider } from '@explorer/wallet';
 import Web3Container, {
-    chainIds,
     appMetaData,
+    chainIds,
 } from '../../src/components/Web3Container';
 
-const path = '@explorer/wallet';
+const path = '@explorer/wallet/src/provider';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
     return {

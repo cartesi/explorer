@@ -9,13 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, cleanup } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
-import { useNetwork } from '../../src/services/useNetwork';
+import { useWallet } from '@explorer/wallet/src/useWallet';
+import { cleanup, renderHook } from '@testing-library/react';
+import { networks, useNetwork } from '../../src/services/useNetwork';
 import { useRollupsGraphQL } from '../../src/services/useRollupsGraphQL';
-import { networks } from '../../src/services/useNetwork';
 
-const walletMod = '@explorer/wallet';
+const walletMod = `@explorer/wallet/src/useWallet`;
 const networkMod = '../../src/services/useNetwork';
 
 jest.mock(walletMod, () => {
