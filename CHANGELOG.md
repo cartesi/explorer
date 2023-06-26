@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.0] - 2023-06-24
+
+-   `Staking`
+    -   Increased code coverage to multiple components
+    -   Fix the alignment between header text and arrow icon when sorting the staking pool table.
+    -   We are switching to feed indexed data from Chainstack and moving away from AWS.
+-   `Rollups`
+    -   Increased code coverage to multiple components
+    -   The DApp details page is all set for rollups `v0.9.x`.
+    -   Improvements done for docker image generation for rollups. That includes linux/arm64 architecture besides the linux/amd64.
+
 ## [3.4.0] - 2023-06-05
 
 -   `Staking`
@@ -306,7 +317,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.4.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.5.0...HEAD
+[3.5.0]: https://github.com/cartesi/explorer/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/cartesi/explorer/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/cartesi/explorer/compare/v3.2.2...v3.3.0
 [3.2.2]: https://github.com/cartesi/explorer/compare/v3.2.1...v3.2.2
