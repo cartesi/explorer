@@ -9,15 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { useUnleashContext } from '@unleash/proxy-client-react';
-import { WalletConnectionProvider, useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
+import { WalletConnectionProvider } from '@explorer/wallet/src/provider';
 import { TestComponent } from './helpers';
 import { useOnboard } from '@explorer/wallet/src/useOnboard';
 import { buildMockUseOnboardV2Return } from './mocks';
 import { Network, networks } from '../../../src/utils/networks';
 
-const walletMod = '@explorer/wallet';
+const walletMod = '@explorer/wallet/src/useWallet';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
@@ -75,7 +76,6 @@ describe('Wallet Provider', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.resetAllMocks();
         jest.restoreAllMocks();
     });

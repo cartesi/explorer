@@ -32,7 +32,7 @@ import {
 import { act } from 'react-dom/test-utils';
 import { BigNumber, FixedNumber } from 'ethers';
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 
 jest.mock('../../src/services/transaction', () => ({
     useTransaction: jest.fn(),

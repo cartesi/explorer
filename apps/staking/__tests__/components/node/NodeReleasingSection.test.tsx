@@ -8,8 +8,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { NodeReleasingSection } from '../../../src/components/node/NodeReleasingSection';
 import { BigNumber } from 'ethers';
 
@@ -19,8 +18,6 @@ const TEST_RELEASING_TIME = '1 hour, 20 minutes';
 const TEST_WITHDRAW_BUTTON = `WITHDRAW (${TEST_RELEASING_TIME})`;
 
 describe('NodeReleasingSection component', () => {
-    afterEach(() => cleanup());
-
     it(`Should be 'Releasing' with ${TEST_RELEASING_BALANCE} CTSI, ${TEST_RELEASING_TIME}`, () => {
         render(
             <NodeReleasingSection

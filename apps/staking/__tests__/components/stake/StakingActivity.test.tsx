@@ -9,9 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { StakingActivity } from '../../../src/components/stake/StakingActivity';
-import usePoolActivities from '../../../src/graphql/hooks/usePoolActivities';
+import usePoolActivities, {
+    Activity,
+} from '../../../src/graphql/hooks/usePoolActivities';
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
 const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
@@ -47,14 +49,13 @@ describe('Staking Activity', () => {
                     id: '0x5316176a7262ab6cd401a212c6cd892662ea43b67537c4af22bcbc4e8cd996de',
                     timestamp: defaultTimestamp,
                     type: 'Deposit',
-                },
+                } as Activity,
             ],
         });
     });
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display loader and information when retrieving data', () => {

@@ -9,14 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
     PoolActivity,
     IPoolActivityProps,
 } from '../../../src/components/stake/PoolActivity';
 import { withChakraTheme } from '../../test-utilities';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
@@ -32,7 +31,7 @@ const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const EPoolActivity = withChakraTheme<IPoolActivityProps>(PoolActivity);
@@ -69,7 +68,6 @@ describe('Pool Activity', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display pool filters wrapper', () => {

@@ -9,16 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { ethers } from 'ethers';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useENS } from '../../src/services/ens';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
 
 jest.mock('ethers');
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 
 const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const mockedGetAddress = ethers.utils.getAddress as jest.MockedFunction<
@@ -50,7 +50,6 @@ describe('ens service', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

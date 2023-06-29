@@ -8,8 +8,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { NodeMaturingSection } from '../../../src/components/node/NodeMaturingSection';
 import { BigNumber } from 'ethers';
 
@@ -18,8 +17,6 @@ const TEST_MATURING_BALANCE_CTSI = '87';
 const TEST_MATURING_TIME = '1 hour, 20 minutes';
 
 describe('NodeMaturingSection component', () => {
-    afterEach(() => cleanup());
-
     it('Should be with 0 CTSI, 6 hours', () => {
         render(<NodeMaturingSection maturingBalance={BigNumber.from(0)} />);
 

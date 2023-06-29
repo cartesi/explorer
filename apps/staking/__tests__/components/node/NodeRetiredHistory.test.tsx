@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { NodeRetiredHistory } from '../../../src/components/node/NodeRetiredHistory';
 import {
     buildUseUserNodesReturn,
@@ -31,7 +30,6 @@ describe('Node Retired History', () => {
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
     });
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
     it('Should display the title', () => {
@@ -66,7 +64,6 @@ describe('When user has no retired node', () => {
         expect(nodeAddress).not.toBeInTheDocument();
     });
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 });
@@ -86,7 +83,6 @@ describe('When user has retired node', () => {
         expect(tbody.length).toBe(1);
     });
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 });

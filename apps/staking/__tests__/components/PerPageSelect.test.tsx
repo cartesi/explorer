@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import PerPageSelect from '../../src/components/PerPageSelect';
 import { withChakraTheme } from '../test-utilities';
 
@@ -22,10 +22,6 @@ const defaultProps = {
 };
 
 describe('PerPageSelect component', () => {
-    beforeEach(() => {
-        cleanup();
-    });
-
     it('should display required label', () => {
         render(<Component {...defaultProps} />);
         expect(screen.getByText('Rows per page')).toBeInTheDocument();

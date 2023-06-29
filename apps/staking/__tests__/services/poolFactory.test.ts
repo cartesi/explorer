@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useStakingPoolFactory } from '../../src/services/poolFactory';
 import { useTransaction, Transaction } from '../../src/services/transaction';
 import { Web3Provider } from '@ethersproject/providers';
@@ -19,7 +19,7 @@ import { useStakingPoolFactoryContract } from '../../src/services/contracts';
 import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
 import { act } from 'react-dom/test-utils';
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 
 jest.mock('../../src/services/transaction', () => ({
     useTransaction: jest.fn(),

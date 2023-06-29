@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { useBreakpointValue } from '@chakra-ui/react';
 import CustomizeEthereumNode from '../../../../src/components/node/steps/CustomizeEthereumNode';
 import { IStep } from '../../../../src/components/StepGroup';
@@ -25,7 +25,6 @@ describe('Customize Ethereum Node Step component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

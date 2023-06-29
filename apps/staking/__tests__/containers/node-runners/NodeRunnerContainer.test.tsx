@@ -10,10 +10,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { UseWallet } from '@explorer/wallet';
+import { UseWallet } from '@explorer/wallet/src/useWallet';
 import {
     act,
-    cleanup,
     findByText,
     fireEvent,
     getByRole,
@@ -119,7 +118,6 @@ describe('NodeRunners container (Landing Page)', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
         localStorage.clear();
     });

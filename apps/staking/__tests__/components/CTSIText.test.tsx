@@ -10,13 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Text } from '@chakra-ui/react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { FaIcons } from 'react-icons/fa';
 import CTSIText from '../../src/components/CTSIText';
 
 describe('CTSI Text component', () => {
-    afterEach(() => cleanup());
-
     it('Should render the formatted amount of CTSI', () => {
         render(<CTSIText value="5000100000000000000000000" />);
 

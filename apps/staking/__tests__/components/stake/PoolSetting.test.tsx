@@ -9,10 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import {
     act,
-    cleanup,
     fireEvent,
     getByText,
     render,
@@ -31,8 +30,7 @@ import {
     buildUseStakingPoolFactoryReturn,
     buildUseStakingPoolReturn,
 } from '../pools/mocks';
-
-useStakingPool;
+import { StakingPool } from '../../../src/graphql/models';
 
 const pool = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -43,7 +41,7 @@ const totalPoolBalance = '100000000000000000000000000000000';
 jest.mock('@unleash/proxy-client-react');
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>;
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('../../../src/graphql/hooks/useTotalPoolBalance');
@@ -139,12 +137,11 @@ describe('PoolSetting', () => {
             commissionPercentage: 15,
             paused: false,
             timestamp: new Date().getTime(),
-        });
+        } as StakingPool);
     });
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display header text', () => {

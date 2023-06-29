@@ -9,19 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
-import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { SlideDown } from '../../../src/components/animation/SlideDown';
 
-describe('SlideDown component', () => {
-    const DummyComponent = ({ text }) => <h1>{text}</h1>;
-    afterEach(() => {
-        cleanup();
-    });
+const DummyComponent = ({ text }) => <h1>{text}</h1>;
 
+describe('SlideDown component', () => {
     it('should be able to render children component when display prop is true', () => {
         render(
-            <SlideDown display={true}>
+            <SlideDown display>
                 <DummyComponent text="Create your own pool" />
             </SlideDown>
         );
