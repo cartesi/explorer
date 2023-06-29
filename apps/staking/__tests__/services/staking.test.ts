@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { useStaking } from '../../src/services/staking';
 import { useStakingContract } from '../../src/services/contracts';
@@ -62,7 +62,6 @@ describe('staking service', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

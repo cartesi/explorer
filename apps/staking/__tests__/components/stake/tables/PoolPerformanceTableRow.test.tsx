@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Table, Tbody } from '@chakra-ui/react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { FC } from 'react';
 import PoolPerformanceTableRow, {
@@ -57,10 +57,6 @@ describe('Pool Performance Table Row', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false);
-    });
-
-    afterEach(() => {
-        cleanup();
     });
 
     it('Should have required columns', () => {

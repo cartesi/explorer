@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StakingImpl, PoS } from '@cartesi/pos';
 import Layout, { headerLinks, footerLinks } from '../../src/components/Layout';
 import {
@@ -94,7 +94,6 @@ describe('Layout component', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('should display correct header links', () => {

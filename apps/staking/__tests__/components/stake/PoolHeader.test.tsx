@@ -9,10 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PoolHeader } from '../../../src/components/stake/PoolHeader';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
@@ -28,7 +27,7 @@ jest.mock('next/router', () => {
 });
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('@unleash/proxy-client-react', () => ({
@@ -62,7 +61,6 @@ describe('Pool Header', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display staking pool label', () => {

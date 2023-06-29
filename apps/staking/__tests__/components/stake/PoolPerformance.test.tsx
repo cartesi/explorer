@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import PoolPerformance from '../../../src/components/stake/PoolPerformance';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
@@ -68,7 +68,6 @@ describe('PoolPerformance component', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display pagination when there is no search query', () => {

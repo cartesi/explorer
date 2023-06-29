@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    cleanup,
     render,
     screen,
     fireEvent,
@@ -18,7 +17,7 @@ import {
     findByText,
 } from '@testing-library/react';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/node/steps/HireNode';
@@ -26,7 +25,7 @@ import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../mocks';
 import { useAtom } from 'jotai';
 
-const walletMod = `@explorer/wallet`;
+const walletMod = `@explorer/wallet/src/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 
@@ -111,7 +110,6 @@ describe('HireNode Step', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { NodeInput } from '../../../../src/components/node/inputs/NodeInput';
 import { buildNodeObj } from '../mocks';
 
@@ -28,7 +28,6 @@ describe('NodeInput component', () => {
     );
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    cleanup,
     fireEvent,
     act,
     render,
@@ -20,7 +19,7 @@ import {
 } from '@testing-library/react';
 import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
 import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
 import { buildContractReceipt } from '../../node/mocks';
 import { useAtom } from 'jotai';
@@ -29,7 +28,7 @@ import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
-const walletMod = '@explorer/wallet';
+const walletMod = '@explorer/wallet/src/useWallet';
 const stepGroupMod = '../../../../src/components/StepGroup';
 
 jest.mock(stepGroupMod, () => {
@@ -118,7 +117,6 @@ describe('CommissionModel step component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

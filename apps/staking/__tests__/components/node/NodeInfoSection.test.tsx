@@ -8,8 +8,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useMediaQuery } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
@@ -66,7 +65,6 @@ describe('NodeInfoSection component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

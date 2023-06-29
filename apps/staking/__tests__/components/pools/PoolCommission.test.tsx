@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import humanizeDuration from 'humanize-duration';
 import PoolCommission from '../../../src/components/pools/PoolCommission';
 import { withChakraTheme } from '../../test-utilities';
 import { StakingPool } from '../../../src/graphql/models';

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { QueryResult } from '@apollo/client';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import PoolPerformanceStat, {
     PoolPerformanceStatProps,
 } from '../../../../src/components/stake/stats/PoolPerformanceStat';
@@ -61,7 +61,6 @@ describe('Pool Performance Stat', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display pool performance label', () => {

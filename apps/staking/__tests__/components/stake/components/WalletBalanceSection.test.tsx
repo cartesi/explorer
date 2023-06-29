@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import {
     IWalletBalanceSectionProps,
@@ -18,9 +17,9 @@ import {
 } from '../../../../src/components/stake/components/WalletBalanceSection';
 import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
 import { withChakraTheme } from '../../../test-utilities';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 
 const defaultValue = '10000000000000000000000000000';
 
@@ -50,7 +49,6 @@ describe('Wallet Balance Section', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.resetAllMocks();
     });
 
