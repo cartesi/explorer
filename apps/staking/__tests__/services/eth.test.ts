@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { renderHook, waitFor } from '@testing-library/react';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { isAddress } from '@ethersproject/address';
 import { useBalance, useBlockNumber } from '../../src/services/eth';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
 import { BigNumber } from 'ethers';
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 jest.mock('@ethersproject/address', () => {
     const originalModule = jest.requireActual('@ethersproject/address');
     return {
@@ -55,7 +55,6 @@ describe('eth service', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

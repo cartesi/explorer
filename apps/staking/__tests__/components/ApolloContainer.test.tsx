@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, render, screen } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { render, screen } from '@testing-library/react';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useApollo } from '../../src/services/apollo';
 import ApolloContainer from '../../src/components/ApolloContainer';
 import { withChakraTheme } from '../test-utilities';
@@ -33,8 +33,8 @@ jest.mock('../../src/services/apollo', () => {
     };
 });
 
-jest.mock('@explorer/wallet', () => {
-    const originalModule = jest.requireActual('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet', () => {
+    const originalModule = jest.requireActual('@explorer/wallet/src/useWallet');
     return {
         __esModule: true,
         ...originalModule,
@@ -61,7 +61,6 @@ describe('ApolloContainer component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

@@ -1,6 +1,17 @@
-import { renderHook, act, cleanup, waitFor } from '@testing-library/react';
+// Copyright (C) 2023 Cartesi Pte. Ltd.
+
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { ContractTransaction } from 'ethers';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 import { confirmations, Network } from '../../src/utils/networks';
 import {
@@ -9,7 +20,7 @@ import {
     buildContractReceiptEvent,
 } from './mocks';
 
-const walletMod = '@explorer/wallet';
+const walletMod = '@explorer/wallet/src/useWallet';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
@@ -36,7 +47,6 @@ describe('Transaction service', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

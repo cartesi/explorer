@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    cleanup,
     findByTestId,
     fireEvent,
     getByText,
@@ -57,10 +56,6 @@ describe('Pool Performance Table', () => {
 
     beforeEach(() => {
         useFlagStub.mockReturnValue(false);
-    });
-
-    afterEach(() => {
-        cleanup();
     });
 
     it('Should have required columns', () => {

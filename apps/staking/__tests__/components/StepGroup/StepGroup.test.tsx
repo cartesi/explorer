@@ -8,8 +8,8 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import React, { useEffect, useState } from 'react';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { useEffect, useState } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import {
     Step,
     StepActions,
@@ -74,7 +74,6 @@ describe('StepGroup component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PoolTabNavigation } from '../../../src/components/stake/PoolTabNavigation';
 import { NextRouter, useRouter } from 'next/router';
 import { withChakraTheme } from '../../test-utilities';
@@ -43,7 +42,6 @@ describe('PoolTabNavigation', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display pool info label', () => {

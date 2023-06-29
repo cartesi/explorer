@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BigNumber } from 'ethers';
 import EffectiveBalanceStat, {
@@ -39,10 +39,6 @@ describe('Effective Balance Stat', () => {
     // a default configured component
     const renderComponent = () =>
         render(<EEffectiveBalanceStat {...defaultProps} />);
-
-    afterEach(() => {
-        cleanup();
-    });
 
     it('Should display effective balance label', () => {
         renderComponent();

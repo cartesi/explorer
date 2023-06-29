@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
     act,
-    cleanup,
     findByText,
     fireEvent,
     render,
     screen,
 } from '@testing-library/react';
 
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useStakingPool } from '../../../../src/services/pool';
@@ -19,7 +18,7 @@ import ENS from '../../../../src/components/pools/steps/ENS';
 import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = '@explorer/wallet';
+const walletMod = '@explorer/wallet/src/useWallet';
 const stakingPoolMod = '../../../../src/services/pool';
 const stepGroupMod = '../../../../src/components/StepGroup';
 
@@ -119,7 +118,6 @@ describe('Pool ENS step', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

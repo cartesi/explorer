@@ -11,14 +11,13 @@
 
 import {
     act,
-    cleanup,
     findByText,
     fireEvent,
     render,
     screen,
     waitFor,
 } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import HireNode from '../../../../src/components/pools/steps/HireNode';
@@ -31,7 +30,7 @@ import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
 import { StepStatus } from '../../../../src/components/Step';
 import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = '@explorer/wallet';
+const walletMod = '@explorer/wallet/src/useWallet';
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 const stakingPoolMod = '../../../../src/services/pool';
@@ -141,7 +140,6 @@ describe('HireNode Step', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

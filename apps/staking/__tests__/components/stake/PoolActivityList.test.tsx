@@ -9,13 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     PoolActivityList,
     IPoolActivityListProps,
 } from '../../../src/components/stake/PoolActivityList';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { withChakraTheme } from '../../test-utilities';
 import usePoolActivities, {
     Activity,
@@ -33,7 +32,7 @@ const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
 
-jest.mock('@explorer/wallet');
+jest.mock('@explorer/wallet/src/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const EPoolActivityList =
@@ -72,7 +71,6 @@ describe('Pool Activity List', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        cleanup();
     });
 
     it('Should display load more text', () => {

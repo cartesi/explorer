@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SyncStatus from '../../src/components/SyncStatus';
 import { withChakraTheme } from '../test-utilities';
 import { useBlockNumber } from '../../src/services/eth';
@@ -49,7 +49,6 @@ describe('SyncStatus component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StakingInstructions } from '../../../../src/components/stake/components/StakingInstructions';
 import { withChakraTheme } from '../../../test-utilities';

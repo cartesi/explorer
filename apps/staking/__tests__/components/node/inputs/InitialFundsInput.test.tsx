@@ -9,19 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    act,
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-} from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { useWallet } from '@explorer/wallet/src/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { InitialFundsInput } from '../../../../src/components/node/inputs/InitialFundsInput';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 
-const walletMod = `@explorer/wallet`;
+const walletMod = `@explorer/wallet/src/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 
 jest.mock(walletMod, () => {
@@ -73,7 +67,6 @@ describe('InitialFundsInput component', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 

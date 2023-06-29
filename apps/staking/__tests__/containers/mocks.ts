@@ -1,7 +1,11 @@
 import { mock } from 'jest-mock-extended';
 import { useUserNodes } from '../../src/graphql/hooks/useNodes';
 import useStakingPools from '../../src/graphql/hooks/useStakingPools';
-import { NodesData, StakingPoolsData } from '../../src/graphql/models';
+import {
+    NodesData,
+    StakingPoolsData,
+    StakingPool,
+} from '../../src/graphql/models';
 import { useCartesiToken } from '../../src/services/token';
 import { toBigNumber } from '../../src/utils/numberParser';
 import { ReturnOf } from '../test-utilities';
@@ -91,7 +95,7 @@ const generateStakingPoolsData = (): { data: StakingPoolsData } => ({
                     totalBlocks: 0,
                     totalReward: '0',
                 },
-            },
+            } as StakingPool,
             {
                 amount: '0',
                 commissionPercentage: null,
@@ -120,7 +124,7 @@ const generateStakingPoolsData = (): { data: StakingPoolsData } => ({
                     totalBlocks: 0,
                     totalReward: '0',
                 },
-            },
+            } as StakingPool,
         ],
     },
 });

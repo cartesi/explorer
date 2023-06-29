@@ -9,14 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import {
-    fireEvent,
-    render,
-    screen,
-    cleanup,
-    prettyDOM,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     IInfoBannerProps,
     InfoBanner,
@@ -38,10 +31,6 @@ const EInfoBanner = withChakraTheme<IInfoBannerProps>(InfoBanner);
 describe('Info Banner', () => {
     // a default configured component
     const renderComponent = () => render(<EInfoBanner {...defaultProps} />);
-
-    afterEach(() => {
-        cleanup();
-    });
 
     it('Should display title', () => {
         renderComponent();
