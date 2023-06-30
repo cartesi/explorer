@@ -9,25 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CartesiDAppFactory as V08Factory } from '@cartesi/rollups-0.8';
-import { TypedEvent } from '@cartesi/rollups-0.8/dist/src/types/common';
-import { ApplicationCreatedEvent } from '@cartesi/rollups-0.8/dist/src/types/contracts/CartesiDAppFactory';
-import { InputAddedEvent } from '@cartesi/rollups-0.8/dist/src/types/contracts/facets/InputFacet';
+import { TypedEvent } from '@cartesi/rollups/dist/src/types/common';
+import { ApplicationCreatedEvent } from '@cartesi/rollups/dist/src/types/contracts/dapp/CartesiDAppFactory';
 import { InputAddedEvent as BoxInputAddedEvent } from '@cartesi/rollups/dist/src/types/contracts/inputs/InputBox';
 import { utils } from 'ethers';
 import { mock } from 'jest-mock-extended';
 import { useInputBoxMeta } from '../../src/services/contracts/inputBox';
-import { buildInputFacetMeta } from '../../src/services/contracts/inputFacet';
-import {
-    useRollupLegacyFactories,
-    useRollupsFactory,
-} from '../../src/services/useRollupsFactory';
+import { useRollupsFactory } from '../../src/services/useRollupsFactory';
 import { ReturnOf } from '../test-utilities';
 
 const typedEvent = mock<TypedEvent>();
 type UseRollupFactoryReturn = ReturnOf<typeof useRollupsFactory>;
-type UseRollupLegacyFactoriesReturn = ReturnOf<typeof useRollupLegacyFactories>;
-type BuildInputFacetMetaReturn = ReturnOf<typeof buildInputFacetMeta>;
 type UseInputBoxMetaReturn = ReturnOf<typeof useInputBoxMeta>;
 type Block = Awaited<ReturnOf<typeof typedEvent.getBlock>>;
 
@@ -37,13 +29,6 @@ function createBlock(timestamp: number) {
     const block = mock<Block>();
     block.timestamp = timestamp;
     return block;
-}
-export function buildInputAddedEvent() {
-    const evt = mock<InputAddedEvent>();
-    const block = createBlock(DEFAULT_TIMESTAMP);
-    evt.address = utils.hexlify(200);
-    evt.getBlock.mockResolvedValue(block);
-    return evt;
 }
 
 export function buildBoxInputAddedEvent() {
@@ -70,18 +55,6 @@ function buildMockInputBoxMeta() {
     return mock<UseInputBoxMetaReturn>();
 }
 
-function buildMockInputFacetMeta() {
-    return mock<BuildInputFacetMetaReturn>();
-}
-
-function buildMockV08Factory() {
-    return mock<V08Factory>();
-}
-
-function buildMockLegacyFactories() {
-    return mock<UseRollupLegacyFactoriesReturn>();
-}
-
 function buildRollupsFactory() {
     return mock<UseRollupFactoryReturn>();
 }
@@ -93,13 +66,6 @@ function buildRollupsFactory() {
  * optimistic perspective trying to avoid undefined / null values where applicable.
  */
 
-function buildInputFacetMetaReturn() {
-    const mock = buildMockInputFacetMeta();
-    const inputAddedEventStub = buildInputAddedEvent();
-    mock.getInputs.mockResolvedValue([inputAddedEventStub]);
-    return mock;
-}
-
 function buildUseInputBoxMetaReturn(): UseInputBoxMetaReturn {
     const mock = buildMockInputBoxMeta();
     mock.getInputs.mockResolvedValue([
@@ -107,17 +73,6 @@ function buildUseInputBoxMetaReturn(): UseInputBoxMetaReturn {
         buildBoxInputAddedEvent(),
     ]);
 
-    return mock;
-}
-
-function buildUseRollupLegacyFactoriesReturn(): UseRollupLegacyFactoriesReturn {
-    const mock = buildMockLegacyFactories();
-    mock.v08Factory = buildMockV08Factory();
-    mock.v08Factory.queryFilter = jest.fn(() => Promise.resolve([]));
-    mock.v08Factory.filters = {
-        ...mock.v08Factory.filters,
-        ApplicationCreated: jest.fn(),
-    };
     return mock;
 }
 
@@ -131,9 +86,4 @@ function buildUseRollupFactoryReturn(): UseRollupFactoryReturn {
     return mock;
 }
 
-export {
-    buildUseRollupLegacyFactoriesReturn,
-    buildUseRollupFactoryReturn,
-    buildInputFacetMetaReturn,
-    buildUseInputBoxMetaReturn,
-};
+export { buildUseRollupFactoryReturn, buildUseInputBoxMetaReturn };

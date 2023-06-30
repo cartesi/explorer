@@ -11,18 +11,12 @@
 // under the License.
 
 import { CartesiDAppFactory } from '@cartesi/rollups';
-import { CartesiDAppFactory as V08Factory } from '@cartesi/rollups-0.8';
-import { InputAddedEvent as InputAdded } from '@cartesi/rollups-0.8/dist/src/types/contracts/facets/InputFacet';
 import { InputAddedEvent } from '@cartesi/rollups/dist/src/types/contracts/inputs/InputBox';
 import { useWallet } from '@explorer/wallet';
 import { useEffect, useState } from 'react';
 import { useInputBoxMeta } from './contracts/inputBox';
-import { buildInputFacetMeta } from './contracts/inputFacet';
 import { useNetwork } from './useNetwork';
-import {
-    useRollupLegacyFactories,
-    useRollupsFactory,
-} from './useRollupsFactory';
+import { useRollupsFactory } from './useRollupsFactory';
 
 interface NetworkError extends Error {
     code: number;
@@ -35,11 +29,11 @@ export interface Applications {
 interface Application {
     factoryVersion: string;
     address: string;
-    inputs: InputAddedEvent[] | InputAdded[];
+    inputs: InputAddedEvent[];
     deploymentTimestamp: number;
 }
 
-type FactoryType = CartesiDAppFactory | V08Factory;
+type FactoryType = CartesiDAppFactory;
 type FactoryVersion = '0.8' | '0.9';
 
 /**
@@ -102,7 +96,6 @@ export const useApplications = (): Applications => {
     const wallet = useWallet();
     const network = useNetwork();
     const factory = useRollupsFactory();
-    const legacyFactories = useRollupLegacyFactories();
     const inputBoxMeta = useInputBoxMeta();
 
     useEffect(() => {
@@ -124,15 +117,6 @@ export const useApplications = (): Applications => {
                         (dapp: string, blockNumber?: number) =>
                             inputBoxMeta.getInputs(dapp, blockNumber)
                     ),
-                    fetchApplications(
-                        legacyFactories.v08Factory,
-                        '0.8',
-                        deployBlock,
-                        (dapp: string, blockNumber?: number) =>
-                            buildInputFacetMeta(dapp, wallet.library).getInputs(
-                                blockNumber
-                            )
-                    ),
                 ])
                     .then((result) => {
                         setApplications({
@@ -151,7 +135,7 @@ export const useApplications = (): Applications => {
         } else {
             setApplications({ loading: false, applications: [] });
         }
-    }, [factory, network, legacyFactories, wallet.library, inputBoxMeta]);
+    }, [factory, network, wallet.library, inputBoxMeta]);
 
     return applications;
 };
