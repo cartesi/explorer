@@ -76,11 +76,13 @@ describe('Nav Bar', () => {
     it('Should display children', async () => {
         const label = 'Children';
 
-        await act(() => {
+        await act(async () => {
             render(<NavLink href="/">{label}</NavLink>);
         });
 
-        expect(screen.getByText(label)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText(label)).toBeInTheDocument();
+        });
     });
 
     it('Should display menu button', async () => {
