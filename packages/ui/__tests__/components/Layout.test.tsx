@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen } from '@testing-library/react';
+import { waitFor, render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { withChakraTheme } from '../test-utilities';
 import Layout from '../../src/components/Layout';
 
@@ -46,16 +47,18 @@ describe('Layout component', () => {
             </Component>
         );
 
-    it('should display header links', () => {
-        renderComponent();
+    it('should display header links', async () => {
+        await act(() => {
+            renderComponent();
+        });
 
         defaultProps.headerLinks.forEach((link) => {
             expect(screen.getByText(link.label)).toBeInTheDocument();
         });
     });
 
-    it('should display footer links', () => {
-        const { container } = renderComponent();
+    it('should display footer links', async () => {
+        const { container } = await act(() => renderComponent());
 
         defaultProps.footerLinks.forEach((link) => {
             const domLink = container.querySelector(`a[href="${link.href}"]`);
@@ -65,8 +68,10 @@ describe('Layout component', () => {
         });
     });
 
-    it('should display footer contracts', () => {
-        renderComponent();
+    it('should display footer contracts', async () => {
+        await act(() => {
+            renderComponent();
+        });
 
         defaultProps.footerContracts.forEach((contract) => {
             expect(screen.getByText(contract.name)).toBeInTheDocument();

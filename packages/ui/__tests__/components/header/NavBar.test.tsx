@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { waitFor, fireEvent, render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { useWallet } from '@explorer/wallet/src/useWallet';
 import { NavBar, NavLink } from '../../../src/components/header/NavBar';
 
@@ -69,55 +70,66 @@ describe('Nav Bar', () => {
     });
 
     afterEach(() => {
-        cleanup();
         jest.clearAllMocks();
     });
 
-    it('Should display children', () => {
+    it('Should display children', async () => {
         const label = 'Children';
 
-        render(
-            <NavLink href="/">
-                <span>{label}</span>
-            </NavLink>
-        );
+        await act(() => {
+            render(<NavLink href="/">{label}</NavLink>);
+        });
 
         expect(screen.getByText(label)).toBeInTheDocument();
     });
 
-    it('Should display menu button', () => {
-        render(<NavBar {...defaultProps} />);
+    it('Should display menu button', async () => {
+        await act(async () => {
+            render(<NavBar {...defaultProps} />);
+        });
 
-        const button = screen.getByTestId('menu-button');
-        expect(button).toBeInTheDocument();
+        await waitFor(() => {
+            const button = screen.getByTestId('menu-button');
+            expect(button).toBeInTheDocument();
+        });
     });
 
-    it('Should display links container', () => {
-        render(<NavBar {...defaultProps} />);
+    it('Should display links container', async () => {
+        await act(async () => {
+            render(<NavBar {...defaultProps} />);
+        });
 
-        const element = screen.getByTestId('links-container');
-        expect(element).toBeInTheDocument();
+        await waitFor(() => {
+            const element = screen.getByTestId('links-container');
+            expect(element).toBeInTheDocument();
+        });
     });
 
-    it('Should display theme toggle button', () => {
-        render(<NavBar {...defaultProps} />);
+    it('Should display theme toggle button', async () => {
+        await act(async () => {
+            render(<NavBar {...defaultProps} />);
+        });
 
-        const button = screen.getByTestId('theme-toggle-button');
-        expect(button).toBeInTheDocument();
+        await waitFor(() => {
+            const button = screen.getByTestId('theme-toggle-button');
+            expect(button).toBeInTheDocument();
+        });
     });
 
-    it('Should toggle mobile menu', () => {
-        render(<NavBar {...defaultProps} />);
+    it('Should toggle mobile menu', async () => {
+        await act(async () => {
+            render(<NavBar {...defaultProps} />);
+        });
 
-        const button = screen.getByTestId('menu-button');
-        fireEvent.click(button);
-
-        const element = screen.getByTestId('mobile-menu');
-        expect(element).toBeInTheDocument();
-
-        fireEvent.click(button);
-        expect(() => screen.getByTestId('mobile-menu')).toThrow(
-            'Unable to find an element'
-        );
+        await waitFor(() => {
+            const button = screen.getByTestId('menu-button');
+            fireEvent.click(button);
+            const element = screen.getByTestId('mobile-menu');
+            expect(element).toBeInTheDocument();
+            fireEvent.click(button);
+            expect(() => screen.getByTestId('mobile-menu')).toThrow(
+                'Unable to find an element'
+            );
+        });
     });
 });
