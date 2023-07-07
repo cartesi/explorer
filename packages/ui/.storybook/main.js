@@ -22,11 +22,9 @@ module.exports = {
         '../src/stories/**/*.stories.@(js|jsx|ts|tsx)',
     ],
     addons: [
-        'storybook-addon-apollo-client',
         'storybook-addon-performance/register',
         '@storybook/addon-links',
         '@storybook/addon-essentials',
-        'storybook-addon-next-router',
     ],
     webpackFinal: async (config) => {
         config.module.rules = config.module.rules.map((r) =>
