@@ -8,14 +8,16 @@ on:
         paths:
             - 'apps/rollups/**'
             - 'packages/**'
+            - './github/workflows/docker-rollups.yml'
         branches:
-            - main 
+            - main
         tags:
             - rollups@*
 
 permissions:
-    packages: write
     contents: read
+    packages: write
+    id-token: write
 
 concurrency:
     group: ${{github.workflow}}-${{github.ref_name}}
