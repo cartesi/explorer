@@ -9,17 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { MockedProvider } from '@apollo/client/testing';
-import { ChakraProvider } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import { Fonts } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { StoryContext } from '@storybook/react';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
-import React from 'react';
 import { withPerformance } from 'storybook-addon-performance';
 import theme from '../src/styles/theme';
-import withColorMode from './withColorMode';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -29,14 +25,8 @@ export const parameters = {
             date: /Date$/,
         },
     },
-    nextRouter: {
-        Provider: RouterContext.Provider,
-    },
     viewport: {
         viewports: MINIMAL_VIEWPORTS,
-    },
-    apolloClient: {
-        MockedProvider,
     },
 };
 
@@ -52,7 +42,19 @@ export const globalTypes = {
     },
 };
 
-const withChakra = (Story: Function, context: StoryContext) => {
+const withColorMode = (Story: Function, { globals: { theme = 'light' } }) => {
+    const { colorMode, setColorMode } = useColorMode();
+
+    useEffect(() => {
+        if (colorMode !== theme) {
+            setColorMode(theme);
+        }
+    }, [theme, colorMode]);
+
+    return <Story />;
+};
+
+const withChakra = (Story: Function) => {
     return (
         <ChakraProvider resetCSS theme={theme}>
             <Fonts />
