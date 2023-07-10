@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { Text } from '@chakra-ui/react';
-import { ethers } from 'ethers';
+import { parseUnits } from 'ethers';
 import { BsClockHistory } from 'react-icons/bs';
 import { ComponentMeta } from '@storybook/react';
 import { FaCoins, FaPercentage, FaUsers, FaWallet } from 'react-icons/fa';
@@ -43,18 +43,14 @@ export const Percentage = () => (
 );
 
 export const CTSI = () => (
-    <BigNumberText
-        value={ethers.utils.parseUnits('10000', 18)}
-        icon={FaCoins}
-        unit="ctsi"
-    >
+    <BigNumberText value={parseUnits('10000', 18)} icon={FaCoins} unit="ctsi">
         <Text>Staked Balance</Text>
     </BigNumberText>
 );
 
 export const Ether = () => (
     <BigNumberText
-        value={ethers.utils.parseUnits('43.96328', 18)}
+        value={parseUnits('43.96328', 18)}
         icon={FaWallet}
         unit="eth"
     >
@@ -96,7 +92,7 @@ export const ShortDuration = () => (
 );
 export const WithCountdownMaturing = () => (
     <BigNumberText
-        value={ethers.utils.parseUnits('10000', 18)}
+        value={parseUnits('10000', 18)}
         icon={BsClockHistory}
         unit="ctsi"
         countdown={{
@@ -109,7 +105,7 @@ export const WithCountdownMaturing = () => (
 );
 export const WithCountdownReleasing = () => (
     <BigNumberText
-        value={ethers.utils.parseUnits('10000', 18)}
+        value={parseUnits('10000', 18)}
         icon={BsClockHistory}
         unit="ctsi"
         countdown={{
