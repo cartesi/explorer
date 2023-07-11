@@ -26,7 +26,7 @@ import {
 import React, { FC } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
 
-export interface IInfoBannerProps extends AlertProps {
+export interface IInfoBannerProps extends Omit<AlertProps, 'content'> {
     isOpen?: boolean;
     isClosable?: boolean;
     isExpandable?: boolean;
@@ -34,7 +34,7 @@ export interface IInfoBannerProps extends AlertProps {
     icon?: JSX.Element;
     title?: string;
     status?: AlertStatus;
-    content?: JSX.Element | string;
+    content?: React.ReactNode;
     onToggle?: () => void;
 }
 
