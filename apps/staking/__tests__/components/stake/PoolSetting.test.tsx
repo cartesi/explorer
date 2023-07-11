@@ -30,7 +30,6 @@ import {
     buildUseStakingPoolFactoryReturn,
     buildUseStakingPoolReturn,
 } from '../pools/mocks';
-import { StakingPool } from '../../../src/graphql/models';
 
 const pool = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
