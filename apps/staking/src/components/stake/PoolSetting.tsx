@@ -34,7 +34,7 @@ import {
 import { Notification } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
 import { useFlag } from '@unleash/proxy-client-react';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -215,7 +215,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     Pool balance:
                                 </Text>
                                 <CTSIText
-                                    value={pool?.amount as any}
+                                    value={pool?.amount}
                                     fontSize="1x1"
                                     lineHeight={1}
                                 />

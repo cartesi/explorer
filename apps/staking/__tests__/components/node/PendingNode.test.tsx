@@ -25,28 +25,24 @@ const props = {
 };
 
 describe('PendingNode component', () => {
-    it('should pass until refactoring is done', () => {
-        expect(true).toBe(true);
+    it('should display Cancel Hire button when account and user are the same', () => {
+        window.prompt = () => undefined;
+        render(<Component {...props} user={props.account} />);
+
+        expect(screen.getByText('Cancel Hire')).toBeInTheDocument();
     });
-    // TODO: Uncomment tests after staking ethers library is upgraded to the same version as in packages/ui
-    // it('should display Cancel Hire button when account and user are the same', () => {
-    //     window.prompt = () => undefined;
-    //     render(<Component {...props} user={props.account} />);
-    //
-    //     expect(screen.getByText('Cancel Hire')).toBeInTheDocument();
-    // });
-    //
-    // it('should invoke onCancelHire callback when icon button is clicked', () => {
-    //     const mockedOnCancelHire = jest.fn();
-    //     render(
-    //         <Component
-    //             {...props}
-    //             user={props.account}
-    //             onCancelHire={mockedOnCancelHire}
-    //         />
-    //     );
-    //
-    //     fireEvent.click(screen.getByTestId('cancel-hire-button'));
-    //     expect(mockedOnCancelHire).toHaveBeenCalled();
-    // });
+
+    it('should invoke onCancelHire callback when icon button is clicked', () => {
+        const mockedOnCancelHire = jest.fn();
+        render(
+            <Component
+                {...props}
+                user={props.account}
+                onCancelHire={mockedOnCancelHire}
+            />
+        );
+
+        fireEvent.click(screen.getByTestId('cancel-hire-button'));
+        expect(mockedOnCancelHire).toHaveBeenCalled();
+    });
 });
