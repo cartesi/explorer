@@ -54,8 +54,5 @@ module.exports = {
             },
         ],
     },
-    transformIgnorePatterns: [
-        '/node_modules/(?!(@web3-onboard))/',
-        '^.+\\.module\\.(css|sass|scss)$',
-    ],
+    transformIgnorePatterns: ['^.+\\.module\\.(css|sass|scss)$'],
 };
