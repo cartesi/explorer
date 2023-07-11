@@ -45,48 +45,44 @@ const useFormData = {
 } as unknown as UseFormReturn<any>;
 
 describe('AvailableNode component', () => {
-    it('should pass until refactoring is done', () => {
-        expect(true).toBe(true);
+    it('should trigger submit when button is clicked', () => {
+        const mockedHandleSubmit = jest.fn();
+        mockedUseForm.mockReturnValue({
+            ...useFormData,
+            handleSubmit: mockedHandleSubmit,
+        });
+
+        const { container } = render(<Component {...props} />);
+
+        const button = container.querySelector('button');
+        fireEvent.click(button);
+
+        expect(mockedHandleSubmit).toHaveBeenCalled();
     });
-    // TODO: Uncomment tests after staking ethers library is upgraded to the same version as in packages/ui
-    // it('should trigger submit when button is clicked', () => {
-    //     const mockedHandleSubmit = jest.fn();
-    //     mockedUseForm.mockReturnValue({
-    //         ...useFormData,
-    //         handleSubmit: mockedHandleSubmit,
-    //     });
-    //
-    //     const { container } = render(<Component {...props} />);
-    //
-    //     const button = container.querySelector('button');
-    //     fireEvent.click(button);
-    //
-    //     expect(mockedHandleSubmit).toHaveBeenCalled();
-    // });
-    //
-    // it('should display error message', () => {
-    //     const errorMessage = 'Some error';
-    //     mockedUseForm.mockReturnValue({
-    //         ...useFormData,
-    //         formState: {
-    //             errors: {
-    //                 deposit: {
-    //                     message: errorMessage,
-    //                 },
-    //             },
-    //         } as unknown as FormState<FieldValues>,
-    //     });
-    //
-    //     render(<Component {...props} />);
-    //     expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    // });
-    //
-    // it('should display helper text when there is no error', () => {
-    //     mockedUseForm.mockReturnValue(useFormData);
-    //
-    //     render(<Component {...props} />);
-    //     expect(
-    //         screen.getByText('Amount of ETH to transfer to node on hire')
-    //     ).toBeInTheDocument();
-    // });
+
+    it('should display error message', () => {
+        const errorMessage = 'Some error';
+        mockedUseForm.mockReturnValue({
+            ...useFormData,
+            formState: {
+                errors: {
+                    deposit: {
+                        message: errorMessage,
+                    },
+                },
+            } as unknown as FormState<FieldValues>,
+        });
+
+        render(<Component {...props} />);
+        expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    });
+
+    it('should display helper text when there is no error', () => {
+        mockedUseForm.mockReturnValue(useFormData);
+
+        render(<Component {...props} />);
+        expect(
+            screen.getByText('Amount of ETH to transfer to node on hire')
+        ).toBeInTheDocument();
+    });
 });
