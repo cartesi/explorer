@@ -35,10 +35,11 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
-import { AddressText, BigNumberText } from '@explorer/ui';
+import { AddressText } from '@explorer/ui';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
+import { BigNumberText } from '../CTSIText';
 
 type OwnedNodeProps = {
     account: string; // metamask account (or pool address)
