@@ -11,8 +11,7 @@
 
 import React, { FC } from 'react';
 import { Flex, FlexProps, HStack, SystemProps, Text } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import ethers, { BigNumber, BigNumberish } from 'ethers';
 import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
 import humanizeDuration from 'humanize-duration';
@@ -58,12 +57,16 @@ const format = (
     switch (unit) {
         case 'eth':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(ethers.utils.formatUnits(value, 18))
+                ),
                 'ETH',
             ];
         case 'ctsi':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(ethers.utils.formatUnits(value, 18))
+                ),
                 'CTSI',
             ];
         case 'percent':
