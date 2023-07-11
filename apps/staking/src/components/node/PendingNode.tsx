@@ -10,10 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Button, HStack, Stack, Text, VStack } from '@chakra-ui/react';
-import { AddressText, BigNumberText } from '@explorer/ui';
+import { AddressText } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
+import { BigNumberText } from '../CTSIText';
 
 type PendingNodeProps = {
     account: string; // metamask account (or pool)
