@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.1] - 2023-07-12
+
+-   `Staking`
+    -   New Cartesi logo added.
+    -   Test startup on CI optimised.
+-   `Rollups`
+    -   New Cartesi logo added.
+    -   Rollups v0.8.2 removed.
+    -   Image generation optimised by replacing QEMU with Depot.
+
 ## [3.5.0] - 2023-06-24
 
 -   `Staking`
@@ -317,7 +327,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.5.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.5.1...HEAD
+[3.5.0]: https://github.com/cartesi/explorer/compare/v3.5.0...v3.5.1
 [3.5.0]: https://github.com/cartesi/explorer/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/cartesi/explorer/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/cartesi/explorer/compare/v3.2.2...v3.3.0
