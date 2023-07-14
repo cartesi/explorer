@@ -10,7 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Web3Provider } from '@ethersproject/providers';
+import { Network } from '@explorer/utils';
 import { useFlag } from '@unleash/proxy-client-react';
+import coinbaseWalletModule from '@web3-onboard/coinbase';
+import { AppMetadata, Chain } from '@web3-onboard/common';
 import Onboard, {
     ConnectOptions,
     InitOptions,
@@ -18,22 +21,21 @@ import Onboard, {
     WalletState,
 } from '@web3-onboard/core';
 import { ConnectOptionsString } from '@web3-onboard/core/dist/types';
+import gnosisModule from '@web3-onboard/gnosis';
 import injectedModule from '@web3-onboard/injected-wallets';
 import ledgerModule from '@web3-onboard/ledger';
 import walletConnectModule from '@web3-onboard/walletconnect';
-import coinbaseWalletModule from '@web3-onboard/coinbase';
-import gnosisModule from '@web3-onboard/gnosis';
-import { Chain, AppMetadata } from '@web3-onboard/common';
-import { Network } from '@explorer/utils';
 import { ethers } from 'ethers';
 import { contains, debounce, pick } from 'lodash/fp';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
-import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 import { WalletType } from './definitions';
+import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
+const WALLETCONNECT_PROJECT_ID = process.env
+    .NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
@@ -41,10 +43,14 @@ const hardwareWallets = new Set(['ledger']);
 const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
+const wcV2InitOptions = {
+    projectId: WALLETCONNECT_PROJECT_ID,
+    requiredChains: [1],
+};
 
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
-const walletConnect = walletConnectModule();
+const walletConnect = walletConnectModule(wcV2InitOptions);
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
@@ -105,7 +111,7 @@ export const buildConfig = (
                 enabled: false,
             },
         },
-        wallets: [injectedWallet, coinbase, gnosis, ledger, walletConnect],
+        wallets: [injectedWallet, coinbase, ledger, walletConnect, gnosis],
         chains,
         appMetadata: {
             name: 'Cartesi Blockchain Explorer',
