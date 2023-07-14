@@ -15,7 +15,7 @@ import { zIndices } from './foundations/zIndices';
 const grayColour = colors.gray[800];
 const white = colors.white;
 
-export const buildOnboardTheme = (props) => {
+export const buildOnboardTheme = (props: { colorMode: string }) => {
     const isDarkMode = props.colorMode === 'dark';
     const defaultVars = {
         '--onboard-font-family-normal': 'var(--chakra-fonts-body)',
@@ -23,6 +23,8 @@ export const buildOnboardTheme = (props) => {
         '--onboard-font-family-light': 'var(--chakra-fonts-body)',
         '--onboard-modal-z-index': zIndices.xxl,
         '--onboard-account-select-modal-z-index': zIndices.xxl,
+        '--wcm-z-index': `${1060} !important`,
+        '--w3m-z-index': `${1060} !important`,
     };
     let darkVars = {};
 
