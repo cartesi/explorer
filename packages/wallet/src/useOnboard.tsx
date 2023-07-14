@@ -34,6 +34,8 @@ import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
+const WALLETCONNECT_PROJECT_ID = process.env
+    .NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
@@ -41,12 +43,14 @@ const hardwareWallets = new Set(['ledger']);
 const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
+const wcV2InitOptions = {
+    projectId: WALLETCONNECT_PROJECT_ID,
+    requiredChains: [1],
+};
 
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const walletConnect = walletConnectModule();
+const walletConnect = walletConnectModule(wcV2InitOptions);
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
