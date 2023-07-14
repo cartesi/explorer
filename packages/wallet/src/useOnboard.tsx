@@ -34,6 +34,8 @@ import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
+const WALLETCONNECT_PROJECT_ID =
+    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
@@ -44,9 +46,11 @@ const injectedWallets = new Set(['metamask', 'coinbase']);
 
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const walletConnect = walletConnectModule();
+const walletConnect = walletConnectModule({
+    projectId: WALLETCONNECT_PROJECT_ID || 'ba5de27656b7af8e2dab344f790ad81a',
+    version: 2,
+    requiredChains: [1],
+});
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
@@ -107,7 +111,7 @@ export const buildConfig = (
                 enabled: false,
             },
         },
-        wallets: [injectedWallet, coinbase, ledger, walletConnect, gnosis],
+        wallets: [injectedWallet, coinbase, walletConnect, ledger, gnosis],
         chains,
         appMetadata: {
             name: 'Cartesi Blockchain Explorer',
