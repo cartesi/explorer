@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { createContext, ReactNode, useState, useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import { useWallet } from '@explorer/wallet';
+import { ReactNode, createContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga4';
 
 export const measurementID = 'G-0J9KC579GV';
 
@@ -60,7 +60,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
                 hasUser: !!account,
             }));
         }
-    }, [account, analytics]);
+    }, [account]);
 
     useEffect(() => {
         const { isInitialised } = analytics;
@@ -70,7 +70,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
             };
             ReactGA.event('Wallet Selection', params);
         }
-    }, [analytics, walletName]);
+    }, [walletName]);
 
     // is returning nothing as context-value at the moment
     return (
