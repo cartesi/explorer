@@ -9,14 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, waitFor, act } from '@testing-library/react';
-import ReactGA from 'react-ga4';
 import { useWallet } from '@explorer/wallet/src/useWallet';
+import { act, render, waitFor } from '@testing-library/react';
+import ReactGA from 'react-ga4';
 import {
-    measurementID,
-    anonymizeUser,
-    GA4TrackerProvider,
     CustomDimensions,
+    GA4TrackerProvider,
+    anonymizeUser,
+    measurementID,
 } from '../../src/contexts/ga4Tracker';
 import { Network } from '../../src/utils/networks';
 
@@ -41,11 +41,14 @@ const mockedSet = ReactGA.set as jest.MockedFunction<typeof ReactGA.set>;
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+const activate = jest.fn();
+const deactivate = jest.fn();
+
 const walletMock = {
     account,
     active: true,
-    activate: jest.fn(),
-    deactivate: jest.fn(),
+    activate,
+    deactivate,
     chainId: Network.MAINNET,
     walletName: 'Wallet ABC',
 };
@@ -103,11 +106,16 @@ describe('ga4Tracker context', () => {
         };
         const mockedImplementation = jest.fn();
         mockedEvent.mockImplementation(mockedImplementation);
+
+        //Wallet is not connected
+        mockUseWallet.mockReturnValue({ active: false, activate, deactivate });
         const { rerender } = render(
             <GA4TrackerProvider>Content</GA4TrackerProvider>
         );
 
         await act(() => {
+            // Return wallet information and rerender
+            mockUseWallet.mockReturnValue(walletMock);
             rerender(<GA4TrackerProvider>Content</GA4TrackerProvider>);
         });
 
@@ -127,11 +135,15 @@ describe('ga4Tracker context', () => {
         };
         const mockedImplementation = jest.fn();
         mockedSet.mockImplementation(mockedImplementation);
+        //Wallet is not connected
+        mockUseWallet.mockReturnValue({ active: false, activate, deactivate });
         const { rerender } = render(
             <GA4TrackerProvider>Content</GA4TrackerProvider>
         );
 
         await act(() => {
+            // Return wallet information and rerender
+            mockUseWallet.mockReturnValue(walletMock);
             rerender(<GA4TrackerProvider>Content</GA4TrackerProvider>);
         });
 
