@@ -44,7 +44,8 @@ module.exports = {
                           return (
                               /node_modules/.test(filename) &&
                               !/@chakra-ui/.test(filename) &&
-                              !/@zag-js/.test(filename)
+                              !/@zag-js/.test(filename) &&
+                              !/ethers/.test(filename)
                           );
                       },
                   }
@@ -75,4 +76,8 @@ module.exports = {
             },
         };
     },
+    babel: async (options) => ({
+        ...options,
+        plugins: [['@babel/plugin-proposal-class-properties', { loose: true }]],
+    }),
 };
