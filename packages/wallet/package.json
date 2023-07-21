@@ -30,7 +30,7 @@
     },
     "dependencies": {
         "@explorer/utils": "*",
-        "@unleash/proxy-client-react": "3.3.0",
+        "@unleash/proxy-client-react": "3.6.0",
         "@web3-onboard/coinbase": "2.2.4",
         "@web3-onboard/core": "2.20.5",
         "@web3-onboard/gnosis": "2.1.10",

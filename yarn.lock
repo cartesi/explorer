@@ -9170,10 +9170,10 @@
     "@typescript-eslint/types" "5.48.0"
     eslint-visitor-keys "^3.3.0"
 
-"@unleash/proxy-client-react@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-3.3.0.tgz#ea7b9b3590a6ca9e6cf4639623820ec88ac5122d"
-  integrity sha512-ZUtdvBZ4zGvurSTx+0rHu5FnQeeZ+Sfjpw4M+AoOCbG7mAX6ZvXy2IEkn+2Nv2F/sfLBsFL1LP+xC/RtDfZvAw==
+"@unleash/proxy-client-react@3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-3.6.0.tgz#50e56abf6e1e2a02b53f17787b96462258b55901"
+  integrity sha512-maQ3PYdBWUpIraD9z/2C8oVoCAS/EryV0WT4HiZQWxzrwvrZ+XHQJw1sImzRdWlGMvl1qJcgdEoxXhNSuYIrEQ==
 
 "@urql/core@^3.0.3":
   version "3.1.1"

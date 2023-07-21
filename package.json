@@ -35,7 +35,7 @@
         "@chakra-ui/theme-tools": "2.1.0",
         "@emotion/react": "11.11.1",
         "@emotion/styled": "11.11.0",
-        "@unleash/proxy-client-react": "3.3.0",
+        "@unleash/proxy-client-react": "3.6.0",
         "framer-motion": "10.13.0",
         "lcov-result-merger": "^4.1.0",
         "react": "18.2.0",
