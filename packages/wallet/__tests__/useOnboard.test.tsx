@@ -9,8 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, waitFor, cleanup } from '@testing-library/react';
+import { Network, networks } from '@explorer/utils';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import Onboard, {
+    EIP1193Provider,
+    OnboardAPI,
+    WalletState,
+} from '@web3-onboard/core';
+import { ConnectedChain } from '@web3-onboard/core/dist/types';
 import { act } from 'react-dom/test-utils';
+import { UnsupportedNetworkError } from '../src';
+import { WalletType } from '../src/definitions';
 import {
     buildConfig,
     checkNetwork,
@@ -19,15 +28,6 @@ import {
     handlerBuilder,
     useOnboard,
 } from '../src/useOnboard';
-import { Network, networks } from '@explorer/utils';
-import { UnsupportedNetworkError } from '../src';
-import { WalletType } from '../src/definitions';
-import Onboard, {
-    EIP1193Provider,
-    OnboardAPI,
-    WalletState,
-} from '@web3-onboard/core';
-import { ConnectedChain } from '@web3-onboard/core/dist/types';
 
 jest.mock('ethers');
 
@@ -76,6 +76,11 @@ const mockedOnboard = Onboard as jest.MockedFunction<typeof Onboard>;
 describe('useOnBoard', () => {
     const initialEnv = process.env;
 
+    beforeEach(() => {
+        jest.resetModules();
+        process.env = { ...initialEnv };
+        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = 'PROJECT_ID';
+    });
     afterAll(() => {
         process.env = initialEnv;
     });
