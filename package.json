@@ -30,17 +30,17 @@
         "node": ">=14.0.0"
     },
     "dependencies": {
-        "@chakra-ui/icons": "2.0.10",
-        "@chakra-ui/react": "2.3.4",
-        "@chakra-ui/theme-tools": "2.0.11",
+        "@chakra-ui/icons": "2.1.0",
+        "@chakra-ui/react": "2.8.0",
+        "@chakra-ui/theme-tools": "2.1.0",
         "@emotion/react": "11.11.1",
         "@emotion/styled": "11.11.0",
         "@unleash/proxy-client-react": "3.3.0",
-        "framer-motion": "^4",
+        "framer-motion": "10.13.0",
         "lcov-result-merger": "^4.1.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "unleash-proxy-client": "2.2.1"
+        "unleash-proxy-client": "2.5.0"
     },
     "packageManager": "yarn@1.22.19"
 }
