@@ -46,8 +46,8 @@ const injectedWallets = new Set(['metamask', 'coinbase']);
 
 const injectedWallet = injectedModule();
 const ledger = ledgerModule();
-const walletConnect = walletConnectModule({
-    projectId: WALLETCONNECT_PROJECT_ID || 'ba5de27656b7af8e2dab344f790ad81a',
+export const walletConnect = walletConnectModule({
+    projectId: WALLETCONNECT_PROJECT_ID as string,
     version: 2,
     requiredChains: [1],
 });

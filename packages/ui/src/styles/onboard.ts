@@ -23,6 +23,8 @@ export const buildOnboardTheme = (props: { colorMode: string }) => {
         '--onboard-font-family-light': 'var(--chakra-fonts-body)',
         '--onboard-modal-z-index': zIndices.xxl,
         '--onboard-account-select-modal-z-index': zIndices.xxl,
+    };
+    const wcVars = {
         '--wcm-z-index': `${1060} !important`,
         '--w3m-z-index': `${1060} !important`,
     };
@@ -48,6 +50,7 @@ export const buildOnboardTheme = (props: { colorMode: string }) => {
         ':root': {
             ...defaultVars,
             ...darkVars,
+            ...wcVars,
         },
     };
 };
