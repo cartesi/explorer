@@ -15,6 +15,7 @@ import {
     Flex,
     Heading,
     HStack,
+    IconProps,
     SimpleGrid,
     Stack,
     Text,
@@ -35,7 +36,7 @@ import {
 } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
 import { FixedNumber } from 'ethers';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import BlockMiniCard from '../components/block/BlockMiniCard';
 import CTSIText from '../components/CTSIText';
 import MarketInfoPanel from '../components/home/MarketInfoPanel';
@@ -178,7 +179,7 @@ const Home = () => {
                         py={{ base: 2, md: 8 }}
                     >
                         <PrimaryCard
-                            icon={ChartIcon}
+                            icon={ChartIcon as FC<IconProps>}
                             mt={4}
                             mb={{ base: 4, md: 0 }}
                             mr={2}
@@ -192,7 +193,7 @@ const Home = () => {
                         </PrimaryCard>
 
                         <PrimaryCard
-                            icon={MarketCapICon}
+                            icon={MarketCapICon as FC<IconProps>}
                             mt={4}
                             mb={{ base: 4, md: 0 }}
                             mr={2}
@@ -231,7 +232,7 @@ const Home = () => {
                         </PrimaryCard>
 
                         <PrimaryCard
-                            icon={CircleSupplyIcon}
+                            icon={CircleSupplyIcon as FC<IconProps>}
                             mt={4}
                             minWidth="calc(33.33% - 0.8rem)"
                         >

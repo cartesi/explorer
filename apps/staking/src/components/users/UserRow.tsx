@@ -10,7 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Tr, Td, useColorModeValue, Box, Link, Text } from '@chakra-ui/react';
+import {
+    Tr,
+    Td,
+    useColorModeValue,
+    Box,
+    Link,
+    Text,
+    IconProps,
+} from '@chakra-ui/react';
 import { User } from '../../graphql/models';
 import {
     Address,
@@ -55,7 +63,9 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                     minWidth="120px"
                     shouldDisplayFallbackAvatar
                     fallbackAvatar={
-                        isPool ? StakeCircledIcon : StakeCircledOutlinedIcon
+                        (isPool
+                            ? StakeCircledIcon
+                            : StakeCircledOutlinedIcon) as FC<IconProps>
                     }
                 />
             </Td>
