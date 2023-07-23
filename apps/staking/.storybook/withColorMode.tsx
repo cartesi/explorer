@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useEffect } from 'react';
 import { useColorMode } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
 
 export default (Story: Function, { globals: { theme = 'light' } }) => {
     const { colorMode, setColorMode } = useColorMode();
