@@ -9,10 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { FC } from 'react';
 import { createIcon, Icon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/react';
 
-export const PencilIcon = createIcon({
+export const PencilIcon: FC = createIcon({
     path: (
         <path
             fillRule="evenodd"
@@ -27,7 +28,7 @@ export const PencilIcon = createIcon({
     defaultProps: { width: '22', height: '21' },
 });
 
-export const CartesiLogo = createIcon({
+export const CartesiLogo: FC = createIcon({
     displayName: 'CartesiLogo',
     viewBox: '0 0 1356.98 344.03',
     path: (
@@ -52,7 +53,7 @@ export const CartesiLogo = createIcon({
     ),
 });
 
-export const PencilIconWhite = createIcon({
+export const PencilIconWhite: FC = createIcon({
     displayName: 'PencilIconWhite',
     viewBox: '0 0 24 24',
     path: (
@@ -86,7 +87,7 @@ export const PencilIconWhite = createIcon({
     ),
 });
 
-export const DashboardIcon = createIcon({
+export const DashboardIcon: FC = createIcon({
     displayName: 'DashboardIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -97,7 +98,7 @@ export const DashboardIcon = createIcon({
     ),
 });
 
-export const DelegateIcon = createIcon({
+export const DelegateIcon: FC = createIcon({
     displayName: 'DelegateIcon',
     viewBox: '0 0 25 25',
     path: (
@@ -108,7 +109,7 @@ export const DelegateIcon = createIcon({
     ),
 });
 
-export const CheckCircleIcon = createIcon({
+export const CheckCircleIcon: FC = createIcon({
     displayName: 'CheckCircleIcon',
     viewBox: '0 0 26 26',
     path: (
@@ -121,7 +122,7 @@ export const CheckCircleIcon = createIcon({
     ),
 });
 
-export const PoolBalanceIcon = createIcon({
+export const PoolBalanceIcon: FC = createIcon({
     displayName: 'PoolBalanceIcon',
     viewBox: '0 0 24 25',
     path: (
@@ -138,7 +139,7 @@ export const PoolBalanceIcon = createIcon({
     ),
 });
 
-export const PoolAllowenceIcon = createIcon({
+export const PoolAllowenceIcon: FC = createIcon({
     displayName: 'PoolAllowenceIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -159,7 +160,7 @@ export const PoolAllowenceIcon = createIcon({
     ),
 });
 
-export const AllowanceIcon = createIcon({
+export const AllowanceIcon: FC = createIcon({
     displayName: 'AllowanceIcon',
     viewBox: '0 0 21 21',
     path: (
@@ -180,7 +181,7 @@ export const AllowanceIcon = createIcon({
     ),
 });
 
-export const WalletIcon = createIcon({
+export const WalletIcon: FC = createIcon({
     displayName: 'WalletIcon',
     viewBox: '0 0 22 22',
     path: (
@@ -191,7 +192,7 @@ export const WalletIcon = createIcon({
     ),
 });
 
-export const TimerIcon = createIcon({
+export const TimerIcon: FC = createIcon({
     displayName: 'WalletIcon',
     viewBox: '0 0 22 22',
     path: (
@@ -202,7 +203,7 @@ export const TimerIcon = createIcon({
     ),
 });
 
-export const TimeIcon = createIcon({
+export const TimeIcon: FC = createIcon({
     displayName: 'TimeIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -213,7 +214,7 @@ export const TimeIcon = createIcon({
     ),
 });
 
-export const StakeIcon = createIcon({
+export const StakeIcon: FC = createIcon({
     displayName: 'StakeIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -250,7 +251,7 @@ export const StakeIcon = createIcon({
     ),
 });
 
-export const StakedBalanceIcon = createIcon({
+export const StakedBalanceIcon: FC = createIcon({
     displayName: 'StakedBalanceIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -270,7 +271,7 @@ export const StakedBalanceIcon = createIcon({
     ),
 });
 
-export const EffectiveBalanceIcon = createIcon({
+export const EffectiveBalanceIcon: FC = createIcon({
     displayName: 'EffectiveBalanceIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -294,7 +295,7 @@ export const EffectiveBalanceIcon = createIcon({
     ),
 });
 
-export const PoolUsersIcon = createIcon({
+export const PoolUsersIcon: FC = createIcon({
     displayName: 'PoolUsersIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -319,7 +320,7 @@ export const PoolUsersIcon = createIcon({
     ),
 });
 
-export const PoolProductionIntervalIcon = createIcon({
+export const PoolProductionIntervalIcon: FC = createIcon({
     displayName: 'PoolProductionIntervalIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -331,7 +332,7 @@ export const PoolProductionIntervalIcon = createIcon({
     ),
 });
 
-export const PoolCommisionIcon = createIcon({
+export const PoolCommisionIcon: FC = createIcon({
     displayName: 'PoolCommisionIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -345,7 +346,7 @@ export const PoolCommisionIcon = createIcon({
     ),
 });
 
-export const DisconnectIcon = createIcon({
+export const DisconnectIcon: FC = createIcon({
     displayName: 'DisconnectIcon',
     viewBox: '0 0 18 18',
     path: (
@@ -372,7 +373,7 @@ export const DisconnectIcon = createIcon({
     ),
 });
 
-export const SwitchIcon = createIcon({
+export const SwitchIcon: FC = createIcon({
     displayName: 'SwitchIcon',
     viewBox: '0 0 18 18',
     path: (
@@ -389,7 +390,7 @@ export const SwitchIcon = createIcon({
     ),
 });
 
-export const PaginationIcon = createIcon({
+export const PaginationIcon: FC = createIcon({
     displayName: 'PaginationIcon',
     viewBox: '0 0 33 33',
     path: (
@@ -404,7 +405,7 @@ export const PaginationIcon = createIcon({
     ),
 });
 
-export const ArrowsUpDownIcon = createIcon({
+export const ArrowsUpDownIcon: FC = createIcon({
     displayName: 'ArrowsUpDownIcon',
     viewBox: '0 0 28 27',
     path: (
@@ -421,7 +422,7 @@ export const ArrowsUpDownIcon = createIcon({
     ),
 });
 
-export const CopyIcon = createIcon({
+export const CopyIcon: FC = createIcon({
     displayName: 'CopyIcon',
     viewBox: '0 0 19 19',
     path: (
@@ -442,7 +443,7 @@ export const CopyIcon = createIcon({
     ),
 });
 
-export const PoolPerformanceIcon = createIcon({
+export const PoolPerformanceIcon: FC = createIcon({
     displayName: 'PoolPerformanceIcon',
     viewBox: '0 0 32 32',
     path: (
@@ -466,7 +467,7 @@ export const PoolPerformanceIcon = createIcon({
     ),
 });
 
-export const EyeIcon = createIcon({
+export const EyeIcon: FC = createIcon({
     displayName: 'EyeIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -480,7 +481,7 @@ export const EyeIcon = createIcon({
     ),
 });
 
-export const FilterIcon = createIcon({
+export const FilterIcon: FC = createIcon({
     displayName: 'FilterIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -493,7 +494,7 @@ export const FilterIcon = createIcon({
     ),
 });
 
-export const CloseIcon = createIcon({
+export const CloseIcon: FC = createIcon({
     displayName: 'CloseIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -506,7 +507,7 @@ export const CloseIcon = createIcon({
     ),
 });
 
-export const ViewMoreIcon = createIcon({
+export const ViewMoreIcon: FC = createIcon({
     displayName: 'ViewMoreIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -568,7 +569,7 @@ export const ViewMoreIcon = createIcon({
     ),
 });
 
-export const PoolsTimer = createIcon({
+export const PoolsTimer: FC = createIcon({
     displayName: 'PoolsTimer',
     viewBox: '0 0 25 25',
     path: (
@@ -579,7 +580,7 @@ export const PoolsTimer = createIcon({
     ),
 });
 
-export const StakePlusIcon = (props: any) => {
+export const StakePlusIcon: FC = (props: any) => {
     const plusColor = useColorModeValue('white', 'blue.900');
 
     return (
@@ -642,7 +643,7 @@ export const StakePlusIcon = (props: any) => {
     );
 };
 
-export const StakeCircledIcon = createIcon({
+export const StakeCircledIcon: FC = createIcon({
     displayName: 'StakeCircledIcon',
     viewBox: '0 0 44 44',
     path: (
@@ -674,7 +675,7 @@ export const StakeCircledIcon = createIcon({
     ),
 });
 
-export const MarketCapICon = createIcon({
+export const MarketCapICon: FC = createIcon({
     displayName: 'MarketCapICon',
     viewBox: '0 0 31 33',
     path: (
@@ -748,7 +749,7 @@ export const MarketCapICon = createIcon({
     ),
 });
 
-export const CircleSupplyIcon = createIcon({
+export const CircleSupplyIcon: FC = createIcon({
     displayName: 'CircleSupplyIcon',
     viewBox: '0 0 29 29',
     path: (
@@ -771,7 +772,7 @@ export const CircleSupplyIcon = createIcon({
     ),
 });
 
-export const ChartIcon = createIcon({
+export const ChartIcon: FC = createIcon({
     displayName: 'ChartIcon',
     viewBox: '0 0 21 22',
     path: (
@@ -817,7 +818,7 @@ export const ChartIcon = createIcon({
     ),
 });
 
-export const ActiveNodeIcon = createIcon({
+export const ActiveNodeIcon: FC = createIcon({
     displayName: 'ActiveNodeIcon',
     viewBox: '0 0 28 23',
     path: (
@@ -839,7 +840,7 @@ export const ActiveNodeIcon = createIcon({
     ),
 });
 
-export const PrizeIcon = createIcon({
+export const PrizeIcon: FC = createIcon({
     displayName: 'PrizeIcon',
     viewBox: '0 0 27 24',
     path: (
@@ -864,7 +865,7 @@ export const PrizeIcon = createIcon({
     ),
 });
 
-export const GridIcon = createIcon({
+export const GridIcon: FC = createIcon({
     displayName: 'GridIcon',
     viewBox: '0 0 30 30',
     path: (
@@ -910,7 +911,7 @@ export const GridIcon = createIcon({
     ),
 });
 
-export const TotalStakedIcon = createIcon({
+export const TotalStakedIcon: FC = createIcon({
     displayName: 'TotalStakedIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -937,7 +938,7 @@ export const TotalStakedIcon = createIcon({
     ),
 });
 
-export const ChevronRightIcon = createIcon({
+export const ChevronRightIcon: FC = createIcon({
     displayName: 'ChevronRightIcon',
     viewBox: '0 0 9 14',
     path: (
@@ -950,7 +951,7 @@ export const ChevronRightIcon = createIcon({
     ),
 });
 
-export const ChevronLeftIcon = createIcon({
+export const ChevronLeftIcon: FC = createIcon({
     displayName: 'ChevronLeftIcon',
     viewBox: '0 0 9 14',
     path: (
@@ -963,7 +964,7 @@ export const ChevronLeftIcon = createIcon({
     ),
 });
 
-export const StakeCircledOutlinedIcon = createIcon({
+export const StakeCircledOutlinedIcon: FC = createIcon({
     displayName: 'StakeCircledOutlinedIcon',
     viewBox: '0 0 46 46',
     path: (
@@ -1002,7 +1003,7 @@ export const StakeCircledOutlinedIcon = createIcon({
     ),
 });
 
-export const PoolBalanceHexIcon = createIcon({
+export const PoolBalanceHexIcon: FC = createIcon({
     displayName: 'PoolBalanceHexIcon',
     viewBox: '0 0 28 33',
     path: (
@@ -1024,7 +1025,7 @@ export const PoolBalanceHexIcon = createIcon({
     ),
 });
 
-export const EmptyTransactionIcon = createIcon({
+export const EmptyTransactionIcon: FC = createIcon({
     displayName: 'EmptyTransactionIcon',
     viewBox: '0 0 66 66',
     path: (
@@ -1065,7 +1066,7 @@ export const EmptyTransactionIcon = createIcon({
     ),
 });
 
-export const RebalanceIcon = createIcon({
+export const RebalanceIcon: FC = createIcon({
     displayName: 'RebalanceIcon',
     viewBox: '0 0 24 24',
     path: (
@@ -1088,7 +1089,7 @@ export const RebalanceIcon = createIcon({
     ),
 });
 
-export const MyStakeIcon = createIcon({
+export const MyStakeIcon: FC = createIcon({
     displayName: 'MyStakeIcon',
     viewBox: '0 0 30 29',
     path: (
@@ -1142,7 +1143,7 @@ export const MyStakeIcon = createIcon({
     ),
 });
 
-export const MyPoolsIcon = createIcon({
+export const MyPoolsIcon: FC = createIcon({
     displayName: 'MyPoolsIcon',
     viewBox: '0 0 30 29',
     path: (
@@ -1170,7 +1171,7 @@ export const MyPoolsIcon = createIcon({
     ),
 });
 
-export const PoolsIcon = createIcon({
+export const PoolsIcon: FC = createIcon({
     displayName: 'PoolsIcon',
     viewBox: '0 0 29 29',
     path: (
@@ -1189,7 +1190,7 @@ export const PoolsIcon = createIcon({
     ),
 });
 
-export const SimpleChartIcon = createIcon({
+export const SimpleChartIcon: FC = createIcon({
     displayName: 'SimpleChartIcon',
     viewBox: '0 0 25 21',
     path: (
@@ -1229,7 +1230,7 @@ export const SimpleChartIcon = createIcon({
     ),
 });
 
-export const SettingsIcon = createIcon({
+export const SettingsIcon: FC = createIcon({
     displayName: 'SettingsIcon',
     viewBox: '0 0 19 19',
     path: (
@@ -1249,7 +1250,7 @@ const defaultProps = {
     xmlns: 'http://www.w3.org/2000/svg',
 };
 
-export const DappIcon = createIcon({
+export const DappIcon: FC = createIcon({
     displayName: 'DappIcon',
     viewBox: '0 0 28 28',
     defaultProps,
@@ -1286,7 +1287,7 @@ export const DappIcon = createIcon({
     ),
 });
 
-export const InputIcon = createIcon({
+export const InputIcon: FC = createIcon({
     displayName: 'InputIcon',
     viewBox: '0 0 28 28',
     defaultProps,
@@ -1307,7 +1308,7 @@ export const InputIcon = createIcon({
     ),
 });
 
-export const NoticeIcon = createIcon({
+export const NoticeIcon: FC = createIcon({
     displayName: 'NoticeIcon',
     viewBox: '0 0 28 28',
     defaultProps,
@@ -1321,7 +1322,7 @@ export const NoticeIcon = createIcon({
     ),
 });
 
-export const ReportIcon = createIcon({
+export const ReportIcon: FC = createIcon({
     displayName: 'ReportIcon',
     viewBox: '0 0 28 28',
     defaultProps,
@@ -1366,7 +1367,7 @@ export const ReportIcon = createIcon({
     ),
 });
 
-export const VoucherIcon = createIcon({
+export const VoucherIcon: FC = createIcon({
     displayName: 'VoucherIcon',
     viewBox: '0 0 28 28',
     defaultProps,
