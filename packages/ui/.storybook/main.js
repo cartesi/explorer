@@ -43,6 +43,15 @@ module.exports = {
                 : r
         );
 
+        config.module.rules = [
+            ...config.module.rules,
+            {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: 'javascript/auto',
+            },
+        ];
+
         return {
             ...config,
             resolve: {
