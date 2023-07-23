@@ -27,11 +27,12 @@ import {
     useColorModeValue,
     useDisclosure,
     VisuallyHidden,
+    IconProps,
 } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import {
     Address,
     PencilIcon,
@@ -106,7 +107,7 @@ const NodeTable = () => {
                                         minWidth="120px"
                                         shouldDisplayFallbackAvatar
                                         fallbackAvatar={
-                                            StakeCircledOutlinedIcon
+                                            StakeCircledOutlinedIcon as FC<IconProps>
                                         }
                                     />
                                 </Td>
