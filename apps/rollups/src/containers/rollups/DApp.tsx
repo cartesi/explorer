@@ -430,10 +430,24 @@ export const DApp: FC<DAppProps> = (props) => {
                     </InputGroup>
                 </HStack>
                 <SimpleGrid columns={1} spacing="5" py={4}>
-                    {inputEdge.data &&
-                        inputEdge.data.inputs.edges.map((edge) => (
-                            <InputEdgeItem node={edge.node} key={edge.cursor} />
-                        ))}
+                    {inputEdge.data && (
+                        <>
+                            {inputEdge.data.inputs.edges.length > 0 ? (
+                                <>
+                                    {inputEdge.data.inputs.edges.map((edge) => (
+                                        <InputEdgeItem
+                                            node={edge.node}
+                                            key={edge.cursor}
+                                        />
+                                    ))}
+                                </>
+                            ) : (
+                                <Text textAlign="center">
+                                    Looks like there are no inputs yet...
+                                </Text>
+                            )}
+                        </>
+                    )}
                 </SimpleGrid>
             </Box>
         </>

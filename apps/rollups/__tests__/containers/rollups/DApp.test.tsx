@@ -17,7 +17,11 @@ import {
     hexToJSON,
     transformPayload,
 } from '../../../src/containers/rollups/DApp';
-import { useDappQuery } from '../../../src/generated/graphql/rollups/0.9';
+import {
+    useDappQuery,
+    useInputEdgeQuery,
+    PageInfo,
+} from '../../../src/generated/graphql/rollups/0.9';
 import { withChakraTheme } from '../../test-utilities';
 const path = '../../../src/generated/graphql/rollups/0.9';
 jest.mock(path, () => {
@@ -26,11 +30,16 @@ jest.mock(path, () => {
         __esModule: true,
         ...originalModule,
         useDappQuery: jest.fn(),
+        useInputEdgeQuery: jest.fn(),
     };
 });
 
 const mockUseDappQuery = useDappQuery as jest.MockedFunction<
     typeof useDappQuery
+>;
+
+const mockUseInputEdgeQuery = useInputEdgeQuery as jest.MockedFunction<
+    typeof useInputEdgeQuery
 >;
 
 // Create a mock client
@@ -167,6 +176,20 @@ describe('DApp container', () => {
                 },
                 () => undefined,
             ]);
+            mockUseInputEdgeQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    data: {
+                        inputs: {
+                            edges: [edge],
+                            totalCount: 1,
+                            pageInfo: {} as PageInfo,
+                        },
+                    },
+                },
+                () => undefined,
+            ]);
         });
 
         afterEach(() => {
@@ -214,6 +237,34 @@ describe('DApp container', () => {
             });
 
             expect(screen.getByTestId('dapp-spinner')).toBeInTheDocument();
+        });
+
+        it('should display no inputs label', async () => {
+            mockUseInputEdgeQuery.mockReturnValue([
+                {
+                    fetching: false,
+                    stale: false,
+                    data: {
+                        inputs: {
+                            edges: [],
+                            totalCount: 0,
+                            pageInfo: {} as PageInfo,
+                        },
+                    },
+                },
+                () => undefined,
+            ]);
+            await act(() => {
+                render(
+                    <Provider value={mockClient}>
+                        <DApp address={''} chainId={0} />
+                    </Provider>
+                );
+            });
+
+            expect(
+                screen.getByText('Looks like there are no inputs yet...')
+            ).toBeInTheDocument();
         });
     });
 
