@@ -32,8 +32,12 @@ export interface UsersStatProps extends StackProps {
 
 const UsersStat: FC<UsersStatProps> = (props) => {
     const { totalUsers, location } = props;
-
-    const bgBlocks = useColorModeValue('blue.50', 'gray.900');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'light.border.tertiary',
+        'dark.gray.quaternary'
+    );
 
     return (
         <ConditionalWrapper
@@ -45,7 +49,10 @@ const UsersStat: FC<UsersStatProps> = (props) => {
             <Box
                 flexBasis={{ base: '100%', lg: '33.33%' }}
                 flexShrink={0}
-                bgColor={bgBlocks}
+                bgColor={bg}
+                borderRadius="1rem"
+                borderColor={borderColor}
+                borderWidth="1px"
                 cursor={location ? 'pointer' : ''}
             >
                 <HStack spacing={4} align="center" p={4} w="full">
@@ -57,7 +64,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolUsersIcon w={7} h={7} />
+                        <PoolUsersIcon color={iconColor} w={7} h={7} />
                     </Box>
                     <BigNumberTextV2
                         value={totalUsers}

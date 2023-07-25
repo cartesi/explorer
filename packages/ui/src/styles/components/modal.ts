@@ -10,11 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const Modal = {
-    baseStyle: {
+    baseStyle: (props: any) => ({
         dialog: {
             marginLeft: 3,
             marginRight: 3,
             minHeight: '610px',
+            borderRadius: '1rem',
+            background:
+                props.colorMode === 'dark' ? 'dark.gray.quaternary' : 'white',
         },
         body: {
             display: 'flex',
@@ -32,5 +35,5 @@ export const Modal = {
         footer: {
             paddingBottom: [6, 10],
         },
-    },
+    }),
 };

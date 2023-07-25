@@ -104,25 +104,27 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
 
     const hash = innerTransaction?.transaction?.hash;
     const chainId = innerTransaction?.transaction?.chainId;
-    const bg = useColorModeValue('white', 'gray.700');
-    const inlineBorderColour = 'gray.100';
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const variant = useColorModeValue('left-accent', undefined);
+    const alertIconColor = useColorModeValue(
+        `light.support.${status}`,
+        `dark.support.${status}`
+    );
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
 
     return !innerTransaction?.acknowledged ? (
         <Alert
-            variant="left-accent"
+            variant={variant}
             alignItems="flex-start"
-            borderBlockStartColor={inlineBorderColour}
-            borderBlockStartWidth={1}
-            borderBlockEndColor={inlineBorderColour}
-            borderBlockEndWidth={1}
-            borderEndColor={inlineBorderColour}
-            borderEndWidth={1}
             bg={bg}
             status={status}
+            borderRadius="1rem"
+            borderWidth="1px"
+            borderColor={borderColor}
             {...props}
         >
             {status === 'info' && <Spinner mx={2} />}
-            {status !== 'info' && <AlertIcon />}
+            {status !== 'info' && <AlertIcon color={alertIconColor} />}
             <Box flex="1">
                 <HStack>
                     <AlertTitle alignSelf="flex-start">
@@ -139,7 +141,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     )}
                 </HStack>
 
-                <AlertDescription display="block">
+                <AlertDescription display="block" fontSize={'1rem'}>
                     {isError && error ? error : ''}
                     {isSuccess && !isError ? successDescription : ''}
                 </AlertDescription>

@@ -30,15 +30,23 @@ export interface BlockCardProps extends StackProps {
 
 const BlockCard: FC<BlockCardProps> = (props) => {
     const { chainId, block, highlight, highlightColor, ...stackProps } = props;
-    const bg = useColorModeValue('white', 'gray.700');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.gray.secondary',
+        'dark.gray.quaternary'
+    );
+    const boxShadow = useColorModeValue('md', 'none');
+
     return (
         <HStack
-            shadow="md"
             p={4}
             bg={bg}
-            borderLeftWidth={10}
-            borderLeftColor="gray.900"
+            borderWidth="1px"
+            borderLeftWidth={16}
+            borderLeftColor={borderColor}
             align="flex-start"
+            borderRadius="1rem"
+            shadow={boxShadow}
             {...stackProps}
         >
             <Box w="100%">

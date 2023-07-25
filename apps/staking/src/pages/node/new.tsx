@@ -9,29 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
+    Link as ChakraLink,
+    HStack,
     Heading,
     Stack,
-    HStack,
     Text,
     useColorModeValue,
-    Link as ChakraLink,
 } from '@chakra-ui/react';
-import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
+import { FC } from 'react';
+import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../components/Layout';
+import PageHead from '../../components/PageHead';
+import { StepGroup } from '../../components/StepGroup';
 import CustomizeEthereumNode from '../../components/node/steps/CustomizeEthereumNode';
-import SetUpNode from '../../components/node/steps/SetUpNode';
 import HireNode from '../../components/node/steps/HireNode';
 import SetAllowance from '../../components/node/steps/SetAllowance';
-import { StepGroup } from '../../components/StepGroup';
-import PageHead from '../../components/PageHead';
+import SetUpNode from '../../components/node/steps/SetUpNode';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('gray.80', 'gray.800');
-    const linkColor = useColorModeValue('gray', 'gray.100');
+    const bgSection = useColorModeValue('gray.80', 'dark.gray.primary');
+    const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Layout>
             <PageHead
@@ -40,7 +40,7 @@ const NewNode: FC = () => {
             />
 
             <HStack
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
@@ -53,7 +53,7 @@ const NewNode: FC = () => {
                 </Link>
             </HStack>
             <Box
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
@@ -66,7 +66,7 @@ const NewNode: FC = () => {
                 </Stack>
             </Box>
             <Box
-                bg={bg}
+                bg={bgSection}
                 px={{ base: 0, md: '12vw', xl: '18vw' }}
                 pb={{ base: 0, sm: '5vw' }}
             >
@@ -82,8 +82,12 @@ const NewNode: FC = () => {
                         target="_blank"
                         color={linkColor}
                         fontWeight="medium"
-                        textDecorationLine="underline"
+                        textDecorationLine="none"
                         fontSize="sm"
+                        _hover={{
+                            color: linkColor,
+                            textDecoration: 'underline',
+                        }}
                         alignSelf="flex-end"
                     >
                         Learn from tutorial

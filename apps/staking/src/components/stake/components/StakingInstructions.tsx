@@ -9,16 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     OrderedList,
     ListItem,
     Stack,
     Box,
-    Link,
     Button,
     useDisclosure,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { InfoBanner } from '../InfoBanner';
@@ -32,8 +29,6 @@ export const StakingInstructions: FC = () => {
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: showInstructions,
     });
-
-    const borderColor = useColorModeValue('gray.100', 'transparent');
 
     const handleDontShowAgainClick = () => {
         localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
@@ -95,7 +90,7 @@ export const StakingInstructions: FC = () => {
                                 <Stack
                                     spacing={4}
                                     direction={{ base: 'column', md: 'row' }}
-                                    justifyContent="space-between"
+                                    justifyContent="flex-end"
                                     mt={6}
                                     w="full"
                                 >
@@ -123,12 +118,6 @@ export const StakingInstructions: FC = () => {
                         }
                         isOpen={isOpen}
                         isClosable
-                        borderTop="1px solid"
-                        borderRight="1px solid"
-                        borderBottom="1px solid"
-                        borderTopColor={borderColor}
-                        borderRightColor={borderColor}
-                        borderBottomColor={borderColor}
                         status="warning"
                         onToggle={onToggle}
                     />

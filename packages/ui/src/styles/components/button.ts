@@ -11,8 +11,9 @@
 
 export const Button = {
     baseStyle: {
-        borderRadius: 0,
-        fontWeight: 'normal',
+        borderRadius: '1.875rem',
+        fontWeight: '500',
+        fontFamily: "'Plus Jakarta Sans'",
     },
     sizes: {
         lg: {
@@ -26,11 +27,10 @@ export const Button = {
         },
     },
     variants: {
-        outline: (props) => {
+        outline: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
-                    borderColor:
-                        props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
+                    borderColor: props.colorMode === 'dark' ? 'white' : 'black',
                     _hover: {
                         bg:
                             props.colorMode === 'dark'
@@ -42,17 +42,13 @@ export const Button = {
 
             return;
         },
-        solid: (props) => {
+        solid: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
                     bg: props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
-
                     color: props.colorMode === 'dark' ? 'white' : 'white',
                     _hover: {
-                        bg:
-                            props.colorMode === 'dark'
-                                ? 'gray.500'
-                                : 'gray.700',
+                        bg: props.colorMode === 'dark' ? 'gray.500' : 'red.100',
                         color: props.colorMode === 'dark' ? 'white' : 'white',
                     },
                     _active: {
@@ -77,20 +73,202 @@ export const Button = {
 
             if (props.colorScheme === 'blue') {
                 return {
-                    bg: 'blue.200',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'blue.200'
+                            : 'dark.primary',
                     color: 'gray.900',
                     textTransform: 'uppercase',
                     _hover: {
-                        bg: 'blue.300',
-                        color: 'gray.900',
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'blue.100'
+                                : 'dark.primary',
+                        color:
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.tertiary',
+                    },
+                    borderWidth: '1px',
+                    borderColor:
+                        props.colorMode === 'light' ? 'gray.80' : 'white',
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'blue.200'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'gray.80'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'blue.100'
+                                : 'dark.primary',
+                        color:
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.tertiary',
+                    },
+                };
+            }
+            if (props.colorScheme === 'cyan') {
+                return {
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'cyan.primary'
+                            : 'dark.primary',
+                    color:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.primary'
+                            : 'dark.gray.tertiary',
+                    textTransform: 'uppercase',
+                    borderWidth: '1px',
+                    borderColor: 'white',
+                    _hover: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'cyan.secondary'
+                                : 'dark.primary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'cyan.secondary'
+                                : 'dark.primary',
+                    },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.primary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'light.border.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
                     },
                 };
             }
 
-            return;
-        },
-        ghost: (props) => {
+            if (props.colorScheme === 'teal') {
+                return {
+                    textTransform: 'uppercase',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'dark.secondary'
+                            : 'dark.primary',
+                    borderWidth: '1px',
+                    borderColor:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.tertiary'
+                            : 'white',
+                    _hover: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.secondary'
+                                : 'dark.primary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.secondary'
+                                : 'dark.primary',
+                    },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.primary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'light.border.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                    },
+                };
+            }
+
             return {
+                textTransform: 'uppercase',
+            };
+        },
+        ghost: (props: { colorScheme: string; colorMode: string }) => {
+            if (props.colorScheme === 'darkGray') {
+                return {
+                    textTransform: 'uppercase',
+                    color:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.primary'
+                            : 'dark.gray.senary',
+                    borderWidth: '1px',
+                    borderColor:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.tertiary'
+                            : 'white',
+                    bg: 'transparent',
+                    _hover: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.senary'
+                                : 'dark.border.quaternary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.senary'
+                                : 'dark.border.quaternary',
+                    },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.secondary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                        borderColor:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.secondary'
+                                : 'dark.support.disabled',
+                    },
+                };
+            }
+
+            return {
+                textTransform: 'uppercase',
+            };
+        },
+        link: (props: { colorScheme: string; colorMode: string }) => {
+            return {
+                color:
+                    props.colorMode === 'light'
+                        ? 'dark.gray.tertiary'
+                        : 'dark.primary',
                 textTransform: 'uppercase',
             };
         },

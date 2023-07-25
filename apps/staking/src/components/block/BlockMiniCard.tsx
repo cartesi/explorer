@@ -52,7 +52,11 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     }
 
     // dark mode support
-    const bg = useColorModeValue('white', 'gray.700');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
 
     return (
         <Box {...boxProps}>
@@ -68,10 +72,27 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                     </Text>
                 </HStack>
             </Center>
-            <Center bg="header" p={2}>
+            <Center
+                bg="dark.gray.primary"
+                p={2}
+                borderColor={borderColor}
+                borderWidth="1px"
+                borderBottom="none"
+                borderTopLeftRadius="1rem"
+                borderTopRightRadius="1rem"
+            >
                 <Text color="white">Block {id}</Text>
             </Center>
-            <Flex p={6} justify="space-between" boxShadow="md" bg={bg}>
+            <Flex
+                p={6}
+                justify="space-between"
+                bg={bg}
+                borderColor={borderColor}
+                borderWidth="1px"
+                borderTop="none"
+                borderBottomLeftRadius="1rem"
+                borderBottomRightRadius="1rem"
+            >
                 <Flex
                     direction="column"
                     align="flex-start"

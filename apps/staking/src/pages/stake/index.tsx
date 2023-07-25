@@ -19,11 +19,7 @@ import {
 import { useWallet } from '@explorer/wallet';
 import { constants } from 'ethers';
 import { useState } from 'react';
-import Layout, {
-    PageBody,
-    PageHeader,
-    PagePanel,
-} from '../../components/Layout';
+import Layout, { PageBody, PagePanel } from '../../components/Layout';
 import PageHead from '../../components/PageHead';
 import SearchInput from '../../components/SearchInput';
 import PoolPerformance from '../../components/stake/PoolPerformance';
@@ -39,11 +35,12 @@ const Home = () => {
     const summary = useSummary();
     const balances = usePoolBalances(account || constants.AddressZero);
     const poolBalance = useTotalPoolBalance(account);
-    const bg = useColorModeValue('gray.80', 'header');
-    const bodyBg = useColorModeValue('gray.80', 'header');
-    const stakingPoolsBg = useColorModeValue('white', 'gray.800');
+    const stakingPoolsBg = useColorModeValue('white', 'dark.gray.primary');
     const [search, setSearch] = useState<string>();
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
+    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
+    const pageBg = useColorModeValue('gray.80', 'dark.gray.quaternary');
+    const myStakingPoolsBg = useColorModeValue('white', 'dark.gray.primary');
 
     return (
         <Layout>
@@ -53,19 +50,21 @@ const Home = () => {
             />
 
             <Box bg={bg}>
-                <PageHeader>
-                    <Box
-                        bg="header"
-                        color="white"
-                        px={{ base: '6vw', xl: '6vw' }}
-                    >
+                <Box
+                    w="100%"
+                    bg="dark.gray.tertiary"
+                    color="white"
+                    px="6vw"
+                    py={5}
+                >
+                    <Box color="white" px={{ base: '6vw', xl: '6vw' }}>
                         <Heading as="h1" fontSize={['4xl', '5xl']}>
                             Pools
                         </Heading>
                     </Box>
-                </PageHeader>
+                </Box>
 
-                <PagePanel darkModeColor="gray.800">
+                <PagePanel darkModeColor="dark.gray.primary">
                     <PoolsOverview
                         balance={poolBalance}
                         summary={summary}
@@ -73,14 +72,14 @@ const Home = () => {
                     />
                 </PagePanel>
 
-                <PageBody bg={bodyBg} p={0}>
+                <PageBody bg={pageBg} p={0}>
                     {active && (
                         <Box
                             shadow="md"
                             pt={[6, 6, 10]}
                             mt={[4, 4, 8]}
                             mb={[2, 2, 6]}
-                            bg={stakingPoolsBg}
+                            bg={myStakingPoolsBg}
                         >
                             <Box
                                 px={{

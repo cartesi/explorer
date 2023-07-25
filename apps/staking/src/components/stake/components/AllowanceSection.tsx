@@ -11,20 +11,20 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    VStack,
-    Tooltip,
-    Icon,
     Heading,
+    Icon,
+    Text,
+    Tooltip,
+    VStack,
     useColorModeValue,
-    Button,
 } from '@chakra-ui/react';
+import { PencilIconWhite } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../../pools/staking/CTSI';
-import { PencilIconWhite } from '@explorer/ui';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;

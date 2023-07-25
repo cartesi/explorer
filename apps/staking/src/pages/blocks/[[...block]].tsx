@@ -63,7 +63,10 @@ const BlockList = (props: BlockListProps) => {
     const { chainId, result, filterField, filterValue, ...stackProps } = props;
     const { data, loading, fetchMore } = result;
     const blocks = data?.blocks || [];
-    const highlightColor = useColorModeValue('lightyellow', 'header');
+    const highlightColor = useColorModeValue(
+        'dark.gray.senary',
+        'dark.gray.quaternary'
+    );
 
     // handler for the "load more" button
     const loadMore = () => {
@@ -129,6 +132,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
 
     // list of blocks filtered by node
     const byNode = useBlocks({ node: searchKey }, 20);
+    const pageBg = useColorModeValue('white', 'dark.gray.primary');
 
     return (
         <Layout>
@@ -141,7 +145,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 />
             </PageHeader>
 
-            <HStack w="100%" px="6vw" py="5">
+            <HStack w="100%" px="6vw" py="5" bg={pageBg}>
                 <BlocksChart result={all} />
             </HStack>
 
@@ -152,6 +156,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                     w="100%"
                     px="6vw"
                     py="5"
+                    bg={pageBg}
                 />
             )}
             <BlockList
@@ -162,6 +167,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 w="100%"
                 px="6vw"
                 py="5"
+                bg={pageBg}
             />
             <BlockList
                 chainId={chainId}
@@ -171,6 +177,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 w="100%"
                 px="6vw"
                 py="5"
+                bg={pageBg}
             />
         </Layout>
     );

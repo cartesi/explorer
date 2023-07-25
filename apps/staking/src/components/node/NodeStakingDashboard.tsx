@@ -11,18 +11,19 @@
 
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
-    OrderedList,
-    ListItem,
-    Stack,
-    Link,
+    AlertIcon,
     Button,
-    useDisclosure,
-    VStack,
-    useColorModeValue,
+    Link,
+    ListItem,
+    OrderedList,
+    Stack,
     StackProps,
+    VStack,
+    useDisclosure,
+    useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
+import { FC } from 'react';
 import { InfoBanner } from '../stake/InfoBanner';
 import { WalletBalanceSection } from '../stake/components/WalletBalanceSection';
 import { NodeAllowanceSection } from './NodeAllowanceSection';
@@ -45,6 +46,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
 }) => {
     const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
+    const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
 
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: showInstructions,
@@ -57,8 +59,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
     } = useDisclosure();
 
     const disclosure = useDisclosure();
-
-    const borderColor = useColorModeValue('gray.100', 'transparent');
 
     const handleDontShowAgainClick = () => {
         localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
@@ -124,9 +124,10 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                         href="#"
                                         isExternal
                                         fontSize="sm"
-                                        color="orange.500"
+                                        color={linkColor}
                                         _hover={{
-                                            color: 'orange.600',
+                                            color: linkColor,
+                                            textDecoration: 'underline',
                                         }}
                                     >
                                         Learn detailed staking instructions{' '}
@@ -135,7 +136,10 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                     <Button
                                         size="sm"
                                         onClick={handleDontShowAgainClick}
-                                        colorScheme="darkGray"
+                                        colorScheme="cyan"
+                                        variant="link"
+                                        fontWeight="600"
+                                        textTransform="uppercase"
                                     >
                                         Don't show again
                                     </Button>
@@ -144,12 +148,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                         }
                         isOpen={isOpen}
                         isClosable
-                        borderTop="1px solid"
-                        borderRight="1px solid"
-                        borderBottom="1px solid"
-                        borderTopColor={borderColor}
-                        borderRightColor={borderColor}
-                        borderBottomColor={borderColor}
                         status="warning"
                         onToggle={onToggle}
                     />

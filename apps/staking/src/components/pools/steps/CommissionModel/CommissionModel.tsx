@@ -8,20 +8,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Stack, Button } from '@chakra-ui/react';
-import { Step, StepActions, StepBody, StepStatus } from '../../../Step';
-import { IStep, useStepState } from '../../../StepGroup';
-import { useState, useEffect } from 'react';
-import { OptionalMappedErrors, ValidationResult } from '../../../BaseInput';
-import { useStakingPoolFactory } from '../../../../services/poolFactory';
-import TransactionBanner from '../../../TransactionBanner';
-import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
-import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
-import { Transaction } from '../../../../services/transaction';
-import { useMessages } from '../../../../utils/messages';
+import { Button, Stack, useColorModeValue } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
 import { atom, useAtom } from 'jotai';
+import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
+import { useEffect, useState } from 'react';
+import { useStakingPoolFactory } from '../../../../services/poolFactory';
+import { Transaction } from '../../../../services/transaction';
+import { useMessages } from '../../../../utils/messages';
+import { OptionalMappedErrors, ValidationResult } from '../../../BaseInput';
+import { Step, StepActions, StepBody, StepStatus } from '../../../Step';
+import { IStep, useStepState } from '../../../StepGroup';
+import TransactionBanner from '../../../TransactionBanner';
 import { WalletDisconnectedNotification } from '../WalletDisconnectedNotification';
+import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
 
 type Validation = ValidationResult<FlatRateModel>;
 type Errors = OptionalMappedErrors<Validation>;
@@ -104,6 +104,7 @@ const CommissionModel = ({
         errors,
     });
     const isStepCompleted = isPoolCreationCompleted(poolFactory.transaction);
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -160,6 +161,7 @@ const CommissionModel = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
+                        colorScheme="darkGray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => onPrevious && onPrevious(evt)}
@@ -172,7 +174,7 @@ const CommissionModel = ({
                             poolFactory?.transaction?.isOngoing
                         }
                         isLoading={poolFactory?.transaction?.isOngoing}
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             poolFactory.createFlatRateCommission(

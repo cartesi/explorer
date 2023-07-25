@@ -10,30 +10,31 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Button,
     HStack,
+    Menu,
+    MenuButton,
     Tag,
     TagLabel,
     useColorModeValue,
-    MenuButton,
-    Menu,
-    Button,
 } from '@chakra-ui/react';
-import { FC } from 'react';
-import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '@explorer/services';
 import { truncateString } from '@explorer/utils';
 import { useWallet } from '@explorer/wallet';
-import WalletMenu from './menu/WalletMenu';
+import { theme } from '@explorer/ui';
+import { FC } from 'react';
+import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { PaginationIcon } from '../Icons';
+import WalletMenu from './menu/WalletMenu';
 
 export const Account: FC = () => {
     const { account = '' } = useWallet();
     const hasAccount = account !== '';
     const ens = useENS(account);
-    const bgColor = useColorModeValue('white', 'gray.700');
-    const color = useColorModeValue('black', 'white');
-    const expandedStyle = useColorModeValue({ bg: 'white' }, undefined);
-    const hoverStyle = useColorModeValue({ bg: 'white' }, undefined);
+    const bgColor = useColorModeValue('white', 'white');
+    const color = useColorModeValue('black', 'black');
+    const expandedStyle = useColorModeValue({ bg: 'white' }, { bg: 'white' });
+    const hoverStyle = useColorModeValue({ bg: 'white' }, { bg: 'white' });
     const colorScheme = useColorModeValue('gray', undefined);
     const address = ens.name || truncateString(ens.address || account);
 
@@ -45,6 +46,7 @@ export const Account: FC = () => {
                         {({ isOpen }) => (
                             <>
                                 <MenuButton
+                                    borderRadius={0}
                                     bg={bgColor}
                                     h={10}
                                     pl={4}
@@ -73,7 +75,11 @@ export const Account: FC = () => {
                                             seed={jsNumberForAddress(account)}
                                         />
 
-                                        <TagLabel color={color} fontSize="sm">
+                                        <TagLabel
+                                            color={color}
+                                            fontSize="sm"
+                                            fontFamily={theme.fonts.body}
+                                        >
                                             {address}
                                         </TagLabel>
                                     </HStack>

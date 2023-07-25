@@ -14,6 +14,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -26,17 +27,22 @@ export interface IPoolBreadcrumbsProps {
 export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
     const router = useRouter();
     const address = router.query.pool as string;
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const boxShadow = useColorModeValue('md', 'none');
 
     return (
         <Box
-            px={{ base: '6vw', xl: '12vw' }}
-            py={3}
-            shadow="sm"
-            fontSize="sm"
+            position="relative"
             display={{
                 base: 'none',
                 lg: 'block',
             }}
+            px={{ base: '6vw', xl: '12vw' }}
+            py={3}
+            boxShadow={boxShadow}
+            fontSize="sm"
+            zIndex={10}
+            backgroundColor={bg}
         >
             <Breadcrumb>
                 <BreadcrumbItem>

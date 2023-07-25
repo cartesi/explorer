@@ -15,6 +15,7 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
@@ -25,13 +26,28 @@ export interface SearchInputProps extends InputGroupProps {
 
 const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const { placeholder = 'Search', onSearchChange, ...rest } = props;
+    const placeholderColor = useColorModeValue('gray.500', 'white');
+    const searchBackgroundColor = useColorModeValue(
+        'white',
+        'dark.gray.tertiary'
+    );
+    const iconColor = useColorModeValue('gray.900', 'white');
+
     return (
         <InputGroup {...rest}>
             <InputLeftElement pointerEvents="none">
-                <SearchIcon />
+                <SearchIcon color={iconColor} />
             </InputLeftElement>
 
-            <Input placeholder={placeholder} onChange={onSearchChange} />
+            <Input
+                _placeholder={{
+                    color: placeholderColor,
+                }}
+                borderRadius="3px"
+                placeholder={placeholder}
+                backgroundColor={searchBackgroundColor}
+                onChange={onSearchChange}
+            />
         </InputGroup>
     );
 };

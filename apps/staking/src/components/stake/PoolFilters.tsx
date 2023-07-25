@@ -47,8 +47,12 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     selectedTypes,
     onSelectedTypesChange,
 }) => {
-    const checkedBg = useColorModeValue('gray.50', 'gray.600');
-    const badgeBg = useColorModeValue('blue.200', 'blue.300');
+    const checkedBg = useColorModeValue('gray.50', 'dark.gray.secondary');
+    const badgeBg = useColorModeValue('dark.secondary', 'white');
+    const badgeColor = useColorModeValue('white', 'gray.900');
+    const menuBg = useColorModeValue('white', 'dark.gray.secondary');
+    const checkboxColorScheme = useColorModeValue('teal', 'gray');
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
 
     return (
         <Stack
@@ -76,7 +80,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                         </HStack>
                     </MenuButton>
 
-                    <MenuList p={4}>
+                    <MenuList p={4} backgroundColor={menuBg}>
                         {filters.map((filter, index) => (
                             <Fragment key={index}>
                                 <MenuGroup>
@@ -100,6 +104,9 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                     checkedBg,
                                                             }}
                                                             spacing={0}
+                                                            colorScheme={
+                                                                checkboxColorScheme
+                                                            }
                                                             py={2}
                                                             px={4}
                                                             w="100%"
@@ -150,6 +157,9 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                 w="100%"
                                                                 flexDirection="row-reverse"
                                                                 justifyContent="space-between"
+                                                                colorScheme={
+                                                                    radioColorScheme
+                                                                }
                                                                 value={
                                                                     option.value
                                                                 }
@@ -173,7 +183,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
             </Box>
             <Flex mb={4} direction="row" wrap="wrap">
                 {selectedPeriod && (
-                    <Box p={'1px'}>
+                    <Box p={'1px'} mr={1}>
                         <HStack
                             bg={badgeBg}
                             color="header"
@@ -184,7 +194,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             align="center"
                             spacing={2}
                         >
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" color={badgeColor}>
                                 {
                                     filters
                                         .find((el) => el.key === 'time')
@@ -197,7 +207,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     </Box>
                 )}
                 {selectedTypes.map((type, index) => (
-                    <Box p={'1px'} key={index}>
+                    <Box p={'1px'} mr={1} key={index}>
                         <HStack
                             bg={badgeBg}
                             color="header"
@@ -208,7 +218,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             align="center"
                             spacing={2}
                         >
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" color={badgeColor}>
                                 {
                                     filters
                                         .find((el) => el.key === 'type')
@@ -225,7 +235,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                     onSelectedTypesChange(type);
                                 }}
                             >
-                                <CloseIcon w={3} h={3} />
+                                <CloseIcon color={badgeColor} w={3} h={3} />
                             </Button>
                         </HStack>
                     </Box>

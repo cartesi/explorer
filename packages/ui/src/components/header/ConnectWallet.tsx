@@ -9,9 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
-import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    BoxProps,
+    Button,
+    HStack,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { UnsupportedNetworkError, UseWallet } from '@explorer/wallet';
+import { FC } from 'react';
 
 export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
@@ -21,6 +28,11 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
     const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
+    const colorScheme = useColorModeValue('teal', 'cyan');
+    const hoverBg = useColorModeValue(
+        'linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), #008DA5',
+        'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF'
+    );
 
     return (
         <Box {...boxProps}>
@@ -32,12 +44,15 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                 </Button>
             ) : (
                 !active && (
-                    <Button size="md" colorScheme="blue" onClick={activate}>
-                        <HStack>
-                            <Text fontWeight="medium" fontSize="sm">
-                                Connect To Wallet
-                            </Text>
-                        </HStack>
+                    <Button
+                        size="md"
+                        colorScheme={colorScheme}
+                        onClick={activate}
+                        _hover={{
+                            bg: hoverBg,
+                        }}
+                    >
+                        <Text fontWeight={600}>Connect To Wallet</Text>
                     </Button>
                 )
             )}

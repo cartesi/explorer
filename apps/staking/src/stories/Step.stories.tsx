@@ -21,12 +21,11 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
 import {
     Step,
-    StepProps,
-    StepBody,
     StepActions,
+    StepBody,
+    StepProps,
     StepStatus,
 } from '../components/Step';
 
@@ -96,7 +95,7 @@ const Template: ComponentStory<typeof Step> = (args) => {
                                 <Link
                                     href="https://infura.io/"
                                     target="_blank"
-                                    color="blue.500"
+                                    color="teal.light"
                                     fontWeight="medium"
                                     textDecorationLine="underline"
                                     fontSize="md"
@@ -107,7 +106,7 @@ const Template: ComponentStory<typeof Step> = (args) => {
                                 <Link
                                     href="https://www.alchemy.com/"
                                     target="_blank"
-                                    color="blue.500"
+                                    color="teal.light"
                                     fontWeight="medium"
                                     textDecorationLine="underline"
                                     fontSize="md"

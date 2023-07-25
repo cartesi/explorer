@@ -12,14 +12,14 @@
 import { EditIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Text,
     Flex,
     HStack,
-    VStack,
-    Tooltip,
-    Icon,
     Heading,
+    Icon,
     IconButton,
+    Text,
+    Tooltip,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
@@ -61,8 +61,10 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             placement="top"
                             label="Here you can see your current allowance."
                             fontSize="small"
-                            bg="black"
+                            bg="dark.gray.quaternary"
                             color="white"
+                            borderRadius={'md'}
+                            opacity={0.9}
                         >
                             <Icon color={color} w={3.5} h={3.5} />
                         </Tooltip>

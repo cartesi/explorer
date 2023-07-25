@@ -24,7 +24,7 @@ import {
 } from 'recharts';
 import { QueryResult } from '@apollo/client';
 import { BlocksData, BlocksVars } from '../graphql/models';
-import { useColorModeValue } from '@chakra-ui/react';
+import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 
 export interface BlocksChartProps {
     result: QueryResult<BlocksData, BlocksVars>;
@@ -45,6 +45,8 @@ const colors = [
 
 const BlocksChart = (props: BlocksChartProps) => {
     const blocks = props.result.data?.blocks || [];
+    const { colorMode } = useColorMode();
+    const defaultColor = colorMode === 'light' ? '#008DA5' : '#00f6ff';
 
     // group blocks per chain
     const blocksPerChain = _.groupBy(
@@ -88,7 +90,7 @@ const BlocksChart = (props: BlocksChartProps) => {
 
         // follow tinygraphs color pattern
         const id = chain.number;
-        const color = id >= 0 && id < colors.length ? colors[id] : colors[0];
+        const color = id > 0 && id < colors.length ? colors[id] : defaultColor;
 
         // create scatter plot
         return (
@@ -122,7 +124,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         return value;
     };
 
-    const bg = useColorModeValue('white', '#2D3748'); // gray.700 = #2D3748
+    const bg = useColorModeValue('white', '#161618'); // dark.gray.primary = #161618
     return (
         <ResponsiveContainer height={300}>
             <ScatterChart>

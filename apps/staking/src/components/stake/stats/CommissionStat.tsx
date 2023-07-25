@@ -35,8 +35,12 @@ export interface CommissionStatProps extends StackProps {
 
 const CommissionStat: FC<CommissionStatProps> = (props) => {
     const { commissionPercentage, fee, location } = props;
-
-    const bgBlocks = useColorModeValue('blue.50', 'gray.900');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'light.border.tertiary',
+        'dark.gray.quaternary'
+    );
 
     return (
         <ConditionalWrapper
@@ -48,7 +52,10 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
             <Box
                 flexBasis={{ base: '100%', lg: '33.33%' }}
                 flexShrink={0}
-                bgColor={bgBlocks}
+                bgColor={bg}
+                borderRadius="1rem"
+                borderWidth="1px"
+                borderColor={borderColor}
                 cursor={location ? 'pointer' : ''}
             >
                 <HStack spacing={4} align="center" p={4} w="full">
@@ -60,7 +67,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolCommisionIcon w={7} h={7} />
+                        <PoolCommisionIcon color={iconColor} w={7} h={7} />
                     </Box>
 
                     {commissionPercentage ? (

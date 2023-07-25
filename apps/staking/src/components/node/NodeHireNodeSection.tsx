@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
 import {
     Box,
-    Text,
-    Stack,
     Button,
-    useColorModeValue,
     Flex,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
+import { isEmpty, omit } from 'lodash/fp';
+import { FC, useState } from 'react';
+import { useNode } from '../../services/node';
 import { toBigNumber } from '../../utils/numberParser';
-import { NodeInput, NodeField, evaluateNode } from './inputs/NodeInput';
 import { MappedErrors, ValidationResult } from '../BaseInput';
 import { DepositField, InitialFundsInput } from './inputs/InitialFundsInput';
-import { isEmpty, omit } from 'lodash/fp';
-import { useNode } from '../../services/node';
+import { NodeField, NodeInput, evaluateNode } from './inputs/NodeInput';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -38,7 +38,12 @@ export interface NodeHireNodeSectionProps {
 export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     const { isHiring = false, onHire } = props;
     const { account } = useWallet();
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const [initialFunds, setInitialFunds] = useState('');
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
@@ -59,10 +64,12 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     return (
         <Box
             bg={bg}
-            shadow="md"
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="1rem"
         >
             <Stack
                 spacing={4}
@@ -105,7 +112,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                     alignItems="flex-end"
                 >
                     <Button
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.813rem"
                         textTransform="uppercase"

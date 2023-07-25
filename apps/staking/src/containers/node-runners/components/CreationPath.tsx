@@ -10,15 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Heading, useColorModeValue, VStack } from '@chakra-ui/react';
+import { AllowanceIcon, Card, WalletIcon } from '@explorer/ui';
 import { useAtom } from 'jotai';
 import { NextRouter } from 'next/router';
 import { SlideDown } from '../../../components/animation/SlideDown';
-import { Card, AllowanceIcon, WalletIcon } from '@explorer/ui';
 import { OrderedContent } from '../../../components/OrderedContent';
-import { hasPrivateNodeAtom, hasPoolsAtom } from '../atoms';
+import { hasPoolsAtom, hasPrivateNodeAtom } from '../atoms';
 import Block from './Block';
 
-const mainResponsibilities = 'Main responsabilities:';
+const mainResponsibilities = 'Main responsibilities:';
 const privateNodeResponsibilities = [
     'Make sure the Noether node is online and works properly 24x7.',
     'Pay the Ethereum fees that are necessary for block production and also maintenance operations.',
@@ -34,7 +34,11 @@ interface CreationPathProps {
 }
 
 const CreationPath = ({ router }: CreationPathProps) => {
-    const bg = useColorModeValue('gray.80', 'header');
+    const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
+    const bgCard = useColorModeValue('white', 'dark.gray.quaternary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.secondary');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const [hasPools] = useAtom(hasPoolsAtom);
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const noPoolsOrNodes = !hasPools || !hasPrivateNode;
@@ -54,16 +58,17 @@ const CreationPath = ({ router }: CreationPathProps) => {
                 <VStack align="stretch" px={{ base: '3vw', md: '9vw' }}>
                     <SlideDown display={!hasPools}>
                         <Card
+                            my={2}
+                            borderRadius="1rem"
+                            borderWidth="1px"
+                            borderColor={borderColor}
+                            bg={bgCard}
                             id="pool-creation-card"
                             title="Create a public pool"
                             subtitle="Earn commissions out of the blocks rewards."
-                            iconBg="orange.50"
+                            iconBg={iconBg}
                             icon={
-                                <AllowanceIcon
-                                    color="light.support.attention"
-                                    w={6}
-                                    h={6}
-                                />
+                                <AllowanceIcon color={iconColor} w={6} h={6} />
                             }
                             buttonText="CREATE PUBLIC POOL"
                             onButtonClick={() => router.push('/pools/new')}
@@ -78,17 +83,16 @@ const CreationPath = ({ router }: CreationPathProps) => {
 
                     <SlideDown display={!hasPrivateNode}>
                         <Card
+                            my={2}
+                            borderRadius="1rem"
+                            borderWidth="1px"
+                            borderColor={borderColor}
+                            bg={bgCard}
                             id="private-node-creation-card"
                             title="Run a private node"
                             subtitle="You are able to stake directly by running your own node to represent your stake."
-                            iconBg="orange.50"
-                            icon={
-                                <WalletIcon
-                                    color="light.support.attention"
-                                    w={6}
-                                    h={6}
-                                />
-                            }
+                            iconBg={iconBg}
+                            icon={<WalletIcon color={iconColor} w={6} h={6} />}
                             buttonText={'CREATE MY NODE'}
                             onButtonClick={() => {
                                 router.push('/node/new');

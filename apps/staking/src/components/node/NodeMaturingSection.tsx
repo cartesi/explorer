@@ -11,18 +11,18 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
-    Button,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { TimeIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { TimeIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeMaturingSection {
@@ -34,8 +34,18 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     maturingBalance,
     maturingLeft = '6 hours',
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    const borderColor = maturingBalance.isZero() ? 'gray.450' : 'blue.200';
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const iconColorModeColor = useColorModeValue(
+        'dark.secondary',
+        'dark.primary'
+    );
+    const iconColor = maturingBalance.isZero()
+        ? 'gray.450'
+        : iconColorModeColor;
 
     return (
         <Box
@@ -43,17 +53,10 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
             bg={bg}
             p={6}
             pl={7}
-            border="1px solid var(--chakra-colors-gray-100)"
+            borderRadius="1rem"
+            borderWidth="1px"
+            borderColor={borderColor}
         >
-            <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width={3}
-                height="100%"
-                bg={borderColor}
-            />
-
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
@@ -67,15 +70,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                         display="grid"
                         placeContent="center"
                     >
-                        <TimeIcon
-                            w={9}
-                            h={9}
-                            color={
-                                maturingBalance.isZero()
-                                    ? 'gray.450'
-                                    : 'blue.200'
-                            }
-                        />
+                        <TimeIcon w={9} h={9} color={iconColor} />
                     </Box>
 
                     <Box>
@@ -100,7 +95,12 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                     alignItems="center"
                 >
                     {maturingBalance.gt(0) && maturingLeft && (
-                        <Button bg={bg} mt={[8, 0]} disabled>
+                        <Button
+                            colorScheme="darkGray"
+                            variant="ghost"
+                            mt={[8, 0]}
+                            disabled
+                        >
                             STAKE ({maturingLeft})
                         </Button>
                     )}

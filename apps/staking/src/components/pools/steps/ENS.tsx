@@ -9,35 +9,35 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
     Box,
-    useColorModeValue,
     BoxProps,
-    Stack,
     Button,
+    FormControl,
     FormControlProps,
-    Link,
-    Text,
+    FormErrorMessage,
+    FormLabel,
     Input,
     InputGroup,
     InputRightElement,
+    Link,
+    Stack,
+    Text,
     useBreakpointValue,
+    useColorModeValue,
 } from '@chakra-ui/react';
-import { Step, StepActions, StepBody, StepStatus } from '../../Step';
-import { IStep, useStepState } from '../../StepGroup';
-import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
-import { useMessages } from '../../../utils/messages';
-import { OrderedContent } from '../../OrderedContent';
-import { useAtom } from 'jotai';
-import { poolAddressAtom } from './CommissionModel';
 import { useWallet } from '@explorer/wallet';
-import { useStakingPool } from '../../../services/pool';
-import TransactionBanner from '../../TransactionBanner';
+import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 import { trim } from 'lodash/fp';
 import { useRouter } from 'next/router';
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { useStakingPool } from '../../../services/pool';
+import { useMessages } from '../../../utils/messages';
+import { OrderedContent } from '../../OrderedContent';
+import { Step, StepActions, StepBody, StepStatus } from '../../Step';
+import { IStep, useStepState } from '../../StepGroup';
+import TransactionBanner from '../../TransactionBanner';
+import { poolAddressAtom } from './CommissionModel';
 import { WalletDisconnectedNotification } from './WalletDisconnectedNotification';
 
 interface SimpleInput {
@@ -94,7 +94,7 @@ const SimpleInput = ({
 };
 
 const useStyle = () => {
-    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
+    const tipsBgColor = useColorModeValue('white', 'dark.gray.tertiary');
     return {
         tipsBgColor,
     };
@@ -112,14 +112,18 @@ const Message = ({ content, boxProps }: MessageProps) => {
 };
 
 const ENSManagerLink = () => {
-    const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
+    const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Link
             href="https://app.ens.domains/"
             target="_blank"
             color={thirdPartyColor}
+            _hover={{
+                color: thirdPartyColor,
+                textDecoration: 'underline',
+            }}
             fontWeight="medium"
-            textDecorationLine="underline"
+            textDecorationLine="none"
             fontSize="md"
         >
             ENS Manager
@@ -171,7 +175,7 @@ const EthereumNameServer = ({
     const [ens, setENS] = useState<string | null>();
     const isCompleted = proceed || pool.transaction?.state === 'confirmed';
     const ensInputIsEmpty = isEmpty(trim(ens));
-
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
     useEffect(() => {
         if (isCompleted) {
             setStepState(COMPLETED);
@@ -201,7 +205,7 @@ const EthereumNameServer = ({
                 />
                 {isSmallScreen && (
                     <Text
-                        color="light.support.alert"
+                        color="light.support.warning"
                         fontWeight="medium"
                         fontSize={18}
                     >
@@ -225,7 +229,7 @@ const EthereumNameServer = ({
                     <Button
                         isLoading={pool.transaction?.isOngoing}
                         disabled={pool.transaction?.isOngoing}
-                        colorScheme="blue"
+                        colorScheme={buttonColorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             if (ensInputIsEmpty) {

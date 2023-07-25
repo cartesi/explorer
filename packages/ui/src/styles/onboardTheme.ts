@@ -22,7 +22,7 @@ const ACCOUNT_SELECT_LOAD_MORE = `${ACCOUNT_SELECT} + button`;
 const WALLET_CHECK_SECTION = `${CUSTOM_CLASS}.bn-onboard-wallet-check-section`;
 const WALLET_CHECK_SECTION_WRAPPER = `${WALLET_CHECK_SECTION} > div`;
 
-export const buildOnboardTheme = (props) => {
+export const buildOnboardTheme = (props: { colorMode: string }) => {
     return {
         [MODAL]: {
             fontFamily: fonts.body,

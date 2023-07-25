@@ -72,20 +72,20 @@ describe('Notification component', () => {
         const role = screen.getByRole('alert');
 
         // default is info
-        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-blue-500);');
+        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-blue-200);');
 
         rerender(<ENotification title="Title" status="success" />);
 
-        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-green-500);');
+        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-green-200);');
 
         rerender(<ENotification title="Title" status="error" />);
 
-        expect(role).toHaveStyle('--alert-fg:  var(--chakra-colors-red-500);');
+        expect(role).toHaveStyle('--alert-fg:  var(--chakra-colors-red-200);');
 
         rerender(<ENotification title="Title" status="warning" />);
 
         expect(role).toHaveStyle(
-            '--alert-fg:  var(--chakra-colors-orange-500);'
+            '--alert-fg:  var(--chakra-colors-orange-200);'
         );
     });
 });

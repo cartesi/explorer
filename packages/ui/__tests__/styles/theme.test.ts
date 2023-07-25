@@ -9,21 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-const CHAKRA_FORM_CLASS = '.chakra-form';
-const LABEL = `${CHAKRA_FORM_CLASS}__label`;
-const ERROR_MESSAGE = `${CHAKRA_FORM_CLASS}__error-message`;
-const HELPER_TEXT = `${CHAKRA_FORM_CLASS}__helper-text`;
+import theme from '../../src/styles/theme';
 
-export const formsTheme = () => {
-    return {
-        [LABEL]: {
-            marginBottom: '0.75rem !important',
-        },
-        [ERROR_MESSAGE]: {
-            marginTop: '0.75rem !important',
-        },
-        [HELPER_TEXT]: {
-            marginTop: '0.75rem !important',
-        },
-    };
-};
+describe('styles/theme', () => {
+    it('should have the color mode set initially to "dark"', () => {
+        expect(theme.config.initialColorMode).toBe('dark');
+    });
+});

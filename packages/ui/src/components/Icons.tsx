@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
 import { createIcon, Icon, IconProps } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/react';
+import { FC, SVGProps } from 'react';
 
 export const PencilIcon: FC<IconProps> = createIcon({
     path: (
@@ -1025,46 +1025,53 @@ export const PoolBalanceHexIcon: FC<IconProps> = createIcon({
     ),
 });
 
-export const EmptyTransactionIcon: FC<IconProps> = createIcon({
-    displayName: 'EmptyTransactionIcon',
-    viewBox: '0 0 66 66',
-    path: (
-        <g fill="#E1EBFF">
-            <circle cx="33" cy="33" r="33" fill="#E1EBFF" />
-            <path
-                d="M27.4 19L21 25.2703V48H43V19H27.4Z"
-                stroke="#2D5ABE"
-                strokeWidth="2.5"
-            />
-            <path d="M21.5 26H27.5V20" stroke="#2D5ABE" strokeWidth="2.5" />
-            <circle
-                cx="42.9179"
-                cy="37.9179"
-                r="4.91791"
-                fill="#E1EBFF"
-                stroke="#2D5ABE"
-                strokeWidth="2"
-            />
-            <rect
-                x="29.4142"
-                y="33.5"
-                width="4"
-                height="4"
-                transform="rotate(-45 29.4142 33.5)"
-                stroke="#2D5ABE"
-                strokeWidth="2"
-            />
-            <rect
-                x="47.6026"
-                y="41"
-                width="5.0383"
-                height="1.65635"
-                transform="rotate(45 47.6026 41)"
-                fill="#2D5ABE"
-            />
-        </g>
-    ),
-});
+interface EmptyTransactionIconProps extends IconProps {
+    fill: SVGProps<SVGGElement>['fill'];
+    stroke: SVGProps<SVGElement>['stroke'];
+}
+
+export const EmptyTransactionIcon: FC<EmptyTransactionIconProps> = (props) => {
+    const { fill, stroke } = props;
+
+    return (
+        <Icon viewBox="0 0 66 66" {...props}>
+            <g fill={fill}>
+                <circle cx="33" cy="33" r="33" fill={fill} stroke="none" />
+                <path
+                    d="M27.4 19L21 25.2703V48H43V19H27.4Z"
+                    stroke={stroke}
+                    strokeWidth="2.5"
+                />
+                <path d="M21.5 26H27.5V20" stroke={stroke} strokeWidth="2.5" />
+                <circle
+                    cx="42.9179"
+                    cy="37.9179"
+                    r="4.91791"
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth="2"
+                />
+                <rect
+                    x="29.4142"
+                    y="33.5"
+                    width="4"
+                    height="4"
+                    transform="rotate(-45 29.4142 33.5)"
+                    stroke={stroke}
+                    strokeWidth="2"
+                />
+                <rect
+                    x="47.6026"
+                    y="41"
+                    width="5.0383"
+                    height="1.65635"
+                    transform="rotate(45 47.6026 41)"
+                    fill={stroke}
+                />
+            </g>
+        </Icon>
+    );
+};
 
 export const RebalanceIcon: FC<IconProps> = createIcon({
     displayName: 'RebalanceIcon',
@@ -1386,6 +1393,19 @@ export const VoucherIcon: FC<IconProps> = createIcon({
                 d="M18.5891 11.5572L13.6583 16.3908L10.1224 13.6543"
                 stroke="currentColor"
                 strokeWidth="1.7"
+            />
+        </g>
+    ),
+});
+export const CartesiTranparent: FC<IconProps> = createIcon({
+    displayName: 'CartesiTransparent',
+    viewBox: '0 0 26 26',
+    defaultProps: { width: '6', height: '6' },
+    path: (
+        <g>
+            <path
+                d="M5.63964 8.47756C5.36031 8.78342 5.38182 9.2578 5.68768 9.53713C5.99354 9.81646 6.46792 9.79495 6.74725 9.48909L5.63964 8.47756ZM13.4843 1L14.1864 0.736466C14.0947 0.492106 13.8826 0.312998 13.6263 0.263571C13.37 0.214144 13.1065 0.301507 12.9305 0.494233L13.4843 1ZM15.7783 9.24686C15.9239 9.63466 16.3562 9.83105 16.744 9.6855C17.1318 9.53995 17.3282 9.10759 17.1827 8.71979L15.7783 9.24686ZM16.8841 20.8659C17.1637 20.5603 17.1426 20.0859 16.8369 19.8063C16.5313 19.5267 16.0569 19.5478 15.7773 19.8535L16.8841 20.8659ZM12.0861 25L11.3839 25.2635C11.4756 25.5078 11.6876 25.6869 11.9437 25.7364C12.1999 25.7859 12.4634 25.6987 12.6395 25.5062L12.0861 25ZM9.79201 16.7531C9.64647 16.3653 9.2141 16.169 8.8263 16.3145C8.4385 16.46 8.24212 16.8924 8.38766 17.2802L9.79201 16.7531ZM16.4306 8.98329V8.23329C16.2208 8.23329 16.0205 8.32119 15.8785 8.47565L16.4306 8.98329ZM21.6241 8.98329L22.3262 8.71976C22.2164 8.42713 21.9366 8.23329 21.6241 8.23329V8.98329ZM24.6203 16.9666V17.7166C24.8663 17.7166 25.0967 17.596 25.2368 17.3937C25.3769 17.1915 25.4089 16.9334 25.3225 16.7031L24.6203 16.9666ZM14.3332 16.9666L13.6311 17.2302C13.7409 17.5228 14.0207 17.7166 14.3332 17.7166V16.9666ZM11.337 8.98329L12.0392 8.71976C11.9293 8.42713 11.6496 8.23329 11.337 8.23329V8.98329ZM1 8.98329V8.23329C0.753979 8.23329 0.523602 8.35395 0.383498 8.55618C0.243393 8.75841 0.211379 9.01649 0.297825 9.24683L1 8.98329ZM3.99623 16.9666L3.29406 17.2302C3.40388 17.5228 3.68367 17.7166 3.99623 17.7166V16.9666ZM9.13976 17.7166C9.55398 17.7166 9.88976 17.3808 9.88976 16.9666C9.88976 16.5524 9.55398 16.2166 9.13976 16.2166V17.7166ZM6.74725 9.48909L14.0381 1.50577L12.9305 0.494233L5.63964 8.47756L6.74725 9.48909ZM12.7821 1.26353L15.7783 9.24686L17.1827 8.71979L14.1864 0.736466L12.7821 1.26353ZM15.7773 19.8535L11.5327 24.4938L12.6395 25.5062L16.8841 20.8659L15.7773 19.8535ZM12.7882 24.7365L9.79201 16.7531L8.38766 17.2802L11.3839 25.2635L12.7882 24.7365ZM18.8766 16.4571L15.7805 19.8001L16.881 20.8194L19.9771 17.4764L18.8766 16.4571ZM16.4306 9.73329H21.6241V8.23329H16.4306V9.73329ZM20.9219 9.24683L23.9181 17.2302L25.3225 16.7031L22.3262 8.71976L20.9219 9.24683ZM24.6203 16.2166H14.3332V17.7166H24.6203V16.2166ZM15.0354 16.7031L12.0392 8.71976L10.6348 9.24683L13.6311 17.2302L15.0354 16.7031ZM11.337 8.23329H1V9.73329H11.337V8.23329ZM0.297825 9.24683L3.29406 17.2302L4.69841 16.7031L1.70218 8.71976L0.297825 9.24683ZM3.99623 17.7166H9.13976V16.2166H3.99623V17.7166ZM15.8785 8.47565L8.53775 16.459L9.64192 17.4743L16.9827 9.49094L15.8785 8.47565Z"
+                fill="white"
             />
         </g>
     ),

@@ -11,16 +11,13 @@
 
 import { WarningIcon } from '@chakra-ui/icons';
 import {
+    Box,
     Button,
+    Divider,
     FormControl,
-    VStack,
-    Text,
     FormHelperText,
     FormLabel,
-    UseDisclosureProps,
     HStack,
-    Box,
-    Divider,
     Input,
     Modal,
     ModalBody,
@@ -28,9 +25,12 @@ import {
     ModalContent,
     ModalFooter,
     ModalOverlay,
+    Text,
+    UseDisclosureProps,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 interface INodeRetireModalProps {
     address: string;
@@ -43,7 +43,10 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     disclosure,
     onConfirmRetire,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
+    const color = useColorModeValue('dark.gray.primary', 'white');
+    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const [addressValue, setAddressValue] = useState('');
     const { isOpen, onClose } = disclosure;
 
@@ -54,7 +57,13 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     return (
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent
+                bg={bgModal}
+                border="1px solid"
+                borderColor={'dark.border.secondary'}
+                borderRadius={'2xl'}
+                color={color}
+            >
                 <Box pb={6}>
                     <HStack justify="space-between">
                         <Box
@@ -96,20 +105,25 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         px={2}
                     >
                         <HStack spacing={2} mb={1}>
-                            <WarningIcon color="orange.500" />
+                            <WarningIcon color="light.support.alert" />
                             <Text fontSize="sm">
                                 Once that node is retired, you cannot reuse it.
                             </Text>
                         </HStack>
                         <Button
                             width="full"
-                            colorScheme="blue"
+                            colorScheme={colorScheme}
                             disabled={address != addressValue?.trim()}
                             onClick={onConfirmRetire}
                         >
                             Retire
                         </Button>
-                        <Button width="full" bg={bg} onClick={onClose}>
+                        <Button
+                            width="full"
+                            colorScheme="darkGray"
+                            variant="ghost"
+                            onClick={onClose}
+                        >
                             Cancel
                         </Button>
                     </VStack>

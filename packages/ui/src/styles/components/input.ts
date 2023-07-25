@@ -9,19 +9,32 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+const borderRadius = '6px';
+
 export const Input = {
-    baseStyle: {
+    baseStyle: (props: { colorMode: string }) => ({
         field: {
-            borderRadius: 0,
+            borderRadius,
             _disabled: {
-                backgroundColor: 'gray.80',
+                backgroundColor:
+                    props.colorMode === 'light'
+                        ? 'dark.gray.senary'
+                        : 'dark.border.secondary',
+            },
+            _focus: {
+                boxShadow: 'none',
             },
         },
-    },
+        control: {
+            _focus: {
+                boxShadow: 'none',
+            },
+        },
+    }),
     variants: {
         outline: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -29,7 +42,7 @@ export const Input = {
         },
         filled: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -37,7 +50,7 @@ export const Input = {
         },
         flushed: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -45,7 +58,7 @@ export const Input = {
         },
         unstyled: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },

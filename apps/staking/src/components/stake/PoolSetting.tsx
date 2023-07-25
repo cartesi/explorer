@@ -101,8 +101,29 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     const posV2Enabled = useFlag('posV2Enabled');
     const stakingPool = useStakingPoolQuery(address);
     const poolFactory = useStakingPoolFactory();
-    const rebalanceColor = useColorModeValue('gray.800', 'header');
-    const rebalanceHoverBg = useColorModeValue('orange.300', 'orange.100');
+    const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
+    const rebalanceBg = useColorModeValue(
+        'light.support.warning',
+        'dark.support.warning'
+    );
+    const rebalanceColor = useColorModeValue('white', 'dark.gray.primary');
+    const rebalanceHoverBg = useColorModeValue(
+        'light.orange.primary',
+        'dark.orange.primary'
+    );
+    const rebalanceDisabledBg = useColorModeValue(
+        'light.gray.quaternary',
+        'dark.gray.quaternary'
+    );
+    const rebalanceDisabledColor = useColorModeValue(
+        'light.support.disabled',
+        'dark.support.disabled'
+    );
+    const borderColor = useColorModeValue(
+        'dark.gray.quaternary',
+        'dark.border.quaternary'
+    );
+    const linkColor = useColorModeValue('teal', 'cyan');
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const isRebalanceEnabled =
         pool.amounts?.stake > BigNumber.from(0) ||
@@ -156,7 +177,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
             px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
             pb={{ base: 6, sm: 8, lg: 8 }}
             fontSize="xl"
-            mt={16}
+            pt={16}
+            bg={bg}
         >
             <TransactionBanner
                 title={wordingFor.rebalance.title}
@@ -185,14 +207,21 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                 <Box>
                     <VStack alignItems="flex-end">
                         <Button
-                            bg="orange.200"
+                            bg={rebalanceBg}
                             color={rebalanceColor}
+                            _disabled={{
+                                color: rebalanceDisabledColor,
+                                bg: rebalanceDisabledBg,
+                                cursor: 'not-allowed',
+                            }}
                             _hover={{
-                                color: 'gray.800',
                                 bg: isRebalanceButtonDisabled
-                                    ? 'gray.200'
+                                    ? rebalanceDisabledBg
                                     : rebalanceHoverBg,
                             }}
+                            borderWidth="1px"
+                            borderColor={borderColor}
+                            borderRadius="full"
                             w={{ base: '100%', md: 'auto' }}
                             minW="10.8125rem"
                             height="2.875rem"
@@ -257,7 +286,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     data-testid="posV2Alert"
                 >
                     <Button
-                        colorScheme="blue"
+                        colorScheme="darkGray"
+                        variant="ghost"
                         mt="1rem !important"
                         isLoading={pool?.updateTransaction?.isOngoing}
                         onClick={pool?.update}
@@ -331,7 +361,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             />
                         </InputGroup>
                         <Button
-                            colorScheme="blue"
+                            colorScheme="darkGray"
+                            variant="ghost"
                             w={{ base: '100%', md: 'auto' }}
                             minW="10.8125rem"
                             height="2.875rem"
@@ -402,6 +433,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     <HStack>
                         <InputGroup me={6}>
                             <Switch
+                                colorScheme="teal"
                                 size="lg"
                                 me={3}
                                 defaultChecked
@@ -447,7 +479,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                 </HStack>
                 <FormLabel>
                     If you would like to close the pool, please{' '}
-                    <Link href="mailto:hello@cartesi.io" color="blue.400">
+                    <Link href="mailto:hello@cartesi.io" color={linkColor}>
                         contact us
                     </Link>{' '}
                     and we will be glad to help you.
