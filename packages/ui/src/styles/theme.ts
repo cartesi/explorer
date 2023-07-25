@@ -38,7 +38,7 @@ const theme = extendTheme({
         },
     },
     config: {
-        initialColorMode: 'light',
+        initialColorMode: 'dark',
     },
     components: {
         Heading,
