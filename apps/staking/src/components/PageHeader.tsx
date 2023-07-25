@@ -18,13 +18,14 @@ export interface PageHeaderProps extends StackProps {
 
 const PageHeader: FunctionComponent<PageHeaderProps> = (props) => {
     const { title, children, ...rest } = props;
+
     return (
         <HStack
             w="100%"
             px="6vw"
             py="5"
             color="white"
-            bg="gray.900"
+            bg="dark.gray.tertiary"
             justify="space-between"
             {...rest}
         >

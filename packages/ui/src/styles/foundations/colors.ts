@@ -12,7 +12,9 @@
 import { theme } from '@chakra-ui/react';
 
 export const colors = {
+    alertFg: 'rgba(189, 224, 141, 1)',
     header: '#1E1941',
+    footerBg: '#0C0C0C',
     primary: '#1E1941',
     secondary: '#3d3d3d',
     info: '#007bff',
@@ -22,13 +24,38 @@ export const colors = {
     gray3: '#b9b9b9',
     gray9: '#1E1941',
     gray10: '#939393',
+    red: {
+        200: '#FF8D78',
+    },
     grey: {
         support: '#5F6368',
+        tertiary: '#E3E3E5',
     },
     light: {
+        primary: '#008DA5',
+        secondary: '#00F6FF',
+        orange: {
+            primary: '#FFBE5D',
+        },
+        gray: {
+            primary: '#232222',
+            secondary: '#F1F2F5',
+            tertiary: '#E3E3E5',
+            quaternary: '#C8C8C8',
+        },
         support: {
-            alert: '#FFA030',
-            attention: '#FFD700',
+            success: '#7CA154',
+            warning: '#FFA77A',
+            error: '#FD7267',
+            info: '#B5E8F4',
+            neutral: '#E1EBFF',
+            disabled: 'rgba(0, 0, 0, 0.40)',
+        },
+        border: {
+            button: {
+                secondary: 'rgba(0, 0, 0, 0.40)',
+            },
+            tertiary: 'rgba(0, 141, 165, 0.10)',
         },
     },
     gray: {
@@ -43,7 +70,7 @@ export const colors = {
         500: '#82808F',
         600: '#69677B',
         700: '#504D68',
-        800: '#373354',
+        800: '#39383C',
         900: '#1E1941',
     },
     grayDark: theme.colors.gray,
@@ -58,6 +85,16 @@ export const colors = {
         700: '#F77900',
         800: '#E85808',
         900: '#CC6E00',
+    },
+    teal: {
+        200: '#008DA5',
+        secondary: '#008DA5',
+        support: '#2D5ABE',
+        light: '#F0F7F9',
+    },
+    cyan: {
+        primary: '#00F6FF',
+        secondary: '#75FBFF',
     },
     blue: {
         50: '#E1EBFF',
@@ -82,5 +119,36 @@ export const colors = {
         700: '#5D1E7B',
         800: '#3E1452',
         900: '#1F0A29',
+    },
+    dark: {
+        primary: '#00F6FF',
+        secondary: '#008DA5',
+        gray: {
+            primary: '#161618',
+            secondary: '#1C1B1F',
+            tertiary: '#232226',
+            quaternary: '#39383C',
+            quinary: 'rgba(241, 242, 245, 0.5)',
+            senary: '#F0F7F9',
+        },
+        orange: {
+            primary: '#FFA77A',
+        },
+        support: {
+            success: '#BDE08D',
+            warning: '#FEB274',
+            error: '#FF8D78',
+            info: '#ACFCFF',
+            neutral: '#E1EBFF',
+            disabled: 'rgba(255, 255, 255, 0.50)',
+        },
+        border: {
+            secondary: 'rgba(240, 247, 249, 0.40)',
+            tertiary: 'rgba(57, 56, 60, 0.30)',
+            quaternary: 'rgba(255, 255, 255, 0.10)',
+        },
+        background: {
+            secondary: 'rgba(255, 255, 255, 0.06)',
+        },
     },
 };

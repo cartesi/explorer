@@ -19,6 +19,26 @@ const defaultProps = {
         { label: 'Google', href: 'https://google.com' },
         { label: 'Amazon', href: 'https://amazon.com' },
     ],
+    general: [
+        {
+            label: 'About Us',
+            href: 'https://cartesi.io/about/',
+        },
+        {
+            label: 'Docs',
+            href: 'https://docs.cartesi.io/',
+        },
+    ],
+    support: [
+        {
+            label: 'About Us',
+            href: 'https://cartesi.io/about/',
+        },
+        {
+            label: 'Docs',
+            href: 'https://docs.cartesi.io/',
+        },
+    ],
     contracts: [
         {
             name: 'Contract A',

@@ -9,13 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useEffect } from 'react';
 import { ChakraProvider, useColorMode } from '@chakra-ui/react';
-import { Fonts } from '@explorer/ui';
+import { Fonts, theme } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { useEffect } from 'react';
 import { withPerformance } from 'storybook-addon-performance';
-import theme from '../src/styles/theme';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -34,7 +33,7 @@ export const globalTypes = {
     theme: {
         name: 'Theme',
         description: 'Global theme for components',
-        defaultValue: 'light',
+        defaultValue: 'dark',
         toolbar: {
             icon: 'circlehollow',
             items: ['light', 'dark'],
@@ -42,7 +41,7 @@ export const globalTypes = {
     },
 };
 
-const withColorMode = (Story: Function, { globals: { theme = 'light' } }) => {
+const withColorMode = (Story: Function, { globals: { theme = 'dark' } }) => {
     const { colorMode, setColorMode } = useColorMode();
 
     useEffect(() => {

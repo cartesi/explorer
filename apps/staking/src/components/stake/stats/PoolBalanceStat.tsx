@@ -20,6 +20,7 @@ import {
     Icon,
     Tooltip,
     Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 
@@ -29,12 +30,17 @@ export interface PoolBalanceStatProps extends StackProps {
 
 const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
     const { pool } = props;
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBackgroundColor = useColorModeValue(
+        'dark.gray.senary',
+        'transparent'
+    );
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4}>
                 <Box
-                    bg="orange.50"
+                    bg={iconBackgroundColor}
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -42,11 +48,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <PoolBalanceHexIcon
-                        color="light.support.attention"
-                        w={7}
-                        h={7}
-                    />
+                    <PoolBalanceHexIcon color={iconColor} w={7} h={7} />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"

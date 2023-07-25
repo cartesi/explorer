@@ -10,19 +10,19 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { extendTheme } from '@chakra-ui/react';
-import { Heading } from './components/heading';
-import { Text } from './components/text';
 import { Button } from './components/button';
+import { Heading } from './components/heading';
+import { Input } from './components/input';
 import { Link } from './components/link';
 import { Modal } from './components/modal';
 import { Table } from './components/table';
-import { Input } from './components/input';
-import { colors } from './foundations/colors';
-import { zIndices } from './foundations/zIndices';
-import { fonts } from './foundations/fonts';
-import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
+import { Text } from './components/text';
 import { formsTheme } from './formsTheme';
+import { colors } from './foundations/colors';
+import { fonts } from './foundations/fonts';
+import { zIndices } from './foundations/zIndices';
 import { buildOnboardTheme } from './onboard';
+import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
 
 const theme = extendTheme({
     styles: {
@@ -38,7 +38,7 @@ const theme = extendTheme({
         },
     },
     config: {
-        initialColorMode: 'light',
+        initialColorMode: 'dark',
     },
     components: {
         Heading,

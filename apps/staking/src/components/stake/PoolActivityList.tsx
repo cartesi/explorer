@@ -22,6 +22,7 @@ import {
     Th,
     Thead,
     Tr,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
@@ -31,7 +32,7 @@ import usePoolActivities, {
 } from '../../graphql/hooks/usePoolActivities';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { formatValue } from '../../utils/numberFormatter';
-import { Address } from '@explorer/ui';
+import { Address, theme } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {
@@ -75,15 +76,16 @@ const Activity: FC<ActivityProps> = memo(
     ({ index, accountId, chainId, timestamp, type, amount }) => {
         const formattedAmount = formatValue(amount, 'ctsi', ctsiFormatOptions);
         const formattedTime = dateTimeFormat.format(timestamp);
+        const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
 
         return (
             <Tr key={index}>
-                <Td>
+                <Td borderColor={borderColor}>
                     <Address address={accountId} chainId={chainId} truncated />
                 </Td>
-                <Td>{formattedTime}</Td>
-                <Td>{type}</Td>
-                <Td>{formattedAmount} CTSI</Td>
+                <Td borderColor={borderColor}>{formattedTime}</Td>
+                <Td borderColor={borderColor}>{type}</Td>
+                <Td borderColor={borderColor}>{formattedAmount} CTSI</Td>
             </Tr>
         );
     }
@@ -111,6 +113,19 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             to: selectedTimePeriod?.to,
             types: selectedTypes as Types[],
         });
+        const headerColor = 'dark.gray.primary';
+        const borderColor = useColorModeValue(
+            'transparent',
+            'dark.gray.quaternary'
+        );
+        const topBorderColor = useColorModeValue(
+            'transparent',
+            'dark.gray.quinary'
+        );
+        const loadMoreColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
 
         useEffect(() => {
             setTimestamp(null);
@@ -134,14 +149,40 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
         return (
             <>
                 {list?.length > 0 && (
-                    <TableResponsiveHolder>
+                    <TableResponsiveHolder
+                        borderColor={borderColor}
+                        borderWidth="1px"
+                        borderRadius="6px"
+                    >
                         <Table>
                             <Thead>
-                                <Tr key="0">
-                                    <Th>From</Th>
-                                    <Th>Time</Th>
-                                    <Th>Type</Th>
-                                    <Th>Amount</Th>
+                                <Tr key="0" fontFamily={theme.fonts.body}>
+                                    <Th
+                                        borderColor={topBorderColor}
+                                        bg={headerColor}
+                                        borderTopLeftRadius="6px"
+                                    >
+                                        From
+                                    </Th>
+                                    <Th
+                                        borderColor={topBorderColor}
+                                        bg={headerColor}
+                                    >
+                                        Time
+                                    </Th>
+                                    <Th
+                                        borderColor={topBorderColor}
+                                        bg={headerColor}
+                                    >
+                                        Type
+                                    </Th>
+                                    <Th
+                                        borderColor={topBorderColor}
+                                        bg={headerColor}
+                                        borderTopRightRadius="6px"
+                                    >
+                                        Amount
+                                    </Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -170,6 +211,8 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                     colorScheme="blue"
                                     isLoading={loading}
                                     loadingText="Loading..."
+                                    color={loadMoreColor}
+                                    textTransform="none"
                                     onClick={() =>
                                         setTimestamp(oldestActivityTime)
                                     }

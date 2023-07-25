@@ -28,6 +28,7 @@ import {
     Box,
     HStack,
     Divider,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -58,6 +59,9 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     );
     const formattedStakedValue = formatBigNumber(stakedValue);
     const inputFocusRef = useRef();
+    const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const helperTextColor = useColorModeValue('gray.600', 'white');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -122,7 +126,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                             variant="text"
                                             size="md"
                                             height="auto"
-                                            color="blue.400"
+                                            color={maxStakeColor}
                                             textTransform="uppercase"
                                             p={0}
                                             data-testid="max-stake-button"
@@ -143,7 +147,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     max={userBalanceFormatted}
                                     onChange={setStakedValue}
                                 />
-                                <FormHelperText>
+                                <FormHelperText color={helperTextColor}>
                                     Allowance: {toCTSI(userBalance)} CTSI
                                 </FormHelperText>
                             </FormControl>
@@ -152,7 +156,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={colorScheme}
                                     disabled={stakedValue.isZero()}
                                     data-testid="stake-button"
                                     onClick={() => {

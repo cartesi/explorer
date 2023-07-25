@@ -9,30 +9,30 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
+    Link as ChakraLink,
+    HStack,
     Heading,
     Stack,
-    HStack,
     Text,
     useColorModeValue,
-    Link as ChakraLink,
 } from '@chakra-ui/react';
-import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
+import { FC } from 'react';
+import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../components/Layout';
+import PageHead from '../../components/PageHead';
 import { StepGroup } from '../../components/StepGroup';
 import CommissionModel from '../../components/pools/steps/CommissionModel';
 import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereumNode';
-import SetUpNode from '../../components/pools/steps/SetUpNode';
-import HireNode from '../../components/pools/steps/HireNode';
 import EthereumNameServer from '../../components/pools/steps/ENS';
-import PageHead from '../../components/PageHead';
+import HireNode from '../../components/pools/steps/HireNode';
+import SetUpNode from '../../components/pools/steps/SetUpNode';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('gray.80', 'gray.800');
-    const linkColor = useColorModeValue('gray', 'gray.100');
+    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
+    const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Layout>
             <PageHead
@@ -41,8 +41,8 @@ const NewNode: FC = () => {
             />
 
             <HStack
-                bg="header"
                 color="white"
+                bg="dark.gray.tertiary"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
@@ -54,8 +54,8 @@ const NewNode: FC = () => {
                 </Link>
             </HStack>
             <Box
-                bg="header"
                 color="white"
+                bg="dark.gray.tertiary"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
                 pb={5}
@@ -83,8 +83,12 @@ const NewNode: FC = () => {
                         target="_blank"
                         color={linkColor}
                         fontWeight="medium"
-                        textDecorationLine="underline"
+                        textDecorationLine="none"
                         fontSize="sm"
+                        _hover={{
+                            color: linkColor,
+                            textDecoration: 'underline',
+                        }}
                         alignSelf="flex-end"
                     >
                         Learn from tutorial

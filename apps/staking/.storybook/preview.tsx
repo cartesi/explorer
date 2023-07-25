@@ -11,16 +11,17 @@
 
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Fonts, SelectedChain } from '@explorer/ui';
+import { Fonts, SelectedChain, theme } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { StoryContext } from '@storybook/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { withPerformance } from 'storybook-addon-performance';
 import Web3Container from '../src/components/Web3Container';
-import theme from '../src/styles/theme';
-import withFeatureFlags from './withFeatureFlags';
+
+import React from 'react';
 import ColorMode from './ColorMode';
+import withFeatureFlags from './withFeatureFlags';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -45,7 +46,7 @@ export const globalTypes = {
     theme: {
         name: 'Theme',
         description: 'Global theme for components',
-        defaultValue: 'light',
+        defaultValue: 'dark',
         toolbar: {
             icon: 'circlehollow',
             items: ['light', 'dark'],
@@ -53,15 +54,17 @@ export const globalTypes = {
     },
 };
 
-const withChakra = (Story: Function, context: StoryContext) => (
-    <ChakraProvider resetCSS theme={theme}>
-        <ColorMode globals={context.globals} />
-        <Fonts />
-        <Web3Container>
-            <SelectedChain />
-            <Story />
-        </Web3Container>
-    </ChakraProvider>
-);
+const withChakra = (Story: Function, context: StoryContext) => {
+    return (
+        <ChakraProvider resetCSS theme={theme}>
+            <ColorMode globals={context.globals} />
+            <Fonts />
+            <Web3Container>
+                <SelectedChain />
+                <Story />
+            </Web3Container>
+        </ChakraProvider>
+    );
+};
 
 export const decorators = [withChakra, withPerformance, withFeatureFlags];

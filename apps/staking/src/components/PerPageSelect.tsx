@@ -10,18 +10,32 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Select, SelectProps, Text, HStack } from '@chakra-ui/react';
+import {
+    Select,
+    SelectProps,
+    Text,
+    HStack,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { TriangleDownIcon } from '@chakra-ui/icons';
 
 export interface PerPageSelectProps extends SelectProps {
     options: number[];
     onChange: (event: React.ChangeEvent) => void;
 }
 
+const SelectIcon = () => <TriangleDownIcon ml={5} width={4} height={4} />;
+
 const PerPageSelect: FC<PerPageSelectProps> = (props) => {
     const { value, options, onChange, ...restProps } = props;
+    const borderWidth = useColorModeValue('0 0 1px 0', 0);
 
     return (
-        <HStack mr={{ base: 0, md: 12 }} mb={{ base: 4, md: 0 }}>
+        <HStack
+            alignItems="center"
+            mr={{ base: 0, md: 10 }}
+            mb={{ base: 4, md: 0 }}
+        >
             <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
                 Rows per page
             </Text>
@@ -29,11 +43,11 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
             <Select
                 value={value}
                 width="4.625rem"
-                borderLeft="none"
-                borderTop="none"
-                borderRight="none"
+                borderWidth={borderWidth}
+                borderColor="gray.900"
                 borderRadius={0}
                 fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
+                icon={<SelectIcon />}
                 onChange={onChange}
                 {...restProps}
             >

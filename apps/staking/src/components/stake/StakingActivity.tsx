@@ -74,7 +74,7 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 
     return (
         <Box>
-            <Heading as="h4" size="sm">
+            <Heading as="h4" size="sm" fontWeight={600}>
                 {headerContent}
             </Heading>
             <Text fontSize="sm" color={timeColor}>
@@ -98,6 +98,18 @@ export const StakingActivity: FC<Props> = memo(
 
         const isAllActivitiesLoaded =
             timestamp === oldestActivityTime && !loading;
+        const emptyIconBg = useColorModeValue(
+            'dark.gray.senary',
+            'dark.gray.primary'
+        );
+        const emptyIconColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
+        const checkIconColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
 
         useEffect(() => {
             if (null !== activities) {
@@ -121,13 +133,13 @@ export const StakingActivity: FC<Props> = memo(
                                     key={index}
                                     justifyContent="flex-start"
                                     spacing={4}
-                                    alignItems="flex-start"
+                                    alignItems="center"
                                     minW={167}
                                 >
                                     <CheckCircleIcon
                                         w={6}
                                         h={6}
-                                        color="green.500"
+                                        color={checkIconColor}
                                     />
                                     <Activity
                                         key={activity.id}
@@ -148,6 +160,7 @@ export const StakingActivity: FC<Props> = memo(
                                         colorScheme="blue"
                                         isLoading={loading}
                                         loadingText="Loading..."
+                                        textTransform="none"
                                         onClick={() =>
                                             setTimestamp(oldestActivityTime)
                                         }
@@ -178,9 +191,14 @@ export const StakingActivity: FC<Props> = memo(
                                 display="grid"
                                 placeContent="center"
                                 flexShrink={0}
-                                marginBottom={4}
+                                marginBottom={0}
                             >
-                                <EmptyTransactionIcon w={16} h={16} />
+                                <EmptyTransactionIcon
+                                    fill={emptyIconBg}
+                                    stroke={emptyIconColor}
+                                    w={16}
+                                    h={16}
+                                />
                             </Box>
 
                             <Text>

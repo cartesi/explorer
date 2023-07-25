@@ -14,12 +14,13 @@ import {
     Box,
     BoxProps,
     Button,
+    ButtonProps,
     Heading,
     HStack,
-    Link,
     Spinner,
     Stack,
     Table,
+    TableColumnHeaderProps,
     Tbody,
     Td,
     Text,
@@ -30,7 +31,13 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import { Notification, Address, GhostButton, PencilIcon } from '@explorer/ui';
+import {
+    Address,
+    GhostButton,
+    Notification,
+    PencilIcon,
+    theme,
+} from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
@@ -77,44 +84,78 @@ const NodeStatus = ({ ownerAddress }: { ownerAddress: string }) => {
 const PoolTable = ({ data }: Props) => {
     const [sortBy, setSortBy] = useAtom(poolSortByAtom);
     const [loading] = useAtom(poolDataFetchingAtom);
-    const bg = useColorModeValue('white', 'gray.800');
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
+    const buttonProps: ButtonProps = {
+        height: 'auto',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+        textTransform: 'none',
+        _hover: {
+            color: buttonHoverColor,
+        },
+    };
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+
+    const thProps: TableColumnHeaderProps = {
+        borderColor: topBorderColor,
+        bg: 'dark.gray.primary',
+        textTransform: 'none',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const backgroundHoverColor = useColorModeValue(
+        'WhiteSmoke',
+        'dark.gray.tertiary'
+    );
+    const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
+    const linkColor = useColorModeValue('gray.900', 'gray.90');
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="6px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>Address</Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th {...thProps}>Address</Th>
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                {...buttonProps}
                                 onClick={() => setSortBy('amount')}
                             >
                                 Total Staked
                             </GhostButton>
                             {sortBy == 'amount' && <ArrowDownIcon />}
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                {...buttonProps}
                                 onClick={() => setSortBy('totalUsers')}
                             >
                                 Total Users
                             </GhostButton>
                             {sortBy == 'totalUsers' && <ArrowDownIcon />}
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Total Rewards
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                {...buttonProps}
                                 onClick={() =>
                                     setSortBy('commissionPercentage')
                                 }
@@ -125,14 +166,16 @@ const PoolTable = ({ data }: Props) => {
                                 <ArrowDownIcon />
                             )}
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Pool Balance
                         </Th>
-                        <Th whiteSpace="nowrap">Node Status</Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th whiteSpace="nowrap" {...thProps}>
+                            Node Status
+                        </Th>
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Block Produced
                         </Th>
-                        <Th position="sticky" right="0">
+                        <Th position="sticky" right="0" {...thProps}>
                             Manage
                         </Th>
                     </Tr>
@@ -157,11 +200,11 @@ const PoolTable = ({ data }: Props) => {
                                         address={pool.id}
                                         truncated
                                         size="md"
-                                        bg="blue.50"
+                                        minWidth="120px"
+                                        textDecoration="underline"
                                         px="0.5rem"
                                         py="0.25rem"
-                                        color="gray.900"
-                                        minWidth="120px"
+                                        color={addressColor}
                                         shouldDisplayFallbackAvatar
                                         renderLabel={(label) => (
                                             <NextLink
@@ -194,14 +237,21 @@ const PoolTable = ({ data }: Props) => {
                                 <Td
                                     position="sticky"
                                     right="0"
-                                    bg={bg}
                                     textAlign="center"
+                                    backgroundColor={backgroundHoverColor}
                                 >
                                     <NextLink
                                         href={`/pools/${pool.id}/manage?from=node-runners`}
                                         passHref
                                     >
-                                        <Button as="a" variant="link">
+                                        <Button
+                                            as="a"
+                                            variant="link"
+                                            color={linkColor}
+                                            _hover={{
+                                                color: linkHoverColor,
+                                            }}
+                                        >
                                             <VisuallyHidden>
                                                 Manage pool {pool.id}
                                             </VisuallyHidden>
@@ -224,9 +274,8 @@ interface PoolTableInfoProps {
 
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForStakingPool';
 const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
     const [pools] = useAtom(poolInfoListAtom);
-
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
     const showAlert = posV2Enabled && value;
@@ -242,6 +291,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
         useMessages('pool.update.pos.steps.three'),
         useMessages('pool.update.pos.steps.four'),
     ];
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     useEffect(() => {
         showAlert ? onOpen() : onClose();
@@ -250,7 +300,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     return (
         pools?.length > 0 && (
             <Block bg={bg} {...boxProps}>
-                <Box py="2">
+                <Box>
                     {isOpen && (
                         <Notification
                             data-testid="bannerPoolPoSV2"
@@ -285,6 +335,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                     justify="space-between"
                     direction={'row'}
                     alignItems={{ base: 'center', md: 'flex-start' }}
+                    mt={8}
                 >
                     <Heading
                         fontSize="2xl"
@@ -296,7 +347,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                         Pool Management
                     </Heading>
                     <NextLink href="/pools/new" passHref>
-                        <Button as="a" colorScheme="blue">
+                        <Button as="a" colorScheme={colorScheme}>
                             CREATE A POOL
                         </Button>
                     </NextLink>

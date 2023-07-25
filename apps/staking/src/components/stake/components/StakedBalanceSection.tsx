@@ -11,19 +11,19 @@
 
 import {
     Box,
-    Text,
     Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
-    VStack,
     Heading,
+    Stack,
+    Text,
+    VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { StakedBalanceIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { StakedBalanceIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IStakedBalanceSection {
@@ -35,29 +35,38 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
     stakedBalance,
     onUnstakeClick,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
     const stakedBalanceColor = useColorModeValue('gray.400', 'white');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const boxShadow = useColorModeValue('sm', 'none');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
 
     return (
-        <Box bg={bg} shadow="sm" p={6} pl={{ base: 6, md: 8 }}>
+        <Box
+            bg={bg}
+            shadow={boxShadow}
+            borderWidth="1px"
+            borderRadius={'2xl'}
+            border="1px solid"
+            borderColor={'dark.border.quaternary'}
+            p={6}
+            pl={{ base: 6, md: 8 }}
+        >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
                 <HStack spacing={4} alignItems="center">
                     <Box
-                        bg="orange.50"
+                        bg={iconBg}
                         w={14}
                         h={14}
                         borderRadius="full"
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon
-                            color="light.support.attention"
-                            w={7}
-                            h={7}
-                        />
+                        <StakedBalanceIcon color={iconColor} w={7} h={7} />
                     </Box>
                     <Box>
                         <Text color={stakedBalanceColor}>

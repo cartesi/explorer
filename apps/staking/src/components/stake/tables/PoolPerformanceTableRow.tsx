@@ -9,12 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { FC, useState } from 'react';
 import { LockIcon } from '@chakra-ui/icons';
 import {
     Box,
     HStack,
     Icon,
     Link,
+    TableCellProps,
     Td,
     Tooltip,
     Tr,
@@ -23,7 +25,6 @@ import {
 import { Address, StakeIcon } from '@explorer/ui';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
-import { FunctionComponent } from 'react';
 import { StakingPool } from '../../../graphql/models';
 import labels from '../../../utils/labels';
 import { formatCTSI } from '../../../utils/token';
@@ -50,7 +51,7 @@ type PerformanceProps = {
 const parseOrDefault = (value?: string) => (value ? parseFloat(value) : 0.0);
 
 const Performance = ({ weekly, monthly }: PerformanceProps) => {
-    const borderColor = useColorModeValue('gray.100', 'header');
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const parsedWeekly = parseOrDefault(weekly);
     const parsedMonthly = parseOrDefault(monthly);
 
@@ -59,6 +60,8 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
             <Td
                 isNumeric
                 borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
                 data-testid="week-performance-col"
             >
                 {numberFormat.format(parsedWeekly)} (
@@ -67,6 +70,8 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
             <Td
                 isNumeric
                 borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
                 data-testid="month-performance-col"
             >
                 {numberFormat.format(parsedMonthly)} (
@@ -76,12 +81,11 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
     );
 };
 
-const PoolPerformanceTableRow: FunctionComponent<
-    PoolPerformanceTableRowProps
-> = ({ chainId, pool, keepActionColVisible }) => {
-    const borderColor = useColorModeValue('gray.100', 'header');
-    const stakeInfoBg = useColorModeValue('white', 'gray.800');
-
+const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
+    chainId,
+    pool,
+    keepActionColVisible,
+}) => {
     // accrued commission
     const accruedCommissionLabel =
         pool.commissionPercentage !== null
@@ -112,9 +116,34 @@ const PoolPerformanceTableRow: FunctionComponent<
         commissionTooltip = labels.gasTaxCommission;
     }
 
+    const [isHovered, setHovered] = useState(false);
+    const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
+    const backgroundHoverColor = useColorModeValue(
+        'WhiteSmoke',
+        'dark.gray.tertiary'
+    );
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
+    const linkHoverColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const linkColor = useColorModeValue('gray.900', 'dark.primary');
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const stakeInfoBg = useColorModeValue('white', 'dark.gray.primary');
+    const tdProps: TableCellProps = {
+        borderColor,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
+
     return (
-        <Tr key={pool.id} id={pool.id} data-testid="pool-performance-table-row">
-            <Td borderColor={borderColor} data-testid="address-col">
+        <Tr
+            key={pool.id}
+            id={pool.id}
+            data-testid="pool-performance-table-row"
+            bg={backgroundColor}
+            _hover={{ backgroundColor: backgroundHoverColor }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <Td data-testid="address-col" {...tdProps}>
                 <HStack>
                     <Address
                         ens
@@ -122,11 +151,11 @@ const PoolPerformanceTableRow: FunctionComponent<
                         chainId={chainId}
                         truncated
                         size="md"
-                        bg="blue.50"
+                        minWidth="120px"
+                        textDecoration="underline"
                         px="0.5rem"
                         py="0.25rem"
-                        color="gray.900"
-                        minWidth="120px"
+                        color={addressColor}
                         shouldDisplayFallbackAvatar
                     />
 
@@ -147,21 +176,13 @@ const PoolPerformanceTableRow: FunctionComponent<
                     )}
                 </HStack>
             </Td>
-            <Td
-                isNumeric
-                borderColor={borderColor}
-                data-testid="total-users-col"
-            >
+            <Td isNumeric data-testid="total-users-col" {...tdProps}>
                 {pool.totalUsers}
             </Td>
-            <Td isNumeric borderColor={borderColor} data-testid="amount-col">
+            <Td isNumeric data-testid="amount-col" {...tdProps}>
                 {formatCTSI(pool.amount, 2)} CTSI
             </Td>
-            <Td
-                isNumeric
-                borderColor={borderColor}
-                data-testid="total-reward-col"
-            >
+            <Td isNumeric data-testid="total-reward-col" {...tdProps}>
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
             </Td>
 
@@ -171,7 +192,7 @@ const PoolPerformanceTableRow: FunctionComponent<
                 monthly={last(pool.monthlyPerformance)?.performance}
             />
 
-            <Td borderColor={borderColor} data-testid="commission-col">
+            <Td data-testid="commission-col" {...tdProps}>
                 {commissionLabel}{' '}
                 {commissionTooltip && (
                     <Tooltip
@@ -186,23 +207,23 @@ const PoolPerformanceTableRow: FunctionComponent<
                     </Tooltip>
                 )}
             </Td>
-            <Td borderColor={borderColor} data-testid="accrued-commission-col">
+            <Td data-testid="accrued-commission-col" {...tdProps}>
                 {accruedCommissionLabel}
             </Td>
             <Td
                 isNumeric
-                borderColor={borderColor}
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
-                backgroundColor={stakeInfoBg}
                 padding={0}
                 data-testid="stake-info-col"
+                backgroundColor={isHovered ? backgroundHoverColor : stakeInfoBg}
+                {...tdProps}
             >
                 <Box
                     transition="all 0.2s ease-in"
                     shadow={keepActionColVisible ? 'md' : 'none'}
-                    paddingY={[0, 0, 8, 8]}
+                    paddingY={[0, 0, 6, 6]}
                     paddingX={[0, 0, '48px', '48px']}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
@@ -212,7 +233,13 @@ const PoolPerformanceTableRow: FunctionComponent<
                     ml="auto"
                 >
                     <NextLink href={`/stake/${pool.id}`} passHref>
-                        <Link data-testid="stake-info-link">
+                        <Link
+                            data-testid="stake-info-link"
+                            color={linkColor}
+                            _hover={{
+                                color: linkHoverColor,
+                            }}
+                        >
                             <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>

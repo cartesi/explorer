@@ -10,15 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    UnorderedList,
-    Heading,
-    Text,
-    ListItem,
-    Link,
-    Flex,
     Box,
+    Button,
+    Flex,
+    Heading,
+    Link,
+    ListItem,
     Stack,
+    Text,
+    UnorderedList,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -33,8 +33,13 @@ const CustomizeEthereumNode = ({
     onStepActive,
 }: IStep) => {
     const [state, setState] = useStepState({ inFocus });
-    const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
-
+    const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'dark.border.quaternary'
+    );
     return (
         <Step
             title="Set up Ethereum Node"
@@ -42,6 +47,11 @@ const CustomizeEthereumNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
@@ -68,8 +78,12 @@ const CustomizeEthereumNode = ({
                                 target="_blank"
                                 color={thirdPartyColor}
                                 fontWeight="medium"
-                                textDecorationLine="underline"
+                                textDecoration="none"
                                 fontSize="md"
+                                _hover={{
+                                    color: thirdPartyColor,
+                                    textDecoration: 'underline',
+                                }}
                             >
                                 1. Infura
                             </Link>{' '}
@@ -79,8 +93,12 @@ const CustomizeEthereumNode = ({
                                 target="_blank"
                                 color={thirdPartyColor}
                                 fontWeight="medium"
-                                textDecorationLine="underline"
+                                textDecoration="none"
                                 fontSize="md"
+                                _hover={{
+                                    color: thirdPartyColor,
+                                    textDecoration: 'underline',
+                                }}
                             >
                                 2. Alchemy
                             </Link>
@@ -107,7 +125,7 @@ const CustomizeEthereumNode = ({
                 >
                     <Button
                         minWidth={{ base: '10rem' }}
-                        colorScheme="blue"
+                        colorScheme={buttonColorScheme}
                         onClick={(evt) => {
                             setState(COMPLETED);
                             onComplete(evt);

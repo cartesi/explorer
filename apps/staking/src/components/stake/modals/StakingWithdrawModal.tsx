@@ -28,6 +28,7 @@ import {
     Box,
     HStack,
     Divider,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -58,6 +59,8 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
         constants.Zero
     );
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     return (
         <>
@@ -108,7 +111,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         <Radio
                                             size="lg"
                                             value="full"
-                                            colorScheme="blue"
+                                            colorScheme={radioColorScheme}
                                             onChange={(e) =>
                                                 setWithdrawFullAmount(
                                                     e.target.value
@@ -120,7 +123,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         <Radio
                                             size="lg"
                                             value="partial"
-                                            colorScheme="blue"
+                                            colorScheme={radioColorScheme}
                                             onChange={(e) => {
                                                 setWithdrawFullAmount(
                                                     e.target.value
@@ -166,7 +169,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={colorScheme}
                                     role="withdraw-button"
                                     disabled={
                                         outputWithdraw.isZero() &&

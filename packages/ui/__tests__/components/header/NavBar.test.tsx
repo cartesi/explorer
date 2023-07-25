@@ -9,14 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { waitFor, fireEvent, render, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import { useWallet } from '@explorer/wallet/src/useWallet';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { NextRouter, useRouter } from 'next/router';
+import { act } from 'react-dom/test-utils';
 import { NavBar, NavLink } from '../../../src/components/header/NavBar';
 
 const walletMod = `@explorer/wallet/src/useWallet`;
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
 jest.mock('@unleash/proxy-client-react', () => ({
     useUnleashContext: () => jest.fn(),
     useFlag: jest.fn(),
@@ -32,6 +41,8 @@ jest.mock(walletMod, () => {
 });
 
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
+
+const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 const defaultProps = {
     links: [
@@ -67,6 +78,9 @@ describe('Nav Bar', () => {
             deactivate: jest.fn(),
             chainId: 3,
         });
+        mockUseRouter.mockReturnValue({
+            asPath: 'stake',
+        } as unknown as NextRouter);
     });
 
     afterEach(() => {
@@ -75,7 +89,6 @@ describe('Nav Bar', () => {
 
     it('Should display children', async () => {
         const label = 'Children';
-
         await act(async () => {
             render(<NavLink href="/">{label}</NavLink>);
         });
@@ -86,6 +99,9 @@ describe('Nav Bar', () => {
     });
 
     it('Should display menu button', async () => {
+        mockUseRouter.mockReturnValue({
+            asPath: 'stake',
+        } as unknown as NextRouter);
         await act(async () => {
             render(<NavBar {...defaultProps} />);
         });

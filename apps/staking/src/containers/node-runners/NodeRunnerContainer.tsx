@@ -8,18 +8,16 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { Box, Stack, Heading, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { UseWallet } from '@explorer/wallet';
+import { useAtom } from 'jotai';
 import { NextRouter } from 'next/router';
 import { useEffect } from 'react';
-import { UseWallet } from '@explorer/wallet';
-import PoolTable from './components/PoolTable';
-import NodeTable from './components/NodeTable';
+import { useUserNodes } from '../../graphql/hooks/useNodes';
 import useStakingPools from '../../graphql/hooks/useStakingPools';
-import { StakingPool, Node } from '../../graphql/models';
-import { formatCTSI } from '../../utils/token';
+import { Node, StakingPool } from '../../graphql/models';
 import { formatValue } from '../../utils/numberFormatter';
-import { NodeInfo, PoolInfo } from './interfaces';
-import { useAtom } from 'jotai';
+import { formatCTSI } from '../../utils/token';
 import {
     nodeInfoFetchingAtom,
     nodeInfoListAtom,
@@ -27,10 +25,12 @@ import {
     poolInfoListAtom,
     poolSortByAtom,
 } from './atoms';
-import CreationPath from './components/CreationPath';
 import AlertAndConnect from './components/AlertAndConnect';
 import Block from './components/Block';
-import { useUserNodes } from '../../graphql/hooks/useNodes';
+import CreationPath from './components/CreationPath';
+import NodeTable from './components/NodeTable';
+import PoolTable from './components/PoolTable';
+import { NodeInfo, PoolInfo } from './interfaces';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;
@@ -38,7 +38,12 @@ export interface NodeRunnersContainerProps {
 }
 
 const Header = () => (
-    <Box bg="header" color="white" px={{ base: '6vw', xl: '12vw' }} py={5}>
+    <Box
+        bg="dark.gray.tertiary"
+        color="white"
+        px={{ base: '6vw', xl: '12vw' }}
+        py={5}
+    >
         <Stack alignItems={'flex-start'} direction={'column'}>
             <Heading as="h1" fontSize={['4xl', '5xl']}>
                 Node Runners
@@ -85,7 +90,10 @@ export const NodeRunnersContainer = ({
     wallet,
     router,
 }: NodeRunnersContainerProps) => {
-    const bg = useColorModeValue('gray.80', 'header');
+    const bgBlock = useColorModeValue(
+        'light.gray.secondary',
+        'dark.gray.tertiary'
+    );
     const [poolSortBy] = useAtom(poolSortByAtom);
     const [, setPoolDataLoading] = useAtom(poolDataFetchingAtom);
     const [, setPoolInfoList] = useAtom(poolInfoListAtom);
@@ -125,7 +133,7 @@ export const NodeRunnersContainer = ({
             <Header />
             <AlertAndConnect isVisible={!active} onConnect={activate} />
             {active && <PoolTable />}
-            {active && <Block bg={bg} pt={0} pb={7} />}
+            {active && <Block bg={bgBlock} pt={0} pb={7} />}
             {active && <NodeTable />}
             <CreationPath router={router} />
         </>

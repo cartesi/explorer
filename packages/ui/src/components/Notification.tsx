@@ -37,21 +37,22 @@ export const Notification = ({
     status = 'info',
     ...alertProps
 }: NotificationProps) => {
-    const bg = useColorModeValue('white', 'gray.700');
-    const inlineBorderColour = 'gray.100';
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const borderColor = useColorModeValue(
+        'light.gray.tertiary',
+        'dark.border.quaternary'
+    );
 
     return (
         <Alert
-            variant="left-accent"
             alignItems="flex-start"
-            borderBlockStartColor={inlineBorderColour}
-            borderBlockStartWidth={1}
-            borderBlockEndColor={inlineBorderColour}
-            borderBlockEndWidth={1}
-            borderEndColor={inlineBorderColour}
-            borderEndWidth={1}
             boxShadow="sm"
             bg={bg}
+            borderRadius="2xl"
+            borderWidth={'1px'}
+            borderStyle={'solid'}
+            borderColor={borderColor}
+            py="2"
             status={status}
             {...alertProps}
         >

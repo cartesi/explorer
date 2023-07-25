@@ -17,6 +17,8 @@ import {
     Tr,
     useColorModeValue,
     Text,
+    Flex,
+    TableCellProps,
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
@@ -45,8 +47,6 @@ const calculateStakedCTSI = (
 };
 
 const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
-    const backgroundColor = useColorModeValue('WhiteSmoke', 'gray.700');
-    const borderColor = useColorModeValue('gray.100', 'header');
     const formattedStakeTime = dateTimeFormat.format(
         balance.stakeTimestamp * 1000
     );
@@ -54,13 +54,27 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     const stakedBalance = calculateStakedCTSI(balance);
     const truncateNumber = (num) => Math.trunc(num * 100) / 100;
 
+    const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
+    const backgroundHoverColor = useColorModeValue(
+        'WhiteSmoke',
+        'dark.gray.quaternary'
+    );
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const tdProps: TableCellProps = {
+        borderColor,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
+
     return (
         <Tr
             key={balance.pool.id}
-            _hover={{ backgroundColor }}
+            backgroundColor={backgroundColor}
+            _hover={{ backgroundColor: backgroundHoverColor }}
             data-testid="users-table-row"
         >
-            <Td borderColor={borderColor} data-testid="user-col">
+            <Td data-testid="user-col" {...tdProps}>
                 <Address
                     ens
                     address={balance.user.id}
@@ -68,39 +82,35 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                     responsive
                     truncated
                     size="md"
-                    bg="blue.50"
+                    textDecoration="underline"
                     px="0.5rem"
                     py="0.25rem"
-                    color="gray.900"
+                    color={addressColor}
                     minWidth="120px"
                     shouldDisplayFallbackAvatar
                 />
             </Td>
 
-            <Td borderColor={borderColor} data-testid="stake-since-col">
+            <Td data-testid="stake-since-col" {...tdProps}>
                 {formattedStakeTime}
             </Td>
 
-            <Td borderColor={borderColor} data-testid="total-staked-col">
+            <Td data-testid="total-staked-col" {...tdProps}>
                 {formatCTSI(stakedBalance, 2)} CTSI
             </Td>
 
-            <Td borderColor={borderColor} data-testid="shares-col" isNumeric>
-                <Text as="span">
-                    {truncateNumber(balance.sharesPercent * 100)}%
-                </Text>
-                <Text as="span" verticalAlign="text-top" marginStart={1}>
+            <Td data-testid="shares-col" isNumeric {...tdProps}>
+                <Flex alignItems="center">
+                    <Text as="span" mr={1}>
+                        {truncateNumber(balance.sharesPercent * 100)}%
+                    </Text>
                     <Tooltip label={`Unformatted: ${balance.sharesPercent} %`}>
                         <Icon />
                     </Tooltip>
-                </Text>
+                </Flex>
             </Td>
 
-            <Td
-                borderColor={borderColor}
-                data-testid="accumulated-shared-col"
-                isNumeric
-            >
+            <Td data-testid="accumulated-shared-col" isNumeric {...tdProps}>
                 {truncateNumber(balance.accumulatedSharesPercent * 100)}%
             </Td>
         </Tr>

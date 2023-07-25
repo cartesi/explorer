@@ -11,7 +11,7 @@
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { FunctionComponent } from 'react';
-import theme from '../src/styles/theme';
+import { theme } from '@explorer/ui';
 
 /**
  * A HOC for tests where the component uses any of our custom theme properties e.g. color grey.support

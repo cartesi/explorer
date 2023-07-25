@@ -21,12 +21,14 @@ import {
     Tr,
     Td,
     useBreakpointValue,
+    useColorModeValue,
+    TableCellProps,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
-import { GhostButton } from '@explorer/ui';
+import { GhostButton, theme } from '@explorer/ui';
 
 export interface UserTableProps {
     chainId: number;
@@ -45,56 +47,117 @@ const UserTable: FC<UserTableProps> = ({
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
+    const thProps: TableCellProps = {
+        bg: 'dark.gray.primary',
+        paddingTop: 4,
+        paddingBottom: 4,
+        borderColor: topBorderColor,
+    };
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="6px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>User</Th>
+                        <Th
+                            {...thProps}
+                            textTransform="none"
+                            fontSize="md"
+                            fontWeight={400}
+                            borderTopLeftRadius="6px"
+                            fontFamily={theme.fonts.body}
+                        >
+                            User
+                        </Th>
 
-                        <Th isNumeric>
+                        <Th {...thProps} isNumeric>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                height="auto"
+                                fontSize="md"
+                                fontWeight={400}
+                                textTransform="none"
+                                _hover={{ color: buttonHoverColor }}
+                                fontFamily={theme.fonts.body}
                                 onClick={() => onSort('totalBlocks')}
                             >
                                 Block Produced
                             </GhostButton>
-                            {sort == 'totalBlocks' && <ArrowDownIcon />}
+                            {sort == 'totalBlocks' && (
+                                <ArrowDownIcon
+                                    marginLeft={4}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th {...thProps} isNumeric>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                height="auto"
+                                fontSize="md"
+                                fontWeight={400}
+                                textTransform="none"
+                                fontFamily={theme.fonts.body}
+                                _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('balance')}
                             >
                                 Total Staked
                             </GhostButton>
-                            {sort == 'balance' && <ArrowDownIcon />}
+                            {sort == 'balance' && (
+                                <ArrowDownIcon
+                                    marginLeft={4}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th {...thProps} isNumeric>
                             <GhostButton
-                                fontSize="xs"
-                                fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                height="auto"
+                                fontSize="md"
+                                fontWeight={400}
+                                textTransform="none"
+                                fontFamily={theme.fonts.body}
+                                _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('totalReward')}
                             >
                                 Total Rewards
                             </GhostButton>
-                            {sort == 'totalReward' && <ArrowDownIcon />}
+                            {sort == 'totalReward' && (
+                                <ArrowDownIcon
+                                    marginLeft={4}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
                         </Th>
 
                         <Th
+                            {...thProps}
                             isNumeric
                             position={{ base: 'sticky', md: 'initial' }}
                             top={0}
                             right={0}
                             style={{ textAlign: 'center' }}
+                            textTransform="none"
+                            fontSize="md"
+                            fontWeight={400}
+                            fontFamily={theme.fonts.body}
+                            borderTopRightRadius="6px"
                         >
                             {stakeText}
                         </Th>

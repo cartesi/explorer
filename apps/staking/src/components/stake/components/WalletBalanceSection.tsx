@@ -12,20 +12,20 @@
 import { WarningIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Text,
     Flex,
     HStack,
-    VStack,
-    Tooltip,
-    Icon,
     Heading,
+    Icon,
+    Text,
+    Tooltip,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { WalletIcon } from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
-import { WalletIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IWalletBalanceSectionProps {
@@ -38,21 +38,28 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     userCTSIBalance,
 }) => {
     const balanceColor = useColorModeValue('gray.400', 'white');
+    const bgIcon = useColorModeValue('teal.light', 'black');
     const { isGnosisSafe } = useWallet();
     const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
+    const warningIconColor = useColorModeValue(
+        'light.support.warning',
+        'white'
+    );
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
             <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
-                    bg="orange.50"
+                    bg={bgIcon}
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"
                     display="grid"
                     placeContent="center"
                 >
-                    <WalletIcon color="light.support.attention" w={6} h={6} />{' '}
+                    <WalletIcon color={iconColor} w={6} h={6} />{' '}
                 </Box>
                 <Box>
                     <HStack>
@@ -61,8 +68,10 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             placement="top"
                             label="Here you can see your current wallet balance."
                             fontSize="small"
-                            bg="black"
+                            bg="dark.gray.quaternary"
                             color="white"
+                            borderRadius={'md'}
+                            opacity={0.9}
                         >
                             <Icon color={balanceColor} w={3.5} h={3.5} />
                         </Tooltip>
@@ -79,7 +88,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             </HStack>
             {userETHBalance?.isZero() && !isGnosisSafe && (
                 <HStack spacing={2} alignItems="flex-start">
-                    <WarningIcon color="orange.500" />
+                    <WarningIcon color={warningIconColor} />
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
                         transaction fee.

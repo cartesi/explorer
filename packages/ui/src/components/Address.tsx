@@ -20,6 +20,7 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
+    useColorModeValue,
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useENS } from '@explorer/services';
@@ -85,6 +86,7 @@ const Address: FC<AddressProps> = (props) => {
     const linkMargin = useBreakpointValue({ base: 7, sm: 0 });
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
     const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
+    const hoverIconColor = useColorModeValue('light.primary', 'dark.primary');
 
     const label =
         (isLargerThan555
@@ -143,7 +145,10 @@ const Address: FC<AddressProps> = (props) => {
                     variant="ghost"
                     display="flex"
                     p={0}
-                    _hover={{ background: 'transparent', color: 'blue.400' }}
+                    _hover={{
+                        background: 'transparent',
+                        color: hoverIconColor,
+                    }}
                     _focus={{
                         background: 'transparent',
                         color: 'blue.400',
@@ -168,6 +173,9 @@ const Address: FC<AddressProps> = (props) => {
                     display="flex"
                     isExternal
                     title="External link"
+                    _hover={{
+                        color: hoverIconColor,
+                    }}
                 >
                     <ExternalLinkIcon
                         fontSize={fontSize}

@@ -33,7 +33,12 @@ export interface PoolPerformanceStatProps {
 
 const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
     ({ address, location }: PoolPerformanceStatProps) => {
-        const bgBlocks = useColorModeValue('blue.50', 'gray.900');
+        const iconColor = useColorModeValue('light.primary', 'dark.primary');
+        const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
+        const borderColor = useColorModeValue(
+            'light.border.tertiary',
+            'dark.gray.quaternary'
+        );
         const { loading, data } = useStakingPoolPerformance(address);
 
         if (loading) return null;
@@ -54,7 +59,10 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                 <Box
                     flexBasis={{ base: '100%', lg: '33.33%' }}
                     flexShrink={0}
-                    bgColor={bgBlocks}
+                    bgColor={bg}
+                    borderRadius="1rem"
+                    borderWidth="1px"
+                    borderColor={borderColor}
                     cursor={location ? 'pointer' : ''}
                 >
                     <HStack spacing={4} align="center" p={4} w="full">
@@ -66,7 +74,11 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                             placeContent="center"
                             flexShrink={0}
                         >
-                            <PoolPerformanceIcon w={7} h={7} />
+                            <PoolPerformanceIcon
+                                color={iconColor}
+                                w={7}
+                                h={7}
+                            />
                         </Box>
                         <BigNumberTextV2
                             value={weekPerformance}

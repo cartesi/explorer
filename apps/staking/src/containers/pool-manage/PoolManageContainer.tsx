@@ -58,7 +58,8 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
     const retiredDisclosure = useDisclosure();
 
     // dark mode support
-    const bg = useColorModeValue('gray.80', 'header');
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const bg2 = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
     const hiredNewNode = pool.hireTransaction?.state === 'confirmed';
 
     useEffect(() => {
@@ -148,7 +149,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
 
                 {!node?.ready && !node?.error ? (
                     <Box
-                        bg={bg}
+                        bg={bg2}
                         px={{ base: 2, lg: 8 }}
                         py={{ base: 2, lg: 6 }}
                         display="flex"

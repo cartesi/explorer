@@ -20,6 +20,7 @@ import {
     Icon,
     Tooltip,
     Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 
@@ -29,6 +30,11 @@ export interface StakedBalanceStatProps extends StackProps {
 
 const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
     const { stakedBalance } = props;
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBackgroundColor = useColorModeValue(
+        'dark.gray.senary',
+        'transparent'
+    );
 
     return (
         <VStack
@@ -38,7 +44,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
         >
             <HStack spacing={4} align="center" p={4}>
                 <Box
-                    bg="orange.50"
+                    bg={iconBackgroundColor}
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -46,11 +52,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <StakedBalanceIcon
-                        color="light.support.attention"
-                        w={7}
-                        h={7}
-                    />
+                    <StakedBalanceIcon color={iconColor} w={7} h={7} />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -70,12 +72,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon
-                                color="gray.500"
-                                role="balance-icon"
-                                w={3.5}
-                                h={3.5}
-                            />
+                            <Icon role="balance-icon" w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

@@ -17,13 +17,17 @@ import {
     FormHelperText,
     FormLabel,
     Modal,
-    ModalHeader,
     ModalCloseButton,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalOverlay,
     UseDisclosureProps,
+    Box,
+    HStack,
+    Divider,
+    useColorModeValue,
+    useToken,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -49,6 +53,9 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const [formControlColor] = useToken('colors', ['form-control-color']);
+    const helperTextColor = useColorModeValue(formControlColor, 'white');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
@@ -65,8 +72,23 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Edit pool allowance</ModalHeader>
-                    <ModalCloseButton />
+                    <Box pb={6}>
+                        <HStack justify="space-between">
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Edit pool allowance
+                            </Box>
+
+                            <ModalCloseButton mt="0.5rem !important" />
+                        </HStack>
+                        <Divider />
+                    </Box>
+
                     <ModalBody>
                         <VStack spacing={5}>
                             <Text>
@@ -85,7 +107,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                         setOutputAllowance(bigNumberValue);
                                     }}
                                 />
-                                <FormHelperText>
+                                <FormHelperText color={helperTextColor}>
                                     The Pool Allowance can be edited at any
                                     time. Each edit is charged in the form of a
                                     gas fee like any Ethereum transaction.
@@ -96,7 +118,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={buttonColorScheme}
                                     onClick={() => {
                                         onSave(outputAllowance);
                                         disclosure.onClose();

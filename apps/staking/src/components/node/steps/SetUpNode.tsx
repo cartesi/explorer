@@ -10,17 +10,17 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    UnorderedList,
-    Heading,
-    Text,
-    ListItem,
-    Flex,
     Box,
-    useClipboard,
-    Stack,
-    useColorModeValue,
+    Button,
+    Flex,
+    Heading,
     Link,
+    ListItem,
+    Stack,
+    Text,
+    UnorderedList,
+    useClipboard,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { MdContentCopy } from 'react-icons/md';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -30,12 +30,12 @@ const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
-    const bgColor = useColorModeValue('gray.80', 'gray.800');
+    const bgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
             bgColor={bgColor}
-            rounded="sm"
+            rounded="md"
             mt={3}
             alignItems="center"
             justifyContent={{ base: 'space-between', md: 'flex-start' }}
@@ -46,6 +46,7 @@ const CopyBoard = ({ command, children }) => {
                 <Box minH={6} alignSelf="flex-start" ml={2}>
                     <Box
                         as={MdContentCopy}
+                        cursor={'pointer'}
                         onClick={onCopy}
                         fontSize="xl"
                         minW={6}
@@ -69,11 +70,12 @@ const SetUpNode = ({
     inFocus,
 }: IStep) => {
     const dockerPullTxt = 'docker pull cartesi/noether';
+    const linkColor = useColorModeValue('teal.secondary', 'cyan.primary');
     const dockerRunTxt = (
         <>
             docker run -it --rm --name cartesi_noether -v
             cartesi_wallet:/root/.ethereum cartesi/noether --url{' '}
-            <Text as="span" color="blue.300">
+            <Text as="span" color={linkColor}>
                 &lt;https://mainnet.infura.io/v3/project_id&gt;
             </Text>{' '}
             --wallet /root/.ethereum/key --create --verbose;
@@ -81,8 +83,12 @@ const SetUpNode = ({
     );
 
     const [state, setState] = useStepState({ inFocus });
-    const linkColor = useColorModeValue('blue.500', 'blue.200');
-
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'dark.border.quaternary'
+    );
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
     return (
         <Step
             title="Set up Node"
@@ -90,6 +96,11 @@ const SetUpNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
@@ -101,6 +112,9 @@ const SetUpNode = ({
                             color={linkColor}
                             href="https://docs.docker.com/desktop/mac/install/"
                             target="_blank"
+                            _hover={{
+                                opacity: 0.9,
+                            }}
                         >
                             Download for Mac (macOS)
                         </Link>
@@ -110,6 +124,9 @@ const SetUpNode = ({
                             color={linkColor}
                             href="https://docs.docker.com/desktop/windows/install/"
                             target="_blank"
+                            _hover={{
+                                opacity: 0.9,
+                            }}
                         >
                             Download for Windows
                         </Link>
@@ -167,6 +184,7 @@ const SetUpNode = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
+                        colorScheme="darkGray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
@@ -176,7 +194,7 @@ const SetUpNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        colorScheme="blue"
+                        colorScheme={buttonColorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState(COMPLETED);

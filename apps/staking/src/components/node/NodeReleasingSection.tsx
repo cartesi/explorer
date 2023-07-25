@@ -11,14 +11,14 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
     Icon,
-    Button,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -37,8 +37,19 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     releasingLeftShort,
     onWithdraw,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    const borderColor = releasingBalance.isZero() ? 'gray.450' : 'blue.200';
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const colorScheme = useColorModeValue('teal', 'cyan');
+    const iconColorModeColor = useColorModeValue(
+        'dark.secondary',
+        'dark.primary'
+    );
+    const iconColor = releasingBalance.isZero()
+        ? 'gray.450'
+        : iconColorModeColor;
 
     return (
         <Box
@@ -47,17 +58,10 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
             p={6}
             pl={7}
             mt={5}
-            border="1px solid var(--chakra-colors-gray-100)"
+            borderRadius="1rem"
+            borderWidth="1px"
+            borderColor={borderColor}
         >
-            <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width={3}
-                height="100%"
-                bg={borderColor}
-            />
-
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
@@ -75,11 +79,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                             w={9}
                             h={9}
                             as={AiFillDollarCircle}
-                            color={
-                                releasingBalance.isZero()
-                                    ? 'gray.450'
-                                    : 'blue.200'
-                            }
+                            color={iconColor}
                         />
                     </Box>
                     <Box>
@@ -103,12 +103,21 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     alignItems="center"
                 >
                     {releasingBalance.gt(0) && releasingLeftShort && (
-                        <Button bg={bg} mt={[8, 0]} disabled>
+                        <Button
+                            colorScheme="darkGray"
+                            variant="ghost"
+                            mt={[8, 0]}
+                            disabled
+                        >
                             WITHDRAW ({releasingLeftShort})
                         </Button>
                     )}
                     {releasingBalance.gt(0) && !releasingLeftShort && (
-                        <Button bg={bg} mt={[8, 0]} onClick={onWithdraw}>
+                        <Button
+                            colorScheme={colorScheme}
+                            mt={[8, 0]}
+                            onClick={onWithdraw}
+                        >
                             WITHDRAW
                         </Button>
                     )}

@@ -11,17 +11,17 @@
 
 import {
     Box,
-    Text,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { StakedBalanceIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { StakedBalanceIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeStakedBalanceSection {
@@ -31,17 +31,31 @@ export interface INodeStakedBalanceSection {
 export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     stakedBalance,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.secondary');
 
     return (
-        <Box bg={bg} shadow="md" p={6} mt={5} minHeight="7.125rem">
+        <Box
+            borderRadius="1rem"
+            borderWidth="1px"
+            borderColor={borderColor}
+            bg={bg}
+            p={6}
+            mt={5}
+            minHeight="7.125rem"
+        >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack ml={3} alignItems="center">
+                <HStack alignItems="center">
                     <Box
-                        bg="blue.50"
+                        bg={iconBg}
                         w="4.125rem"
                         h="4.125rem"
                         borderRadius="full"
@@ -50,7 +64,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                         mr={5}
                     >
                         <StakedBalanceIcon
-                            color="blue.400"
+                            color={iconColor}
                             w={8}
                             h={8}
                             ml={0.5}

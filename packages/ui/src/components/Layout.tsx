@@ -13,6 +13,7 @@ import {
     Box,
     Center,
     Flex,
+    FlexProps,
     StackProps,
     Text,
     useBreakpointValue,
@@ -21,8 +22,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Footer, { FooterContract, FooterLink } from './Footer';
-import { Header } from './header';
-import { HeaderLink } from './header';
+import { Header, HeaderLink } from './header';
 
 interface ComponentProps {
     children: React.ReactNode;
@@ -42,7 +42,7 @@ export const ResponsiveDebug: FC = () => {
 };
 
 export const PageHeader: FC<ComponentProps> = ({ children }) => (
-    <Box w="100%" bg="gray.900" color="white" px="6vw" py={5}>
+    <Box w="100%" bg="dark.gray.tertiary" color="white" px="6vw" py={5}>
         {children}
     </Box>
 );
@@ -76,26 +76,45 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
     </VStack>
 );
 
-export type LayoutProps = {
+export interface LayoutProps extends FlexProps {
     headerLinks: HeaderLink[];
     footerLinks: FooterLink[];
+    footerSupport: FooterLink[];
+    footerGeneral: FooterLink[];
     footerContracts: FooterContract[];
     children: React.ReactNode;
-};
+}
 
 const Layout: FC<LayoutProps> = ({
     children,
     headerLinks,
     footerLinks,
+    footerSupport,
+    footerGeneral,
     footerContracts,
+    ...restProps
 }) => {
+    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const contentBg = useColorModeValue('white', 'dark.gray.quaternary');
     return (
-        <Flex direction="column" align="center" m="0 auto" minHeight="100vh">
+        <Flex
+            direction="column"
+            align="center"
+            m="0 auto"
+            minHeight="100vh"
+            bg={bg}
+            {...restProps}
+        >
             <Header links={headerLinks} />
-            <Box width="100%" paddingTop="100px">
+            <Box width="100%" paddingTop="100px" bg={contentBg}>
                 {children}
             </Box>
-            <Footer contracts={footerContracts} links={footerLinks} />
+            <Footer
+                links={footerLinks}
+                support={footerSupport}
+                general={footerGeneral}
+                contracts={footerContracts}
+            />
         </Flex>
     );
 };

@@ -6,6 +6,7 @@ import {
     Flex,
     useColorModeValue,
     useToken,
+    useColorMode,
 } from '@chakra-ui/react';
 import {
     Chart as ChartJS,
@@ -123,9 +124,14 @@ const UsersChart: FC<UsersChartProps> = (props) => {
             ? minUsers - 1
             : minUsers;
 
+    const { colorMode } = useColorMode();
     const [lineColorFromCssVar, tickLightColor, tickDarkColor] = useToken(
         'colors',
-        ['blue.200', 'gray.700', 'whiteAlpha.800']
+        [
+            colorMode === 'light' ? 'dark.secondary' : 'dark.primary',
+            'gray.700',
+            'whiteAlpha.800',
+        ]
     );
     const tickColor = useColorModeValue(tickLightColor, tickDarkColor);
     const containerMinHeight = hasUsers ? '22rem' : '6rem';

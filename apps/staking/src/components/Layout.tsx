@@ -20,10 +20,11 @@ import {
     useWorkerManagerContract,
 } from '../services/contracts';
 import SyncStatus from './SyncStatus';
+import { FlexProps } from '@chakra-ui/react';
 
-export { PageHeader, PagePanel, PageBody };
+export { PageBody, PageHeader, PagePanel };
 
-interface ComponentProps {
+interface ComponentProps extends FlexProps {
     children: React.ReactNode;
 }
 
@@ -52,24 +53,50 @@ export const headerLinks = [
 
 export const footerLinks = [
     {
-        label: 'Audit Report',
-        href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
-    },
-    {
         label: 'CTSI Reserve Mining',
         href: 'https://cartesi.io/en/mine/',
+    },
+    {
+        label: 'Audit Report',
+        href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
     },
     {
         label: 'How to Run a Node',
         href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
     },
+];
+
+export const footerSupport = [
+    {
+        label: `What's New`,
+        href: 'https://cartesi.io/blog/',
+    },
+    {
+        label: 'Support on Discord',
+        href: 'https://discord.com/invite/pfXMwXDDfW',
+    },
     {
         label: 'FAQ',
         href: 'https://github.com/cartesi/noether/wiki/FAQ',
     },
+    {
+        label: 'Governance',
+        href: 'https://governance.cartesi.io/',
+    },
 ];
 
-const PageLayout: FC<ComponentProps> = ({ children }) => {
+export const footerGeneral = [
+    {
+        label: 'About Us',
+        href: 'https://cartesi.io/about/',
+    },
+    {
+        label: 'Docs',
+        href: 'https://docs.cartesi.io/',
+    },
+];
+
+const PageLayout: FC<ComponentProps> = ({ children, ...restProps }) => {
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
     const faucet = useSimpleFaucetContract();
@@ -108,7 +135,10 @@ const PageLayout: FC<ComponentProps> = ({ children }) => {
         <Layout
             headerLinks={headerLinks}
             footerContracts={contracts}
+            footerSupport={footerSupport}
+            footerGeneral={footerGeneral}
             footerLinks={footerLinks}
+            {...restProps}
         >
             <>
                 <SyncStatus />

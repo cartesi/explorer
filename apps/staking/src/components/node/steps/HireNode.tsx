@@ -9,24 +9,31 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, Text, Box, Stack, useColorModeValue } from '@chakra-ui/react';
-import { isEmpty, omit } from 'lodash/fp';
+import {
+    Box,
+    Button,
+    Stack,
+    Text,
+    useColorMode,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { useAtom } from 'jotai';
+import { isEmpty, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 
 import { useWallet } from '@explorer/wallet';
 
-import { useNode, NodeStatus } from '../../../services/node';
+import { ConnectWallet, Notification } from '@explorer/ui';
+import { NodeStatus, useNode } from '../../../services/node';
+import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
+import { MappedErrors, ValidationResult } from '../../BaseInput';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../../TransactionBanner';
-import { hiredNodeAddressAtom } from './HireNode.atoms';
-import { NodeInput, NodeField, evaluateNode } from '../inputs/NodeInput';
 import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';
-import { Notification, ConnectWallet } from '@explorer/ui';
-import { useMessages } from '../../../utils/messages';
+import { NodeField, NodeInput, evaluateNode } from '../inputs/NodeInput';
+import { hiredNodeAddressAtom } from './HireNode.atoms';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -49,7 +56,7 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
-    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
+    const tipsBgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     const [stepState, setStepState] = useStepState({ inFocus });
     const wallet = useWallet();
     const { account, active } = wallet;
@@ -70,6 +77,12 @@ const HireNode = ({
                 : { ...state, [name]: validation };
         });
     };
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'dark.border.quaternary'
+    );
+    const { colorMode } = useColorMode();
 
     useEffect(() => {
         if (inFocus) return;
@@ -93,10 +106,16 @@ const HireNode = ({
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 {!active && (
                     <Notification
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
                         title={useMessages('wallet.is.disconnected')}
                         status="warning"
                     >
@@ -122,7 +141,7 @@ const HireNode = ({
                     max={3}
                     min={0.001}
                 />
-                <Box px={6} py={4} bgColor={tipsBgColor} mt={6}>
+                <Box px={6} py={4} bgColor={tipsBgColor} mt={6} rounded="md">
                     <Text>
                         You need to specify the amount of ETH you want to give
                         to your node. The node holds a separate Ethereum account
@@ -139,7 +158,7 @@ const HireNode = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        variant="ghost"
+                        variant="outline"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             onPrevious && onPrevious();
@@ -150,7 +169,7 @@ const HireNode = ({
                     <Button
                         disabled={!enableNext || node.transaction?.isOngoing}
                         isLoading={node.transaction?.isOngoing}
-                        colorScheme="blue"
+                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => node.hire(toBigNumber(initialFunds))}
                     >

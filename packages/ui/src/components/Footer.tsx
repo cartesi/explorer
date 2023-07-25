@@ -9,26 +9,35 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet';
-import React, { FC, ReactNode } from 'react';
 import {
     Box,
     Container,
-    Stack,
-    SimpleGrid,
-    Text,
+    Flex,
+    Grid,
+    GridItem,
     Link,
+    SimpleGrid,
+    Stack,
+    Text,
     VisuallyHidden,
     chakra,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { FaTwitter } from 'react-icons/fa';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { useWallet } from '@explorer/wallet';
+import { theme } from '@explorer/ui';
+import { FC, ReactNode } from 'react';
+import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Address from './Address';
+import { CartesiTranparent } from './Icons';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
-        <Text fontWeight="500" fontSize="lg" mb={2}>
+        <Text
+            fontFamily={theme.fonts.heading}
+            fontWeight="600"
+            fontSize="lg"
+            mb={2}
+        >
             {children}
         </Text>
     );
@@ -46,16 +55,16 @@ const SocialButton = ({
     return (
         <chakra.button
             bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-            rounded={'full'}
+            rounded="full"
             w={8}
             h={8}
-            cursor={'pointer'}
-            as={'a'}
+            cursor="pointer"
+            as="a"
             href={href}
-            display={'inline-flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            transition={'background 0.3s ease'}
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
+            transition="background 0.3s ease"
             _hover={{
                 bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
             }}
@@ -71,70 +80,141 @@ export type FooterContract = { name: string; address?: string };
 
 export type FooterProps = {
     links: FooterLink[];
+    support: FooterLink[];
+    general: FooterLink[];
     contracts: FooterContract[];
 };
 
-const Footer: FC<FooterProps> = ({ links, contracts }) => {
+const Footer: FC<FooterProps> = (props) => {
+    const { links, support, general, contracts } = props;
     const { chainId } = useWallet();
+    const linkHoverColor = 'dark.primary';
 
     return (
-        <Box bg="gray.900" color="white" w="100%" p="0 6vw" mt="auto">
+        <Box bg="footerBg" color="white" w="100%" p="0 6vw" mt="auto">
             <Container as={Stack} maxW={'100%'} py={10}>
-                <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-                    <Stack align="flex-start">
-                        <ListHeader>Resources</ListHeader>
-                        {links.map(({ label, href }, index) => (
-                            <Link href={href} key={index} isExternal>
-                                {label}
-                                <ExternalLinkIcon mx="4px" />
-                            </Link>
-                        ))}
-                    </Stack>
+                <Grid
+                    templateColumns={{
+                        base: 'repeat(1, 1fr)',
+                        md: 'repeat(2, minmax(0, 1fr))',
+                        lg: 'repeat(12, minmax(0, 1fr))',
+                    }}
+                    gap={6}
+                >
+                    <GridItem colSpan={2}>
+                        <ListHeader>Resources & Security</ListHeader>
+                        <Flex direction="column" marginTop={4} gap={2}>
+                            {links.map(({ label, href }, index) => (
+                                <Link
+                                    href={href}
+                                    key={index}
+                                    isExternal
+                                    _hover={{ color: linkHoverColor }}
+                                >
+                                    {label}
+                                </Link>
+                            ))}
+                        </Flex>
+                    </GridItem>
 
-                    <Stack align="flex-start">
+                    <GridItem colSpan={4} pl={{ base: 0, lg: 4 }}>
+                        <ListHeader>Support Center</ListHeader>
+                        <SimpleGrid
+                            columns={{ base: 1, md: 2 }}
+                            spacing={2}
+                            marginTop={4}
+                        >
+                            {support.map(({ label, href }, index) => (
+                                <Link
+                                    href={href}
+                                    key={index}
+                                    isExternal
+                                    _hover={{ color: linkHoverColor }}
+                                >
+                                    {label}
+                                </Link>
+                            ))}
+                        </SimpleGrid>
+                    </GridItem>
+                    <GridItem colSpan={{ base: 4, lg: 3 }}>
                         <ListHeader>Contracts</ListHeader>
                         {contracts
                             .filter(({ address }) => address)
                             .map(({ name, address }, index) => (
-                                <Address
-                                    address={address ?? ''}
-                                    name={name}
-                                    key={index}
-                                    chainId={chainId}
-                                    truncated
-                                />
+                                <Box mt={4} mb="-2" key={index}>
+                                    <Address
+                                        address={address ?? ''}
+                                        name={name}
+                                        key={index}
+                                        chainId={chainId}
+                                        truncated
+                                    />
+                                </Box>
                             ))}
+                    </GridItem>
+                    <Stack align="flex-start">
+                        <ListHeader>General</ListHeader>
+                        {general.map(({ label, href }, index) => (
+                            <Link
+                                href={href}
+                                key={index}
+                                isExternal
+                                _hover={{ color: linkHoverColor }}
+                            >
+                                {label}
+                            </Link>
+                        ))}
                     </Stack>
-                </SimpleGrid>
+                </Grid>
             </Container>
 
-            <Box
-                borderTopWidth={1}
-                borderStyle={'solid'}
-                borderColor={useColorModeValue('gray.200', 'gray.700')}
+            <Grid
+                templateColumns={{
+                    base: 'repeat(1, 1fr)',
+                    lg: 'repeat(12, minmax(0, 1fr))',
+                }}
+                gap={4}
             >
-                <Container
-                    as={Stack}
-                    maxW={'100%'}
-                    py={4}
-                    direction={{ base: 'column', md: 'row' }}
-                    spacing={4}
-                    justify={{ md: 'space-between' }}
-                    align={{ md: 'center' }}
-                >
-                    <Text>
-                        © {new Date().getFullYear()} Cartesi Foundation Ltd. All
-                        rights reserved
-                    </Text>
+                <GridItem colStart={10} colEnd={-1}>
                     <Stack direction={'row'} spacing={6}>
+                        <SocialButton
+                            label="Cartesi"
+                            href="https://cartesi.io/"
+                        >
+                            <CartesiTranparent />
+                        </SocialButton>
+                        <SocialButton
+                            label="Github"
+                            href="https://github.com/cartesi"
+                        >
+                            <FaGithub size={24} />
+                        </SocialButton>
+                        <SocialButton
+                            label="Discord"
+                            href="https://discord.gg/pfXMwXDDfW"
+                        >
+                            <FaDiscord size={24} />
+                        </SocialButton>
+                        <SocialButton
+                            label="Youtube"
+                            href="https://www.youtube.com/@cartesiproject/featured"
+                        >
+                            <FaYoutube size={24} />
+                        </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <FaTwitter />
+                            <FaTwitter size={24} />
                         </SocialButton>
                     </Stack>
-                </Container>
+                </GridItem>
+            </Grid>
+            <Box py={4}>
+                <Text opacity={0.6}>
+                    © {new Date().getFullYear()} Cartesi Foundation Ltd. All
+                    rights reserved
+                </Text>
             </Box>
         </Box>
     );

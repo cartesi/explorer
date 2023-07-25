@@ -30,10 +30,10 @@ import { formatUnits } from 'ethers/lib/utils';
 import { isEmpty } from 'lodash';
 import { FC } from 'react';
 import { truncateString } from '../../utils/stringUtils';
-import { NodeBalanceModal } from './modals/NodeBalanceModal';
-import { NodeRetireModal } from './modals/NodeRetireModal';
 import { NodeHireNodeSection } from './NodeHireNodeSection';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
+import { NodeBalanceModal } from './modals/NodeBalanceModal';
+import { NodeRetireModal } from './modals/NodeRetireModal';
 export interface INodeInfoSection {
     ownerAccount?: string;
     address: string;
@@ -65,10 +65,11 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     onHire,
     onAuthorize,
 }) => {
-    // dark mode support
-    const bg = useColorModeValue('white', 'gray.800');
-    const buttonBg = useColorModeValue('gray.80', 'gray.800');
     const tooltipColor = useColorModeValue('gray.400', 'white');
+    const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
+    const boxShadow = useColorModeValue('sm', 'none');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const colorScheme = useColorModeValue('teal', 'blue');
     const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
     const textFontWeight = isLargerThan554 ? 400 : 600;
 
@@ -104,10 +105,13 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                 <>
                     <Box
                         bg={bg}
-                        shadow="md"
+                        shadow={boxShadow}
+                        borderWidth="1px"
+                        borderColor={borderColor}
+                        borderRadius="1rem"
                         px={{ base: 4, sm: 6, lg: 8 }}
                         py={{ base: 2, sm: 4, lg: 6 }}
-                        mb={2}
+                        mb={4}
                     >
                         <Stack
                             spacing={{ base: 2, md: 4 }}
@@ -151,7 +155,10 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             placement="bottom"
                                             label="The node balance is the amount of ETH available in the node’s wallet."
                                             fontSize="small"
+                                            bg="dark.gray.quaternary"
                                             color="white"
+                                            borderRadius={'md'}
+                                            opacity={0.9}
                                         >
                                             <Icon
                                                 width={3.5}
@@ -208,31 +215,28 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         </Stack>
                     </Box>
                     <Button
-                        onClick={retireModal.onOpen}
-                        disabled={isRetiring}
-                        bgColor={buttonBg}
                         w={{ base: 'auto' }}
                         px={{ base: 4, md: 6 }}
                         minWidth={{ base: 'auto', md: '173px' }}
-                        fontWeight="bold"
-                        textTransform="uppercase"
                         me={2}
+                        colorScheme="darkGray"
+                        variant="ghost"
+                        disabled={isRetiring}
+                        onClick={retireModal.onOpen}
                     >
                         Retire node
                     </Button>
 
                     {!isAuthorized ? (
                         <Button
-                            onClick={onAuthorize}
-                            isLoading={isAuthorizing}
+                            colorScheme={colorScheme}
                             loadingText="authorizing"
-                            bgColor={buttonBg}
                             w={{ base: 'auto' }}
                             px={{ base: 4, md: 6 }}
                             minWidth={{ base: 'auto', md: '173px' }}
-                            fontWeight="bold"
-                            textTransform="uppercase"
                             me={2}
+                            isLoading={isAuthorizing}
+                            onClick={onAuthorize}
                         >
                             Authorize
                         </Button>

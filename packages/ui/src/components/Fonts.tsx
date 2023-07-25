@@ -13,47 +13,31 @@ import { Global } from '@emotion/react';
 export const Fonts = () => (
     <Global
         styles={`
-
-
-        @font-face {
-            font-family: "FK Grotesk";
-            src: local("FK Grotesk Light Italic"), local("FKGrotesk-LightItalic"),
-              url("/fonts/FKGrotesk-LightItalic.woff2") format("woff2"),
-              url("/fonts/FKGrotesk-LightItalic.woff") format("woff");
-            font-weight: 300;
-            font-style: italic;
-            font-display: swap;
-          }
-          
-          @font-face {
-            font-family: "FK Grotesk";
-            src: local("FK Grotesk Italic"), local("FKGrotesk-Italic"),
-              url("/fonts/FKGrotesk-Italic.woff2") format("woff2"),
-              url("/fonts/FKGrotesk-Italic.woff") format("woff");
-            font-weight: normal;
-            font-style: italic;
-            font-display: swap;
-          }
-          
-          @font-face {
-            font-family: "FK Grotesk";
-            src: local("FK Grotesk Light"), local("FKGrotesk-Light"),
-              url("/fonts/FKGrotesk-Light.woff2") format("woff2"),
-              url("/fonts/FKGrotesk-Light.woff") format("woff");
-            font-weight: 300;
-            font-style: normal;
-            font-display: swap;
-          }
-          
-          @font-face {
-            font-family: "FK Grotesk";
-            src: local("FK Grotesk Regular"), local("FKGrotesk-Regular"),
-              url("/fonts/FKGrotesk-Regular.woff2") format("woff2"),
-              url("/fonts/FKGrotesk-Regular.woff") format("woff");
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
+        
+      @font-face {
+        font-family: "Plus Jakarta Sans";
+        src: local("Plus Jakarta Sans Medium"), local("PlusJakartaSans-Medium"), 
+          url("/fonts/PlusJakartaSans-Medium.woff2") format('woff2');
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Plus Jakarta Sans";
+        src: local("Plus Jakarta Sans Semi Bold"), local("PlusJakartaSans-SemiBold"), 
+          url("/fonts/PlusJakartaSans-SemiBold.woff2") format('woff2');
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: local("Inter Regular"), local("Inter-Regular"), 
+          url("/fonts/Inter-Regular.woff2") format('woff2');
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+      }
       `}
     />
 );

@@ -38,7 +38,7 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
 
     return (
         <Box
-            bg="header"
+            bg="dark.gray.tertiary"
             color="white"
             px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
             pt={5}
