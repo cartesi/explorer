@@ -16,6 +16,7 @@ const grayColour = colors.gray[800];
 const white = colors.white;
 
 export const buildOnboardTheme = (props: { colorMode: string }) => {
+    const LEDGER_MODAL = '.ledger-ck-modal > #ModalWrapper';
     const isDarkMode = props.colorMode === 'dark';
     const defaultVars = {
         '--onboard-font-family-normal': 'var(--chakra-fonts-body)',
@@ -47,6 +48,9 @@ export const buildOnboardTheme = (props: { colorMode: string }) => {
     }
 
     return {
+        [LEDGER_MODAL]: {
+            zIndex: zIndices.xxl,
+        },
         ':root': {
             ...defaultVars,
             ...darkVars,
