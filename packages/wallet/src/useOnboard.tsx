@@ -23,8 +23,10 @@ import Onboard, {
 import { ConnectOptionsString } from '@web3-onboard/core/dist/types';
 import gnosisModule from '@web3-onboard/gnosis';
 import injectedModule from '@web3-onboard/injected-wallets';
-import ledgerModule from '@web3-onboard/ledger';
-import walletConnectModule from '@web3-onboard/walletconnect';
+import ledgerModule, { LedgerOptionsWCv2 } from '@web3-onboard/ledger';
+import walletConnectModule, {
+    WalletConnectOptions,
+} from '@web3-onboard/walletconnect';
 import { ethers } from 'ethers';
 import { contains, debounce, pick } from 'lodash/fp';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -34,8 +36,9 @@ import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
-const WALLETCONNECT_PROJECT_ID =
-    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+const WC_VERSION = 2;
+const WC_PROJECT_ID = process.env
+    .NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string;
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
@@ -44,13 +47,20 @@ const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
 
-const injectedWallet = injectedModule();
-const ledger = ledgerModule();
-const walletConnect = walletConnectModule({
-    projectId: WALLETCONNECT_PROJECT_ID as string,
-    version: 2,
+const ledgerOptions: LedgerOptionsWCv2 = {
+    projectId: WC_PROJECT_ID,
+    walletConnectVersion: WC_VERSION,
+};
+
+const wcOptions: WalletConnectOptions = {
+    projectId: WC_PROJECT_ID,
+    version: WC_VERSION,
     requiredChains: [Network.MAINNET],
-});
+};
+
+const injectedWallet = injectedModule();
+const ledger = ledgerModule(ledgerOptions);
+const walletConnect = walletConnectModule(wcOptions);
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
 
