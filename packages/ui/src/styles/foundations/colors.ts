@@ -83,4 +83,19 @@ export const colors = {
         800: '#3E1452',
         900: '#1F0A29',
     },
+    dark: {
+        primary: '#00F6FF',
+        secondary: '#008DA5',
+        gray: {
+            primary: '#161618',
+            secondary: '#1c1b1f',
+            tertiary: '#232226',
+            quaternary: '#39383C',
+        },
+        support: {
+            success: '#BDE08D',
+            alert: '#FEB274',
+            error: '#FF8D78',
+        },
+    },
 };
