@@ -26,7 +26,7 @@ export const Button = {
         },
     },
     variants: {
-        outline: (props) => {
+        outline: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
                     borderColor:
@@ -42,7 +42,7 @@ export const Button = {
 
             return;
         },
-        solid: (props) => {
+        solid: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
                     bg: props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
@@ -89,7 +89,7 @@ export const Button = {
 
             return;
         },
-        ghost: (props) => {
+        ghost: () => {
             return {
                 textTransform: 'uppercase',
             };
