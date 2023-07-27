@@ -12,8 +12,8 @@
         "export": "turbo run export",
         "dev": "turbo run dev --parallel",
         "lint": "turbo run lint",
-        "test": "turbo run test",
-        "test:ci": "turbo run test:ci",
+        "test": "dotenv -c test -- turbo run test",
+        "test:ci": "dotenv -c test -- turbo run test:ci",
         "build-storybook": "turbo run build-storybook",
         "storybook": "turbo run storybook",
         "format:check": "prettier --check \"**/*.{ts,tsx}\"",
@@ -21,6 +21,7 @@
         "coveralls": "mkdir coverage && ./node_modules/.bin/lcov-result-merger './!(node_modules)**/**/coverage/lcov.info' './coverage/lcov.info' --prepend-source-files"
     },
     "devDependencies": {
+        "dotenv-cli": "7.2.1",
         "eslint-config-custom": "*",
         "prettier": "latest",
         "turbo": "latest"

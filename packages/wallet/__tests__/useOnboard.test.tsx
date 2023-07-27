@@ -74,17 +74,6 @@ const wallet = {
 const mockedOnboard = Onboard as jest.MockedFunction<typeof Onboard>;
 
 describe('useOnBoard', () => {
-    const initialEnv = process.env;
-
-    beforeEach(() => {
-        jest.resetModules();
-        process.env = { ...initialEnv };
-        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = 'PROJECT_ID';
-    });
-    afterAll(() => {
-        process.env = initialEnv;
-    });
-
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
