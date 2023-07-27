@@ -92,6 +92,9 @@ jobs:
 
             - name: Build & Push Docker Image (Depot)
               uses: depot/bake-action@v1
+              env:
+                  WC_PROJECT_ID: ${{ secrets.WC_PROJECT_ID }}
+                  INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
               with:
                   project: ${{ vars.DEPOT_PROJECT }}
                   workdir: .
