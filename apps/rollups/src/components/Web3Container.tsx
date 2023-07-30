@@ -9,17 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { WalletConnectionProvider } from '@explorer/wallet';
 import networks from '../services/useNetwork';
+
+const ROLLUPS_PUBLIC_URL = process.env.NEXT_PUBLIC_ROLLUPS_EXPLORER_URL;
 
 export const chainIds = Object.keys(networks).map(
     (key) => networks[key].chain.id
 );
 
 export const appMetaData = {
-    name: 'Cartesi Blockchain Rollups',
+    name: 'Cartesi Rollups Explorer',
     description: 'A place where you can view instantiated DApps.',
+    explore: ROLLUPS_PUBLIC_URL,
 };
 
 const Web3Container = ({ children }) => (
