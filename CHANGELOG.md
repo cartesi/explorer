@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.6.0] - 2023-07-31
+
+-   `Staking`
+    -   The wallet was upgraded. There is a change for ledger connection workflow that involves using the ledger live app.
+    -   Multiple library dependencies were upgraded.
+-   `Rollups`
+    -   We add a feedback message in the DApp detail view when there are no inputs to be displayed yet.
+-   Several dependencies were upgraded.
+
 ## [3.5.2] - 2023-07-18
 
 -   `Staking`
@@ -332,7 +341,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.5.2...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.6.0...HEAD
+[3.6.0]: https://github.com/cartesi/explorer/compare/v3.5.2...v3.6.0
 [3.5.2]: https://github.com/cartesi/explorer/compare/v3.5.1...v3.5.2
 [3.5.1]: https://github.com/cartesi/explorer/compare/v3.5.0...v3.5.1
 [3.5.0]: https://github.com/cartesi/explorer/compare/v3.4.0...v3.5.0
