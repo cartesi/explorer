@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { WalletConnectionProvider } from '@explorer/wallet';
 import { networks } from '../utils/networks';
 
@@ -20,6 +19,7 @@ const Web3Container = ({ children }) => {
     const appMetaData = {
         name: 'Cartesi Blockchain Explorer',
         description: 'A place where you can stake your CTSI and much more.',
+        explore: 'https://explorer.cartesi.io',
     };
 
     return (
