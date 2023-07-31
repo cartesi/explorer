@@ -17,7 +17,11 @@ export interface BannerProps extends BoxProps {
 const Banner: FC<BannerProps> = (props) => {
     const { children, Title, Icon, ...restProps } = props;
     const hasIcon = isObject(Icon);
-    const bg = useColorModeValue('blue.50', 'primary');
+    const bg = useColorModeValue('blue.50', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
 
     return (
         <Box
@@ -26,7 +30,9 @@ const Banner: FC<BannerProps> = (props) => {
             w="100%"
             p={5}
             bg={bg}
-            borderRadius="3px"
+            borderRadius="1rem"
+            borderColor={borderColor}
+            borderWidth="1px"
             {...restProps}
         >
             {hasIcon && (
