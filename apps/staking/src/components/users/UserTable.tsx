@@ -21,6 +21,8 @@ import {
     Tr,
     Td,
     useBreakpointValue,
+    useColorModeValue,
+    Box,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
@@ -45,43 +47,95 @@ const UserTable: FC<UserTableProps> = ({
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
+    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="3px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>User</Th>
+                        <Th
+                            paddingTop={0}
+                            paddingBottom={0}
+                            borderColor={topBorderColor}
+                            bg={headerColor}
+                            textTransform="none"
+                            fontSize="sm"
+                        >
+                            User
+                        </Th>
 
-                        <Th isNumeric>
+                        <Th
+                            paddingTop={0}
+                            paddingBottom={0}
+                            borderColor={topBorderColor}
+                            bg={headerColor}
+                            isNumeric
+                        >
                             <GhostButton
-                                fontSize="xs"
+                                fontSize="sm"
                                 fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                textTransform="none"
+                                _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('totalBlocks')}
                             >
                                 Block Produced
                             </GhostButton>
-                            {sort == 'totalBlocks' && <ArrowDownIcon />}
+                            {sort == 'totalBlocks' && (
+                                <ArrowDownIcon width={10} />
+                            )}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th
+                            paddingTop={0}
+                            paddingBottom={0}
+                            borderColor={topBorderColor}
+                            bg={headerColor}
+                            isNumeric
+                        >
                             <GhostButton
-                                fontSize="xs"
+                                fontSize="sm"
                                 fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                textTransform="none"
+                                _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('balance')}
                             >
                                 Total Staked
                             </GhostButton>
-                            {sort == 'balance' && <ArrowDownIcon />}
+                            {sort == 'balance' && (
+                                <ArrowDownIcon
+                                    marginLeft={2}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
                         </Th>
 
-                        <Th isNumeric>
+                        <Th
+                            paddingTop={0}
+                            paddingBottom={0}
+                            borderColor={topBorderColor}
+                            bg={headerColor}
+                            isNumeric
+                        >
                             <GhostButton
-                                fontSize="xs"
+                                fontSize="sm"
                                 fontWeight="bold"
-                                _hover={{ color: 'blue.400' }}
+                                textTransform="none"
+                                _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('totalReward')}
                             >
                                 Total Rewards
@@ -95,6 +149,12 @@ const UserTable: FC<UserTableProps> = ({
                             top={0}
                             right={0}
                             style={{ textAlign: 'center' }}
+                            bg={headerColor}
+                            borderColor={topBorderColor}
+                            paddingTop={0}
+                            paddingBottom={0}
+                            textTransform="none"
+                            fontSize="sm"
                         >
                             {stakeText}
                         </Th>
@@ -112,7 +172,7 @@ const UserTable: FC<UserTableProps> = ({
                             </Td>
                         </Tr>
                     ) : hasItems ? (
-                        data.map((user) => (
+                        data.map((user, index) => (
                             <UserRow
                                 key={user.id}
                                 chainId={chainId}

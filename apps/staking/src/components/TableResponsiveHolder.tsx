@@ -10,15 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
-import { Box, ChakraProps, useConst } from '@chakra-ui/react';
+import { Box, BoxProps, ChakraProps, useConst } from '@chakra-ui/react';
 
-export interface TableResponsiveHolderProps {
+export interface TableResponsiveHolderProps extends BoxProps {
     children: React.ReactNode;
 }
 
 type Ref = HTMLDivElement;
 
-const Component = ({ children }, ref) => {
+const Component = (props, ref) => {
+    const { children, ...restProps } = props;
     const [state, setState] = useState({
         overflow: false,
         scrolled: false,
@@ -73,7 +74,7 @@ const Component = ({ children }, ref) => {
     }, [holder]);
 
     return (
-        <Box position="relative" w="100%">
+        <Box position="relative" w="100%" {...restProps}>
             <Box
                 overflowX="auto"
                 w="100%"
