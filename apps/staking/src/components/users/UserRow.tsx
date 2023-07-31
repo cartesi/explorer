@@ -18,6 +18,7 @@ import {
     Link,
     Text,
     IconProps,
+    TableRowProps,
 } from '@chakra-ui/react';
 import { User } from '../../graphql/models';
 import {
@@ -30,15 +31,19 @@ import { formatCTSI } from '../../utils/token';
 import NextLink from 'next/link';
 import { isObject } from 'lodash';
 
-export interface UserRowProps {
+export interface UserRowProps extends TableRowProps {
     chainId: number;
     user: User;
 }
 
-const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
-    const backgroundColor = useColorModeValue('white', 'gray.800');
-    const backgroundHoverColor = useColorModeValue('WhiteSmoke', 'gray.700');
-    const borderColor = useColorModeValue('gray.100', 'header');
+const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
+    const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
+    const backgroundHoverColor = useColorModeValue(
+        'WhiteSmoke',
+        'dark.gray.quaternary'
+    );
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
+    const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
     const isPool = isObject(user.pool);
 
     return (
@@ -47,8 +52,9 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
             backgroundColor={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
             data-testid="user-row"
+            {...restProps}
         >
-            <Td borderColor={borderColor}>
+            <Td borderColor={borderColor} paddingTop={4} paddingBottom={4}>
                 <Address
                     ens
                     address={user.id}
@@ -69,13 +75,28 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                     }
                 />
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
+            >
                 {user.totalBlocks}
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
+            >
                 {formatCTSI(user.balance, 0)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor}>
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
+            >
                 {formatCTSI(user.totalReward, 0)} CTSI
             </Td>
             <Td
@@ -87,10 +108,13 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                 backgroundColor="inherit"
                 padding={0}
                 data-testid="stake-info-col"
+                paddingTop={4}
+                paddingBottom={4}
             >
                 <Box
                     shadow={{ base: 'md', md: 'none' }}
-                    padding={{ base: 0, md: 8 }}
+                    paddingLeft={{ base: 0, md: 8 }}
+                    paddingRight={{ base: 0, md: 8 }}
                     minHeight={{ base: '5rem', md: 'auto' }}
                     width={{ base: '5rem', md: 'auto' }}
                     display={{ base: 'flex', md: 'block' }}
@@ -103,6 +127,9 @@ const UserRow: FC<UserRowProps> = ({ chainId, user }) => {
                             <Link
                                 data-testid="stake-info-link"
                                 title="Stake/info"
+                                _hover={{
+                                    color: linkHoverColor,
+                                }}
                             >
                                 <StakeIcon w={8} h={8} />
                             </Link>

@@ -59,8 +59,8 @@ import { toCTSI } from '../utils/token';
 const Home = () => {
     // user account and blockchain information (from metamask or other wallets)
     const { account, chainId } = useWallet();
-    const bg = useColorModeValue('gray.80', 'header');
-    const sectionBg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('gray.80', 'dark.gray.quaternary');
+    const sectionBg = useColorModeValue('white', 'dark.gray.primary');
 
     // ethereum block number (from metamask)
     const blockNumber = useBlockNumber();
@@ -94,6 +94,8 @@ const Home = () => {
     );
 
     const [userSearch, setUserSearch] = useState<string>();
+    const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
+    const bannerIconColor = useColorModeValue('black', 'dark.primary');
 
     return (
         <Layout>
@@ -105,7 +107,7 @@ const Home = () => {
 
             <Box bg={bg}>
                 <Box
-                    bg="header"
+                    bg={headerBg}
                     color="white"
                     display={{ base: 'block', md: 'flex' }}
                     alignItems="center"
@@ -283,7 +285,13 @@ const Home = () => {
                                     </Tooltip>
                                 </Flex>
                             }
-                            Icon={<ActiveNodeIcon width={7} height={7} />}
+                            Icon={
+                                <ActiveNodeIcon
+                                    color={bannerIconColor}
+                                    width={7}
+                                    height={7}
+                                />
+                            }
                             width={{
                                 base: '100%',
                                 md: 'calc(50% - 0.8rem)',
@@ -308,7 +316,13 @@ const Home = () => {
                                     </Tooltip>
                                 </Flex>
                             }
-                            Icon={<TotalStakedIcon width={7} height={7} />}
+                            Icon={
+                                <TotalStakedIcon
+                                    color={bannerIconColor}
+                                    width={7}
+                                    height={7}
+                                />
+                            }
                             width={{
                                 base: '100%',
                                 md: 'calc(50% - 0.8rem)',
@@ -348,7 +362,13 @@ const Home = () => {
                                     </Tooltip>
                                 </Flex>
                             }
-                            Icon={<PrizeIcon width={7} height={7} />}
+                            Icon={
+                                <PrizeIcon
+                                    color={bannerIconColor}
+                                    width={7}
+                                    height={7}
+                                />
+                            }
                             width={{
                                 base: '100%',
                                 md: 'calc(50% - 0.8rem)',
@@ -386,7 +406,13 @@ const Home = () => {
                                     </Tooltip>
                                 </Flex>
                             }
-                            Icon={<GridIcon width={7} height={7} />}
+                            Icon={
+                                <GridIcon
+                                    color={bannerIconColor}
+                                    width={7}
+                                    height={7}
+                                />
+                            }
                             width={{
                                 base: '100%',
                                 md: 'calc(50% - 0.8rem)',
@@ -453,6 +479,7 @@ const Home = () => {
                         <SearchInput
                             w={[100, 200, 400, 500]}
                             flex={{ base: 1, md: 'initial' }}
+                            placeholder="Search Pool Address..."
                             onSearchChange={(e) =>
                                 setUserSearch(e.target.value)
                             }
