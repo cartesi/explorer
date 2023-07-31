@@ -42,6 +42,8 @@ const Home = () => {
     const blocks = data?.blocks || [];
 
     const [userSearch, setUserSearch] = useState<string>();
+    const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
+    const bannerIconColor = useColorModeValue('black', 'dark.primary');
 
     return (
         <Layout>
