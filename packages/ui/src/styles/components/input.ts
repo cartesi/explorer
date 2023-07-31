@@ -9,10 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+const borderRadius = '3px';
+
 export const Input = {
     baseStyle: {
         field: {
-            borderRadius: 0,
+            borderRadius,
             _disabled: {
                 backgroundColor: 'gray.80',
             },
@@ -21,7 +23,7 @@ export const Input = {
     variants: {
         outline: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -29,7 +31,7 @@ export const Input = {
         },
         filled: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -37,7 +39,7 @@ export const Input = {
         },
         flushed: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },
@@ -45,7 +47,7 @@ export const Input = {
         },
         unstyled: {
             field: {
-                borderRadius: 0,
+                borderRadius,
                 _disabled: {
                     opacity: 1,
                 },

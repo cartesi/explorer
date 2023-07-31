@@ -16,6 +16,7 @@ import {
     Heading,
     IconProps,
     StackProps,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 
@@ -30,11 +31,16 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
     ...restProps
 }) => {
     const CardIcon = icon;
+    const iconColor = useColorModeValue(
+        'light.support.attention',
+        'dark.primary'
+    );
+    const bg = useColorModeValue('gray.90', 'transparent');
 
     return (
         <HStack {...restProps}>
             <Box
-                bg="gray.90"
+                bg={bg}
                 w="4.125rem"
                 h="4.125rem"
                 borderRadius="full"
@@ -42,7 +48,7 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
                 placeContent="center"
                 mr="0.25rem"
             >
-                <CardIcon color="light.support.attention" w={6} h={6} />
+                <CardIcon color={iconColor} w={6} h={6} />
             </Box>
 
             <Box>

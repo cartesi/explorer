@@ -91,6 +91,7 @@ export const colors = {
             secondary: '#1c1b1f',
             tertiary: '#232226',
             quaternary: '#39383C',
+            quinary: 'rgba(241, 242, 245, 0.5)',
         },
         support: {
             success: '#BDE08D',
