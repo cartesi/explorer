@@ -80,13 +80,18 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
     const maturingLeft = useTimeLeft(stakingMaturingTimestamp?.getTime());
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
 
-    const bgDevider = useColorModeValue('gray.100', 'gray.600');
+    const bgDivider = useColorModeValue('gray.100', 'gray.600');
+    const iconBackgroundColor = useColorModeValue('orange.50', 'transparent');
+    const iconColor = useColorModeValue(
+        'light.support.attention',
+        'dark.primary'
+    );
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
             <HStack spacing={4} align="center" p={4} w="full">
                 <Box
-                    bg="orange.50"
+                    bg={iconBackgroundColor}
                     w={14}
                     h={14}
                     borderRadius="full"
@@ -94,11 +99,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <EffectiveBalanceIcon
-                        color="light.support.attention"
-                        w={7}
-                        h={7}
-                    />
+                    <EffectiveBalanceIcon color={iconColor} w={7} h={7} />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -169,7 +170,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 <VStack
                                     align="stretch"
                                     divider={
-                                        <StackDivider borderColor={bgDevider} />
+                                        <StackDivider borderColor={bgDivider} />
                                     }
                                 >
                                     <BigNumberTextV2

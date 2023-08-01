@@ -104,6 +104,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
     });
 
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
+    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
 
     return (
         <Layout>
@@ -116,6 +117,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
                 py={{ base: 4, sm: 8, lg: 26 }}
+                backgroundColor={bg}
             >
                 <HStack
                     spacing={4}
@@ -187,6 +189,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
             <Box
                 px={{ base: '6vw', xl: '12vw' }}
                 py={{ base: 8, sm: 12, lg: 16 }}
+                backgroundColor={bg}
             >
                 <Heading as="h2" size="lg" mb={4}>
                     Pool Activity

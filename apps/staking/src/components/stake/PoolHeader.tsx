@@ -16,6 +16,7 @@ import {
     HStack,
     Stack,
     useBreakpointValue,
+    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { AddressText, SettingsIcon } from '@explorer/ui';
@@ -35,10 +36,11 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
     const address = router.query.pool as string;
     const { chainId } = useWallet();
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
+    const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
 
     return (
         <Box
-            bg="header"
+            bg={headerBg}
             color="white"
             px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
             pt={5}
