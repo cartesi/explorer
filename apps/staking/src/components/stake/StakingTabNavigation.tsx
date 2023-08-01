@@ -16,7 +16,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
 export const StakingTabNavigation: FC = () => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('gray.900', 'white');
     const router = useRouter();
     const address = router.query.pool as string;
@@ -54,6 +54,8 @@ export const StakingTabNavigation: FC = () => {
                             bg,
                             color,
                         }}
+                        borderTopLeftRadius="0.6rem"
+                        borderTopRightRadius="0.6rem"
                         leftIcon={<tab.Icon w="24px" h="24px" />}
                         isActive={tab.isActive}
                         variant={tab.variant}
