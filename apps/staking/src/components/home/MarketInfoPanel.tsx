@@ -47,7 +47,7 @@ const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
                 <HStack align="baseline">
                     <Text
                         fontSize={{ base: 28, md: 36 }}
-                        fontWeight="bold"
+                        fontWeight={500}
                         {...textProps}
                     >
                         {valueLabel}
