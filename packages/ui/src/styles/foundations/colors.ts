@@ -92,6 +92,7 @@ export const colors = {
             tertiary: '#232226',
             quaternary: '#39383C',
             quinary: 'rgba(241, 242, 245, 0.5)',
+            senary: '#F0F7F9',
         },
         support: {
             success: '#BDE08D',
