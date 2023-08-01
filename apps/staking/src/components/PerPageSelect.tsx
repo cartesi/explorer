@@ -11,6 +11,7 @@
 
 import React, { FC } from 'react';
 import { Select, SelectProps, Text, HStack } from '@chakra-ui/react';
+import { TriangleDownIcon } from '@chakra-ui/icons';
 
 export interface PerPageSelectProps extends SelectProps {
     options: number[];
@@ -21,7 +22,11 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
     const { value, options, onChange, ...restProps } = props;
 
     return (
-        <HStack mr={{ base: 0, md: 12 }} mb={{ base: 4, md: 0 }}>
+        <HStack
+            alignItems="center"
+            mr={{ base: 0, md: 12 }}
+            mb={{ base: 4, md: 0 }}
+        >
             <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
                 Rows per page
             </Text>
@@ -29,11 +34,10 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
             <Select
                 value={value}
                 width="4.625rem"
-                borderLeft="none"
-                borderTop="none"
-                borderRight="none"
+                border="none"
                 borderRadius={0}
                 fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
+                icon={<TriangleDownIcon ml={6} w={4} h={4} />}
                 onChange={onChange}
                 {...restProps}
             >

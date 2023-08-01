@@ -70,6 +70,8 @@ const Pagination: FC<PaginationProps> = (props) => {
                 >
                     <ChevronLeftIcon
                         display="flex"
+                        width={3}
+                        height={3}
                         color={
                             isAfterFirstPage ? activeArrowBg : inactiveArrowBg
                         }
@@ -136,6 +138,8 @@ const Pagination: FC<PaginationProps> = (props) => {
                 >
                     <ChevronRightIcon
                         display="flex"
+                        width={3}
+                        height={3}
                         color={
                             isBeforeLastPage ? activeArrowBg : inactiveArrowBg
                         }
@@ -157,14 +161,16 @@ export const PageLink = ({
     index,
     onPageClick,
 }: PageLinkProps) => {
-    const bg = useColorModeValue('gray.80', 'header');
+    const color = useColorModeValue('white', 'black');
+    const bg = useColorModeValue('gray.80', 'dark.gray.senary');
+    const isActive = currentPage === index;
 
     return (
         <Button
             variant="ghost"
             borderRadius="full"
-            minW={10}
-            h={10}
+            minW={8}
+            h={8}
             p={0}
             alignItems="center"
             justifyContent="center"
@@ -173,9 +179,11 @@ export const PageLink = ({
             _hover={{
                 textDecoration: 'none',
                 cursor: 'pointer',
+                color,
                 backgroundColor: bg,
             }}
-            backgroundColor={currentPage === index ? bg : 'transparent'}
+            color={isActive ? color : undefined}
+            backgroundColor={isActive ? bg : 'transparent'}
             onClick={() => onPageClick(index)}
         >
             <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
