@@ -12,10 +12,10 @@
 import { useEffect } from 'react';
 import { useColorMode } from '@chakra-ui/react';
 
-export default (Story: Function, { globals: { theme = 'light' } }) => {
+export default ({ globals: { theme = 'light' } }) => {
     const { colorMode, setColorMode } = useColorMode();
     useEffect(() => {
         if (colorMode !== theme) setColorMode(theme);
     }, [theme, colorMode]);
-    return <Story />;
+    return null;
 };

@@ -19,8 +19,8 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { withPerformance } from 'storybook-addon-performance';
 import Web3Container from '../src/components/Web3Container';
 import theme from '../src/styles/theme';
-import withColorMode from './withColorMode';
 import withFeatureFlags from './withFeatureFlags';
+import ColorMode from './ColorMode';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -53,21 +53,15 @@ export const globalTypes = {
     },
 };
 
-const withChakra = (Story: Function, context: StoryContext) => {
-    return (
-        <ChakraProvider resetCSS theme={theme}>
-            <Fonts />
-            <Web3Container>
-                <SelectedChain />
-                <Story />
-            </Web3Container>
-        </ChakraProvider>
-    );
-};
+const withChakra = (Story: Function, context: StoryContext) => (
+    <ChakraProvider resetCSS theme={theme}>
+        <ColorMode globals={context.globals} />
+        <Fonts />
+        <Web3Container>
+            <SelectedChain />
+            <Story />
+        </Web3Container>
+    </ChakraProvider>
+);
 
-export const decorators = [
-    withColorMode,
-    withChakra,
-    withPerformance,
-    withFeatureFlags,
-];
+export const decorators = [withChakra, withPerformance, withFeatureFlags];
