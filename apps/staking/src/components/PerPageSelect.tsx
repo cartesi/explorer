@@ -18,13 +18,15 @@ export interface PerPageSelectProps extends SelectProps {
     onChange: (event: React.ChangeEvent) => void;
 }
 
+const SelectIcon = () => <TriangleDownIcon ml={5} width={4} height={4} />;
+
 const PerPageSelect: FC<PerPageSelectProps> = (props) => {
     const { value, options, onChange, ...restProps } = props;
 
     return (
         <HStack
             alignItems="center"
-            mr={{ base: 0, md: 12 }}
+            mr={{ base: 0, md: 10 }}
             mb={{ base: 4, md: 0 }}
         >
             <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
@@ -37,7 +39,7 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
                 border="none"
                 borderRadius={0}
                 fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
-                icon={<TriangleDownIcon ml={6} w={4} h={4} />}
+                icon={<SelectIcon />}
                 onChange={onChange}
                 {...restProps}
             >

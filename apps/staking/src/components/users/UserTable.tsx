@@ -22,13 +22,12 @@ import {
     Td,
     useBreakpointValue,
     useColorModeValue,
-    Box,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
-import { GhostButton } from '@explorer/ui';
+import { GhostButton, theme } from '@explorer/ui';
 
 export interface UserTableProps {
     chainId: number;
@@ -73,7 +72,9 @@ const UserTable: FC<UserTableProps> = ({
                             borderColor={topBorderColor}
                             bg={headerColor}
                             textTransform="none"
-                            fontSize="sm"
+                            fontSize="md"
+                            fontWeight={400}
+                            fontFamily={theme.fonts.body}
                         >
                             User
                         </Th>
@@ -86,38 +87,18 @@ const UserTable: FC<UserTableProps> = ({
                             isNumeric
                         >
                             <GhostButton
-                                fontSize="sm"
-                                fontWeight="bold"
+                                fontSize="md"
+                                fontWeight={400}
                                 textTransform="none"
                                 _hover={{ color: buttonHoverColor }}
+                                fontFamily={theme.fonts.body}
                                 onClick={() => onSort('totalBlocks')}
                             >
                                 Block Produced
                             </GhostButton>
                             {sort == 'totalBlocks' && (
-                                <ArrowDownIcon width={10} />
-                            )}
-                        </Th>
-
-                        <Th
-                            paddingTop={0}
-                            paddingBottom={0}
-                            borderColor={topBorderColor}
-                            bg={headerColor}
-                            isNumeric
-                        >
-                            <GhostButton
-                                fontSize="sm"
-                                fontWeight="bold"
-                                textTransform="none"
-                                _hover={{ color: buttonHoverColor }}
-                                onClick={() => onSort('balance')}
-                            >
-                                Total Staked
-                            </GhostButton>
-                            {sort == 'balance' && (
                                 <ArrowDownIcon
-                                    marginLeft={2}
+                                    marginLeft={4}
                                     width={5}
                                     height={5}
                                 />
@@ -132,15 +113,48 @@ const UserTable: FC<UserTableProps> = ({
                             isNumeric
                         >
                             <GhostButton
-                                fontSize="sm"
-                                fontWeight="bold"
+                                fontSize="md"
+                                fontWeight={400}
                                 textTransform="none"
+                                fontFamily={theme.fonts.body}
+                                _hover={{ color: buttonHoverColor }}
+                                onClick={() => onSort('balance')}
+                            >
+                                Total Staked
+                            </GhostButton>
+                            {sort == 'balance' && (
+                                <ArrowDownIcon
+                                    marginLeft={4}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
+                        </Th>
+
+                        <Th
+                            paddingTop={0}
+                            paddingBottom={0}
+                            borderColor={topBorderColor}
+                            bg={headerColor}
+                            isNumeric
+                        >
+                            <GhostButton
+                                fontSize="md"
+                                fontWeight={400}
+                                textTransform="none"
+                                fontFamily={theme.fonts.body}
                                 _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('totalReward')}
                             >
                                 Total Rewards
                             </GhostButton>
-                            {sort == 'totalReward' && <ArrowDownIcon />}
+                            {sort == 'totalReward' && (
+                                <ArrowDownIcon
+                                    marginLeft={4}
+                                    width={5}
+                                    height={5}
+                                />
+                            )}
                         </Th>
 
                         <Th
@@ -154,7 +168,9 @@ const UserTable: FC<UserTableProps> = ({
                             paddingTop={0}
                             paddingBottom={0}
                             textTransform="none"
-                            fontSize="sm"
+                            fontSize="md"
+                            fontWeight={400}
+                            fontFamily={theme.fonts.body}
                         >
                             {stakeText}
                         </Th>
@@ -172,7 +188,7 @@ const UserTable: FC<UserTableProps> = ({
                             </Td>
                         </Tr>
                     ) : hasItems ? (
-                        data.map((user, index) => (
+                        data.map((user) => (
                             <UserRow
                                 key={user.id}
                                 chainId={chainId}

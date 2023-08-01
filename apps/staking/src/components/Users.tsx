@@ -51,7 +51,7 @@ const Users: FC<UsersProps> = (props) => {
                 <Flex
                     flexDirection={{ base: 'column', md: 'row' }}
                     justifyContent="flex-end"
-                    alignItems={{ base: 'flex-end', md: 'flex-start' }}
+                    alignItems={{ base: 'flex-end', md: 'center' }}
                     width="100%"
                     mt="var(--chakra-space-12) !important"
                     overflowX="auto"
