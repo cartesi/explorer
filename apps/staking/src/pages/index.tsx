@@ -22,7 +22,6 @@ import {
     Tooltip,
     useColorModeValue,
     Wrap,
-    WrapItem,
 } from '@chakra-ui/react';
 import {
     Banner,
@@ -203,7 +202,7 @@ const Home = () => {
                         >
                             <MarketInfoPanel
                                 label={
-                                    <Flex alignItems="center">
+                                    <Flex>
                                         <Text mr={2}>CTSI Market Cap</Text>
                                         <Tooltip
                                             label={
@@ -240,7 +239,7 @@ const Home = () => {
                         >
                             <MarketInfoPanel
                                 label={
-                                    <Flex alignItems="center">
+                                    <Flex>
                                         <Text mr={2}>Circ. Supply</Text>
                                         <Tooltip
                                             label="The number of coins that are currently circulating in the market and are able to be purchased or sold."
@@ -300,7 +299,7 @@ const Home = () => {
                             mt={5}
                             alignSelf="stretch"
                         >
-                            <Text fontWeight="bold">
+                            <Text fontWeight={500}>
                                 {formatNumberValue(summary?.totalNodes || 0)}
                             </Text>
                         </Banner>
@@ -332,7 +331,7 @@ const Home = () => {
                             alignSelf="stretch"
                         >
                             <Box
-                                fontWeight="bold"
+                                fontWeight={500}
                                 display="flex"
                                 alignItems="flex-end"
                             >
@@ -378,7 +377,7 @@ const Home = () => {
                             alignSelf="stretch"
                         >
                             <Box
-                                fontWeight="bold"
+                                fontWeight={500}
                                 display="flex"
                                 alignItems="flex-end"
                             >

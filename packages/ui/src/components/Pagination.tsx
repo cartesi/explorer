@@ -161,7 +161,7 @@ export const PageLink = ({
     index,
     onPageClick,
 }: PageLinkProps) => {
-    const color = useColorModeValue('white', 'black');
+    const color = useColorModeValue('gray.900', 'black');
     const bg = useColorModeValue('gray.80', 'dark.gray.senary');
     const isActive = currentPage === index;
 
