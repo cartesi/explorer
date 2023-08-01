@@ -44,6 +44,10 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
+    const linkColor = useColorModeValue('gray.900', 'dark.primary');
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const addressTextDecoration = useColorModeValue('none', 'underline');
+    const addressBackground = useColorModeValue('blue.50', 'transparent');
     const isPool = isObject(user.pool);
 
     return (
@@ -62,10 +66,11 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                     responsive
                     truncated
                     size="md"
-                    bg="blue.50"
+                    textDecoration={addressTextDecoration}
+                    bg={addressBackground}
                     px="0.5rem"
                     py="0.25rem"
-                    color="gray.900"
+                    color={addressColor}
                     minWidth="120px"
                     shouldDisplayFallbackAvatar
                     fallbackAvatar={
@@ -127,6 +132,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                             <Link
                                 data-testid="stake-info-link"
                                 title="Stake/info"
+                                color={linkColor}
                                 _hover={{
                                     color: linkHoverColor,
                                 }}

@@ -24,7 +24,7 @@ import {
 import { TimeIcon } from '@chakra-ui/icons';
 import humanizeDuration from 'humanize-duration';
 
-import { Address } from '@explorer/ui';
+import { Address, theme } from '@explorer/ui';
 import { Block } from '../../graphql/models';
 import { tinyGraphUrl } from '../../utils/tinygraph';
 
@@ -61,7 +61,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     const boxShadow = useColorModeValue('md', 'none');
 
     return (
-        <Box {...boxProps}>
+        <Box {...boxProps} fontFamily={theme.fonts.heading}>
             <Center p={2}>
                 <HStack>
                     <TimeIcon />
@@ -79,6 +79,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                 p={2}
                 borderColor={borderColor}
                 borderWidth="1px"
+                borderBottom="none"
                 borderTopLeftRadius="1rem"
                 borderTopRightRadius="1rem"
             >
@@ -91,6 +92,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                 boxShadow={boxShadow}
                 borderColor={borderColor}
                 borderWidth="1px"
+                borderTop="none"
                 borderBottomLeftRadius="1rem"
                 borderBottomRightRadius="1rem"
             >
