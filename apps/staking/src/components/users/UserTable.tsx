@@ -188,7 +188,7 @@ const UserTable: FC<UserTableProps> = ({
                             </Td>
                         </Tr>
                     ) : hasItems ? (
-                        data.map((user, index) => (
+                        data.map((user) => (
                             <UserRow
                                 key={user.id}
                                 chainId={chainId}
