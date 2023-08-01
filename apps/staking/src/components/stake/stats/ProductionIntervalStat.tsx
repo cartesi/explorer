@@ -33,8 +33,11 @@ export interface ProductionIntervalStatProps extends StackProps {
 
 const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
     const { totalBlocks, productionInterval, location } = props;
-
-    const bgBlocks = useColorModeValue('blue.50', 'gray.900');
+    const bg = useColorModeValue('blue.50', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
 
     return (
         <ConditionalWrapper
@@ -46,7 +49,10 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
             <Box
                 flexBasis={{ base: '100%', lg: '33.33%' }}
                 flexShrink={0}
-                bgColor={bgBlocks}
+                bgColor={bg}
+                borderRadius="1rem"
+                borderColor={borderColor}
+                borderWidth="1px"
                 cursor={location ? 'pointer' : ''}
             >
                 <HStack spacing={4} align="center" p={4} w="full">
