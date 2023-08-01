@@ -45,7 +45,6 @@ module.exports = {
                               /node_modules/.test(filename) &&
                               !/@chakra-ui/.test(filename) &&
                               !/@zag-js/.test(filename) &&
-                              !/@zag-js/.test(filename) &&
                               !/ethers/.test(filename) &&
                               !/@walletconnect/.test(filename) &&
                               !/@web3modal/.test(filename) &&
