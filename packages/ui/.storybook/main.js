@@ -17,6 +17,10 @@ module.exports = {
         postcss: false,
         buildStoriesJson: true,
     },
+    env: (config) => ({
+        ...config,
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: 'DUMMY_WALLETCONNECT_PROJECT_ID',
+    }),
     stories: [
         '../src/stories/**/*.stories.mdx',
         '../src/stories/**/*.stories.@(js|jsx|ts|tsx)',
