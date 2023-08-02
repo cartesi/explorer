@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const fonts = {
-    heading: '"FK Grotesk", sans-serif',
     body: '"Inter", sans-serif',
+    heading: '"Plus Jakarta Sans", sans-serif',
+    title: '"FK Grotesk", sans-serif',
 };
