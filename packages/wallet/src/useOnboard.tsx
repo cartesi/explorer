@@ -23,7 +23,6 @@ import Onboard, {
 import { ConnectOptionsString } from '@web3-onboard/core/dist/types';
 import gnosisModule from '@web3-onboard/gnosis';
 import injectedModule from '@web3-onboard/injected-wallets';
-import ledgerModule, { LedgerOptionsWCv2 } from '@web3-onboard/ledger';
 import walletConnectModule, {
     WalletConnectOptions,
 } from '@web3-onboard/walletconnect';
@@ -42,15 +41,9 @@ const WC_PROJECT_ID = process.env
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
-const hardwareWallets = new Set(['ledger']);
 const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
-
-const ledgerOptions: LedgerOptionsWCv2 = {
-    projectId: WC_PROJECT_ID,
-    walletConnectVersion: WC_VERSION,
-};
 
 const wcOptions: WalletConnectOptions = {
     projectId: WC_PROJECT_ID,
@@ -59,7 +52,6 @@ const wcOptions: WalletConnectOptions = {
 };
 
 const injectedWallet = injectedModule();
-const ledger = ledgerModule(ledgerOptions);
 const walletConnect = walletConnectModule(wcOptions);
 const coinbase = coinbaseWalletModule({ darkMode: true });
 const gnosis = gnosisModule();
@@ -113,6 +105,9 @@ export const buildConfig = (
     ].filter((c) => chainIds.includes(c.id));
 
     return {
+        connect: {
+            removeWhereIsMyWalletWarning: true,
+        },
         accountCenter: {
             desktop: {
                 enabled: false,
@@ -121,7 +116,7 @@ export const buildConfig = (
                 enabled: false,
             },
         },
-        wallets: [injectedWallet, coinbase, walletConnect, ledger, gnosis],
+        wallets: [injectedWallet, coinbase, walletConnect, gnosis],
         chains,
         appMetadata: {
             name: 'Cartesi Blockchain Explorer',
@@ -133,14 +128,12 @@ export const buildConfig = (
 };
 
 /**
- * Check what type of wallet is based on its label e.g. Ledger
+ * Check what type of wallet is based on its label e.g. Safe
  */
 export const getWalletType = (label = ''): WalletType | null => {
     const name = label.toLocaleLowerCase();
     return injectedWallets.has(name)
         ? WalletType.INJECTED
-        : hardwareWallets.has(name)
-        ? WalletType.HARDWARE
         : sdkWallets.has(name)
         ? WalletType.SDK
         : null;
