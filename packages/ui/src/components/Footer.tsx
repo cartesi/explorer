@@ -9,26 +9,32 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet';
-import React, { FC, ReactNode } from 'react';
 import {
     Box,
     Container,
-    Stack,
-    SimpleGrid,
-    Text,
+    Grid,
+    GridItem,
     Link,
+    SimpleGrid,
+    Stack,
+    Text,
     VisuallyHidden,
     chakra,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { useWallet } from '@explorer/wallet';
+import { FC, ReactNode } from 'react';
 import { FaTwitter } from 'react-icons/fa';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import Address from './Address';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
-        <Text fontWeight="500" fontSize="lg" mb={2}>
+        <Text
+            fontFamily={'Plus Jakarta Sans'}
+            fontWeight="600"
+            fontSize="lg"
+            mb={2}
+        >
             {children}
         </Text>
     );
@@ -71,48 +77,75 @@ export type FooterContract = { name: string; address?: string };
 
 export type FooterProps = {
     links: FooterLink[];
+    support: FooterLink[];
+    general: FooterLink[];
     contracts: FooterContract[];
 };
 
-const Footer: FC<FooterProps> = ({ links, contracts }) => {
+const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
     const { chainId } = useWallet();
 
     return (
-        <Box bg="gray.900" color="white" w="100%" p="0 6vw" mt="auto">
+        <Box bg="footerBg" color="white" w="100%" p="0 6vw" mt="auto">
             <Container as={Stack} maxW={'100%'} py={10}>
-                <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+                <Grid
+                    templateColumns={{
+                        base: 'repeat(1, 1fr)',
+                        md: 'repeat(6, minmax(0, 1fr))',
+                    }}
+                    gap={6}
+                >
                     <Stack align="flex-start">
-                        <ListHeader>Resources</ListHeader>
+                        <ListHeader>Resources & Security</ListHeader>
                         {links.map(({ label, href }, index) => (
                             <Link href={href} key={index} isExternal>
                                 {label}
-                                <ExternalLinkIcon mx="4px" />
                             </Link>
                         ))}
                     </Stack>
 
-                    <Stack align="flex-start">
+                    <GridItem colSpan={2} pl={{ base: 0, lg: 4 }}>
+                        <ListHeader>Support Center</ListHeader>
+                        <SimpleGrid
+                            columns={{ base: 1, md: 2 }}
+                            spacing={2}
+                            marginTop={4}
+                        >
+                            {support.map(({ label, href }, index) => (
+                                <Link href={href} key={index} isExternal>
+                                    {label}
+                                </Link>
+                            ))}
+                        </SimpleGrid>
+                    </GridItem>
+                    <GridItem colSpan={2}>
                         <ListHeader>Contracts</ListHeader>
                         {contracts
                             .filter(({ address }) => address)
                             .map(({ name, address }, index) => (
-                                <Address
-                                    address={address ?? ''}
-                                    name={name}
-                                    key={index}
-                                    chainId={chainId}
-                                    truncated
-                                />
+                                <Box mt={4} mb={'-2'}>
+                                    <Address
+                                        address={address ?? ''}
+                                        name={name}
+                                        key={index}
+                                        chainId={chainId}
+                                        truncated
+                                    />
+                                </Box>
                             ))}
+                    </GridItem>
+                    <Stack align="flex-start">
+                        <ListHeader>General</ListHeader>
+                        {general.map(({ label, href }, index) => (
+                            <Link href={href} key={index} isExternal>
+                                {label}
+                            </Link>
+                        ))}
                     </Stack>
-                </SimpleGrid>
+                </Grid>
             </Container>
 
-            <Box
-                borderTopWidth={1}
-                borderStyle={'solid'}
-                borderColor={useColorModeValue('gray.200', 'gray.700')}
-            >
+            <Box>
                 <Container
                     as={Stack}
                     maxW={'100%'}
@@ -122,7 +155,7 @@ const Footer: FC<FooterProps> = ({ links, contracts }) => {
                     justify={{ md: 'space-between' }}
                     align={{ md: 'center' }}
                 >
-                    <Text>
+                    <Text opacity={0.6}>
                         © {new Date().getFullYear()} Cartesi Foundation Ltd. All
                         rights reserved
                     </Text>

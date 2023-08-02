@@ -21,8 +21,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import Footer, { FooterContract, FooterLink } from './Footer';
-import { Header } from './header';
-import { HeaderLink } from './header';
+import { Header, HeaderLink } from './header';
 
 interface ComponentProps {
     children: React.ReactNode;
@@ -79,6 +78,8 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
 export type LayoutProps = {
     headerLinks: HeaderLink[];
     footerLinks: FooterLink[];
+    footerSupport: FooterLink[];
+    footerGeneral: FooterLink[];
     footerContracts: FooterContract[];
     children: React.ReactNode;
 };
@@ -87,6 +88,8 @@ const Layout: FC<LayoutProps> = ({
     children,
     headerLinks,
     footerLinks,
+    footerSupport,
+    footerGeneral,
     footerContracts,
 }) => {
     return (
@@ -95,7 +98,12 @@ const Layout: FC<LayoutProps> = ({
             <Box width="100%" paddingTop="100px">
                 {children}
             </Box>
-            <Footer contracts={footerContracts} links={footerLinks} />
+            <Footer
+                links={footerLinks}
+                support={footerSupport}
+                general={footerGeneral}
+                contracts={footerContracts}
+            />
         </Flex>
     );
 };
