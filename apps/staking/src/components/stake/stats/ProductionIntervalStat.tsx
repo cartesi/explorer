@@ -38,7 +38,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
         'transparent',
         'dark.gray.quaternary'
     );
-    const iconColor = useColorModeValue('white', 'dark.primary');
+    const iconColor = useColorModeValue('gray.900', 'dark.primary');
 
     return (
         <ConditionalWrapper

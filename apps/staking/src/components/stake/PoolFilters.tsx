@@ -48,7 +48,8 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     onSelectedTypesChange,
 }) => {
     const checkedBg = useColorModeValue('gray.50', 'gray.600');
-    const badgeBg = useColorModeValue('blue.200', 'blue.300');
+    const badgeBg = useColorModeValue('blue.200', 'dark.gray.quaternary');
+    const badgeColor = useColorModeValue('gray.900', 'white');
 
     return (
         <Stack
@@ -76,7 +77,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                         </HStack>
                     </MenuButton>
 
-                    <MenuList p={4}>
+                    <MenuList p={4} backgroundColor={badgeBg}>
                         {filters.map((filter, index) => (
                             <Fragment key={index}>
                                 <MenuGroup>
@@ -184,7 +185,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             align="center"
                             spacing={2}
                         >
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" color={badgeColor}>
                                 {
                                     filters
                                         .find((el) => el.key === 'time')
@@ -208,7 +209,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             align="center"
                             spacing={2}
                         >
-                            <Text fontSize="sm">
+                            <Text fontSize="sm" color={badgeColor}>
                                 {
                                     filters
                                         .find((el) => el.key === 'type')
@@ -225,7 +226,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                     onSelectedTypesChange(type);
                                 }}
                             >
-                                <CloseIcon w={3} h={3} />
+                                <CloseIcon color={badgeColor} w={3} h={3} />
                             </Button>
                         </HStack>
                     </Box>
