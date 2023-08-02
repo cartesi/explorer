@@ -50,6 +50,9 @@ const injectedWallets = new Set(['metamask', 'coinbase']);
 const ledgerOptions: LedgerOptionsWCv2 = {
     projectId: WC_PROJECT_ID,
     walletConnectVersion: WC_VERSION,
+    requiredChains: [Network.MAINNET],
+    requiredMethods: ['eth_getBalance', 'eth_call'],
+    requiredEvents: ['block'],
 };
 
 const wcOptions: WalletConnectOptions = {
