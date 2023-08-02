@@ -38,6 +38,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
             'transparent',
             'dark.gray.quaternary'
         );
+        const iconColor = useColorModeValue('white', 'dark.primary');
         const { loading, data } = useStakingPoolPerformance(address);
 
         if (loading) return null;
@@ -73,7 +74,11 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                             placeContent="center"
                             flexShrink={0}
                         >
-                            <PoolPerformanceIcon w={7} h={7} />
+                            <PoolPerformanceIcon
+                                color={iconColor}
+                                w={7}
+                                h={7}
+                            />
                         </Box>
                         <BigNumberTextV2
                             value={weekPerformance}

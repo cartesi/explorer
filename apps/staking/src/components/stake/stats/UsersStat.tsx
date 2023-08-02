@@ -37,6 +37,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
         'transparent',
         'dark.gray.quaternary'
     );
+    const iconColor = useColorModeValue('white', 'dark.primary');
 
     return (
         <ConditionalWrapper
@@ -63,7 +64,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolUsersIcon w={7} h={7} />
+                        <PoolUsersIcon color={iconColor} w={7} h={7} />
                     </Box>
                     <BigNumberTextV2
                         value={totalUsers}
