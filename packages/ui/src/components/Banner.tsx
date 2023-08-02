@@ -7,6 +7,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { isObject } from 'lodash';
+import { theme } from '@explorer/ui';
 
 export interface BannerProps extends BoxProps {
     children: React.ReactNode;
@@ -33,6 +34,7 @@ const Banner: FC<BannerProps> = (props) => {
             borderRadius="1rem"
             borderColor={borderColor}
             borderWidth="1px"
+            fontFamily={theme.fonts.title}
             {...restProps}
         >
             {hasIcon && (
