@@ -66,7 +66,7 @@ const account = {
 
 const wallet = {
     provider: 'Some provider' as unknown as EIP1193Provider,
-    label: 'ledger',
+    label: 'metamask',
     chains: [chain],
     accounts: [account],
 } as WalletState;
@@ -113,7 +113,7 @@ describe('useOnBoard', () => {
 
     it('should build config with correct number of wallets', () => {
         const config = buildConfig(false, defaultChainIds, defaultAppMetadata);
-        expect(config.wallets.length).toBe(5);
+        expect(config.wallets.length).toBe(4);
     });
 
     it('should generate error when unsupported network is selected', () => {
@@ -141,11 +141,6 @@ describe('useOnBoard', () => {
         const injectedWallets = new Set(['metamask', 'coinbase']);
         for (const value of injectedWallets) {
             expect(getWalletType(value)).toBe(WalletType.INJECTED);
-        }
-
-        const hardwareWallets = new Set(['ledger']);
-        for (const value of hardwareWallets) {
-            expect(getWalletType(value)).toBe(WalletType.HARDWARE);
         }
 
         const sdkWallets = new Set(['gnosis safe', 'safe']);
@@ -181,9 +176,9 @@ describe('useOnBoard', () => {
             error: null,
             account: account.address?.toLowerCase(),
             chainId: parseInt(chain.id),
-            isHardwareWallet: true,
+            isHardwareWallet: false,
             isGnosisSafe: false,
-            walletType: WalletType.HARDWARE,
+            walletType: WalletType.INJECTED,
             walletLabel: wallet.label,
         });
     });
