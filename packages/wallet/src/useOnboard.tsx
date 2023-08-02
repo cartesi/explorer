@@ -48,6 +48,7 @@ const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);
 
 const ledgerOptions: LedgerOptionsWCv2 = {
+    enableDebugLogs: true,
     projectId: WC_PROJECT_ID,
     walletConnectVersion: WC_VERSION,
     requiredChains: [Network.MAINNET],
