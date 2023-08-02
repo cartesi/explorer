@@ -11,6 +11,7 @@
 
 import React, { FunctionComponent } from 'react';
 import { HStack, Text, TextProps, VStack, Box } from '@chakra-ui/react';
+import { theme } from '@explorer/ui';
 
 export type MarketInfoUnit = 'USD' | 'CTSI';
 
@@ -39,7 +40,7 @@ const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
     const valueLabel = numberFormat.format(value);
 
     return (
-        <VStack align="flex-start">
+        <VStack align="flex-start" fontFamily={theme.fonts.title}>
             <Box fontSize="md" {...textProps}>
                 {label}
             </Box>
