@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
 import { UnsupportedNetworkError, UseWallet } from '@explorer/wallet';
+import { FC } from 'react';
 
 export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
@@ -32,9 +32,21 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                 </Button>
             ) : (
                 !active && (
-                    <Button size="md" colorScheme="blue" onClick={activate}>
+                    <Button
+                        size="md"
+                        colorScheme="cyan"
+                        onClick={activate}
+                        _hover={{
+                            bg: 'linear-gradient(0deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.40) 100%), #00F6FF',
+                        }}
+                    >
                         <HStack>
-                            <Text fontWeight="medium" fontSize="sm">
+                            <Text
+                                fontSize="sm"
+                                color={'dark.gray.primary'}
+                                textTransform={'uppercase'}
+                                fontWeight={'600'}
+                            >
                                 Connect To Wallet
                             </Text>
                         </HStack>
