@@ -11,19 +11,19 @@
 
 import {
     Box,
-    MenuItem,
-    MenuList,
     Flex,
-    useClipboard,
-    Text,
-    useColorModeValue,
-    MenuItemProps,
     IconProps,
+    MenuItem,
+    MenuItemProps,
+    MenuList,
+    Text,
+    useClipboard,
+    useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC, useMemo } from 'react';
-import { DisconnectIcon, CopyIcon, SwitchIcon } from '../../Icons';
 import { useENS } from '@explorer/services';
 import { useWallet } from '@explorer/wallet';
+import React, { FC, useMemo } from 'react';
+import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
 
 interface WalletMenuItemProps extends MenuItemProps {
     children: React.ReactNode;
@@ -32,17 +32,27 @@ interface WalletMenuItemProps extends MenuItemProps {
 const WalletMenuItem: FC<WalletMenuItemProps> = ({
     children,
     ...restProps
-}) => (
-    <MenuItem
-        justifyContent="flex-end"
-        borderBottom="1px"
-        borderColor="gray.100"
-        padding={3}
-        {...restProps}
-    >
-        {children}
-    </MenuItem>
-);
+}) => {
+    const bgColor = useColorModeValue('white', 'dark.gray.quaternary');
+    const borderColor = useColorModeValue('grey.tertiary', undefined);
+    const hoverStyle = useColorModeValue(
+        { bg: 'light.support.teal' },
+        undefined
+    );
+    return (
+        <MenuItem
+            justifyContent="flex-end"
+            borderBottom="1px"
+            borderColor={borderColor}
+            padding={3}
+            bg={bgColor}
+            _hover={hoverStyle}
+            {...restProps}
+        >
+            {children}
+        </MenuItem>
+    );
+};
 
 interface WalletMenuActionItemProps {
     title: string;
@@ -85,8 +95,8 @@ const WalletMenu: FC = () => {
         useWallet();
     const ens = useENS(account ?? '');
     const { hasCopied, onCopy } = useClipboard(account ?? '');
-    const color = useColorModeValue('black', 'white');
-    const backgroundColor = useColorModeValue('blue.50', 'gray.700');
+    const color = useColorModeValue('light.gray.primary', 'white');
+    const backgroundColor = useColorModeValue('white', 'white');
     const addressHoverColor = useColorModeValue(undefined, {
         color: 'white',
     });
@@ -116,8 +126,8 @@ const WalletMenu: FC = () => {
     return (
         <>
             {typeof account === 'string' && (
-                <MenuList borderRadius="0" p={0}>
-                    <WalletMenuItem backgroundColor={backgroundColor}>
+                <MenuList borderRadius="0" p={0} border={0}>
+                    <WalletMenuItem>
                         <Flex>
                             <Text
                                 fontSize={14}

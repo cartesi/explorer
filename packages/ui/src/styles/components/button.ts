@@ -11,8 +11,9 @@
 
 export const Button = {
     baseStyle: {
-        borderRadius: 0,
-        fontWeight: 'normal',
+        borderRadius: '1.875rem',
+        fontWeight: '500',
+        fontFamily: "'Plus Jakarta Sans'",
     },
     sizes: {
         lg: {
@@ -49,10 +50,7 @@ export const Button = {
 
                     color: props.colorMode === 'dark' ? 'white' : 'white',
                     _hover: {
-                        bg:
-                            props.colorMode === 'dark'
-                                ? 'gray.500'
-                                : 'gray.700',
+                        bg: props.colorMode === 'dark' ? 'gray.500' : 'red.100',
                         color: props.colorMode === 'dark' ? 'white' : 'white',
                     },
                     _active: {
@@ -83,6 +81,16 @@ export const Button = {
                     _hover: {
                         bg: 'blue.300',
                         color: 'gray.900',
+                    },
+                };
+            }
+            if (props.colorScheme === 'cyan') {
+                return {
+                    bg: 'cyan.secondary',
+                    color: 'dark.gray.primary',
+                    textTransform: 'uppercase',
+                    _hover: {
+                        bg: '#76FAFF',
                     },
                 };
             }
