@@ -61,7 +61,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     const boxShadow = useColorModeValue('md', 'none');
 
     return (
-        <Box {...boxProps} fontFamily={theme.fonts.heading}>
+        <Box {...boxProps} fontFamily={theme.fonts.title}>
             <Center p={2}>
                 <HStack>
                     <TimeIcon />
