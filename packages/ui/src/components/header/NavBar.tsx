@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, ReactNode } from 'react';
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -22,8 +21,10 @@ import {
     useColorMode,
     useDisclosure,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { useWallet } from '@explorer/wallet';
+// import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, ReactNode } from 'react';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
 import { ConnectWallet } from './ConnectWallet';
@@ -35,20 +36,45 @@ export interface NavLinkProps {
     children: ReactNode;
 }
 
-export const NavLink: FC<NavLinkProps> = ({ href, children }) => (
-    <NextLink href={href} passHref>
+export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
+    const router = useRouter();
+    const isActive = router.asPath === href;
+    return (
         <Link
+            position={'relative'}
             px={2}
             py={1}
+            href={href}
+            aria-current={isActive ? 'page' : undefined}
             _hover={{
-                textDecoration: 'none',
-                bg: 'gray.800',
+                _after: {
+                    content: '""',
+                    bottom: '-5px',
+                    transform: 'translateX(-50%)',
+                    left: '50%',
+                    position: 'absolute',
+                    width: 'calc(100% - 16px)',
+                    height: '0.3125rem',
+                    bg: 'teal.support',
+                },
+            }}
+            _activeLink={{
+                _after: {
+                    content: '""',
+                    bottom: '-5px',
+                    transform: 'translateX(-50%)',
+                    left: '50%',
+                    position: 'absolute',
+                    width: 'calc(100% - 16px)',
+                    height: '0.3125rem',
+                    bg: 'teal.support',
+                },
             }}
         >
             {children}
         </Link>
-    </NextLink>
-);
+    );
+};
 
 export interface HeaderLink {
     key: string;
@@ -67,7 +93,13 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
-        <Box bg="gray.900" color="white" px="6vw" position="fixed" {...props}>
+        <Box
+            bg="dark.gray.tertiary"
+            color="white"
+            px="6vw"
+            position="fixed"
+            {...props}
+        >
             <Flex h="100px" alignItems="center" justifyContent="space-between">
                 <HStack
                     spacing={8}

@@ -13,6 +13,7 @@ import { theme } from '@chakra-ui/react';
 
 export const colors = {
     header: '#1E1941',
+    footerBg: '#0C0C0C',
     primary: '#1E1941',
     secondary: '#3d3d3d',
     info: '#007bff',
@@ -24,11 +25,16 @@ export const colors = {
     gray10: '#939393',
     grey: {
         support: '#5F6368',
+        tertiary: '#E3E3E5',
     },
     light: {
+        gray: {
+            primary: '#232222',
+        },
         support: {
             alert: '#FFA030',
             attention: '#FFD700',
+            teal: '#E1EBFF',
         },
     },
     gray: {
@@ -58,6 +64,15 @@ export const colors = {
         700: '#F77900',
         800: '#E85808',
         900: '#CC6E00',
+    },
+    teal: {
+        secondary: '#008DA5',
+        support: '#2D5ABE',
+        light: '#F0F7F9',
+    },
+    cyan: {
+        primary: '#00F6FF',
+        200: '#00F6FF',
     },
     blue: {
         50: '#E1EBFF',
