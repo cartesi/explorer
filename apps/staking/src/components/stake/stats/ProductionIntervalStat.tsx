@@ -38,6 +38,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
         'transparent',
         'dark.gray.quaternary'
     );
+    const iconColor = useColorModeValue('white', 'dark.primary');
 
     return (
         <ConditionalWrapper
@@ -64,7 +65,11 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolProductionIntervalIcon w={7} h={7} />
+                        <PoolProductionIntervalIcon
+                            color={iconColor}
+                            w={7}
+                            h={7}
+                        />
                     </Box>
                     <BigNumberTextV2
                         value={productionInterval}

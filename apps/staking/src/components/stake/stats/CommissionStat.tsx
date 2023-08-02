@@ -40,6 +40,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
         'transparent',
         'dark.gray.quaternary'
     );
+    const iconColor = useColorModeValue('white', 'dark.primary');
 
     return (
         <ConditionalWrapper
@@ -66,7 +67,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolCommisionIcon w={7} h={7} />
+                        <PoolCommisionIcon color={iconColor} w={7} h={7} />
                     </Box>
 
                     {commissionPercentage ? (

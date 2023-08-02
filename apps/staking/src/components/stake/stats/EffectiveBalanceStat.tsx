@@ -86,6 +86,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
         'light.support.attention',
         'dark.primary'
     );
+    const popoverBodyColor = useColorModeValue('white', 'dark.gray.primary');
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
@@ -165,8 +166,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 <EyeIcon />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverBody>
+                        <PopoverContent borderRadius="1rem">
+                            <PopoverBody
+                                borderRadius="1rem"
+                                backgroundColor={popoverBodyColor}
+                            >
                                 <VStack
                                     align="stretch"
                                     divider={
