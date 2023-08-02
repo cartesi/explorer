@@ -38,7 +38,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
             'transparent',
             'dark.gray.quaternary'
         );
-        const iconColor = useColorModeValue('white', 'dark.primary');
+        const iconColor = useColorModeValue('gray.900', 'dark.primary');
         const { loading, data } = useStakingPoolPerformance(address);
 
         if (loading) return null;
