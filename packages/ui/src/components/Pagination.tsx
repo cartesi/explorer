@@ -13,6 +13,7 @@ import { HStack, Text, useColorModeValue, Button } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 import { GhostButton } from './GhostButton';
+import { fonts } from '../styles/foundations/fonts';
 
 export interface PaginationProps {
     currentPage: number;
@@ -57,7 +58,7 @@ const Pagination: FC<PaginationProps> = (props) => {
     }, [pageNumbers, currentPage, pages, maxPageNumbers]);
 
     return (
-        <HStack maxWidth="100%" {...restProps}>
+        <HStack maxWidth="100%" fontFamily={fonts.title} {...restProps}>
             {hasMultiplePages && (
                 <GhostButton
                     mr={2}

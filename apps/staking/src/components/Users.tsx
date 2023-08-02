@@ -13,7 +13,7 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { VStack, Flex } from '@chakra-ui/react';
 import UserTable from './users/UserTable';
 import useUsers from '../graphql/hooks/useUsers';
-import { Pagination } from '@explorer/ui';
+import { Pagination, theme } from '@explorer/ui';
 import { UserSort } from '../graphql/models';
 import PerPageSelect from './PerPageSelect';
 
@@ -56,6 +56,7 @@ const Users: FC<UsersProps> = (props) => {
                     mt="var(--chakra-space-12) !important"
                     overflowX="auto"
                     py={1}
+                    fontFamily={theme.fonts.title}
                 >
                     <PerPageSelect
                         value={rowsPerPage}
