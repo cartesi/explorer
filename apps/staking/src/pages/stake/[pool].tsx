@@ -33,7 +33,6 @@ import { useCartesiToken } from '../../services/token';
 import { useStaking } from '../../services/staking';
 import { useStakingPool } from '../../services/pool';
 import { useWallet } from '@explorer/wallet';
-import { theme } from '@explorer/ui';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
 import { PoolActivity } from '../../components/stake/PoolActivity';
@@ -192,12 +191,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
                 py={{ base: 8, sm: 12, lg: 16 }}
                 backgroundColor={bg}
             >
-                <Heading
-                    as="h2"
-                    size="lg"
-                    mb={4}
-                    fontFamily={theme.fonts.title}
-                >
+                <Heading as="h2" size="lg" mb={4}>
                     Pool Activity
                 </Heading>
 
