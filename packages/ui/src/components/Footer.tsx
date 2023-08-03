@@ -24,8 +24,9 @@ import {
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
 import { FC, ReactNode } from 'react';
-import { FaTwitter } from 'react-icons/fa';
+import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Address from './Address';
+import { CartesiTranparent } from './Icons';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
@@ -91,20 +92,21 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                 <Grid
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
-                        md: 'repeat(6, minmax(0, 1fr))',
+                        md: 'repeat(2, minmax(0, 1fr))',
+                        lg: 'repeat(12, minmax(0, 1fr))',
                     }}
                     gap={6}
                 >
-                    <Stack align="flex-start">
+                    <GridItem colSpan={2}>
                         <ListHeader>Resources & Security</ListHeader>
                         {links.map(({ label, href }, index) => (
                             <Link href={href} key={index} isExternal>
                                 {label}
                             </Link>
                         ))}
-                    </Stack>
+                    </GridItem>
 
-                    <GridItem colSpan={2} pl={{ base: 0, lg: 4 }}>
+                    <GridItem colSpan={4} pl={{ base: 0, lg: 4 }}>
                         <ListHeader>Support Center</ListHeader>
                         <SimpleGrid
                             columns={{ base: 1, md: 2 }}
@@ -118,12 +120,12 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                             ))}
                         </SimpleGrid>
                     </GridItem>
-                    <GridItem colSpan={2}>
+                    <GridItem colSpan={3}>
                         <ListHeader>Contracts</ListHeader>
                         {contracts
                             .filter(({ address }) => address)
                             .map(({ name, address }, index) => (
-                                <Box mt={4} mb={'-2'}>
+                                <Box mt={4} mb={'-2'} key={index}>
                                     <Address
                                         address={address ?? ''}
                                         name={name}
@@ -145,29 +147,53 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                 </Grid>
             </Container>
 
-            <Box>
-                <Container
-                    as={Stack}
-                    maxW={'100%'}
-                    py={4}
-                    direction={{ base: 'column', md: 'row' }}
-                    spacing={4}
-                    justify={{ md: 'space-between' }}
-                    align={{ md: 'center' }}
-                >
-                    <Text opacity={0.6}>
-                        © {new Date().getFullYear()} Cartesi Foundation Ltd. All
-                        rights reserved
-                    </Text>
+            <Grid
+                templateColumns={{
+                    base: 'repeat(1, 1fr)',
+                    lg: 'repeat(12, minmax(0, 1fr))',
+                }}
+                gap={4}
+            >
+                <GridItem colStart={10} colEnd={-1}>
                     <Stack direction={'row'} spacing={6}>
+                        <SocialButton
+                            label="Cartesi"
+                            href="https://cartesi.io/"
+                        >
+                            <CartesiTranparent />
+                        </SocialButton>
+                        <SocialButton
+                            label="Github"
+                            href="https://github.com/cartesi"
+                        >
+                            <FaGithub size={24} />
+                        </SocialButton>
+                        <SocialButton
+                            label="Discord"
+                            href="https://discord.gg/pfXMwXDDfW"
+                        >
+                            <FaDiscord size={24} />
+                        </SocialButton>
+                        <SocialButton
+                            label="Youtube"
+                            href="https://www.youtube.com/@Cartesiproject/featured"
+                        >
+                            <FaYoutube size={24} />
+                        </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <FaTwitter />
+                            <FaTwitter size={24} />
                         </SocialButton>
                     </Stack>
-                </Container>
+                </GridItem>
+            </Grid>
+            <Box py={4}>
+                <Text opacity={0.6}>
+                    © {new Date().getFullYear()} Cartesi Foundation Ltd. All
+                    rights reserved
+                </Text>
             </Box>
         </Box>
     );
