@@ -19,6 +19,30 @@ const defaultProps = {
         { label: 'Google', href: 'https://google.com' },
         { label: 'Amazon', href: 'https://amazon.com' },
     ],
+    general: [
+        {
+            label: 'About Us',
+            href: 'https://cartesi.io/about/',
+        },
+        {
+            label: 'Docs',
+            href: 'https://docs.cartesi.io/',
+        },
+    ],
+    support: [
+        {
+            label: `What's New`,
+            href: 'https://cartesi.io/blog/',
+        },
+        {
+            label: 'Support on Discord',
+            href: 'https://discord.com/invite/pfXMwXDDfW',
+        },
+        {
+            label: 'FAQ',
+            href: 'https://github.com/cartesi/noether/wiki/FAQ',
+        },
+    ],
     contracts: [
         {
             name: 'Contract A',
