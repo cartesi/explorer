@@ -9,12 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { waitFor, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { NextRouter, useRouter } from 'next/router';
 import { act } from 'react-dom/test-utils';
-import { withChakraTheme } from '../test-utilities';
 import Layout from '../../src/components/Layout';
+import { withChakraTheme } from '../test-utilities';
 
 const Component = withChakraTheme(Layout);
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+
+const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const defaultProps = {
     headerLinks: [
         {
@@ -26,6 +37,30 @@ const defaultProps = {
     footerLinks: [
         { label: 'Google', href: 'https://google.com' },
         { label: 'Amazon', href: 'https://amazon.com' },
+    ],
+    footerGeneral: [
+        {
+            label: 'About Us',
+            href: 'https://cartesi.io/about/',
+        },
+        {
+            label: 'Docs',
+            href: 'https://docs.cartesi.io/',
+        },
+    ],
+    footerSupport: [
+        {
+            label: `What's New`,
+            href: 'https://cartesi.io/blog/',
+        },
+        {
+            label: 'Support on Discord',
+            href: 'https://discord.com/invite/pfXMwXDDfW',
+        },
+        {
+            label: 'FAQ',
+            href: 'https://github.com/cartesi/noether/wiki/FAQ',
+        },
     ],
     footerContracts: [
         {
@@ -40,6 +75,16 @@ const defaultProps = {
 };
 
 describe('Layout component', () => {
+    beforeEach(() => {
+        mockUseRouter.mockReturnValue({
+            asPath: 'stake',
+        } as unknown as NextRouter);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     const renderComponent = (props = {}) =>
         render(
             <Component {...defaultProps} {...props}>

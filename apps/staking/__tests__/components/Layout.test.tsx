@@ -9,9 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { PoS, StakingImpl } from '@cartesi/pos';
+import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
+import { CartesiToken, SimpleFaucet } from '@cartesi/token';
+import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
 import { render, screen } from '@testing-library/react';
-import { StakingImpl, PoS } from '@cartesi/pos';
-import Layout, { headerLinks, footerLinks } from '../../src/components/Layout';
+import { NextRouter, useRouter } from 'next/router';
+import Layout, { footerLinks, headerLinks } from '../../src/components/Layout';
+import useMeta from '../../src/graphql/hooks/useMeta';
 import {
     useCartesiTokenContract,
     usePoSContract,
@@ -20,11 +25,7 @@ import {
     useStakingPoolFactoryContract,
     useWorkerManagerContract,
 } from '../../src/services/contracts';
-import useMeta from '../../src/graphql/hooks/useMeta';
 import { withChakraTheme } from '../test-utilities';
-import { CartesiToken, SimpleFaucet } from '@cartesi/token';
-import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
-import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
 
 jest.mock('../../src/services/contracts', () => {
     const original = jest.requireActual('../../src/services/contracts');
@@ -41,6 +42,14 @@ jest.mock('../../src/services/contracts', () => {
 });
 
 jest.mock('../../src/graphql/hooks/useMeta');
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
 
 const address = '0x2942aa4356783892c624125acfbbb80d29629a9d';
 const mockedUseCartesiTokenContract =
@@ -66,7 +75,7 @@ const mockedUseWorkerManagerContract =
         typeof useWorkerManagerContract
     >;
 const mockedUseMeta = useMeta as jest.MockedFunction<typeof useMeta>;
-
+const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const Component = withChakraTheme(Layout);
 
 describe('Layout component', () => {
@@ -90,6 +99,9 @@ describe('Layout component', () => {
             address,
         } as unknown as WorkerManagerAuthManagerImpl);
         mockedUseMeta.mockReturnValue(undefined);
+        mockUseRouter.mockReturnValue({
+            asPath: 'stake',
+        } as unknown as NextRouter);
     });
 
     afterEach(() => {
