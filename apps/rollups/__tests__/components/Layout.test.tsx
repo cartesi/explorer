@@ -10,17 +10,35 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { withChakraTheme } from '../test-utilities';
+import { NextRouter, useRouter } from 'next/router';
 import {
     PageLayout,
     Props,
-    headerLinks,
     footerLinks,
+    headerLinks,
 } from '../../src/components/Layout';
+import { withChakraTheme } from '../test-utilities';
 
 const Component = withChakraTheme<Props>(PageLayout);
-
+jest.mock('next/router', () => {
+    const originalModule = jest.requireActual('next/router');
+    return {
+        __esModule: true,
+        ...originalModule,
+        useRouter: jest.fn(),
+    };
+});
+const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 describe('PageLayout component', () => {
+    beforeEach(() => {
+        mockUseRouter.mockReturnValue({
+            asPath: 'stake',
+        } as unknown as NextRouter);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
     it('should render correct header links', () => {
         render(
             <Component>
