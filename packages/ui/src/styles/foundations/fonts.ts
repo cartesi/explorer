@@ -12,5 +12,4 @@
 export const fonts = {
     body: '"Inter", sans-serif',
     heading: '"Plus Jakarta Sans", sans-serif',
-    title: '"FK Grotesk", sans-serif',
 };

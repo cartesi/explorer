@@ -21,7 +21,6 @@ import {
     Wrap,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
-import { theme } from '@explorer/ui';
 import CTSIText from '../../components/CTSIText';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import { useBlockNumber } from '../../services/eth';
@@ -35,7 +34,6 @@ const HomeHeader = () => {
     const { stakedBalance } = useStaking(account);
     const poolBalance = useTotalPoolBalance(account);
     const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
-    const fontFamily = theme.fonts.title;
 
     return (
         <Box
@@ -49,12 +47,7 @@ const HomeHeader = () => {
             px={{ base: '6vw', xl: '12vw' }}
         >
             <Stack alignItems="flex-start" direction="column">
-                <Heading
-                    as="h1"
-                    fontSize={['4xl', '5xl']}
-                    fontFamily={fontFamily}
-                    fontWeight={500}
-                >
+                <Heading as="h1" fontSize={['4xl', '5xl']} fontWeight={500}>
                     Explorer
                 </Heading>
             </Stack>
@@ -72,14 +65,8 @@ const HomeHeader = () => {
                     value={balance}
                     pt={{ base: 4, md: 0 }}
                     pr={{ base: 2, sm: 10, md: 16 }}
-                    fontFamily={fontFamily}
                 >
-                    <Text
-                        color="white"
-                        mb={2}
-                        fontFamily={fontFamily}
-                        fontWeight={500}
-                    >
+                    <Text color="white" mb={2} fontWeight={500}>
                         Wallet Balance
                     </Text>
                 </CTSIText>
@@ -87,9 +74,8 @@ const HomeHeader = () => {
                 <CTSIText
                     value={stakedBalance.add(poolBalance)}
                     pt={{ base: 4, md: 0 }}
-                    fontFamily={fontFamily}
                 >
-                    <HStack mb={2} fontFamily={fontFamily} fontWeight={500}>
+                    <HStack mb={2} fontWeight={500}>
                         <Text color="white">Staked Balance</Text>
                         <Tooltip
                             label="This includes direct staking and pool staking."
