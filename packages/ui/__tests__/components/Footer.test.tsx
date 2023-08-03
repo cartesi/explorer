@@ -31,16 +31,12 @@ const defaultProps = {
     ],
     support: [
         {
-            label: `What's New`,
-            href: 'https://cartesi.io/blog/',
+            label: 'About Us',
+            href: 'https://cartesi.io/about/',
         },
         {
-            label: 'Support on Discord',
-            href: 'https://discord.com/invite/pfXMwXDDfW',
-        },
-        {
-            label: 'FAQ',
-            href: 'https://github.com/cartesi/noether/wiki/FAQ',
+            label: 'Docs',
+            href: 'https://docs.cartesi.io/',
         },
     ],
     contracts: [

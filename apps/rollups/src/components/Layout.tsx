@@ -36,6 +36,28 @@ export const footerLinks = [
     },
 ];
 
+export const footerSupport = [
+    {
+        label: 'About Us',
+        href: 'https://cartesi.io/about/',
+    },
+    {
+        label: 'Docs',
+        href: 'https://docs.cartesi.io/',
+    },
+];
+
+export const footerGeneral = [
+    {
+        label: 'About Us',
+        href: 'https://cartesi.io/about/',
+    },
+    {
+        label: 'Docs',
+        href: 'https://docs.cartesi.io/',
+    },
+];
+
 export const PageLayout: FC<Props> = ({ children }) => {
     const rollupsFactory = useRollupsFactory();
     const contracts: FooterContract[] = [
@@ -49,6 +71,8 @@ export const PageLayout: FC<Props> = ({ children }) => {
         <Layout
             headerLinks={headerLinks}
             footerLinks={footerLinks}
+            footerSupport={footerSupport}
+            footerGeneral={footerGeneral}
             footerContracts={contracts}
         >
             {children}
