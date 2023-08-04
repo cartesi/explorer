@@ -27,19 +27,20 @@ export interface IPoolBreadcrumbsProps {
 export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
     const router = useRouter();
     const address = router.query.pool as string;
-    const bg = useColorModeValue('transparent', 'dark.gray.quaternary');
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
 
     return (
         <Box
             px={{ base: '6vw', xl: '12vw' }}
             py={3}
-            shadow="sm"
+            boxShadow="sm"
             fontSize="sm"
             display={{
                 base: 'none',
                 lg: 'block',
             }}
             backgroundColor={bg}
+            marginBottom="0.05rem"
         >
             <Breadcrumb>
                 <BreadcrumbItem>
