@@ -10,7 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Box, Td, Tr, useColorModeValue, Link } from '@chakra-ui/react';
+import {
+    Box,
+    Td,
+    Tr,
+    useColorModeValue,
+    Link,
+    TableCellProps,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { PoolBalance } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
@@ -31,8 +38,6 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     balance,
     keepActionColVisible,
 }) => {
-    const borderColor = useColorModeValue('gray.100', 'header');
-    const stakeInfoBg = useColorModeValue('white', 'gray.800');
     const percentFormatter = new Intl.NumberFormat('en-US', {
         style: 'percent',
         minimumFractionDigits: 0,
@@ -46,45 +51,85 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     } = useStakingPool(address, account);
     const stakedBalance = sharesToAmount(stakedShares);
 
+    const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
+    const backgroundHoverColor = useColorModeValue(
+        'white',
+        'dark.gray.primary'
+    );
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
+    const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
+    const linkColor = useColorModeValue('gray.900', 'dark.primary');
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const addressTextDecoration = useColorModeValue('none', 'underline');
+    const addressBackground = useColorModeValue('blue.50', 'transparent');
+    const stakeInfoBg = useColorModeValue('white', 'dark.gray.primary');
+    const tdProps: TableCellProps = {
+        borderColor,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
+
     return (
-        <Tr key={balance.pool.id} data-testid="user-staking-pools-table-row">
-            <Td borderColor={borderColor} data-testid="address-col">
+        <Tr
+            key={balance.pool.id}
+            data-testid="user-staking-pools-table-row"
+            bg={backgroundColor}
+            _hover={{ backgroundColor: backgroundHoverColor }}
+        >
+            <Td
+                borderColor={borderColor}
+                data-testid="address-col"
+                {...tdProps}
+            >
                 <Address
                     ens
                     address={balance.pool.id}
                     chainId={chainId}
                     truncated
                     size="md"
-                    bg="blue.50"
                     px="0.5rem"
                     py="0.25rem"
-                    color="gray.900"
                     minWidth="120px"
+                    textDecoration={addressTextDecoration}
+                    color={addressColor}
+                    bg={addressBackground}
                     shouldDisplayFallbackAvatar
                 />
             </Td>
-            <Td isNumeric borderColor={borderColor} data-testid="unstaked-col">
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="unstaked-col"
+                {...tdProps}
+            >
                 {formatCTSI(unstakedBalance, 2)} CTSI
             </Td>
-            <Td isNumeric borderColor={borderColor} data-testid="staked-col">
+            <Td
+                isNumeric
+                borderColor={borderColor}
+                data-testid="staked-col"
+                {...tdProps}
+            >
                 {formatCTSI(stakedBalance, 2)} CTSI
             </Td>
             <Td
                 isNumeric
                 borderColor={borderColor}
                 data-testid="percentage-col"
+                {...tdProps}
             >
                 {percentFormatter.format(userShare(balance))}
             </Td>
             <Td
                 isNumeric
-                borderColor={borderColor}
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
+                maxWidth="132px"
                 backgroundColor={stakeInfoBg}
                 padding={0}
                 data-testid="stake-info-col"
+                {...tdProps}
             >
                 <Box
                     transition="all 0.2s ease-in"
@@ -99,7 +144,13 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     ml="auto"
                 >
                     <NextLink href={`/stake/${balance.pool.id}`} passHref>
-                        <Link data-testid="stake-info-link">
+                        <Link
+                            data-testid="stake-info-link"
+                            color={linkColor}
+                            _hover={{
+                                color: linkHoverColor,
+                            }}
+                        >
                             <StakeIcon w={8} h={8} />
                         </Link>
                     </NextLink>

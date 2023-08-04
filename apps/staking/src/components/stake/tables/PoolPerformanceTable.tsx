@@ -15,6 +15,7 @@ import {
     HStack,
     Spinner,
     Table,
+    TableColumnHeaderProps,
     Tbody,
     Td,
     Text,
@@ -24,7 +25,7 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { GhostButton } from '@explorer/ui';
+import { GhostButton, theme } from '@explorer/ui';
 import { FC, useRef } from 'react';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
@@ -52,63 +53,114 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const thRef = useRef<HTMLTableCellElement>();
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
-    const borderColor = useColorModeValue('white', 'gray.700');
     const colSpans = 11;
+    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
+
+    const thProps: TableColumnHeaderProps = {
+        borderColor: topBorderColor,
+        bg: headerColor,
+        textTransform: 'none',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+        paddingTop: 2,
+        paddingBottom: 2,
+    };
+
     return (
-        <TableResponsiveHolder ref={tableRef}>
+        <TableResponsiveHolder
+            ref={tableRef}
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="3px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>Pool Address</Th>
+                        <Th {...thProps}>Pool Address</Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
-                                    marginRight={'2'}
-                                    fontSize="xs"
-                                    fontWeight="bold"
-                                    _hover={{ color: 'blue.400' }}
+                                    height="auto"
+                                    fontSize="md"
+                                    fontWeight={400}
+                                    textTransform="none"
+                                    _hover={{ color: buttonHoverColor }}
+                                    fontFamily={theme.fonts.body}
                                     onClick={() => onSort('totalUsers')}
                                 >
                                     Total Users
                                 </GhostButton>
-                                {sort == 'totalUsers' && <ArrowDownIcon />}
+                                {sort == 'totalUsers' && (
+                                    <ArrowDownIcon
+                                        marginLeft={4}
+                                        width={5}
+                                        height={5}
+                                    />
+                                )}
                             </Flex>
                         </Th>
 
-                        <Th isNumeric>
+                        <Th isNumeric {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
-                                    marginRight={'2'}
-                                    fontSize="xs"
-                                    fontWeight="bold"
-                                    _hover={{ color: 'blue.400' }}
+                                    height="auto"
+                                    fontSize="md"
+                                    fontWeight={400}
+                                    textTransform="none"
+                                    _hover={{ color: buttonHoverColor }}
+                                    fontFamily={theme.fonts.body}
                                     onClick={() => onSort('amount')}
                                 >
                                     Total Staked
                                 </GhostButton>
-                                {sort == 'amount' && <ArrowDownIcon />}
+                                {sort == 'amount' && (
+                                    <ArrowDownIcon
+                                        marginLeft={4}
+                                        width={5}
+                                        height={5}
+                                    />
+                                )}
                             </Flex>
                         </Th>
 
-                        <Th isNumeric>Total Rewards</Th>
+                        <Th isNumeric {...thProps}>
+                            Total Rewards
+                        </Th>
 
-                        <Th isNumeric whiteSpace="nowrap" data-testid="">
+                        <Th
+                            isNumeric
+                            whiteSpace="nowrap"
+                            data-testid=""
+                            {...thProps}
+                        >
                             <Text whiteSpace="nowrap">7-days % (Annual)</Text>
                         </Th>
 
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             <Text whiteSpace="nowrap">30-days % (Annual)</Text>
                         </Th>
 
-                        <Th>Configured Commission</Th>
-                        <Th>
+                        <Th {...thProps}>Configured Commission</Th>
+                        <Th {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
-                                    marginRight={'2'}
-                                    fontSize="xs"
-                                    fontWeight="bold"
-                                    _hover={{ color: 'blue.400' }}
+                                    height="auto"
+                                    fontSize="md"
+                                    fontWeight={400}
+                                    textTransform="none"
+                                    _hover={{ color: buttonHoverColor }}
+                                    fontFamily={theme.fonts.body}
                                     onClick={() =>
                                         onSort('commissionPercentage')
                                     }
@@ -116,12 +168,21 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Accrued Commission
                                 </GhostButton>{' '}
                                 {sort == 'commissionPercentage' && (
-                                    <ArrowDownIcon />
+                                    <ArrowDownIcon
+                                        marginLeft={4}
+                                        width={5}
+                                        height={5}
+                                    />
                                 )}
                             </Flex>
                         </Th>
 
-                        <Th isNumeric position="initial" ref={thRef}>
+                        <Th
+                            isNumeric
+                            position="initial"
+                            ref={thRef}
+                            {...thProps}
+                        >
                             {stakeText}
                         </Th>
                         {threshold.isBelow && (
@@ -138,6 +199,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 alignItems="center"
                                 borderColor={borderColor}
                                 borderBottomWidth={[0, '1px', 0, 0]}
+                                {...thProps}
                             >
                                 <SlideInOut display={true}>
                                     {stakeText}

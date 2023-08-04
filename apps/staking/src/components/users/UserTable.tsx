@@ -67,8 +67,8 @@ const UserTable: FC<UserTableProps> = ({
                 <Thead>
                     <Tr>
                         <Th
-                            paddingTop={0}
-                            paddingBottom={0}
+                            paddingTop={2}
+                            paddingBottom={2}
                             borderColor={topBorderColor}
                             bg={headerColor}
                             textTransform="none"
@@ -80,8 +80,8 @@ const UserTable: FC<UserTableProps> = ({
                         </Th>
 
                         <Th
-                            paddingTop={0}
-                            paddingBottom={0}
+                            paddingTop={2}
+                            paddingBottom={2}
                             borderColor={topBorderColor}
                             bg={headerColor}
                             isNumeric
@@ -106,8 +106,8 @@ const UserTable: FC<UserTableProps> = ({
                         </Th>
 
                         <Th
-                            paddingTop={0}
-                            paddingBottom={0}
+                            paddingTop={2}
+                            paddingBottom={2}
                             borderColor={topBorderColor}
                             bg={headerColor}
                             isNumeric
@@ -132,8 +132,8 @@ const UserTable: FC<UserTableProps> = ({
                         </Th>
 
                         <Th
-                            paddingTop={0}
-                            paddingBottom={0}
+                            paddingTop={2}
+                            paddingBottom={2}
                             borderColor={topBorderColor}
                             bg={headerColor}
                             isNumeric
@@ -165,8 +165,8 @@ const UserTable: FC<UserTableProps> = ({
                             style={{ textAlign: 'center' }}
                             bg={headerColor}
                             borderColor={topBorderColor}
-                            paddingTop={0}
-                            paddingBottom={0}
+                            paddingTop={2}
+                            paddingBottom={2}
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}

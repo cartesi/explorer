@@ -24,7 +24,7 @@ import {
     useColorModeValue,
     TableColumnHeaderProps,
 } from '@chakra-ui/react';
-import { PoolBalance } from '../../../graphql/models';
+import { PoolBalance, PoolUser, StakingPool } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
@@ -59,7 +59,6 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
         'transparent',
         'dark.gray.quinary'
     );
-    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
         bg: headerColor,
