@@ -104,7 +104,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
     });
 
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
-    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
 
     return (
         <Layout>
