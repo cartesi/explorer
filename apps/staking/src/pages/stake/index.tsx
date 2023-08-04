@@ -19,11 +19,7 @@ import {
 import { useWallet } from '@explorer/wallet';
 import { constants } from 'ethers';
 import { useState } from 'react';
-import Layout, {
-    PageBody,
-    PageHeader,
-    PagePanel,
-} from '../../components/Layout';
+import Layout, { PageBody, PagePanel } from '../../components/Layout';
 import PageHead from '../../components/PageHead';
 import SearchInput from '../../components/SearchInput';
 import PoolPerformance from '../../components/stake/PoolPerformance';
@@ -39,8 +35,7 @@ const Home = () => {
     const summary = useSummary();
     const balances = usePoolBalances(account || constants.AddressZero);
     const poolBalance = useTotalPoolBalance(account);
-    const bodyBg = useColorModeValue('gray.80', 'header');
-    const stakingPoolsBg = useColorModeValue('white', 'gray.800');
+    const stakingPoolsBg = useColorModeValue('white', 'dark.gray.primary');
     const [search, setSearch] = useState<string>();
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
