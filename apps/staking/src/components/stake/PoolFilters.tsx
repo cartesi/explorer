@@ -47,9 +47,11 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     selectedTypes,
     onSelectedTypesChange,
 }) => {
-    const checkedBg = useColorModeValue('gray.50', 'gray.600');
+    const checkedBg = useColorModeValue('gray.50', 'dark.gray.secondary');
     const badgeBg = useColorModeValue('blue.200', 'dark.gray.quaternary');
     const badgeColor = useColorModeValue('gray.900', 'white');
+    const menuBg = useColorModeValue('white', 'dark.gray.secondary');
+    const checkboxColorScheme = useColorModeValue('blue', 'gray');
 
     return (
         <Stack
@@ -77,7 +79,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                         </HStack>
                     </MenuButton>
 
-                    <MenuList p={4} backgroundColor={badgeBg}>
+                    <MenuList p={4} backgroundColor={menuBg}>
                         {filters.map((filter, index) => (
                             <Fragment key={index}>
                                 <MenuGroup>
@@ -101,6 +103,9 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                     checkedBg,
                                                             }}
                                                             spacing={0}
+                                                            colorScheme={
+                                                                checkboxColorScheme
+                                                            }
                                                             py={2}
                                                             px={4}
                                                             w="100%"
@@ -151,6 +156,9 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                 w="100%"
                                                                 flexDirection="row-reverse"
                                                                 justifyContent="space-between"
+                                                                colorScheme={
+                                                                    checkboxColorScheme
+                                                                }
                                                                 value={
                                                                     option.value
                                                                 }
