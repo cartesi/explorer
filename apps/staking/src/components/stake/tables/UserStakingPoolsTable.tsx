@@ -21,12 +21,15 @@ import {
     HStack,
     Spinner,
     useBreakpointValue,
+    useColorModeValue,
+    TableColumnHeaderProps,
 } from '@chakra-ui/react';
 import { PoolBalance } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
 import { SlideInOut } from '../../animation/SlideInOut';
+import { theme } from '@explorer/ui';
 
 export interface UserStakingPoolsTableProps {
     chainId: number;
@@ -47,21 +50,56 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     const thRef = useRef<HTMLTableCellElement>();
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
+    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
+    const thProps: TableColumnHeaderProps = {
+        borderColor: topBorderColor,
+        bg: headerColor,
+        textTransform: 'none',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+    };
 
     return (
-        <TableResponsiveHolder ref={tableRef}>
+        <TableResponsiveHolder
+            ref={tableRef}
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="3px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>Pool Address</Th>
-                        <Th isNumeric>Unstaked</Th>
-                        <Th isNumeric>Staked</Th>
-                        <Th isNumeric>% Pool</Th>
-                        <Th isNumeric ref={thRef}>
+                        <Th {...thProps}>Pool Address</Th>
+                        <Th isNumeric {...thProps}>
+                            Unstaked
+                        </Th>
+                        <Th isNumeric {...thProps}>
+                            Staked
+                        </Th>
+                        <Th isNumeric {...thProps}>
+                            % Pool
+                        </Th>
+                        <Th isNumeric ref={thRef} {...thProps}>
                             {stakeText}
                         </Th>
                         {threshold.isBelow && (
-                            <Th isNumeric position="sticky" top={0} right={0}>
+                            <Th
+                                isNumeric
+                                position="sticky"
+                                top={0}
+                                right={0}
+                                {...thProps}
+                            >
                                 <SlideInOut display={true}>
                                     {stakeText}
                                 </SlideInOut>
