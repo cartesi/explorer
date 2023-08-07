@@ -30,6 +30,7 @@ export const colors = {
     light: {
         gray: {
             primary: '#232222',
+            quarternary: '#39383C',
         },
         support: {
             alert: '#FFA030',
@@ -72,7 +73,7 @@ export const colors = {
     },
     cyan: {
         primary: '#00F6FF',
-        200: '#00F6FF',
+        secondary: '#75FBFF',
     },
     blue: {
         50: '#E1EBFF',
