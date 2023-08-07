@@ -86,11 +86,16 @@ export const Button = {
             }
             if (props.colorScheme === 'cyan') {
                 return {
-                    bg: 'cyan.secondary',
+                    bg: 'cyan.primary',
                     color: 'dark.gray.primary',
                     textTransform: 'uppercase',
+                    borderWidth: '1px',
+                    borderColor:
+                        props.colorMode === 'dark'
+                            ? 'white'
+                            : 'light.gray.quarternary',
                     _hover: {
-                        bg: '#76FAFF',
+                        bg: 'cyan.secondary',
                     },
                 };
             }

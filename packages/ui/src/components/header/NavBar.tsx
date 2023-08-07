@@ -22,7 +22,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
-// import NextLink from 'next/link';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, ReactNode } from 'react';
 import { Account } from './Account';
@@ -40,39 +40,40 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
     const router = useRouter();
     const isActive = router.asPath === href;
     return (
-        <Link
-            position={'relative'}
-            px={2}
-            py={1}
-            href={href}
-            aria-current={isActive ? 'page' : undefined}
-            _hover={{
-                _after: {
-                    content: '""',
-                    bottom: '-5px',
-                    transform: 'translateX(-50%)',
-                    left: '50%',
-                    position: 'absolute',
-                    width: 'calc(100% - 16px)',
-                    height: '0.3125rem',
-                    bg: 'teal.support',
-                },
-            }}
-            _activeLink={{
-                _after: {
-                    content: '""',
-                    bottom: '-5px',
-                    transform: 'translateX(-50%)',
-                    left: '50%',
-                    position: 'absolute',
-                    width: 'calc(100% - 16px)',
-                    height: '0.3125rem',
-                    bg: 'teal.support',
-                },
-            }}
-        >
-            {children}
-        </Link>
+        <NextLink href={href} passHref>
+            <Link
+                position={'relative'}
+                px={2}
+                py={1}
+                aria-current={isActive ? 'page' : undefined}
+                _hover={{
+                    _after: {
+                        content: '""',
+                        bottom: '-5px',
+                        transform: 'translateX(-50%)',
+                        left: '50%',
+                        position: 'absolute',
+                        width: 'calc(100% - 16px)',
+                        height: '0.3125rem',
+                        bg: 'teal.support',
+                    },
+                }}
+                _activeLink={{
+                    _after: {
+                        content: '""',
+                        bottom: '-5px',
+                        transform: 'translateX(-50%)',
+                        left: '50%',
+                        position: 'absolute',
+                        width: 'calc(100% - 16px)',
+                        height: '0.3125rem',
+                        bg: 'teal.support',
+                    },
+                }}
+            >
+                {children}
+            </Link>
+        </NextLink>
     );
 };
 
