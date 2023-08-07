@@ -10,7 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FunctionComponent } from 'react';
-import { Heading, HStack, StackProps } from '@chakra-ui/react';
+import {
+    Heading,
+    HStack,
+    StackProps,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
 export interface PageHeaderProps extends StackProps {
     title: string;
@@ -18,13 +23,15 @@ export interface PageHeaderProps extends StackProps {
 
 const PageHeader: FunctionComponent<PageHeaderProps> = (props) => {
     const { title, children, ...rest } = props;
+    const bg = useColorModeValue('gray.900', 'dark.gray.tertiary');
+
     return (
         <HStack
             w="100%"
             px="6vw"
             py="5"
             color="white"
-            bg="gray.900"
+            bg={bg}
             justify="space-between"
             {...rest}
         >
