@@ -12,6 +12,7 @@
 import {
     Box,
     Container,
+    Flex,
     Grid,
     GridItem,
     Link,
@@ -99,11 +100,13 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                 >
                     <GridItem colSpan={2}>
                         <ListHeader>Resources & Security</ListHeader>
-                        {links.map(({ label, href }, index) => (
-                            <Link href={href} key={index} isExternal>
-                                {label}
-                            </Link>
-                        ))}
+                        <Flex direction={'column'} marginTop={4} gap={2}>
+                            {links.map(({ label, href }, index) => (
+                                <Link href={href} key={index} isExternal>
+                                    {label}
+                                </Link>
+                            ))}
+                        </Flex>
                     </GridItem>
 
                     <GridItem colSpan={4} pl={{ base: 0, lg: 4 }}>
@@ -120,7 +123,7 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                             ))}
                         </SimpleGrid>
                     </GridItem>
-                    <GridItem colSpan={3}>
+                    <GridItem colSpan={{ base: 4, lg: 3 }}>
                         <ListHeader>Contracts</ListHeader>
                         {contracts
                             .filter(({ address }) => address)
