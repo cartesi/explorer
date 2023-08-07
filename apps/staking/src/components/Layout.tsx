@@ -79,12 +79,8 @@ export const footerSupport = [
         href: 'https://github.com/cartesi/noether/wiki/FAQ',
     },
     {
-        label: 'User Idea',
+        label: 'Governance',
         href: 'https://governance.cartesi.io/',
-    },
-    {
-        label: 'Video Guide',
-        href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
     },
 ];
 
