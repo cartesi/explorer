@@ -104,7 +104,7 @@ export const colors = {
         secondary: '#008DA5',
         gray: {
             primary: '#161618',
-            secondary: '#1c1b1f',
+            secondary: '#1C1B1F',
             tertiary: '#232226',
             quaternary: '#39383C',
             quinary: 'rgba(241, 242, 245, 0.5)',
