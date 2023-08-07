@@ -27,7 +27,7 @@ export const headerLinks = [{ href: '/', key: 'home', label: 'Home' }];
 
 export const footerLinks = [
     {
-        label: 'The Blockchain OS',
+        label: 'Cartesi Platform',
         href: 'https://docs.cartesi.io/new-to-cartesi/overview/',
     },
     {
@@ -38,12 +38,16 @@ export const footerLinks = [
 
 export const footerSupport = [
     {
-        label: 'About Us',
-        href: 'https://cartesi.io/about/',
+        label: `What's New`,
+        href: 'https://cartesi.io/blog/',
     },
     {
-        label: 'Docs',
-        href: 'https://docs.cartesi.io/',
+        label: 'Support on Discord',
+        href: 'https://discord.com/invite/pfXMwXDDfW',
+    },
+    {
+        label: 'Governance',
+        href: 'https://governance.cartesi.io/',
     },
 ];
 
