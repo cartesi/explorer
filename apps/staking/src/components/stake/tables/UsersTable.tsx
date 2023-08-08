@@ -20,10 +20,13 @@ import {
     Thead,
     HStack,
     Spinner,
+    useColorModeValue,
+    TableCellProps,
 } from '@chakra-ui/react';
 import UsersTableRow from './UsersTableRow';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
+import { theme } from '@explorer/ui';
 
 export interface UsersTableProps {
     chainId: number;
@@ -34,17 +37,44 @@ export interface UsersTableProps {
 const UsersTable: FC<UsersTableProps> = (props) => {
     const { chainId, data, loading } = props;
     const hasItems = data?.length > 0;
+    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+    const thProps: TableCellProps = {
+        paddingTop: 4,
+        paddingBottom: 4,
+        fontFamily: theme.fonts.body,
+        fontWeight: 400,
+        fontSize: 'md',
+        textTransform: 'none',
+        borderColor: topBorderColor,
+        bg: headerColor,
+    };
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="3px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>User</Th>
-                        <Th>Stake Since</Th>
-                        <Th>Total Staked</Th>
-                        <Th isNumeric>Shares</Th>
-                        <Th isNumeric>Accumulated Shares</Th>
+                        <Th {...thProps}>User</Th>
+                        <Th {...thProps}>Stake Since</Th>
+                        <Th {...thProps}>Total Staked</Th>
+                        <Th isNumeric {...thProps}>
+                            Shares
+                        </Th>
+                        <Th isNumeric {...thProps}>
+                            Accumulated Shares
+                        </Th>
                     </Tr>
                 </Thead>
 

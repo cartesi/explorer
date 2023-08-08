@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
     Box,
@@ -47,6 +47,7 @@ import {
     getENSStaticProps,
     getPoolsStaticPaths,
 } from '../../../utils/staticGeneration';
+import PerPageSelect from '../../../components/PerPageSelect';
 
 export async function getStaticPaths() {
     return getPoolsStaticPaths();
@@ -66,8 +67,9 @@ export interface AugmentedPoolBalance extends PoolBalance {
 }
 
 const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
-    const bg = useColorModeValue('gray.80', 'header');
-    const sectionBg = useColorModeValue('white', 'gray.800');
+    const pageBg = useColorModeValue('white', 'dark.gray.quaternary');
+    const bg = useColorModeValue('gray.80', 'dark.gray.quaternary');
+    const sectionBg = useColorModeValue('white', 'dark.gray.primary');
     const { account, chainId } = useWallet();
     const router = useRouter();
     const address = router.query.pool as string;
@@ -227,7 +229,7 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     }, [stakingPoolUserHistories.data?.stakingPoolUserHistories]);
 
     return (
-        <Layout>
+        <Layout bg={pageBg}>
             <PageHead
                 title={`Pool users - ${formattedAddress}`}
                 description={`Pool users - ${formattedAddress}`}
@@ -349,58 +351,27 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
                                     justifyContent="flex-end"
                                     alignItems={{
                                         base: 'flex-end',
-                                        md: 'flex-start',
+                                        md: 'center',
                                     }}
                                     width="100%"
                                     mt="var(--chakra-space-12) !important"
                                     overflowX="auto"
                                     py={1}
                                 >
-                                    <HStack
-                                        mr={{ base: 0, md: 12 }}
-                                        mb={{ base: 4, md: 0 }}
-                                    >
-                                        <Text
-                                            fontSize={{
-                                                base: 'xs',
-                                                sm: 'sm',
-                                                md: 'md',
-                                            }}
-                                        >
-                                            Rows per page
-                                        </Text>
-                                        <Select
-                                            value={rowsPerPage}
-                                            width="4.625rem"
-                                            borderLeft="none"
-                                            borderTop="none"
-                                            borderRight="none"
-                                            borderRadius={0}
-                                            fontSize={{
-                                                base: 'xs',
-                                                sm: 'sm',
-                                                md: 'md',
-                                            }}
-                                            onChange={(event) => {
-                                                setRowsPerPage(
-                                                    Number(
-                                                        event.currentTarget
-                                                            .value
-                                                    )
-                                                );
-                                                setPageNumber(0);
-                                            }}
-                                        >
-                                            {options.map((option) => (
-                                                <option
-                                                    key={`rows-per-page-${option}`}
-                                                    value={option}
-                                                >
-                                                    {option}
-                                                </option>
-                                            ))}
-                                        </Select>
-                                    </HStack>
+                                    <PerPageSelect
+                                        value={rowsPerPage}
+                                        options={options}
+                                        onChange={(
+                                            event: ChangeEvent<HTMLSelectElement>
+                                        ) => {
+                                            setRowsPerPage(
+                                                Number(
+                                                    event.currentTarget.value
+                                                )
+                                            );
+                                            setPageNumber(0);
+                                        }}
+                                    />
 
                                     <Pagination
                                         pages={totalPages}

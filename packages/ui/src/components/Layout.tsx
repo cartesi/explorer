@@ -13,6 +13,7 @@ import {
     Box,
     Center,
     Flex,
+    FlexProps,
     StackProps,
     Text,
     useBreakpointValue,
@@ -75,14 +76,14 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
     </VStack>
 );
 
-export type LayoutProps = {
+export interface LayoutProps extends FlexProps {
     headerLinks: HeaderLink[];
     footerLinks: FooterLink[];
     footerSupport: FooterLink[];
     footerGeneral: FooterLink[];
     footerContracts: FooterContract[];
     children: React.ReactNode;
-};
+}
 
 const Layout: FC<LayoutProps> = ({
     children,
@@ -91,9 +92,16 @@ const Layout: FC<LayoutProps> = ({
     footerSupport,
     footerGeneral,
     footerContracts,
+    ...restProps
 }) => {
     return (
-        <Flex direction="column" align="center" m="0 auto" minHeight="100vh">
+        <Flex
+            direction="column"
+            align="center"
+            m="0 auto"
+            minHeight="100vh"
+            {...restProps}
+        >
             <Header links={headerLinks} />
             <Box width="100%" paddingTop="100px">
                 {children}
