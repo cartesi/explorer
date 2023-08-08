@@ -20,10 +20,11 @@ import {
     useWorkerManagerContract,
 } from '../services/contracts';
 import SyncStatus from './SyncStatus';
+import { FlexProps } from '@chakra-ui/react';
 
 export { PageBody, PageHeader, PagePanel };
 
-interface ComponentProps {
+interface ComponentProps extends FlexProps {
     children: React.ReactNode;
 }
 
@@ -95,7 +96,7 @@ export const footerGeneral = [
     },
 ];
 
-const PageLayout: FC<ComponentProps> = ({ children }) => {
+const PageLayout: FC<ComponentProps> = ({ children, ...restProps }) => {
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
     const faucet = useSimpleFaucetContract();
@@ -137,6 +138,7 @@ const PageLayout: FC<ComponentProps> = ({ children }) => {
             footerSupport={footerSupport}
             footerGeneral={footerGeneral}
             footerLinks={footerLinks}
+            {...restProps}
         >
             <>
                 <SyncStatus />
