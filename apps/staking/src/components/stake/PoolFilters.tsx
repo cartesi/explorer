@@ -48,10 +48,11 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     onSelectedTypesChange,
 }) => {
     const checkedBg = useColorModeValue('gray.50', 'dark.gray.secondary');
-    const badgeBg = useColorModeValue('blue.200', 'dark.gray.quaternary');
-    const badgeColor = useColorModeValue('gray.900', 'white');
+    const badgeBg = useColorModeValue('blue.200', 'white');
+    const badgeColor = 'gray.900';
     const menuBg = useColorModeValue('white', 'dark.gray.secondary');
     const checkboxColorScheme = useColorModeValue('blue', 'gray');
+    const radioColorScheme = useColorModeValue('blue', 'cyan');
 
     return (
         <Stack
@@ -157,7 +158,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                 flexDirection="row-reverse"
                                                                 justifyContent="space-between"
                                                                 colorScheme={
-                                                                    checkboxColorScheme
+                                                                    radioColorScheme
                                                                 }
                                                                 value={
                                                                     option.value
