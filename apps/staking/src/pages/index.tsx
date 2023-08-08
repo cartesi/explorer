@@ -17,7 +17,6 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
-import { theme } from '@explorer/ui';
 import { useState } from 'react';
 import BlockMiniCard from '../components/block/BlockMiniCard';
 import Layout from '../components/Layout';
