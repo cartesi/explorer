@@ -54,8 +54,7 @@ export const StakingTabNavigation: FC = () => {
                             bg,
                             color,
                         }}
-                        borderTopLeftRadius="0.6rem"
-                        borderTopRightRadius="0.6rem"
+                        borderRadius="0.6rem 0.6rem 0 0"
                         leftIcon={<tab.Icon w="24px" h="24px" />}
                         isActive={tab.isActive}
                         variant={tab.variant}
