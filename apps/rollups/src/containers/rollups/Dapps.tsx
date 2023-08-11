@@ -123,7 +123,7 @@ export const dappsFilterOptions = [
 
 export const DappsFilters: FC<DappsFiltersProps> = (props) => {
     const { orderBy, fetching, onChangeSearch, onChangeOrderBy } = props;
-    const dappsBodyBg = useColorModeValue('white', 'gray.700');
+    const dappsBodyBg = useColorModeValue('white', 'dark.gray.quaternary');
 
     return (
         <HStack

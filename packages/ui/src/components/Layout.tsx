@@ -94,6 +94,7 @@ const Layout: FC<LayoutProps> = ({
     footerContracts,
     ...restProps
 }) => {
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
     return (
         <Flex
             direction="column"
@@ -103,7 +104,7 @@ const Layout: FC<LayoutProps> = ({
             {...restProps}
         >
             <Header links={headerLinks} />
-            <Box width="100%" paddingTop="100px">
+            <Box width="100%" paddingTop="100px" bg={bg}>
                 {children}
             </Box>
             <Footer

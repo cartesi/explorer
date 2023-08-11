@@ -11,11 +11,23 @@
 
 export const Table = {
     variants: {
-        simple: {
-            th: {
-                backgroundColor: 'gray.900',
-                color: 'white',
-            },
+        simple: (props: { colorMode: string }) => {
+            return {
+                th: {
+                    backgroundColor: 'dark.gray.secondary',
+                    color: 'white',
+                    borderColor:
+                        props.colorMode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.5)'
+                            : 'light.gray.primary',
+                },
+                td: {
+                    borderColor:
+                        props.colorMode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.5)'
+                            : 'light.gray.primary',
+                },
+            };
         },
         clear: {},
     },
