@@ -16,7 +16,6 @@ import {
     Button,
     Heading,
     HStack,
-    Link,
     Spinner,
     Stack,
     Table,
@@ -30,7 +29,7 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import { Notification, Address, GhostButton, PencilIcon } from '@explorer/ui';
+import { Address, GhostButton, Notification, PencilIcon } from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
@@ -77,7 +76,7 @@ const NodeStatus = ({ ownerAddress }: { ownerAddress: string }) => {
 const PoolTable = ({ data }: Props) => {
     const [sortBy, setSortBy] = useAtom(poolSortByAtom);
     const [loading] = useAtom(poolDataFetchingAtom);
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
 
     return (
         <TableResponsiveHolder>
@@ -135,7 +134,7 @@ const PoolTable = ({ data }: Props) => {
                         <Th isNumeric whiteSpace="nowrap">
                             Block Produced
                         </Th>
-                        <Th position="sticky" right="0">
+                        <Th position="sticky" right="0" bg={bg}>
                             Manage
                         </Th>
                     </Tr>
@@ -227,7 +226,8 @@ interface PoolTableInfoProps {
 
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForStakingPool';
 const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const bgNotif = useColorModeValue('white', 'dark.gray.quaternary');
     const [pools] = useAtom(poolInfoListAtom);
 
     const posV2Enabled = useFlag('posV2Enabled');
@@ -253,7 +253,13 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     return (
         pools?.length > 0 && (
             <Block bg={bg} {...boxProps}>
-                <Box py="2">
+                <Box
+                    py="2"
+                    mb="8"
+                    bg={bgNotif}
+                    borderRadius="2xl"
+                    border={'1px solid rgba(255, 255, 255, 0.10)'}
+                >
                     {isOpen && (
                         <Notification
                             data-testid="bannerPoolPoSV2"
@@ -299,7 +305,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                         Pool Management
                     </Heading>
                     <NextLink href="/pools/new" passHref>
-                        <Button as="a" colorScheme="blue">
+                        <Button as="a" colorScheme="cyan">
                             CREATE A POOL
                         </Button>
                     </NextLink>

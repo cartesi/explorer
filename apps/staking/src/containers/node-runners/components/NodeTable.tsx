@@ -13,8 +13,9 @@ import {
     Box,
     BoxProps,
     Button,
-    Heading,
     HStack,
+    Heading,
+    IconProps,
     Spinner,
     Stack,
     Table,
@@ -24,21 +25,20 @@ import {
     Th,
     Thead,
     Tr,
+    VisuallyHidden,
     useColorModeValue,
     useDisclosure,
-    VisuallyHidden,
-    IconProps,
 } from '@chakra-ui/react';
+import {
+    Address,
+    Notification,
+    PencilIcon,
+    StakeCircledOutlinedIcon,
+} from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
-import {
-    Address,
-    PencilIcon,
-    StakeCircledOutlinedIcon,
-    Notification,
-} from '@explorer/ui';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useMessages } from '../../../utils/messages';
@@ -56,7 +56,7 @@ const useStyle = () => {
 };
 
 const NodeTable = () => {
-    const [bg] = useStyle();
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const [data] = useAtom(nodeInfoDataAtom);
     const { list, loading } = data;
     return (
@@ -146,7 +146,7 @@ const NodeTable = () => {
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForPrivateNode';
 
 const NodeTableBlock = ({ boxProps }: TableInfo) => {
-    const [bg] = useStyle();
+    const bg = useColorModeValue('white', 'dark.gray.primary');
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
