@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Box, BoxProps, ChakraProps, useConst } from '@chakra-ui/react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 export interface TableResponsiveHolderProps extends BoxProps {
     children: React.ReactNode;
@@ -76,6 +76,9 @@ const Component = (props, ref) => {
     return (
         <Box position="relative" w="100%" {...restProps}>
             <Box
+                border={'1px solid'}
+                borderColor={'dark.gray.quaternary'}
+                borderRadius={'md'}
                 overflowX="auto"
                 w="100%"
                 ref={(node) => {

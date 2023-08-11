@@ -13,7 +13,7 @@ export const Table = {
     variants: {
         simple: {
             th: {
-                backgroundColor: 'gray.900',
+                backgroundColor: 'dark.gray.secondary',
                 color: 'white',
             },
         },
