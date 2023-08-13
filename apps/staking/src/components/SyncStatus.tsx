@@ -18,6 +18,7 @@ import {
     AlertTitle,
 } from '@chakra-ui/alert';
 import { Box } from '@chakra-ui/layout';
+import { useColorModeValue } from '@chakra-ui/react';
 
 const threshold = 25;
 
@@ -38,9 +39,10 @@ const SyncStatus = () => {
         ? 'Indexing errors'
         : 'Synchronization delay';
     const delay = blockNumber - meta?.block?.number;
+    const bg = useColorModeValue('gray.900', 'dark.gray.tertiary');
 
     return issues ? (
-        <Box px="6vw" bg="gray.900">
+        <Box px="6vw" bg={bg}>
             <Alert status="error">
                 <AlertIcon />
                 <AlertTitle mr={2}>{title}</AlertTitle>
