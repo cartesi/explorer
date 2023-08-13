@@ -40,19 +40,24 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     const balanceColor = useColorModeValue('gray.400', 'white');
     const { isGnosisSafe } = useWallet();
     const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
+    const iconColor = useColorModeValue(
+        'light.support.attention',
+        'dark.primary'
+    );
+    const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
             <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
-                    bg="orange.50"
+                    bg={iconBg}
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"
                     display="grid"
                     placeContent="center"
                 >
-                    <WalletIcon color="light.support.attention" w={6} h={6} />{' '}
+                    <WalletIcon color={iconColor} w={6} h={6} />{' '}
                 </Box>
                 <Box>
                     <HStack>

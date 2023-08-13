@@ -127,6 +127,7 @@ export const colors = {
         },
         border: {
             tertiary: 'rgba(57, 56, 60, 0.30)',
+            quaternary: 'rgba(255, 255, 255, 0.10)',
         },
     },
 };

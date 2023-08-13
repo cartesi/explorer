@@ -82,7 +82,13 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
         approve,
     } = useCartesiToken(account, address, blockNumber);
 
-    const bg = useColorModeValue('gray.80', 'header');
+    const layoutBg = useColorModeValue('white', 'dark.gray.quaternary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.border.quaternary'
+    );
+    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
+    const sectionBg = useColorModeValue('white', 'dark.gray.quaternary');
 
     const onUnstake = (action: Operation, amount?: BigNumber) => {
         if (action === 'partial' && amount) {
@@ -95,7 +101,7 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
     };
 
     return (
-        <Layout>
+        <Layout bg={layoutBg}>
             <PageHead
                 title={`Stake to ${formattedAddress}`}
                 description={`Stake to ${formattedAddress}`}
@@ -107,6 +113,9 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 4, sm: 6, lg: 8 }}
+                bg={sectionBg}
+                borderTopWidth={1}
+                borderColor={borderColor}
             >
                 {isConnected ? (
                     <StakingDashboard
