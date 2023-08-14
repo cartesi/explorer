@@ -12,25 +12,25 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useMemo } from 'react';
-import { Environment } from '../utils/environment';
 import { Network } from '../utils/networks';
+
+const MAINNET_GRAPHQL_URL = process.env.NEXT_PUBLIC_MAINNET_GRAPHQL_URL;
+const GOERLI_GRAPHQL_URL = process.env.NEXT_PUBLIC_GOERLI_GRAPHQL_URL;
+const LOCAL_GRAPHQL_URL =
+    process.env.NEXT_PUBLIC_LOCAL_GRAPHQL_URL ??
+    'http://localhost:8000/subgraphs/name/cartesi/pos';
 
 const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
     1: `${hostedBaseUrl}/pos`,
     5: `${hostedBaseUrl}/pos-goerli`,
-    31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
+    31337: LOCAL_GRAPHQL_URL,
 };
 
-const mainnetURL =
-    Environment.PRODUCTION === process.env.NEXT_PUBLIC_ENVIRONMENT
-        ? 'https://ethereum-mainnet.graph-eu.p2pify.com/75d339525576cdbd7ff93e11ff2ffdc7/pos'
-        : 'https://ethereum-mainnet.graph-eu.p2pify.com/8d17b395563b06f244441ad91b0d4c04/pos-preview';
-
 const chainstackURI = {
-    1: mainnetURL,
-    5: 'https://ethereum-goerli.graph-eu.p2pify.com/a76ae69498820dfffde048a21229ff89/pos-goerli',
-    31337: 'http://localhost:8000/subgraphs/name/cartesi/pos',
+    1: MAINNET_GRAPHQL_URL,
+    5: GOERLI_GRAPHQL_URL,
+    31337: LOCAL_GRAPHQL_URL,
 } as const;
 
 const mergeUniqueSort = (fieldName: string) => {
