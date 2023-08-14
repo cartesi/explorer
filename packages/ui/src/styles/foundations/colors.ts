@@ -28,14 +28,20 @@ export const colors = {
         tertiary: '#E3E3E5',
     },
     light: {
+        primary: '#008DA5',
+        secondary: '#00F6FF',
         gray: {
             primary: '#232222',
-            quarternary: '#39383C',
+            secondary: '#F1F2F5',
+            tertiary: '#E3E3E5',
+            quaternary: '#C8C8C8',
         },
         support: {
-            alert: '#FFA030',
-            attention: '#FFD700',
-            teal: '#E1EBFF',
+            success: '#7CA154',
+            alert: '#FFA77A',
+            error: '#FD7267',
+            info: '#B5E8F4',
+            neutral: '#E1EBFF',
         },
     },
     gray: {
@@ -114,6 +120,7 @@ export const colors = {
             success: '#BDE08D',
             alert: '#FEB274',
             error: '#FF8D78',
+            info: '#ACFCFF',
         },
     },
 };
