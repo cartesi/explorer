@@ -73,12 +73,14 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
             ref={tableRef}
             borderColor={borderColor}
             borderWidth="1px"
-            borderRadius="3px"
+            borderRadius="6px"
         >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th {...thProps}>Pool Address</Th>
+                        <Th {...thProps} borderTopLeftRadius="6px">
+                            Pool Address
+                        </Th>
                         <Th isNumeric {...thProps}>
                             Unstaked
                         </Th>
@@ -97,6 +99,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                                 position="sticky"
                                 top={0}
                                 right={0}
+                                borderTopRightRadius="6px"
                                 {...thProps}
                             >
                                 <SlideInOut display={true}>

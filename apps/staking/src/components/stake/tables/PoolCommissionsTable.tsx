@@ -20,10 +20,13 @@ import {
     Thead,
     HStack,
     Spinner,
+    useColorModeValue,
+    TableColumnHeaderProps,
 } from '@chakra-ui/react';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolCommissionsTableRow from './PoolCommissionsTableRow';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
+import { theme } from '@explorer/ui';
 
 export interface PoolCommissionsTableProps {
     loading: boolean;
@@ -35,15 +38,45 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
     loading,
 }) => {
     const hasItems = data?.length > 0;
+    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+
+    const thProps: TableColumnHeaderProps = {
+        borderColor: topBorderColor,
+        bg: headerColor,
+        textTransform: 'none',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
 
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="6px"
+        >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th>Date</Th>
-                        <Th isNumeric>Commission</Th>
-                        <Th isNumeric>Change</Th>
+                        <Th borderTopLeftRadius="6px" {...thProps}>
+                            Date
+                        </Th>
+                        <Th isNumeric {...thProps}>
+                            Commission
+                        </Th>
+                        <Th isNumeric borderTopRightRadius="6px" {...thProps}>
+                            Change
+                        </Th>
                     </Tr>
                 </Thead>
 

@@ -61,18 +61,20 @@ const UsersTable: FC<UsersTableProps> = (props) => {
         <TableResponsiveHolder
             borderColor={borderColor}
             borderWidth="1px"
-            borderRadius="3px"
+            borderRadius="6px"
         >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th {...thProps}>User</Th>
+                        <Th {...thProps} borderTopLeftRadius="6px">
+                            User
+                        </Th>
                         <Th {...thProps}>Stake Since</Th>
                         <Th {...thProps}>Total Staked</Th>
                         <Th isNumeric {...thProps}>
                             Shares
                         </Th>
-                        <Th isNumeric {...thProps}>
+                        <Th isNumeric {...thProps} borderTopRightRadius="6px">
                             Accumulated Shares
                         </Th>
                     </Tr>

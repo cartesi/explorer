@@ -61,7 +61,7 @@ const UserTable: FC<UserTableProps> = ({
         <TableResponsiveHolder
             borderColor={borderColor}
             borderWidth="1px"
-            borderRadius="3px"
+            borderRadius="6px"
         >
             <Table>
                 <Thead>
@@ -74,6 +74,7 @@ const UserTable: FC<UserTableProps> = ({
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}
+                            borderTopLeftRadius="6px"
                             fontFamily={theme.fonts.body}
                         >
                             User
@@ -171,6 +172,7 @@ const UserTable: FC<UserTableProps> = ({
                             fontSize="md"
                             fontWeight={400}
                             fontFamily={theme.fonts.body}
+                            borderTopRightRadius="6px"
                         >
                             {stakeText}
                         </Th>

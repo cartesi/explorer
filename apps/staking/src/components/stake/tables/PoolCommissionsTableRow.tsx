@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Td, Tr, useColorModeValue } from '@chakra-ui/react';
+import { TableCellProps, Td, Tr, useColorModeValue } from '@chakra-ui/react';
 import {
     StakingPoolFeeHistory,
     StakingPoolFeeType,
@@ -33,19 +33,20 @@ export interface PoolCommissionsTableRowProps {
 const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
     data,
 }) => {
-    const borderColor = useColorModeValue('gray.100', 'header');
+    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
+    const tdProps: TableCellProps = {
+        borderColor,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
 
     return (
         <Tr data-testid="pool-commissions-table-row">
-            <Td
-                borderColor={borderColor}
-                textAlign="left"
-                data-testid="timestamp-col"
-            >
+            <Td {...tdProps} textAlign="left" data-testid="timestamp-col">
                 {dateTimeFormat.format(data.timestamp * 1000)}
             </Td>
 
-            <Td borderColor={borderColor} data-testid="new-value-col" isNumeric>
+            <Td {...tdProps} data-testid="new-value-col" isNumeric>
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.newValue / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
@@ -54,11 +55,7 @@ const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
                     : formatNumber(data.newValue)}
             </Td>
 
-            <Td
-                borderColor={borderColor}
-                data-testid="percentage-col"
-                isNumeric
-            >
+            <Td {...tdProps} data-testid="percentage-col" isNumeric>
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.change / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
