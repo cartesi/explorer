@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { some } from 'lodash/fp';
-import { InferGetStaticPropsType } from 'next';
+import { GetStaticProps } from 'next';
 import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { DOMAINS } from '../graphql/queries/ensDomains';
@@ -85,7 +85,13 @@ export type Context = {
     };
 };
 
-export async function getENSStaticProps({ params }: Context) {
+export type ENSStaticProps = {
+    formattedAddress: string;
+};
+
+export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
+    params,
+}: Context) => {
     const { goerliClient, mainnetClient } = await getGraphQLClients();
     const [poolQ, goerliPoolQ, ensQ] = await Promise.all([
         mainnetClient.query<StakingPoolData>({
@@ -135,6 +141,4 @@ export async function getENSStaticProps({ params }: Context) {
         // re-run the StaticProps once daily
         revalidate: inSeconds,
     };
-}
-
-export type ENSStaticProps = InferGetStaticPropsType<typeof getENSStaticProps>;
+};
