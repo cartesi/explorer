@@ -15,13 +15,13 @@ import {
     Box,
     Button,
     Heading,
+    HeadingProps,
     Stack,
     StackProps,
     Text,
+    Tooltip,
     useColorModeValue,
     useDisclosure,
-    Tooltip,
-    HeadingProps,
 } from '@chakra-ui/react';
 import { MouseEventHandler, ReactElement, ReactNode } from 'react';
 
@@ -87,10 +87,11 @@ export const Card = ({
                         {title}{' '}
                         {tooltip && (
                             <Tooltip
+                                borderRadius={'md'}
                                 label={tooltip}
                                 placement="auto"
                                 fontSize="md"
-                                bg="grey.support"
+                                bg={'light.gray.quaternary'}
                                 opacity={0.9}
                                 color="white"
                                 maxW={{ base: '95vw', md: '37rem' }}
@@ -115,7 +116,7 @@ export const Card = ({
                     <Button
                         data-testid="card-action-button"
                         ml={{ base: 0, lg: 2 }}
-                        colorScheme="blue"
+                        colorScheme="cyan"
                         onClick={onButtonClick}
                         fontWeight={500}
                         width="full"

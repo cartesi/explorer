@@ -189,7 +189,7 @@ describe('NodeRunners container (Landing Page)', () => {
             fireEvent.click(tooltipIcon);
 
             expect(
-                await screen.findByText('Main responsabilities:')
+                await screen.findByText('Main responsibilities:')
             ).toBeInTheDocument();
             expect(
                 await screen.findByText(
@@ -213,7 +213,7 @@ describe('NodeRunners container (Landing Page)', () => {
             fireEvent.click(tooltipIcon);
 
             expect(
-                await screen.findByText('Main responsabilities:')
+                await screen.findByText('Main responsibilities:')
             ).toBeInTheDocument();
             expect(
                 await screen.findByText(

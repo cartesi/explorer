@@ -19,7 +19,7 @@ interface AlertAndConnectProps {
 }
 
 const AlertAndConnect = ({ isVisible, onConnect }: AlertAndConnectProps) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
     return (
         <SlideDown display={isVisible}>
             <Box
@@ -43,7 +43,7 @@ const AlertAndConnect = ({ isVisible, onConnect }: AlertAndConnectProps) => {
                         node and pool already
                     </Alert>
                 </Box>
-                <Button colorScheme="blue" mt={7} onClick={onConnect}>
+                <Button colorScheme="cyan" mt={7} onClick={onConnect}>
                     CONNECT WALLET
                 </Button>
             </Box>
