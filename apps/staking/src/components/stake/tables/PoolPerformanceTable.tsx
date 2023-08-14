@@ -81,12 +81,14 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
             ref={tableRef}
             borderColor={borderColor}
             borderWidth="1px"
-            borderRadius="3px"
+            borderRadius="6px"
         >
             <Table>
                 <Thead>
                     <Tr>
-                        <Th {...thProps}>Pool Address</Th>
+                        <Th {...thProps} borderTopLeftRadius="6px">
+                            Pool Address
+                        </Th>
 
                         <Th isNumeric {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
@@ -199,6 +201,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 alignItems="center"
                                 borderColor={borderColor}
                                 borderBottomWidth={[0, '1px', 0, 0]}
+                                borderTopLeftRadius="6px"
                                 {...thProps}
                             >
                                 <SlideInOut display={true}>

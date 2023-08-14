@@ -11,7 +11,7 @@
 
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { isArray } from 'lodash';
 import Layout from '../../../components/Layout';
 import { PoolHeader } from '../../../components/stake/PoolHeader';
@@ -78,9 +78,10 @@ const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
             ]);
         }
     }, [data?.stakingPoolFeeHistories, maxPerPage]);
+    const pageBg = useColorModeValue('white', 'dark.gray.primary');
 
     return (
-        <Layout>
+        <Layout bg={pageBg}>
             <PageHead
                 title={`Pool commissions - ${formattedAddress}`}
                 description={`Pool commissions - ${formattedAddress}`}
@@ -102,7 +103,7 @@ const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
                 <Flex
                     flexDirection={{ base: 'column', md: 'row' }}
                     justifyContent="flex-end"
-                    alignItems={{ base: 'flex-end', md: 'flex-start' }}
+                    alignItems={{ base: 'flex-end', md: 'center' }}
                     width="100%"
                     mt="var(--chakra-space-12) !important"
                     overflowX="auto"

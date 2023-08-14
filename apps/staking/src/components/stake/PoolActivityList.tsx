@@ -149,7 +149,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                     <TableResponsiveHolder
                         borderColor={borderColor}
                         borderWidth="1px"
-                        borderRadius="3px"
+                        borderRadius="6px"
                     >
                         <Table>
                             <Thead>
@@ -157,6 +157,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                     <Th
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        borderTopLeftRadius="6px"
                                     >
                                         From
                                     </Th>
@@ -175,6 +176,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                     <Th
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        borderTopRightRadius="6px"
                                     >
                                         Amount
                                     </Th>
