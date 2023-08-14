@@ -93,7 +93,7 @@ export const Button = {
                     borderColor:
                         props.colorMode === 'dark'
                             ? 'white'
-                            : 'light.gray.quarternary',
+                            : 'light.gray.quaternary',
                     _hover: {
                         bg: 'cyan.secondary',
                     },
