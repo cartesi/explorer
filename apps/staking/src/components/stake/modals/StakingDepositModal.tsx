@@ -35,6 +35,7 @@ import {
     useColorModeValue,
     Stack,
     Tag,
+    useToken,
 } from '@chakra-ui/react';
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { BigNumber, constants } from 'ethers';
@@ -78,6 +79,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
 
     const color = useColorModeValue('black', 'white');
     const max_depositColor = useColorModeValue('blue.500', 'white');
+    const [formControlColor] = useToken('colors', ['form-control-color']);
+    const tagColor = useColorModeValue('gray.900', 'white');
 
     const inputFocusRef = useRef();
 
@@ -100,7 +103,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
         >
             <ModalOverlay />
 
-            <ModalContent borderRadius="0" p={0} minH="auto">
+            <ModalContent borderRadius="0" p={0} minH="610px">
                 {allowance.isZero() || allowanceStep ? (
                     <>
                         <Box pb={6}>
@@ -122,12 +125,17 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                         <ModalBody>
                             <VStack spacing={5}>
                                 <HStack w="full" spacing={4}>
-                                    <Box flexGrow="0">
-                                        <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <Tag>
+                                    <Box
+                                        flexGrow="0"
+                                        display="flex"
+                                        alignItems="center"
+                                    >
+                                        <CheckCircleIcon w={5} h={5} mr={1} />
+                                        <Tag bg="transparent">
                                             <TagLabel
                                                 fontSize="lg"
                                                 fontWeight="normal"
+                                                color={tagColor}
                                             >
                                                 Set Allowance
                                             </TagLabel>
@@ -140,19 +148,23 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             borderColor={color}
                                         />
                                     </Box>
-                                    <Box flexGrow="1">
+                                    <Box
+                                        flexGrow="1"
+                                        display="flex"
+                                        alignItems="center"
+                                    >
                                         <CheckCircleIcon
                                             w={5}
                                             h={5}
-                                            mr={2}
+                                            mr={1}
                                             color="gray.300"
                                             pointerEvents="none"
                                         />
-                                        <Tag>
+                                        <Tag bg="transparent">
                                             <TagLabel
                                                 fontSize="lg"
                                                 fontWeight="normal"
-                                                color="gray.300"
+                                                color={tagColor}
                                                 pointerEvents="none"
                                             >
                                                 Deposit
@@ -177,7 +189,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             setOutputAllowance(bigNumberValue);
                                         }}
                                     />
-                                    <FormHelperText>
+                                    <FormHelperText color={formControlColor}>
                                         First time setting will cost ETH gas
                                         fee. It will display in the wallet
                                         transaction.

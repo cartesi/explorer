@@ -9,17 +9,25 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-const borderRadius = '3px';
+const borderRadius = '6px';
 
 export const Input = {
-    baseStyle: {
+    baseStyle: (props: any) => ({
         field: {
             borderRadius,
             _disabled: {
                 backgroundColor: 'gray.80',
             },
+            _focus: {
+                boxShadow: 'none',
+            },
         },
-    },
+        control: {
+            _focus: {
+                boxShadow: 'none',
+            },
+        },
+    }),
     variants: {
         outline: {
             field: {

@@ -45,6 +45,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
         'dark.primary'
     );
     const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
+    const warningIconColor = useColorModeValue('orange.500', 'white');
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
@@ -84,7 +85,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             </HStack>
             {userETHBalance?.isZero() && !isGnosisSafe && (
                 <HStack spacing={2} alignItems="flex-start">
-                    <WarningIcon color="orange.500" />
+                    <WarningIcon color={warningIconColor} />
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
                         transaction fee.
