@@ -25,6 +25,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
+import { isObject } from 'lodash';
 
 export interface IInfoBannerProps extends Omit<AlertProps, 'content'> {
     isOpen?: boolean;
@@ -46,7 +47,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
     isExpanded: isExpanded = false,
     title,
     content = '',
-    icon: icon = <AlertIcon />,
+    icon,
     status = 'info',
     ...props
 }) => {
@@ -55,38 +56,29 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
             defaultIsOpen: isExpanded,
         });
 
-    const bg = useColorModeValue('white', 'gray.700');
-    const borderColor =
-        status === 'info'
-            ? 'var(--chakra-colors-blue-500)'
-            : status === 'warning'
-            ? 'var(--chakra-colors-orange-500)'
-            : status === 'error'
-            ? 'var(--chakra-colors-red-500)'
-            : 'var(--chakra-colors-green-500)';
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const variant = useColorModeValue('left-accent', undefined);
+    const alertIconColor = useColorModeValue(
+        `light.support.${status}`,
+        `dark.support.${status}`
+    );
 
     return (
         isOpen && (
             <Alert
                 position="relative"
-                variant="left-accent"
+                variant={variant}
                 alignItems="flex-start"
                 boxShadow="sm"
                 bg={bg}
                 borderLeftWidth={0}
                 status={status}
+                borderRadius="1rem"
+                py={4}
+                pl={8}
                 {...props}
             >
-                <Box
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    width="0.25rem"
-                    height="100%"
-                    bg={borderColor}
-                />
-
-                {icon}
+                {isObject(icon) ? icon : <AlertIcon color={alertIconColor} />}
 
                 <Box w="full">
                     <AlertTitle mr={5}>{title}</AlertTitle>

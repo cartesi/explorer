@@ -121,7 +121,7 @@ export const colors = {
         },
         support: {
             success: '#BDE08D',
-            alert: '#FEB274',
+            warning: '#FEB274',
             error: '#FF8D78',
             info: '#ACFCFF',
         },

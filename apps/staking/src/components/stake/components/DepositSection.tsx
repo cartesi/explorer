@@ -9,7 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, Flex, Button, Stack, Heading, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Flex,
+    Button,
+    Stack,
+    Heading,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
@@ -29,6 +37,7 @@ export const DepositSection: FC<IDepositSection> = ({
 }) => {
     const { isGnosisSafe } = useWallet();
     const noEthAndIsNotASafe = userETHBalance?.isZero() && !isGnosisSafe;
+    const warningIconColor = useColorModeValue('orange.500', 'white');
 
     return (
         <Stack
@@ -59,13 +68,14 @@ export const DepositSection: FC<IDepositSection> = ({
                     >
                         {userWalletBalance.isZero() ? (
                             <>
-                                <WarningIcon color="orange.500" /> You have 0
-                                CTSI. Please, add CTSI to deposit.
+                                <WarningIcon color={warningIconColor} /> You
+                                have 0 CTSI. Please, add CTSI to deposit.
                             </>
                         ) : noEthAndIsNotASafe ? (
                             <>
-                                <WarningIcon color="orange.500" /> You have 0
-                                ETH. You'll need ETH for transaction fees.
+                                <WarningIcon color={warningIconColor} /> You
+                                have 0 ETH. You'll need ETH for transaction
+                                fees.
                             </>
                         ) : (
                             <>Let's deposit your tokens to the pool!</>

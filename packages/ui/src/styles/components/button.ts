@@ -14,7 +14,7 @@ export const Button = {
         borderRadius: '1.875rem',
         fontWeight: '500',
         fontFamily: "'Plus Jakarta Sans'",
-    },
+    }),
     sizes: {
         lg: {
             fontSize: 'md',
@@ -75,35 +75,95 @@ export const Button = {
 
             if (props.colorScheme === 'blue') {
                 return {
-                    bg: 'blue.200',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'blue.200'
+                            : 'dark.primary',
                     color: 'gray.900',
                     textTransform: 'uppercase',
                     _hover: {
-                        bg: 'blue.300',
-                        color: 'gray.900',
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'blue.100'
+                                : 'dark.primary',
+                        color:
+                            props.colorMode === 'light' ? 'gray.900' : 'black',
+                    },
+                    borderColor:
+                        props.colorMode === 'light' ? 'gray.80' : 'white',
+                    _disabled: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'gray.600'
+                                : 'dark.gray.quaternary !important',
+                        color:
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.senary !important',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'blue.100'
+                                : 'dark.primary',
+                        color:
+                            props.colorMode === 'light' ? 'gray.900' : 'black',
                     },
                 };
             }
             if (props.colorScheme === 'cyan') {
                 return {
-                    bg: 'cyan.primary',
-                    color: 'dark.gray.primary',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'cyan.primary'
+                            : 'dark.primary',
+                    color:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.primary'
+                            : 'black',
                     textTransform: 'uppercase',
                     borderWidth: '1px',
                     borderColor:
                         props.colorMode === 'dark'
                             ? 'white'
-                            : 'light.gray.quaternary',
+                            : 'light.gray.senary',
                     _hover: {
-                        bg: 'cyan.secondary',
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'cyan.secondary'
+                                : 'dark.primary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'cyan.secondary'
+                                : 'dark.primary',
                     },
                 };
             }
 
             return;
         },
-        ghost: () => {
+        ghost: (props: { colorScheme: string; colorMode: string }) => {
+            if (props.colorScheme === 'darkGray') {
+                return {
+                    borderWidth: props.colorMode === 'light' ? 0 : '1px',
+                    borderColor:
+                        props.colorMode === 'light'
+                            ? 'transparent'
+                            : 'light.gray.senary',
+                    textTransform: 'uppercase',
+                };
+            }
+
             return {
+                textTransform: 'uppercase',
+            };
+        },
+        link: (props: { colorScheme: string; colorMode: string }) => {
+            return {
+                color:
+                    props.colorMode === 'light' ? 'blue.200' : 'dark.primary',
                 textTransform: 'uppercase',
             };
         },

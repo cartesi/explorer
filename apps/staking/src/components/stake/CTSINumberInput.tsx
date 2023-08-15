@@ -15,6 +15,7 @@ import {
     InputRightElement,
     NumberInput,
     NumberInputField,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -45,6 +46,8 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     onChange,
 }) => {
     const [innerValue, setInnerValue] = useState<string>('0');
+    const rightElementColor = useColorModeValue('gray.300', 'white');
+    const inputBg = useColorModeValue('transparent', 'dark.border.quaternary');
 
     const handleOnChange = (value) => {
         const numberValue = parseFloat(value);
@@ -93,6 +96,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 min={min}
                 max={max}
                 width="full"
+                bg={inputBg}
                 onBeforeInputCapture={(e) => {
                     const inputText: string = (e as any)?.data;
 
@@ -140,9 +144,9 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 }}
                 onChange={handleOnChange}
             >
-                <NumberInputField borderRadius={0} />
+                <NumberInputField />
                 <InputRightElement
-                    color="gray.300"
+                    color={rightElementColor}
                     pointerEvents="none"
                     pl={8}
                     w={hasNumberSteppers ? 24 : 14}

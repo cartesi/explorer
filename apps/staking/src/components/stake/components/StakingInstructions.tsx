@@ -95,7 +95,7 @@ export const StakingInstructions: FC = () => {
                                 <Stack
                                     spacing={4}
                                     direction={{ base: 'column', md: 'row' }}
-                                    justifyContent="space-between"
+                                    justifyContent="flex-end"
                                     mt={6}
                                     w="full"
                                 >
