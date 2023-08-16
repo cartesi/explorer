@@ -26,7 +26,7 @@ export const steps = [
         title: 'Connect Wallet',
         description:
             'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
-        icon: (color = 'light.support.attention') => (
+        icon: (color = 'orange.500') => (
             <WalletIcon color={color} w={6} h={6} />
         ),
     },
@@ -34,7 +34,7 @@ export const steps = [
         title: 'Allowance / Deposit',
         description:
             'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
-        icon: (color = 'light.support.attention') => (
+        icon: (color = 'orange.500') => (
             <AllowanceIcon color={color} w={6} h={6} />
         ),
     },
@@ -42,17 +42,14 @@ export const steps = [
         title: 'Stake',
         description:
             'After staking, your deposit will starts contributing to the staking power of the pool.',
-        icon: (color = 'light.support.attention') => (
+        icon: (color = 'orange.500') => (
             <StakedBalanceIcon color={color} w={6} h={6} />
         ),
     },
 ];
 
 export const StakingGuide: FC = () => {
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
-    );
+    const iconColor = useColorModeValue('orange.500', 'dark.primary');
     const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
 
     return (
