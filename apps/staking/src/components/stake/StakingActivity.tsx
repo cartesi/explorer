@@ -192,9 +192,8 @@ export const StakingActivity: FC<Props> = memo(
                             </Box>
 
                             <Text>
-                                You haven’t had any transaction yet.
-                                <br />
-                                Start delegation by depositing.
+                                You haven’t had any transaction yet. Start
+                                delegation by depositing.
                             </Text>
                         </VStack>
                     )}
