@@ -14,7 +14,7 @@ export const Button = {
         borderRadius: '1.875rem',
         fontWeight: '500',
         fontFamily: "'Plus Jakarta Sans'",
-    }),
+    },
     sizes: {
         lg: {
             fontSize: 'md',
