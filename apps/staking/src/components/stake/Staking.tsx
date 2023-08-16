@@ -79,8 +79,7 @@ export const Staking: FC<StakingProps> = ({
     const unlock = useTimeLeft(stakeUnlock, 2, false);
     const unlockHumanized = useTimeLeft(stakeUnlock, 2, true);
     const isMaturingDeposit = Date.now() < stakeUnlock;
-
-    const infoColor = useColorModeValue('blue.500', 'blue.200');
+    const iconColor = useColorModeValue('blue.500', 'dark.primary');
 
     const depositDisclosure = useDisclosure();
     const withdrawDisclosure = useDisclosure();
@@ -140,8 +139,8 @@ export const Staking: FC<StakingProps> = ({
                         status="info"
                         role="info-banner"
                         icon={
-                            <VStack mr={4} spacing={1} color={infoColor}>
-                                <TimerIcon boxSize="6" />
+                            <VStack mr={4} spacing={1}>
+                                <TimerIcon boxSize="6" color={iconColor} />
                                 <Box fontSize="xs" fontWeight="bold">
                                     {unlock}
                                 </Box>
