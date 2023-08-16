@@ -26,6 +26,7 @@ import {
     RadioGroup,
     Stack,
     Text,
+    useColorModeValue,
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
@@ -59,6 +60,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
         constants.Zero
     );
+    const radioColorScheme = useColorModeValue('blue', 'cyan');
 
     return (
         <>
@@ -103,7 +105,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         <Radio
                                             size="lg"
                                             value="full"
-                                            colorScheme="blue"
+                                            colorScheme={radioColorScheme}
                                             onChange={() => {
                                                 setUnstakeFullAmount('full');
                                                 setOutputUnstake(
@@ -116,7 +118,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         <Radio
                                             size="lg"
                                             value="partial"
-                                            colorScheme="blue"
+                                            colorScheme={radioColorScheme}
                                             onChange={() => {
                                                 setUnstakeFullAmount('partial');
                                                 inputRef.current?.focus();

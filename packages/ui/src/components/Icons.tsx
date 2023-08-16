@@ -11,7 +11,7 @@
 
 import { createIcon, Icon, IconProps } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/react';
-import { FC } from 'react';
+import { FC, SVGProps } from 'react';
 
 export const PencilIcon: FC<IconProps> = createIcon({
     path: (
@@ -1025,46 +1025,53 @@ export const PoolBalanceHexIcon: FC<IconProps> = createIcon({
     ),
 });
 
-export const EmptyTransactionIcon: FC<IconProps> = createIcon({
-    displayName: 'EmptyTransactionIcon',
-    viewBox: '0 0 66 66',
-    path: (
-        <g fill="#E1EBFF">
-            <circle cx="33" cy="33" r="33" fill="#E1EBFF" />
-            <path
-                d="M27.4 19L21 25.2703V48H43V19H27.4Z"
-                stroke="#2D5ABE"
-                strokeWidth="2.5"
-            />
-            <path d="M21.5 26H27.5V20" stroke="#2D5ABE" strokeWidth="2.5" />
-            <circle
-                cx="42.9179"
-                cy="37.9179"
-                r="4.91791"
-                fill="#E1EBFF"
-                stroke="#2D5ABE"
-                strokeWidth="2"
-            />
-            <rect
-                x="29.4142"
-                y="33.5"
-                width="4"
-                height="4"
-                transform="rotate(-45 29.4142 33.5)"
-                stroke="#2D5ABE"
-                strokeWidth="2"
-            />
-            <rect
-                x="47.6026"
-                y="41"
-                width="5.0383"
-                height="1.65635"
-                transform="rotate(45 47.6026 41)"
-                fill="#2D5ABE"
-            />
-        </g>
-    ),
-});
+interface EmptyTransactionIconProps extends IconProps {
+    fill: SVGProps<SVGGElement>['fill'];
+    stroke: SVGProps<SVGElement>['stroke'];
+}
+
+export const EmptyTransactionIcon: FC<EmptyTransactionIconProps> = (props) => {
+    const { fill, stroke } = props;
+
+    return (
+        <Icon viewBox="0 0 66 66" {...props}>
+            <g fill={fill}>
+                <circle cx="33" cy="33" r="33" fill={fill} stroke="none" />
+                <path
+                    d="M27.4 19L21 25.2703V48H43V19H27.4Z"
+                    stroke={stroke}
+                    strokeWidth="2.5"
+                />
+                <path d="M21.5 26H27.5V20" stroke={stroke} strokeWidth="2.5" />
+                <circle
+                    cx="42.9179"
+                    cy="37.9179"
+                    r="4.91791"
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth="2"
+                />
+                <rect
+                    x="29.4142"
+                    y="33.5"
+                    width="4"
+                    height="4"
+                    transform="rotate(-45 29.4142 33.5)"
+                    stroke={stroke}
+                    strokeWidth="2"
+                />
+                <rect
+                    x="47.6026"
+                    y="41"
+                    width="5.0383"
+                    height="1.65635"
+                    transform="rotate(45 47.6026 41)"
+                    fill={stroke}
+                />
+            </g>
+        </Icon>
+    );
+};
 
 export const RebalanceIcon: FC<IconProps> = createIcon({
     displayName: 'RebalanceIcon',

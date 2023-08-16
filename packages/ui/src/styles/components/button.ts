@@ -47,7 +47,6 @@ export const Button = {
             if (props.colorScheme === 'darkGray') {
                 return {
                     bg: props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
-
                     color: props.colorMode === 'dark' ? 'white' : 'white',
                     _hover: {
                         bg: props.colorMode === 'dark' ? 'gray.500' : 'red.100',
@@ -89,17 +88,25 @@ export const Button = {
                         color:
                             props.colorMode === 'light' ? 'gray.900' : 'black',
                     },
+                    borderWidth: '1px',
                     borderColor:
                         props.colorMode === 'light' ? 'gray.80' : 'white',
                     _disabled: {
-                        bg:
-                            props.colorMode === 'light'
-                                ? 'gray.600'
-                                : 'dark.gray.quaternary !important',
-                        color:
+                        color: `${
                             props.colorMode === 'light'
                                 ? 'gray.900'
-                                : 'dark.gray.senary !important',
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'blue.200'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'gray.80'
+                                : 'dark.border.quaternary'
+                        } !important`,
                     },
                     _active: {
                         bg:
@@ -123,10 +130,7 @@ export const Button = {
                             : 'black',
                     textTransform: 'uppercase',
                     borderWidth: '1px',
-                    borderColor:
-                        props.colorMode === 'dark'
-                            ? 'white'
-                            : 'light.gray.senary',
+                    borderColor: 'white',
                     _hover: {
                         bg:
                             props.colorMode === 'light'
@@ -153,6 +157,10 @@ export const Button = {
                             ? 'transparent'
                             : 'light.gray.senary',
                     textTransform: 'uppercase',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'transparent'
+                            : 'dark.gray.primary',
                 };
             }
 
