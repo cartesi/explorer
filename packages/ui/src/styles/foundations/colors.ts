@@ -38,7 +38,7 @@ export const colors = {
         },
         support: {
             success: '#7CA154',
-            alert: '#FFA77A',
+            warning: '#FFA77A',
             error: '#FD7267',
             info: '#B5E8F4',
             neutral: '#E1EBFF',
@@ -124,6 +124,7 @@ export const colors = {
             warning: '#FEB274',
             error: '#FF8D78',
             info: '#ACFCFF',
+            neutral: '#E1EBFF',
         },
         border: {
             tertiary: 'rgba(57, 56, 60, 0.30)',
