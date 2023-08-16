@@ -62,6 +62,8 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
         `light.support.${status}`,
         `dark.support.${status}`
     );
+    const boxShadow = useColorModeValue('sm', 'none');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
 
     return (
         isOpen && (
@@ -69,11 +71,12 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                 position="relative"
                 variant={variant}
                 alignItems="flex-start"
-                boxShadow="sm"
+                boxShadow={boxShadow}
                 bg={bg}
-                borderLeftWidth={0}
                 status={status}
                 borderRadius="1rem"
+                borderWidth="1px"
+                borderColor={borderColor}
                 py={4}
                 pl={8}
                 {...props}

@@ -74,7 +74,7 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 
     return (
         <Box>
-            <Heading as="h4" size="sm">
+            <Heading as="h4" size="sm" fontWeight={600}>
                 {headerContent}
             </Heading>
             <Text fontSize="sm" color={timeColor}>
@@ -98,6 +98,9 @@ export const StakingActivity: FC<Props> = memo(
 
         const isAllActivitiesLoaded =
             timestamp === oldestActivityTime && !loading;
+        const emptyIconBg = useColorModeValue('blue.50', 'dark.gray.primary');
+        const emptyIconColor = useColorModeValue('blue.500', 'dark.primary');
+        const checkIconColor = useColorModeValue('green.500', 'dark.primary');
 
         useEffect(() => {
             if (null !== activities) {
@@ -121,13 +124,13 @@ export const StakingActivity: FC<Props> = memo(
                                     key={index}
                                     justifyContent="flex-start"
                                     spacing={4}
-                                    alignItems="flex-start"
+                                    alignItems="center"
                                     minW={167}
                                 >
                                     <CheckCircleIcon
                                         w={6}
                                         h={6}
-                                        color="green.500"
+                                        color={checkIconColor}
                                     />
                                     <Activity
                                         key={activity.id}
@@ -178,14 +181,20 @@ export const StakingActivity: FC<Props> = memo(
                                 display="grid"
                                 placeContent="center"
                                 flexShrink={0}
-                                marginBottom={4}
+                                marginBottom={0}
                             >
-                                <EmptyTransactionIcon w={16} h={16} />
+                                <EmptyTransactionIcon
+                                    fill={emptyIconBg}
+                                    stroke={emptyIconColor}
+                                    w={16}
+                                    h={16}
+                                />
                             </Box>
 
                             <Text>
-                                You haven’t had any transaction yet. Start
-                                delegation by depositing.
+                                You haven’t had any transaction yet.
+                                <br />
+                                Start delegation by depositing.
                             </Text>
                         </VStack>
                     )}

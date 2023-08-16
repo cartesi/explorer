@@ -144,12 +144,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                         }
                         isOpen={isOpen}
                         isClosable
-                        borderTop="1px solid"
-                        borderRight="1px solid"
-                        borderBottom="1px solid"
-                        borderTopColor={borderColor}
-                        borderRightColor={borderColor}
-                        borderBottomColor={borderColor}
                         status="warning"
                         onToggle={onToggle}
                     />
