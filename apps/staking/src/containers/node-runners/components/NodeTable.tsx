@@ -50,18 +50,13 @@ interface TableInfo {
     boxProps?: BoxProps;
 }
 
-const useStyle = () => {
-    const bg = useColorModeValue('white', 'gray.800');
-    return [bg];
-};
-
 const NodeTable = () => {
-    const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const bgTable = useColorModeValue('white', 'dark.gray.secondary');
     const [data] = useAtom(nodeInfoDataAtom);
     const { list, loading } = data;
     return (
         <TableResponsiveHolder>
-            <Table>
+            <Table bg={bgTable}>
                 <Thead>
                     <Tr>
                         <Th>Node Address</Th>
@@ -118,7 +113,6 @@ const NodeTable = () => {
                                 <Td
                                     position="sticky"
                                     right="0"
-                                    bg={bg}
                                     textAlign="center"
                                 >
                                     <NextLink
@@ -146,7 +140,7 @@ const NodeTable = () => {
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForPrivateNode';
 
 const NodeTableBlock = ({ boxProps }: TableInfo) => {
-    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);

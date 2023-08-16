@@ -253,13 +253,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     return (
         pools?.length > 0 && (
             <Block bg={bg} {...boxProps}>
-                <Box
-                    py="2"
-                    mb="8"
-                    bg={bgNotif}
-                    borderRadius="2xl"
-                    border={'1px solid rgba(255, 255, 255, 0.10)'}
-                >
+                <Box>
                     {isOpen && (
                         <Notification
                             data-testid="bannerPoolPoSV2"
@@ -294,6 +288,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                     justify="space-between"
                     direction={'row'}
                     alignItems={{ base: 'center', md: 'flex-start' }}
+                    mt={8}
                 >
                     <Heading
                         fontSize="2xl"

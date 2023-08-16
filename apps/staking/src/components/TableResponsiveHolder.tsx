@@ -76,7 +76,7 @@ const Component = (props, ref) => {
     return (
         <Box position="relative" w="100%" {...restProps}>
             <Box
-                border={'1px solid'}
+                boxShadow={'0px 1px 8px 0px rgba(0, 0, 0, 0.10)'}
                 borderColor={'dark.gray.quaternary'}
                 borderRadius={'md'}
                 overflowX="auto"

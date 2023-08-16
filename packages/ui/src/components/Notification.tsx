@@ -45,6 +45,9 @@ export const Notification = ({
             alignItems="flex-start"
             boxShadow="sm"
             bg={bg}
+            borderRadius="2xl"
+            border={'1px solid rgba(255, 255, 255, 0.10)'}
+            py="2"
             status={status}
             {...alertProps}
         >
