@@ -201,7 +201,7 @@ const EthereumNameServer = ({
                 />
                 {isSmallScreen && (
                     <Text
-                        color="light.support.alert"
+                        color="light.support.warning"
                         fontWeight="medium"
                         fontSize={18}
                     >
