@@ -55,7 +55,7 @@ const HomeStats = () => {
         FixedNumber.from(marketInformation?.circulatingSupply || 1)
     );
 
-    const bannerIconColor = useColorModeValue('black', 'dark.primary');
+    const bannerIconColor = useColorModeValue('light.primary', 'dark.primary');
 
     return (
         <Box

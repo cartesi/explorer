@@ -43,6 +43,9 @@ export const colors = {
             info: '#B5E8F4',
             neutral: '#E1EBFF',
         },
+        border: {
+            tertiary: 'rgba(0, 141, 165, 0.10)',
+        },
     },
     gray: {
         50: '#FAFAFB',
@@ -121,6 +124,9 @@ export const colors = {
             alert: '#FEB274',
             error: '#FF8D78',
             info: '#ACFCFF',
+        },
+        border: {
+            tertiary: 'rgba(57, 56, 60, 0.30)',
         },
     },
 };

@@ -86,7 +86,7 @@ const Address: FC<AddressProps> = (props) => {
     const linkMargin = useBreakpointValue({ base: 7, sm: 0 });
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
     const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
-    const hoverIconColor = useColorModeValue('blue.400', 'dark.primary');
+    const hoverIconColor = useColorModeValue('light.primary', 'dark.primary');
 
     const label =
         (isLargerThan555

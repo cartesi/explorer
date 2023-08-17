@@ -17,7 +17,6 @@ import {
     Stack,
     Text,
     Tooltip,
-    useColorModeValue,
     Wrap,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
@@ -33,11 +32,10 @@ const HomeHeader = () => {
     const { balance } = useCartesiToken(account, null, blockNumber);
     const { stakedBalance } = useStaking(account);
     const poolBalance = useTotalPoolBalance(account);
-    const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
 
     return (
         <Box
-            bg={headerBg}
+            bg="dark.gray.tertiary"
             color="white"
             display={{ base: 'block', md: 'flex' }}
             alignItems="center"

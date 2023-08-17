@@ -42,12 +42,10 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
         'WhiteSmoke',
         'dark.gray.quaternary'
     );
-    const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
-    const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
+    const borderColor = useColorModeValue('gray.80', 'dark.gray.quinary');
+    const linkHoverColor = useColorModeValue('light.primary', 'dark.primary');
     const linkColor = useColorModeValue('gray.900', 'dark.primary');
     const addressColor = useColorModeValue('gray.900', 'white');
-    const addressTextDecoration = useColorModeValue('none', 'underline');
-    const addressBackground = useColorModeValue('blue.50', 'transparent');
     const isPool = isObject(user.pool);
 
     return (
@@ -66,8 +64,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                     responsive
                     truncated
                     size="md"
-                    textDecoration={addressTextDecoration}
-                    bg={addressBackground}
+                    textDecoration="underline"
                     px="0.5rem"
                     py="0.25rem"
                     color={addressColor}
