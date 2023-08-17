@@ -31,11 +31,8 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
     ...restProps
 }) => {
     const CardIcon = icon;
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
-    );
-    const bg = useColorModeValue('gray.90', 'transparent');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const bg = useColorModeValue('dark.gray.senary', 'transparent');
 
     return (
         <HStack {...restProps}>

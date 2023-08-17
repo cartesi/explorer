@@ -26,9 +26,9 @@ export interface SearchInputProps extends InputGroupProps {
 
 const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const { placeholder = 'Search', onSearchChange, ...rest } = props;
-    const placeholderColor = useColorModeValue('gray.900', 'white');
+    const placeholderColor = useColorModeValue('gray.500', 'white');
     const searchBackgroundColor = useColorModeValue(
-        'gray.50',
+        'white',
         'dark.gray.tertiary'
     );
     const iconColor = useColorModeValue('gray.900', 'white');

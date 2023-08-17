@@ -17,9 +17,9 @@ export interface BannerProps extends BoxProps {
 const Banner: FC<BannerProps> = (props) => {
     const { children, Title, Icon, ...restProps } = props;
     const hasIcon = isObject(Icon);
-    const bg = useColorModeValue('blue.50', 'dark.gray.tertiary');
+    const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
-        'transparent',
+        'light.border.tertiary',
         'dark.gray.quaternary'
     );
 

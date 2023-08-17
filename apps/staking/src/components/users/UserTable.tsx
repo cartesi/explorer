@@ -22,6 +22,7 @@ import {
     Td,
     useBreakpointValue,
     useColorModeValue,
+    TableCellProps,
 } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { User, UserSort } from '../../graphql/models';
@@ -46,7 +47,6 @@ const UserTable: FC<UserTableProps> = ({
 }) => {
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
-    const headerColor = useColorModeValue('header', 'dark.gray.primary');
     const borderColor = useColorModeValue(
         'transparent',
         'dark.gray.quaternary'
@@ -56,6 +56,12 @@ const UserTable: FC<UserTableProps> = ({
         'dark.gray.quinary'
     );
     const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
+    const thProps: TableCellProps = {
+        bg: 'dark.gray.primary',
+        paddingTop: 2,
+        paddingBottom: 2,
+        borderColor: topBorderColor,
+    };
 
     return (
         <TableResponsiveHolder
@@ -67,10 +73,7 @@ const UserTable: FC<UserTableProps> = ({
                 <Thead>
                     <Tr>
                         <Th
-                            paddingTop={2}
-                            paddingBottom={2}
-                            borderColor={topBorderColor}
-                            bg={headerColor}
+                            {...thProps}
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}
@@ -80,13 +83,7 @@ const UserTable: FC<UserTableProps> = ({
                             User
                         </Th>
 
-                        <Th
-                            paddingTop={2}
-                            paddingBottom={2}
-                            borderColor={topBorderColor}
-                            bg={headerColor}
-                            isNumeric
-                        >
+                        <Th {...thProps} isNumeric>
                             <GhostButton
                                 fontSize="md"
                                 fontWeight={400}
@@ -106,13 +103,7 @@ const UserTable: FC<UserTableProps> = ({
                             )}
                         </Th>
 
-                        <Th
-                            paddingTop={2}
-                            paddingBottom={2}
-                            borderColor={topBorderColor}
-                            bg={headerColor}
-                            isNumeric
-                        >
+                        <Th {...thProps} isNumeric>
                             <GhostButton
                                 fontSize="md"
                                 fontWeight={400}
@@ -132,13 +123,7 @@ const UserTable: FC<UserTableProps> = ({
                             )}
                         </Th>
 
-                        <Th
-                            paddingTop={2}
-                            paddingBottom={2}
-                            borderColor={topBorderColor}
-                            bg={headerColor}
-                            isNumeric
-                        >
+                        <Th {...thProps} isNumeric>
                             <GhostButton
                                 fontSize="md"
                                 fontWeight={400}
@@ -159,15 +144,12 @@ const UserTable: FC<UserTableProps> = ({
                         </Th>
 
                         <Th
+                            {...thProps}
                             isNumeric
                             position={{ base: 'sticky', md: 'initial' }}
                             top={0}
                             right={0}
                             style={{ textAlign: 'center' }}
-                            bg={headerColor}
-                            borderColor={topBorderColor}
-                            paddingTop={2}
-                            paddingBottom={2}
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}
