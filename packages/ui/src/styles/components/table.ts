@@ -14,7 +14,7 @@ export const Table = {
         simple: (props: { colorMode: string }) => {
             return {
                 th: {
-                    backgroundColor: 'dark.gray.secondary',
+                    background: 'dark.gray.secondary',
                     color: 'white',
                     borderColor:
                         props.colorMode === 'dark'

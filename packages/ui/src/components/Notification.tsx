@@ -38,6 +38,10 @@ export const Notification = ({
     ...alertProps
 }: NotificationProps) => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const borderColor = useColorModeValue(
+        'light.gray.tertiary',
+        'rgba(255, 255, 255, 0.10)'
+    );
     const inlineBorderColour = 'gray.100';
 
     return (
@@ -46,7 +50,9 @@ export const Notification = ({
             boxShadow="sm"
             bg={bg}
             borderRadius="2xl"
-            border={'1px solid rgba(255, 255, 255, 0.10)'}
+            borderWidth={'1px'}
+            borderStyle={'solid'}
+            borderColor={borderColor}
             py="2"
             status={status}
             {...alertProps}
