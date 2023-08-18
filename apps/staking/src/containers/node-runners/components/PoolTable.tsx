@@ -76,7 +76,6 @@ const NodeStatus = ({ ownerAddress }: { ownerAddress: string }) => {
 const PoolTable = ({ data }: Props) => {
     const [sortBy, setSortBy] = useAtom(poolSortByAtom);
     const [loading] = useAtom(poolDataFetchingAtom);
-    const bg = useColorModeValue('white', 'dark.gray.quaternary');
 
     return (
         <TableResponsiveHolder>
@@ -134,7 +133,11 @@ const PoolTable = ({ data }: Props) => {
                         <Th isNumeric whiteSpace="nowrap">
                             Block Produced
                         </Th>
-                        <Th position="sticky" right="0" bg={bg}>
+                        <Th
+                            position="sticky"
+                            right="0"
+                            bg={'dark.gray.quaternary'}
+                        >
                             Manage
                         </Th>
                     </Tr>
@@ -196,7 +199,7 @@ const PoolTable = ({ data }: Props) => {
                                 <Td
                                     position="sticky"
                                     right="0"
-                                    bg={bg}
+                                    bg={'dark.gray.quaternary'}
                                     textAlign="center"
                                 >
                                     <NextLink
@@ -208,6 +211,7 @@ const PoolTable = ({ data }: Props) => {
                                                 Manage pool {pool.id}
                                             </VisuallyHidden>
                                             <PencilIcon
+                                                color={'white'}
                                                 data-testid={`pencil-svg-${pool.id}`}
                                             />
                                         </Button>
@@ -227,7 +231,6 @@ interface PoolTableInfoProps {
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForStakingPool';
 const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const bg = useColorModeValue('white', 'dark.gray.primary');
-    const bgNotif = useColorModeValue('white', 'dark.gray.quaternary');
     const [pools] = useAtom(poolInfoListAtom);
 
     const posV2Enabled = useFlag('posV2Enabled');
