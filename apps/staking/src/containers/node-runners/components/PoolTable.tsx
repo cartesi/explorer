@@ -87,6 +87,7 @@ const PoolTable = ({ data }: Props) => {
                         <Th>Address</Th>
                         <Th isNumeric whiteSpace="nowrap">
                             <GhostButton
+                                height="auto"
                                 fontSize="xs"
                                 fontWeight="bold"
                                 _hover={{ color: 'blue.400' }}
@@ -98,6 +99,7 @@ const PoolTable = ({ data }: Props) => {
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
                             <GhostButton
+                                height="auto"
                                 fontSize="xs"
                                 fontWeight="bold"
                                 _hover={{ color: 'blue.400' }}
@@ -112,6 +114,7 @@ const PoolTable = ({ data }: Props) => {
                         </Th>
                         <Th isNumeric whiteSpace="nowrap">
                             <GhostButton
+                                height="auto"
                                 fontSize="xs"
                                 fontWeight="bold"
                                 _hover={{ color: 'blue.400' }}

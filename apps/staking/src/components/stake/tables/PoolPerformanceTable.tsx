@@ -54,7 +54,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
     const colSpans = 11;
-    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const borderColor = useColorModeValue(
         'transparent',
         'dark.gray.quaternary'
@@ -63,17 +63,16 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
         'transparent',
         'dark.gray.quinary'
     );
-    const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
 
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
-        bg: headerColor,
+        bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
         fontFamily: theme.fonts.body,
-        paddingTop: 2,
-        paddingBottom: 2,
+        paddingTop: 4,
+        paddingBottom: 4,
     };
 
     return (
@@ -155,7 +154,11 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
 
                         <Th {...thProps}>Configured Commission</Th>
                         <Th {...thProps}>
-                            <Flex direction={'row'} alignItems={'center'}>
+                            <Flex
+                                height="auto"
+                                direction={'row'}
+                                alignItems={'center'}
+                            >
                                 <GhostButton
                                     height="auto"
                                     fontSize="md"
@@ -183,6 +186,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                             isNumeric
                             position="initial"
                             ref={thRef}
+                            borderTopRightRadius="6px"
                             {...thProps}
                         >
                             {stakeText}
@@ -201,7 +205,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 alignItems="center"
                                 borderColor={borderColor}
                                 borderBottomWidth={[0, '1px', 0, 0]}
-                                borderTopLeftRadius="6px"
+                                borderTopRightRadius="6px"
                                 {...thProps}
                             >
                                 <SlideInOut display={true}>

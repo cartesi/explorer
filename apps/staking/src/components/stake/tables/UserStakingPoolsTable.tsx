@@ -24,7 +24,7 @@ import {
     useColorModeValue,
     TableColumnHeaderProps,
 } from '@chakra-ui/react';
-import { PoolBalance, PoolUser, StakingPool } from '../../../graphql/models';
+import { PoolBalance } from '../../../graphql/models';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
@@ -50,7 +50,6 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     const thRef = useRef<HTMLTableCellElement>();
     const tableRef = useRef<HTMLDivElement>();
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
-    const headerColor = useColorModeValue('header', 'dark.gray.primary');
     const borderColor = useColorModeValue(
         'transparent',
         'dark.gray.quaternary'
@@ -61,11 +60,13 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     );
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
-        bg: headerColor,
+        bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
         fontFamily: theme.fonts.body,
+        paddingTop: 4,
+        paddingBottom: 4,
     };
 
     return (
@@ -90,7 +91,12 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                         <Th isNumeric {...thProps}>
                             % Pool
                         </Th>
-                        <Th isNumeric ref={thRef} {...thProps}>
+                        <Th
+                            isNumeric
+                            ref={thRef}
+                            borderTopRightRadius="6px"
+                            {...thProps}
+                        >
                             {stakeText}
                         </Th>
                         {threshold.isBelow && (

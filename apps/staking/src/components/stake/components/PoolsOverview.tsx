@@ -23,7 +23,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
     summary,
     poolBalancesCount,
 }) => {
-    const iconColor = useColorModeValue('gray.900', 'dark.primary');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
 
     return (
         <Stack
