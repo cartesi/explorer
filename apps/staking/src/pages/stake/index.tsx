@@ -39,7 +39,6 @@ const Home = () => {
     const [search, setSearch] = useState<string>();
     const pages = Math.ceil((summary?.totalPools || 0) / POOLS_PER_PAGE);
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
-    const headerBg = useColorModeValue('header', 'dark.gray.tertiary');
     const pageBg = useColorModeValue('gray.80', 'dark.gray.quaternary');
     const myStakingPoolsBg = useColorModeValue('white', 'dark.gray.primary');
 
@@ -51,7 +50,13 @@ const Home = () => {
             />
 
             <Box bg={bg}>
-                <Box w="100%" bg={headerBg} color="white" px="6vw" py={5}>
+                <Box
+                    w="100%"
+                    bg="dark.gray.tertiary"
+                    color="white"
+                    px="6vw"
+                    py={5}
+                >
                     <Box color="white" px={{ base: '6vw', xl: '6vw' }}>
                         <Heading as="h1" fontSize={['4xl', '5xl']}>
                             Pools

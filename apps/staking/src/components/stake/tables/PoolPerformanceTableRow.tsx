@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { FC, useState } from 'react';
 import { LockIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -16,7 +17,6 @@ import {
     Icon,
     Link,
     TableCellProps,
-    TableRowProps,
     Td,
     Tooltip,
     Tr,
@@ -25,7 +25,6 @@ import {
 import { Address, StakeIcon } from '@explorer/ui';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
-import { FunctionComponent } from 'react';
 import { StakingPool } from '../../../graphql/models';
 import labels from '../../../utils/labels';
 import { formatCTSI } from '../../../utils/token';
@@ -82,9 +81,11 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
     );
 };
 
-const PoolPerformanceTableRow: FunctionComponent<
-    PoolPerformanceTableRowProps
-> = ({ chainId, pool, keepActionColVisible }) => {
+const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
+    chainId,
+    pool,
+    keepActionColVisible,
+}) => {
     // accrued commission
     const accruedCommissionLabel =
         pool.commissionPercentage !== null
@@ -115,17 +116,16 @@ const PoolPerformanceTableRow: FunctionComponent<
         commissionTooltip = labels.gasTaxCommission;
     }
 
+    const [isHovered, setHovered] = useState(false);
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
-        'white',
-        'dark.gray.primary'
+        'WhiteSmoke',
+        'dark.gray.tertiary'
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
     const linkColor = useColorModeValue('gray.900', 'dark.primary');
     const addressColor = useColorModeValue('gray.900', 'white');
-    const addressTextDecoration = useColorModeValue('none', 'underline');
-    const addressBackground = useColorModeValue('blue.50', 'transparent');
     const stakeInfoBg = useColorModeValue('white', 'dark.gray.primary');
     const tdProps: TableCellProps = {
         borderColor,
@@ -140,6 +140,8 @@ const PoolPerformanceTableRow: FunctionComponent<
             data-testid="pool-performance-table-row"
             bg={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
         >
             <Td data-testid="address-col" {...tdProps}>
                 <HStack>
@@ -150,11 +152,10 @@ const PoolPerformanceTableRow: FunctionComponent<
                         truncated
                         size="md"
                         minWidth="120px"
-                        textDecoration={addressTextDecoration}
+                        textDecoration="underline"
                         px="0.5rem"
                         py="0.25rem"
                         color={addressColor}
-                        bg={addressBackground}
                         shouldDisplayFallbackAvatar
                     />
 
@@ -214,15 +215,15 @@ const PoolPerformanceTableRow: FunctionComponent<
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
-                backgroundColor={stakeInfoBg}
                 padding={0}
                 data-testid="stake-info-col"
+                backgroundColor={isHovered ? backgroundHoverColor : stakeInfoBg}
                 {...tdProps}
             >
                 <Box
                     transition="all 0.2s ease-in"
                     shadow={keepActionColVisible ? 'md' : 'none'}
-                    paddingY={[0, 0, 8, 8]}
+                    paddingY={[0, 0, 6, 6]}
                     paddingX={[0, 0, '48px', '48px']}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}

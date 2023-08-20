@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Box,
     Td,
@@ -50,18 +50,16 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
         sharesToAmount,
     } = useStakingPool(address, account);
     const stakedBalance = sharesToAmount(stakedShares);
-
+    const [isHovered, setHovered] = useState(false);
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
-        'white',
-        'dark.gray.primary'
+        'WhiteSmoke',
+        'dark.gray.tertiary'
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
     const linkColor = useColorModeValue('gray.900', 'dark.primary');
     const addressColor = useColorModeValue('gray.900', 'white');
-    const addressTextDecoration = useColorModeValue('none', 'underline');
-    const addressBackground = useColorModeValue('blue.50', 'transparent');
     const stakeInfoBg = useColorModeValue('white', 'dark.gray.primary');
     const tdProps: TableCellProps = {
         borderColor,
@@ -75,6 +73,8 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
             data-testid="user-staking-pools-table-row"
             bg={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
         >
             <Td
                 borderColor={borderColor}
@@ -90,9 +90,8 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     px="0.5rem"
                     py="0.25rem"
                     minWidth="120px"
-                    textDecoration={addressTextDecoration}
+                    textDecoration="underline"
                     color={addressColor}
-                    bg={addressBackground}
                     shouldDisplayFallbackAvatar
                 />
             </Td>
@@ -126,7 +125,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 top={0}
                 right={0}
                 maxWidth="132px"
-                backgroundColor={stakeInfoBg}
+                backgroundColor={isHovered ? backgroundHoverColor : stakeInfoBg}
                 padding={0}
                 data-testid="stake-info-col"
                 {...tdProps}
@@ -134,13 +133,13 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 <Box
                     transition="all 0.2s ease-in"
                     shadow={keepActionColVisible ? 'md' : 'none'}
-                    padding={[0, 0, 8, 8]}
+                    padding={[0, 0, 6, 6]}
                     minHeight={['78px', '80px', 'auto', 'auto']}
                     width={['80px', '80px', 'auto', 'auto']}
                     display="flex"
                     alignItems="center"
                     justifyContent={{ base: 'center', lg: 'flex-end' }}
-                    mr={{ base: 0, lg: 4 }}
+                    mr={{ base: 0, lg: 6 }}
                     ml="auto"
                 >
                     <NextLink href={`/stake/${balance.pool.id}`} passHref>

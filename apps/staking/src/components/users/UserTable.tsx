@@ -58,8 +58,8 @@ const UserTable: FC<UserTableProps> = ({
     const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const thProps: TableCellProps = {
         bg: 'dark.gray.primary',
-        paddingTop: 2,
-        paddingBottom: 2,
+        paddingTop: 4,
+        paddingBottom: 4,
         borderColor: topBorderColor,
     };
 
@@ -85,6 +85,7 @@ const UserTable: FC<UserTableProps> = ({
 
                         <Th {...thProps} isNumeric>
                             <GhostButton
+                                height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
@@ -105,6 +106,7 @@ const UserTable: FC<UserTableProps> = ({
 
                         <Th {...thProps} isNumeric>
                             <GhostButton
+                                height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
@@ -125,6 +127,7 @@ const UserTable: FC<UserTableProps> = ({
 
                         <Th {...thProps} isNumeric>
                             <GhostButton
+                                height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
