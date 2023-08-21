@@ -81,12 +81,12 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
 
     const bgDivider = useColorModeValue('gray.100', 'gray.600');
-    const iconBackgroundColor = useColorModeValue('orange.50', 'transparent');
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
-    );
     const popoverBodyColor = useColorModeValue('white', 'dark.gray.primary');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBackgroundColor = useColorModeValue(
+        'dark.gray.senary',
+        'transparent'
+    );
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
@@ -200,11 +200,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon
-                                                    color="gray.500"
-                                                    w={3.5}
-                                                    h={3.5}
-                                                />
+                                                <Icon w={3.5} h={3.5} />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>
@@ -232,11 +228,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon
-                                                    color="gray.500"
-                                                    w={3.5}
-                                                    h={3.5}
-                                                />
+                                                <Icon w={3.5} h={3.5} />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>
@@ -260,11 +252,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                 bg="black"
                                                 color="white"
                                             >
-                                                <Icon
-                                                    color="gray.500"
-                                                    w={3.5}
-                                                    h={3.5}
-                                                />
+                                                <Icon w={3.5} h={3.5} />
                                             </Tooltip>
                                         </HStack>
                                     </BigNumberTextV2>

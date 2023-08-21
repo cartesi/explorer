@@ -30,10 +30,10 @@ export interface PoolBalanceStatProps extends StackProps {
 
 const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
     const { pool } = props;
-    const iconBackgroundColor = useColorModeValue('orange.50', 'transparent');
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBackgroundColor = useColorModeValue(
+        'dark.gray.senary',
+        'transparent'
     );
 
     return (

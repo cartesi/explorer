@@ -33,12 +33,12 @@ export interface PoolPerformanceStatProps {
 
 const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
     ({ address, location }: PoolPerformanceStatProps) => {
-        const bg = useColorModeValue('blue.50', 'dark.gray.tertiary');
+        const iconColor = useColorModeValue('light.primary', 'dark.primary');
+        const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
         const borderColor = useColorModeValue(
-            'transparent',
+            'light.border.tertiary',
             'dark.gray.quaternary'
         );
-        const iconColor = useColorModeValue('gray.900', 'dark.primary');
         const { loading, data } = useStakingPoolPerformance(address);
 
         if (loading) return null;

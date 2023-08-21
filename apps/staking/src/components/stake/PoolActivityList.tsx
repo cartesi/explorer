@@ -113,7 +113,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             to: selectedTimePeriod?.to,
             types: selectedTypes as Types[],
         });
-        const headerColor = useColorModeValue('header', 'dark.gray.primary');
+        const headerColor = 'dark.gray.primary';
         const borderColor = useColorModeValue(
             'transparent',
             'dark.gray.quaternary'
@@ -122,7 +122,10 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
             'transparent',
             'dark.gray.quinary'
         );
-        const loadMoreColor = useColorModeValue('blue.300', 'dark.primary');
+        const loadMoreColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
 
         useEffect(() => {
             setTimestamp(null);

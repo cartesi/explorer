@@ -28,19 +28,20 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
     const router = useRouter();
     const address = router.query.pool as string;
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const boxShadow = useColorModeValue('md', 'none');
 
     return (
         <Box
-            px={{ base: '6vw', xl: '12vw' }}
-            py={3}
-            boxShadow="sm"
-            fontSize="sm"
+            position="relative"
             display={{
                 base: 'none',
                 lg: 'block',
             }}
+            px={{ base: '6vw', xl: '12vw' }}
+            py={3}
+            boxShadow={boxShadow}
+            fontSize="sm"
             backgroundColor={bg}
-            marginBottom="0.05rem"
         >
             <Breadcrumb>
                 <BreadcrumbItem>

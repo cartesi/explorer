@@ -30,10 +30,10 @@ export interface StakedBalanceStatProps extends StackProps {
 
 const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
     const { stakedBalance } = props;
-    const iconBackgroundColor = useColorModeValue('orange.50', 'transparent');
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBackgroundColor = useColorModeValue(
+        'dark.gray.senary',
+        'transparent'
     );
 
     return (
@@ -72,12 +72,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             bg="black"
                             color="white"
                         >
-                            <Icon
-                                color="gray.500"
-                                role="balance-icon"
-                                w={3.5}
-                                h={3.5}
-                            />
+                            <Icon role="balance-icon" w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

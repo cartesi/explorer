@@ -128,6 +128,7 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
                         base: 'flex',
                         lg: 'none',
                     }}
+                    cursor="pointer"
                     onClick={onToggle}
                 >
                     <Heading
