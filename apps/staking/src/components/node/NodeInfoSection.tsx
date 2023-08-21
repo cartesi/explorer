@@ -30,10 +30,10 @@ import { formatUnits } from 'ethers/lib/utils';
 import { isEmpty } from 'lodash';
 import { FC } from 'react';
 import { truncateString } from '../../utils/stringUtils';
-import { NodeBalanceModal } from './modals/NodeBalanceModal';
-import { NodeRetireModal } from './modals/NodeRetireModal';
 import { NodeHireNodeSection } from './NodeHireNodeSection';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
+import { NodeBalanceModal } from './modals/NodeBalanceModal';
+import { NodeRetireModal } from './modals/NodeRetireModal';
 export interface INodeInfoSection {
     ownerAccount?: string;
     address: string;
@@ -67,6 +67,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 }) => {
     // dark mode support
     const bg = useColorModeValue('white', 'gray.800');
+    const bgBox = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
     const buttonBg = useColorModeValue('gray.80', 'gray.800');
     const tooltipColor = useColorModeValue('gray.400', 'white');
     const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
@@ -103,11 +104,13 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
             ) : (
                 <>
                     <Box
-                        bg={bg}
+                        border={'1px solid rgba(255, 255, 255, 0.10)'}
+                        borderRadius={'2xl'}
+                        bg={bgBox}
                         shadow="md"
                         px={{ base: 4, sm: 6, lg: 8 }}
                         py={{ base: 2, sm: 4, lg: 6 }}
-                        mb={2}
+                        mb={4}
                     >
                         <Stack
                             spacing={{ base: 2, md: 4 }}
@@ -208,9 +211,9 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         </Stack>
                     </Box>
                     <Button
+                        variant={'outline'}
                         onClick={retireModal.onOpen}
                         disabled={isRetiring}
-                        bgColor={buttonBg}
                         w={{ base: 'auto' }}
                         px={{ base: 4, md: 6 }}
                         minWidth={{ base: 'auto', md: '173px' }}

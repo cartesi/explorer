@@ -12,20 +12,20 @@
 import { WarningIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Text,
     Flex,
     HStack,
-    VStack,
-    Tooltip,
-    Icon,
     Heading,
+    Icon,
+    Text,
+    Tooltip,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { WalletIcon } from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { useWallet } from '@explorer/wallet';
 import { useMessages } from '../../../utils/messages';
-import { WalletIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IWalletBalanceSectionProps {
@@ -38,20 +38,17 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     userCTSIBalance,
 }) => {
     const balanceColor = useColorModeValue('gray.400', 'white');
+    const bgIcon = useColorModeValue('teal.light', 'black');
+    const iconColor = useColorModeValue('light.primary', 'cyan');
     const { isGnosisSafe } = useWallet();
     const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
-    const iconColor = useColorModeValue(
-        'light.support.attention',
-        'dark.primary'
-    );
-    const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
     const warningIconColor = useColorModeValue('orange.500', 'white');
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
             <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
-                    bg={iconBg}
+                    bg={bgIcon}
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"

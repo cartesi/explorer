@@ -10,28 +10,28 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Box,
     Button,
+    Divider,
     FormControl,
-    VStack,
-    Text,
     FormHelperText,
     FormLabel,
-    UseDisclosureProps,
     HStack,
-    Box,
-    useColorModeValue,
     Link,
-    Divider,
     Modal,
-    ModalCloseButton,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalOverlay,
+    Text,
+    UseDisclosureProps,
+    VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
-import React, { FC, useEffect, useRef, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+import { FC, useEffect, useRef, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 
 interface INodeUnstakeModalProps {
@@ -66,7 +66,9 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
     };
 
     const inputFocusRef = useRef();
-    const bg = useColorModeValue('gray.50', 'header');
+    const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
+    const color = useColorModeValue('dark.primary.gray', 'white');
+    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
 
     useEffect(() => {
         if (!isOpen) {
@@ -89,7 +91,12 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                 initialFocusRef={inputFocusRef}
             >
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent
+                    bg={bgModal}
+                    border={'1px solid rgba(255, 255, 255, 0.20)'}
+                    borderRadius={'2xl'}
+                    color={color}
+                >
                     <Box pb={6}>
                         <HStack justify="space-between">
                             <Box
@@ -123,7 +130,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                         Unstake Amount
                                     </FormLabel>
                                     <Link
-                                        color="blue.500"
+                                        color="cyan.primary"
                                         pb={2}
                                         onClick={handleMaxUnstake}
                                     >
@@ -146,7 +153,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme="cyan"
                                     disabled={outputStake.isZero()}
                                     onClick={() => {
                                         onSave(outputStake);
@@ -156,7 +163,12 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 >
                                     UNSTAKE
                                 </Button>
-                                <Button width="full" bg={bg} onClick={onClose}>
+                                <Button
+                                    width="full"
+                                    variant={'outline'}
+                                    borderColor={borderColor}
+                                    onClick={onClose}
+                                >
                                     CANCEL
                                 </Button>
                             </VStack>

@@ -102,8 +102,13 @@ const ManageNode: FC = () => {
     const node = useNode(activeWorker);
 
     // dark mode support
-    const bg = useColorModeValue('gray.80', 'header');
-
+    const bg = useColorModeValue('white', 'dark.gray.quaternary');
+    const bgSection = useColorModeValue(
+        'light.gray.secondary',
+        'dark.gray.primary'
+    );
+    const bgBox = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
     const retiredDisclosure = useDisclosure();
@@ -181,7 +186,7 @@ const ManageNode: FC = () => {
             />
 
             <HStack
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
@@ -195,7 +200,7 @@ const ManageNode: FC = () => {
             </HStack>
 
             <Box
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
@@ -214,6 +219,7 @@ const ManageNode: FC = () => {
                     py={{ base: 4, sm: 6, lg: '26px' }}
                     shadow="md"
                     position="relative"
+                    bg={bg}
                 >
                     <NodeStakingDashboard
                         userETHBalance={userBalance}
@@ -229,17 +235,10 @@ const ManageNode: FC = () => {
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 pt={{ base: 8 }}
-                bg={bg}
                 pb={4}
+                bg={bgSection}
             >
                 <VStack spacing={4} alignItems="stretch">
-                    <TransactionBanner
-                        title="Setting allowance..."
-                        failTitle="Error setting allowance"
-                        successDescription="New allowance set successfully."
-                        transaction={tokenTransaction}
-                    />
-
                     {currentTransaction === 'authorize' && (
                         <TransactionBanner
                             title={useMessages('node.authorize.authorizing')}
@@ -307,7 +306,7 @@ const ManageNode: FC = () => {
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 pb={{ base: 6, sm: 8, lg: 8 }}
-                bg={bg}
+                bg={bgSection}
                 fontSize={'xl'}
             >
                 <Stack
@@ -326,7 +325,9 @@ const ManageNode: FC = () => {
 
                 {!node?.ready && !node?.error ? (
                     <Box
-                        bg={bg}
+                        border={'1px solid rgba(255, 255, 255, 0.10)'}
+                        borderRadius={4}
+                        bg={bgBox}
                         px={{ base: 2, lg: 8 }}
                         py={{ base: 2, lg: 6 }}
                         display="flex"
@@ -392,8 +393,8 @@ const ManageNode: FC = () => {
                     {!isSmallScreen && (
                         <Box>
                             <Button
-                                bgColor={bg}
-                                color="gray.450"
+                                variant={'outline'}
+                                borderColor={borderColor}
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 me={2}
@@ -406,7 +407,7 @@ const ManageNode: FC = () => {
                                 Unstake
                             </Button>
                             <Button
-                                colorScheme="blue"
+                                colorScheme="cyan"
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 fontWeight={600}
@@ -421,7 +422,7 @@ const ManageNode: FC = () => {
                     )}
                 </Stack>
 
-                <Box bg={bg}>
+                <Box>
                     <VStack spacing={4} alignItems="stretch">
                         {isWithdrawAlertActive && (
                             <TransactionInfoBanner
@@ -523,7 +524,8 @@ const ManageNode: FC = () => {
                         direction="row"
                     >
                         <Button
-                            bgColor={bg}
+                            variant={'outline'}
+                            borderColor={borderColor}
                             w={{ base: '100%', md: 'auto' }}
                             me={2}
                             disabled={isStakeUnstakeDisabled}
@@ -532,7 +534,7 @@ const ManageNode: FC = () => {
                             UNSTAKE
                         </Button>
                         <Button
-                            colorScheme="blue"
+                            colorScheme="cyan"
                             w={{ base: '100%', md: 'auto' }}
                             disabled={isStakeUnstakeDisabled}
                             onClick={stakeDisclosure.onOpen}

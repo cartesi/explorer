@@ -10,30 +10,30 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Box,
     Button,
+    Divider,
     FormControl,
-    VStack,
-    Text,
     FormHelperText,
     FormLabel,
-    UseDisclosureProps,
     HStack,
-    Box,
-    useColorModeValue,
-    Divider,
     Input,
-    InputRightElement,
     InputGroup,
+    InputRightElement,
     Modal,
-    ModalCloseButton,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalOverlay,
+    Text,
+    UseDisclosureProps,
+    VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber, constants, ethers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 
 interface INodeBalanceModalProps {
     userBalance: BigNumber;
@@ -51,7 +51,9 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     const [fundsValue, setFundsValue] = useState<any>(0);
 
     const inputFocusRef = useRef();
-    const bg = useColorModeValue('gray.50', 'header');
+    const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
+    const color = useColorModeValue('dark.primary.gray', 'white');
+    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
 
     const toBigNumber = (value: number, decimals = 18) =>
         ethers.utils.parseUnits(value.toString(), decimals);
@@ -97,7 +99,12 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                 initialFocusRef={inputFocusRef}
             >
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent
+                    bg={bgModal}
+                    border={'1px solid rgba(255, 255, 255, 0.20)'}
+                    borderRadius={'2xl'}
+                    color={color}
+                >
                     <Box pb={6}>
                         <HStack justify="space-between">
                             <Box
@@ -140,8 +147,9 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                         pointerEvents="none"
                                         w={12}
                                         h="100%"
-                                        children={<Box>ETH</Box>}
-                                    />
+                                    >
+                                        <Box>ETH</Box>
+                                    </InputRightElement>
                                 </InputGroup>
                                 <FormHelperText>
                                     Your balance: {userETHBalance} ETH
@@ -152,7 +160,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme="cyan"
                                     disabled={
                                         output.isZero() ||
                                         output.gt(userBalance)
@@ -165,7 +173,12 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 >
                                     ADD FUNDS
                                 </Button>
-                                <Button width="full" bg={bg} onClick={onClose}>
+                                <Button
+                                    width="full"
+                                    variant={'outline'}
+                                    borderColor={borderColor}
+                                    onClick={onClose}
+                                >
                                     CANCEL
                                 </Button>
                             </VStack>
