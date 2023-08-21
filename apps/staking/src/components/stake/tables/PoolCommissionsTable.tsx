@@ -38,7 +38,6 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
     loading,
 }) => {
     const hasItems = data?.length > 0;
-    const headerColor = useColorModeValue('header', 'dark.gray.primary');
     const borderColor = useColorModeValue(
         'transparent',
         'dark.gray.quaternary'
@@ -50,7 +49,7 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
 
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
-        bg: headerColor,
+        bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
