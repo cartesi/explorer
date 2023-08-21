@@ -11,18 +11,18 @@
 
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
-    OrderedList,
-    ListItem,
-    Stack,
-    Link,
     Button,
-    useDisclosure,
+    Link,
+    ListItem,
+    OrderedList,
+    Stack,
+    StackProps,
     VStack,
     useColorModeValue,
-    StackProps,
+    useDisclosure,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
 import { BigNumber, BigNumberish } from 'ethers';
+import { FC } from 'react';
 import { InfoBanner } from '../stake/InfoBanner';
 import { WalletBalanceSection } from '../stake/components/WalletBalanceSection';
 import { NodeAllowanceSection } from './NodeAllowanceSection';

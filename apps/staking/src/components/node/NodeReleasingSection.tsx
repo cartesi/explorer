@@ -11,14 +11,14 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
     Icon,
-    Button,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
@@ -37,27 +37,19 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     releasingLeftShort,
     onWithdraw,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    const borderColor = releasingBalance.isZero() ? 'gray.450' : 'blue.200';
+    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const iconColor = useColorModeValue('light.gray.primary', 'white');
 
     return (
         <Box
+            borderRadius={'2xl'}
             position="relative"
             bg={bg}
             p={6}
             pl={7}
             mt={5}
-            border="1px solid var(--chakra-colors-gray-100)"
+            border="1px solid rgba(255, 255, 255, 0.10)"
         >
-            <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width={3}
-                height="100%"
-                bg={borderColor}
-            />
-
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
@@ -77,8 +69,8 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                             as={AiFillDollarCircle}
                             color={
                                 releasingBalance.isZero()
-                                    ? 'gray.450'
-                                    : 'blue.200'
+                                    ? iconColor
+                                    : 'cyan.primary'
                             }
                         />
                     </Box>

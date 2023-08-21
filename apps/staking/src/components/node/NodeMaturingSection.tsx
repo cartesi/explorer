@@ -11,18 +11,18 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
-    Button,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { TimeIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { TimeIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeMaturingSection {
@@ -34,26 +34,18 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     maturingBalance,
     maturingLeft = '6 hours',
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    const borderColor = maturingBalance.isZero() ? 'gray.450' : 'blue.200';
+    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const iconColor = useColorModeValue('light.gray.primary', 'white');
 
     return (
         <Box
+            borderRadius={'2xl'}
             position="relative"
             bg={bg}
             p={6}
             pl={7}
-            border="1px solid var(--chakra-colors-gray-100)"
+            border="1px solid rgba(255, 255, 255, 0.10)"
         >
-            <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width={3}
-                height="100%"
-                bg={borderColor}
-            />
-
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
@@ -72,8 +64,8 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                             h={9}
                             color={
                                 maturingBalance.isZero()
-                                    ? 'gray.450'
-                                    : 'blue.200'
+                                    ? iconColor
+                                    : 'cyan.primary'
                             }
                         />
                     </Box>

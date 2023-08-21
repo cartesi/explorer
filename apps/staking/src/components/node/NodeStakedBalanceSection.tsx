@@ -11,17 +11,17 @@
 
 import {
     Box,
-    Text,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
     Heading,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { StakedBalanceIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { StakedBalanceIcon } from '@explorer/ui';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeStakedBalanceSection {
@@ -31,8 +31,9 @@ export interface INodeStakedBalanceSection {
 export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     stakedBalance,
 }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-
+    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bgIcon = useColorModeValue('teal.light', 'black');
+    const iconColor = useColorModeValue('light.primary', 'cyan');
     return (
         <Box bg={bg} shadow="md" p={6} mt={5} minHeight="7.125rem">
             <Stack
@@ -41,7 +42,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
             >
                 <HStack ml={3} alignItems="center">
                     <Box
-                        bg="blue.50"
+                        bg={bgIcon}
                         w="4.125rem"
                         h="4.125rem"
                         borderRadius="full"
@@ -50,7 +51,7 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                         mr={5}
                     >
                         <StakedBalanceIcon
-                            color="blue.400"
+                            color={iconColor}
                             w={8}
                             h={8}
                             ml={0.5}
