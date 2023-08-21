@@ -61,8 +61,6 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const addressColor = useColorModeValue('gray.900', 'white');
-    const addressTextDecoration = useColorModeValue('none', 'underline');
-    const addressBackground = useColorModeValue('blue.50', 'transparent');
     const tdProps: TableCellProps = {
         borderColor,
         paddingTop: 4,
@@ -84,8 +82,7 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                     responsive
                     truncated
                     size="md"
-                    textDecoration={addressTextDecoration}
-                    bg={addressBackground}
+                    textDecoration="underline"
                     px="0.5rem"
                     py="0.25rem"
                     color={addressColor}

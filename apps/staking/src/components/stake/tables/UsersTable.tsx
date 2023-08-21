@@ -37,7 +37,7 @@ export interface UsersTableProps {
 const UsersTable: FC<UsersTableProps> = (props) => {
     const { chainId, data, loading } = props;
     const hasItems = data?.length > 0;
-    const headerColor = useColorModeValue('header', 'dark.gray.primary');
+    const headerColor = 'dark.gray.primary';
     const borderColor = useColorModeValue(
         'transparent',
         'dark.gray.quaternary'

@@ -128,7 +128,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
     const [lineColorFromCssVar, tickLightColor, tickDarkColor] = useToken(
         'colors',
         [
-            colorMode === 'light' ? 'blue.200' : 'dark.primary',
+            colorMode === 'light' ? 'dark.secondary' : 'dark.primary',
             'gray.700',
             'whiteAlpha.800',
         ]
