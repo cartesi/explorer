@@ -48,11 +48,11 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
     onSelectedTypesChange,
 }) => {
     const checkedBg = useColorModeValue('gray.50', 'dark.gray.secondary');
-    const badgeBg = useColorModeValue('blue.200', 'white');
-    const badgeColor = 'gray.900';
+    const badgeBg = useColorModeValue('dark.secondary', 'white');
+    const badgeColor = useColorModeValue('white', 'gray.900');
     const menuBg = useColorModeValue('white', 'dark.gray.secondary');
-    const checkboxColorScheme = useColorModeValue('blue', 'gray');
-    const radioColorScheme = useColorModeValue('blue', 'cyan');
+    const checkboxColorScheme = useColorModeValue('teal', 'gray');
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
 
     return (
         <Stack
@@ -183,7 +183,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
             </Box>
             <Flex mb={4} direction="row" wrap="wrap">
                 {selectedPeriod && (
-                    <Box p={'1px'}>
+                    <Box p={'1px'} mr={1}>
                         <HStack
                             bg={badgeBg}
                             color="header"
@@ -207,7 +207,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     </Box>
                 )}
                 {selectedTypes.map((type, index) => (
-                    <Box p={'1px'} key={index}>
+                    <Box p={'1px'} mr={1} key={index}>
                         <HStack
                             bg={badgeBg}
                             color="header"

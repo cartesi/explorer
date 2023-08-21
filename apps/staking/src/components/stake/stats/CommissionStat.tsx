@@ -35,12 +35,12 @@ export interface CommissionStatProps extends StackProps {
 
 const CommissionStat: FC<CommissionStatProps> = (props) => {
     const { commissionPercentage, fee, location } = props;
-    const bg = useColorModeValue('blue.50', 'dark.gray.tertiary');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
-        'transparent',
+        'light.border.tertiary',
         'dark.gray.quaternary'
     );
-    const iconColor = useColorModeValue('gray.900', 'dark.primary');
 
     return (
         <ConditionalWrapper
