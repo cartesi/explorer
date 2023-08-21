@@ -30,8 +30,7 @@ export const Button = {
         outline: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
-                    borderColor:
-                        props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
+                    borderColor: props.colorMode === 'dark' ? 'white' : 'black',
                     _hover: {
                         bg:
                             props.colorMode === 'dark'
