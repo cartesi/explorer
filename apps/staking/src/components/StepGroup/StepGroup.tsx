@@ -25,7 +25,7 @@ import { VSeparator, HSeparator } from './Separator';
 import { IStepMeta, IStep } from './interfaces';
 import { range } from 'lodash/fp';
 import { CheckIcon } from '@chakra-ui/icons';
-import theme from '../../styles/theme';
+import { theme } from '@explorer/ui';
 
 type HeaderType = {
     currentStep: number;
