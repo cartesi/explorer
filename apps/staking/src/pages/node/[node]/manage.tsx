@@ -47,7 +47,7 @@ import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useNode } from '../../../services/node';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
-import theme from '../../../styles/theme';
+import { theme } from '@explorer/ui';
 import { useMessages } from '../../../utils/messages';
 import { useTimeLeft } from '../../../utils/react';
 

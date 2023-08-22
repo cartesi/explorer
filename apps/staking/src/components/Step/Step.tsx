@@ -24,7 +24,7 @@ import {
 import { CheckIcon } from '@chakra-ui/icons';
 import { StepStatus } from './enums';
 import { StepProps } from './interfaces';
-import theme from '../../styles/theme';
+import { theme } from '@explorer/ui';
 
 interface State {
     stepNumberBgColor: string;
