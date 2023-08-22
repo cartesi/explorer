@@ -81,7 +81,12 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const max_depositColor = useColorModeValue('blue.500', 'white');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const tagColor = useColorModeValue('gray.900', 'white');
-
+    const infoBg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
+    const infoBorderColor = useColorModeValue(
+        'light.border.tertiary',
+        'dark.border.quaternary'
+    );
+    const infoColor = useColorModeValue('black', 'white');
     const inputFocusRef = useRef();
 
     useEffect(() => {
@@ -287,25 +292,23 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     spacing={4}
                                     alignItems="center"
                                     p={4}
-                                    bg="blue.50"
+                                    color={infoColor}
+                                    bg={infoBg}
+                                    borderRadius="1rem"
+                                    borderWidth="1px"
+                                    borderColor={infoBorderColor}
                                 >
                                     <Box flexGrow="1">
                                         <HStack>
-                                            <Text fontSize="sm" color="black">
+                                            <Text fontSize="sm">
                                                 Your Allowance
                                             </Text>
                                             <Tooltip
                                                 placement="top"
                                                 label="Here you can see your current pool allowance."
                                                 fontSize="small"
-                                                bg="black"
-                                                color="white"
                                             >
-                                                <Icon
-                                                    color="gray.400"
-                                                    w={3.5}
-                                                    h={3.5}
-                                                />
+                                                <Icon w={3.5} h={3.5} />
                                             </Tooltip>
                                         </HStack>
                                         <Heading m={0} size="sm">
@@ -313,15 +316,12 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 <CTSI
                                                     value={allowance}
                                                     fontSize="lg"
-                                                    color="black"
                                                 />
-                                                <Text ml={1} color="black">
-                                                    CTSI
-                                                </Text>
+                                                <Text ml={1}>CTSI</Text>
                                             </Flex>
                                         </Heading>
                                     </Box>
-                                    <Box alignSelf="flex-end">
+                                    <Box>
                                         <IconButton
                                             aria-label="Edit"
                                             size="sm"
@@ -331,10 +331,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                         height: 24,
                                                         width: 24,
                                                     }}
-                                                    color="black"
                                                 />
                                             }
-                                            variant="blue.50"
                                             onClick={() => {
                                                 setAllowanceStep(true);
                                             }}
@@ -414,11 +412,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         width="full"
                                         colorScheme="blue"
                                         disabled={outputDeposit.isZero()}
-                                        background={
-                                            outputDeposit.isZero()
-                                                ? 'gray'
-                                                : 'blue.200'
-                                        }
                                         role="deposit-button"
                                         onClick={() => {
                                             onSave(outputDeposit, 'deposit');
