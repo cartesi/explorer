@@ -9,22 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useReducer, useEffect, ReactElement } from 'react';
+import { CheckIcon } from '@chakra-ui/icons';
 import {
-    VStack,
     Box,
-    Text,
-    Flex,
-    Heading,
     Divider,
+    Flex,
     FlexProps,
+    Heading,
+    Text,
+    VStack,
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
+import { theme } from '@explorer/ui';
+import React, { ReactElement, useEffect, useReducer } from 'react';
 import { StepStatus } from './enums';
 import { StepProps } from './interfaces';
-import { theme } from '@explorer/ui';
 
 interface State {
     stepNumberBgColor: string;
@@ -69,8 +69,11 @@ export const Step = ({
     ...stackProps
 }: StepProps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const stepBoxBg = useColorModeValue('white', 'gray.700');
-    const stepNumberBgColor = useColorModeValue('blue.500', 'blue.200');
+    const stepBoxBg = useColorModeValue('teal.light', 'dark.gray.primary');
+    const stepNumberBgColor = useColorModeValue(
+        'light.primary',
+        'cyan.primary'
+    );
     const stepNumberColor = useColorModeValue('white', 'black');
     const activeProps = {
         stepBoxShadow: 'base',

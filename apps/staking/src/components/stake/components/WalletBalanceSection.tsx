@@ -64,8 +64,10 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             placement="top"
                             label="Here you can see your current wallet balance."
                             fontSize="small"
-                            bg="black"
+                            bg="dark.gray.quaternary"
                             color="white"
+                            borderRadius={'md'}
+                            opacity={0.9}
                         >
                             <Icon color={balanceColor} w={3.5} h={3.5} />
                         </Tooltip>

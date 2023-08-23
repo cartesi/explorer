@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { AlertStatus } from '@chakra-ui/alert';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import {
     Alert,
@@ -23,9 +24,8 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
-import { AlertStatus } from '@chakra-ui/alert';
 import { isObject } from 'lodash';
+import React, { FC } from 'react';
 
 export interface IInfoBannerProps extends Omit<AlertProps, 'content'> {
     isOpen?: boolean;
