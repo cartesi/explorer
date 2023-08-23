@@ -64,7 +64,7 @@ const BlockList = (props: BlockListProps) => {
     const { data, loading, fetchMore } = result;
     const blocks = data?.blocks || [];
     const highlightColor = useColorModeValue(
-        'lightyellow',
+        'dark.gray.senary',
         'dark.gray.quaternary'
     );
 

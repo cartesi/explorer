@@ -46,7 +46,7 @@ const colors = [
 const BlocksChart = (props: BlocksChartProps) => {
     const blocks = props.result.data?.blocks || [];
     const { colorMode } = useColorMode();
-    const defaultColor = colorMode === 'light' ? '#5dd54b' : '#00f6ff';
+    const defaultColor = colorMode === 'light' ? '#008DA5' : '#00f6ff';
 
     // group blocks per chain
     const blocksPerChain = _.groupBy(
