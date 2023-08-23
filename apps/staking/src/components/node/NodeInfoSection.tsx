@@ -154,7 +154,10 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             placement="bottom"
                                             label="The node balance is the amount of ETH available in the node’s wallet."
                                             fontSize="small"
+                                            bg="dark.gray.quaternary"
                                             color="white"
+                                            borderRadius={'md'}
+                                            opacity={0.9}
                                         >
                                             <Icon
                                                 width={3.5}

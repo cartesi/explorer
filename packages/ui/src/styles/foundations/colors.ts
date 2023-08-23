@@ -12,6 +12,7 @@
 import { theme } from '@chakra-ui/react';
 
 export const colors = {
+    alertFg: 'rgba(189, 224, 141, 1)',
     header: '#1E1941',
     footerBg: '#0C0C0C',
     primary: '#1E1941',

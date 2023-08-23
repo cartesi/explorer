@@ -11,6 +11,7 @@
 
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
+    AlertIcon,
     Button,
     Link,
     ListItem,
@@ -70,6 +71,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
             <VStack spacing={8}>
                 {showInstructions && (
                     <InfoBanner
+                        icon={<AlertIcon color={'dark.support.alert'} />}
                         title="Read carefully before staking!"
                         content={
                             <>
@@ -135,7 +137,10 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                     <Button
                                         size="sm"
                                         onClick={handleDontShowAgainClick}
-                                        colorScheme="darkGray"
+                                        colorScheme="cyan"
+                                        variant={'link'}
+                                        fontWeight={'600'}
+                                        textTransform={'uppercase'}
                                     >
                                         Don't show again
                                     </Button>

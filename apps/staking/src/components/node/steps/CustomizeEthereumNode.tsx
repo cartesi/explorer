@@ -10,15 +10,16 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    UnorderedList,
-    Heading,
-    Text,
-    ListItem,
-    Link,
-    Flex,
     Box,
+    Button,
+    Flex,
+    Heading,
+    Link,
+    ListItem,
     Stack,
+    Text,
+    UnorderedList,
+    useColorMode,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -33,8 +34,13 @@ const CustomizeEthereumNode = ({
     onStepActive,
 }: IStep) => {
     const [state, setState] = useStepState({ inFocus });
-    const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
-
+    const thirdPartyColor = useColorModeValue('light.primary', 'cyan.primary');
+    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'rgba(255, 255, 255, 0.10)'
+    );
+    const { colorMode } = useColorMode();
     return (
         <Step
             title="Set up Ethereum Node"
@@ -42,6 +48,11 @@ const CustomizeEthereumNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
@@ -107,7 +118,7 @@ const CustomizeEthereumNode = ({
                 >
                     <Button
                         minWidth={{ base: '10rem' }}
-                        colorScheme="blue"
+                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
                         onClick={(evt) => {
                             setState(COMPLETED);
                             onComplete(evt);

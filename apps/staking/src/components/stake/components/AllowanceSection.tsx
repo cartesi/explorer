@@ -11,20 +11,20 @@
 
 import {
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
-    VStack,
-    Tooltip,
-    Icon,
     Heading,
+    Icon,
+    Text,
+    Tooltip,
+    VStack,
     useColorModeValue,
-    Button,
 } from '@chakra-ui/react';
+import { PencilIconWhite } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../../pools/staking/CTSI';
-import { PencilIconWhite } from '@explorer/ui';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;
@@ -52,8 +52,10 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             placement="top"
                             label="Here you can see your current pool allowance."
                             fontSize="small"
-                            bg="black"
+                            bg="dark.gray.quaternary"
                             color="white"
+                            borderRadius={'md'}
+                            opacity={0.9}
                         >
                             <Icon color={color} w={3.5} h={3.5} />
                         </Tooltip>

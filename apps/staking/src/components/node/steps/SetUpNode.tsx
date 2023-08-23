@@ -10,17 +10,18 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    UnorderedList,
-    Heading,
-    Text,
-    ListItem,
-    Flex,
     Box,
-    useClipboard,
-    Stack,
-    useColorModeValue,
+    Button,
+    Flex,
+    Heading,
     Link,
+    ListItem,
+    Stack,
+    Text,
+    UnorderedList,
+    useClipboard,
+    useColorMode,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { MdContentCopy } from 'react-icons/md';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -30,7 +31,7 @@ const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
-    const bgColor = useColorModeValue('gray.80', 'gray.800');
+    const bgColor = useColorModeValue('white', 'rgba(255, 255, 255, 0.20)');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
@@ -82,7 +83,12 @@ const SetUpNode = ({
 
     const [state, setState] = useStepState({ inFocus });
     const linkColor = useColorModeValue('blue.500', 'blue.200');
-
+    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'rgba(255, 255, 255, 0.10)'
+    );
+    const { colorMode } = useColorMode();
     return (
         <Step
             title="Set up Node"
@@ -90,6 +96,11 @@ const SetUpNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 <Heading as="h3" size="sm" my={4}>
@@ -167,7 +178,7 @@ const SetUpNode = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        variant="ghost"
+                        variant="outline"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             onPrevious(e);
@@ -176,7 +187,7 @@ const SetUpNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        colorScheme="blue"
+                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState(COMPLETED);
