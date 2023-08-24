@@ -59,7 +59,8 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
         constants.Zero
     );
-    const radioColorScheme = useColorModeValue('blue', 'cyan');
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     return (
         <>
@@ -168,7 +169,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={colorScheme}
                                     role="withdraw-button"
                                     disabled={
                                         outputWithdraw.isZero() &&

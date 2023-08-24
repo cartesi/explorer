@@ -53,7 +53,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
-    const buttonColorScheme = useColorModeValue('blue', 'cyan');
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const helperTextColor = useColorModeValue(formControlColor, 'white');
 

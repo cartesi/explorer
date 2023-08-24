@@ -41,6 +41,7 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
             py={3}
             boxShadow={boxShadow}
             fontSize="sm"
+            zIndex={10}
             backgroundColor={bg}
         >
             <Breadcrumb>

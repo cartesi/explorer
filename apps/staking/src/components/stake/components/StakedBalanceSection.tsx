@@ -38,8 +38,9 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
     const stakedBalanceColor = useColorModeValue('gray.400', 'white');
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const boxShadow = useColorModeValue('sm', 'none');
-    const iconColor = useColorModeValue('orange.500', 'dark.primary');
-    const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
 
     return (
         <Box

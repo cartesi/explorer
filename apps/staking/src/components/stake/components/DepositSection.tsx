@@ -37,7 +37,11 @@ export const DepositSection: FC<IDepositSection> = ({
 }) => {
     const { isGnosisSafe } = useWallet();
     const noEthAndIsNotASafe = userETHBalance?.isZero() && !isGnosisSafe;
-    const warningIconColor = useColorModeValue('orange.500', 'white');
+    const warningIconColor = useColorModeValue(
+        'light.support.warning',
+        'white'
+    );
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     return (
         <Stack
@@ -53,7 +57,7 @@ export const DepositSection: FC<IDepositSection> = ({
             </Box>
             <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
-                    colorScheme="blue"
+                    colorScheme={colorScheme}
                     onClick={onDepositClick}
                     width="173px"
                     ml="auto"
