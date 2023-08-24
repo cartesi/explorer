@@ -251,8 +251,8 @@ export const Button = {
                         } !important`,
                         bg: `${
                             props.colorMode === 'light'
-                                ? 'transparent'
-                                : 'dark.gray.primary'
+                                ? 'light.gray.quaternary'
+                                : 'dark.border.quaternary'
                         } !important`,
                         borderColor:
                             props.colorMode === 'light'
