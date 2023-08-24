@@ -49,8 +49,8 @@ export const steps = [
 ];
 
 export const StakingGuide: FC = () => {
-    const iconColor = useColorModeValue('orange.500', 'dark.primary');
-    const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
 
     return (
         <>
