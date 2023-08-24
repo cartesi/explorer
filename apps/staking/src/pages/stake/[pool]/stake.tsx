@@ -89,6 +89,7 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
     );
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
     const sectionBg = useColorModeValue('white', 'dark.gray.quaternary');
+    const sectionBoxShadow = useColorModeValue('md', 'none');
 
     const onUnstake = (action: Operation, amount?: BigNumber) => {
         if (action === 'partial' && amount) {
@@ -111,11 +112,13 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
             <PoolBreadcrumbs currentPage="Stake" />
 
             <Box
+                position="relative"
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 4, sm: 6, lg: 8 }}
                 bg={sectionBg}
                 borderTopWidth={1}
                 borderColor={borderColor}
+                shadow={sectionBoxShadow}
             >
                 {isConnected ? (
                     <StakingDashboard

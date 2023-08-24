@@ -85,7 +85,9 @@ export const Button = {
                                 ? 'blue.100'
                                 : 'dark.primary',
                         color:
-                            props.colorMode === 'light' ? 'gray.900' : 'black',
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.tertiary',
                     },
                     borderWidth: '1px',
                     borderColor:
@@ -113,7 +115,9 @@ export const Button = {
                                 ? 'blue.100'
                                 : 'dark.primary',
                         color:
-                            props.colorMode === 'light' ? 'gray.900' : 'black',
+                            props.colorMode === 'light'
+                                ? 'gray.900'
+                                : 'dark.gray.tertiary',
                     },
                 };
             }
@@ -126,7 +130,7 @@ export const Button = {
                     color:
                         props.colorMode === 'light'
                             ? 'dark.gray.primary'
-                            : 'black',
+                            : 'dark.gray.tertiary',
                     textTransform: 'uppercase',
                     borderWidth: '1px',
                     borderColor: 'white',
@@ -145,21 +149,99 @@ export const Button = {
                 };
             }
 
-            return;
+            if (props.colorScheme === 'teal') {
+                return {
+                    textTransform: 'uppercase',
+                    bg:
+                        props.colorMode === 'light'
+                            ? 'dark.secondary'
+                            : 'dark.primary',
+                    borderWidth: '1px',
+                    borderColor:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.tertiary'
+                            : 'white',
+                    _hover: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.secondary'
+                                : 'dark.primary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.secondary'
+                                : 'dark.primary',
+                    },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.primary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'light.border.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                    },
+                };
+            }
+
+            return {
+                textTransform: 'uppercase',
+            };
         },
         ghost: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
-                    borderWidth: props.colorMode === 'light' ? 0 : '1px',
+                    textTransform: 'uppercase',
+                    color:
+                        props.colorMode === 'light'
+                            ? 'dark.gray.primary'
+                            : 'dark.gray.senary',
+                    borderWidth: '1px',
                     borderColor:
                         props.colorMode === 'light'
-                            ? 'transparent'
+                            ? 'dark.gray.tertiary'
                             : 'light.gray.senary',
-                    textTransform: 'uppercase',
                     bg:
                         props.colorMode === 'light'
                             ? 'transparent'
                             : 'dark.gray.primary',
+                    _hover: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.senary'
+                                : 'dark.border.quaternary',
+                    },
+                    _active: {
+                        bg:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.senary'
+                                : 'dark.border.quaternary',
+                    },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.secondary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                        borderColor:
+                            props.colorMode === 'light'
+                                ? 'dark.gray.secondary'
+                                : 'light.gray.senary',
+                    },
                 };
             }
 
@@ -170,7 +252,9 @@ export const Button = {
         link: (props: { colorScheme: string; colorMode: string }) => {
             return {
                 color:
-                    props.colorMode === 'light' ? 'blue.200' : 'dark.primary',
+                    props.colorMode === 'light'
+                        ? 'dark.gray.tertiary'
+                        : 'dark.primary',
                 textTransform: 'uppercase',
             };
         },

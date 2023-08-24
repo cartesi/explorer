@@ -59,8 +59,9 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     );
     const formattedStakedValue = formatBigNumber(stakedValue);
     const inputFocusRef = useRef();
-    const maxStakeColor = useColorModeValue('blue.400', 'dark.primary');
+    const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
     const helperTextColor = useColorModeValue('gray.600', 'white');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -155,7 +156,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={colorScheme}
                                     disabled={stakedValue.isZero()}
                                     data-testid="stake-button"
                                     onClick={() => {

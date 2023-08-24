@@ -43,8 +43,9 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const boxShadow = useColorModeValue('sm', 'none');
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
-    const iconColor = useColorModeValue('blue.500', 'dark.primary');
-    const iconBg = useColorModeValue('blue.50', 'dark.gray.primary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     return (
         <Box
@@ -98,7 +99,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         width="173px"
                         ml="auto"
                         onClick={onStakeClick}
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         disabled={
                             isPoolBalanceLocked || userPoolBalance.isZero()
                         }

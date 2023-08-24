@@ -60,7 +60,8 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
         constants.Zero
     );
-    const radioColorScheme = useColorModeValue('blue', 'cyan');
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
+    const colorScheme = useColorModeValue('teal', 'blue');
 
     return (
         <>
@@ -156,7 +157,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="blue"
+                                    colorScheme={colorScheme}
                                     role="unstake-button"
                                     disabled={
                                         outputUnstake.isZero() &&

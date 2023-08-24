@@ -98,9 +98,18 @@ export const StakingActivity: FC<Props> = memo(
 
         const isAllActivitiesLoaded =
             timestamp === oldestActivityTime && !loading;
-        const emptyIconBg = useColorModeValue('blue.50', 'dark.gray.primary');
-        const emptyIconColor = useColorModeValue('blue.500', 'dark.primary');
-        const checkIconColor = useColorModeValue('green.500', 'dark.primary');
+        const emptyIconBg = useColorModeValue(
+            'dark.gray.senary',
+            'dark.gray.primary'
+        );
+        const emptyIconColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
+        const checkIconColor = useColorModeValue(
+            'dark.secondary',
+            'dark.primary'
+        );
 
         useEffect(() => {
             if (null !== activities) {

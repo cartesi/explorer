@@ -78,15 +78,13 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const formattedDepositValue = formatBigNumber(outputDeposit);
 
     const color = useColorModeValue('black', 'white');
-    const max_depositColor = useColorModeValue('blue.500', 'white');
+    const maxDepositColor = useColorModeValue('dark.secondary', 'dark.primary');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const tagColor = useColorModeValue('gray.900', 'white');
     const infoBg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
-    const infoBorderColor = useColorModeValue(
-        'light.border.tertiary',
-        'dark.border.quaternary'
-    );
     const infoColor = useColorModeValue('black', 'white');
+    const checkIconBg = useColorModeValue('dark.gray.senary', 'white');
+    const colorScheme = useColorModeValue('teal', 'blue');
     const inputFocusRef = useRef();
 
     useEffect(() => {
@@ -205,7 +203,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <VStack w="full">
                                     <Button
                                         width="full"
-                                        colorScheme="blue"
+                                        colorScheme={colorScheme}
                                         onClick={() => {
                                             onSave(
                                                 outputAllowance,
@@ -245,12 +243,11 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         <CheckCircleIcon
                                             w={5}
                                             h={5}
-                                            mr={2}
-                                            bgColor="blue.50"
-                                            rounded={'full'}
+                                            bgColor={checkIconBg}
+                                            borderRadius="full"
                                             color="black"
                                         />
-                                        <Tag>
+                                        <Tag bg="transparent">
                                             <TagLabel
                                                 fontSize="lg"
                                                 fontWeight="normal"
@@ -267,8 +264,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         />
                                     </Box>
                                     <Box flexGrow="1">
-                                        <CheckCircleIcon w={5} h={5} mr={2} />
-                                        <Tag>
+                                        <CheckCircleIcon w={5} h={5} />
+                                        <Tag bg="transparent">
                                             <TagLabel
                                                 fontSize="lg"
                                                 fontWeight="normal"
@@ -294,9 +291,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     p={4}
                                     color={infoColor}
                                     bg={infoBg}
-                                    borderRadius="1rem"
-                                    borderWidth="1px"
-                                    borderColor={infoBorderColor}
+                                    borderRadius="6px"
                                 >
                                     <Box flexGrow="1">
                                         <HStack>
@@ -325,6 +320,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         <IconButton
                                             aria-label="Edit"
                                             size="sm"
+                                            bg="transparent"
                                             icon={
                                                 <PencilIconWhite
                                                     style={{
@@ -364,7 +360,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 variant="text"
                                                 size="lg"
                                                 height="auto"
-                                                color={max_depositColor}
+                                                color={maxDepositColor}
                                                 textTransform="uppercase"
                                                 p={0}
                                                 role="max-deposit-button"
@@ -410,7 +406,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                 <VStack w="full" spacing={4}>
                                     <Button
                                         width="full"
-                                        colorScheme="blue"
+                                        colorScheme={colorScheme}
                                         disabled={outputDeposit.isZero()}
                                         role="deposit-button"
                                         onClick={() => {

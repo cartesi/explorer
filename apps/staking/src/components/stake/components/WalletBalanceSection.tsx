@@ -39,10 +39,14 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
 }) => {
     const balanceColor = useColorModeValue('gray.400', 'white');
     const bgIcon = useColorModeValue('teal.light', 'black');
-    const iconColor = useColorModeValue('light.primary', 'cyan');
     const { isGnosisSafe } = useWallet();
     const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
-    const warningIconColor = useColorModeValue('orange.500', 'white');
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
+    const warningIconColor = useColorModeValue(
+        'light.support.warning',
+        'white'
+    );
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
