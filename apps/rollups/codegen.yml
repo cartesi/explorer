@@ -1,4 +1,13 @@
 generates:
+    ./src/generated/graphql/squid/index.ts:
+        schema:
+            - https://squid.subsquid.io/rollups-sepolia/v/v5/graphql
+        documents:
+            - ./graphql/squid/rollups.graphql
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-urql
     ./src/generated/graphql/subgraph/index.ts:
         schema:
             - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
