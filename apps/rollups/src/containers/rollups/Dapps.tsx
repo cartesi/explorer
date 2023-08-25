@@ -37,11 +37,10 @@ import {
 import { FC, useState } from 'react';
 import { DAppsList } from '../../components/DAppsList';
 import {
-    DAppStatus,
-    DApp_OrderBy,
-    useDappsQuery,
-    useDashboardQuery,
-} from '../../generated/graphql/subgraph';
+    ApplicationOrderByInput,
+    useApplicationsQuery,
+    useRollupsSummaryQuery,
+} from '../../generated/graphql/squid';
 
 export interface DappsProps {
     chainId: number;
@@ -100,24 +99,24 @@ export const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
 );
 
 export interface DappsFiltersProps {
-    orderBy: DApp_OrderBy;
+    orderBy: ApplicationOrderByInput;
     fetching: boolean;
     onChangeSearch: (search: string) => void;
-    onChangeOrderBy: (orderBy: DApp_OrderBy) => void;
+    onChangeOrderBy: (orderBy: ApplicationOrderByInput) => void;
 }
 
 export const dappsFilterOptions = [
     {
         label: 'Recent Activity',
-        value: DApp_OrderBy.ActivityTimestamp,
+        value: ApplicationOrderByInput.ActivityTimestampDesc,
     },
     {
         label: 'Number of Activity',
-        value: DApp_OrderBy.InputCount,
+        value: ApplicationOrderByInput.InputCountDesc,
     },
     {
         label: 'Newest',
-        value: DApp_OrderBy.DeploymentTimestamp,
+        value: ApplicationOrderByInput.DeploymentTimestampDesc,
     },
 ];
 
@@ -153,7 +152,9 @@ export const DappsFilters: FC<DappsFiltersProps> = (props) => {
                 width={250}
                 data-testid="dapps-filters-order-by"
                 onChange={(event) =>
-                    onChangeOrderBy(event.target.value as DApp_OrderBy)
+                    onChangeOrderBy(
+                        event.target.value as ApplicationOrderByInput
+                    )
                 }
             >
                 {dappsFilterOptions.map((option) => (
@@ -171,46 +172,37 @@ export const Dapps: FC<DappsProps> = (props) => {
     const [pageNumber, setPageNumber] = useState<number>(0);
     const bg = useColorModeValue('white', 'gray.800');
     const [search, setSearch] = useState<string>('');
-    const [orderBy, setOrderBy] = useState<DApp_OrderBy>(
-        DApp_OrderBy.ActivityTimestamp
+    const [orderBy, setOrderBy] = useState<ApplicationOrderByInput>(
+        ApplicationOrderByInput.ActivityTimestampDesc
     );
     const perPage = 10;
 
-    const status = DAppStatus.CreatedByFactory;
-    const [dAppsResult] = useDappsQuery({
+    const [{ data }] = useRollupsSummaryQuery();
+    const [{ data: result, fetching, error }] = useApplicationsQuery({
         variables: {
             orderBy,
-            first: perPage,
-            skip: perPage * pageNumber,
-            where_dapp:
+            limit: perPage,
+            offset: perPage * pageNumber,
+            where:
                 search && search.length > 0
                     ? {
-                          id: search,
-                          status,
+                          id_eq: search,
+                          factory_isNull: false,
                       }
-                    : { status },
-        },
-    });
-    const [dashboardResult] = useDashboardQuery({
-        variables: {
-            id: String(1),
+                    : {
+                          factory_isNull: false,
+                      },
         },
     });
 
-    const dappsCount = dashboardResult.data?.dashboard?.dappCount ?? 0;
-    const dappsInputs = dashboardResult.data?.dashboard?.inputCount ?? 0;
-    const hasFactories = dashboardResult.data?.dashboard?.factoryCount ?? false;
+    const dappsCount = data?.rollupsSummary.totalApplications ?? 0;
+    const dappsInputs = data?.rollupsSummary.totalInputs ?? 0;
 
     return (
         <Box bg={bg}>
-            {hasFactories && (
-                <PagePanel data-testid="dapps-summary">
-                    <DappsSummary
-                        dappCount={dappsCount}
-                        inputCount={dappsInputs}
-                    />
-                </PagePanel>
-            )}
+            <PagePanel data-testid="dapps-summary">
+                <DappsSummary dappCount={dappsCount} inputCount={dappsInputs} />
+            </PagePanel>
 
             <PageBody p={0}>
                 <Box
@@ -219,29 +211,29 @@ export const Dapps: FC<DappsProps> = (props) => {
                     px={{ md: '12vw', xl: '12vw' }}
                     py={{ base: 10 }}
                 >
-                    {dAppsResult.error && (
+                    {error && (
                         <Notification
                             status="error"
                             title="Error fetching DApps!"
-                            subtitle={dAppsResult.error?.message}
+                            subtitle={error?.message}
                         />
                     )}
 
-                    {!dAppsResult.error && dAppsResult.data?.dapps ? (
+                    {!error && result?.applications ? (
                         <>
                             <DappsFilters
                                 orderBy={orderBy}
-                                fetching={dAppsResult.fetching}
+                                fetching={fetching}
                                 onChangeSearch={setSearch}
                                 onChangeOrderBy={setOrderBy}
                             />
 
                             <DAppsList
-                                dapps={dAppsResult.data.dapps}
+                                dapps={result.applications}
                                 dappsCount={dappsCount}
                                 chainId={chainId}
                                 pageNumber={pageNumber}
-                                fetching={dAppsResult.fetching}
+                                fetching={fetching}
                                 onChangePageNumber={setPageNumber}
                             />
                         </>
