@@ -74,7 +74,7 @@ const SetUpNode = ({
         <>
             docker run -it --rm --name cartesi_noether -v
             cartesi_wallet:/root/.ethereum cartesi/noether --url{' '}
-            <Text as="span" color="blue.300">
+            <Text as="span" color="cyan">
                 &lt;https://mainnet.infura.io/v3/project_id&gt;
             </Text>{' '}
             --wallet /root/.ethereum/key --create --verbose;

@@ -12,36 +12,37 @@
 import {
     Button,
     FormControl,
-    FormLabel,
-    FormHelperText,
     FormErrorMessage,
-    Stack,
-    InputGroup,
+    FormHelperText,
+    FormLabel,
     Input,
+    InputGroup,
     InputRightElement,
+    Stack,
+    useColorMode,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { isEmpty, isFunction, omit, isNil } from 'lodash/fp';
+import { useWallet } from '@explorer/wallet';
 import { useAtom } from 'jotai';
+import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useWallet } from '@explorer/wallet';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
 import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 
+import { ConnectWallet, Notification } from '@explorer/ui';
 import {
     BaseInput,
-    ValidationResult,
     OptionalMappedErrors,
+    ValidationResult,
 } from '../../BaseInput';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../../TransactionBanner';
-import { Notification, ConnectWallet } from '@explorer/ui';
 
 const useStyle = () => {
     const helperTxtColor = useColorModeValue('gray', 'gray.100');
@@ -161,7 +162,12 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const [stepState] = useStepState({ inFocus });
     const [allowanceAmount, setAllowance] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
-
+    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const borderColor = useColorModeValue(
+        'light.grey.tertiary',
+        'rgba(255, 255, 255, 0.10)'
+    );
+    const { colorMode } = useColorMode();
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
         setErrors((state) => {
@@ -189,6 +195,11 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
+            bg={bg}
+            borderRadius={'md'}
+            borderWidth={'1px'}
+            borderColor={borderColor}
+            borderStyle={'solid'}
         >
             <StepBody>
                 {!active && (
@@ -219,7 +230,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                     <Button
                         disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
-                        colorScheme="blue"
+                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
                         isLoading={transaction.isOngoing}
                         onClick={() =>
                             approve(
