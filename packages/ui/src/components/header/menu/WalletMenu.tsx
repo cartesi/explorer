@@ -96,7 +96,6 @@ const WalletMenu: FC = () => {
     const ens = useENS(account ?? '');
     const { hasCopied, onCopy } = useClipboard(account ?? '');
     const color = useColorModeValue('light.gray.primary', 'white');
-    const backgroundColor = useColorModeValue('white', 'white');
     const addressHoverColor = useColorModeValue(undefined, {
         color: 'white',
     });
@@ -162,7 +161,12 @@ const WalletMenu: FC = () => {
 
                     {menuItems.map((item) => (
                         <WalletMenuItem key={item.title}>
-                            <WalletMenuActionItem color={color} {...item} />
+                            <WalletMenuActionItem
+                                color={color}
+                                title={item.title}
+                                Icon={item.Icon as FC<IconProps>}
+                                onClick={item.onClick}
+                            />
                         </WalletMenuItem>
                     ))}
                 </MenuList>

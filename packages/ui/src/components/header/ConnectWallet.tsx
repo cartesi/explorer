@@ -9,7 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    BoxProps,
+    Button,
+    HStack,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { UnsupportedNetworkError, UseWallet } from '@explorer/wallet';
 import { FC } from 'react';
 
@@ -21,6 +28,11 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
     const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
+    const colorScheme = useColorModeValue('teal', 'cyan');
+    const hoverBg = useColorModeValue(
+        'linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), #008DA5',
+        'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF'
+    );
 
     return (
         <Box {...boxProps}>
@@ -34,22 +46,13 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                 !active && (
                     <Button
                         size="md"
-                        colorScheme="cyan"
+                        colorScheme={colorScheme}
                         onClick={activate}
                         _hover={{
-                            bg: 'linear-gradient(0deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.40) 100%), #00F6FF',
+                            bg: hoverBg,
                         }}
                     >
-                        <HStack>
-                            <Text
-                                fontSize="sm"
-                                color={'dark.gray.primary'}
-                                textTransform={'uppercase'}
-                                fontWeight={'600'}
-                            >
-                                Connect To Wallet
-                            </Text>
-                        </HStack>
+                        <Text fontWeight={600}>Connect To Wallet</Text>
                     </Button>
                 )
             )}
