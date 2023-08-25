@@ -1,0 +1,55 @@
+query applications(
+    $limit: Int!
+    $offset: Int
+    $orderBy: [ApplicationOrderByInput!]
+    $where: ApplicationWhereInput
+) {
+    applications(
+        limit: $limit
+        offset: $offset
+        orderBy: $orderBy
+        where: $where
+    ) {
+        id
+        inputCount
+        deploymentTimestamp
+        activityTimestamp
+    }
+}
+
+query rollupsSummary {
+    rollupsSummary {
+        totalInputs
+        totalApplications
+    }
+}
+
+query applicationConnection(
+    $first: Int
+    $after: String
+    $orderBy: [ApplicationOrderByInput!]!
+    $where: ApplicationWhereInput
+) {
+    applicationsConnection(
+        orderBy: $orderBy
+        first: $first
+        after: $after
+        where: $where
+    ) {
+        totalCount
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+        }
+        edges {
+            node {
+                id
+                inputCount
+                deploymentTimestamp
+                activityTimestamp
+            }
+        }
+    }
+}
