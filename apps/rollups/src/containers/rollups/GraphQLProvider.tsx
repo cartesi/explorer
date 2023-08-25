@@ -11,18 +11,21 @@
 // under the License.
 
 import React, { FC, useMemo } from 'react';
-import { Client, createClient, Provider } from 'urql';
+import { Client, Provider, createClient } from 'urql';
 
 type Props = {
     chainId: number;
     children?: React.ReactNode;
 };
 
+const SEPOLIA_GRAPHQL = process.env.NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL;
+const ARB_GOERLI_GRAPHQL = process.env.NEXT_PUBLIC_ARB_GOERLI_GRAPHQL_URL;
+const LOCAL_GRAPHQL = process.env.NEXT_PUBLIC_LOCAL_GRAPHQL_URL;
+
 export const urls: Record<number, string> = {
-    [31337]: 'http://localhost:8000/subgraphs/name/cartesi/rollups',
-    [5]: 'https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli',
-    [421613]:
-        'https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli',
+    [31337]: LOCAL_GRAPHQL,
+    [421613]: ARB_GOERLI_GRAPHQL,
+    [11155111]: SEPOLIA_GRAPHQL,
 };
 
 const GraphQLProvider: FC<Props> = ({ children, chainId }) => {
