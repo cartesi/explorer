@@ -21,6 +21,7 @@ import {
 import { useENS } from '@explorer/services';
 import { truncateString } from '@explorer/utils';
 import { useWallet } from '@explorer/wallet';
+import { theme } from '@explorer/ui';
 import { FC } from 'react';
 import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { PaginationIcon } from '../Icons';
@@ -77,7 +78,7 @@ export const Account: FC = () => {
                                         <TagLabel
                                             color={color}
                                             fontSize="sm"
-                                            fontFamily={'Inter'}
+                                            fontFamily={theme.fonts.body}
                                         >
                                             {address}
                                         </TagLabel>

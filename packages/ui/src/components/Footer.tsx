@@ -24,6 +24,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
+import { theme } from '@explorer/ui';
 import { FC, ReactNode } from 'react';
 import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Address from './Address';
@@ -32,7 +33,7 @@ import { CartesiTranparent } from './Icons';
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
         <Text
-            fontFamily={'Plus Jakarta Sans'}
+            fontFamily={theme.fonts.heading}
             fontWeight="600"
             fontSize="lg"
             mb={2}
@@ -54,16 +55,16 @@ const SocialButton = ({
     return (
         <chakra.button
             bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-            rounded={'full'}
+            rounded="full"
             w={8}
             h={8}
-            cursor={'pointer'}
-            as={'a'}
+            cursor="pointer"
+            as="a"
             href={href}
-            display={'inline-flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            transition={'background 0.3s ease'}
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
+            transition="background 0.3s ease"
             _hover={{
                 bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
             }}
@@ -84,7 +85,8 @@ export type FooterProps = {
     contracts: FooterContract[];
 };
 
-const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
+const Footer: FC<FooterProps> = (props) => {
+    const { links, support, general, contracts } = props;
     const { chainId } = useWallet();
 
     return (
@@ -100,7 +102,7 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                 >
                     <GridItem colSpan={2}>
                         <ListHeader>Resources & Security</ListHeader>
-                        <Flex direction={'column'} marginTop={4} gap={2}>
+                        <Flex direction="column" marginTop={4} gap={2}>
                             {links.map(({ label, href }, index) => (
                                 <Link href={href} key={index} isExternal>
                                     {label}
@@ -128,7 +130,7 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                         {contracts
                             .filter(({ address }) => address)
                             .map(({ name, address }, index) => (
-                                <Box mt={4} mb={'-2'} key={index}>
+                                <Box mt={4} mb="-2" key={index}>
                                     <Address
                                         address={address ?? ''}
                                         name={name}
@@ -179,7 +181,7 @@ const Footer: FC<FooterProps> = ({ links, support, general, contracts }) => {
                         </SocialButton>
                         <SocialButton
                             label="Youtube"
-                            href="https://www.youtube.com/@Cartesiproject/featured"
+                            href="https://www.youtube.com/@cartesiproject/featured"
                         >
                             <FaYoutube size={24} />
                         </SocialButton>

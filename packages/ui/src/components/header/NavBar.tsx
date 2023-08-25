@@ -19,6 +19,7 @@ import {
     Link,
     Stack,
     useColorMode,
+    useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
@@ -39,36 +40,31 @@ export interface NavLinkProps {
 export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
     const router = useRouter();
     const isActive = router.asPath === href;
+    const bg = useColorModeValue('dark.secondary', 'dark.primary');
+    const pseudoProps = {
+        content: '""',
+        bottom: '-5px',
+        transform: 'translateX(-50%)',
+        left: '50%',
+        position: 'absolute',
+        width: 'calc(100% - 16px)',
+        height: '0.3125rem',
+        bg,
+    };
+
     return (
         <NextLink href={href} passHref>
             <Link
-                position={'relative'}
+                position="relative"
                 px={2}
                 py={1}
+                width="fit-content"
                 aria-current={isActive ? 'page' : undefined}
                 _hover={{
-                    _after: {
-                        content: '""',
-                        bottom: '-5px',
-                        transform: 'translateX(-50%)',
-                        left: '50%',
-                        position: 'absolute',
-                        width: 'calc(100% - 16px)',
-                        height: '0.3125rem',
-                        bg: 'teal.support',
-                    },
+                    _after: pseudoProps,
                 }}
                 _activeLink={{
-                    _after: {
-                        content: '""',
-                        bottom: '-5px',
-                        transform: 'translateX(-50%)',
-                        left: '50%',
-                        position: 'absolute',
-                        width: 'calc(100% - 16px)',
-                        height: '0.3125rem',
-                        bg: 'teal.support',
-                    },
+                    _after: pseudoProps,
                 }}
             >
                 {children}
@@ -88,7 +84,6 @@ export interface NavBarProps extends FlexProps {
 }
 
 export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
-    // color mode switcher
     const { colorMode, toggleColorMode } = useColorMode();
     const wallet = useWallet();
     const { isOpen, onOpen, onClose } = useDisclosure();
