@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, cleanup } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet';
 import { Web3Provider } from '@ethersproject/providers';
+import { useWallet } from '@explorer/wallet';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
+import { cleanup, renderHook } from '@testing-library/react';
 import { useNetwork } from '../../src/services/useNetwork';
 
 const walletMod = '@explorer/wallet';
@@ -35,7 +35,7 @@ describe('useNetwork hook', () => {
     });
 
     it('should set network to the wallet chainId when wallet exists', () => {
-        const chainId = 5;
+        const chainId = 11155111;
         mockUseWallet.mockReturnValue({
             library: {} as Web3Provider,
             chainId,

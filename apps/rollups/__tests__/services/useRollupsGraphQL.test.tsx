@@ -46,7 +46,7 @@ const defaultUseWalletData = {
     chainId: 3,
 };
 
-const defaultNetwork = networks[0x5];
+const defaultNetwork = networks[0xaa36a7];
 
 describe('useRollupsGraphQL hook', () => {
     beforeEach(() => {

@@ -17,10 +17,10 @@ import {
     screen,
 } from '@testing-library/react';
 import { Client } from 'urql';
-import { withChakraTheme } from '../../test-utilities';
 import GraphQLProvider from '../../../src/containers/rollups/RollupsGraphQLProvider';
 import { Network, useNetwork } from '../../../src/services/useNetwork';
 import { useRollupsGraphQL } from '../../../src/services/useRollupsGraphQL';
+import { withChakraTheme } from '../../test-utilities';
 
 jest.mock('urql', () => {
     const originalModule = jest.requireActual('urql');
@@ -65,7 +65,7 @@ const Component = withChakraTheme(GraphQLProvider);
 
 const defaultProps = {
     address: '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad',
-    chainId: 5,
+    chainId: 11155111,
 };
 
 describe('GraphQLProvider container', () => {

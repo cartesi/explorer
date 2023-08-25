@@ -113,19 +113,19 @@ export const loadLocalAbi = (): Promise<ChainAbi> => {
 };
 
 export const networks: Record<number, Network> = {
-    [0x5]: {
-        name: 'Goerli',
-        chainId: 5,
+    [0xaa36a7]: {
+        name: 'Sepolia',
+        chainId: 11155111,
         graphql: (address, env = 'staging') =>
-            `https://${address}.goerli.rollups.${env}.cartesi.io/graphql`,
-        explorer: new Explorer('https://goerli.etherscan.io'),
+            `https://${address}.sepolia.rollups.${env}.cartesi.io/graphql`,
+        explorer: new Explorer('https://sepolia.etherscan.io'),
         deployment: (contract) =>
-            import(`@cartesi/rollups/deployments/goerli/${contract}.json`),
+            import(`@cartesi/rollups/deployments/sepolia/${contract}.json`),
         chain: {
-            id: '0x5',
-            token: 'ETH',
-            label: 'Goerli',
-            rpcUrl: 'https://rpc.ankr.com/eth_goerli',
+            id: '0xaa36a7',
+            token: 'SepoliaETH',
+            label: 'Sepolia',
+            rpcUrl: 'https://rpc.ankr.com/eth_sepolia',
         },
     },
     [0x66eed]: {
@@ -143,23 +143,6 @@ export const networks: Record<number, Network> = {
             token: 'ETH',
             label: 'Arbitrum Goerli',
             rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc/',
-        },
-    },
-    [0x13881]: {
-        name: 'Polygon Mumbai',
-        chainId: 80001,
-        graphql: (address, env = 'staging') =>
-            `https://${address}.polygon-mumbai.rollups.${env}.cartesi.io/graphql`,
-        explorer: new Explorer('https://mumbai.polygonscan.com'),
-        deployment: (contract) =>
-            import(
-                `@cartesi/rollups/deployments/polygon_mumbai/${contract}.json`
-            ),
-        chain: {
-            id: '0x13881',
-            token: 'MATIC',
-            label: 'Polygon Mumbai',
-            rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
         },
     },
 };
