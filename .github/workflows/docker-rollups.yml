@@ -95,6 +95,8 @@ jobs:
               env:
                   WC_PROJECT_ID: ${{ secrets.WC_PROJECT_ID }}
                   INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
+                  SEPOLIA_GRAPHQL_URL: ${{ secrets.SEPOLIA_GRAPHQL_URL }}
+                  ARB_GOERLI_GRAPHQL_URL: ${{ secrets.ARB_GOERLI_GRAPHQL_URL }}
               with:
                   project: ${{ vars.DEPOT_PROJECT }}
                   workdir: .
