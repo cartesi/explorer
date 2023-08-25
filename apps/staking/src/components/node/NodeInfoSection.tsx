@@ -66,9 +66,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     onAuthorize,
 }) => {
     // dark mode support
-    const bg = useColorModeValue('white', 'gray.800');
     const bgBox = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
-    const buttonBg = useColorModeValue('gray.80', 'gray.800');
     const tooltipColor = useColorModeValue('gray.400', 'white');
     const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
     const textFontWeight = isLargerThan554 ? 400 : 600;
@@ -232,7 +230,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                             onClick={onAuthorize}
                             isLoading={isAuthorizing}
                             loadingText="authorizing"
-                            bgColor={buttonBg}
+                            colorScheme="cyan"
                             w={{ base: 'auto' }}
                             px={{ base: 4, md: 6 }}
                             minWidth={{ base: 'auto', md: '173px' }}
