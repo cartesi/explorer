@@ -10,9 +10,10 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { FC } from 'react';
-import { Box, SimpleGrid, Spinner, Flex } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
 import { Pagination } from '@explorer/ui';
+import { FC } from 'react';
+import { Application } from '../generated/graphql/squid';
 import DAppCard from './DAppCard';
 
 export interface DApp {
@@ -22,7 +23,7 @@ export interface DApp {
 }
 
 export interface DAppsListProps {
-    dapps: DApp[];
+    dapps: Application[];
     dappsCount: number;
     chainId: number;
     fetching: boolean;
@@ -54,7 +55,9 @@ export const DAppsList: FC<DAppsListProps> = (props) => {
                                     key={id}
                                     address={id}
                                     chainId={chainId}
-                                    date={new Date(deploymentTimestamp * 1000)}
+                                    date={
+                                        new Date(parseInt(deploymentTimestamp))
+                                    }
                                     inputCount={inputCount}
                                     data-testid="dapps-list-card"
                                 />
