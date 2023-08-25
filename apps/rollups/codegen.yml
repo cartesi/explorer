@@ -8,16 +8,6 @@ generates:
             - typescript
             - typescript-operations
             - typescript-urql
-    ./src/generated/graphql/subgraph/index.ts:
-        schema:
-            - https://api.thegraph.com/subgraphs/name/cartesi/rollups-goerli
-            - https://api.thegraph.com/subgraphs/name/cartesi/rollups-arbitrum-goerli
-        documents:
-            - ./graphql/subgraph/rollups.graphql
-        plugins:
-            - typescript
-            - typescript-operations
-            - typescript-urql
     ./src/generated/graphql/rollups/0.9/index.ts:
         schema:
             - ./graphql/schema/0.9/schema.graphql

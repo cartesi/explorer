@@ -17,53 +17,57 @@ import {
     screen,
 } from '@testing-library/react';
 import { CombinedError } from '@urql/core';
-import { withChakraTheme } from '../../test-utilities';
 import {
-    dappsFilterOptions,
+    Dapps,
     DappsFilters,
     DappsSummary,
-    Dapps,
+    dappsFilterOptions,
 } from '../../../src/containers/rollups/Dapps';
-import {
-    DApp_OrderBy,
-    useDappsQuery,
-    useDashboardQuery,
-} from '../../../src/generated/graphql/subgraph';
+import { withChakraTheme } from '../../test-utilities';
 
-const path = '../../../src/generated/graphql/subgraph/';
-jest.mock(path, () => {
-    const originalModule = jest.requireActual(path);
+import {
+    ApplicationOrderByInput,
+    useApplicationsQuery,
+    useRollupsSummaryQuery,
+} from '../../../src/generated/graphql/squid';
+
+const squidPath = '../../../src/generated/graphql/squid/';
+
+jest.mock(squidPath, () => {
+    const originalModule = jest.requireActual(squidPath);
     return {
         __esModule: true,
         ...originalModule,
-        useDappsQuery: jest.fn(),
-        useDashboardQuery: jest.fn(),
+        useRollupsSummaryQuery: jest.fn(),
+        useApplicationsQuery: jest.fn(),
     };
 });
 
 const DappsSummaryComponent = withChakraTheme(DappsSummary);
 const DappsFiltersComponent = withChakraTheme(DappsFilters);
 
-const mockUseDappsQuery = useDappsQuery as jest.MockedFunction<
-    typeof useDappsQuery
+const mockUseApplicationsQuery = useApplicationsQuery as jest.MockedFunction<
+    typeof useApplicationsQuery
 >;
-const mockUseDashboardQuery = useDashboardQuery as jest.MockedFunction<
-    typeof useDashboardQuery
->;
+
+const mockUseRollupsSummaryQuery =
+    useRollupsSummaryQuery as jest.MockedFunction<
+        typeof useRollupsSummaryQuery
+    >;
 
 const DappsComponent = withChakraTheme(Dapps);
 
 describe('DApps container', () => {
     describe('Dapps component', () => {
         beforeEach(() => {
-            mockUseDappsQuery.mockReturnValue([
+            mockUseApplicationsQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
                 },
                 () => undefined,
             ]);
-            mockUseDashboardQuery.mockReturnValue([
+            mockUseRollupsSummaryQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
@@ -78,41 +82,27 @@ describe('DApps container', () => {
         });
 
         it('should display dapps summary', () => {
-            mockUseDashboardQuery.mockReturnValue([
+            mockUseRollupsSummaryQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
                     data: {
-                        dashboard: {
-                            id: '1',
-                            factoryCount: 1,
-                            dappCount: 0,
-                            inputCount: 0,
+                        rollupsSummary: {
+                            totalApplications: 3,
+                            totalInputs: 2,
                         },
                     },
                 },
                 () => undefined,
             ]);
 
-            const { rerender } = render(<DappsComponent chainId={5} />);
+            render(<DappsComponent chainId={11155111} />);
+
             expect(screen.getByTestId('dapps-summary')).toBeInTheDocument();
-
-            mockUseDashboardQuery.mockReturnValue([
-                {
-                    fetching: false,
-                    stale: false,
-                },
-                () => undefined,
-            ]);
-            rerender(<DappsComponent chainId={5} />);
-
-            expect(() => screen.getByTestId('dapps-summary')).toThrow(
-                'Unable to find an element'
-            );
         });
 
         it('should display error', () => {
-            mockUseDappsQuery.mockReturnValue([
+            mockUseApplicationsQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
@@ -128,7 +118,7 @@ describe('DApps container', () => {
                 screen.getByText('Error fetching DApps!')
             ).toBeInTheDocument();
 
-            mockUseDappsQuery.mockReturnValue([
+            mockUseApplicationsQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
@@ -143,7 +133,7 @@ describe('DApps container', () => {
         });
 
         it('should not display dapps filters and list when error has occurred', () => {
-            mockUseDappsQuery.mockReturnValue([
+            mockUseApplicationsQuery.mockReturnValue([
                 {
                     fetching: false,
                     stale: false,
@@ -151,15 +141,15 @@ describe('DApps container', () => {
                         message: 'Error',
                     } as CombinedError,
                     data: {
-                        dapps: [
+                        applications: [
                             {
                                 id: '1',
-                                deploymentTimestamp:
-                                    new Date().getTime() / 1000,
-                                activityTimestamp: new Date().getTime() / 1000,
-                                factory: {
-                                    id: '2',
-                                },
+                                deploymentTimestamp: new Date()
+                                    .getTime()
+                                    .toString(),
+                                activityTimestamp: new Date()
+                                    .getTime()
+                                    .toString(),
                                 inputCount: 0,
                             },
                         ],
@@ -206,7 +196,7 @@ describe('DApps container', () => {
         it('should render correct options', () => {
             render(
                 <DappsFiltersComponent
-                    orderBy={DApp_OrderBy.ActivityTimestamp}
+                    orderBy={ApplicationOrderByInput.ActivityTimestampDesc}
                     fetching={false}
                     onChangeSearch={() => undefined}
                     onChangeOrderBy={() => undefined}
@@ -224,7 +214,7 @@ describe('DApps container', () => {
             const onChangeSearch = jest.fn();
             render(
                 <DappsFiltersComponent
-                    orderBy={DApp_OrderBy.ActivityTimestamp}
+                    orderBy={ApplicationOrderByInput.ActivityTimestampDesc}
                     fetching={false}
                     onChangeSearch={onChangeSearch}
                     onChangeOrderBy={() => undefined}
@@ -244,7 +234,7 @@ describe('DApps container', () => {
             const onChangeOrderBy = jest.fn();
             render(
                 <DappsFiltersComponent
-                    orderBy={DApp_OrderBy.ActivityTimestamp}
+                    orderBy={ApplicationOrderByInput.ActivityTimestampDesc}
                     fetching={false}
                     onChangeSearch={() => undefined}
                     onChangeOrderBy={onChangeOrderBy}
@@ -264,7 +254,7 @@ describe('DApps container', () => {
         it('should display spinner when fetching', () => {
             render(
                 <DappsFiltersComponent
-                    orderBy={DApp_OrderBy.ActivityTimestamp}
+                    orderBy={ApplicationOrderByInput.ActivityTimestampDesc}
                     fetching
                     onChangeSearch={() => undefined}
                     onChangeOrderBy={() => undefined}
