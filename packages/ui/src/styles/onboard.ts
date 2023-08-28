@@ -12,7 +12,7 @@
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 
-const grayColour = colors.gray[800];
+const grayColour = colors.dark.gray.quaternary;
 const white = colors.white;
 
 export const buildOnboardTheme = (props: { colorMode: string }) => {
@@ -24,6 +24,7 @@ export const buildOnboardTheme = (props: { colorMode: string }) => {
         '--onboard-font-family-light': 'var(--chakra-fonts-body)',
         '--onboard-modal-z-index': zIndices.xxl,
         '--onboard-account-select-modal-z-index': zIndices.xxl,
+        '--onboard-link-color': colors.light.primary,
     };
     const wcVars = {
         '--wcm-z-index': `${1060} !important`,
@@ -42,8 +43,9 @@ export const buildOnboardTheme = (props: { colorMode: string }) => {
             '--onboard-close-button-background': grayColour,
             '--onboard-close-button-color': white,
             '--onboard-wallet-button-background-hover': colors.gray1,
-            // Color pallete
+            // Color pallet
             '--onboard-black': white,
+            '--onboard-link-color': colors.dark.primary,
         };
     }
 
