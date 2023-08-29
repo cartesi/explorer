@@ -35,7 +35,7 @@ import { FC, ReactElement, useState } from 'react';
 import {
     useDappQuery,
     useInputEdgeQuery,
-} from '../../generated/graphql/rollups/0.9';
+} from '../../generated/graphql/rollups/1.0';
 import { DappStats } from './DappStats';
 const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
