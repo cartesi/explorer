@@ -134,7 +134,7 @@ describe('useApplications Hook', () => {
         expect(isDeploymentCalled).toBe(true);
     });
 
-    it('should retrieve DApp (v0.9) information directly from smartcontract', async () => {
+    it('should retrieve DApp (v1.0) information directly from smartcontract', async () => {
         const factory = buildUseRollupFactoryReturn();
         factory.queryFilter = jest.fn(() =>
             Promise.resolve<any>([buildApplicationCreatedEvent()])
@@ -150,7 +150,7 @@ describe('useApplications Hook', () => {
         expect(result.current.applications).toHaveLength(1);
         expect(result.current.applications[0]).toHaveProperty(
             'factoryVersion',
-            '0.9'
+            '1.0'
         );
         expect(result.current.applications[0]).toHaveProperty(
             'address',

@@ -6,7 +6,7 @@ import { createServer } from 'node:http';
 import { join } from 'path';
 import { BigInt, Float, Int, String } from './custom-scalars';
 const typeDefs = readFileSync(
-    join(process.cwd(), 'graphql/schema/0.9/schema.graphql'),
+    join(process.cwd(), 'graphql/schema/1.0/schema.graphql'),
     {
         encoding: 'utf-8',
     }

@@ -34,7 +34,7 @@ interface Application {
 }
 
 type FactoryType = CartesiDAppFactory;
-type FactoryVersion = '0.8' | '0.9';
+type FactoryVersion = '1.0';
 
 /**
  * Fetch the DApp information (i.e. Address) from a specific factory version from a block-number
@@ -112,7 +112,7 @@ export const useApplications = (): Applications => {
                 Promise.all([
                     fetchApplications(
                         factory,
-                        '0.9',
+                        '1.0',
                         deployBlock,
                         (dapp: string, blockNumber?: number) =>
                             inputBoxMeta.getInputs(dapp, blockNumber)
