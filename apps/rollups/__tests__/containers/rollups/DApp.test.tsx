@@ -19,9 +19,9 @@ import {
     PageInfo,
     useDappQuery,
     useInputEdgeQuery,
-} from '../../../src/generated/graphql/rollups/0.9';
+} from '../../../src/generated/graphql/rollups/1.0';
 import { withChakraTheme } from '../../test-utilities';
-const path = '../../../src/generated/graphql/rollups/0.9';
+const path = '../../../src/generated/graphql/rollups/1.0';
 jest.mock(path, () => {
     const originalModule = jest.requireActual(path);
     return {

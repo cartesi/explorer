@@ -11,12 +11,12 @@
 
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { withChakraTheme } from '../../test-utilities';
 import {
     DappsSummary,
     LocalDAppList,
 } from '../../../src/containers/rollups/LocalDApps';
 import { useApplications } from '../../../src/services/useApplications';
+import { withChakraTheme } from '../../test-utilities';
 
 const path = '../../../src/services/useApplications';
 jest.mock(path, () => {
@@ -134,7 +134,7 @@ describe('LocalDApps container', () => {
             const errorMessage = 'Error XYZ';
             const applications = [
                 {
-                    factoryVersion: '0.9',
+                    factoryVersion: '1.0',
                     address: 'some-address',
                     inputs: [],
                     deploymentTimestamp: new Date().getTime() / 1000,
