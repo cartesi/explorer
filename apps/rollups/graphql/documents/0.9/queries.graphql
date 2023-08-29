@@ -4,6 +4,9 @@ query inputEdge {
             cursor
             node {
                 index
+                payload
+                msgSender
+                timestamp
                 notices {
                     totalCount
                     pageInfo {

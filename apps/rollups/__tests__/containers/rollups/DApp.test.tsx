@@ -11,16 +11,14 @@ import { CombinedError } from '@urql/core';
 import { Provider, createClient } from 'urql';
 import {
     DApp,
-    EpochItem,
     InputContent,
-    Inputs,
     hexToJSON,
     transformPayload,
 } from '../../../src/containers/rollups/DApp';
 import {
+    PageInfo,
     useDappQuery,
     useInputEdgeQuery,
-    PageInfo,
 } from '../../../src/generated/graphql/rollups/0.9';
 import { withChakraTheme } from '../../test-utilities';
 const path = '../../../src/generated/graphql/rollups/0.9';
@@ -73,13 +71,13 @@ const inputContentProps = {
     label: 'Input content label',
 };
 
-const InputsComponent = withChakraTheme(Inputs);
 const edge = {
     cursor: '2',
     node: {
         id: '1',
         index: 0,
         msgSender: '0x912d9dfa80c617e5e9ef4f43eca01a05cc2123e1',
+        payload: PAYLOAD_STRING,
         timestamp: new Date().getTime() / 1000,
         blockNumber: 7704915,
         notices: {
@@ -138,29 +136,6 @@ const edge = {
                 hasNextPage: false,
                 hasPreviousPage: false,
             },
-        },
-    },
-};
-const inputItems = [edge, edge];
-const inputsProps = {
-    inputs: inputItems,
-    count: inputItems.length,
-};
-
-const EpochItemComponent = withChakraTheme(EpochItem);
-const epochItemProps = {
-    item: {
-        id: '1',
-        index: 0,
-        inputs: {
-            totalCount: 0,
-            pageInfo: {
-                startCursor: '',
-                endCursor: '',
-                hasNextPage: false,
-                hasPreviousPage: false,
-            },
-            edges: [edge],
         },
     },
 };
@@ -279,6 +254,24 @@ describe('DApp container', () => {
             ).toBeInTheDocument();
         });
 
+        it('should not display internal paging when it is disabled', async () => {
+            render(
+                <InputContentComponent
+                    items={[inputContentItems[0]]}
+                    label="Payload"
+                    showPagination={false}
+                />
+            );
+
+            expect(screen.getByText('Payload')).toBeInTheDocument();
+            expect(
+                screen.queryByTestId('input-content-position')
+            ).not.toBeInTheDocument();
+            expect(screen.queryByText('PREV')).not.toBeInTheDocument();
+            expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
+            expect(screen.queryByText('Total 1')).not.toBeInTheDocument();
+        });
+
         it('should display items count', () => {
             render(<InputContentComponent {...inputContentProps} />);
 
@@ -380,100 +373,6 @@ describe('DApp container', () => {
                 expect(
                     screen.getByTestId('input-content-position').innerHTML
                 ).toBe('1')
-            );
-        });
-    });
-
-    describe('EpochItem component', () => {
-        it('should display epoch position', () => {
-            render(<EpochItemComponent {...epochItemProps} />);
-
-            expect(
-                screen.getByText(`Epoch ${epochItemProps.item.index + 1}`)
-            ).toBeInTheDocument();
-        });
-    });
-    describe('Inputs component', () => {
-        it('should display items count', () => {
-            render(<InputsComponent {...inputsProps} />);
-
-            expect(
-                screen.getByText(`Total ${inputsProps.count}`)
-            ).toBeInTheDocument();
-        });
-
-        it('should increase position when next position exists', async () => {
-            render(<InputsComponent {...inputsProps} />);
-
-            const nextButton = screen.getByTestId('inputs-next-button');
-
-            await act(() => {
-                fireEvent.click(nextButton);
-            });
-
-            await waitFor(() =>
-                expect(screen.getByTestId('inputs-position').innerHTML).toBe(
-                    '2'
-                )
-            );
-        });
-
-        it('should not increase position when next position does not exist', async () => {
-            render(<InputsComponent {...inputsProps} count={1} />);
-
-            const nextButton = screen.getByTestId('inputs-next-button');
-
-            await act(() => {
-                fireEvent.click(nextButton);
-            });
-
-            await waitFor(() =>
-                expect(screen.getByTestId('inputs-position').innerHTML).toBe(
-                    '1'
-                )
-            );
-        });
-
-        it('should decrease position when previous position exists', async () => {
-            render(<InputsComponent {...inputsProps} />);
-
-            const nextButton = screen.getByTestId('inputs-next-button');
-
-            await act(() => {
-                fireEvent.click(nextButton);
-            });
-
-            await waitFor(() =>
-                expect(screen.getByTestId('inputs-position').innerHTML).toBe(
-                    '2'
-                )
-            );
-            const prevButton = screen.getByTestId('inputs-prev-button');
-
-            await act(() => {
-                fireEvent.click(prevButton);
-            });
-
-            await waitFor(() =>
-                expect(screen.getByTestId('inputs-position').innerHTML).toBe(
-                    '1'
-                )
-            );
-        });
-
-        it('should not decrease position when previous position does not exist', async () => {
-            render(<InputsComponent {...inputsProps} />);
-
-            const prevButton = screen.getByTestId('inputs-prev-button');
-
-            await act(() => {
-                fireEvent.click(prevButton);
-            });
-
-            await waitFor(() =>
-                expect(screen.getByTestId('inputs-position').innerHTML).toBe(
-                    '1'
-                )
             );
         });
     });

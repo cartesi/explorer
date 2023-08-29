@@ -31,7 +31,7 @@ import {
 import { Notification } from '@explorer/ui';
 import { ethers } from 'ethers';
 import dynamic from 'next/dynamic';
-import { FC, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import {
     useDappQuery,
     useInputEdgeQuery,
@@ -40,22 +40,15 @@ import { DappStats } from './DappStats';
 const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
 type PageInfo = {
-    startCursor: string;
-    endCursor: string;
+    startCursor?: string;
+    endCursor?: string;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
 };
 
 type Edge<T> = {
-    cursor: string;
+    cursor?: string;
     node: T;
-};
-
-type Connection<T> = {
-    totalCount: number;
-    pageInfo: PageInfo;
-    nodes?: T[];
-    edges?: Edge<T>[];
 };
 
 type Proof = {
@@ -89,27 +82,6 @@ type Voucher = {
     payload: string;
 };
 
-type Input = {
-    id: string;
-    index: number;
-    msgSender: string;
-    timestamp: number;
-    blockNumber: number;
-    notices: Connection<Notice>;
-    reports: Connection<Report>;
-    vouchers: Connection<Voucher>;
-};
-
-type Epoch = {
-    id: string;
-    index: number;
-    inputs: Connection<Input>;
-};
-
-interface ItemProps<T> {
-    item: T;
-}
-
 const hexToString = (hex: string) => {
     return ethers.utils.toUtf8String(hex);
 };
@@ -138,18 +110,21 @@ export const transformPayload = (as: PayloadAs, payload: string) => {
 export interface InputContentProps<D> {
     items: Edge<D>[];
     count?: number;
-    label: string;
+    label: string | ReactElement;
+    showPagination?: boolean;
 }
 
 export const InputContent = ({
     items,
     label,
-}: InputContentProps<Report | Notice | Voucher>) => {
+    showPagination = true,
+}: InputContentProps<Report | Notice | Voucher | Node>) => {
     const [pos, updatePos] = useState<number>(0);
     const [payloadAs, setPayloadAs] = useState<PayloadAs>('hex');
     const jsonTheme = useColorModeValue('rjv-default', 'ocean');
+    const totalItems = items.length;
     const item = items[pos];
-    const hasNext = pos + 1 < items.length;
+    const hasNext = pos + 1 < totalItems;
     const hasPrev = pos > 0;
 
     if (!item) {
@@ -161,38 +136,42 @@ export const InputContent = ({
     return (
         <Box width="full" py={2} px={3}>
             <HStack width="full" py={2}>
-                <Text>{label}</Text>
-                <Tag size="md" data-testid="input-content-position">
-                    {pos + 1}
-                </Tag>
+                <Text whiteSpace="nowrap">{label}</Text>
+                {showPagination && (
+                    <>
+                        <Tag size="md" data-testid="input-content-position">
+                            {pos + 1}
+                        </Tag>
 
-                <ButtonGroup variant="ghost" spacing={3}>
-                    <Button
-                        size="sm"
-                        colorScheme="blue"
-                        textTransform="uppercase"
-                        data-testid="input-content-prev-button"
-                        isDisabled={!hasPrev}
-                        onClick={() => updatePos((state) => state - 1)}
-                    >
-                        prev
-                    </Button>
+                        <ButtonGroup variant="ghost" spacing={3}>
+                            <Button
+                                size="sm"
+                                colorScheme="blue"
+                                textTransform="uppercase"
+                                data-testid="input-content-prev-button"
+                                isDisabled={!hasPrev}
+                                onClick={() => updatePos((state) => state - 1)}
+                            >
+                                prev
+                            </Button>
 
-                    <Button
-                        size="sm"
-                        colorScheme="blue"
-                        textTransform="uppercase"
-                        data-testid="input-content-next-button"
-                        isDisabled={!hasNext}
-                        onClick={() => updatePos((state) => state + 1)}
-                    >
-                        next
-                    </Button>
-                </ButtonGroup>
+                            <Button
+                                size="sm"
+                                colorScheme="blue"
+                                textTransform="uppercase"
+                                data-testid="input-content-next-button"
+                                isDisabled={!hasNext}
+                                onClick={() => updatePos((state) => state + 1)}
+                            >
+                                next
+                            </Button>
+                        </ButtonGroup>
 
-                <Text width="full" textAlign="right">
-                    Total {items.length}
-                </Text>
+                        <Text width="full" textAlign="right">
+                            Total {items.length}
+                        </Text>
+                    </>
+                )}
             </HStack>
 
             <HStack>
@@ -226,109 +205,28 @@ export const InputContent = ({
     );
 };
 
-export interface InputsProps {
-    count: number;
-    inputs: Edge<Input>[];
-}
-
-export const Inputs: FC<InputsProps> = ({ count, inputs }) => {
-    const [pos, updatePos] = useState<number>(0);
-    const input = inputs[pos];
-    const hasNext = pos + 1 < count;
-    const hasPrev = pos > 0;
-
-    return (
-        <Box px={3} py={2} width="full">
-            <HStack>
-                <Text fontWeight="bold" fontSize="lg">
-                    Input
-                </Text>
-                <Tag
-                    size="md"
-                    variant="solid"
-                    bg="blue.200"
-                    data-testid="inputs-position"
-                >
-                    {pos + 1}
-                </Tag>
-                <ButtonGroup variant="ghost" spacing={3}>
-                    <Button
-                        size="sm"
-                        colorScheme="blue"
-                        textTransform="uppercase"
-                        data-testid="inputs-prev-button"
-                        isDisabled={!hasPrev}
-                        onClick={() => updatePos((state) => state - 1)}
-                    >
-                        prev
-                    </Button>
-                    <Button
-                        size="sm"
-                        colorScheme="blue"
-                        textTransform="uppercase"
-                        data-testid="inputs-next-button"
-                        isDisabled={!hasNext}
-                        onClick={() => updatePos((state) => state + 1)}
-                    >
-                        next
-                    </Button>
-                </ButtonGroup>
-                <Text width="full" textAlign="right">
-                    Total {count}
-                </Text>
-            </HStack>
-
-            <SimpleGrid columns={{ base: 1 }}>
-                <InputContent items={input.node.notices.edges} label="Notice" />
-
-                <InputContent items={input.node.reports.edges} label="Report" />
-
-                <InputContent
-                    items={input.node.vouchers.edges}
-                    label="Voucher"
-                />
-            </SimpleGrid>
-        </Box>
-    );
-};
-
-export const EpochItem: FC<ItemProps<Epoch>> = ({ item }) => {
-    const bg = useColorModeValue('white', 'gray.800');
-    return (
-        <VStack bg={bg} alignItems="flex-start" data-testid="epoch-item">
-            <Box
-                width="100%"
-                textAlign="center"
-                bg="blue.100"
-                py={2}
-                color="black"
-            >
-                <Heading fontSize="2xl">Epoch {item.index + 1}</Heading>
-            </Box>
-            <Inputs count={item.inputs.totalCount} inputs={item.inputs.edges} />
-        </VStack>
-    );
-};
-
 interface NodeProps<T> {
     node: T;
 }
 
 type Node = {
     index: number;
+    payload: string;
+    msgSender: string;
+    timestamp: BigInt;
     notices: {
         totalCount: number;
-        pageInfo: any;
+        pageInfo: PageInfo;
         edges: Edge<Notice>[];
     };
     reports: {
         totalCount: number;
-        pageInfo: any;
+        pageInfo: PageInfo;
         edges: Edge<Report>[];
     };
     vouchers: {
         totalCount: number;
-        pageInfo: any;
+        pageInfo: PageInfo;
         edges: Edge<Voucher>[];
     };
 };
@@ -348,6 +246,15 @@ const InputEdgeItem: FC<NodeProps<Node>> = ({ node }) => {
             </Box>
             <Box px={3} py={2} width="full">
                 <SimpleGrid columns={{ base: 1 }}>
+                    <InputContent
+                        showPagination={false}
+                        items={[{ node }]}
+                        label={
+                            <Text as="span" fontWeight="bold" fontSize="large">
+                                Payload
+                            </Text>
+                        }
+                    />
                     <InputContent
                         count={node.notices.totalCount}
                         items={node.notices.edges}
@@ -411,7 +318,7 @@ export const DApp: FC<DAppProps> = (props) => {
                 {error && (
                     <Notification
                         status="error"
-                        title="Error fetching Dapps!"
+                        title="Error fetching Dapp information!"
                         subtitle={error?.message}
                     />
                 )}
