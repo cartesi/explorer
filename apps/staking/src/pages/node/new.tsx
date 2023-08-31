@@ -35,7 +35,7 @@ const NewNode: FC = () => {
         'light.gray.secondary',
         'dark.gray.primary'
     );
-    const linkColor = useColorModeValue('gray', 'gray.100');
+    const linkColor = useColorModeValue('black', 'white');
     return (
         <Layout>
             <PageHead
@@ -89,6 +89,9 @@ const NewNode: FC = () => {
                         textDecorationLine="underline"
                         fontSize="sm"
                         alignSelf="flex-end"
+                        _hover={{
+                            color: 'teal.secondary',
+                        }}
                     >
                         Learn from tutorial
                     </ChakraLink>
