@@ -74,7 +74,7 @@ const SetUpNode = ({
         <>
             docker run -it --rm --name cartesi_noether -v
             cartesi_wallet:/root/.ethereum cartesi/noether --url{' '}
-            <Text as="span" color="cyan">
+            <Text as="span" color="teal.secondary">
                 &lt;https://mainnet.infura.io/v3/project_id&gt;
             </Text>{' '}
             --wallet /root/.ethereum/key --create --verbose;
@@ -82,7 +82,7 @@ const SetUpNode = ({
     );
 
     const [state, setState] = useStepState({ inFocus });
-    const linkColor = useColorModeValue('blue.500', 'blue.200');
+    const linkColor = useColorModeValue('light.primary', 'teal.secondary');
     const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
@@ -112,6 +112,9 @@ const SetUpNode = ({
                             color={linkColor}
                             href="https://docs.docker.com/desktop/mac/install/"
                             target="_blank"
+                            _hover={{
+                                opacity: 0.9,
+                            }}
                         >
                             Download for Mac (macOS)
                         </Link>
@@ -121,6 +124,9 @@ const SetUpNode = ({
                             color={linkColor}
                             href="https://docs.docker.com/desktop/windows/install/"
                             target="_blank"
+                            _hover={{
+                                opacity: 0.9,
+                            }}
                         >
                             Download for Windows
                         </Link>

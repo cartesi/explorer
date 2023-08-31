@@ -115,6 +115,7 @@ const HireNode = ({
             <StepBody>
                 {!active && (
                     <Notification
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
                         title={useMessages('wallet.is.disconnected')}
                         status="warning"
                     >
