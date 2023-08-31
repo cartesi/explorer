@@ -141,7 +141,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     )}
                 </HStack>
 
-                <AlertDescription display="block">
+                <AlertDescription display="block" fontSize={'1rem'}>
                     {isError && error ? error : ''}
                     {isSuccess && !isError ? successDescription : ''}
                 </AlertDescription>

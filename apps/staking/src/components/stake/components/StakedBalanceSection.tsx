@@ -11,19 +11,19 @@
 
 import {
     Box,
-    Text,
     Button,
     Flex,
     HStack,
-    Stack,
-    useColorModeValue,
-    VStack,
     Heading,
+    Stack,
+    Text,
+    VStack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
+import { StakedBalanceIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { StakedBalanceIcon } from '@explorer/ui';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IStakedBalanceSection {
@@ -38,7 +38,6 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
     const stakedBalanceColor = useColorModeValue('gray.400', 'white');
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const boxShadow = useColorModeValue('sm', 'none');
-    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const iconColor = useColorModeValue('orange.500', 'dark.primary');
     const iconBg = useColorModeValue('orange.50', 'dark.gray.primary');
 
@@ -47,8 +46,8 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
             bg={bg}
             shadow={boxShadow}
             borderWidth="1px"
-            borderColor={borderColor}
-            borderRadius="1rem"
+            borderRadius={'2xl'}
+            border="1px solid rgba(255, 255, 255, 0.10)"
             p={6}
             pl={{ base: 6, md: 8 }}
         >

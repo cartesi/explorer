@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 
+import { theme } from '@explorer/ui';
 import { useWallet } from '@explorer/wallet';
 import Layout from '../../../components/Layout';
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
@@ -47,7 +48,6 @@ import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useNode } from '../../../services/node';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
-import { theme } from '@explorer/ui';
 import { useMessages } from '../../../utils/messages';
 import { useTimeLeft } from '../../../utils/react';
 
@@ -424,6 +424,12 @@ const ManageNode: FC = () => {
 
                 <Box>
                     <VStack spacing={4} alignItems="stretch">
+                        <TransactionBanner
+                            title="Setting allowance..."
+                            failTitle="Error setting allowance"
+                            successDescription="New allowance set successfully."
+                            transaction={tokenTransaction}
+                        />
                         {isWithdrawAlertActive && (
                             <TransactionInfoBanner
                                 title="Withdrawing..."
