@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
 import {
     Box,
-    Text,
-    Stack,
     Button,
-    useColorModeValue,
     Flex,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
+import { isEmpty, omit } from 'lodash/fp';
+import { FC, useState } from 'react';
+import { useNode } from '../../services/node';
 import { toBigNumber } from '../../utils/numberParser';
-import { NodeInput, NodeField, evaluateNode } from './inputs/NodeInput';
 import { MappedErrors, ValidationResult } from '../BaseInput';
 import { DepositField, InitialFundsInput } from './inputs/InitialFundsInput';
-import { isEmpty, omit } from 'lodash/fp';
-import { useNode } from '../../services/node';
+import { NodeField, NodeInput, evaluateNode } from './inputs/NodeInput';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -38,7 +38,7 @@ export interface NodeHireNodeSectionProps {
 export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     const { isHiring = false, onHire } = props;
     const { account } = useWallet();
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
     const [initialFunds, setInitialFunds] = useState('');
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
@@ -63,6 +63,8 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
+            borderRadius={'2xl'}
+            border="1px solid rgba(255, 255, 255, 0.10)"
         >
             <Stack
                 spacing={4}

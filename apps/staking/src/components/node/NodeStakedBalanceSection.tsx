@@ -35,7 +35,15 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     const bgIcon = useColorModeValue('teal.light', 'black');
     const iconColor = useColorModeValue('light.primary', 'cyan');
     return (
-        <Box bg={bg} shadow="md" p={6} mt={5} minHeight="7.125rem">
+        <Box
+            bg={bg}
+            shadow="md"
+            p={6}
+            mt={5}
+            minHeight="7.125rem"
+            borderRadius={'2xl'}
+            border="1px solid rgba(255, 255, 255, 0.10)"
+        >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"

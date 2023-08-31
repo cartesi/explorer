@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { useState, Fragment, FunctionComponent } from 'react';
+import { CheckIcon } from '@chakra-ui/icons';
 import {
-    VStack,
     Box,
     BoxProps,
-    Heading,
-    Text,
     Flex,
+    Heading,
+    Link,
+    Text,
+    VStack,
     useBreakpointValue,
     useColorModeValue,
-    Link,
 } from '@chakra-ui/react';
-import { VSeparator, HSeparator } from './Separator';
-import { IStepMeta, IStep } from './interfaces';
-import { range } from 'lodash/fp';
-import { CheckIcon } from '@chakra-ui/icons';
 import { theme } from '@explorer/ui';
+import { range } from 'lodash/fp';
+import { Fragment, FunctionComponent, useState } from 'react';
+import { HSeparator, VSeparator } from './Separator';
+import { IStep, IStepMeta } from './interfaces';
 
 type HeaderType = {
     currentStep: number;
@@ -46,9 +46,12 @@ const Header = ({
     subtitle,
     ...boxProps
 }: HeaderType) => {
-    const bgColor = useColorModeValue('white', 'gray.700');
-    const linkColor = useColorModeValue('gray', 'gray.100');
-    const stepNumberBg = useColorModeValue('blue.500', 'blue.200');
+    const bgColor = useColorModeValue(
+        'light.gray.secondary',
+        'dark.gray.primary'
+    );
+    const linkColor = useColorModeValue('light.primary', 'teal.secondary');
+    const stepNumberBg = useColorModeValue('light.primary', 'cyan.primary');
     const stepNumberColor = useColorModeValue('white', 'black');
     return (
         <Box

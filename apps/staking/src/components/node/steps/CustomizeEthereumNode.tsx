@@ -34,7 +34,10 @@ const CustomizeEthereumNode = ({
     onStepActive,
 }: IStep) => {
     const [state, setState] = useStepState({ inFocus });
-    const thirdPartyColor = useColorModeValue('light.primary', 'cyan.primary');
+    const thirdPartyColor = useColorModeValue(
+        'light.primary',
+        'teal.secondary'
+    );
     const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
@@ -81,6 +84,9 @@ const CustomizeEthereumNode = ({
                                 fontWeight="medium"
                                 textDecorationLine="underline"
                                 fontSize="md"
+                                _hover={{
+                                    opacity: 0.8,
+                                }}
                             >
                                 1. Infura
                             </Link>{' '}
@@ -92,6 +98,9 @@ const CustomizeEthereumNode = ({
                                 fontWeight="medium"
                                 textDecorationLine="underline"
                                 fontSize="md"
+                                _hover={{
+                                    opacity: 0.8,
+                                }}
                             >
                                 2. Alchemy
                             </Link>
