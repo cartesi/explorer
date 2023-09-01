@@ -52,6 +52,9 @@ export const Card = ({
     ...stackProps
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
+    const colorScheme = useColorModeValue('teal', 'cyan');
+    const tooltipBg = useColorModeValue('white', 'dark.gray.secondary');
+    const tooltipColor = useColorModeValue('black', 'white');
     const { isOpen, onToggle } = useDisclosure();
     return (
         <Stack
@@ -87,13 +90,12 @@ export const Card = ({
                         {title}{' '}
                         {tooltip && (
                             <Tooltip
-                                borderRadius={'md'}
+                                borderRadius="md"
                                 label={tooltip}
                                 placement="auto"
                                 fontSize="md"
-                                bg={'light.gray.quaternary'}
-                                opacity={0.9}
-                                color="white"
+                                bg={tooltipBg}
+                                color={tooltipColor}
                                 maxW={{ base: '95vw', md: '37rem' }}
                                 isOpen={isOpen}
                             >
@@ -116,7 +118,7 @@ export const Card = ({
                     <Button
                         data-testid="card-action-button"
                         ml={{ base: 0, lg: 2 }}
-                        colorScheme="cyan"
+                        colorScheme={colorScheme}
                         onClick={onButtonClick}
                         fontWeight={500}
                         width="full"
