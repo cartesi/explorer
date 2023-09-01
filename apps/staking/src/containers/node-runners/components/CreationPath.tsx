@@ -36,6 +36,9 @@ interface CreationPathProps {
 const CreationPath = ({ router }: CreationPathProps) => {
     const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
     const bgCard = useColorModeValue('white', 'dark.gray.quaternary');
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.secondary');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const [hasPools] = useAtom(hasPoolsAtom);
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const noPoolsOrNodes = !hasPools || !hasPrivateNode;
@@ -56,19 +59,16 @@ const CreationPath = ({ router }: CreationPathProps) => {
                     <SlideDown display={!hasPools}>
                         <Card
                             my={2}
-                            borderRadius={4}
-                            border={'1px solid rgba(255, 255, 255, 0.10)'}
+                            borderRadius="1rem"
+                            borderWidth="1px"
+                            borderColor={borderColor}
                             bg={bgCard}
                             id="pool-creation-card"
                             title="Create a public pool"
                             subtitle="Earn commissions out of the blocks rewards."
-                            iconBg="black"
+                            iconBg={iconBg}
                             icon={
-                                <AllowanceIcon
-                                    color="cyan.primary"
-                                    w={6}
-                                    h={6}
-                                />
+                                <AllowanceIcon color={iconColor} w={6} h={6} />
                             }
                             buttonText="CREATE PUBLIC POOL"
                             onButtonClick={() => router.push('/pools/new')}
@@ -84,16 +84,15 @@ const CreationPath = ({ router }: CreationPathProps) => {
                     <SlideDown display={!hasPrivateNode}>
                         <Card
                             my={2}
-                            borderRadius={4}
-                            border={'1px solid rgba(255, 255, 255, 0.10)'}
+                            borderRadius="1rem"
+                            borderWidth="1px"
+                            borderColor={borderColor}
                             bg={bgCard}
                             id="private-node-creation-card"
                             title="Run a private node"
                             subtitle="You are able to stake directly by running your own node to represent your stake."
-                            iconBg="black"
-                            icon={
-                                <WalletIcon color="cyan.primary" w={6} h={6} />
-                            }
+                            iconBg={iconBg}
+                            icon={<WalletIcon color={iconColor} w={6} h={6} />}
                             buttonText={'CREATE MY NODE'}
                             onButtonClick={() => {
                                 router.push('/node/new');
