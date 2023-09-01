@@ -28,12 +28,14 @@ import {
     VisuallyHidden,
     useColorModeValue,
     useDisclosure,
+    TableColumnHeaderProps,
 } from '@chakra-ui/react';
 import {
     Address,
     Notification,
     PencilIcon,
     StakeCircledOutlinedIcon,
+    theme,
 } from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
@@ -51,26 +53,59 @@ interface TableInfo {
 }
 
 const NodeTable = () => {
-    const bgTable = useColorModeValue('white', 'dark.gray.secondary');
+    const bgTable = useColorModeValue('white', 'dark.gray.primary');
     const [data] = useAtom(nodeInfoDataAtom);
     const { list, loading } = data;
+    const borderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quaternary'
+    );
+    const topBorderColor = useColorModeValue(
+        'transparent',
+        'dark.gray.quinary'
+    );
+
+    const thProps: TableColumnHeaderProps = {
+        borderColor: topBorderColor,
+        bg: 'dark.gray.primary',
+        textTransform: 'none',
+        fontSize: 'md',
+        fontWeight: 400,
+        fontFamily: theme.fonts.body,
+        paddingTop: 4,
+        paddingBottom: 4,
+    };
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const backgroundHoverColor = useColorModeValue(
+        'WhiteSmoke',
+        'dark.gray.tertiary'
+    );
+    const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
+    const linkColor = useColorModeValue('gray.900', 'gray.90');
+
     return (
-        <TableResponsiveHolder>
+        <TableResponsiveHolder
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="6px"
+        >
             <Table bg={bgTable}>
                 <Thead>
                     <Tr>
-                        <Th>Node Address</Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th {...thProps}>Node Address</Th>
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Total Staked
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Total Rewards
                         </Th>
-                        <Th isNumeric whiteSpace="nowrap">
+                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
                             Block Produced
                         </Th>
-                        <Th whiteSpace="nowrap">Node Status</Th>
-                        <Th position="sticky" right="0">
+                        <Th whiteSpace="nowrap" {...thProps}>
+                            Node Status
+                        </Th>
+                        <Th position="sticky" right="0" {...thProps}>
                             Manage
                         </Th>
                     </Tr>
@@ -95,11 +130,11 @@ const NodeTable = () => {
                                         address={node.id}
                                         truncated
                                         size="md"
-                                        bg="blue.50"
+                                        minWidth="120px"
+                                        textDecoration="underline"
                                         px="0.5rem"
                                         py="0.25rem"
-                                        color="gray.900"
-                                        minWidth="120px"
+                                        color={addressColor}
                                         shouldDisplayFallbackAvatar
                                         fallbackAvatar={
                                             StakeCircledOutlinedIcon as FC<IconProps>
@@ -114,12 +149,20 @@ const NodeTable = () => {
                                     position="sticky"
                                     right="0"
                                     textAlign="center"
+                                    backgroundColor={backgroundHoverColor}
                                 >
                                     <NextLink
                                         href={`/node/${node.id}/manage`}
                                         passHref
                                     >
-                                        <Button as="a" variant="link">
+                                        <Button
+                                            as="a"
+                                            variant="link"
+                                            color={linkColor}
+                                            _hover={{
+                                                color: linkHoverColor,
+                                            }}
+                                        >
                                             <VisuallyHidden>
                                                 Manage node {node.id}
                                             </VisuallyHidden>
@@ -140,7 +183,7 @@ const NodeTable = () => {
 const SHOW_POS_V2_ALERT = 'showPoSV2AlertForPrivateNode';
 
 const NodeTableBlock = ({ boxProps }: TableInfo) => {
-    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
     const [hasPrivateNode] = useAtom(hasPrivateNodeAtom);
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
