@@ -10,7 +10,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
+import { BoxProps, useColorModeValue } from '@chakra-ui/react';
 import { Address, Card, DappIcon } from '@explorer/ui';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -25,10 +25,13 @@ export interface DAppCardProps extends BoxProps {
 const DAppCard: FC<DAppCardProps> = (props) => {
     const { address, chainId, inputCount, date, ...restProps } = props;
     const router = useRouter();
-    const boxShadow = useColorModeValue(
-        '0px 0px 3px rgba(0, 0, 0, 0.1)',
-        '0px 0px 3px rgba(255, 255, 255, 0.3)'
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
     );
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
 
     return (
         <Card
@@ -37,6 +40,10 @@ const DAppCard: FC<DAppCardProps> = (props) => {
             direction="column"
             alignItems="center"
             w="auto"
+            bg={bg}
+            borderWidth="1px"
+            borderRadius="1rem"
+            borderColor={borderColor}
             mx={{ base: 6, md: 0 }}
             title={
                 <Address
@@ -50,8 +57,8 @@ const DAppCard: FC<DAppCardProps> = (props) => {
             titleProps={{
                 justifyContent: 'center',
             }}
-            iconBg="blue.100"
-            icon={<Box as={DappIcon} w={8} h={8} color="blue.500" />}
+            iconBg={iconBg}
+            icon={<DappIcon w={8} h={8} color={iconColor} />}
             buttonText="VIEW"
             onButtonClick={() => router.push(`/dapp/${address}`)}
             contentStackProps={{
@@ -59,7 +66,6 @@ const DAppCard: FC<DAppCardProps> = (props) => {
                 textAlign: 'center',
                 spacing: 8,
             }}
-            boxShadow={boxShadow}
         />
     );
 };

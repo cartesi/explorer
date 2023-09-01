@@ -42,7 +42,7 @@ export const ResponsiveDebug: FC = () => {
 };
 
 export const PageHeader: FC<ComponentProps> = ({ children }) => (
-    <Box w="100%" bg="gray.900" color="white" px="6vw" py={5}>
+    <Box w="100%" bg="dark.gray.tertiary" color="white" px="6vw" py={5}>
         {children}
     </Box>
 );

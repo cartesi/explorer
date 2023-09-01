@@ -51,52 +51,55 @@ export interface SummaryProps {
     inputCount: number;
 }
 
-export const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => (
-    <Stack
-        direction={['column', 'column', 'row', 'row']}
-        justify="space-evenly"
-        w="100%"
-        p={[5, 5, 10, 10]}
-        px={['6vw', '6vw', '12vw', '12vw']}
-        spacing={6}
-    >
-        <Banner
-            Icon={<Box as={DappIcon} w={8} h={8} />}
-            Title={
-                <HStack>
-                    <Text># DApps</Text>
-                    <Tooltip
-                        label="Total number of DApps instantiated"
-                        placement="top"
-                    >
-                        <Icon />
-                    </Tooltip>
-                </HStack>
-            }
-            data-testid="dapps-summary-dapps-count"
+export const DappsSummary: FC<SummaryProps> = ({ dappCount, inputCount }) => {
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    return (
+        <Stack
+            direction={['column', 'column', 'row', 'row']}
+            justify="space-evenly"
+            w="100%"
+            p={[5, 5, 10, 10]}
+            px={['6vw', '6vw', '12vw', '12vw']}
+            spacing={6}
         >
-            <BigNumberText value={dappCount} />
-        </Banner>
+            <Banner
+                Icon={<DappIcon color={iconColor} w={8} h={8} />}
+                Title={
+                    <HStack>
+                        <Text># DApps</Text>
+                        <Tooltip
+                            label="Total number of DApps instantiated"
+                            placement="top"
+                        >
+                            <Icon />
+                        </Tooltip>
+                    </HStack>
+                }
+                data-testid="dapps-summary-dapps-count"
+            >
+                <BigNumberText value={dappCount} />
+            </Banner>
 
-        <Banner
-            Icon={<Box as={InputIcon} w={8} h={8} />}
-            Title={
-                <HStack>
-                    <Text># Inputs</Text>
-                    <Tooltip
-                        label="Total number of inputs processed"
-                        placement="top"
-                    >
-                        <Icon />
-                    </Tooltip>
-                </HStack>
-            }
-            data-testid="dapps-summary-input-count"
-        >
-            <BigNumberText value={inputCount} />
-        </Banner>
-    </Stack>
-);
+            <Banner
+                Icon={<InputIcon color={iconColor} w={8} h={8} />}
+                Title={
+                    <HStack>
+                        <Text># Inputs</Text>
+                        <Tooltip
+                            label="Total number of inputs processed"
+                            placement="top"
+                        >
+                            <Icon />
+                        </Tooltip>
+                    </HStack>
+                }
+                data-testid="dapps-summary-input-count"
+            >
+                <BigNumberText value={inputCount} />
+            </Banner>
+        </Stack>
+    );
+};
 
 export interface DappsFiltersProps {
     orderBy: ApplicationOrderByInput;
@@ -170,7 +173,7 @@ export const DappsFilters: FC<DappsFiltersProps> = (props) => {
 export const Dapps: FC<DappsProps> = (props) => {
     const { chainId } = props;
     const [pageNumber, setPageNumber] = useState<number>(0);
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
     const [search, setSearch] = useState<string>('');
     const [orderBy, setOrderBy] = useState<ApplicationOrderByInput>(
         ApplicationOrderByInput.ActivityTimestampDesc
@@ -200,9 +203,17 @@ export const Dapps: FC<DappsProps> = (props) => {
 
     return (
         <Box bg={bg}>
-            <PagePanel data-testid="dapps-summary">
-                <DappsSummary dappCount={dappsCount} inputCount={dappsInputs} />
-            </PagePanel>
+            {hasFactories && (
+                <PagePanel
+                    data-testid="dapps-summary"
+                    darkModeColor="dark.gray.primary"
+                >
+                    <DappsSummary
+                        dappCount={dappsCount}
+                        inputCount={dappsInputs}
+                    />
+                </PagePanel>
+            )}
 
             <PageBody p={0}>
                 <Box
