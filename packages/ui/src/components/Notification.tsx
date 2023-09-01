@@ -40,9 +40,8 @@ export const Notification = ({
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const borderColor = useColorModeValue(
         'light.gray.tertiary',
-        'rgba(255, 255, 255, 0.10)'
+        'dark.border.quaternary'
     );
-    const inlineBorderColour = 'gray.100';
 
     return (
         <Alert
@@ -57,7 +56,7 @@ export const Notification = ({
             status={status}
             {...alertProps}
         >
-            <AlertIcon color={'dark.support.alert'} />
+            <AlertIcon />
             <VStack alignItems={['flex-start']}>
                 <AlertTitle fontSize="md">{title}</AlertTitle>
                 {subtitle && (

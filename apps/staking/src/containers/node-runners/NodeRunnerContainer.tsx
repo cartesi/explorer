@@ -90,8 +90,10 @@ export const NodeRunnersContainer = ({
     wallet,
     router,
 }: NodeRunnersContainerProps) => {
-    const bg = useColorModeValue('white', 'dark.gray.primary');
-    const bgBlock = useColorModeValue('white', 'dark.gray.tertiary');
+    const bgBlock = useColorModeValue(
+        'light.gray.secondary',
+        'dark.gray.tertiary'
+    );
     const [poolSortBy] = useAtom(poolSortByAtom);
     const [, setPoolDataLoading] = useAtom(poolDataFetchingAtom);
     const [, setPoolInfoList] = useAtom(poolInfoListAtom);
