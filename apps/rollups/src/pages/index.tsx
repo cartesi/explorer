@@ -10,7 +10,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react';
 import { Notification } from '@explorer/ui';
 import { Network } from '@explorer/utils';
 import Head from 'next/head';
@@ -25,6 +25,7 @@ const Home = () => {
     const network = useNetwork();
     const localDevEnabled = process.env.NEXT_PUBLIC_DAPP_LOCAL_DEV === 'true';
     const isUsingLocalBlockchain = network?.chainId === Network.LOCAL;
+    const notificationColor = useColorModeValue('black', 'white');
 
     return (
         <PageLayout>
@@ -40,7 +41,7 @@ const Home = () => {
             </PageHeader>
 
             {!factory && (
-                <PageBody>
+                <PageBody bg="dark.gray.tertiary" color={notificationColor}>
                     <Notification
                         title="Network not supported!"
                         subtitle="Rollups DApp Factory not deployed to the selected network."
