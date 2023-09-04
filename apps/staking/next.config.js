@@ -21,6 +21,15 @@ module.exports = withTM({
     async headers() {
         return [
             {
+                source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: `frame-ancestors 'self' https://app.safe.global;`,
+                    },
+                ],
+            },
+            {
                 source: '/manifest.json',
                 headers: [
                     {
