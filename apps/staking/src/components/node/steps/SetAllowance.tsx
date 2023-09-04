@@ -19,7 +19,6 @@ import {
     InputGroup,
     InputRightElement,
     Stack,
-    useColorMode,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useWallet } from '@explorer/wallet';
@@ -162,12 +161,12 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const [stepState] = useStepState({ inFocus });
     const [allowanceAmount, setAllowance] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
-    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'rgba(255, 255, 255, 0.10)'
+        'dark.border.quaternary'
     );
-    const { colorMode } = useColorMode();
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
         setErrors((state) => {
@@ -230,7 +229,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                     <Button
                         disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
-                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
+                        colorScheme={buttonColorScheme}
                         isLoading={transaction.isOngoing}
                         onClick={() =>
                             approve(

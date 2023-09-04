@@ -66,7 +66,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     onAuthorize,
 }) => {
     // dark mode support
-    const bgBox = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bgBox = useColorModeValue('white', 'dark.background.secondary');
     const tooltipColor = useColorModeValue('gray.400', 'white');
     const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
     const textFontWeight = isLargerThan554 ? 400 : 600;
@@ -102,7 +102,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
             ) : (
                 <>
                     <Box
-                        border={'1px solid rgba(255, 255, 255, 0.10)'}
+                        border={'1px solid '}
+                        borderColor={'dark.border.quaternary'}
                         borderRadius={'2xl'}
                         bg={bgBox}
                         shadow="md"

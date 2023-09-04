@@ -56,7 +56,7 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
-    const tipsBgColor = useColorModeValue('white', 'rgba(255, 255, 255, 0.20)');
+    const tipsBgColor = useColorModeValue('white', 'dark.border.secondary');
     const [stepState, setStepState] = useStepState({ inFocus });
     const wallet = useWallet();
     const { account, active } = wallet;
@@ -77,10 +77,10 @@ const HireNode = ({
                 : { ...state, [name]: validation };
         });
     };
-    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'rgba(255, 255, 255, 0.10)'
+        'dark.border.quaternary'
     );
     const { colorMode } = useColorMode();
 

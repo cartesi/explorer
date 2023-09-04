@@ -107,7 +107,7 @@ const ManageNode: FC = () => {
         'light.gray.secondary',
         'dark.gray.primary'
     );
-    const bgBox = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bgBox = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
@@ -325,7 +325,8 @@ const ManageNode: FC = () => {
 
                 {!node?.ready && !node?.error ? (
                     <Box
-                        border={'1px solid rgba(255, 255, 255, 0.10)'}
+                        border="1px solid"
+                        borderColor={'dark.border.quaternary'}
                         borderRadius={4}
                         bg={bgBox}
                         px={{ base: 2, lg: 8 }}

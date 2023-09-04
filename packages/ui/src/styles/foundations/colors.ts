@@ -131,8 +131,12 @@ export const colors = {
             neutral: '#E1EBFF',
         },
         border: {
+            secondary: 'rgba(255, 255, 255, 0.20)',
             tertiary: 'rgba(57, 56, 60, 0.30)',
             quaternary: 'rgba(255, 255, 255, 0.10)',
+        },
+        background: {
+            secondary: 'rgba(255, 255, 255, 0.06)',
         },
     },
 };
