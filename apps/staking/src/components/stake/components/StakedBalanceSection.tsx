@@ -47,7 +47,8 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
             shadow={boxShadow}
             borderWidth="1px"
             borderRadius={'2xl'}
-            border="1px solid rgba(255, 255, 255, 0.10)"
+            border="1px solid"
+            borderColor={'dark.border.quaternary'}
             p={6}
             pl={{ base: 6, md: 8 }}
         >

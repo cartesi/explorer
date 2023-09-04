@@ -31,7 +31,7 @@ export interface INodeStakedBalanceSection {
 export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     stakedBalance,
 }) => {
-    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const bgIcon = useColorModeValue('teal.light', 'black');
     const iconColor = useColorModeValue('light.primary', 'cyan');
     return (
@@ -42,7 +42,8 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
             mt={5}
             minHeight="7.125rem"
             borderRadius={'2xl'}
-            border="1px solid rgba(255, 255, 255, 0.10)"
+            border="1px solid"
+            borderColor={'dark.border.quaternary'}
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}

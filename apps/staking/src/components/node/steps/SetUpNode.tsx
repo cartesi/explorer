@@ -20,7 +20,6 @@ import {
     Text,
     UnorderedList,
     useClipboard,
-    useColorMode,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { MdContentCopy } from 'react-icons/md';
@@ -31,7 +30,7 @@ const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
-    const bgColor = useColorModeValue('white', 'rgba(255, 255, 255, 0.20)');
+    const bgColor = useColorModeValue('white', 'dark.border.secondary');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
@@ -83,12 +82,12 @@ const SetUpNode = ({
 
     const [state, setState] = useStepState({ inFocus });
     const linkColor = useColorModeValue('light.primary', 'teal.secondary');
-    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'rgba(255, 255, 255, 0.10)'
+        'dark.border.quaternary'
     );
-    const { colorMode } = useColorMode();
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
     return (
         <Step
             title="Set up Node"
@@ -193,7 +192,7 @@ const SetUpNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
+                        colorScheme={buttonColorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState(COMPLETED);

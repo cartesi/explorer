@@ -34,7 +34,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
     maturingBalance,
     maturingLeft = '6 hours',
 }) => {
-    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const iconColor = useColorModeValue('light.gray.primary', 'white');
 
     return (
@@ -44,7 +44,8 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
             bg={bg}
             p={6}
             pl={7}
-            border="1px solid rgba(255, 255, 255, 0.10)"
+            border="1px solid"
+            borderColor={'dark.border.quaternary'}
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}

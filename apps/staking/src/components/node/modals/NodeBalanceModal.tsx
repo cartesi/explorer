@@ -101,7 +101,8 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                 <ModalOverlay />
                 <ModalContent
                     bg={bgModal}
-                    border={'1px solid rgba(255, 255, 255, 0.20)'}
+                    border="1px solid"
+                    borderColor={'dark.border.secondary'}
                     borderRadius={'2xl'}
                     color={color}
                 >

@@ -38,7 +38,7 @@ export interface NodeHireNodeSectionProps {
 export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     const { isHiring = false, onHire } = props;
     const { account } = useWallet();
-    const bg = useColorModeValue('white', 'rgba(255, 255, 255, 0.06)');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const [initialFunds, setInitialFunds] = useState('');
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
@@ -64,7 +64,8 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
             borderRadius={'2xl'}
-            border="1px solid rgba(255, 255, 255, 0.10)"
+            border="1px solid"
+            borderColor={'dark.border.quaternary'}
         >
             <Stack
                 spacing={4}

@@ -19,7 +19,6 @@ import {
     Stack,
     Text,
     UnorderedList,
-    useColorMode,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
@@ -38,12 +37,12 @@ const CustomizeEthereumNode = ({
         'light.primary',
         'teal.secondary'
     );
-    const bg = useColorModeValue('teal.light', 'rgba(255, 255, 255, 0.06)');
+    const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'rgba(255, 255, 255, 0.10)'
+        'dark.border.quaternary'
     );
-    const { colorMode } = useColorMode();
     return (
         <Step
             title="Set up Ethereum Node"
@@ -127,7 +126,7 @@ const CustomizeEthereumNode = ({
                 >
                     <Button
                         minWidth={{ base: '10rem' }}
-                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
+                        colorScheme={buttonColorScheme}
                         onClick={(evt) => {
                             setState(COMPLETED);
                             onComplete(evt);
