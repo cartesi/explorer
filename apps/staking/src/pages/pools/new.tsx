@@ -9,30 +9,30 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
+    Link as ChakraLink,
+    HStack,
     Heading,
     Stack,
-    HStack,
     Text,
     useColorModeValue,
-    Link as ChakraLink,
 } from '@chakra-ui/react';
-import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
+import { FC } from 'react';
+import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../components/Layout';
+import PageHead from '../../components/PageHead';
 import { StepGroup } from '../../components/StepGroup';
 import CommissionModel from '../../components/pools/steps/CommissionModel';
 import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereumNode';
-import SetUpNode from '../../components/pools/steps/SetUpNode';
-import HireNode from '../../components/pools/steps/HireNode';
 import EthereumNameServer from '../../components/pools/steps/ENS';
-import PageHead from '../../components/PageHead';
+import HireNode from '../../components/pools/steps/HireNode';
+import SetUpNode from '../../components/pools/steps/SetUpNode';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('gray.80', 'gray.800');
-    const linkColor = useColorModeValue('gray', 'gray.100');
+    const bg = useColorModeValue('teal.light', 'dark.gray.primary');
+    const linkColor = useColorModeValue('black', 'white');
     return (
         <Layout>
             <PageHead
@@ -41,7 +41,7 @@ const NewNode: FC = () => {
             />
 
             <HStack
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
@@ -54,7 +54,7 @@ const NewNode: FC = () => {
                 </Link>
             </HStack>
             <Box
-                bg="header"
+                bg={'dark.gray.tertiary'}
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
@@ -72,13 +72,11 @@ const NewNode: FC = () => {
                 pb={{ base: 0, sm: '5vw' }}
             >
                 <Stack
-                    py={4}
                     direction="column"
                     alignItems="stretch"
                     display={{ base: 'none', md: 'flex' }}
                 >
                     <ChakraLink
-                        // TODO: Replace with new upcoming tutorial
                         href="https://medium.com/cartesi/staking-delegation-guide-pool-management-3cfe357a66c2"
                         target="_blank"
                         color={linkColor}
@@ -86,6 +84,7 @@ const NewNode: FC = () => {
                         textDecorationLine="underline"
                         fontSize="sm"
                         alignSelf="flex-end"
+                        my={4}
                     >
                         Learn from tutorial
                     </ChakraLink>
