@@ -31,27 +31,31 @@ export interface INodeStakedBalanceSection {
 export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
     stakedBalance,
 }) => {
-    const bg = useColorModeValue('white', 'dark.background.secondary');
-    const bgIcon = useColorModeValue('teal.light', 'black');
-    const iconColor = useColorModeValue('light.primary', 'cyan');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const iconColor = useColorModeValue('dark.secondary', 'dark.primary');
+    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.secondary');
+
     return (
         <Box
+            borderRadius="1rem"
+            borderWidth="1px"
+            borderColor={borderColor}
             bg={bg}
-            shadow="md"
             p={6}
             mt={5}
             minHeight="7.125rem"
-            borderRadius={'2xl'}
-            border="1px solid"
-            borderColor={'dark.border.quaternary'}
         >
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack ml={3} alignItems="center">
+                <HStack alignItems="center">
                     <Box
-                        bg={bgIcon}
+                        bg={iconBg}
                         w="4.125rem"
                         h="4.125rem"
                         borderRadius="full"

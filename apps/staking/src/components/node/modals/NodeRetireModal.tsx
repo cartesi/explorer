@@ -46,6 +46,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.gray.primary', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const [addressValue, setAddressValue] = useState('');
     const { isOpen, onClose } = disclosure;
 
@@ -111,7 +112,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         </HStack>
                         <Button
                             width="full"
-                            colorScheme="cyan"
+                            colorScheme={colorScheme}
                             disabled={address != addressValue?.trim()}
                             onClick={onConfirmRetire}
                         >
@@ -119,8 +120,8 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         </Button>
                         <Button
                             width="full"
-                            variant={'outline'}
-                            borderColor={borderColor}
+                            colorScheme="darkGray"
+                            variant="ghost"
                             onClick={onClose}
                         >
                             Cancel

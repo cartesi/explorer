@@ -65,9 +65,11 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     onHire,
     onAuthorize,
 }) => {
-    // dark mode support
-    const bgBox = useColorModeValue('white', 'dark.background.secondary');
     const tooltipColor = useColorModeValue('gray.400', 'white');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const boxShadow = useColorModeValue('sm', 'none');
+    const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const colorScheme = useColorModeValue('teal', 'blue');
     const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
     const textFontWeight = isLargerThan554 ? 400 : 600;
 
@@ -102,11 +104,11 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
             ) : (
                 <>
                     <Box
-                        border={'1px solid '}
-                        borderColor={'dark.border.quaternary'}
-                        borderRadius={'2xl'}
-                        bg={bgBox}
-                        shadow="md"
+                        bg={bg}
+                        shadow={boxShadow}
+                        borderWidth="1px"
+                        borderColor={borderColor}
+                        borderRadius="1rem"
                         px={{ base: 4, sm: 6, lg: 8 }}
                         py={{ base: 2, sm: 4, lg: 6 }}
                         mb={4}
@@ -213,31 +215,28 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         </Stack>
                     </Box>
                     <Button
-                        variant={'outline'}
-                        onClick={retireModal.onOpen}
-                        disabled={isRetiring}
                         w={{ base: 'auto' }}
                         px={{ base: 4, md: 6 }}
                         minWidth={{ base: 'auto', md: '173px' }}
-                        fontWeight="bold"
-                        textTransform="uppercase"
                         me={2}
+                        colorScheme="darkGray"
+                        variant="ghost"
+                        disabled={isRetiring}
+                        onClick={retireModal.onOpen}
                     >
                         Retire node
                     </Button>
 
                     {!isAuthorized ? (
                         <Button
-                            onClick={onAuthorize}
-                            isLoading={isAuthorizing}
+                            colorScheme={colorScheme}
                             loadingText="authorizing"
-                            colorScheme="cyan"
                             w={{ base: 'auto' }}
                             px={{ base: 4, md: 6 }}
                             minWidth={{ base: 'auto', md: '173px' }}
-                            fontWeight="bold"
-                            textTransform="uppercase"
                             me={2}
+                            isLoading={isAuthorizing}
+                            onClick={onAuthorize}
                         >
                             Authorize
                         </Button>

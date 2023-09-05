@@ -54,6 +54,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     const toBigNumber = (value: number, decimals = 18) =>
         ethers.utils.parseUnits(value.toString(), decimals);
@@ -161,7 +162,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="cyan"
+                                    colorScheme={colorScheme}
                                     disabled={
                                         output.isZero() ||
                                         output.gt(userBalance)
@@ -172,15 +173,16 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                         onClose();
                                     }}
                                 >
-                                    ADD FUNDS
+                                    Add funds
                                 </Button>
+
                                 <Button
                                     width="full"
-                                    variant={'outline'}
-                                    borderColor={borderColor}
+                                    colorScheme="darkGray"
+                                    variant="ghost"
                                     onClick={onClose}
                                 >
-                                    CANCEL
+                                    Cancel
                                 </Button>
                             </VStack>
                         </ModalFooter>

@@ -146,6 +146,23 @@ export const Button = {
                                 ? 'cyan.secondary'
                                 : 'dark.primary',
                     },
+                    _disabled: {
+                        color: `${
+                            props.colorMode === 'light'
+                                ? 'dark.gray.primary'
+                                : 'dark.gray.senary'
+                        } !important`,
+                        bg: `${
+                            props.colorMode === 'light'
+                                ? 'light.gray.quaternary'
+                                : 'dark.gray.quaternary'
+                        } !important`,
+                        borderColor: `${
+                            props.colorMode === 'light'
+                                ? 'light.border.quaternary'
+                                : 'dark.border.quaternary'
+                        } !important`,
+                    },
                 };
             }
 
@@ -234,8 +251,8 @@ export const Button = {
                         } !important`,
                         bg: `${
                             props.colorMode === 'light'
-                                ? 'light.gray.quaternary'
-                                : 'dark.border.quaternary'
+                                ? 'transparent'
+                                : 'dark.gray.primary'
                         } !important`,
                         borderColor:
                             props.colorMode === 'light'

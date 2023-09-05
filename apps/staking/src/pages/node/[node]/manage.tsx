@@ -102,13 +102,9 @@ const ManageNode: FC = () => {
     const node = useNode(activeWorker);
 
     // dark mode support
-    const bg = useColorModeValue('white', 'dark.gray.quaternary');
-    const bgSection = useColorModeValue(
-        'light.gray.secondary',
-        'dark.gray.primary'
-    );
-    const bgBox = useColorModeValue('white', 'dark.background.secondary');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const bg = useColorModeValue('gray.80', 'dark.gray.primary');
+    const colorScheme = useColorModeValue('teal', 'cyan');
+
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
     const retiredDisclosure = useDisclosure();
@@ -186,7 +182,7 @@ const ManageNode: FC = () => {
             />
 
             <HStack
-                bg={'dark.gray.tertiary'}
+                bg="dark.gray.tertiary"
                 color="white"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
@@ -200,7 +196,7 @@ const ManageNode: FC = () => {
             </HStack>
 
             <Box
-                bg={'dark.gray.tertiary'}
+                bg="dark.gray.tertiary"
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
@@ -236,7 +232,6 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 pt={{ base: 8 }}
                 pb={4}
-                bg={bgSection}
             >
                 <VStack spacing={4} alignItems="stretch">
                     {currentTransaction === 'authorize' && (
@@ -306,7 +301,6 @@ const ManageNode: FC = () => {
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
                 pb={{ base: 6, sm: 8, lg: 8 }}
-                bg={bgSection}
                 fontSize={'xl'}
             >
                 <Stack
@@ -328,7 +322,6 @@ const ManageNode: FC = () => {
                         border="1px solid"
                         borderColor={'dark.border.quaternary'}
                         borderRadius={4}
-                        bg={bgBox}
                         px={{ base: 2, lg: 8 }}
                         py={{ base: 2, lg: 6 }}
                         display="flex"
@@ -394,26 +387,20 @@ const ManageNode: FC = () => {
                     {!isSmallScreen && (
                         <Box>
                             <Button
-                                variant={'outline'}
-                                borderColor={borderColor}
+                                colorScheme="darkGray"
+                                variant="ghost"
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 me={2}
-                                fontWeight={600}
-                                textTransform="uppercase"
-                                letterSpacing="0.5px"
                                 disabled={isStakeUnstakeDisabled}
                                 onClick={unstakeDisclosure.onOpen}
                             >
                                 Unstake
                             </Button>
                             <Button
-                                colorScheme="cyan"
+                                colorScheme={colorScheme}
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
-                                fontWeight={600}
-                                textTransform="uppercase"
-                                letterSpacing="0.5px"
                                 disabled={isStakeUnstakeDisabled}
                                 onClick={stakeDisclosure.onOpen}
                             >
@@ -532,7 +519,6 @@ const ManageNode: FC = () => {
                     >
                         <Button
                             variant={'outline'}
-                            borderColor={borderColor}
                             w={{ base: '100%', md: 'auto' }}
                             me={2}
                             disabled={isStakeUnstakeDisabled}
