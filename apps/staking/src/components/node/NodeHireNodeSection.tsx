@@ -38,7 +38,12 @@ export interface NodeHireNodeSectionProps {
 export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     const { isHiring = false, onHire } = props;
     const { account } = useWallet();
-    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const borderColor = useColorModeValue(
+        'dark.border.tertiary',
+        'dark.gray.quaternary'
+    );
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const [initialFunds, setInitialFunds] = useState('');
     const [nodeAddress, setNodeAddress] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
@@ -59,13 +64,12 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     return (
         <Box
             bg={bg}
-            shadow="md"
             px={{ base: 2, lg: 4, xl: 8 }}
             py={{ base: 2, sm: 4, lg: 8 }}
             mb={6}
-            borderRadius={'2xl'}
-            border="1px solid"
-            borderColor={'dark.border.quaternary'}
+            borderColor={borderColor}
+            borderWidth="1px"
+            borderRadius="1rem"
         >
             <Stack
                 spacing={4}
@@ -108,7 +112,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                     alignItems="flex-end"
                 >
                     <Button
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.813rem"
                         textTransform="uppercase"

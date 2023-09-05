@@ -55,6 +55,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
@@ -124,22 +125,22 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="cyan"
+                                    colorScheme={colorScheme}
                                     onClick={() => {
                                         onSave(outputAllowance);
                                         disclosure.onClose();
                                         onClose();
                                     }}
                                 >
-                                    APPROVE
+                                    Approve
                                 </Button>
                                 <Button
                                     width="full"
-                                    variant={'outline'}
-                                    borderColor={borderColor}
+                                    colorScheme="darkGray"
+                                    variant="ghost"
                                     onClick={onClose}
                                 >
-                                    CANCEL
+                                    Cancel
                                 </Button>
                             </VStack>
                         </ModalFooter>

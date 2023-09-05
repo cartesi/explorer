@@ -54,6 +54,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
     const maxAllowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const [outputStake, setOutputStake] = useState<BigNumber>(allowance);
     const [stakedValue, setStakedValue] = useState<any>(0);
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -128,7 +129,10 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                         Stake Amount
                                     </FormLabel>
                                     <Link
-                                        color="cyan.primary"
+                                        color={colorScheme}
+                                        _hover={{
+                                            color: colorScheme,
+                                        }}
                                         pb={2}
                                         onClick={handleMaxStake}
                                     >
@@ -152,7 +156,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                             <VStack w="full" spacing={4}>
                                 <Button
                                     width="full"
-                                    colorScheme="cyan"
+                                    colorScheme={colorScheme}
                                     disabled={outputStake.isZero()}
                                     onClick={() => {
                                         onSave(outputStake);
@@ -164,8 +168,8 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                 </Button>
                                 <Button
                                     width="full"
-                                    variant={'outline'}
-                                    borderColor={borderColor}
+                                    colorScheme="darkGray"
+                                    variant="ghost"
                                     onClick={onClose}
                                 >
                                     CANCEL

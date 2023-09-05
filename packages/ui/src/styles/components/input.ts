@@ -12,11 +12,14 @@
 const borderRadius = '6px';
 
 export const Input = {
-    baseStyle: (props: any) => ({
+    baseStyle: (props: { colorMode: string }) => ({
         field: {
             borderRadius,
             _disabled: {
-                backgroundColor: 'gray.80',
+                backgroundColor:
+                    props.colorMode === 'light'
+                        ? 'dark.gray.senary'
+                        : 'dark.border.secondary',
             },
             _focus: {
                 boxShadow: 'none',

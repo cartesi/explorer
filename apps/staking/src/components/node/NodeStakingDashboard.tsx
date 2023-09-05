@@ -19,7 +19,6 @@ import {
     Stack,
     StackProps,
     VStack,
-    useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
@@ -58,8 +57,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
     } = useDisclosure();
 
     const disclosure = useDisclosure();
-
-    const borderColor = useColorModeValue('gray.100', 'transparent');
 
     const handleDontShowAgainClick = () => {
         localStorage.setItem(SHOW_STAKING_INSTRUCTIONS, 'false');
