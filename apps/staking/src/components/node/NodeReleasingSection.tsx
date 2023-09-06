@@ -62,17 +62,6 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
             borderWidth="1px"
             borderColor={borderColor}
         >
-            <Box
-                position="absolute"
-                top={0}
-                left={0}
-                width={3}
-                height="100%"
-                borderTopLeftRadius="1rem"
-                borderBottomLeftRadius="1rem"
-                bg={borderColor}
-            />
-
             <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
