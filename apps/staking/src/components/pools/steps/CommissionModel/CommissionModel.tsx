@@ -8,7 +8,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Heading, RadioGroup, Radio, Stack, Button } from '@chakra-ui/react';
+import {
+    Heading,
+    RadioGroup,
+    Radio,
+    Stack,
+    Button,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../../Step';
 import { IStep, useStepState } from '../../../StepGroup';
 import { useState, useEffect } from 'react';
@@ -111,6 +118,7 @@ const CommissionModel = ({
         errors,
     });
     const isStepCompleted = isPoolCreationCompleted(poolFactory.transaction);
+    const radioColorScheme = useColorModeValue('teal', 'cyan');
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -170,6 +178,7 @@ const CommissionModel = ({
                     <RadioGroup value={modelType} pt={1} name="flatRateOption">
                         <Radio
                             value="flatRateCommission"
+                            colorScheme={radioColorScheme}
                             isChecked={modelType === 'flatRateCommission'}
                         />
                     </RadioGroup>
@@ -189,6 +198,7 @@ const CommissionModel = ({
                     <RadioGroup value={modelType} pt={1} name="gasBasedOption">
                         <Radio
                             value="gasBasedCommission"
+                            colorScheme={radioColorScheme}
                             isChecked={modelType === 'gasBasedCommission'}
                         />
                     </RadioGroup>
@@ -205,6 +215,7 @@ const CommissionModel = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
+                        colorScheme="darkGray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => onPrevious && onPrevious(evt)}

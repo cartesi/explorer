@@ -75,7 +75,7 @@ const wordingFor = {
 };
 
 const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
-    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
+    const tipsBgColor = useColorModeValue('white', 'dark.gray.tertiary');
     const [poolAddress] = useAtom(poolAddressAtom);
     const { account, active } = useWallet();
     const [stepState, setStepState] = useStepState({ inFocus });
@@ -90,6 +90,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     const enableNext = enableNextWhen(initialFunds, status, errors) && active;
     const isStepCompleted =
         transactionType === 'hire' && pool?.transaction?.state === 'confirmed';
+    const checkboxColorScheme = useColorModeValue('teal', 'gray');
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -142,6 +143,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     defaultChecked
                     mt={5}
                     isChecked={!pool.paused}
+                    colorScheme={checkboxColorScheme}
                     onChange={() => {
                         const tType = pool.paused ? 'unpause' : 'pause';
                         setTransactionType(tType);

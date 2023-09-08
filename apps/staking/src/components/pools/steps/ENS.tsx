@@ -94,7 +94,7 @@ const SimpleInput = ({
 };
 
 const useStyle = () => {
-    const tipsBgColor = useColorModeValue('gray.80', 'gray.800');
+    const tipsBgColor = useColorModeValue('white', 'dark.gray.tertiary');
     return {
         tipsBgColor,
     };
@@ -112,14 +112,18 @@ const Message = ({ content, boxProps }: MessageProps) => {
 };
 
 const ENSManagerLink = () => {
-    const thirdPartyColor = useColorModeValue('blue.500', 'blue.200');
+    const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Link
             href="https://app.ens.domains/"
             target="_blank"
             color={thirdPartyColor}
+            _hover={{
+                color: thirdPartyColor,
+                textDecoration: 'underline',
+            }}
             fontWeight="medium"
-            textDecorationLine="underline"
+            textDecorationLine="none"
             fontSize="md"
         >
             ENS Manager
@@ -171,6 +175,7 @@ const EthereumNameServer = ({
     const [ens, setENS] = useState<string | null>();
     const isCompleted = proceed || pool.transaction?.state === 'confirmed';
     const ensInputIsEmpty = isEmpty(trim(ens));
+    const colorScheme = useColorModeValue('teal', 'cyan');
 
     useEffect(() => {
         if (isCompleted) {
@@ -225,7 +230,7 @@ const EthereumNameServer = ({
                     <Button
                         isLoading={pool.transaction?.isOngoing}
                         disabled={pool.transaction?.isOngoing}
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             if (ensInputIsEmpty) {
