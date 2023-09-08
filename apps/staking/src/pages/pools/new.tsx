@@ -31,8 +31,8 @@ import EthereumNameServer from '../../components/pools/steps/ENS';
 import PageHead from '../../components/PageHead';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('gray.80', 'gray.800');
-    const linkColor = useColorModeValue('gray', 'gray.100');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Layout>
             <PageHead
@@ -41,8 +41,8 @@ const NewNode: FC = () => {
             />
 
             <HStack
-                bg="header"
                 color="white"
+                bg="dark.gray.tertiary"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
@@ -54,8 +54,8 @@ const NewNode: FC = () => {
                 </Link>
             </HStack>
             <Box
-                bg="header"
                 color="white"
+                bg="dark.gray.tertiary"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}
                 pb={5}
@@ -83,8 +83,12 @@ const NewNode: FC = () => {
                         target="_blank"
                         color={linkColor}
                         fontWeight="medium"
-                        textDecorationLine="underline"
+                        textDecorationLine="none"
                         fontSize="sm"
+                        _hover={{
+                            color: linkColor,
+                            textDecoration: 'underline',
+                        }}
                         alignSelf="flex-end"
                     >
                         Learn from tutorial

@@ -30,7 +30,7 @@ const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
-    const bgColor = useColorModeValue('white', 'dark.border.secondary');
+    const bgColor = useColorModeValue('white', 'dark.gray.tertiary');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
@@ -183,7 +183,8 @@ const SetUpNode = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        variant="outline"
+                        colorScheme="darkGray"
+                        variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             onPrevious(e);
