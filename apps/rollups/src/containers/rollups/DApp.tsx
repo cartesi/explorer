@@ -148,6 +148,7 @@ export const InputContent = ({
     const [pos, updatePos] = useState<number>(0);
     const [payloadAs, setPayloadAs] = useState<PayloadAs>('hex');
     const jsonTheme = useColorModeValue('rjv-default', 'ocean');
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const item = items[pos];
     const hasNext = pos + 1 < items.length;
     const hasPrev = pos > 0;
@@ -169,7 +170,7 @@ export const InputContent = ({
                 <ButtonGroup variant="ghost" spacing={3}>
                     <Button
                         size="sm"
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         textTransform="uppercase"
                         data-testid="input-content-prev-button"
                         isDisabled={!hasPrev}
@@ -180,7 +181,7 @@ export const InputContent = ({
 
                     <Button
                         size="sm"
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         textTransform="uppercase"
                         data-testid="input-content-next-button"
                         isDisabled={!hasNext}
@@ -334,15 +335,20 @@ type Node = {
 };
 
 const InputEdgeItem: FC<NodeProps<Node>> = ({ node }) => {
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const headerBg = useColorModeValue(
+        'dark.gray.senary',
+        'dark.gray.quaternary'
+    );
+    const headerColor = useColorModeValue('black', 'white');
     return (
         <VStack bg={bg} alignItems="flex-start">
             <Box
                 width="100%"
                 textAlign="center"
-                bg="blue.100"
+                bg={headerBg}
                 py={2}
-                color="black"
+                color={headerColor}
             >
                 <Heading fontSize="2xl">Input {node.index}</Heading>
             </Box>
@@ -379,7 +385,7 @@ export interface DAppProps {
 export const DApp: FC<DAppProps> = (props) => {
     const { address, chainId } = props;
     const [search, setSearch] = useState<string>('');
-    const bg = useColorModeValue('gray.80', 'header');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
     const [result] = useDappQuery({
         variables: {},
     });
@@ -392,7 +398,8 @@ export const DApp: FC<DAppProps> = (props) => {
         <>
             <Box
                 px={{ base: '3vw', md: '8vw' }}
-                py={{ base: 4, sm: 8, lg: 26 }}
+                py={error ? null : { base: 4, sm: 8, lg: 26 }}
+                mt={`${error ? 0 : '0.5rem'} !important`}
             >
                 {data && (
                     <DappStats
@@ -407,27 +414,31 @@ export const DApp: FC<DAppProps> = (props) => {
                 px={{ base: '3vw', md: '8vw' }}
                 py={{ base: 4, sm: 8, lg: 26 }}
                 bg={bg}
+                mt={`${error ? 0 : '0.5rem'} !important`}
             >
                 {error && (
                     <Notification
                         status="error"
                         title="Error fetching Dapps!"
                         subtitle={error?.message}
+                        mb={4}
                     />
                 )}
                 <HStack justifyContent="flex-end">
                     {fetching && (
                         <Spinner data-testid="dapp-spinner" size="md" />
                     )}
-                    <InputGroup width={300}>
-                        <InputLeftElement>
-                            <SearchIcon />
-                        </InputLeftElement>
-                        <ChakraInput
-                            placeholder="Search"
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </InputGroup>
+                    {!error && (
+                        <InputGroup width={300}>
+                            <InputLeftElement>
+                                <SearchIcon />
+                            </InputLeftElement>
+                            <ChakraInput
+                                placeholder="Search"
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </InputGroup>
+                    )}
                 </HStack>
                 <SimpleGrid columns={1} spacing="5" py={4}>
                     {inputEdge.data && (

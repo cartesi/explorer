@@ -34,7 +34,7 @@ const mockPort = 4000;
 const shouldUseMock = process.env.NEXT_PUBLIC_USE_GRAPHQL_MOCK === 'true';
 
 const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
-    const barBgColor = useColorModeValue('white', 'header');
+    const barBgColor = useColorModeValue('white', 'dark.gray.primary');
     const [url, setUrl] = useState<string>('');
     const client = useRollupsGraphQL(address, url);
 
@@ -58,10 +58,14 @@ const GraphQLProvider: FC<Props> = ({ children, address, chainId }) => {
                 bg={barBgColor}
                 zIndex="var(--chakra-zIndices-xxl)"
             >
-                <InputLeftAddon>
+                <InputLeftAddon borderRadius={0}>
                     <Icon as={GrGraphQl} />
                 </InputLeftAddon>
-                <Input value={url} onChange={(e) => setUrl(e.target.value)} />
+                <Input
+                    value={url}
+                    borderRadius={0}
+                    onChange={(e) => setUrl(e.target.value)}
+                />
             </InputGroup>
             <Provider value={client}>{children}</Provider>
         </VStack>

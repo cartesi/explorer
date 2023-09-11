@@ -39,10 +39,10 @@ const Rollups = () => {
                             <Link>
                                 <IconButton
                                     bg="transparent"
-                                    _hover={{ bg: 'gray.800' }}
+                                    _hover={{ bg: 'dark.gray.primary' }}
                                     size="md"
                                     mt={-2}
-                                    icon={<ArrowBackIcon />}
+                                    icon={<ArrowBackIcon color="white" />}
                                     aria-label={'Back to rollups'}
                                     title={'Back to rollups'}
                                 />
