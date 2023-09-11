@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useMemo } from 'react';
+import { WarningIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
@@ -19,17 +19,17 @@ import {
     FormLabel,
     HStack,
     Icon,
-    Text,
-    Tooltip,
-    VStack,
     Input,
     InputGroup,
     InputRightElement,
     Stack,
+    Text,
+    Tooltip,
+    VStack,
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
-import { WarningIcon } from '@chakra-ui/icons';
+import { FC, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export interface CommissionFormProps {
     currentValue: number;
@@ -154,7 +154,8 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                     </InputGroup>
 
                     <Button
-                        colorScheme="blue"
+                        colorScheme="darkGray"
+                        variant="ghost"
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.8125rem"
                         height="2.875rem"

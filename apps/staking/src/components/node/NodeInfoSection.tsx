@@ -66,7 +66,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     onAuthorize,
 }) => {
     const tooltipColor = useColorModeValue('gray.400', 'white');
-    const bg = useColorModeValue('white', 'dark.gray.tertiary');
+    const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
     const boxShadow = useColorModeValue('sm', 'none');
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const colorScheme = useColorModeValue('teal', 'blue');
