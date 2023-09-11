@@ -34,6 +34,9 @@ export const colors = {
     light: {
         primary: '#008DA5',
         secondary: '#00F6FF',
+        orange: {
+            primary: '#FFBE5D',
+        },
         gray: {
             primary: '#232222',
             secondary: '#F1F2F5',
@@ -46,8 +49,12 @@ export const colors = {
             error: '#FD7267',
             info: '#B5E8F4',
             neutral: '#E1EBFF',
+            disabled: 'rgba(0, 0, 0, 0.40)',
         },
         border: {
+            button: {
+                secondary: 'rgba(0, 0, 0, 0.40)',
+            },
             tertiary: 'rgba(0, 141, 165, 0.10)',
         },
     },
@@ -63,7 +70,7 @@ export const colors = {
         500: '#82808F',
         600: '#69677B',
         700: '#504D68',
-        800: '#373354',
+        800: '#39383C',
         900: '#1E1941',
     },
     grayDark: theme.colors.gray,
@@ -80,6 +87,7 @@ export const colors = {
         900: '#CC6E00',
     },
     teal: {
+        200: '#008DA5',
         secondary: '#008DA5',
         support: '#2D5ABE',
         light: '#F0F7F9',
@@ -123,12 +131,16 @@ export const colors = {
             quinary: 'rgba(241, 242, 245, 0.5)',
             senary: '#F0F7F9',
         },
+        orange: {
+            primary: '#FFA77A',
+        },
         support: {
             success: '#BDE08D',
             warning: '#FEB274',
             error: '#FF8D78',
             info: '#ACFCFF',
             neutral: '#E1EBFF',
+            disabled: 'rgba(255, 255, 255, 0.50)',
         },
         border: {
             secondary: 'rgba(240, 247, 249, 0.40)',

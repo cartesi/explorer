@@ -226,11 +226,8 @@ export const Button = {
                     borderColor:
                         props.colorMode === 'light'
                             ? 'dark.gray.tertiary'
-                            : 'light.gray.senary',
-                    bg:
-                        props.colorMode === 'light'
-                            ? 'transparent'
-                            : 'dark.gray.primary',
+                            : 'white',
+                    bg: 'transparent',
                     _hover: {
                         bg:
                             props.colorMode === 'light'
@@ -257,7 +254,7 @@ export const Button = {
                         borderColor:
                             props.colorMode === 'light'
                                 ? 'dark.gray.secondary'
-                                : 'light.gray.senary',
+                                : 'dark.support.disabled',
                     },
                 };
             }
