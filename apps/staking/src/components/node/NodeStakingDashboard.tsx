@@ -20,6 +20,7 @@ import {
     StackProps,
     VStack,
     useDisclosure,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
@@ -45,6 +46,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
 }) => {
     const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
+    const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
 
     const { isOpen, onToggle } = useDisclosure({
         defaultIsOpen: showInstructions,
@@ -68,7 +70,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
             <VStack spacing={8}>
                 {showInstructions && (
                     <InfoBanner
-                        icon={<AlertIcon color={'dark.support.alert'} />}
                         title="Read carefully before staking!"
                         content={
                             <>
@@ -123,9 +124,10 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                         href="#"
                                         isExternal
                                         fontSize="sm"
-                                        color="orange.500"
+                                        color={linkColor}
                                         _hover={{
-                                            color: 'orange.600',
+                                            color: linkColor,
+                                            textDecoration: 'underline',
                                         }}
                                     >
                                         Learn detailed staking instructions{' '}
@@ -135,9 +137,9 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                         size="sm"
                                         onClick={handleDontShowAgainClick}
                                         colorScheme="cyan"
-                                        variant={'link'}
-                                        fontWeight={'600'}
-                                        textTransform={'uppercase'}
+                                        variant="link"
+                                        fontWeight="600"
+                                        textTransform="uppercase"
                                     >
                                         Don't show again
                                     </Button>
