@@ -9,18 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect } from 'react';
-import { Box, Heading, Stack, HStack, Text, Button } from '@chakra-ui/react';
+import { Box, Button, HStack, Heading, Stack, Text } from '@chakra-ui/react';
+import { Address, SimpleChartIcon } from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
+import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, useEffect } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../../components/Layout';
-import { useRouter } from 'next/router';
-import { useWallet } from '@explorer/wallet';
-import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
-import { Address, SimpleChartIcon } from '@explorer/ui';
 import PageHead from '../../../components/PageHead';
+import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-import { isObject, isString } from 'lodash';
 
 const PoolNode: FC = () => {
     const { account, chainId, active } = useWallet();
@@ -56,7 +56,7 @@ const PoolNode: FC = () => {
             />
 
             <HStack
-                bg="header"
+                bg="dark.gray.tertiary"
                 color="white"
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
@@ -69,7 +69,7 @@ const PoolNode: FC = () => {
                 </NextLink>
             </HStack>
             <Box
-                bg="header"
+                bg="dark.gray.tertiary"
                 color="white"
                 px={{ base: '6vw', xl: '12vw' }}
                 pt={0}

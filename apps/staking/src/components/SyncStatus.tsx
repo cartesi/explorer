@@ -9,8 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useBlockNumber } from '../services/eth';
-import useMeta from '../graphql/hooks/useMeta';
 import {
     Alert,
     AlertDescription,
@@ -19,6 +17,8 @@ import {
 } from '@chakra-ui/alert';
 import { Box } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
+import useMeta from '../graphql/hooks/useMeta';
+import { useBlockNumber } from '../services/eth';
 
 const threshold = 25;
 
@@ -39,7 +39,7 @@ const SyncStatus = () => {
         ? 'Indexing errors'
         : 'Synchronization delay';
     const delay = blockNumber - meta?.block?.number;
-    const bg = useColorModeValue('gray.900', 'dark.gray.tertiary');
+    const bg = useColorModeValue('white', 'dark.gray.tertiary');
 
     return issues ? (
         <Box px="6vw" bg={bg}>
