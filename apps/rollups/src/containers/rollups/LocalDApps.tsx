@@ -41,57 +41,63 @@ export interface LocalDAppListProps {
 
 type SummaryProps = { dappCount: number; inputCount: number };
 
-export const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => (
-    <Stack
-        direction={['column', 'column', 'row', 'row']}
-        justify="space-evenly"
-        w="100%"
-        p={[5, 5, 10, 10]}
-        px={['6vw', '6vw', '12vw', '12vw']}
-        spacing={6}
-    >
-        <Banner
-            Icon={<Box as={DappIcon} w={8} h={8} />}
-            Title={
-                <HStack>
-                    <Text># DApps</Text>
-                    <Tooltip
-                        label="Total number of DApps instantiated"
-                        placement="top"
-                    >
-                        <Icon data-testid="dapps-summary-dapps-count" />
-                    </Tooltip>
-                </HStack>
-            }
+export const DappsSummary = ({ dappCount, inputCount = 0 }: SummaryProps) => {
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+    return (
+        <Stack
+            direction={['column', 'column', 'row', 'row']}
+            justify="space-evenly"
+            w="100%"
+            p={[5, 5, 10, 10]}
+            px={['6vw', '6vw', '12vw', '12vw']}
+            spacing={6}
         >
-            <BigNumberText value={dappCount} />
-        </Banner>
-        <Banner
-            Icon={<Box as={InputIcon} w={8} h={8} />}
-            Title={
-                <HStack>
-                    <Text># Inputs</Text>
-                    <Tooltip
-                        label="Total number of inputs processed"
-                        placement="top"
-                    >
-                        <Icon data-testid="dapps-summary-input-count" />
-                    </Tooltip>
-                </HStack>
-            }
-        >
-            <BigNumberText value={inputCount} />
-        </Banner>
-    </Stack>
-);
+            <Banner
+                Icon={<DappIcon color={iconColor} w={8} h={8} />}
+                Title={
+                    <HStack>
+                        <Text># DApps</Text>
+                        <Tooltip
+                            label="Total number of DApps instantiated"
+                            placement="top"
+                        >
+                            <Icon data-testid="dapps-summary-dapps-count" />
+                        </Tooltip>
+                    </HStack>
+                }
+            >
+                <BigNumberText value={dappCount} />
+            </Banner>
+            <Banner
+                Icon={<InputIcon color={iconColor} w={8} h={8} />}
+                Title={
+                    <HStack>
+                        <Text># Inputs</Text>
+                        <Tooltip
+                            label="Total number of inputs processed"
+                            placement="top"
+                        >
+                            <Icon data-testid="dapps-summary-input-count" />
+                        </Tooltip>
+                    </HStack>
+                }
+            >
+                <BigNumberText value={inputCount} />
+            </Banner>
+        </Stack>
+    );
+};
 
 export const LocalDAppList: FC<LocalDAppListProps> = (props) => {
     const { loading, applications, error } = useApplications();
-    const bg = useColorModeValue('white', 'gray.800');
+    const bg = useColorModeValue('white', 'dark.gray.primary');
 
     return (
         <Box bg={bg}>
-            <PagePanel>
+            <PagePanel
+                data-testid="dapps-summary"
+                darkModeColor="dark.gray.primary"
+            >
                 <DappsSummary
                     dappCount={applications?.length ?? 0}
                     inputCount={0}
