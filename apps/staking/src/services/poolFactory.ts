@@ -50,16 +50,6 @@ export const useStakingPoolFactory = () => {
         }
     };
 
-    const createGasTaxCommission = (gas: number) => {
-        if (poolFactory) {
-            transaction.set(
-                poolFactory.createGasTaxCommission(gas, {
-                    value: ethers.utils.parseEther('0.001'),
-                })
-            );
-        }
-    };
-
     // query paused flag
     useEffect(() => {
         if (poolFactory && account) {
@@ -85,7 +75,6 @@ export const useStakingPoolFactory = () => {
 
     return {
         createFlatRateCommission,
-        createGasTaxCommission,
         loading,
         paused,
         ready,

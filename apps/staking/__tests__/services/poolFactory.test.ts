@@ -61,7 +61,6 @@ const walletData = {
 
 const stakingPoolFactoryContract = {
     createFlatRateCommission: jest.fn(),
-    createGasTaxCommission: jest.fn(),
     paused: () => Promise.resolve(),
     referencePool: () => Promise.resolve(),
     pos: () => Promise.resolve(),
@@ -101,27 +100,6 @@ describe('poolFactory service', () => {
 
         expect(mockedSet).toHaveBeenCalled();
         expect(mockedCreateFlatRateCommission).toHaveBeenCalled();
-    });
-
-    it('should invoke createGasTaxCommission and related functions when poolFactory exists', async () => {
-        const mockedSet = jest.fn();
-        mockedUseTransaction.mockReturnValue({
-            set: mockedSet,
-        } as unknown as Transaction<any>);
-
-        const mockedCreateGasTaxCommission = jest.fn();
-        mockedUseStakingPoolFactoryContract.mockReturnValue({
-            ...stakingPoolFactoryContract,
-            createGasTaxCommission: mockedCreateGasTaxCommission,
-        } as unknown as StakingPoolFactoryImpl);
-
-        const { result } = renderHook(() => useStakingPoolFactory());
-        await act(async () => {
-            await result.current.createGasTaxCommission(1000);
-        });
-
-        expect(mockedSet).toHaveBeenCalled();
-        expect(mockedCreateGasTaxCommission).toHaveBeenCalled();
     });
 
     it('should not set pos when poolFactory and account are undefined', () => {

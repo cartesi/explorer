@@ -125,17 +125,9 @@ describe('CommissionModel step component', () => {
             render(<CommissionModel stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
-            expect(screen.getByText('Commission Model')).toBeInTheDocument();
-            expect(
-                screen.getByText(
-                    'Choose the commission model and fee for your pool'
-                )
-            ).toBeInTheDocument();
+            expect(screen.getByText('Commission')).toBeInTheDocument();
             expect(
                 screen.queryByLabelText('Flat-rate commission (%)')
-            ).not.toBeInTheDocument();
-            expect(
-                screen.queryByLabelText('Gas-based commission (Gas)')
             ).not.toBeInTheDocument();
             expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
             expect(screen.queryByText('CREATE POOL')).not.toBeInTheDocument();
@@ -147,11 +139,9 @@ describe('CommissionModel step component', () => {
             render(<CommissionModel stepNumber={1} inFocus />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
-            expect(screen.getByText('Commission Model')).toBeInTheDocument();
+            expect(screen.getByText('Commission')).toBeInTheDocument();
             expect(
-                screen.getByText(
-                    'Choose the commission model and fee for your pool'
-                )
+                screen.getByText('Set the commission fee for your pool')
             ).toBeInTheDocument();
             expect(
                 screen.getByLabelText('Flat-rate commission (%)')
@@ -159,15 +149,6 @@ describe('CommissionModel step component', () => {
             expect(
                 screen.getByText(
                     'This model calculates the commission as a fixed percentage of the block CTSI reward before distributing the remaining amount to the pool users.'
-                )
-            ).toBeInTheDocument();
-            expect(
-                screen.getByLabelText('Gas-based commission (Gas)')
-            ).toBeInTheDocument();
-
-            expect(
-                screen.getByText(
-                    'This model calculates the commission considering the current network gas price, Ethereum price and CTSI price. The configured amount of gas above is multiplied by the gas price provided by a ChainLink oracle, then converted from ETH to CTSI using an Uniswap V2 price oracle.'
                 )
             ).toBeInTheDocument();
             expect(screen.getByText('PREVIOUS')).toBeInTheDocument();
@@ -270,40 +251,6 @@ describe('CommissionModel step component', () => {
                 await act(() => {
                     fireEvent.blur(
                         screen.getByLabelText('Flat-rate commission (%)')
-                    );
-                });
-
-                expect(
-                    await screen.findByText('This field is required.')
-                ).toBeInTheDocument();
-            });
-        });
-
-        describe('Gas Based Commission', () => {
-            it('should display a message when the field is visited and left in blank', async () => {
-                const { container } = render(
-                    <CommissionModel inFocus stepNumber={1} />
-                );
-
-                const gasBasedOption = container.querySelector(
-                    `input[name='gasBasedOption']`
-                );
-
-                await act(() => {
-                    fireEvent.click(gasBasedOption);
-                });
-
-                await waitFor(() =>
-                    expect(
-                        screen
-                            .getByText('Gas-based commission (Gas)')
-                            .hasAttribute('disabled')
-                    ).toBe(false)
-                );
-
-                await act(() => {
-                    fireEvent.blur(
-                        screen.getByLabelText('Gas-based commission (Gas)')
                     );
                 });
 
@@ -501,46 +448,6 @@ describe('CommissionModel step component', () => {
                 );
             });
 
-            it('should call creation pool method based on selected model type (Gas Based)', async () => {
-                const poolFactory = buildUseStakingPoolFactoryReturn();
-                mockUseStakingPoolFactory.mockReturnValue(poolFactory);
-                const { container } = render(
-                    <CommissionModel inFocus stepNumber={1} />
-                );
-
-                const gasBasedOption = container.querySelector(
-                    `input[name='gasBasedOption']`
-                );
-
-                await act(() => {
-                    fireEvent.click(gasBasedOption);
-                });
-
-                await waitFor(() =>
-                    expect(
-                        screen
-                            .getByText('Gas-based commission (Gas)')
-                            .hasAttribute('disabled')
-                    ).toBe(false)
-                );
-
-                await act(() => {
-                    fireEvent.change(
-                        screen.getByLabelText('Gas-based commission (Gas)'),
-                        { target: { value: 400000 } }
-                    );
-                });
-
-                const button = screen.getByText('CREATE POOL');
-                fireEvent.click(button);
-
-                await waitFor(() =>
-                    expect(
-                        poolFactory.createGasTaxCommission
-                    ).toHaveBeenCalledWith(400000)
-                );
-            });
-
             it('should display spinner when transaction is submitted and avoid any subsequent click', async () => {
                 const poolFactory = buildUseStakingPoolFactoryReturn();
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
@@ -631,9 +538,6 @@ describe('CommissionModel step component', () => {
             expect(atomSetterStub).toHaveBeenCalledWith(poolAddress);
             expect(
                 screen.queryByLabelText('Flat-rate commission (%)')
-            ).not.toBeInTheDocument();
-            expect(
-                screen.queryByLabelText('Gas-based commission (Gas)')
             ).not.toBeInTheDocument();
             expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
             expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
