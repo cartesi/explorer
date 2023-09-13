@@ -8,7 +8,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Heading, RadioGroup, Radio, Stack, Button } from '@chakra-ui/react';
+import { Stack, Button } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../../Step';
 import { IStep, useStepState } from '../../../StepGroup';
 import { useState, useEffect } from 'react';
@@ -16,7 +16,6 @@ import { OptionalMappedErrors, ValidationResult } from '../../../BaseInput';
 import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import TransactionBanner from '../../../TransactionBanner';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
-import GasBasedCommission, { GasBasedModel } from './GasBasedCommission';
 import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';
@@ -24,8 +23,7 @@ import { useWallet } from '@explorer/wallet';
 import { atom, useAtom } from 'jotai';
 import { WalletDisconnectedNotification } from '../WalletDisconnectedNotification';
 
-type CommissionModels = FlatRateModel | GasBasedModel;
-type Validation = ValidationResult<FlatRateModel | GasBasedModel>;
+type Validation = ValidationResult<FlatRateModel>;
 type Errors = OptionalMappedErrors<Validation>;
 const { COMPLETED } = StepStatus;
 const poolAddressAtom = atom<string>('');
@@ -93,20 +91,15 @@ const CommissionModel = ({
     const { account, active } = wallet;
     const poolFactory = useStakingPoolFactory();
     const [stepState, setStepState] = useStepState({ inFocus });
-    const [modelType, setModelType] =
-        useState<CommissionModels>('flatRateCommission');
     const [flatRateVal, setFlatRateVal] = useState<string | null>();
-    const [gasBasedVal, setGasBasedVal] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
-    const radioHandler = (v: CommissionModels) => setModelType(v);
     const notInitialised = !poolFactory.loading && !poolFactory.ready;
     const poolCreationIsPaused = !poolFactory.loading && poolFactory.paused;
     const disablePoolCreationButton = createPoolDisabled({
         creationIsPaused: poolCreationIsPaused,
         factoryIsNotReady: notInitialised,
-        commissionModel: modelType,
-        commissionValue:
-            modelType === 'flatRateCommission' ? flatRateVal : gasBasedVal,
+        commissionModel: 'flatRateCommission',
+        commissionValue: flatRateVal,
         account,
         errors,
     });
@@ -133,14 +126,12 @@ const CommissionModel = ({
         if (inFocus) return;
 
         setFlatRateVal(null);
-        setGasBasedVal(null);
-        setModelType('flatRateCommission');
     }, [inFocus]);
 
     return (
         <Step
-            title="Commission Model"
-            subtitle="Choose the commission model and fee for your pool"
+            title="Commission"
+            subtitle="Set the commission fee for your pool"
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
@@ -157,47 +148,11 @@ const CommissionModel = ({
                     successDescription={`Pool ${poolFactory.transaction?.result} created! moving to the next step...`}
                     transaction={poolFactory.transaction}
                 />
-                <Heading as="h3" size="sm" my={4}>
-                    Choose commission model
-                </Heading>
 
-                <Stack
-                    direction="row"
-                    spacing={{ base: 3, md: 7 }}
-                    mt={2}
-                    onClick={(e) => radioHandler('flatRateCommission')}
-                >
-                    <RadioGroup value={modelType} pt={1} name="flatRateOption">
-                        <Radio
-                            value="flatRateCommission"
-                            isChecked={modelType === 'flatRateCommission'}
-                        />
-                    </RadioGroup>
-                    <FlatRateCommission
-                        onChange={setFlatRateVal}
-                        isDisabled={modelType !== 'flatRateCommission'}
-                        onValidationChange={handleValidation}
-                    />
-                </Stack>
-
-                <Stack
-                    direction="row"
-                    spacing={{ base: 3, md: 7 }}
-                    mt={8}
-                    onClick={(e) => radioHandler('gasBasedCommission')}
-                >
-                    <RadioGroup value={modelType} pt={1} name="gasBasedOption">
-                        <Radio
-                            value="gasBasedCommission"
-                            isChecked={modelType === 'gasBasedCommission'}
-                        />
-                    </RadioGroup>
-                    <GasBasedCommission
-                        onChange={setGasBasedVal}
-                        isDisabled={modelType !== 'gasBasedCommission'}
-                        onValidationChange={handleValidation}
-                    />
-                </Stack>
+                <FlatRateCommission
+                    onChange={setFlatRateVal}
+                    onValidationChange={handleValidation}
+                />
             </StepBody>
             <StepActions>
                 <Stack
@@ -220,15 +175,9 @@ const CommissionModel = ({
                         colorScheme="blue"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
-                            if (modelType === 'flatRateCommission') {
-                                poolFactory.createFlatRateCommission(
-                                    toNumber(flatRateVal) * 100
-                                );
-                            } else {
-                                poolFactory.createGasTaxCommission(
-                                    toNumber(gasBasedVal)
-                                );
-                            }
+                            poolFactory.createFlatRateCommission(
+                                toNumber(flatRateVal) * 100
+                            );
                         }}
                     >
                         CREATE POOL
