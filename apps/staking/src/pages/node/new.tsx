@@ -30,11 +30,7 @@ import SetAllowance from '../../components/node/steps/SetAllowance';
 import SetUpNode from '../../components/node/steps/SetUpNode';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('white', 'dark.gray.quaternary');
-    const bgSection = useColorModeValue(
-        'light.gray.secondary',
-        'dark.gray.primary'
-    );
+    const bgSection = useColorModeValue('teal.light', 'dark.gray.primary');
     const linkColor = useColorModeValue('black', 'white');
     return (
         <Layout>

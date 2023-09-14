@@ -56,7 +56,10 @@ const HireNode = ({
     inFocus,
 }: IStep) => {
     const [, setNodeAddressAtom] = useAtom(hiredNodeAddressAtom);
-    const tipsBgColor = useColorModeValue('white', 'dark.border.secondary');
+    const tipsBgColor = useColorModeValue(
+        'teal.light',
+        'dark.border.secondary'
+    );
     const [stepState, setStepState] = useStepState({ inFocus });
     const wallet = useWallet();
     const { account, active } = wallet;
@@ -77,7 +80,7 @@ const HireNode = ({
                 : { ...state, [name]: validation };
         });
     };
-    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'
@@ -141,7 +144,7 @@ const HireNode = ({
                     max={3}
                     min={0.001}
                 />
-                <Box px={6} py={4} bgColor={tipsBgColor} mt={6}>
+                <Box px={6} py={4} bgColor={tipsBgColor} mt={6} rounded="md">
                     <Text>
                         You need to specify the amount of ETH you want to give
                         to your node. The node holds a separate Ethereum account

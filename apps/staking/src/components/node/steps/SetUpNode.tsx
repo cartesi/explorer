@@ -35,7 +35,7 @@ const CopyBoard = ({ command, children }) => {
         <Flex
             p={{ base: 3, md: 6 }}
             bgColor={bgColor}
-            rounded="sm"
+            rounded="md"
             mt={3}
             alignItems="center"
             justifyContent={{ base: 'space-between', md: 'flex-start' }}
@@ -46,6 +46,7 @@ const CopyBoard = ({ command, children }) => {
                 <Box minH={6} alignSelf="flex-start" ml={2}>
                     <Box
                         as={MdContentCopy}
+                        cursor={'pointer'}
                         onClick={onCopy}
                         fontSize="xl"
                         minW={6}
@@ -82,7 +83,7 @@ const SetUpNode = ({
     );
 
     const [state, setState] = useStepState({ inFocus });
-    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'

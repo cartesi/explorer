@@ -35,7 +35,7 @@ const CustomizeEthereumNode = ({
     const [state, setState] = useStepState({ inFocus });
     const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
-    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'

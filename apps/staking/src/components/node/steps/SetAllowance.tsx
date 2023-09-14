@@ -161,7 +161,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
     const [stepState] = useStepState({ inFocus });
     const [allowanceAmount, setAllowance] = useState<string | null>();
     const [errors, setErrors] = useState<Errors>({});
-    const bg = useColorModeValue('teal.light', 'dark.background.secondary');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'
