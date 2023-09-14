@@ -15,7 +15,7 @@
         "start:mock": "ts-node graphql/mock/server.ts"
     },
     "dependencies": {
-        "@cartesi/rollups": "^1.0.0",
+        "@cartesi/rollups": "1.0.0",
         "@explorer/ui": "*",
         "@explorer/wallet": "*",
         "@graphql-tools/load-files": "^6.6.1",

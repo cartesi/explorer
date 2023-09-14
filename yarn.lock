@@ -1597,7 +1597,7 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/rollups@^1.0.0":
+"@cartesi/rollups@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@cartesi/rollups/-/rollups-1.0.0.tgz#4bedc2a62070086fecafd1127dd30862f5361769"
   integrity sha512-/Yjw/sMYNP+xka5IU3pU3yewVILnmjsDfkVRp9xwMWEIyCnjKniOVkf7epAic///Op+UFcIcdgYljvEzMAhXbA==
