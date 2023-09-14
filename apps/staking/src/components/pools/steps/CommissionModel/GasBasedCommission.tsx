@@ -68,7 +68,7 @@ const GasBasedCommission = ({
                 isInvalid={!isNil(inputErrors)}
                 errorMessage={inputErrors?.message}
             />
-            <Message content={howItWorks} bg={'white'} />
+            <Message content={howItWorks} />
         </VStack>
     );
 };
