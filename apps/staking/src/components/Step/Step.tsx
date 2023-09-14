@@ -69,7 +69,7 @@ export const Step = ({
     ...stackProps
 }: StepProps) => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const stepBoxBg = useColorModeValue('teal.light', 'dark.gray.primary');
+    const stepBoxBg = useColorModeValue('white', 'dark.gray.primary');
     const stepNumberBgColor = useColorModeValue(
         'light.primary',
         'cyan.primary'
@@ -134,7 +134,7 @@ export const Step = ({
         <VStack
             boxShadow={state.stepBoxShadow}
             bg={state.stepBoxBg}
-            rounded="sm"
+            rounded="md"
             className="step-box"
             align="stretch"
             mt={isSmallScreen ? '0px !important' : null}

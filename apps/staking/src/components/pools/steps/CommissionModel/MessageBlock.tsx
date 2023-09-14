@@ -12,7 +12,7 @@ import { Box, BoxProps, Text, useColorModeValue } from '@chakra-ui/react';
 
 export type MessageProps = { content: string; boxProps?: BoxProps };
 export const Message = ({ content, boxProps }: MessageProps) => {
-    const tipsBgColor = useColorModeValue('white', 'dark.gray.tertiary');
+    const tipsBgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
 
     return (
         <Box

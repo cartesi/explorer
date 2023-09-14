@@ -9,13 +9,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { VStack } from '@chakra-ui/react';
-import { SimpleInput } from './SimpleInput';
+import { isNil } from 'lodash/fp';
 import { useEffect } from 'react';
 import { useMessages } from '../../../../utils/messages';
 import { BaseInput } from '../../../BaseInput';
-import useFieldValidator from './useFieldValidator';
-import { isNil } from 'lodash/fp';
 import { Message } from './MessageBlock';
+import { SimpleInput } from './SimpleInput';
+import useFieldValidator from './useFieldValidator';
 
 type GasBasedModel = 'gasBasedCommission';
 type GasBasedCommissionProps = BaseInput<GasBasedModel>;
@@ -68,7 +68,7 @@ const GasBasedCommission = ({
                 isInvalid={!isNil(inputErrors)}
                 errorMessage={inputErrors?.message}
             />
-            <Message content={howItWorks} />
+            <Message content={howItWorks} bg={'white'} />
         </VStack>
     );
 };

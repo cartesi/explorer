@@ -10,37 +10,37 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    Text,
     Box,
-    Stack,
-    useColorModeValue,
+    Button,
     Checkbox,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react';
-import { isEmpty, omit } from 'lodash/fp';
 import { useAtom } from 'jotai';
+import { isEmpty, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 
 import { useWallet } from '@explorer/wallet';
 
-import { useNode, NodeStatus } from '../../../services/node';
+import { NodeStatus, useNode } from '../../../services/node';
+import { useStakingPool } from '../../../services/pool';
+import { TransactionType } from '../../../types/pool';
 import { toBigNumber } from '../../../utils/numberParser';
+import { MappedErrors, ValidationResult } from '../../BaseInput';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
-import { ValidationResult, MappedErrors } from '../../BaseInput';
 import TransactionBanner from '../../TransactionBanner';
-import {
-    NodeInput,
-    NodeField,
-    evaluateNode,
-} from '../../node/inputs/NodeInput';
 import {
     DepositField,
     InitialFundsInput,
 } from '../../node/inputs/InitialFundsInput';
+import {
+    NodeField,
+    NodeInput,
+    evaluateNode,
+} from '../../node/inputs/NodeInput';
 import { poolAddressAtom } from './CommissionModel';
-import { useStakingPool } from '../../../services/pool';
-import { TransactionType } from '../../../types/pool';
 import { WalletDisconnectedNotification } from './WalletDisconnectedNotification';
 
 type Validation = ValidationResult<NodeField | DepositField>;
@@ -75,7 +75,11 @@ const wordingFor = {
 };
 
 const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
-    const tipsBgColor = useColorModeValue('white', 'dark.gray.tertiary');
+    const tipsBgColor = useColorModeValue(
+        'teal.light',
+        'dark.border.secondary'
+    );
+    const colorScheme = useColorModeValue('teal', 'cyan');
     const [poolAddress] = useAtom(poolAddressAtom);
     const { account, active } = useWallet();
     const [stepState, setStepState] = useStepState({ inFocus });
@@ -152,7 +156,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                 >
                     Allowing your pool to accept new stakes
                 </Checkbox>
-                <Box px={6} py={4} bgColor={tipsBgColor} mt={6}>
+                <Box px={6} py={4} bgColor={tipsBgColor} mt={6} rounded="md">
                     <Text>
                         You need to specify the amount of ETH you want to give
                         to your node. The node holds a separate Ethereum account
@@ -171,7 +175,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     <Button
                         disabled={!enableNext || pool.transaction?.isOngoing}
                         isLoading={pool.transaction?.isOngoing}
-                        colorScheme="blue"
+                        colorScheme={colorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             setTransactionType('hire');

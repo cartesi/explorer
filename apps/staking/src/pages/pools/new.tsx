@@ -9,29 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
     Box,
+    Link as ChakraLink,
+    HStack,
     Heading,
     Stack,
-    HStack,
     Text,
     useColorModeValue,
-    Link as ChakraLink,
 } from '@chakra-ui/react';
-import { AiOutlineLeft } from 'react-icons/ai';
 import Link from 'next/link';
+import { FC } from 'react';
+import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../components/Layout';
+import PageHead from '../../components/PageHead';
 import { StepGroup } from '../../components/StepGroup';
 import CommissionModel from '../../components/pools/steps/CommissionModel';
 import CustomizeEthereumNode from '../../components/pools/steps/CustomizeEthereumNode';
-import SetUpNode from '../../components/pools/steps/SetUpNode';
-import HireNode from '../../components/pools/steps/HireNode';
 import EthereumNameServer from '../../components/pools/steps/ENS';
-import PageHead from '../../components/PageHead';
+import HireNode from '../../components/pools/steps/HireNode';
+import SetUpNode from '../../components/pools/steps/SetUpNode';
 
 const NewNode: FC = () => {
-    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const bg = useColorModeValue('teal.light', 'dark.gray.primary');
     const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Layout>

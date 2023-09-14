@@ -30,7 +30,7 @@ const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
     const { hasCopied, onCopy } = useClipboard(command);
-    const bgColor = useColorModeValue('white', 'dark.gray.tertiary');
+    const bgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     return (
         <Flex
             p={{ base: 3, md: 6 }}
