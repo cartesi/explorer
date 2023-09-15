@@ -16,9 +16,8 @@ You can add, remove and upgrade packages from within your monorepo using your pa
 
 ### Apps and Packages
 
--   `rollups`: The new rollups explorer App that is [Next.js](https://nextjs.org/) app
 -   `staking`: The staking explorer also a [Next.js](https://nextjs.org/) app
--   `ui`: House to core react components shared by both [rollups](./apps//rollups/) and [staking](./apps//staking/) applications.
+-   `ui`: House to core react components for [staking](./apps//staking/) applications.
 -   `services`: Holds common logic to share between apps e.g ENS service.
 -   `utils`: Holds utilities used inside the packages and also Apps.
 -   `wallet`: Holds common implementation of a web3 wallet to be shared between apps.
@@ -43,18 +42,12 @@ To develop all apps and packages, run the following command:
 yarn run dev
 ```
 
-> Note: When running turborepo tasks like `dev` or `build` it will run rollups and staking in parallel. e.g. when you want only to do `dev` on staking app, you should filter the task
+> Note: When running turborepo tasks like `dev` or `build` it will run apps like staking in parallel. e.g. when you want only to do `dev` on staking app, you should filter the task
 
 The filtering should be done by the **name** inside the package.json of the targeted `apps/*`
 
 ```
 yarn run dev --filter staking
-```
-
-or
-
-```
-yarn run dev --filter rollups
 ```
 
 ### Test coverage reporting
@@ -80,9 +73,6 @@ The project use **tags** that represent releases, including a branch to signal c
 That is as follows:
 
 -   Combined tag name `v` + SemVer format **tag** (e.g. v3.4.0) to pinpoint repository state on a given production release.
--   A different **tag** format for rollups, i.e. `rollups@0.9.0`, is used to initiate the process of releasing docker images with specific versions that match the versioning other rollups projects are using for unison sake.
-
-> The process initiated for rollups docker image generation is a [GitHub Action](./.github/workflows/docker-rollups.yml)
 
 ## Turborepo Useful Links
 
