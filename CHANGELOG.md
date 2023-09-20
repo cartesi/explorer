@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.0] - 2023-09-20
+
+-   The Staking application got a new look and feel. Following the new brand colours.
+-   We removed gas-based staking pool creation option in the staking app.
+-   The rollups explorer was removed from this repository.
+
 ## [3.6.2] - 2023-08-14
 
 -   Update the main GraphQL endpoints to be configurable (i.e. through environment variables).
@@ -350,7 +356,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.6.2...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.7.0...HEAD
+[3.7.0]: https://github.com/cartesi/explorer/compare/v3.7.0...v3.6.2
 [3.6.2]: https://github.com/cartesi/explorer/compare/v3.6.1...v3.6.2
 [3.6.1]: https://github.com/cartesi/explorer/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/cartesi/explorer/compare/v3.5.2...v3.6.0
