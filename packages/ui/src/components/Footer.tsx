@@ -212,8 +212,29 @@ const Footer: FC<FooterProps> = (props) => {
             </Grid>
             <Box py={4}>
                 <Text opacity={0.6}>
-                    © {new Date().getFullYear()} Cartesi Foundation Ltd. All
-                    rights reserved
+                    (c) Cartesi and individual authors (see{' '}
+                    <Link
+                        href="https://github.com/cartesi/explorer/blob/main/AUTHORS"
+                        isExternal
+                        _hover={{
+                            color: linkHoverColor,
+                        }}
+                    >
+                        AUTHORS
+                    </Link>
+                    )
+                    <br />
+                    SPDX-License-Identifier: Apache-2.0 (see{' '}
+                    <Link
+                        href="https://github.com/cartesi/explorer/blob/main/LICENSE"
+                        isExternal
+                        _hover={{
+                            color: linkHoverColor,
+                        }}
+                    >
+                        LICENSE
+                    </Link>
+                    )
                 </Text>
             </Box>
         </Box>
