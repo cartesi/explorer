@@ -11,8 +11,8 @@
         "lint:fix": "yarn lint --fix",
         "start": "next start",
         "storybook": "start-storybook -p 6006",
-        "test": "jest",
-        "test:ci": "jest --runInBand --coverage"
+        "test": "dotenv -c test -- jest",
+        "test:ci": "dotenv -c test jest --runInBand --coverage"
     },
     "dependencies": {
         "@apollo/client": "3.4.13",
