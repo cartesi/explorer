@@ -42,7 +42,6 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     const { isGnosisSafe } = useWallet();
     const ethInfoMessage = useMessages('balance.eth.available.forGasCosts');
     const iconColor = useColorModeValue('light.primary', 'dark.primary');
-    const iconBg = useColorModeValue('dark.gray.senary', 'dark.gray.primary');
     const warningIconColor = useColorModeValue(
         'light.support.warning',
         'white'

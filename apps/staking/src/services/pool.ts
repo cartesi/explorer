@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import {
     useFeeContract,
     useFlatRateCommissionContract,
-    useGasTaxCommissionContract,
     useStakingPoolContract,
 } from './contracts';
 import { useBlockNumber } from './eth';
@@ -407,41 +406,6 @@ export const useFlatRateCommission = (address: string) => {
         timeoutTimestamp,
         raiseTimeout,
         changeRate,
-        transaction,
-    };
-};
-
-export const useGasTaxCommission = (address: string) => {
-    const fee = useGasTaxCommissionContract(address);
-    const [gas, setGas] = useState<BigNumber>(undefined);
-    const [maxRaise, setMaxRaise] = useState<BigNumber>(undefined);
-    const [timeoutTimestamp, setTimeoutTimestamp] = useState<Date>(undefined);
-    const [raiseTimeout, setRaiseTimeout] = useState<BigNumber>(undefined);
-    const transaction = useTransaction();
-
-    useEffect(() => {
-        if (fee) {
-            fee.gas().then(setGas);
-            fee.feeRaiseTimeout().then(setRaiseTimeout);
-            fee.maxRaise().then(setMaxRaise);
-            fee.timeoutTimestamp().then((ts) =>
-                setTimeoutTimestamp(new Date(ts.toNumber() * 1000))
-            );
-        }
-    }, [fee]);
-
-    const changeGas = (gas: number) => {
-        if (fee) {
-            transaction.set(fee.setGas(gas));
-        }
-    };
-
-    return {
-        gas,
-        maxRaise,
-        timeoutTimestamp,
-        raiseTimeout,
-        changeGas,
         transaction,
     };
 };

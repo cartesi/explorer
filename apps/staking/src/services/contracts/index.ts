@@ -198,5 +198,4 @@ export const usePoS1Contract = pos1.usePoSContract;
 export const useStakingPoolContract = pool.useStakingPoolContract;
 export const useFeeContract = pool.useFeeContract;
 export const useFlatRateCommissionContract = pool.useFlatRateCommissionContract;
-export const useGasTaxCommissionContract = pool.useGasTaxCommissionContract;
 export const useStakingPoolFactoryContract = pool.useStakingPoolFactoryContract;

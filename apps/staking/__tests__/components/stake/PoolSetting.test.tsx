@@ -23,6 +23,7 @@ import { BigNumber } from 'ethers';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
 import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance';
+import { StakingPool } from '../../../src/graphql/models';
 import { useStakingPool } from '../../../src/services/pool';
 import { useStakingPoolFactory } from '../../../src/services/poolFactory';
 import { withChakraTheme } from '../../test-utilities';

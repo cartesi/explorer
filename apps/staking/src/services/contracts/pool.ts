@@ -9,27 +9,25 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useEffect, useState } from 'react';
 import {
-    StakingPoolImpl__factory,
-    StakingPoolImpl,
     Fee,
     Fee__factory,
-    StakingPoolFactoryImpl,
-    StakingPoolFactoryImpl__factory,
     FlatRateCommission,
     FlatRateCommission__factory,
-    GasTaxCommission,
-    GasTaxCommission__factory,
+    StakingPoolFactoryImpl,
+    StakingPoolFactoryImpl__factory,
+    StakingPoolImpl,
+    StakingPoolImpl__factory,
 } from '@cartesi/staking-pool';
+import { useEffect, useState } from 'react';
 
-import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
 import goerli from '@cartesi/staking-pool/export/abi/goerli.json';
+import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
 
 import localhost from './localhost.json';
 
-import { ChainMap, useContract, useContractFromAddress } from '.';
 import { useWallet } from '@explorer/wallet';
+import { ChainMap, useContract, useContractFromAddress } from '.';
 
 const abis: ChainMap = {
     1: mainnet,
@@ -77,24 +75,6 @@ export const useFlatRateCommissionContract = (
 
     return useContractFromAddress(
         FlatRateCommission__factory.connect,
-        feeAddress
-    );
-};
-
-export const useGasTaxCommissionContract = (
-    address: string
-): GasTaxCommission => {
-    const [feeAddress, setFeeAddress] = useState<string>();
-    const pool = useStakingPoolContract(address);
-
-    useEffect(() => {
-        if (pool) {
-            pool.fee().then(setFeeAddress);
-        }
-    }, [address, pool]);
-
-    return useContractFromAddress(
-        GasTaxCommission__factory.connect,
         feeAddress
     );
 };
