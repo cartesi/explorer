@@ -40,7 +40,6 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
-import GasTaxContainer from '../../containers/stake/GasTaxContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import { useStakingPool } from '../../services/pool';
 import { useStakingPoolFactory } from '../../services/poolFactory';
@@ -129,12 +128,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
         pool.amounts?.stake > BigNumber.from(0) ||
         pool.amounts?.unstake > BigNumber.from(0) ||
         pool.amounts?.withdraw > BigNumber.from(0);
-    const feeType =
-        stakingPool?.fee?.commission !== null
-            ? 'flatRate'
-            : stakingPool?.fee?.gas !== null
-            ? 'gasTax'
-            : undefined;
     const isRebalancing = pool.rebalanceTransaction?.isOngoing;
     const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
     const hasSamePoS = isSamePoS(pool.pos, poolFactory.pos);
@@ -297,19 +290,10 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                 </Notification>
             )}
 
-            {feeType == 'flatRate' && (
-                <FlatRateContainer
-                    pool={address}
-                    alertMessage={wordingFor.commission}
-                />
-            )}
-
-            {feeType == 'gasTax' && (
-                <GasTaxContainer
-                    pool={address}
-                    alertMessage={wordingFor.commission}
-                />
-            )}
+            <FlatRateContainer
+                pool={address}
+                alertMessage={wordingFor.commission}
+            />
 
             <Stack
                 justifySelf="flex-end"

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, useEffect, useMemo } from 'react';
 import {
     Alert,
     Button,
@@ -18,18 +17,19 @@ import {
     FormHelperText,
     FormLabel,
     HStack,
-    Text,
-    VStack,
     Input,
     InputGroup,
     InputRightAddon,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
 import humanizeDuration from 'humanize-duration';
+import { FC, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export interface CommissionFormProps {
     currentValue: number; // current value
-    unit: string; // unit: '%' | 'gas'
+    unit: string; // unit: '%'
     min?: number; // minimum value
     max?: number; // maximum value
     maxRaise: number; // max raise of the value

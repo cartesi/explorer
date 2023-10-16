@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
 import { BigNumber, BigNumberish, constants } from 'ethers';
-import { useBlockNumber } from './eth';
+import { useEffect, useState } from 'react';
 import { useStakingContract } from './contracts';
+import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
 
 export const useStaking = (user: string) => {

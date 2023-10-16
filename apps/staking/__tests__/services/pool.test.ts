@@ -9,28 +9,25 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, waitFor } from '@testing-library/react';
-import {
-    useFlatRateCommission,
-    useGasTaxCommission,
-    useStakingPool,
-    useStakingPoolCommission,
-} from '../../src/services/pool';
-import {
-    useFeeContract,
-    useFlatRateCommissionContract,
-    useGasTaxCommissionContract,
-    useStakingPoolContract,
-} from '../../src/services/contracts';
-import { useTransaction, Transaction } from '../../src/services/transaction';
 import {
     Fee,
     FlatRateCommission,
-    GasTaxCommission,
     StakingPoolImpl,
 } from '@cartesi/staking-pool';
-import { act } from 'react-dom/test-utils';
+import { renderHook, waitFor } from '@testing-library/react';
 import { BigNumber, FixedNumber } from 'ethers';
+import { act } from 'react-dom/test-utils';
+import {
+    useFeeContract,
+    useFlatRateCommissionContract,
+    useStakingPoolContract,
+} from '../../src/services/contracts';
+import {
+    useFlatRateCommission,
+    useStakingPool,
+    useStakingPoolCommission,
+} from '../../src/services/pool';
+import { Transaction, useTransaction } from '../../src/services/transaction';
 
 jest.mock('@explorer/wallet/src/useWallet');
 
@@ -43,7 +40,6 @@ jest.mock('../../src/services/eth', () => ({
 }));
 
 jest.mock('../../src/services/contracts', () => ({
-    useGasTaxCommissionContract: jest.fn(),
     useFlatRateCommissionContract: jest.fn(),
     useFeeContract: jest.fn(),
     useStakingPoolContract: jest.fn(),
@@ -55,10 +51,6 @@ const mockedUseTransaction = useTransaction as jest.MockedFunction<
     typeof useTransaction
 >;
 
-const mockedUseGasTaxCommissionContract =
-    useGasTaxCommissionContract as jest.MockedFunction<
-        typeof useGasTaxCommissionContract
-    >;
 const mockedUseFlatRateCommissionContract =
     useFlatRateCommissionContract as jest.MockedFunction<
         typeof useFlatRateCommissionContract
@@ -71,14 +63,6 @@ const mockedUseStakingPoolContract =
 const mockUseFeeContract = useFeeContract as jest.MockedFunction<
     typeof useFeeContract
 >;
-
-const gasTaxCommissionContract = {
-    setGas: jest.fn(),
-    gas: () => Promise.resolve(),
-    feeRaiseTimeout: () => Promise.resolve(),
-    maxRaise: () => Promise.resolve(),
-    timeoutTimestamp: () => Promise.resolve(BigNumber.from('10000')),
-};
 
 const flatRateCommissionContract = {
     setRate: jest.fn(),
@@ -117,59 +101,6 @@ const stakingPoolContract = {
 };
 
 describe('pool service', () => {
-    describe('useGasTaxCommission hook', () => {
-        it('should return default initial values when fee is undefined', () => {
-            mockedUseGasTaxCommissionContract.mockReturnValue(undefined);
-
-            const { result } = renderHook(() => useGasTaxCommission(address));
-
-            expect(result.current.gas).toBe(undefined);
-            expect(result.current.maxRaise).toBe(undefined);
-            expect(result.current.timeoutTimestamp).toBe(undefined);
-            expect(result.current.raiseTimeout).toBe(undefined);
-        });
-
-        it('should set a transaction when changing gas', async () => {
-            mockedUseGasTaxCommissionContract.mockReturnValue(
-                gasTaxCommissionContract as unknown as GasTaxCommission
-            );
-            const mockedSet = jest.fn();
-            mockedUseTransaction.mockReturnValue({
-                set: mockedSet,
-            } as unknown as Transaction<any>);
-            const { result } = renderHook(() => useGasTaxCommission(address));
-            await act(async () => {
-                result.current.changeGas(1000);
-            });
-            expect(mockedSet).toHaveBeenCalled();
-        });
-
-        it('should set correct values when fee is defined', async () => {
-            const gas = BigNumber.from('1000');
-            const raiseTimeout = BigNumber.from('10000000');
-            const maxRaise = BigNumber.from('1000000000');
-            const timeoutTimestamp = BigNumber.from('10000');
-            mockedUseGasTaxCommissionContract.mockReturnValue({
-                setGas: jest.fn(),
-                gas: () => Promise.resolve(gas),
-                feeRaiseTimeout: () => Promise.resolve(raiseTimeout),
-                maxRaise: () => Promise.resolve(maxRaise),
-                timeoutTimestamp: () => Promise.resolve(timeoutTimestamp),
-            } as unknown as GasTaxCommission);
-
-            const { result } = renderHook(() => useGasTaxCommission(address));
-
-            await waitFor(() => {
-                expect(result.current.gas).toStrictEqual(gas);
-                expect(result.current.raiseTimeout).toStrictEqual(raiseTimeout);
-                expect(result.current.maxRaise).toStrictEqual(maxRaise);
-                expect(result.current.timeoutTimestamp).toStrictEqual(
-                    new Date(timeoutTimestamp.toNumber() * 1000)
-                );
-            });
-        });
-    });
-
     describe('useFlatRateCommission hook', () => {
         it('should return default initial values when fee is undefined', () => {
             mockedUseFlatRateCommissionContract.mockReturnValue(undefined);
