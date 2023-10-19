@@ -33,7 +33,7 @@ import { useForm } from 'react-hook-form';
 
 export interface CommissionFormProps {
     currentValue: number;
-    unit: '%' | 'gas';
+    unit: '%';
     min?: number;
     max?: number;
     maxRaise: number;

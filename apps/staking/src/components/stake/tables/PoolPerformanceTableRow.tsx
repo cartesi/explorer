@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, useState } from 'react';
 import { LockIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -25,6 +24,7 @@ import {
 import { Address, StakeIcon } from '@explorer/ui';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
+import { FC, useState } from 'react';
 import { StakingPool } from '../../../graphql/models';
 import labels from '../../../utils/labels';
 import { formatCTSI } from '../../../utils/token';
@@ -92,29 +92,11 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
 
-    let flatRate = pool.fee.commission > 0;
-    const gasTax = pool.fee.gas > 0;
-
-    // XXX: if both are zero, currently we don't which is it, for now let's assume it's flat rate
-    if (!flatRate && !gasTax) {
-        flatRate = true;
-    }
-
     // commission label
-    let commissionLabel = '';
-    if (flatRate) {
-        commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
-    } else if (gasTax) {
-        commissionLabel = `${pool.fee.gas} Gas`;
-    }
+    const commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
 
     // commission help tooltip
-    let commissionTooltip: string = undefined;
-    if (flatRate) {
-        commissionTooltip = labels.flatRateCommission;
-    } else if (gasTax) {
-        commissionTooltip = labels.gasTaxCommission;
-    }
+    const commissionTooltip: string = labels.flatRateCommission;
 
     const [isHovered, setHovered] = useState(false);
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');

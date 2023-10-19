@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
+import { FaNetworkWired } from 'react-icons/fa';
 import PoolCommission from '../../../src/components/pools/PoolCommission';
-import { withChakraTheme } from '../../test-utilities';
 import { StakingPool } from '../../../src/graphql/models';
 import stakingPoolsData from '../../../src/stories/stake/tables/stakingPoolsData';
-import { FaNetworkWired } from 'react-icons/fa';
+import { withChakraTheme } from '../../test-utilities';
 
 const [pool] = stakingPoolsData as unknown as StakingPool[];
 
@@ -43,9 +43,7 @@ describe('PoolCommission component', () => {
             pool.commissionPercentage !== null
                 ? numberFormat.format(pool.commissionPercentage)
                 : '-';
-        const commissionLabel = pool.fee.commission
-            ? `${(pool.fee.commission / 100).toFixed(2)} %`
-            : `${pool.fee.gas} Gas`;
+        const commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
 
         const valueLabel = `${accruedCommissionLabel} (${commissionLabel})`;
 
