@@ -105,7 +105,6 @@ export type StakingPoolFee = {
 };
 
 export enum StakingPoolFeeType {
-    GAS_TAX = 'GAS_TAX_COMMISSION',
     FLAT_RATE = 'FLAT_RATE_COMMISSION',
 }
 

@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
-import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/icons';
+import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
+import { FC } from 'react';
 import { IconType } from 'react-icons';
 import { StakingPool } from '../../graphql/models';
 
@@ -33,9 +33,7 @@ const PoolCommission: FC<PoolCommissionProps> = (props) => {
         pool.commissionPercentage !== null
             ? numberFormat.format(pool.commissionPercentage)
             : '-';
-    const commissionLabel = pool.fee.commission
-        ? `${(pool.fee.commission / 100).toFixed(2)} %`
-        : `${pool.fee.gas} Gas`;
+    const commissionLabel = `${(pool.fee.commission / 100).toFixed(2)} %`;
 
     const valueLabel = `${accruedCommissionLabel} (${commissionLabel})`;
     return (

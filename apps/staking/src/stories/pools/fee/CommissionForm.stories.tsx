@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import CommissionForm from '../../../components/pools/fee/CommissionForm';
 
@@ -52,17 +51,4 @@ IncreaseLocked.args = {
     nextIncrease: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
     helperText:
         'Commission is set as a fixed percentage of every block reward (CTSI)',
-};
-
-export const GasTax = Template.bind({});
-GasTax.args = {
-    currentValue: 210000,
-    unit: 'gas',
-    min: 0,
-    maxRaise: 20000,
-    maxDigits: 0,
-    increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
-    nextIncrease: new Date(now.getTime() - 60 * 1000),
-    helperText:
-        'Commission is set as an amount of gas. This amount is converted to CTSI at the time of block production, by using a gas price from an oracle and a ETH/CTSI price from a price oracle.',
 };
