@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.7.0] - 2023-09-20
 
--   The Staking application got a new look and feel. Following the new brand colours.
+-   The Staking application got a new look and feel. Following the new brand colors.
 -   We removed gas-based staking pool creation option in the staking app.
 -   The rollups explorer was removed from this repository.
 
@@ -40,17 +40,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   `Staking`
     -   New Cartesi logo added.
-    -   Test startup on CI optimised.
+    -   Test startup on CI optimized.
 -   `Rollups`
     -   New Cartesi logo added.
     -   Rollups v0.8.2 removed.
-    -   Image generation optimised by replacing QEMU with Depot.
+    -   Image generation optimized by replacing QEMU with Depot.
 
 ## [3.5.0] - 2023-06-24
 
 -   `Staking`
     -   Increased code coverage to multiple components
-    -   Fix the alignment between header text and arrow icon when sorting the staking pool table.
+    -   Fix the alignment between the header text and arrow icon when sorting the staking pool table.
     -   We are switching to feed indexed data from Chainstack and moving away from AWS.
 -   `Rollups`
     -   Increased code coverage to multiple components
@@ -79,18 +79,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.2.2] - 2023-03-01
 
 -   `Staking`
-    -   We fix the alignment for the notification content.
+    -   We fixed the alignment for the notification content.
 
 ## [3.2.1] - 2023-02-23
 
 -   `Staking`
-    -   A fix was applied to the behaviour when doing a full unstake. We only pass down the total amount of staked-shares the user requesting has instead of doing calculations.
+    -   A fix was applied to the behavior when doing a full unstake. We only pass down the total amount of staked-shares the user requesting has instead of doing calculations.
 
 ## [3.2.0] - 2023-02-16
 
 -   `Staking`
     -   Changes applied to enhance our scores on SEO, Accessibility and best practices based on lighthouse report for desktop.
-    -   A fix was applied to keep the pool-info tab selected when the user access the staking pool users page.
+    -   A fix was applied to keep the pool-info tab selected when the user accesses the staking pool users page.
     -   A fix was applied to the staking pool management screen. Now managers will see correctly the nodes retired by the pool and not the private nodes managers themselves had retired if any.
     -   Maintenance work done;
         -   Feature flags for staking pool users and commission pages were retired.
@@ -107,7 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   We removed the code that supported the old onboard-js version 1.
 -   We added a new node history feature for private node and pool management in the node section. Users can see the last three retired nodes.
 -   We added code changes for page generation using ISR to improve SEO results for staking pools with an ENS name.
--   We changed the rendering behaviour of the staking pool page when using an invalid address. Now a not found page is rendered instead, and that avoids confusion and possibly misleading.
+-   We changed the rendering behavior of the staking pool page when using an invalid address. Now a not found page is rendered instead, and that avoids confusion and possibly misleading.
 
 ## [2.12.4] - 2022-12-19
 
@@ -139,7 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Migration from universal analytics to google analytics 4 a.k.a GA4 is done. Google will sunset universal analytics in 2023.
 -   The transaction alerts for the pool settings area in the new management screen were updated. They all comply with the new design.
 -   Alignment fixes in the pool tables for the action column (e.g. stake / info) on Home and Stake pages on small screens.
--   UI update in the Home page producers table when dark mode is active. The action column had a different colour shade.
+-   UI update in the Home page producers table when dark mode is active. The action column had a different color shade.
 
 ## [2.11.0] - 2022-11-28
 
@@ -174,12 +174,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   A new wallet interface is ready to be roll-out.
 -   Fixes in the node-runners page. From landing page to a few updates in the management screens.
 -   UI framework and core render libraries upgraded.
--   UI fixes for the address in dark mode. The font colour was still black even on dark mode making it invisible.
+-   UI fixes for the address in dark mode. The font color was still black even on dark mode making it invisible.
 
 ## [2.8.3] - 2022-10-08
 
 -   Fix a bug on my staking pools area where the unstake and stake column values were displaying as zero all the time.
--   Fix a visibility problem on dark mode for the stake/info where the background would stay white colour and the icon would become white and disappear.
+-   Fix a visibility problem on dark mode for the stake/info where the background would stay white color and the icon would become white and disappear.
 
 ## [2.8.2] - 2022-10-07
 
