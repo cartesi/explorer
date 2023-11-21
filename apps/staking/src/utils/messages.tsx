@@ -88,10 +88,6 @@ const messages = {
                 howItWorks: () =>
                     `This model calculates the commission as a fixed percentage of the block CTSI reward before distributing the remaining amount to the pool users.`,
             },
-            gasBased: {
-                howItWorks: () =>
-                    `This model calculates the commission considering the current network gas price, Ethereum price and CTSI price. The configured amount of gas above is multiplied by the gas price provided by a ChainLink oracle, then converted from ETH to CTSI using an Uniswap V2 price oracle.`,
-            },
         },
     },
     pool: {
