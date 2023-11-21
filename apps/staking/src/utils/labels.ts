@@ -28,8 +28,6 @@ const labels = {
         'Total amount of CTSI locked in the staking contract, currently  in the status "staked"',
     flatRateCommission:
         'This pool charges a flat rate CTSI commission over every block reward',
-    gasTaxCommission:
-        'This pool charges a variable rate CTSI commission over every block reward',
 };
 
 export default labels;
