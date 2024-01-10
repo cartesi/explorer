@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { FlexProps } from '@chakra-ui/react';
 import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
 import React, { FC } from 'react';
 import {
@@ -20,7 +21,6 @@ import {
     useWorkerManagerContract,
 } from '../services/contracts';
 import SyncStatus from './SyncStatus';
-import { FlexProps } from '@chakra-ui/react';
 
 export { PageBody, PageHeader, PagePanel };
 
@@ -53,8 +53,8 @@ export const headerLinks = [
 
 export const footerLinks = [
     {
-        label: 'CTSI Reserve Mining',
-        href: 'https://cartesi.io/en/mine/',
+        label: 'Governance & Grants',
+        href: 'https://cartesi.io/governance/',
     },
     {
         label: 'Audit Report',
@@ -62,7 +62,7 @@ export const footerLinks = [
     },
     {
         label: 'How to Run a Node',
-        href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
+        href: 'https://docs.cartesi.io/earn-ctsi/run-node/',
     },
 ];
 
@@ -77,10 +77,10 @@ export const footerSupport = [
     },
     {
         label: 'FAQ',
-        href: 'https://github.com/cartesi/noether/wiki/FAQ',
+        href: 'https://docs.cartesi.io/earn-ctsi/staking-faq/',
     },
     {
-        label: 'Governance',
+        label: 'Governance Forum',
         href: 'https://governance.cartesi.io/',
     },
 ];
