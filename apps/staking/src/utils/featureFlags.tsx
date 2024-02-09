@@ -9,12 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import FlagProvider, {
-    IConfig,
-    useFlagsStatus,
-} from '@unleash/proxy-client-react';
+import FlagProvider, { IConfig } from '@unleash/proxy-client-react';
 import { ReactNode } from 'react';
-import { Spinner, VStack } from '@chakra-ui/react';
 
 const url = process.env.NEXT_PUBLIC_UNLEASH_PROXY_HOST;
 const clientKey = process.env.NEXT_PUBLIC_UNLEASH_PROXY_CLIENT_KEY;
@@ -32,24 +28,6 @@ type Props = {
     children: ReactNode;
 };
 
-const WhenReady = ({ children }: Props) => {
-    const { flagsReady } = useFlagsStatus();
-    if (!flagsReady) {
-        return (
-            <VStack
-                h="100%"
-                w="100%"
-                justifyContent="center"
-                style={{ position: 'fixed' }}
-            >
-                <Spinner data-testid="when-ready-spinner" size="xl" />
-            </VStack>
-        );
-    }
-
-    return <>{children}</>;
-};
-
 /**
  * Handy provider with our default configuration already set. Just wrap your
  * React component(s) on it and you are set with feature-flags (currently using unleash)
@@ -57,11 +35,7 @@ const WhenReady = ({ children }: Props) => {
  * @returns JSX.Element
  */
 const FeatureFlagProvider = ({ children }: Props) => {
-    return (
-        <FlagProvider config={config}>
-            <WhenReady>{children}</WhenReady>
-        </FlagProvider>
-    );
+    return <FlagProvider config={config}>{children}</FlagProvider>;
 };
 
 export default FeatureFlagProvider;
