@@ -16,6 +16,7 @@ import { FC } from 'react';
 const colorSchemes: { [k: number]: string } = {
     1: 'teal', // mainnet
     5: 'blue', // goerli
+    11155111: 'pink', // sepolia
     421613: 'yellow', // arbitrum-goerli
     31337: 'gray', //localhost
 };
