@@ -10,25 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    StakingImpl__factory,
-    StakingImpl,
-    PoSV2FactoryImpl__factory,
-    PoSV2FactoryImpl,
-    PoS__factory,
     PoS,
+    PoSV2FactoryImpl,
+    PoSV2FactoryImpl__factory,
+    PoS__factory,
+    StakingImpl,
+    StakingImpl__factory,
 } from '@cartesi/pos';
 
-import mainnet from '@cartesi/pos/export/abi/mainnet.json';
 import goerli from '@cartesi/pos/export/abi/goerli.json';
+import mainnet from '@cartesi/pos/export/abi/mainnet.json';
+import sepolia from '@cartesi/pos/export/abi/sepolia.json';
 
 import localhost from './localhost.json';
 
-import { ChainMap, useContract } from '.';
 import { useFlag } from '@unleash/proxy-client-react';
+import { ChainMap, useContract } from '.';
 
 const abis: ChainMap = {
     1: mainnet,
     5: goerli,
+    11155111: sepolia,
     31337: localhost,
 };
 
