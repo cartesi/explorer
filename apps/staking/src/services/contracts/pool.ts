@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 
 import goerli from '@cartesi/staking-pool/export/abi/goerli.json';
 import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
+import sepolia from '@cartesi/staking-pool/export/abi/sepolia.json';
 
 import localhost from './localhost.json';
 
@@ -32,6 +33,7 @@ import { ChainMap, useContract, useContractFromAddress } from '.';
 const abis: ChainMap = {
     1: mainnet,
     5: goerli,
+    11155111: sepolia,
     31337: localhost,
 };
 
