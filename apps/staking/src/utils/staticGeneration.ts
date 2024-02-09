@@ -45,6 +45,7 @@ const getGraphQLClients = async () => {
     return {
         mainnetClient: createApollo(Network.MAINNET, isChainstackEnabled),
         goerliClient: createApollo(Network.GOERLI, isChainstackEnabled),
+        sepoliaClient: createApollo(Network.SEPOLIA, isChainstackEnabled),
     };
 };
 
@@ -92,20 +93,20 @@ export type ENSStaticProps = {
 export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
     params,
 }: Context) => {
-    const { goerliClient, mainnetClient } = await getGraphQLClients();
-    const [poolQ, goerliPoolQ, ensQ] = await Promise.all([
-        mainnetClient.query<StakingPoolData>({
-            query: STAKING_POOL,
-            variables: {
-                id: params.pool,
-            },
-        }),
-        goerliClient.query<StakingPoolData>({
-            query: STAKING_POOL,
-            variables: {
-                id: params.pool,
-            },
-        }),
+    const { goerliClient, mainnetClient, sepoliaClient } =
+        await getGraphQLClients();
+
+    const queryConfig = {
+        query: STAKING_POOL,
+        variables: {
+            id: params.pool,
+        },
+    };
+
+    const [poolQ, goerliPoolQ, sepoliaPoolQ, ensQ] = await Promise.all([
+        mainnetClient.query<StakingPoolData>(queryConfig),
+        goerliClient.query<StakingPoolData>(queryConfig),
+        sepoliaClient.query<StakingPoolData>(queryConfig),
         ensClient
             .query({
                 query: DOMAINS,
@@ -123,10 +124,12 @@ export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
     ]);
 
     const goerliStakingPool = goerliPoolQ.data.stakingPool;
+    const sepoliaStakingPool = sepoliaPoolQ.data.stakingPool;
     const mainnetStakingPool = poolQ.data.stakingPool;
 
     // In case the pool does not exist we say to nextJS to return a 404 page
-    if (!goerliStakingPool && !mainnetStakingPool) return { notFound: true };
+    if (!goerliStakingPool && !mainnetStakingPool && !sepoliaStakingPool)
+        return { notFound: true };
 
     const { data } = ensQ;
 
