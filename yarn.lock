@@ -1543,88 +1543,70 @@
   optionalDependencies:
     fsevents "^2.1.3"
 
-"@cartesi/pos@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-2.0.0.tgz#2868232a4226896eabda45c0fae31f72324c3a88"
-  integrity sha512-gV3A7T0zxkHTqKqqN9chN+NDLqa8Cy5AwwSENYTsyjFTq6cwe6gKJ50+M3+6hkjOiP+47b6uZ8YvtyFg7ImZlg==
+"@cartesi/pos@2.1.0", "@cartesi/pos@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-2.1.0.tgz#26082057291a44ec148a41a2b131bf30c60c80f9"
+  integrity sha512-b2UuXt6I2vTV8fXJqRO0O6pieXfkT2TFpxhHToq1Q8YRzCBQwckPZCzyEYwCmdCrCoD7a7yXdYvA2/+AWz46aQ==
   dependencies:
-    "@cartesi/token" "^1.7.1"
-    "@cartesi/tree" "^1.0.0"
-    "@cartesi/util" "^5.0.1"
+    "@cartesi/token" "^1.9.0"
+    "@cartesi/tree" "^1.1.0"
+    "@cartesi/util" "^5.0.2"
     "@openzeppelin/contracts" "3.2.1-solc-0.7"
     "@openzeppelin/contracts-0.8" "npm:@openzeppelin/contracts@4.1.0"
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/pos@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@cartesi/pos/-/pos-1.1.2.tgz#8527a4bc5eae0f841d5a285bb7c2424f360fc405"
-  integrity sha512-UNQZ1hIPSlEB7QwkC0Nol7M23KE8zSovEjfqwuILVEZQyB0i7Yi4WQuzxlcoJrmfuvUVaO8pGzThEI9/J+IoUw==
+"@cartesi/staking-pool@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-2.1.0.tgz#81572b9778606de5aaf2b410aa22b8e10ce92541"
+  integrity sha512-Hjeyl3cwZ6XW3ilhlMdOqix5H1Ob8tMImP6RatZd4XILUzJCGqCSgNQW12S7OU5C/DKIOKJHzV+yABpgt5tUGA==
   dependencies:
-    "@cartesi/token" "^1.3.0"
-    "@cartesi/util" "^1.0.1"
-    "@openzeppelin/contracts" "3.2.1-solc-0.7"
-  optionalDependencies:
-    fsevents "^2.3.2"
+    "@cartesi/pos" "^2.1.0"
+    "@chainlink/contracts" "0.2.2"
+    "@ensdomains/ens-contracts" "0.0.7"
+    "@openzeppelin/contracts" "4.3.2"
+    "@openzeppelin/contracts-upgradeable" "4.3.2"
 
-"@cartesi/staking-pool@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-1.0.0.tgz#d81f3b6bd70e90ee011a23d23a160d8cd772383c"
-  integrity sha512-SP4tK9n1olbn+VJeIAlcFE4UKO0aq8TUl2S6JMg5smw+fYJNexIB/rZdztKTuSb/boGTYLESVDXqvZ8yrv/Now==
-  dependencies:
-    "@cartesi/pos" "^1.1.2"
-    "@chainlink/contracts" "^0.2.2"
-    "@ensdomains/ens-contracts" "^0.0.7"
-    "@openzeppelin/contracts" "^4.3.2"
-    "@openzeppelin/contracts-upgradeable" "^4.3.2"
-
-"@cartesi/token@1.9.0":
+"@cartesi/token@1.9.0", "@cartesi/token@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@cartesi/token/-/token-1.9.0.tgz#fb1f7c5c3ac03392e4a560830ca4c7cc3a561987"
   integrity sha512-BcGJXHh80kWtSV3ASSo2J8FOF3aqqVpLnCU4sh/RA+UHRDTNtA83aw+awf0w7kQNB4nYfqiZmwnrpi6o4RL+RQ==
   dependencies:
     "@openzeppelin/contracts" "^2.5.0"
 
-"@cartesi/token@^1.2.5", "@cartesi/token@^1.3.0", "@cartesi/token@^1.7.1":
+"@cartesi/token@^1.2.5":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@cartesi/token/-/token-1.8.0.tgz#1f19bda1c5bd4e9e784cbd671c096e0333f11fb3"
   integrity sha512-jcr1ItbEjvhfy0A5KjOwLUd8Yqawo+F7o6p+9sxqfi1RYa39jTL1qhbF9xui4dR7slVrTwqWQTRHHwlfSHzq8A==
   dependencies:
     "@openzeppelin/contracts" "^2.5.0"
 
-"@cartesi/tree@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@cartesi/tree/-/tree-1.0.0.tgz#b12e6add199a0a8e8e0171a3b3682b6f4683dde9"
-  integrity sha512-FE7N45higeeZ08L8vB0/R1qqPxSYyC+gdx4fvfcfdqyF6MwLOI1UGQfJtAqyMF9iMq1SDecfiGlm55ruWk8cSA==
+"@cartesi/tree@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/tree/-/tree-1.1.0.tgz#fd3b8d29b7dfa037d06060e9b7197ecf5fd6c466"
+  integrity sha512-oI1NbailA7OeKPgphqEKvhxW9YEqtFXFBfUcVzKNDRCrFnR1H09WzwTiIf6qn6ycCoSEfHbXXnHaRrdKOUvRaQ==
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
     commander "^9.4.1"
 
-"@cartesi/util@5.0.2":
+"@cartesi/util@5.0.2", "@cartesi/util@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@cartesi/util/-/util-5.0.2.tgz#dfe0ff88b1998b88eafc4089949c3df71e3246e1"
   integrity sha512-mIaOplU+RKkiW10JRpDBG8IG7lGKyXrkF6w4WHVZ2YKWze5I+mzJBaPALZLtJSuwb6GCqLZbB7NZx3A7iZyWkA==
   dependencies:
     "@openzeppelin/contracts" "3.2.1-solc-0.7"
 
-"@cartesi/util@^1.0.0", "@cartesi/util@^1.0.1":
+"@cartesi/util@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@cartesi/util/-/util-1.0.1.tgz#7416bf9bd254b25010ce883d483666b4648b3397"
   integrity sha512-OsfgsT4OQ8ddulrkr/zsn9tnFiZdARkr0j1595UUgDAXO5QZkSpl2WjAZvOCqWg2uv5VrJjXVolvFp0jdn0iKw==
   dependencies:
     "@openzeppelin/contracts" "3.2.1-solc-0.7"
 
-"@cartesi/util@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@cartesi/util/-/util-5.0.1.tgz#953916125122595488c366df0895e5bb79897b55"
-  integrity sha512-KCUHKvjCiZMWo4FojBrZ/2/RHbSiE948IndG8nqEcpYh4CHlumHoKSZKdfoxWBArs12MhupT3v50Pt9e4c5/Hw==
-  dependencies:
-    "@openzeppelin/contracts" "3.2.1-solc-0.7"
-
-"@chainlink/contracts@^0.2.2":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@chainlink/contracts/-/contracts-0.2.3.tgz#f4ef1750caef1682c537a99559b5b95629436303"
-  integrity sha512-hf4b8OEfEqfjC9addvXCrE2SEybNwN1r971vxFYhL/l/yDTTMAk0jmGZYtfUPDOB/qY7FfrOXuxlEVQ+ojZgZw==
+"@chainlink/contracts@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@chainlink/contracts/-/contracts-0.2.2.tgz#8ea2079d8b22d25807fc63b98ccd3dc0bc2a33fe"
+  integrity sha512-wxXPbt7O3aZaUSG34ufFASC5amRSL6eeYCqsa+2gpqbB8Hk7B7FydEDCI5dqvAC444TlFskPHcVbizCZkRHPpw==
 
 "@chakra-ui/accordion@2.1.4":
   version "2.1.4"
@@ -2629,7 +2611,7 @@
     "@ensdomains/buffer" "^0.0.10"
     "@openzeppelin/contracts" "^4.1.0"
 
-"@ensdomains/ens-contracts@^0.0.7":
+"@ensdomains/ens-contracts@0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@ensdomains/ens-contracts/-/ens-contracts-0.0.7.tgz#a08dd7de3d927487c05a9c846b4834a124f053ce"
   integrity sha512-adlWSrtBh85CNM1hsrsNxWrSx6g37DOCkWP5vBT/HtXnpNtvL49Z1Ueum55lN8YifTWo2Kqb1mgPojjLY99f5w==
@@ -5179,22 +5161,27 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.1.0.tgz#baec89a7f5f73e3d8ea582a78f1980134b605375"
   integrity sha512-TihZitscnaHNcZgXGj9zDLDyCqjziytB4tMCwXq0XimfWkAjBYyk5/pOsDbbwcavhlc79HhpTEpQcrMnPVa1mw==
 
-"@openzeppelin/contracts-upgradeable@^4.3.2":
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.8.0.tgz#26688982f46969018e3ed3199e72a07c8d114275"
-  integrity sha512-5GeFgqMiDlqGT8EdORadp1ntGF0qzWZLmEY7Wbp/yVhN7/B3NNzCxujuI77ktlyG81N3CUZP8cZe3ZAQ/cW10w==
+"@openzeppelin/contracts-upgradeable@4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.3.2.tgz#92df481362e366c388fc02133cf793029c744cea"
+  integrity sha512-i/pOaOtcqDk4UqsrOv735uYyTbn6dvfiuVu5hstsgV6c4ZKUtu88/31zT2BzkCg+3JfcwOfgg2TtRKVKKZIGkQ==
 
 "@openzeppelin/contracts@3.2.1-solc-0.7":
   version "3.2.1-solc-0.7"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.1-solc-0.7.tgz#067a60918b935d4733208edb3d7e35cd1d51026b"
   integrity sha512-VfKZE9L2HNaZVBR7l5yHbRmap3EiVw9F5iVXRRDdgfnA9vQ1yFanrs0VYmdo2VIXC+EsI9wPPYZY9Ic7/qDBdw==
 
+"@openzeppelin/contracts@4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.2.tgz#ff80affd6d352dbe1bbc5b4e1833c41afd6283b6"
+  integrity sha512-AybF1cesONZStg5kWf6ao9OlqTZuPqddvprc0ky7lrUVOjXeKpmQ2Y9FK+6ygxasb+4aic4O5pneFBfwVsRRRg==
+
 "@openzeppelin/contracts@^2.5.0":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.1.tgz#c76e3fc57aa224da3718ec351812a4251289db31"
   integrity sha512-qIy6tLx8rtybEsIOAlrM4J/85s2q2nPkDqj/Rx46VakBZ0LwtFhXIVub96LXHczQX0vaqmAueDqNPXtbSXSaYQ==
 
-"@openzeppelin/contracts@^4.0.0", "@openzeppelin/contracts@^4.1.0", "@openzeppelin/contracts@^4.3.2", "@openzeppelin/contracts@^4.7.0":
+"@openzeppelin/contracts@^4.0.0", "@openzeppelin/contracts@^4.1.0", "@openzeppelin/contracts@^4.7.0":
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.0.tgz#6854c37df205dd2c056bdfa1b853f5d732109109"
   integrity sha512-AGuwhRRL+NaKx73WKRNzeCxOCOCxpaqF+kp8TJ89QzAipSwZy/NoflkWaL9bywXFRhIzXt8j38sfF7KBKCPWLw==
@@ -14439,15 +14426,7 @@ ethereumjs-abi@0.6.5:
     bn.js "^4.10.0"
     ethereumjs-util "^4.3.0"
 
-ethereumjs-abi@0.6.8, ethereumjs-abi@^0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz#71bc152db099f70e62f108b7cdfca1b362c6fcae"
-  integrity sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==
-  dependencies:
-    bn.js "^4.11.8"
-    ethereumjs-util "^6.0.0"
-
-"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+ethereumjs-abi@0.6.8, ethereumjs-abi@^0.6.8, "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   version "0.6.8"
   resolved "git+https://github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   dependencies:
