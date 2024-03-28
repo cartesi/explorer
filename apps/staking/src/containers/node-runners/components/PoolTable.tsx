@@ -38,6 +38,7 @@ import {
     PencilIcon,
     theme,
 } from '@explorer/ui';
+import { useWallet } from '@explorer/wallet';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
@@ -121,6 +122,7 @@ const PoolTable = ({ data }: Props) => {
     );
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
     const linkColor = useColorModeValue('gray.900', 'gray.90');
+    const { chainId } = useWallet();
 
     return (
         <TableResponsiveHolder
@@ -197,6 +199,7 @@ const PoolTable = ({ data }: Props) => {
                                 <Td>
                                     <Address
                                         ens
+                                        chainId={chainId}
                                         address={pool.id}
                                         truncated
                                         size="md"
