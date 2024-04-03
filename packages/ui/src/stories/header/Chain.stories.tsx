@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Chain from '../../components/header/Chain';
 
 export default {
@@ -27,8 +26,8 @@ Mainnet.args = { chainId: 1 };
 export const ExplicitMainnet = Template.bind({});
 ExplicitMainnet.args = { chainId: 1, showMainnet: true };
 
-export const Goerli = Template.bind({});
-Goerli.args = { chainId: 5 };
+export const Sepolia = Template.bind({});
+Sepolia.args = { chainId: 11155111 };
 
 export const Localhost = Template.bind({});
 Localhost.args = { chainId: 31337 };
