@@ -11,7 +11,6 @@ declare namespace NodeJS {
         NEXT_PUBLIC_PROJECT_ID: string;
         NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: string;
         NEXT_PUBLIC_MAINNET_GRAPHQL_URL: string;
-        NEXT_PUBLIC_GOERLI_GRAPHQL_URL: string;
         NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL: string;
     }
 }
