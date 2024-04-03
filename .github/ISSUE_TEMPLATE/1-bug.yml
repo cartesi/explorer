@@ -16,7 +16,7 @@ body:
           multiple: true
           options:
               - Mainnet
-              - Goerli
+              - Sepolia
       validations:
           required: true
     - type: dropdown
