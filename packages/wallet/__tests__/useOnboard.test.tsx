@@ -54,7 +54,7 @@ const defaultAppMetadata: Record<string, string> = {
 };
 
 const chain = {
-    id: `0x${convertToHex(Network.GOERLI)}`,
+    id: `0x${convertToHex(Network.SEPOLIA)}`,
     namespace: 'ETH',
 } as unknown as ConnectedChain;
 

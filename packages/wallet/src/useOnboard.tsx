@@ -73,24 +73,6 @@ export const buildConfig = (
                 : getRPC('mainnet'),
         },
         {
-            id: `0x${convertToHex(Network.GOERLI)}`,
-            token: 'ETH',
-            label: 'Goerli Testnet',
-            rpcUrl: getRPC('goerli'),
-        },
-        {
-            id: `0x${convertToHex(Network.ARBITRUM_GOERLI)}`,
-            token: 'ETH',
-            label: 'Arbitrum Goerli Testnet',
-            rpcUrl: getRPC('arbitrum-goerli'),
-        },
-        {
-            id: `0x${convertToHex(Network.POLYGON_MUMBAI)}`,
-            token: 'MATIC',
-            label: 'Polygon Mumbai',
-            rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
-        },
-        {
             id: `0x${convertToHex(Network.LOCAL)}`,
             token: 'ETH',
             label: 'localhost',
