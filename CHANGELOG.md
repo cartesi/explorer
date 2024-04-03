@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.0] - 2024-04-03
+
+-   Added support to the Sepolia testnet.
+-   Removed the Goerli testnet.
+-   Chore work done by removing a bunch of unused network definitions, (e.g. Arb Goerli)
+
 ## [3.7.1] - 2024-01-10
 
 -   Footer links were updated.
@@ -360,7 +366,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.7.1...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.0...HEAD
+[3.8.0]: https://github.com/cartesi/explorer/compare/v3.8.0...v3.7.1
 [3.7.1]: https://github.com/cartesi/explorer/compare/v3.7.1...v3.7.0
 [3.7.0]: https://github.com/cartesi/explorer/compare/v3.7.0...v3.6.2
 [3.6.2]: https://github.com/cartesi/explorer/compare/v3.6.1...v3.6.2
