@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Address, StakePlusIcon } from '../components';
 
 export default {
@@ -38,8 +37,8 @@ Responsive.args = { responsive: true };
 export const TokenLink = Template.bind({});
 TokenLink.args = { type: 'token' };
 
-export const Goerli = Template.bind({});
-Goerli.args = { chainId: 5 };
+export const Sepolia = Template.bind({});
+Sepolia.args = { chainId: 11155111 };
 
 export const WithName = Template.bind({});
 WithName.args = { name: 'Pool Factory' };
