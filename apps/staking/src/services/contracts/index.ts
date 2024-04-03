@@ -25,11 +25,9 @@ import {
     WorkerManagerAuthManagerImpl__factory,
 } from '@cartesi/util';
 
-import util_goerli from '@cartesi/util/export/abi/goerli.json';
 import util_mainnet from '@cartesi/util/export/abi/mainnet.json';
 import util_sepolia from '@cartesi/util/export/abi/sepolia.json';
 
-import token_goerli from '@cartesi/token/export/abi/goerli.json';
 import token_mainnet from '@cartesi/token/export/abi/mainnet.json';
 import token_sepolia from '@cartesi/token/export/abi/sepolia.json';
 
@@ -71,14 +69,12 @@ const abi = {
 
 const utilAbis: ChainMap = {
     1: util_mainnet,
-    5: util_goerli,
     11155111: util_sepolia,
     31337: abi.localhost,
 };
 
 const tokenAbis: ChainMap = {
     1: token_mainnet,
-    5: token_goerli,
     11155111: token_sepolia,
     31337: abi.localhost,
 };
