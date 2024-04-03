@@ -15,9 +15,7 @@ import { FC } from 'react';
 
 const colorSchemes: { [k: number]: string } = {
     1: 'teal', // mainnet
-    5: 'blue', // goerli
     11155111: 'pink', // sepolia
-    421613: 'yellow', // arbitrum-goerli
     31337: 'gray', //localhost
 };
 
@@ -28,7 +26,6 @@ type CustomChains = {
 // eth-chains don't have the info on this chain-ids yet, so we curate the output.
 const customChains: CustomChains = {
     31337: { name: 'Local' },
-    421613: { name: 'Arb görli' },
 };
 
 const getChainInfo = (chainId: number) => {

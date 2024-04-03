@@ -11,36 +11,24 @@
 
 export const Network = {
     MAINNET: 1,
-    GOERLI: 5,
     LOCAL: 31337,
-    ARBITRUM_GOERLI: 421613,
-    POLYGON_MUMBAI: 80001,
     SEPOLIA: 11155111,
 } as const;
 
 export const networks = {
     1: 'mainnet',
-    5: 'goerli',
     31337: 'localhost',
-    421613: 'arbitrum-goerli',
-    80001: 'polygon-mumbai',
     11155111: 'sepolia',
 };
 
 export const confirmations = {
     1: 3,
-    5: 1,
     31337: 1,
-    421613: 1,
-    80001: 1,
     11155111: 1,
 };
 
 export const etherscanLinks = {
     1: 'https://etherscan.io',
-    5: 'https://goerli.etherscan.io',
     31337: null,
-    421613: 'https://goerli.arbiscan.io',
-    80001: 'https://mumbai.polygonscan.com',
     11155111: 'https://sepolia.etherscan.io',
 };
