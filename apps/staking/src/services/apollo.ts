@@ -15,7 +15,6 @@ import { useMemo } from 'react';
 import { Network } from '../utils/networks';
 
 const MAINNET_GRAPHQL_URL = process.env.NEXT_PUBLIC_MAINNET_GRAPHQL_URL;
-const GOERLI_GRAPHQL_URL = process.env.NEXT_PUBLIC_GOERLI_GRAPHQL_URL;
 const SEPOLIA_GRAPHQL_URL = process.env.NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL;
 
 const LOCAL_GRAPHQL_URL =
@@ -25,14 +24,12 @@ const LOCAL_GRAPHQL_URL =
 const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
 const hostedUris = {
     1: `${hostedBaseUrl}/pos`,
-    5: `${hostedBaseUrl}/pos-goerli`,
     11155111: `${hostedBaseUrl}/pos-sepolia`,
     31337: LOCAL_GRAPHQL_URL,
 };
 
 const chainstackURI = {
     1: MAINNET_GRAPHQL_URL,
-    5: GOERLI_GRAPHQL_URL,
     11155111: SEPOLIA_GRAPHQL_URL,
     31337: LOCAL_GRAPHQL_URL,
 } as const;
