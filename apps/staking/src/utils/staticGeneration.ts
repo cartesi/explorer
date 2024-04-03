@@ -44,7 +44,6 @@ const getGraphQLClients = async () => {
 
     return {
         mainnetClient: createApollo(Network.MAINNET, isChainstackEnabled),
-        goerliClient: createApollo(Network.GOERLI, isChainstackEnabled),
         sepoliaClient: createApollo(Network.SEPOLIA, isChainstackEnabled),
     };
 };
@@ -93,8 +92,7 @@ export type ENSStaticProps = {
 export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
     params,
 }: Context) => {
-    const { goerliClient, mainnetClient, sepoliaClient } =
-        await getGraphQLClients();
+    const { mainnetClient, sepoliaClient } = await getGraphQLClients();
 
     const queryConfig = {
         query: STAKING_POOL,
@@ -103,9 +101,8 @@ export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
         },
     };
 
-    const [poolQ, goerliPoolQ, sepoliaPoolQ, ensQ] = await Promise.all([
+    const [poolQ, sepoliaPoolQ, ensQ] = await Promise.all([
         mainnetClient.query<StakingPoolData>(queryConfig),
-        goerliClient.query<StakingPoolData>(queryConfig),
         sepoliaClient.query<StakingPoolData>(queryConfig),
         ensClient
             .query({
@@ -123,13 +120,11 @@ export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
             }),
     ]);
 
-    const goerliStakingPool = goerliPoolQ.data.stakingPool;
     const sepoliaStakingPool = sepoliaPoolQ.data.stakingPool;
     const mainnetStakingPool = poolQ.data.stakingPool;
 
     // In case the pool does not exist we say to nextJS to return a 404 page
-    if (!goerliStakingPool && !mainnetStakingPool && !sepoliaStakingPool)
-        return { notFound: true };
+    if (!mainnetStakingPool && !sepoliaStakingPool) return { notFound: true };
 
     const { data } = ensQ;
 
