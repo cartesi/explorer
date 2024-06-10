@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.1] - 2024-06-28
+
+-   Added fine-tune to plug ENS graphql endpoints for use by the server with ISC. Previous endpoint act as fallback for dev/preview.
+-   API stats set to use Chainstack graphql instead of hosted-services.
+
 ## [3.8.0] - 2024-04-03
 
 -   Added support to the Sepolia testnet.
@@ -366,7 +371,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.1...HEAD
+[3.8.1]: https://github.com/cartesi/explorer/compare/v3.8.1...v3.8.0
 [3.8.0]: https://github.com/cartesi/explorer/compare/v3.8.0...v3.7.1
 [3.7.1]: https://github.com/cartesi/explorer/compare/v3.7.1...v3.7.0
 [3.7.0]: https://github.com/cartesi/explorer/compare/v3.7.0...v3.6.2
