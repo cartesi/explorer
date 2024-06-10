@@ -11,11 +11,16 @@
 
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
-// Mainnet
-export const uri = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
+/**
+ * A default rate-limited sponsored by ENS DAO.
+ * Mostly for use on dev/preview environments.
+ */
+const rateLimitedURL =
+    'https://api.thegraph.com/subgraphs/name/ensdomains/ens' as const;
 
 const createENSApollo = (): ApolloClient<any> => {
     const ssrMode = typeof window === 'undefined';
+    const uri = process.env.ENS_GRAPHQL_URL || rateLimitedURL;
 
     return new ApolloClient({
         ssrMode,
