@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cors from 'cors';
 import axios from 'axios';
-import { constants, FixedNumber } from 'ethers';
+import Cors from 'cors';
+import { FixedNumber, constants } from 'ethers';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-import runMiddleware from '../../../utils/runMiddleware';
 import { getEstimatedRewardRate, getRewardRate } from '../../../utils/reward';
+import runMiddleware from '../../../utils/runMiddleware';
 import { toCTSI } from '../../../utils/token';
 
 import { createApollo } from '../../../services/apollo';
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             )
         ) || 1;
 
-    const client = createApollo(chainId, false);
+    const client = createApollo(chainId, true);
 
     const {
         data: { summary },
