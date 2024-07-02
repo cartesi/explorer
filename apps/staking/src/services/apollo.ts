@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useMemo } from 'react';
 import { Network } from '../utils/networks';
 
@@ -20,13 +19,6 @@ const SEPOLIA_GRAPHQL_URL = process.env.NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL;
 const LOCAL_GRAPHQL_URL =
     process.env.NEXT_PUBLIC_LOCAL_GRAPHQL_URL ??
     'http://localhost:8000/subgraphs/name/cartesi/pos';
-
-const hostedBaseUrl = 'https://api.thegraph.com/subgraphs/name/cartesi';
-const hostedUris = {
-    1: `${hostedBaseUrl}/pos`,
-    11155111: `${hostedBaseUrl}/pos-sepolia`,
-    31337: LOCAL_GRAPHQL_URL,
-};
 
 const chainstackURI = {
     1: MAINNET_GRAPHQL_URL,
@@ -56,18 +48,11 @@ const mergeUniqueSort = (fieldName: string) => {
     };
 };
 
-export const createApollo = (
-    chainId: number,
-    chainstack: boolean
-): ApolloClient<any> => {
-    let uri = chainstack ? chainstackURI[chainId] : hostedUris[chainId];
+export const createApollo = (chainId: number): ApolloClient<any> => {
+    let uri = chainstackURI[chainId];
 
     // default to mainnet
-    uri =
-        uri ||
-        (chainstack
-            ? chainstackURI[Network.MAINNET]
-            : hostedUris[Network.MAINNET]);
+    uri = uri || chainstackURI[Network.MAINNET];
 
     const ssrMode = typeof window === 'undefined';
 
@@ -90,6 +75,5 @@ export const createApollo = (
 };
 
 export const useApollo = (chainId: number): ApolloClient<any> => {
-    const enabled = useFlag('chainstackEnabled');
-    return useMemo(() => createApollo(chainId, enabled), [chainId, enabled]);
+    return useMemo(() => createApollo(chainId), [chainId]);
 };
