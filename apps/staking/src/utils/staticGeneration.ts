@@ -9,42 +9,19 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { some } from 'lodash/fp';
 import { GetStaticProps } from 'next';
 import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { DOMAINS } from '../graphql/queries/ensDomains';
 import { createApollo } from '../services/apollo';
 import ensClient from '../services/apolloENSClient';
-import { config } from './featureFlags';
 import { Network } from './networks';
 import { formatEnsName } from './stringUtils';
 
-const proxyURL = `${config.url}?appName=${config.appName}&environment=${config.environment}`;
-
-const isEnabled = async (name: string): Promise<boolean> => {
-    console.log('CHECKING THE FEATURE_FLAG PROXY');
-    const resp = await fetch(proxyURL, {
-        method: 'GET',
-        headers: { Authorization: config.clientKey },
-    }).then((resp) => resp.json());
-    const toggles = resp.toggles;
-
-    return some({ name, enabled: true }, toggles);
-};
-
-const getGraphQLClients = async () => {
-    const isChainstackEnabled = await isEnabled('chainstackEnabled');
-
-    console.log(
-        `Using ${
-            isChainstackEnabled ? 'Chainstack API' : 'the-graph hosted services'
-        } to fetch data`
-    );
-
+const getGraphQLClients = () => {
     return {
-        mainnetClient: createApollo(Network.MAINNET, isChainstackEnabled),
-        sepoliaClient: createApollo(Network.SEPOLIA, isChainstackEnabled),
+        mainnetClient: createApollo(Network.MAINNET),
+        sepoliaClient: createApollo(Network.SEPOLIA),
     };
 };
 
@@ -61,7 +38,7 @@ type PoolStaticPathsRet = {
 const inSeconds = 60 * 60 * 24;
 
 export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
-    const { mainnetClient } = await getGraphQLClients();
+    const { mainnetClient } = getGraphQLClients();
     const { data } = await mainnetClient.query({
         query: STAKING_POOLS_IDS,
         variables: {
@@ -92,7 +69,7 @@ export type ENSStaticProps = {
 export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
     params,
 }: Context) => {
-    const { mainnetClient, sepoliaClient } = await getGraphQLClients();
+    const { mainnetClient, sepoliaClient } = getGraphQLClients();
 
     const queryConfig = {
         query: STAKING_POOL,
