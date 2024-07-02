@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             )
         ) || 1;
 
-    const client = createApollo(chainId, true);
+    const client = createApollo(chainId);
 
     const {
         data: { summary },
