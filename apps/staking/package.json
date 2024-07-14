@@ -27,7 +27,7 @@
         "@fortawesome/fontawesome-free": "5.15.3",
         "@metamask/onboarding": "1.0.1",
         "@types/humanize-duration": "3.25.1",
-        "axios": "0.21.4",
+        "axios": "0.28.0",
         "big-number-input": "1.0.3",
         "chart.js": "3.9.1",
         "cors": "2.8.5",
