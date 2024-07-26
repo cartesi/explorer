@@ -56,7 +56,6 @@ const usePoolBalances = (
     perPage = POOLS_PER_PAGE,
     pool?: string
 ) => {
-    const tenMinutesInMs = 600000;
     const filter = {
         user: user?.toLowerCase() || undefined,
         pool: pool?.toLowerCase() || undefined,
@@ -71,7 +70,6 @@ const usePoolBalances = (
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: tenMinutesInMs,
     });
 };
 

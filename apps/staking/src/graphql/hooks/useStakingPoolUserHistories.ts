@@ -38,7 +38,6 @@ const useStakingPoolUserHistories = (
         pageNumber = 0,
         perPage = 20,
     } = options;
-    const tenMinutesInMs = 600000;
     const filter: UseStakingPoolFeeHistoriesFilter = {
         timestamp_gte: toUnixTimestamp(startTimestamp),
         timestamp_lte: toUnixTimestamp(endTimestamp),
@@ -60,7 +59,6 @@ const useStakingPoolUserHistories = (
             orderDirection: 'asc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: tenMinutesInMs,
     });
 };
 

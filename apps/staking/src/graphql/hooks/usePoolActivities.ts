@@ -124,7 +124,6 @@ const usePoolActivities = ({
             first,
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 600000,
     });
 
     useEffect(() => {

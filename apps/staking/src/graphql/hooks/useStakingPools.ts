@@ -89,7 +89,6 @@ const useStakingPools = ({
             },
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 600000, // Every 10 minutes
     });
 };
 

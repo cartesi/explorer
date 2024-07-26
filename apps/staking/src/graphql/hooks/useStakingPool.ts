@@ -19,7 +19,6 @@ const useStakingPool = (id: string): StakingPool => {
             id: id?.toLowerCase(),
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 60000,
     });
 
     return data?.stakingPool;

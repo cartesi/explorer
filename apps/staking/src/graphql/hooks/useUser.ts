@@ -19,7 +19,6 @@ const useUser = (id: string) => {
             id: id?.toLowerCase(),
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: 60000,
     });
 
     return data?.user;
