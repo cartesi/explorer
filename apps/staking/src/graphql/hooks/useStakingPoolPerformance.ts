@@ -25,7 +25,6 @@ const useStakingPoolPerformance = (address: string) => {
                     timestamp_gte: getPastDaysInSeconds(7),
                 },
             },
-            pollInterval: 60000,
         }
     );
 };

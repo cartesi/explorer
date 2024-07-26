@@ -38,7 +38,6 @@ const useTotalPoolBalance = (user: string) => {
                 orderDirection: 'desc',
             },
             notifyOnNetworkStatusChange: true,
-            pollInterval: 600000,
         }
     );
 

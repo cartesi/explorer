@@ -27,7 +27,6 @@ const useStakingPoolFeeHistories = (
     options: UseStakingPoolFeeHistoriesOptions
 ) => {
     const { pool = undefined, pageNumber = 0, perPage = 20 } = options;
-    const tenMinutesInMs = 600000;
     const filter: UseStakingPoolFeeHistoriesFilter = {};
 
     if (pool) {
@@ -46,7 +45,6 @@ const useStakingPoolFeeHistories = (
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: tenMinutesInMs,
     });
 };
 

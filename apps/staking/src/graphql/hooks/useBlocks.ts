@@ -26,7 +26,6 @@ const useBlocks = (where: BlocksWhere = {}, count = 100) => {
 
     return useQuery<BlocksData, BlocksVars>(BLOCKS, {
         variables,
-        pollInterval: 30000,
         notifyOnNetworkStatusChange: true,
     });
 };

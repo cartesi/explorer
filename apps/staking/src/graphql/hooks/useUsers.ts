@@ -20,7 +20,6 @@ const useUsers = (
     perPage = 10
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
-    const tenMinutesInMs = 600000;
 
     return useQuery<UsersData, UsersVars>(USERS, {
         variables: {
@@ -31,7 +30,6 @@ const useUsers = (
             orderDirection: 'desc',
         },
         notifyOnNetworkStatusChange: true,
-        pollInterval: tenMinutesInMs,
     });
 };
 
