@@ -34,7 +34,6 @@ describe('useStakingPools', () => {
         expect(result.current.data).toHaveLength(3);
         expect(useQueryMock.mock.calls[0][1]).toEqual({
             notifyOnNetworkStatusChange: true,
-            pollInterval: 600000,
             variables: {
                 first: 50,
                 firstMonthlyPerf: 2,
@@ -72,7 +71,6 @@ describe('useStakingPools', () => {
         expect(result.current.data).toHaveLength(3);
         expect(useQueryMock.mock.calls[0][1]).toEqual({
             notifyOnNetworkStatusChange: true,
-            pollInterval: 600000,
             variables: {
                 first: 50,
                 firstMonthlyPerf: 2,
