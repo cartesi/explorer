@@ -46,7 +46,6 @@ describe('useBlocks hook', () => {
                     node: undefined,
                 },
             },
-            pollInterval: 30000,
             notifyOnNetworkStatusChange: true,
         });
     });
@@ -71,7 +70,6 @@ describe('useBlocks hook', () => {
                 skip: 0,
                 count,
             },
-            pollInterval: 30000,
             notifyOnNetworkStatusChange: true,
         });
     });
