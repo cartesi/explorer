@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.4] - 2024-10-22
+
+-   Added capability for walletconnect to verify the explorer registered domains.
+
 ## [3.8.3] - 2024-08-07
 
 -   Removed graphQL polling.
@@ -379,7 +383,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.3...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.4...HEAD
+[3.8.4]: https://github.com/cartesi/explorer/compare/v3.8.4...v3.8.3
 [3.8.3]: https://github.com/cartesi/explorer/compare/v3.8.3...v3.8.2
 [3.8.2]: https://github.com/cartesi/explorer/compare/v3.8.2...v3.8.1
 [3.8.1]: https://github.com/cartesi/explorer/compare/v3.8.1...v3.8.0
