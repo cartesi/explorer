@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.4] - 2024-10-22
+
+-   Added capability for walletconnect to verify the explorer registered domains.
+
 ## [3.8.3] - 2024-08-07
 
 -   Removed graphQL polling.
