@@ -53,9 +53,9 @@ describe('Staking Tab Navigation', () => {
 
     it('Should lead to pool info page', () => {
         renderComponent();
-        expect(screen.getByText('Pool Info').getAttribute('href')).toBe(
-            `/stake/${address}`
-        );
+        expect(
+            screen.getByText('Pool Info').closest('a').getAttribute('href')
+        ).toBe(`/stake/${address}`);
     });
 
     it('Should display stake label', () => {
@@ -65,9 +65,9 @@ describe('Staking Tab Navigation', () => {
 
     it('Should lead to pool stake page', () => {
         renderComponent();
-        expect(screen.getByText('Stake').getAttribute('href')).toBe(
-            `/stake/${address}/stake`
-        );
+        expect(
+            screen.getByText('Stake').closest('a').getAttribute('href')
+        ).toBe(`/stake/${address}/stake`);
     });
 
     it('Should activate stake tab', () => {
