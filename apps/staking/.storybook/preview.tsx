@@ -15,7 +15,7 @@ import { Fonts, SelectedChain, theme } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { StoryContext } from '@storybook/react';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { withPerformance } from 'storybook-addon-performance';
 import Web3Container from '../src/components/Web3Container';
 
@@ -32,7 +32,7 @@ export const parameters = {
         },
     },
     nextRouter: {
-        Provider: RouterContext.Provider,
+        Provider: AppRouterContext.Provider,
     },
     viewport: {
         viewports: MINIMAL_VIEWPORTS,
