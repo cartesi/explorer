@@ -7,7 +7,6 @@ const modules = [
     '@explorer/utils',
     '@explorer/services',
 ];
-const withTM = require('next-transpile-modules')(modules);
 
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -16,8 +15,9 @@ const ContentSecurityPolicy = `
   frame-ancestors 'self' https://app.safe.global;
 `;
 
-module.exports = withTM({
+module.exports = {
     reactStrictMode: true,
+    transpilePackages: modules,
     async headers() {
         return [
             {
@@ -34,4 +34,4 @@ module.exports = withTM({
             },
         ];
     },
-});
+};
