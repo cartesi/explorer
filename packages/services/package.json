@@ -17,8 +17,8 @@
         "tsconfig": "*",
         "typescript": "^4.9.0",
         "@explorer/prettier-config": "*",
-        "@types/react": "^18.0.21",
-        "@types/react-dom": "^18.0.6",
+        "@types/react": "18.3.12",
+        "@types/react-dom": "18.3.1",
         "@typechain/ethers-v5": "^7.1.2"
     },
     "dependencies": {
