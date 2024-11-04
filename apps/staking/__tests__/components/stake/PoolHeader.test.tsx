@@ -73,7 +73,8 @@ describe('Pool Header', () => {
             isManager: true,
         });
 
-        const link = screen.getByTestId('pool-management-link').closest('a');
+        const link = screen.getByTestId('pool-management-link')
+            .parentNode as HTMLElement;
 
         expect(link).toBeInTheDocument();
         expect(link.getAttribute('href')).toBe(`/pools/${query.pool}/manage`);
@@ -86,7 +87,8 @@ describe('Pool Header', () => {
             isManager: true,
         });
 
-        const link = screen.getByTestId('pool-management-link').closest('a');
+        const link = screen.getByTestId('pool-management-link')
+            .parentNode as HTMLElement;
 
         expect(link).toBeInTheDocument();
         expect(link.getAttribute('href')).toBe(
