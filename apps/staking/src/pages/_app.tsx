@@ -13,7 +13,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '@explorer/ui';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
+import { FC, useEffect, ReactNode } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 
@@ -21,15 +21,20 @@ import { Fonts } from '@explorer/ui';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import PageHead from '../components/PageHead';
 
+type ComponentType = FC<{ children: ReactNode }>;
+
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
-});
+}) as ComponentType;
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
-});
+}) as ComponentType;
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({
+    Component,
+    pageProps,
+}: AppProps & { Component: ComponentType }) => {
     useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
             TagManager.initialize({
