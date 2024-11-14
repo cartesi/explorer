@@ -299,6 +299,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                 justifySelf="flex-end"
                 justifyContent="flex-end"
                 alignItems="flex-end"
+                w="full"
                 mt={2}
             >
                 <TransactionBanner
