@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.5] - 2024-11-25
+
+-   Fix UI bug in the Pool settings section where fields were misaligned.
+-   UI framework and core render libraries upgraded.
+
 ## [3.8.4] - 2024-10-22
 
 -   Added capability for walletconnect to verify the explorer registered domains.
@@ -383,7 +388,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.4...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.5...HEAD
+[3.8.5]: https://github.com/cartesi/explorer/compare/v3.8.5...v3.8.4
 [3.8.4]: https://github.com/cartesi/explorer/compare/v3.8.4...v3.8.3
 [3.8.3]: https://github.com/cartesi/explorer/compare/v3.8.3...v3.8.2
 [3.8.2]: https://github.com/cartesi/explorer/compare/v3.8.2...v3.8.1
