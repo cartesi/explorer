@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, FunctionComponent, useState } from 'react';
+import React, { FC, FunctionComponent, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import {
     Button,
@@ -18,10 +18,10 @@ import {
     Spinner,
     StackProps,
     Tag,
-    TagLabel,
     TagCloseButton,
-    VStack,
+    TagLabel,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
 import { FaEllipsisH } from 'react-icons/fa';
 
@@ -34,6 +34,7 @@ import BlockCard from '../../components/block/BlockCard';
 import SearchInput from '../../components/SearchInput';
 import PageHeader from '../../components/PageHeader';
 import PageHead from '../../components/PageHead';
+import { debounce } from 'lodash/fp';
 
 interface FilterProps {
     label: string;
@@ -123,16 +124,25 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const [searchKey, setSearchKey] = useState<string>(blockId);
+    const [debouncedSearchKey, setDebouncedSearchKey] = useState(searchKey);
 
     // list of all blocks, unfiltered
     const all = useBlocks(undefined, 20);
 
     // list of blocks filtered by producer
-    const byProducer = useBlocks({ producer: searchKey }, 20);
+    const byProducer = useBlocks({ producer: debouncedSearchKey }, 20);
 
     // list of blocks filtered by node
-    const byNode = useBlocks({ node: searchKey }, 20);
+    const byNode = useBlocks({ node: debouncedSearchKey }, 20);
     const pageBg = useColorModeValue('white', 'dark.gray.primary');
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Lodash debounce needs to be set up like this in react context
+    const debounced = useCallback(
+        debounce(500, (nextValue: string) => {
+            setDebouncedSearchKey(nextValue);
+        }),
+        []
+    );
 
     return (
         <Layout>
@@ -141,7 +151,12 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
             <PageHeader title="Blocks">
                 <SearchInput
                     w={[100, 200, 400, 400]}
-                    onSearchChange={(e) => setSearchKey(e.target.value)}
+                    placeholder="Search by producer"
+                    onSearchChange={(e) => {
+                        const nextValue = e.target.value;
+                        debounced(nextValue);
+                        setSearchKey(nextValue);
+                    }}
                 />
             </PageHeader>
 

@@ -31,12 +31,12 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
         'white',
         'dark.gray.tertiary'
     );
-    const iconColor = useColorModeValue('gray.900', 'white');
+    const textColor = useColorModeValue('gray.900', 'white');
 
     return (
         <InputGroup {...rest}>
             <InputLeftElement pointerEvents="none">
-                <SearchIcon color={iconColor} />
+                <SearchIcon color={textColor} />
             </InputLeftElement>
 
             <Input
@@ -44,6 +44,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
                     color: placeholderColor,
                 }}
                 borderRadius="3px"
+                color={textColor}
                 placeholder={placeholder}
                 backgroundColor={searchBackgroundColor}
                 onChange={onSearchChange}
