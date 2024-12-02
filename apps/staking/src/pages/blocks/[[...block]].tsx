@@ -123,8 +123,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     // TODO: use blockId
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
-    const [searchKey, setSearchKey] = useState<string>(blockId);
-    const [debouncedSearchKey, setDebouncedSearchKey] = useState(searchKey);
+    const [debouncedSearchKey, setDebouncedSearchKey] = useState(blockId);
 
     // list of all blocks, unfiltered
     const all = useBlocks(undefined, 20);
@@ -155,7 +154,6 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                     onSearchChange={(e) => {
                         const nextValue = e.target.value;
                         debounced(nextValue);
-                        setSearchKey(nextValue);
                     }}
                 />
             </PageHeader>
@@ -164,7 +162,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 <BlocksChart result={all} />
             </HStack>
 
-            {!searchKey && (
+            {!debouncedSearchKey && (
                 <BlockList
                     chainId={chainId}
                     result={all}
@@ -178,7 +176,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 chainId={chainId}
                 result={byProducer}
                 filterField="producer"
-                filterValue={searchKey}
+                filterValue={debouncedSearchKey}
                 w="100%"
                 px="6vw"
                 py="5"
@@ -188,7 +186,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 chainId={chainId}
                 result={byNode}
                 filterField="node"
-                filterValue={searchKey}
+                filterValue={debouncedSearchKey}
                 w="100%"
                 px="6vw"
                 py="5"
