@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.6] - 2024-12-05
+
+-   Fix a UI bug in the block's page search box. The text is now more visible when using light mode.
+
 ## [3.8.5] - 2024-11-25
 
 -   Fix UI bug in the Pool settings section where fields were misaligned.
@@ -388,7 +392,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.5...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.6...HEAD
+[3.8.6]: https://github.com/cartesi/explorer/compare/v3.8.6...v3.8.5
 [3.8.5]: https://github.com/cartesi/explorer/compare/v3.8.5...v3.8.4
 [3.8.4]: https://github.com/cartesi/explorer/compare/v3.8.4...v3.8.3
 [3.8.3]: https://github.com/cartesi/explorer/compare/v3.8.3...v3.8.2
