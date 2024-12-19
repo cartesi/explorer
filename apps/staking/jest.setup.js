@@ -3,6 +3,18 @@
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-canvas-mock';
 
+jest.mock('@explorer/services', () => {
+    const original = jest.requireActual('@explorer/services');
+    return {
+        __esModule: true,
+        ...original,
+        useENS: jest.fn().mockImplementation((address) => ({
+            address,
+            resolving: false,
+        })),
+    };
+});
+
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation((query) => ({
