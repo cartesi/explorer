@@ -6,7 +6,7 @@
     "license": "MIT",
     "scripts": {
         "storybook": "start-storybook -p 6007",
-        "test": "jest",
+        "test": "dotenv -- jest",
         "test:ci": "jest --runInBand --coverage",
         "lint": "TIMING=1 eslint --ext .tsx,.ts src/"
     },
