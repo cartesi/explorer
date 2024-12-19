@@ -94,3 +94,7 @@ export const STAKING_POOLS_IDS = gql`
         }
     }
 `;
+
+export interface StakingPoolsIdsQuery {
+    stakingPools: { id: string }[];
+}
