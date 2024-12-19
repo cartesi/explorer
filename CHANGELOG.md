@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.0] - 2024-12-20
+
+-   Improve how the ENS address information is provided if available through the UI. The new approach considerably improves efficiency in terms of on-chain reads.
+
 ## [3.8.6] - 2024-12-05
 
 -   Fix a UI bug in the block's page search box. The text is now more visible when using light mode.
@@ -392,7 +396,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.8.6...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.0...HEAD
+[3.9.0]: https://github.com/cartesi/explorer/compare/v3.9.0...v3.8.6
 [3.8.6]: https://github.com/cartesi/explorer/compare/v3.8.6...v3.8.5
 [3.8.5]: https://github.com/cartesi/explorer/compare/v3.8.5...v3.8.4
 [3.8.4]: https://github.com/cartesi/explorer/compare/v3.8.4...v3.8.3
