@@ -27,6 +27,28 @@ export const USER = gql`
     }
 `;
 
+export const IS_CARTESI_USER_QUERY = gql`
+    query user($id: ID!) {
+        user(id: $id) {
+            id
+        }
+
+        poolUser(id: $id) {
+            id
+        }
+
+        node(id: $id) {
+            id
+        }
+    }
+`;
+
+export interface IsCartesiUserQuery {
+    user: { id: string } | null;
+    poolUser: { id: string } | null;
+    node: { id: string } | null;
+}
+
 export const userQueryVars = {
     id: '0',
 };

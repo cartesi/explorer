@@ -34,3 +34,15 @@ export const DOMAINS = gql`
         }
     }
 `;
+
+export type GetEnsDomainsQuery = {
+    __typename?: 'Query';
+    domains: Array<{
+        __typename?: 'Domain';
+        id: string;
+        name?: string | null;
+        labelName?: string | null;
+        createdAt: any;
+        resolvedAddress?: { __typename?: 'Account'; id: string } | null;
+    }>;
+};

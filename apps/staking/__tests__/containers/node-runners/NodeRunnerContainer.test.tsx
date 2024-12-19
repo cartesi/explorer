@@ -10,9 +10,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { ENSEntry, useENS } from '@explorer/services';
 import { UseWallet } from '@explorer/wallet/src/useWallet';
 import {
-    act,
     findByText,
     fireEvent,
     getByRole,
@@ -24,10 +24,10 @@ import {
 } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { NextRouter } from 'next/router';
+import { act } from 'react';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
-import { ENSEntry, useENS } from '../../../src/services/ens';
 import { useCartesiToken } from '../../../src/services/token';
 import { useMessages } from '../../../src/utils/messages';
 import { withChakraTheme } from '../../test-utilities';
@@ -40,7 +40,7 @@ import {
 } from '../mocks';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
-const useENSMod = '../../../src/services/ens';
+const useENSMod = '@explorer/services';
 
 jest.mock('../../../src/services/token', () => {
     return {
