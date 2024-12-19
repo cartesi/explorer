@@ -13,13 +13,15 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '@explorer/ui';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { FC, useEffect, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 
+import { ENSDataProvider } from '@explorer/services';
 import { Fonts } from '@explorer/ui';
-import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import PageHead from '../components/PageHead';
+import { GA4TrackerProvider } from '../contexts/ga4Tracker';
+import { AddressEns } from '../services/server/ens/types';
 
 type ComponentType = FC<{ children: ReactNode }>;
 
@@ -31,16 +33,36 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
 }) as ComponentType;
 
+const getENSCachedData = () => {
+    const host = location.origin;
+    const endpoint = `${host}/api/mainnet/ens`;
+    return fetch(endpoint)
+        .then((response) => response.json())
+        .catch((reason) => {
+            console.error(
+                `Fetching ENS cached data failed.\nReason: ${reason.message}`
+            );
+            return { data: [] };
+        });
+};
+
 const App = ({
     Component,
     pageProps,
 }: AppProps & { Component: ComponentType }) => {
+    const [ensData, setEnsData] = useState<AddressEns[]>([]);
+
     useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
             TagManager.initialize({
                 gtmId: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
             });
         }
+
+        (async () => {
+            const { data }: { data: AddressEns[] } = await getENSCachedData();
+            setEnsData(data);
+        })();
     }, []);
 
     return (
@@ -51,13 +73,15 @@ const App = ({
             />
             <Fonts />
             <FeatureFlagProvider>
-                <Web3Container>
-                    <GA4TrackerProvider>
-                        <ApolloContainer>
-                            <Component {...pageProps} />
-                        </ApolloContainer>
-                    </GA4TrackerProvider>
-                </Web3Container>
+                <ENSDataProvider value={ensData}>
+                    <Web3Container>
+                        <GA4TrackerProvider>
+                            <ApolloContainer>
+                                <Component {...pageProps} />
+                            </ApolloContainer>
+                        </GA4TrackerProvider>
+                    </Web3Container>
+                </ENSDataProvider>
             </FeatureFlagProvider>
         </ChakraProvider>
     );
