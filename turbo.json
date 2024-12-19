@@ -1,18 +1,46 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalEnv": [
+        "NEXT_PUBLIC_ENVIRONMENT",
+        "NEXT_PUBLIC_UNLEASH_PROXY_HOST",
+        "NEXT_PUBLIC_UNLEASH_PROXY_CLIENT_KEY",
+        "NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID",
+        "NEXT_PUBLIC_PROJECT_ID",
+        "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID",
+        "NEXT_PUBLIC_MAINNET_GRAPHQL_URL",
+        "NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL",
+        "ENS_GRAPHQL_URL",
+        "ENS_ENTRY_TTL",
+        "TURSO_DATABASE_URL",
+        "TURSO_AUTH_TOKEN",
+        "CRON_SECRET"
+    ],
     "pipeline": {
         "export": {
             "dependsOn": ["build"]
         },
         "build": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["^build", "db:prod:migrate"],
             "outputs": ["dist/**", ".next/**"]
         },
         "lint": {
             "outputs": []
         },
         "dev": {
+            "dependsOn": ["db:dev:migrate"],
             "cache": false
+        },
+        "db:generate": {
+            "inputs": ["src/db/*.ts"]
+        },
+        "db:migrate": {
+            "outputs": []
+        },
+        "db:dev:migrate": {
+            "outputs": []
+        },
+        "db:prod:migrate": {
+            "outputs": []
         },
         "build-storybook": {
             "outputs": ["dist/**", "storybook-static/**"]
