@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.9.0] - 2024-12-20
+## [3.9.0] - 2025-01-07
 
 -   Improve how the ENS address information is provided if available through the UI. The new approach considerably improves efficiency in terms of on-chain reads.
 
