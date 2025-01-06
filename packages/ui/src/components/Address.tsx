@@ -68,7 +68,8 @@ const Address: FC<AddressProps> = (props) => {
     } = props;
 
     // resolve ENS entry from address
-    const addressEnsInfo = useENS(address);
+    const withEns = ens === true;
+    const addressEnsInfo = useENS(address, { enabled: withEns });
     const ensEntry = ens ? addressEnsInfo : null;
 
     const { hasCopied, onCopy } = useClipboard(address);

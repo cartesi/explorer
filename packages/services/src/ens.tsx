@@ -65,7 +65,7 @@ const getENSInfo = (address: string, chainId: number): GetENSInfoResult => {
     });
 };
 
-const useCachedEntry = (address: string) => {
+const useCachedEntry = (address: string, enabled: boolean) => {
     const { chainId } = useWallet();
     const cachedData = useContext(ENSDataContext);
     const [entry, setEntry] = useState<Partial<ENSData>>({
@@ -75,8 +75,7 @@ const useCachedEntry = (address: string) => {
 
     useEffect(() => {
         const isValidAddress = ethers.utils.isAddress(address ?? '');
-
-        if (!isValidAddress) {
+        if (!isValidAddress || !enabled) {
             const entry = { address, hasEns: false, resolving: false };
             setEntry(entry);
             return;
@@ -114,7 +113,7 @@ const useCachedEntry = (address: string) => {
                     setEntry(newEntry);
                 });
         }
-    }, [cachedData, address, chainId]);
+    }, [cachedData, address, chainId, enabled]);
 
     return entry;
 };
@@ -151,13 +150,20 @@ export interface ENSEntry {
     resolving: boolean;
 }
 
+type Opts = { enabled: boolean };
+
 /**
  * This hook provides a easy way to display ENS information about a ETH address.
+ * When opts params are omitted the fetching is enabled in case of cache miss. Otherwise,
+ * it will just cache and return the address passed down.
  * @param address ETH address to be resolved
+ * @param opts Option to fine grained control on fetching ENS info.
  * @returns ENSEntry with the address, and name if address can be resolved to a name
  */
-export const useENS = (address: string): ENSEntry => {
-    const cachedEnsEntry = useCachedEntry(address);
+export const useENS = (address: string, opts?: Opts): ENSEntry => {
+    const isEnabled = opts === undefined || opts.enabled;
+    const cachedEnsEntry = useCachedEntry(address, isEnabled);
+
     return {
         address: cachedEnsEntry?.address ?? address,
         resolving: cachedEnsEntry?.resolving ?? false,
