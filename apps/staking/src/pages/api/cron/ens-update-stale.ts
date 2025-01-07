@@ -20,6 +20,13 @@ const cronSecret = process.env.CRON_SECRET;
 const isAuthorized = (req: NextApiRequest) =>
     req.headers.authorization === `Bearer ${cronSecret}`;
 
+/**
+ * This function will be allowed to run for a maximum of 30 seconds.
+ */
+export const config = {
+    maxDuration: 30,
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!isAuthorized(req))
         return handleResponse({ ok: false, error: 'unauthorized' }, res);
