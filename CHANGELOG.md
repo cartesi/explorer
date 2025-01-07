@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.1] - 2025-01-08
+
+-   Increased only the execution duration for the function that handles the update of ENS entries marked as stale.
+
 ## [3.9.0] - 2025-01-07
 
--   Improve how the ENS address information is provided if available through the UI. The new approach considerably improves efficiency in terms of on-chain reads.
+-   Improved how the ENS address information is provided if available through the UI. The new approach considerably improves efficiency in terms of on-chain reads.
 
 ## [3.8.6] - 2024-12-05
 
@@ -396,7 +400,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.1...HEAD
+[3.9.1]: https://github.com/cartesi/explorer/compare/v3.9.1...v3.9.0
 [3.9.0]: https://github.com/cartesi/explorer/compare/v3.9.0...v3.8.6
 [3.8.6]: https://github.com/cartesi/explorer/compare/v3.8.6...v3.8.5
 [3.8.5]: https://github.com/cartesi/explorer/compare/v3.8.5...v3.8.4
