@@ -39,8 +39,8 @@ const useFieldValidator = <FormValidatorType, ValidationResultType>({
     useEffect(() => {
         if (!isFunction(onValidationChange)) return;
 
-        const validation: ValidationResult = {
-            name: fieldName as string,
+        const validation: ValidationResult<ValidationResultType> = {
+            name: fieldName as ValidationResultType,
             isValid: isEmpty(inputErrors),
         };
         if (!isEmpty(inputErrors)) {

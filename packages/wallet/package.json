@@ -28,7 +28,7 @@
         "jest-environment-jsdom": "29.3.1",
         "jest-mock-extended": "2.0.9",
         "tsconfig": "*",
-        "typescript": "4.9.4"
+        "typescript": "5.7.3"
     },
     "dependencies": {
         "@explorer/utils": "*",

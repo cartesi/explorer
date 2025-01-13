@@ -81,11 +81,19 @@ export const formatValue = (
     return stringValue;
 };
 
-export const formatNumberValue = (
+type IntlUnit = keyof Intl.NumberFormatOptionsStyleRegistry;
+
+type FormatNumberValueFn = (
+    value: number,
+    fractionDigits?: number,
+    unit?: IntlUnit
+) => string;
+
+export const formatNumberValue: FormatNumberValueFn = (
     value: number,
     fractionDigits = 2,
     unit = 'decimal'
-): string => {
+) => {
     const numberFormat = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: fractionDigits,
