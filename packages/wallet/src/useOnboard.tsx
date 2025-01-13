@@ -41,6 +41,8 @@ const WC_PROJECT_ID = process.env
 const getRPC = (networkName: string): string =>
     `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
 
+console.info(`dapp-url: ${dappUrl}`);
+
 const gnosisSafeLabels = ['gnosis safe', 'safe'];
 const sdkWallets = new Set([...gnosisSafeLabels]);
 const injectedWallets = new Set(['metamask', 'coinbase']);

@@ -13,6 +13,12 @@ declare namespace NodeJS {
         NEXT_PUBLIC_MAINNET_GRAPHQL_URL: string;
         NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL: string;
         /**
+         * The fully-qualifies domain name of your deployed DAPP.
+         * @description It is strongly recommended to supply a dappUrl to the WalletConnect initial config
+         * as it is required by some wallets (i.e. MetaMask) to allow connection.
+         */
+        NEXT_PUBLIC_DAPP_URL: string;
+        /**
          * Usually a subgraph ENS graphql URL with your own API/key.
          * More info at {@link https://thegraph.com/explorer/subgraphs/5XqPmWe6gjyrJtFn9cLy237i4cWw2j9HcUJEXsP5qGtH?view=Query&chain=arbitrum-one}
          */
