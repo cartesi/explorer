@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { useStakingPoolFactory } from '../../src/services/poolFactory';
-import { useTransaction, Transaction } from '../../src/services/transaction';
+import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
 import { Web3Provider } from '@ethersproject/providers';
 import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
+import { useWallet } from '@explorer/wallet/src/useWallet';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { useStakingPoolFactoryContract } from '../../src/services/contracts';
-import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
-import { act } from 'react-dom/test-utils';
+import { useStakingPoolFactory } from '../../src/services/poolFactory';
+import { Transaction, useTransaction } from '../../src/services/transaction';
 
 jest.mock('@explorer/wallet/src/useWallet');
 

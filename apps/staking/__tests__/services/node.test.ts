@@ -9,21 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, waitFor } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { isAddress } from '@ethersproject/address';
-import { useBalance } from '../../src/services/eth';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWorkerManagerContract } from '../../src/services/contracts';
-import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
-import { usePoSContract, usePoS1Contract } from '../../src/services/contracts';
-import { Transaction, useTransaction } from '../../src/services/transaction';
-import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
 import { PoS } from '@cartesi/pos';
 import { PoS as PoS1 } from '@cartesi/pos-1.0';
-import { useNode } from '../../src/services/node';
-import { act } from 'react-dom/test-utils';
+import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
+import { isAddress } from '@ethersproject/address';
+import { Web3Provider } from '@ethersproject/providers';
+import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
+import { useWallet } from '@explorer/wallet/src/useWallet';
+import { renderHook, waitFor } from '@testing-library/react';
 import { BigNumber } from 'ethers';
+import { act } from 'react';
+import {
+    usePoS1Contract,
+    usePoSContract,
+    useWorkerManagerContract,
+} from '../../src/services/contracts';
+import { useBalance } from '../../src/services/eth';
+import { useNode } from '../../src/services/node';
+import { Transaction, useTransaction } from '../../src/services/transaction';
 
 jest.mock('@explorer/wallet/src/useWallet');
 jest.mock('@ethersproject/address', () => {
