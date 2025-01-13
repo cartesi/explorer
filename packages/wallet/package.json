@@ -30,6 +30,8 @@
     },
     "dependencies": {
         "@explorer/utils": "*",
+        "@safe-global/safe-apps-provider": "^0.18.5",
+        "@safe-global/safe-apps-sdk": "^9.1.0",
         "@unleash/proxy-client-react": "3.6.0",
         "@web3-onboard/coinbase": "^2.4.1",
         "@web3-onboard/core": "^2.23.1",
