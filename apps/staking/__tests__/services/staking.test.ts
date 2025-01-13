@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { useStaking } from '../../src/services/staking';
-import { useStakingContract } from '../../src/services/contracts';
-import { useTransaction, Transaction } from '../../src/services/transaction';
-import { BigNumber, constants } from 'ethers';
 import { StakingImpl } from '@cartesi/pos';
+import { renderHook, waitFor } from '@testing-library/react';
+import { BigNumber, constants } from 'ethers';
+import { act } from 'react';
+import { useStakingContract } from '../../src/services/contracts';
+import { useStaking } from '../../src/services/staking';
+import { Transaction, useTransaction } from '../../src/services/transaction';
 
 jest.mock('../../src/services/contracts', () => {
     const originalModule = jest.requireActual('../../src/services/contracts');

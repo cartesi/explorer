@@ -16,7 +16,7 @@ import {
 } from '@cartesi/staking-pool';
 import { renderHook, waitFor } from '@testing-library/react';
 import { BigNumber, FixedNumber } from 'ethers';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 import {
     useFeeContract,
     useFlatRateCommissionContract,

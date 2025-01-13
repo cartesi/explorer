@@ -10,9 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { BigNumber } from 'ethers';
 import userEvent from '@testing-library/user-event';
+import { BigNumber } from 'ethers';
+import { act } from 'react';
 import PoolsOverview from '../../../../src/components/stake/components/PoolsOverview';
 import { withChakraTheme } from '../../../test-utilities';
 
