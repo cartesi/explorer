@@ -25,9 +25,5 @@ export const toCTSI = (amount: BigNumberish): FixedNumber => {
     return FixedNumber.from(formatUnits(amount, 18));
 };
 
-export const isInfinite = (amount: BigNumberish): boolean => {
-    return amount > 1e9;
-};
-
 export const toBigNumber = (value: number, decimals = 18) =>
     parseUnits(value.toString(), decimals);
