@@ -17,7 +17,7 @@ import Onboard, {
     WalletState,
 } from '@web3-onboard/core';
 import { ConnectedChain } from '@web3-onboard/core/dist/types';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 import { UnsupportedNetworkError } from '../src';
 import { WalletType } from '../src/definitions';
 import {
