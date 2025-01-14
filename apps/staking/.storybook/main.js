@@ -16,7 +16,7 @@ module.exports = {
     refs: {
         '@explorer/ui': {
             title: 'Explorer UI',
-            url: 'http://localhost:6007',
+            url: 'http://127.0.0.1:6007',
         },
     },
     staticDirs: ['../public'],
@@ -28,6 +28,9 @@ module.exports = {
         '../src/**/*.stories.mdx',
         '../src/**/*.stories.@(js|jsx|ts|tsx)',
     ],
+    typescript: {
+        reactDocgen: 'react-docgen-typescript-plugin',
+    },
     addons: [
         'storybook-addon-apollo-client',
         'storybook-addon-performance/register',
@@ -48,7 +51,13 @@ module.exports = {
                               !/ethers/.test(filename) &&
                               !/@walletconnect/.test(filename) &&
                               !/@web3modal/.test(filename) &&
-                              !/valtio\/vanilla/.test(filename)
+                              !/valtio\/vanilla/.test(filename) &&
+                              !/@safe-global/.test(filename) &&
+                              !/viem/.test(filename) &&
+                              !/@web3-onboard/.test(filename) &&
+                              !/abitype/.test(filename) &&
+                              !/unstorage/.test(filename) &&
+                              !/ox/.test(filename)
                           );
                       },
                   }
