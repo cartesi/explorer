@@ -25,10 +25,14 @@ module.exports = {
         '../src/stories/**/*.stories.mdx',
         '../src/stories/**/*.stories.@(js|jsx|ts|tsx)',
     ],
+    typescript: {
+        reactDocgen: 'react-docgen-typescript-plugin',
+    },
     addons: [
         'storybook-addon-performance/register',
         '@storybook/addon-links',
         '@storybook/addon-essentials',
+        'storybook-addon-next-router',
     ],
     webpackFinal: async (config) => {
         config.module.rules = config.module.rules.map((r) =>
@@ -41,7 +45,15 @@ module.exports = {
                               !/@chakra-ui/.test(filename) &&
                               !/@zag-js/.test(filename) &&
                               !/ethers/.test(filename) &&
-                              !/@walletconnect/.test(filename)
+                              !/@walletconnect/.test(filename) &&
+                              !/@web3modal/.test(filename) &&
+                              !/valtio\/vanilla/.test(filename) &&
+                              !/@safe-global/.test(filename) &&
+                              !/viem/.test(filename) &&
+                              !/@web3-onboard/.test(filename) &&
+                              !/abitype/.test(filename) &&
+                              !/unstorage/.test(filename) &&
+                              !/ox/.test(filename)
                           );
                       },
                   }
@@ -56,6 +68,8 @@ module.exports = {
                 type: 'javascript/auto',
             },
         ];
+
+        config.node = { fs: 'empty' };
 
         return {
             ...config,
