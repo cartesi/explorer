@@ -13,6 +13,7 @@ import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import { Fonts, theme } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { useEffect } from 'react';
 import { withPerformance } from 'storybook-addon-performance';
 
@@ -23,6 +24,9 @@ export const parameters = {
             color: /(background|color)$/i,
             date: /Date$/,
         },
+    },
+    nextRouter: {
+        Provider: RouterContext.Provider,
     },
     viewport: {
         viewports: MINIMAL_VIEWPORTS,
