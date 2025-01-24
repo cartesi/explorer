@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, FunctionComponent, useState, useCallback } from 'react';
+import React, { FC, FunctionComponent, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
     Button,
@@ -34,7 +34,7 @@ import BlockCard from '../../components/block/BlockCard';
 import SearchInput from '../../components/SearchInput';
 import PageHeader from '../../components/PageHeader';
 import PageHead from '../../components/PageHead';
-import { debounce } from 'lodash/fp';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface FilterProps {
     label: string;
@@ -124,6 +124,7 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 
     const [debouncedSearchKey, setDebouncedSearchKey] = useState(blockId);
+    const handleDebouncedSearch = useDebounce(setDebouncedSearchKey);
 
     // list of all blocks, unfiltered
     const all = useBlocks(undefined, 20);
@@ -135,14 +136,6 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
     const byNode = useBlocks({ node: debouncedSearchKey }, 20);
     const pageBg = useColorModeValue('white', 'dark.gray.primary');
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Lodash debounce needs to be set up like this in react context
-    const debounced = useCallback(
-        debounce(500, (nextValue: string) => {
-            setDebouncedSearchKey(nextValue);
-        }),
-        []
-    );
-
     return (
         <Layout>
             <PageHead title="Cartesi Proof of Stake Blocks" />
@@ -151,10 +144,9 @@ const Blocks: FC<BlocksProps> = ({ chainId }) => {
                 <SearchInput
                     w={[100, 200, 400, 400]}
                     placeholder="Search by producer"
-                    onSearchChange={(e) => {
-                        const nextValue = e.target.value;
-                        debounced(nextValue);
-                    }}
+                    onSearchChange={(e) =>
+                        handleDebouncedSearch(e.target.value)
+                    }
                 />
             </PageHeader>
 
