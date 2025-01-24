@@ -17,7 +17,6 @@ import {
     Heading,
     HStack,
     Select,
-    Text,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
@@ -48,6 +47,7 @@ import {
     getPoolsStaticPaths,
 } from '../../../utils/staticGeneration';
 import PerPageSelect from '../../../components/PerPageSelect';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 export async function getStaticPaths() {
     return getPoolsStaticPaths();
@@ -76,7 +76,10 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     const stakingPool = useStakingPoolQuery(address);
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-    const [search, setSearch] = useState<string | undefined>(undefined);
+    const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>(
+        undefined
+    );
+    const handleDebouncedSearch = useDebounce(setDebouncedSearch);
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
     const poolCreationDate = DateTime.fromJSDate(
         new Date((stakingPool?.timestamp || 0) * 1000)
@@ -133,14 +136,14 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
         address
     );
     const balances = usePoolBalances(
-        search,
-        pageNumber,
+        debouncedSearch,
+        debouncedSearch ? 0 : pageNumber,
         'shares',
         rowsPerPage,
         address
     );
     const options = Array.from({ length: 3 }).map(
-        (item, index) => (index + 1) * 10
+        (_, index) => (index + 1) * 10
     );
     const { poolBalances = [] } = balances.data ?? {};
     const totalPages = Math.ceil(totalUsers / rowsPerPage);
@@ -329,7 +332,7 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
                                 w={[100, 200, 400, 500]}
                                 flex={{ base: 1, md: 'initial' }}
                                 onSearchChange={(e) =>
-                                    setSearch(e.target.value)
+                                    handleDebouncedSearch(e.target.value)
                                 }
                             />
                         </HStack>
@@ -340,7 +343,7 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
                             data={balancesData}
                         />
 
-                        {!search &&
+                        {!debouncedSearch &&
                             balancesData.length > 0 &&
                             totalPages > 1 && (
                                 <Flex
