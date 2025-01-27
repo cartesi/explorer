@@ -24,9 +24,6 @@ module.exports = {
         // Handle image imports
         // https://jestjs.io/docs/webpack#handling-static-assets
         '^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i': `<rootDir>/__mocks__/fileMock.js`,
-
-        // Handle module aliases
-        uuid: '<rootDir>/../../node_modules/uuid/dist/umd/uuid.min.js',
     },
     testMatch: [
         '**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)',
