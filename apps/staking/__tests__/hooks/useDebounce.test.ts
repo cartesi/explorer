@@ -6,20 +6,10 @@ describe('Hooks/useDebounce', () => {
         const callback = jest.fn();
         const delay = 400;
         const { result } = renderHook(() => useDebounce(callback, delay));
+        ['h', 'he', 'hell', 'hello'].forEach((arg) => result.current(arg));
 
-        const functionInvocations = Array.from({ length: 4 }).map(
-            () =>
-                new Promise<void>((resolve) => {
-                    setTimeout(() => {
-                        result.current();
-                        resolve();
-                    }, 100);
-                })
-        );
-        await Promise.all(functionInvocations);
+        await waitFor(() => expect(callback).toHaveBeenCalledTimes(1));
 
-        await waitFor(() => expect(callback).toHaveBeenCalledTimes(1), {
-            timeout: delay + 10,
-        });
+        expect(callback).toHaveBeenCalledWith('hello');
     });
 });
