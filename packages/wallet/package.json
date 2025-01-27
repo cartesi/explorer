@@ -34,7 +34,7 @@
         "@explorer/utils": "*",
         "@safe-global/safe-apps-provider": "^0.18.5",
         "@safe-global/safe-apps-sdk": "^9.1.0",
-        "@unleash/proxy-client-react": "3.6.0",
+        "@unleash/proxy-client-react": "^4.5.1",
         "@web3-onboard/coinbase": "^2.4.1",
         "@web3-onboard/core": "^2.23.1",
         "@web3-onboard/gnosis": "^2.3.2",
