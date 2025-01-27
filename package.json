@@ -40,12 +40,12 @@
         "@chakra-ui/theme-tools": "2.0.12",
         "@emotion/react": "11.11.1",
         "@emotion/styled": "11.11.0",
-        "@unleash/proxy-client-react": "3.6.0",
+        "@unleash/proxy-client-react": "^4.5.1",
         "framer-motion": "10.13.0",
         "lcov-result-merger": "4.1.0",
         "react": "18.3.1",
         "react-dom": "18.3.1",
-        "unleash-proxy-client": "2.5.0"
+        "unleash-proxy-client": "^3.7.2"
     },
     "packageManager": "yarn@1.22.19"
 }
