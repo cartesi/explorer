@@ -8,10 +8,24 @@ declare namespace NodeJS {
         NEXT_PUBLIC_UNLEASH_PROXY_HOST: string;
         NEXT_PUBLIC_UNLEASH_PROXY_CLIENT_KEY: string;
         NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID: string;
-        NEXT_PUBLIC_PROJECT_ID: string;
         NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: string;
         NEXT_PUBLIC_MAINNET_GRAPHQL_URL: string;
         NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL: string;
+        /**
+         * the node-rpc endpoint to access ethereum mainnet network.
+         * Default to https://rpc.ankr.com/eth
+         */
+        NEXT_PUBLIC_RPC_URL_1: string;
+        /**
+         * the node-rpc endpoint to access ethereum sepolia network.
+         * Default to 'https://rpc.ankr.com/eth_sepolia'
+         */
+        NEXT_PUBLIC_RPC_URL_11155111: string;
+        /**
+         * the node-rpc endpoint to your local node (e.g. foundry).
+         * Default to http://localhost:8545
+         */
+        NEXT_PUBLIC_RPC_URL_31337: string;
         /**
          * The fully-qualifies domain name of your deployed DAPP.
          * @description It is strongly recommended to supply a dappUrl to the WalletConnect initial config
@@ -36,7 +50,7 @@ declare namespace NodeJS {
         TURSO_AUTH_TOKEN?: string;
 
         /**
-         * A node to fetch mainnet blockchain information. e.g. Alchemy / Infura.
+         * A node to fetch mainnet blockchain information. e.g. Alchemy / Infura. Not exposed to the client.
          */
         HTTP_MAINNET_NODE_RPC: string;
 
