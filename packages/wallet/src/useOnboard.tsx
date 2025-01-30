@@ -32,13 +32,22 @@ import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { WalletType } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 
+type NetworkName = keyof typeof Network;
+
 const SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
-const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const dappUrl = process.env.NEXT_PUBLIC_DAPP_URL;
 const WC_PROJECT_ID = process.env
     .NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string;
-const getRPC = (networkName: string): string =>
-    `https://${networkName}.infura.io/v3/${PROJECT_ID}`;
+
+const rpcs = {
+    MAINNET: process.env.NEXT_PUBLIC_RPC_URL_1 || 'https://rpc.ankr.com/eth',
+    SEPOLIA:
+        process.env.NEXT_PUBLIC_RPC_URL_11155111 ||
+        'https://rpc.ankr.com/eth_sepolia',
+    LOCAL: process.env.NEXT_PUBLIC_RPC_URL_31337 || 'http://localhost:8545',
+} as const;
+
+const getRPC = (networkName: NetworkName): string => rpcs[networkName];
 
 console.info(`dapp-url: ${dappUrl}`);
 
@@ -71,19 +80,19 @@ export const buildConfig = (
             label: 'Ethereum Mainnet',
             rpcUrl: ankrEnabled
                 ? 'https://rpc.ankr.com/eth'
-                : getRPC('mainnet'),
+                : getRPC('MAINNET'),
         },
         {
             id: `0x${convertToHex(Network.LOCAL)}`,
             token: 'ETH',
             label: 'localhost',
-            rpcUrl: 'http://localhost:8545',
+            rpcUrl: getRPC('LOCAL'),
         },
         {
             id: `0x${convertToHex(Network.SEPOLIA)}`,
             token: 'ETH',
             label: 'Sepolia Testnet',
-            rpcUrl: getRPC('sepolia'),
+            rpcUrl: getRPC('SEPOLIA'),
         },
     ].filter((c) => chainIds.includes(c.id));
 
