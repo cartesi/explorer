@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.3] - 2025-02-03
+
+-   Bugfix applied in the user search inside the pool's users page.
+-   Multiple maintenance upgrades done.
+
 ## [3.9.2] - 2025-01-22
 
 -   Bump the minimum version of the runtime engine to nodeJS v22.
@@ -405,7 +410,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.2...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.3...HEAD
+[3.9.3]: https://github.com/cartesi/explorer/compare/v3.9.3...v3.9.2
 [3.9.2]: https://github.com/cartesi/explorer/compare/v3.9.2...v3.9.1
 [3.9.1]: https://github.com/cartesi/explorer/compare/v3.9.1...v3.9.0
 [3.9.0]: https://github.com/cartesi/explorer/compare/v3.9.0...v3.8.6
