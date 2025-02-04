@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { networks } from '@explorer/utils';
 import { isNil } from 'lodash/fp';
 import {
     IS_CARTESI_USER_QUERY,
     IsCartesiUserQuery,
     userQueryVars,
 } from '../../graphql/queries';
+import { networks } from '../../utils/networks';
 import { createApollo } from '../apollo';
 
 export const getChainId = (chainName: string) =>
