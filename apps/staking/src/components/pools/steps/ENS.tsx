@@ -25,12 +25,12 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 import { trim } from 'lodash/fp';
 import { useRouter } from 'next/router';
 import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { useWallet } from '../../../components/wallet';
 import { useStakingPool } from '../../../services/pool';
 import { useMessages } from '../../../utils/messages';
 import { OrderedContent } from '../../OrderedContent';

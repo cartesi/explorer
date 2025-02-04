@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { PoolHeader } from '../../../src/components/stake/PoolHeader';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { NextRouter, useRouter } from 'next/router';
-import { withChakraTheme } from '../../test-utilities';
-import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
 import { useFlag } from '@unleash/proxy-client-react';
+import { NextRouter, useRouter } from 'next/router';
+import { PoolHeader } from '../../../src/components/stake/PoolHeader';
+import { WalletConnectionContextProps } from '../../../src/components/wallet/definitions';
+import { useWallet } from '../../../src/components/wallet/useWallet';
+import { withChakraTheme } from '../../test-utilities';
 
 jest.mock('next/router', () => {
     const originalModule = jest.requireActual('next/router');
@@ -27,7 +27,7 @@ jest.mock('next/router', () => {
 });
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../../src/components/wallet/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('@unleash/proxy-client-react', () => ({

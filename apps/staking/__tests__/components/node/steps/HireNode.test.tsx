@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
-    render,
-    screen,
-    fireEvent,
     act,
     findByText,
+    fireEvent,
+    render,
+    screen,
 } from '@testing-library/react';
-import { useBreakpointValue } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
+import { useAtom } from 'jotai';
+import HireNode from '../../../../src/components/node/steps/HireNode';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
-import HireNode from '../../../../src/components/node/steps/HireNode';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../mocks';
-import { useAtom } from 'jotai';
 
-const walletMod = `@explorer/wallet/src/useWallet`;
+const walletMod = `../../../../src/components/wallet/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 

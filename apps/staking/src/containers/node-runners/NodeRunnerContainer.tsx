@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
-import { UseWallet } from '@explorer/wallet';
 import { useAtom } from 'jotai';
 import { NextRouter } from 'next/router';
 import { useEffect } from 'react';
+import { UseWallet } from '../../components/wallet';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
 import useStakingPools from '../../graphql/hooks/useStakingPools';
 import { Node, StakingPool } from '../../graphql/models';

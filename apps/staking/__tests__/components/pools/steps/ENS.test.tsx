@@ -7,18 +7,18 @@ import {
     screen,
 } from '@testing-library/react';
 
-import { useWallet } from '@explorer/wallet/src/useWallet';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { useStakingPool } from '../../../../src/services/pool';
-import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
-import { withChakraTheme } from '../../../test-utilities';
-import { useStepState } from '../../../../src/components/StepGroup';
 import ENS from '../../../../src/components/pools/steps/ENS';
 import { StepStatus } from '../../../../src/components/Step';
-import { useBreakpointValue } from '@chakra-ui/react';
+import { useStepState } from '../../../../src/components/StepGroup';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
+import { useStakingPool } from '../../../../src/services/pool';
+import { withChakraTheme } from '../../../test-utilities';
+import { buildContractReceipt, buildUseStakingPoolReturn } from '../mocks';
 
-const walletMod = '@explorer/wallet/src/useWallet';
+const walletMod = '../../../../src/components/wallet/useWallet';
 const stakingPoolMod = '../../../../src/services/pool';
 const stepGroupMod = '../../../../src/components/StepGroup';
 

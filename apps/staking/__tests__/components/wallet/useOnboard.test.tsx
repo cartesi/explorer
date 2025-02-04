@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Cartesi Pte. Ltd.
+// Copyright (C) 2025 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Network, networks } from '@explorer/utils';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import Onboard, {
     EIP1193Provider,
@@ -18,8 +17,8 @@ import Onboard, {
 } from '@web3-onboard/core';
 import { ConnectedChain } from '@web3-onboard/core/dist/types';
 import { act } from 'react';
-import { UnsupportedNetworkError } from '../src';
-import { WalletType } from '../src/definitions';
+import { WalletType } from '../../../src/components/wallet/definitions';
+import { UnsupportedNetworkError } from '../../../src/components/wallet/errors/UnsupportedNetworkError';
 import {
     buildConfig,
     checkNetwork,
@@ -27,7 +26,8 @@ import {
     getWalletType,
     handlerBuilder,
     useOnboard,
-} from '../src/useOnboard';
+} from '../../../src/components/wallet/useOnboard';
+import { Network, networks } from '../../../src/utils/networks';
 
 jest.mock('ethers');
 
@@ -321,7 +321,9 @@ describe('useOnBoard', () => {
     });
 
     it('should correctly set chain to MainNet', async () => {
+        const current_env = structuredClone(process.env);
         process.env = {
+            ...current_env,
             NODE_ENV: 'production',
         };
 
@@ -364,5 +366,9 @@ describe('useOnBoard', () => {
                 chainId: `0x${convertToHex(Network.MAINNET)}`,
             });
         });
+
+        process.env = {
+            ...current_env,
+        };
     });
 });

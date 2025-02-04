@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import { useRouter } from 'next/router';
+import { FC } from 'react';
 import Layout from '../../components/Layout';
-import { useWallet } from '@explorer/wallet';
-import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
 import PageHead from '../../components/PageHead';
+import { useWallet } from '../../components/wallet';
+import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
 
 const NodeRunners: FC = () => {
     const wallet = useWallet();

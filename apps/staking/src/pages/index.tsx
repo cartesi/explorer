@@ -16,17 +16,17 @@ import {
     SimpleGrid,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { useState } from 'react';
 import BlockMiniCard from '../components/block/BlockMiniCard';
+import HomeHeader from '../components/home/Header';
+import Stats from '../components/home/Stats';
 import Layout from '../components/Layout';
 import PageHead from '../components/PageHead';
 import SearchInput from '../components/SearchInput';
 import Users from '../components/Users';
+import { useWallet } from '../components/wallet';
 import useBlocks from '../graphql/hooks/useBlocks';
 import useSummary from '../graphql/hooks/useSummary';
-import HomeHeader from '../components/home/Header';
-import Stats from '../components/home/Stats';
 
 const Home = () => {
     const { chainId } = useWallet();

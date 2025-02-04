@@ -29,7 +29,7 @@ import {
 } from '../../src/services/pool';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../src/components/wallet/useWallet');
 
 jest.mock('../../src/services/transaction', () => ({
     useTransaction: jest.fn(),

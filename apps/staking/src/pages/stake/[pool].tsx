@@ -9,36 +9,35 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import { constants } from 'ethers';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-import { constants } from 'ethers';
-import { PoolHeader } from '../../components/stake/PoolHeader';
 import { PoolBreadcrumbs } from '../../components/stake/PoolBreadcrumbs';
+import { PoolHeader } from '../../components/stake/PoolHeader';
 
 import {
+    Box,
     Collapse,
-    useDisclosure,
-    VStack,
-    useColorModeValue,
     HStack,
     Heading,
-    Box,
+    VStack,
+    useColorModeValue,
+    useDisclosure,
 } from '@chakra-ui/react';
 
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { QueryResult } from '@apollo/client';
-import { useBlockNumber } from '../../services/eth';
-import { useCartesiToken } from '../../services/token';
-import { useStaking } from '../../services/staking';
-import { useStakingPool } from '../../services/pool';
-import { useWallet } from '@explorer/wallet';
-import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
-import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
-import { PoolActivity } from '../../components/stake/PoolActivity';
-import useBlocks from '../../graphql/hooks/useBlocks';
-import { BlocksData, BlocksVars } from '../../graphql/models';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import PageHead from '../../components/PageHead';
+import { PoolActivity } from '../../components/stake/PoolActivity';
+import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
+import { useWallet } from '../../components/wallet';
+import useBlocks from '../../graphql/hooks/useBlocks';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import { BlocksData, BlocksVars } from '../../graphql/models';
+import { useBlockNumber } from '../../services/eth';
+import { useStakingPool } from '../../services/pool';
+import { useStaking } from '../../services/staking';
+import { useCartesiToken } from '../../services/token';
 import {
     Context,
     ENSStaticProps,

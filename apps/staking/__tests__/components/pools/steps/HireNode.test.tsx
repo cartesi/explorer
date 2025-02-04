@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
     act,
     findByText,
@@ -17,20 +18,19 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
+import { useAtom } from 'jotai';
+import HireNode from '../../../../src/components/pools/steps/HireNode';
+import { StepStatus } from '../../../../src/components/Step';
+import { useStepState } from '../../../../src/components/StepGroup';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
-import HireNode from '../../../../src/components/pools/steps/HireNode';
+import { useStakingPool } from '../../../../src/services/pool';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../../node/mocks';
-import { useAtom } from 'jotai';
-import { useStakingPool } from '../../../../src/services/pool';
-import { useStepState } from '../../../../src/components/StepGroup';
-import { buildUseStakingPoolReturn, buildContractReceipt } from '../mocks';
-import { StepStatus } from '../../../../src/components/Step';
-import { useBreakpointValue } from '@chakra-ui/react';
+import { buildContractReceipt, buildUseStakingPoolReturn } from '../mocks';
 
-const walletMod = '@explorer/wallet/src/useWallet';
+const walletMod = '../../../../src/components/wallet/useWallet';
 const servicesEthMod = `../../../../src/services/eth`;
 const servicesNodeMod = `../../../../src/services/node`;
 const stakingPoolMod = '../../../../src/services/pool';

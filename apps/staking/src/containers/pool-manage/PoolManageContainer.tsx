@@ -20,13 +20,13 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { isEmpty } from 'lodash/fp';
 import { FC, useEffect, useState } from 'react';
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import { NodeRetiredBanner } from '../../components/node/NodeRetiredBanner';
 import PoolSetting from '../../components/stake/PoolSetting';
 import TransactionBanner from '../../components/TransactionBanner';
+import { useWallet } from '../../components/wallet';
 import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useBalance } from '../../services/eth';
 import { useNode } from '../../services/node';

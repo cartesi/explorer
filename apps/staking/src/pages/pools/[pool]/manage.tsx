@@ -11,7 +11,6 @@
 
 import { Box, Button, HStack, Heading, Stack, Text } from '@chakra-ui/react';
 import { Address, SimpleChartIcon } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -19,6 +18,7 @@ import { FC, useEffect } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
+import { useWallet } from '../../../components/wallet';
 import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 

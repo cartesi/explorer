@@ -19,10 +19,10 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { AddressText, SettingsIcon } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
 import { isString } from 'lodash';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { useWallet } from '../../components/wallet';
 import { StakingTabNavigation } from './StakingTabNavigation';
 
 export interface PoolHeaderProps {

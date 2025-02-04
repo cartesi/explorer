@@ -9,17 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
-import { BigNumber, BigNumberish } from 'ethers';
 import { isAddress } from '@ethersproject/address';
-import { useBalance, useBlockNumber } from './eth';
+import { BigNumber, BigNumberish } from 'ethers';
+import { useEffect, useState } from 'react';
+import { useWallet } from '../components/wallet';
 import {
-    usePoSContract,
     usePoS1Contract,
+    usePoSContract,
     useWorkerManagerContract,
 } from './contracts';
+import { useBalance, useBlockNumber } from './eth';
 import { Transaction, useTransaction } from './transaction';
-import { useWallet } from '@explorer/wallet';
 
 export type NodeStatus = 'available' | 'owned' | 'retired' | 'pending' | 'none';
 export interface Node {

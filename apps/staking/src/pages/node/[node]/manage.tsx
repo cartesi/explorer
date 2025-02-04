@@ -30,7 +30,6 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 
 import { theme } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
 import Layout from '../../../components/Layout';
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
@@ -43,6 +42,7 @@ import { NodeStakingDashboard } from '../../../components/node/NodeStakingDashbo
 import PageHead from '../../../components/PageHead';
 import { TransactionInfoBanner } from '../../../components/stake/TransactionInfoBanner';
 import TransactionBanner from '../../../components/TransactionBanner';
+import { useWallet } from '../../../components/wallet';
 import { useUserNode } from '../../../graphql/hooks/useNodes';
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useNode } from '../../../services/node';

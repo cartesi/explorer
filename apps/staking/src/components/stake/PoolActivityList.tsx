@@ -10,30 +10,30 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    VStack,
+    Button,
     HStack,
     Spinner,
-    Button,
-    Text,
     Stack,
     Table,
     Tbody,
     Td,
+    Text,
     Th,
     Thead,
     Tr,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
-import { FC, memo, useState, useEffect } from 'react';
+import { Address, theme } from '@explorer/ui';
 import { last } from 'lodash/fp';
+import { FC, memo, useEffect, useState } from 'react';
+import { useWallet } from '../../components/wallet';
 import usePoolActivities, {
     Activity as ActivityType,
     Types,
 } from '../../graphql/hooks/usePoolActivities';
-import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { formatValue } from '../../utils/numberFormatter';
-import { Address, theme } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
+import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,

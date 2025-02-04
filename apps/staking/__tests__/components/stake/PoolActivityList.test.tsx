@@ -11,14 +11,14 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
-    PoolActivityList,
     IPoolActivityListProps,
+    PoolActivityList,
 } from '../../../src/components/stake/PoolActivityList';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { withChakraTheme } from '../../test-utilities';
+import { useWallet } from '../../../src/components/wallet/useWallet';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
+import { withChakraTheme } from '../../test-utilities';
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
 const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
@@ -32,7 +32,7 @@ const defaultProps = {
     poolAddress: POOL_ADDRESS,
 };
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../../src/components/wallet/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const EPoolActivityList =

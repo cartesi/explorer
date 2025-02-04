@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WalletConnectionProvider } from '@explorer/wallet';
+import { WalletConnectionProvider } from '../components/wallet';
 import { networks } from '../utils/networks';
 
 const Web3Container = ({ children }) => {

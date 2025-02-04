@@ -21,12 +21,12 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useWallet } from '../../../components/wallet';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
 import { useMessages } from '../../../utils/messages';

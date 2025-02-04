@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet/src/useWallet';
 import {
     act,
     fireEvent,
@@ -21,6 +20,7 @@ import userEvent from '@testing-library/user-event';
 import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
+import { useWallet } from '../../../src/components/wallet/useWallet';
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
 import useTotalPoolBalance from '../../../src/graphql/hooks/useTotalPoolBalance';
 import { StakingPool } from '../../../src/graphql/models';
@@ -41,7 +41,7 @@ const totalPoolBalance = '100000000000000000000000000000000';
 jest.mock('@unleash/proxy-client-react');
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>;
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../../src/components/wallet/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 jest.mock('../../../src/graphql/hooks/useTotalPoolBalance');

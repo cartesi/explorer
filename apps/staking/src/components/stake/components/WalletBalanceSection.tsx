@@ -22,11 +22,11 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { WalletIcon } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useMessages } from '../../../utils/messages';
 import CTSI from '../../pools/staking/CTSI';
+import { useWallet } from '../../wallet';
 
 export interface IWalletBalanceSectionProps {
     userCTSIBalance: BigNumber;

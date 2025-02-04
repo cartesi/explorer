@@ -10,9 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Provider } from '@ethersproject/providers';
-import { useWallet } from '@explorer/wallet';
 import { Signer } from 'ethers';
 import { useEffect, useState } from 'react';
+import { useWallet } from '../../components/wallet';
 
 import {
     CartesiToken,

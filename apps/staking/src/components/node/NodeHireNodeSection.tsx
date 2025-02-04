@@ -17,10 +17,10 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { isEmpty, omit } from 'lodash/fp';
 import { FC, useState } from 'react';
+import { useWallet } from '../../components/wallet';
 import { useNode } from '../../services/node';
 import { toBigNumber } from '../../utils/numberParser';
 import { MappedErrors, ValidationResult } from '../BaseInput';

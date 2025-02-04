@@ -37,13 +37,13 @@ import {
     StakeCircledOutlinedIcon,
     theme,
 } from '@explorer/ui';
-import { useWallet } from '@explorer/wallet';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
+import { useWallet } from '../../../components/wallet';
 import { useMessages } from '../../../utils/messages';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
 import Block from './Block';

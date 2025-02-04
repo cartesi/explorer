@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { useBalance } from '../../../../src/services/eth';
 import { InitialFundsInput } from '../../../../src/components/node/inputs/InitialFundsInput';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
+import { useBalance } from '../../../../src/services/eth';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 
-const walletMod = `@explorer/wallet/src/useWallet`;
+const walletMod = `../../../../src/components/wallet/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
 
 jest.mock(walletMod, () => {

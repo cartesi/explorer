@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet/src/useWallet';
 import { act, render, waitFor } from '@testing-library/react';
 import ReactGA from 'react-ga4';
+import { useWallet } from '../../src/components/wallet/useWallet';
 import {
     CustomDimensions,
     GA4TrackerProvider,
@@ -20,7 +20,7 @@ import {
 } from '../../src/contexts/ga4Tracker';
 import { Network } from '../../src/utils/networks';
 
-const walletMod = '@explorer/wallet/src/useWallet';
+const walletMod = '../../src/components/wallet/useWallet';
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);
     return {
