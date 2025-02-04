@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Network } from '@explorer/utils';
 import { ethers } from 'ethers';
 import {
     DOMAINS,
     GetEnsDomainsQuery,
 } from '../../../graphql/queries/ensDomains';
-import ensClient from './../../../services/apolloENSClient';
+import ensClient from '../../../services/apolloENSClient';
+import { Network } from '../../../utils/networks';
 import { ENSAddressData, Entry, QueriedDomain } from './types';
 
 const httpNodeRpc =

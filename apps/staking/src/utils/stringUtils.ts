@@ -18,6 +18,13 @@ export const truncateString = (str: string): string => {
     return str;
 };
 
+export const truncateStringMobile = (str: string): string => {
+    if (str && str.length > 9) {
+        return `${str.slice(0, 9)}...${str.slice(-8)}`;
+    }
+    return str;
+};
+
 export const formatEnsName = (
     address: string,
     ensName?: string,

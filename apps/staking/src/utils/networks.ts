@@ -26,3 +26,9 @@ export const confirmations = {
     31337: 1,
     11155111: 1,
 };
+
+export const etherscanLinks = {
+    1: 'https://etherscan.io',
+    31337: null,
+    11155111: 'https://sepolia.etherscan.io',
+};
