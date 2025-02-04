@@ -9,11 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { DepositSection } from '../../../components/stake/components/DepositSection';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { BigNumber } from 'ethers';
-import { WalletConnectionContext } from '@explorer/wallet';
+import { DepositSection } from '../../../components/stake/components/DepositSection';
+import { WalletConnectionContext } from '../../../components/wallet';
 
 const defaultValue = '10000000000000000000000000000';
 

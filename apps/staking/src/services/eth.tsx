@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useState, useEffect } from 'react';
-import { BigNumber } from '@ethersproject/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { useWallet } from '@explorer/wallet';
+import { BigNumber } from '@ethersproject/bignumber';
+import { useEffect, useState } from 'react';
+import { useWallet } from '../components/wallet';
 
 export const useBalance = (address: string, deps: any[] = []): BigNumber => {
     const { library } = useWallet();

@@ -9,8 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import {
     Box,
     Flex,
@@ -19,35 +17,37 @@ import {
     Select,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { DateTime } from 'luxon';
-import { isArray, isObject, uniqueId } from 'lodash';
-import Layout from '../../../components/Layout';
-import { PoolHeader } from '../../../components/stake/PoolHeader';
-import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useWallet } from '@explorer/wallet';
-import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-import UsersTable from '../../../components/stake/tables/UsersTable';
 import { Pagination } from '@explorer/ui';
+import { isArray, isObject, uniqueId } from 'lodash';
+import { DateTime } from 'luxon';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import Layout from '../../../components/Layout';
+import PageHead from '../../../components/PageHead';
+import PerPageSelect from '../../../components/PerPageSelect';
+import SearchInput from '../../../components/SearchInput';
+import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
+import { PoolHeader } from '../../../components/stake/PoolHeader';
+import UsersTable from '../../../components/stake/tables/UsersTable';
+import UsersChart from '../../../components/stake/UsersChart';
+import { useWallet } from '../../../components/wallet';
 import usePoolBalances, {
     userShare,
 } from '../../../graphql/hooks/usePoolBalances';
+import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import useStakingPoolUserHistories from '../../../graphql/hooks/useStakingPoolUserHistories';
 import {
     PoolBalance,
     PoolBalanceWithAccumulatedShares,
     StakingPoolUserHistory,
 } from '../../../graphql/models';
-import SearchInput from '../../../components/SearchInput';
-import useStakingPoolUserHistories from '../../../graphql/hooks/useStakingPoolUserHistories';
-import UsersChart from '../../../components/stake/UsersChart';
-import PageHead from '../../../components/PageHead';
+import { useDebounce } from '../../../hooks/useDebounce';
 import {
     Context,
     ENSStaticProps,
     getENSStaticProps,
     getPoolsStaticPaths,
 } from '../../../utils/staticGeneration';
-import PerPageSelect from '../../../components/PerPageSelect';
-import { useDebounce } from '../../../hooks/useDebounce';
 
 export async function getStaticPaths() {
     return getPoolsStaticPaths();

@@ -10,7 +10,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { UseWallet } from '@explorer/wallet/src/useWallet';
 import {
     findByText,
     fireEvent,
@@ -24,6 +23,7 @@ import {
 import { useFlag } from '@unleash/proxy-client-react';
 import { NextRouter } from 'next/router';
 import { act } from 'react';
+import { UseWallet } from '../../../src/components/wallet/useWallet';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';

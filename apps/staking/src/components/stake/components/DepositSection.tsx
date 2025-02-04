@@ -9,20 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { WarningIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Flex,
     Button,
-    Stack,
+    Flex,
     Heading,
+    Stack,
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { WarningIcon } from '@chakra-ui/icons';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '../../wallet';
 
 export interface IDepositSection {
     userWalletBalance: BigNumber;

@@ -11,7 +11,6 @@
 
 import { Box } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
@@ -22,6 +21,7 @@ import { Staking } from '../../../components/stake/Staking';
 import { StakingActivity } from '../../../components/stake/StakingActivity';
 import { StakingDashboard } from '../../../components/stake/StakingDashboard';
 import { StakingGuide } from '../../../components/stake/StakingGuide';
+import { useWallet } from '../../../components/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useStakingPool } from '../../../services/pool';

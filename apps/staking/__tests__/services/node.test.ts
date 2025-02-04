@@ -14,11 +14,11 @@ import { PoS as PoS1 } from '@cartesi/pos-1.0';
 import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
 import { isAddress } from '@ethersproject/address';
 import { Web3Provider } from '@ethersproject/providers';
-import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
-import { useWallet } from '@explorer/wallet/src/useWallet';
 import { renderHook, waitFor } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import { act } from 'react';
+import { WalletConnectionContextProps } from '../../src/components/wallet/definitions';
+import { useWallet } from '../../src/components/wallet/useWallet';
 import {
     usePoS1Contract,
     usePoSContract,
@@ -28,7 +28,7 @@ import { useBalance } from '../../src/services/eth';
 import { useNode } from '../../src/services/node';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../src/components/wallet/useWallet');
 jest.mock('@ethersproject/address', () => {
     const originalModule = jest.requireActual('@ethersproject/address');
     return {

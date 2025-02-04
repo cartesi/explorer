@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
+    act,
+    findByText,
+    fireEvent,
     render,
     screen,
-    fireEvent,
-    act,
     waitFor,
-    findByText,
 } from '@testing-library/react';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 import SetAllowance from '../../../../src/components/node/steps/SetAllowance';
-import { useWallet } from '@explorer/wallet/src/useWallet';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useStaking } from '../../../../src/services/staking';
 import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
-import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
-import { useBreakpointValue } from '@chakra-ui/react';
 
-const walletMod = `@explorer/wallet/src/useWallet`;
+const walletMod = `'../../../../src/components/wallet/useWallet'`;
 const servicesStakingMod = `../../../../src/services/staking`;
 const servicesTokenMod = `../../../../src/services/token`;
 

@@ -9,10 +9,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Button, Stack, useColorModeValue } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { atom, useAtom } from 'jotai';
 import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
 import { useEffect, useState } from 'react';
+import { useWallet } from '../../../../components/wallet';
 import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import { Transaction } from '../../../../services/transaction';
 import { useMessages } from '../../../../utils/messages';

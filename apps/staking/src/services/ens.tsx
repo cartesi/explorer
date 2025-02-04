@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet';
 import { ethers } from 'ethers';
 import {
     createContext,
@@ -19,6 +18,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useWallet } from '../components/wallet';
 import { networks } from '../utils/networks';
 
 interface AddressEns {

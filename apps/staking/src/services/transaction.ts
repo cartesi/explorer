@@ -9,12 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ContractReceipt, ContractTransaction } from 'ethers';
-import { useEffect, useState } from 'react';
 import { serializeError } from 'eth-rpc-errors';
 import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
-import { confirmations } from '../utils/networks';
-import { useWallet } from '@explorer/wallet';
+import { ContractReceipt, ContractTransaction } from 'ethers';
 import {
     allPass,
     anyPass,
@@ -27,6 +24,9 @@ import {
     propEq,
     T,
 } from 'lodash/fp';
+import { useEffect, useState } from 'react';
+import { useWallet } from '../components/wallet';
+import { confirmations } from '../utils/networks';
 
 export class Transaction<R> {
     submitting: boolean;

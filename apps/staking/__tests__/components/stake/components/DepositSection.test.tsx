@@ -9,16 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import {
     DepositSection,
     IDepositSection,
 } from '../../../../src/components/stake/components/DepositSection';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { withChakraTheme } from '../../../test-utilities';
-import { useWallet } from '@explorer/wallet/src/useWallet';
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../../../src/components/wallet/useWallet');
 
 const defaultValue = '10000000000000000000000000000';
 const defaultOnDepositClick = () => undefined;

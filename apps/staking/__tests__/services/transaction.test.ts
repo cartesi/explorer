@@ -9,18 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { ContractTransaction } from 'ethers';
-import { useWallet } from '@explorer/wallet/src/useWallet';
+import { useWallet } from '../../src/components/wallet/useWallet';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 import { confirmations, Network } from '../../src/utils/networks';
 import {
     buildContractReceipt,
-    buildContractTransaction,
     buildContractReceiptEvent,
+    buildContractTransaction,
 } from './mocks';
 
-const walletMod = '@explorer/wallet/src/useWallet';
+const walletMod = '../../src/components/wallet/useWallet';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);

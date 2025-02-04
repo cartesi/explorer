@@ -9,26 +9,26 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useBreakpointValue } from '@chakra-ui/react';
 import {
-    fireEvent,
     act,
+    findByText,
+    fireEvent,
     render,
     screen,
     waitFor,
-    findByText,
 } from '@testing-library/react';
-import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
-import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { buildUseStakingPoolFactoryReturn } from '../mocks';
-import { buildContractReceipt } from '../../node/mocks';
 import { useAtom } from 'jotai';
-import { useStepState } from '../../../../src/components/StepGroup';
+import CommissionModel from '../../../../src/components/pools/steps/CommissionModel';
 import { StepStatus } from '../../../../src/components/Step';
-import { useBreakpointValue } from '@chakra-ui/react';
+import { useStepState } from '../../../../src/components/StepGroup';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
+import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
+import { buildContractReceipt } from '../../node/mocks';
+import { buildUseStakingPoolFactoryReturn } from '../mocks';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
-const walletMod = '@explorer/wallet/src/useWallet';
+const walletMod = '../../../../src/components/wallet/useWallet';
 const stepGroupMod = '../../../../src/components/StepGroup';
 
 jest.mock(stepGroupMod, () => {

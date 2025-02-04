@@ -10,10 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { useWallet } from '@explorer/wallet/src/useWallet';
-import { useApollo } from '../../src/services/apollo';
 import ApolloContainer from '../../src/components/ApolloContainer';
+import { useWallet } from '../../src/components/wallet/useWallet';
+import { useApollo } from '../../src/services/apollo';
 import { withChakraTheme } from '../test-utilities';
+
+const useWalletMod = '../../src/components/wallet/useWallet';
 
 jest.mock('@apollo/client', () => {
     const originalModule = jest.requireActual('@apollo/client');
@@ -33,8 +35,8 @@ jest.mock('../../src/services/apollo', () => {
     };
 });
 
-jest.mock('@explorer/wallet/src/useWallet', () => {
-    const originalModule = jest.requireActual('@explorer/wallet/src/useWallet');
+jest.mock(useWalletMod, () => {
+    const originalModule = jest.requireActual(useWalletMod);
     return {
         __esModule: true,
         ...originalModule,

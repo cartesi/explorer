@@ -22,7 +22,7 @@ import {
 import { isEmpty, isFunction, isNil } from 'lodash/fp';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '../../../components/wallet';
 import { useBalance } from '../../../services/eth';
 import { useMessages } from '../../../utils/messages';
 import { formatValue } from '../../../utils/numberFormatter';
@@ -153,5 +153,5 @@ const InitialFundsInput = ({
     );
 };
 
-export type { DepositField };
 export { InitialFundsInput };
+export type { DepositField };

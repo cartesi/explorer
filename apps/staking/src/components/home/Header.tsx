@@ -19,8 +19,8 @@ import {
     Tooltip,
     Wrap,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import CTSIText from '../../components/CTSIText';
+import { useWallet } from '../../components/wallet';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';

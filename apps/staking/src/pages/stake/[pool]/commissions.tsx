@@ -9,21 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Pagination } from '@explorer/ui';
 import { isArray } from 'lodash';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Layout from '../../../components/Layout';
-import { PoolHeader } from '../../../components/stake/PoolHeader';
+import PageHead from '../../../components/PageHead';
+import PerPageSelect from '../../../components/PerPageSelect';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { useWallet } from '@explorer/wallet';
+import { PoolHeader } from '../../../components/stake/PoolHeader';
+import PoolCommissionsTable from '../../../components/stake/tables/PoolCommissionsTable';
+import { useWallet } from '../../../components/wallet';
 import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
 import useStakingPoolFeeHistories from '../../../graphql/hooks/useStakingPoolFeeHistories';
-import PoolCommissionsTable from '../../../components/stake/tables/PoolCommissionsTable';
-import { Pagination } from '@explorer/ui';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
-import PerPageSelect from '../../../components/PerPageSelect';
-import PageHead from '../../../components/PageHead';
 
 import {
     Context,

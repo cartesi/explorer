@@ -26,8 +26,8 @@ import sepolia from '@cartesi/staking-pool/export/abi/sepolia.json';
 
 import localhost from './localhost.json';
 
-import { useWallet } from '@explorer/wallet';
 import { ChainMap, useContract, useContractFromAddress } from '.';
+import { useWallet } from '../../components/wallet';
 
 const abis: ChainMap = {
     1: mainnet,

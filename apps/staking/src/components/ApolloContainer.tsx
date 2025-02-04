@@ -9,10 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
 import { ApolloProvider } from '@apollo/client';
+import { useWallet } from '../components/wallet';
 import { useApollo } from '../services/apollo';
-import { useWallet } from '@explorer/wallet';
 
 const ApolloContainer = ({ children }) => {
     const { chainId } = useWallet();

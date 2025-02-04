@@ -11,15 +11,15 @@
 
 import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
 import { Web3Provider } from '@ethersproject/providers';
-import { WalletConnectionContextProps } from '@explorer/wallet/src/definitions';
-import { useWallet } from '@explorer/wallet/src/useWallet';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
+import { WalletConnectionContextProps } from '../../src/components/wallet/definitions';
+import { useWallet } from '../../src/components/wallet/useWallet';
 import { useStakingPoolFactoryContract } from '../../src/services/contracts';
 import { useStakingPoolFactory } from '../../src/services/poolFactory';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../src/components/wallet/useWallet');
 
 jest.mock('../../src/services/transaction', () => ({
     useTransaction: jest.fn(),

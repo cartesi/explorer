@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useWallet } from '@explorer/wallet';
 import { ReactNode, createContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { useWallet } from '../components/wallet';
 
 export const measurementID = 'G-0J9KC579GV';
 

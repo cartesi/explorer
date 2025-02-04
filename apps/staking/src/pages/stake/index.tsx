@@ -16,7 +16,6 @@ import {
     VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useWallet } from '@explorer/wallet';
 import { constants } from 'ethers';
 import { useState } from 'react';
 import Layout, { PageBody, PagePanel } from '../../components/Layout';
@@ -25,6 +24,7 @@ import SearchInput from '../../components/SearchInput';
 import PoolPerformance from '../../components/stake/PoolPerformance';
 import PoolsOverview from '../../components/stake/components/PoolsOverview';
 import UserStakingPoolsTable from '../../components/stake/tables/UserStakingPoolsTable';
+import { useWallet } from '../../components/wallet';
 import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import useSummary from '../../graphql/hooks/useSummary';

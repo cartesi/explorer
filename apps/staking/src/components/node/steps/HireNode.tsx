@@ -21,7 +21,7 @@ import { useAtom } from 'jotai';
 import { isEmpty, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 
-import { useWallet } from '@explorer/wallet';
+import { useWallet } from '../../../components/wallet';
 
 import { ConnectWallet, Notification } from '@explorer/ui';
 import { NodeStatus, useNode } from '../../../services/node';

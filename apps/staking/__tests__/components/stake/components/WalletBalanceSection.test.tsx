@@ -11,15 +11,15 @@
 
 import { render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
+import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
 import {
     IWalletBalanceSectionProps,
     WalletBalanceSection,
 } from '../../../../src/components/stake/components/WalletBalanceSection';
-import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
+import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { withChakraTheme } from '../../../test-utilities';
-import { useWallet } from '@explorer/wallet/src/useWallet';
 
-jest.mock('@explorer/wallet/src/useWallet');
+jest.mock('../../../../src/components/wallet/useWallet');
 
 const defaultValue = '10000000000000000000000000000';
 
