@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 /** @type {import('next').NextConfig} */
-const modules = ['@explorer/ui', '@explorer/wallet', '@explorer/services'];
+const modules = ['@explorer/ui', '@explorer/wallet'];
 
 const ContentSecurityPolicy = `
   default-src 'self';

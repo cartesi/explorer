@@ -17,10 +17,10 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
 
-import { ENSDataProvider } from '@explorer/services';
 import { Fonts } from '@explorer/ui';
 import PageHead from '../components/PageHead';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
+import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
 
 type ComponentType = FC<{ children: ReactNode }>;

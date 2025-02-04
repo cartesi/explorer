@@ -1,4 +1,4 @@
-// Copyright (C) 2024 Cartesi Pte. Ltd.
+// Copyright (C) 2025 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { networks } from '@explorer/utils';
 import { useWallet } from '@explorer/wallet';
 import { ethers } from 'ethers';
 import {
@@ -20,6 +19,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { networks } from '../utils/networks';
 
 interface AddressEns {
     id: number;
