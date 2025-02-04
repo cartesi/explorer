@@ -6,8 +6,8 @@ import { TextDecoder, TextEncoder } from 'util';
 
 Object.assign(global, { TextEncoder, TextDecoder });
 
-jest.mock('@explorer/services', () => {
-    const original = jest.requireActual('@explorer/services');
+jest.mock('./src/services/ens', () => {
+    const original = jest.requireActual('./src/services/ens');
     return {
         __esModule: true,
         ...original,
