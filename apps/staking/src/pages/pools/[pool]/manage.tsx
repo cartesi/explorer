@@ -10,12 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, Button, HStack, Heading, Stack, Text } from '@chakra-ui/react';
-import { Address, SimpleChartIcon } from '@explorer/ui';
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
+import Address from '../../../components/Address';
+import { SimpleChartIcon } from '../../../components/Icons';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
 import { useWallet } from '../../../components/wallet';

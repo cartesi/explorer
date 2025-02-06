@@ -31,22 +31,20 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import {
-    Address,
-    GhostButton,
-    Notification,
-    PencilIcon,
-    theme,
-} from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { useEffect } from 'react';
+import Address from '../../../components/Address';
+import { GhostButton } from '../../../components/GhostButton';
+import { PencilIcon } from '../../../components/Icons';
+import { Notification } from '../../../components/Notification';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useWallet } from '../../../components/wallet';
 import { useUserNodes } from '../../../graphql/hooks/useNodes';
 import { useCartesiToken } from '../../../services/token';
+import theme from '../../../styles/theme';
 import { useMessages } from '../../../utils/messages';
 import { formatCTSI } from '../../../utils/token';
 import {

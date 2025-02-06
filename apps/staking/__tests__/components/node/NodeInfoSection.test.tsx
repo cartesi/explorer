@@ -8,14 +8,14 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { render, screen } from '@testing-library/react';
 import { useMediaQuery } from '@chakra-ui/react';
+import { render, screen } from '@testing-library/react';
+import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
-import { buildUseUserNodesReturn } from '../../containers/mocks';
 import { truncateString } from '../../../src/utils/stringUtils';
-import { useFlag } from '@unleash/proxy-client-react';
+import { buildUseUserNodesReturn } from '../../containers/mocks';
 
 const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {

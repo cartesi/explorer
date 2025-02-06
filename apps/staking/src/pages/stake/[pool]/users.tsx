@@ -17,13 +17,13 @@ import {
     Select,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Pagination } from '@explorer/ui';
 import { isArray, isObject, uniqueId } from 'lodash';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
+import Pagination from '../../../components/Pagination';
 import PerPageSelect from '../../../components/PerPageSelect';
 import SearchInput from '../../../components/SearchInput';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';

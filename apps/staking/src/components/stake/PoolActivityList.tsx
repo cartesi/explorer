@@ -24,7 +24,6 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { Address, theme } from '@explorer/ui';
 import { last } from 'lodash/fp';
 import { FC, memo, useEffect, useState } from 'react';
 import { useWallet } from '../../components/wallet';
@@ -32,7 +31,9 @@ import usePoolActivities, {
     Activity as ActivityType,
     Types,
 } from '../../graphql/hooks/usePoolActivities';
+import theme from '../../styles/theme';
 import { formatValue } from '../../utils/numberFormatter';
+import Address from '../Address';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {

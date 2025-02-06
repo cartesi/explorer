@@ -11,15 +11,17 @@
 
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Fonts, SelectedChain, theme } from '@explorer/ui';
 import '@fontsource/rubik';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { StoryContext } from '@storybook/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { withPerformance } from 'storybook-addon-performance';
+import { Fonts } from '../src/components/Fonts';
+import { SelectedChain } from '../src/components/header/SelectedChain';
 import Web3Container from '../src/components/Web3Container';
+import theme from '../src/styles/theme';
 
-import React from 'react';
+import React, { FC } from 'react';
 import ColorMode from './ColorMode';
 import withFeatureFlags from './withFeatureFlags';
 
@@ -54,7 +56,7 @@ export const globalTypes = {
     },
 };
 
-const withChakra = (Story: Function, context: StoryContext) => {
+const withChakra = (Story: FC, context: StoryContext) => {
     return (
         <ChakraProvider resetCSS theme={theme}>
             <ColorMode globals={context.globals} />

@@ -25,10 +25,11 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { GhostButton, theme } from '@explorer/ui';
 import { FC, useRef } from 'react';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';
+import theme from '../../../styles/theme';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
+import { GhostButton } from '../../GhostButton';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import { SlideInOut } from '../../animation/SlideInOut';
 import PoolPerformanceTableRow from './PoolPerformanceTableRow';

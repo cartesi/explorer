@@ -10,8 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { ColorModeScript } from '@chakra-ui/react';
-import { theme } from '@explorer/ui';
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document';
+import theme from '../styles/theme';
 
 export default class Document extends NextDocument {
     render() {

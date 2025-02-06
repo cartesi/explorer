@@ -9,20 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
-import { BigNumber } from 'ethers';
-import { StakedBalanceIcon } from '@explorer/ui';
 import {
-    HStack,
-    VStack,
     Box,
-    StackProps,
+    HStack,
     Icon,
-    Tooltip,
+    StackProps,
     Text,
+    Tooltip,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
+import { BigNumber } from 'ethers';
+import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
+import { StakedBalanceIcon } from '../../Icons';
 
 export interface StakedBalanceStatProps extends StackProps {
     stakedBalance: BigNumber;

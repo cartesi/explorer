@@ -13,12 +13,6 @@ const path = require('path');
 const toPath = (_path) => path.join(process.cwd(), _path);
 
 module.exports = {
-    refs: {
-        '@explorer/ui': {
-            title: 'Explorer UI',
-            url: 'http://127.0.0.1:6007',
-        },
-    },
     staticDirs: ['../public'],
     features: {
         postcss: false,

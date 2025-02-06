@@ -10,39 +10,39 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    HStack,
     Box,
+    Button,
+    Divider,
     Flex,
-    Tooltip,
-    Icon,
-    IconButton,
-    Heading,
     FormControl,
-    VStack,
-    Text,
     FormHelperText,
     FormLabel,
+    Heading,
+    HStack,
+    Icon,
+    IconButton,
     Modal,
-    ModalCloseButton,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalOverlay,
-    UseDisclosureProps,
-    Divider,
-    TagLabel,
-    useColorModeValue,
     Stack,
     Tag,
+    TagLabel,
+    Text,
+    Tooltip,
+    useColorModeValue,
+    UseDisclosureProps,
     useToken,
+    VStack,
 } from '@chakra-ui/react';
-import React, { FC, useRef, useState, useEffect } from 'react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { CTSINumberInput } from '../CTSINumberInput';
+import { FC, useEffect, useRef, useState } from 'react';
+import { CheckCircleIcon, PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
-import { CheckCircleIcon, PencilIconWhite } from '@explorer/ui';
+import { CTSINumberInput } from '../CTSINumberInput';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;

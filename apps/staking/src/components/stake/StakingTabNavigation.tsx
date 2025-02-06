@@ -9,11 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
-import { SimpleChartIcon, StakeIcon } from '@explorer/ui';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { FC } from 'react';
+import { SimpleChartIcon, StakeIcon } from '../Icons';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');

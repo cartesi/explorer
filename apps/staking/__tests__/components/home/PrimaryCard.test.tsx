@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { ChartIcon } from '@explorer/ui/src/components/Icons';
+import { ChartIcon } from '../../../src/components/Icons';
 import PrimaryCard from '../../../src/components/home/PrimaryCard';
 import { withChakraTheme } from '../../test-utilities';
 

@@ -14,8 +14,6 @@ import {
     Box,
     Button,
     Checkbox,
-    Radio,
-    RadioGroup,
     Flex,
     Heading,
     HStack,
@@ -24,13 +22,15 @@ import {
     MenuDivider,
     MenuGroup,
     MenuList,
+    Radio,
+    RadioGroup,
     Stack,
     Text,
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { FC, Fragment } from 'react';
-import { FilterIcon } from '@explorer/ui';
+import { FilterIcon } from '../Icons';
 
 export interface IPoolFiltersProps {
     filters: any;

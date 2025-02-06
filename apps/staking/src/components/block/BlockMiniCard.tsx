@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FunctionComponent } from 'react';
+import { TimeIcon } from '@chakra-ui/icons';
 import {
     Box,
     BoxProps,
@@ -21,12 +21,12 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { TimeIcon } from '@chakra-ui/icons';
 import humanizeDuration from 'humanize-duration';
+import { FunctionComponent } from 'react';
 
-import { Address } from '@explorer/ui';
 import { Block } from '../../graphql/models';
 import { tinyGraphUrl } from '../../utils/tinygraph';
+import Address from '../Address';
 
 export interface BlockMiniCardProps extends BoxProps {
     chainId: number;

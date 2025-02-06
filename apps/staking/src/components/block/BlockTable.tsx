@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC } from 'react';
 import {
     Table,
     TableProps,
@@ -20,10 +19,11 @@ import {
     Tr,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { FC } from 'react';
 
-import { Address } from '@explorer/ui';
 import { Block } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
+import Address from '../Address';
 
 export type BlockHighlightProp = 'id' | 'node' | 'producer';
 

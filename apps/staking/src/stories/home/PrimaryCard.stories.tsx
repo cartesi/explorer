@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ChartIcon } from '@explorer/ui';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ChartIcon } from '../../components/Icons';
 
 import PrimaryCard from '../../components/home/PrimaryCard';
 

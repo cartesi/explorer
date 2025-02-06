@@ -9,27 +9,27 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
-    Tr,
-    Td,
-    useColorModeValue,
     Box,
-    Link,
-    Text,
     IconProps,
+    Link,
     TableRowProps,
+    Td,
+    Text,
+    Tr,
+    useColorModeValue,
 } from '@chakra-ui/react';
+import { isObject } from 'lodash';
+import NextLink from 'next/link';
+import { FC } from 'react';
 import { User } from '../../graphql/models';
+import { formatCTSI } from '../../utils/token';
+import Address from '../Address';
 import {
-    Address,
     StakeCircledIcon,
     StakeCircledOutlinedIcon,
     StakeIcon,
-} from '@explorer/ui';
-import { formatCTSI } from '../../utils/token';
-import NextLink from 'next/link';
-import { isObject } from 'lodash';
+} from '../Icons';
 
 export interface UserRowProps extends TableRowProps {
     chainId: number;

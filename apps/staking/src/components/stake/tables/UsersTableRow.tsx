@@ -9,21 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
+    Flex,
     Icon,
+    TableCellProps,
     Td,
+    Text,
     Tooltip,
     Tr,
     useColorModeValue,
-    Text,
-    Flex,
-    TableCellProps,
 } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
+import { FC } from 'react';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
-import { Address } from '@explorer/ui';
 import { formatCTSI } from '../../../utils/token';
+import Address from '../../Address';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     hourCycle: 'h23',

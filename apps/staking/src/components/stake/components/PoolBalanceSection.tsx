@@ -11,19 +11,19 @@
 
 import {
     Box,
-    Text,
     Button,
     Flex,
+    Heading,
     HStack,
     Stack,
+    Text,
     useColorModeValue,
     VStack,
-    Heading,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { PoolBalanceIcon } from '@explorer/ui';
+import { PoolBalanceIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IPoolBalanceSectionProps {

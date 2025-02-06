@@ -9,11 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import Rebalance from '../../../src/components/pools/Rebalance';
-import { withChakraTheme } from '../../test-utilities';
 import { formatCTSI } from '../../../src/utils/token';
+import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(Rebalance);
 const props = {

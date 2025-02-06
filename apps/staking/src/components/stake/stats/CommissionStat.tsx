@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, ReactChild, ReactFragment } from 'react';
-import { PoolCommisionIcon } from '@explorer/ui';
-import {
-    HStack,
-    useColorModeValue,
-    Box,
-    StackProps,
-    Icon,
-    Tooltip,
-    Text,
-} from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import {
+    Box,
+    HStack,
+    Icon,
+    StackProps,
+    Text,
+    Tooltip,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { FC, ReactNode } from 'react';
+import ConditionalWrapper from '../../../components/ConditionalWrapper';
+import { StakingPoolFee } from '../../../graphql/models';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import CommissionTextV2 from '../../CommissionTextV2';
-import { StakingPoolFee } from '../../../graphql/models';
-import ConditionalWrapper from '../../../components/ConditionalWrapper';
+import { PoolCommisionIcon } from '../../Icons';
 
 export interface CommissionStatProps extends StackProps {
     commissionPercentage: number;
@@ -45,7 +45,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
     return (
         <ConditionalWrapper
             condition={location}
-            wrapper={(children: ReactChild | ReactFragment) => (
+            wrapper={(children: ReactNode) => (
                 <NextLink href={location}>{children}</NextLink>
             )}
         >

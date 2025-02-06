@@ -9,12 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { SettingsIcon } from '@chakra-ui/icons';
-import { DashboardIcon, StakeIcon } from '@explorer/ui';
+import { FC } from 'react';
+import { DashboardIcon, SettingsIcon, StakeIcon } from '../Icons';
 
 export const PoolTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'gray.800');

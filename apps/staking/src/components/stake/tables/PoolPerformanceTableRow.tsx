@@ -21,13 +21,14 @@ import {
     Tr,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Address, StakeIcon } from '@explorer/ui';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
 import { FC, useState } from 'react';
 import { StakingPool } from '../../../graphql/models';
 import labels from '../../../utils/labels';
 import { formatCTSI } from '../../../utils/token';
+import Address from '../../Address';
+import { StakeIcon } from '../../Icons';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;

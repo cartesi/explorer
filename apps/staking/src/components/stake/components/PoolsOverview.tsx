@@ -6,12 +6,12 @@ import {
     Tooltip,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Banner, MyPoolsIcon, MyStakeIcon, PoolsIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
+import Banner from '../../Banner';
 import CTSIText, { BigNumberText } from '../../CTSIText';
-
+import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
 export interface PoolsOverviewProps {
     balance: BigNumber;
     summary: Summary;

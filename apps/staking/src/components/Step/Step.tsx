@@ -21,8 +21,8 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { theme } from '@explorer/ui';
 import React, { ReactElement, useEffect, useReducer } from 'react';
+import theme from '../../styles/theme';
 import { StepStatus } from './enums';
 import { StepProps } from './interfaces';
 

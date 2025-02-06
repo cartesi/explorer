@@ -9,27 +9,27 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useRef } from 'react';
 import {
+    HStack,
+    Spinner,
     Table,
+    TableColumnHeaderProps,
     Tbody,
     Td,
     Text,
-    Tr,
     Th,
     Thead,
-    HStack,
-    Spinner,
+    Tr,
     useBreakpointValue,
     useColorModeValue,
-    TableColumnHeaderProps,
 } from '@chakra-ui/react';
+import { FC, useRef } from 'react';
 import { PoolBalance } from '../../../graphql/models';
-import { TableResponsiveHolder } from '../../TableResponsiveHolder';
-import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
+import theme from '../../../styles/theme';
 import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThreshold';
 import { SlideInOut } from '../../animation/SlideInOut';
-import { theme } from '@explorer/ui';
+import { TableResponsiveHolder } from '../../TableResponsiveHolder';
+import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
 
 export interface UserStakingPoolsTableProps {
     chainId: number;

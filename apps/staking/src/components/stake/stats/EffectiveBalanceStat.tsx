@@ -25,12 +25,12 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '@explorer/ui';
 import { BigNumber, constants } from 'ethers';
 import { FC } from 'react';
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
+import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;

@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
-/** @type {import('next').NextConfig} */
-const modules = ['@explorer/ui'];
-
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self';  
@@ -12,7 +7,6 @@ const ContentSecurityPolicy = `
 
 module.exports = {
     reactStrictMode: true,
-    transpilePackages: modules,
     async headers() {
         return [
             {

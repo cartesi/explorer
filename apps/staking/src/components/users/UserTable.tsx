@@ -9,26 +9,27 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
+import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
     HStack,
     Spinner,
     Table,
+    TableCellProps,
     Tbody,
-    Text,
-    Thead,
-    Th,
-    Tr,
     Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
     useBreakpointValue,
     useColorModeValue,
-    TableCellProps,
 } from '@chakra-ui/react';
-import { ArrowDownIcon } from '@chakra-ui/icons';
+import { FC } from 'react';
 import { User, UserSort } from '../../graphql/models';
+import theme from '../../styles/theme';
+import { GhostButton } from '../GhostButton';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
-import { GhostButton, theme } from '@explorer/ui';
 
 export interface UserTableProps {
     chainId: number;

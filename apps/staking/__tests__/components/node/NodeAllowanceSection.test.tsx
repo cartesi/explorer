@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+import { BigNumber } from 'ethers';
 import { NodeAllowanceSection } from '../../../src/components/node/NodeAllowanceSection';
 import { withChakraTheme } from '../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const Component = withChakraTheme(NodeAllowanceSection);
 

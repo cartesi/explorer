@@ -9,24 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
+    HStack,
+    Spinner,
     Table,
+    TableColumnHeaderProps,
     Tbody,
     Td,
     Text,
-    Tr,
     Th,
     Thead,
-    HStack,
-    Spinner,
+    Tr,
     useColorModeValue,
-    TableColumnHeaderProps,
 } from '@chakra-ui/react';
+import { FC } from 'react';
+import { StakingPoolFeeHistory } from '../../../graphql/models';
+import theme from '../../../styles/theme';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolCommissionsTableRow from './PoolCommissionsTableRow';
-import { StakingPoolFeeHistory } from '../../../graphql/models';
-import { theme } from '@explorer/ui';
 
 export interface PoolCommissionsTableProps {
     loading: boolean;

@@ -19,9 +19,9 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-import { StakedBalanceIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { StakedBalanceIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeStakedBalanceSection {
