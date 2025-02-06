@@ -1,8 +1,28 @@
 {
-    "extends": "tsconfig/nextjs.json",
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "Next.js",
     "compilerOptions": {
+        "target": "ES6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
         "strict": false,
-        "esModuleInterop": true
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "incremental": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "composite": false,
+        "declaration": true,
+        "declarationMap": true,
+        "inlineSources": false,
+        "moduleResolution": "node",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "preserveWatchOutput": true
     },
     "exclude": ["node_modules"],
     "include": [
