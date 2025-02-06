@@ -321,7 +321,7 @@ describe('useOnBoard', () => {
     });
 
     it('should correctly set chain to MainNet', async () => {
-        const current_env = structuredClone(process.env);
+        const current_env = { ...process.env };
         process.env = {
             ...current_env,
             NODE_ENV: 'production',
