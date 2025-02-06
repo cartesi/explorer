@@ -9,21 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, ReactChild, ReactFragment } from 'react';
-import { PoolProductionIntervalIcon } from '@explorer/ui';
-import {
-    HStack,
-    useColorModeValue,
-    Box,
-    StackProps,
-    Icon,
-    Tooltip,
-    Text,
-} from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import {
+    Box,
+    HStack,
+    Icon,
+    StackProps,
+    Text,
+    Tooltip,
+    useColorModeValue,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
-import BigNumberTextV2 from '../../BigNumberTextV2';
+import { FC, ReactNode } from 'react';
 import ConditionalWrapper from '../../../components/ConditionalWrapper';
+import BigNumberTextV2 from '../../BigNumberTextV2';
+import { PoolProductionIntervalIcon } from '../../Icons';
 
 export interface ProductionIntervalStatProps extends StackProps {
     totalBlocks: number;
@@ -43,7 +43,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
     return (
         <ConditionalWrapper
             condition={location}
-            wrapper={(children: ReactChild | ReactFragment) => (
+            wrapper={(children: ReactNode) => (
                 <NextLink href={location}>{children}</NextLink>
             )}
         >

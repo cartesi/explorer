@@ -9,21 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FC, ReactChild, ReactFragment } from 'react';
-import { PoolUsersIcon } from '@explorer/ui';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    HStack,
-    useColorModeValue,
     Box,
-    StackProps,
+    HStack,
     Icon,
-    Tooltip,
+    StackProps,
     Text,
+    Tooltip,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import BigNumberTextV2 from '../../BigNumberTextV2';
+import { FC, ReactNode } from 'react';
 import ConditionalWrapper from '../../../components/ConditionalWrapper';
+import BigNumberTextV2 from '../../BigNumberTextV2';
+import { PoolUsersIcon } from '../../Icons';
 
 export interface UsersStatProps extends StackProps {
     totalUsers: number;
@@ -42,7 +42,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
     return (
         <ConditionalWrapper
             condition={location}
-            wrapper={(children: ReactChild | ReactFragment) => (
+            wrapper={(children: ReactNode) => (
                 <NextLink href={location}>{children}</NextLink>
             )}
         >

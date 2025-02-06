@@ -17,10 +17,10 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { AddressText } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { FaCoins, FaNetworkWired } from 'react-icons/fa';
+import AddressText from '../AddressText';
 import { BigNumberText } from '../CTSIText';
 
 type RetiredNodeProps = {

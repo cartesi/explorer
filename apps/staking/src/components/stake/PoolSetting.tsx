@@ -31,7 +31,6 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { Notification } from '@explorer/ui';
 import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
@@ -46,6 +45,7 @@ import { useStakingPoolFactory } from '../../services/poolFactory';
 import { getMessages } from '../../utils/messages';
 import { validateEns } from '../../utils/validation';
 import CTSIText from '../CTSIText';
+import { Notification } from '../Notification';
 import TransactionBanner from '../TransactionBanner';
 
 const wordingFor = {

@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { BigNumber } from 'ethers';
 import { FieldValues, FormState, useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form/dist/types';
 import AvailableNode from '../../../src/components/node/AvailableNode';
 import { withChakraTheme } from '../../test-utilities';
-import { UseFormReturn } from 'react-hook-form/dist/types';
-import { BigNumber } from 'ethers';
 
 jest.mock('react-hook-form', () => {
     const originalModule = jest.requireActual('react-hook-form');

@@ -23,11 +23,12 @@ import { useEffect, useState } from 'react';
 
 import { useWallet } from '../../../components/wallet';
 
-import { ConnectWallet, Notification } from '@explorer/ui';
 import { NodeStatus, useNode } from '../../../services/node';
 import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { MappedErrors, ValidationResult } from '../../BaseInput';
+import { ConnectWallet } from '../../header/ConnectWallet';
+import { Notification } from '../../Notification';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../../TransactionBanner';

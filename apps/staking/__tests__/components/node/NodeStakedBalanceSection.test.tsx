@@ -8,10 +8,9 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { NodeStakedBalanceSection } from '../../../src/components/node/NodeStakedBalanceSection';
 import { BigNumber } from 'ethers';
+import { NodeStakedBalanceSection } from '../../../src/components/node/NodeStakedBalanceSection';
 
 const TEST_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
 const TEST_BALANCE_CTSI = '87';

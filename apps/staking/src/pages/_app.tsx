@@ -10,14 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { ChakraProvider } from '@chakra-ui/react';
-import { theme } from '@explorer/ui';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
+import theme from '../styles/theme';
 
-import { Fonts } from '@explorer/ui';
+import { Fonts } from '../components/Fonts';
 import PageHead from '../components/PageHead';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import { ENSDataProvider } from '../services/ens';

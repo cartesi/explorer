@@ -21,9 +21,9 @@ import {
     useBreakpointValue,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { theme } from '@explorer/ui';
 import { range } from 'lodash/fp';
 import { Fragment, FunctionComponent, useState } from 'react';
+import theme from '../../styles/theme';
 import { HSeparator, VSeparator } from './Separator';
 import { IStep, IStepMeta } from './interfaces';
 

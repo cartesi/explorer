@@ -29,7 +29,6 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 
-import { theme } from '@explorer/ui';
 import Layout from '../../../components/Layout';
 import { NodeStakeModal } from '../../../components/node/modals/NodeStakeModal';
 import { NodeUnstakeModal } from '../../../components/node/modals/NodeUnstakeModal';
@@ -48,6 +47,7 @@ import { useBalance, useBlockNumber } from '../../../services/eth';
 import { useNode } from '../../../services/node';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
+import theme from '../../../styles/theme';
 import { useMessages } from '../../../utils/messages';
 import { useTimeLeft } from '../../../utils/react';
 

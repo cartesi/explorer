@@ -18,8 +18,8 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
-import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '@explorer/ui';
+import { FC } from 'react';
+import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '../Icons';
 
 export const steps = [
     {

@@ -18,16 +18,6 @@ import {
     Tooltip,
     useColorModeValue,
 } from '@chakra-ui/react';
-import {
-    Banner,
-    ActiveNodeIcon,
-    ChartIcon,
-    CircleSupplyIcon,
-    GridIcon,
-    MarketCapICon,
-    PrizeIcon,
-    TotalStakedIcon,
-} from '@explorer/ui';
 import { FixedNumber } from 'ethers';
 import { FC } from 'react';
 import MarketInfoPanel from '../../components/home/MarketInfoPanel';
@@ -38,6 +28,16 @@ import { useMarketInformation } from '../../services/market';
 import { formatNumberValue } from '../../utils/numberFormatter';
 import { getRewardRate } from '../../utils/reward';
 import { toCTSI } from '../../utils/token';
+import Banner from '../Banner';
+import {
+    ActiveNodeIcon,
+    ChartIcon,
+    CircleSupplyIcon,
+    GridIcon,
+    MarketCapICon,
+    PrizeIcon,
+    TotalStakedIcon,
+} from '../Icons';
 
 const HomeStats = () => {
     const sectionBg = useColorModeValue('white', 'dark.gray.primary');

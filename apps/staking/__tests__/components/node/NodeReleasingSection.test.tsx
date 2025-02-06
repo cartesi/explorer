@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { render, screen } from '@testing-library/react';
-import { NodeReleasingSection } from '../../../src/components/node/NodeReleasingSection';
 import { BigNumber } from 'ethers';
+import { NodeReleasingSection } from '../../../src/components/node/NodeReleasingSection';
 
 const TEST_RELEASING_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
 const TEST_RELEASING_BALANCE_CTSI = '87';

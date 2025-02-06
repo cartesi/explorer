@@ -9,24 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
 import {
+    HStack,
+    Spinner,
     Table,
+    TableCellProps,
     Tbody,
     Td,
     Text,
-    Tr,
     Th,
     Thead,
-    HStack,
-    Spinner,
+    Tr,
     useColorModeValue,
-    TableCellProps,
 } from '@chakra-ui/react';
-import UsersTableRow from './UsersTableRow';
+import { FC } from 'react';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
+import theme from '../../../styles/theme';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
-import { theme } from '@explorer/ui';
+import UsersTableRow from './UsersTableRow';
 
 export interface UsersTableProps {
     chainId: number;

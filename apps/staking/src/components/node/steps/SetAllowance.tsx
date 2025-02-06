@@ -33,12 +33,13 @@ import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 
-import { ConnectWallet, Notification } from '@explorer/ui';
 import {
     BaseInput,
     OptionalMappedErrors,
     ValidationResult,
 } from '../../BaseInput';
+import { ConnectWallet } from '../../header/ConnectWallet';
+import { Notification } from '../../Notification';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../../TransactionBanner';

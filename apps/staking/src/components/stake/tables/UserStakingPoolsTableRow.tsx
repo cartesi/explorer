@@ -9,21 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useState } from 'react';
 import {
     Box,
+    Link,
+    TableCellProps,
     Td,
     Tr,
     useColorModeValue,
-    Link,
-    TableCellProps,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { PoolBalance } from '../../../graphql/models';
-import { formatCTSI } from '../../../utils/token';
+import { FC, useState } from 'react';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
+import { PoolBalance } from '../../../graphql/models';
 import { useStakingPool } from '../../../services/pool';
-import { Address, StakeIcon } from '@explorer/ui';
+import { formatCTSI } from '../../../utils/token';
+import Address from '../../Address';
+import { StakeIcon } from '../../Icons';
 
 export interface UserStakingPoolsTableRowProps {
     chainId: number;

@@ -18,13 +18,13 @@ import {
     Tooltip,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { PoolPerformanceIcon } from '@explorer/ui';
 import { pathOr } from 'lodash/fp';
 import NextLink from 'next/link';
-import { FC, ReactChild, ReactFragment, memo } from 'react';
+import { FC, memo, ReactNode } from 'react';
 import ConditionalWrapper from '../../../components/ConditionalWrapper';
 import useStakingPoolPerformance from '../../../graphql/hooks/useStakingPoolPerformance';
 import BigNumberTextV2 from '../../BigNumberTextV2';
+import { PoolPerformanceIcon } from '../../Icons';
 
 export interface PoolPerformanceStatProps {
     address: string;
@@ -52,7 +52,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
         return (
             <ConditionalWrapper
                 condition={location}
-                wrapper={(children: ReactChild | ReactFragment) => (
+                wrapper={(children: ReactNode) => (
                     <NextLink href={location}>{children}</NextLink>
                 )}
             >

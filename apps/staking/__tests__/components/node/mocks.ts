@@ -10,14 +10,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { ContractReceipt } from 'ethers/lib';
 import { mock } from 'jest-mock-extended';
-import { ContractReceipt } from 'ethers';
-import { cond, isEqual, constant, stubTrue, cloneDeep } from 'lodash/fp';
+import { cloneDeep, cond, constant, isEqual, stubTrue } from 'lodash/fp';
 import { Node, NodeStatus } from '../../../src/services/node';
-import { Transaction } from '../../../src/services/transaction';
-import { toBigNumber } from '../../../src/utils/numberParser';
 import { useStaking } from '../../../src/services/staking';
 import { useCartesiToken } from '../../../src/services/token';
+import { Transaction } from '../../../src/services/transaction';
+import { toBigNumber } from '../../../src/utils/numberParser';
 import { ReturnOf } from '../../test-utilities';
 
 /**
@@ -184,9 +184,9 @@ function buildUseCartesiTokenReturn() {
 }
 
 export {
-    buildUseCartesiTokenReturn,
-    buildUseStakingReturn,
-    buildTransaction,
     buildContractReceipt,
     buildNodeObj,
+    buildTransaction,
+    buildUseCartesiTokenReturn,
+    buildUseStakingReturn,
 };

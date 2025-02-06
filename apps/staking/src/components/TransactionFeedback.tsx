@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { PropsWithChildren } from 'react';
 import {
     Alert,
     AlertDescription,
@@ -20,8 +19,9 @@ import {
     HStack,
     Spinner,
 } from '@chakra-ui/react';
-import { Address } from '@explorer/ui';
+import { PropsWithChildren } from 'react';
 import { Transaction } from '../services/transaction';
+import Address from './Address';
 
 export interface TransactionFeedbackProps<R> {
     transaction: Transaction<R>;

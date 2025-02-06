@@ -9,8 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FlexProps } from '@chakra-ui/react';
-import { Layout, PageBody, PageHeader, PagePanel } from '@explorer/ui';
+import {
+    Box,
+    Center,
+    Flex,
+    FlexProps,
+    StackProps,
+    Text,
+    useBreakpointValue,
+    useColorModeValue,
+    VStack,
+} from '@chakra-ui/react';
 import React, { FC } from 'react';
 import {
     useCartesiTokenContract,
@@ -20,11 +29,63 @@ import {
     useStakingPoolFactoryContract,
     useWorkerManagerContract,
 } from '../services/contracts';
+import Footer from './Footer';
+import { Header } from './header';
 import SyncStatus from './SyncStatus';
 
-export { PageBody, PageHeader, PagePanel };
+interface ComponentProps {
+    children: React.ReactNode;
+}
 
-interface ComponentProps extends FlexProps {
+export const PageHeader: FC<ComponentProps> = ({ children }) => (
+    <Box w="100%" bg="dark.gray.tertiary" color="white" px="6vw" py={5}>
+        {children}
+    </Box>
+);
+
+export interface PagePanelProps extends ComponentProps {
+    darkModeColor?: string;
+}
+
+export const PagePanel: FC<PagePanelProps> = ({
+    children,
+    darkModeColor = 'gray.700',
+    ...restProps
+}) => {
+    const bg = useColorModeValue('white', darkModeColor);
+    const bgHeader = useColorModeValue('white', 'gray.800');
+    return (
+        <Center
+            bgGradient={`linear(to-b, gray.900 0%, gray.900 50%, ${bgHeader} 50%, ${bgHeader} 100%)`}
+            {...restProps}
+        >
+            <Box bg={bg} w="100%" shadow="md">
+                {children}
+            </Box>
+        </Center>
+    );
+};
+
+export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
+    <VStack px="6vw" py={5} align="stretch" {...restProps}>
+        {children}
+    </VStack>
+);
+
+export const ResponsiveDebug: FC = () => {
+    const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
+    const size = useBreakpointValue(['sm', 'md', 'lg', 'xl']);
+    const index = useBreakpointValue([0, 1, 2, 3]);
+    return (
+        <Center w="100%" minH={50} bg={color}>
+            <Text>
+                {size} [{index}]
+            </Text>
+        </Center>
+    );
+};
+
+interface PageLayoutProps extends FlexProps {
     children: React.ReactNode;
 }
 
@@ -96,7 +157,9 @@ export const footerGeneral = [
     },
 ];
 
-const PageLayout: FC<ComponentProps> = ({ children, ...restProps }) => {
+const PageLayout: FC<PageLayoutProps> = ({ children, ...restProps }) => {
+    const bg = useColorModeValue('white', 'dark.gray.primary');
+    const contentBg = useColorModeValue('white', 'dark.gray.quaternary');
     const pos = usePoSContract();
     const token = useCartesiTokenContract();
     const faucet = useSimpleFaucetContract();
@@ -104,7 +167,7 @@ const PageLayout: FC<ComponentProps> = ({ children, ...restProps }) => {
     const workerManager = useWorkerManagerContract();
     const poolFactory = useStakingPoolFactoryContract();
 
-    const contracts = [
+    const footerContracts = [
         {
             name: 'Token',
             address: token?.address,
@@ -132,19 +195,28 @@ const PageLayout: FC<ComponentProps> = ({ children, ...restProps }) => {
     ];
 
     return (
-        <Layout
-            headerLinks={headerLinks}
-            footerContracts={contracts}
-            footerSupport={footerSupport}
-            footerGeneral={footerGeneral}
-            footerLinks={footerLinks}
+        <Flex
+            direction="column"
+            align="center"
+            m="0 auto"
+            minHeight="100vh"
+            bg={bg}
             {...restProps}
         >
-            <>
-                <SyncStatus />
-                {children}
-            </>
-        </Layout>
+            <Header links={headerLinks} />
+            <Box width="100%" paddingTop="100px" bg={contentBg}>
+                <>
+                    <SyncStatus />
+                    {children}
+                </>
+            </Box>
+            <Footer
+                links={footerLinks}
+                support={footerSupport}
+                general={footerGeneral}
+                contracts={footerContracts}
+            />
+        </Flex>
     );
 };
 

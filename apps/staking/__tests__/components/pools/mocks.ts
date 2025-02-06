@@ -29,7 +29,7 @@ function buildUseStakingPoolReturn() {
 }
 
 export {
+    buildContractReceipt,
     buildUseStakingPoolFactoryReturn,
     buildUseStakingPoolReturn,
-    buildContractReceipt,
 };

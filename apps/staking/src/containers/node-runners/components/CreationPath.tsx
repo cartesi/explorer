@@ -10,10 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Heading, useColorModeValue, VStack } from '@chakra-ui/react';
-import { AllowanceIcon, Card, WalletIcon } from '@explorer/ui';
 import { useAtom } from 'jotai';
 import { NextRouter } from 'next/router';
 import { SlideDown } from '../../../components/animation/SlideDown';
+import { Card } from '../../../components/Card';
+import { AllowanceIcon, WalletIcon } from '../../../components/Icons';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { hasPoolsAtom, hasPrivateNodeAtom } from '../atoms';
 import Block from './Block';

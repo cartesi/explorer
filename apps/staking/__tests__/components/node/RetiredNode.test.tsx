@@ -10,9 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
+import { BigNumber } from 'ethers';
 import RetiredNode from '../../../src/components/node/RetiredNode';
 import { withChakraTheme } from '../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const Component = withChakraTheme(RetiredNode);
 const props = {

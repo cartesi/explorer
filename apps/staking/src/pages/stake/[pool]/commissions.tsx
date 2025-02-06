@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
-import { Pagination } from '@explorer/ui';
 import { isArray } from 'lodash';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
+import Pagination from '../../../components/Pagination';
 import PerPageSelect from '../../../components/PerPageSelect';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
 import { PoolHeader } from '../../../components/stake/PoolHeader';

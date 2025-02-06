@@ -21,10 +21,10 @@ import {
     Spinner,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Address } from '@explorer/ui';
 import { isFunction } from 'lodash/fp';
 import React, { FC, useEffect, useState } from 'react';
 import { Transaction } from '../../services/transaction';
+import Address from '../Address';
 
 export interface AlertMessage {
     title?: string;

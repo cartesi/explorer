@@ -11,21 +11,21 @@
 
 import {
     Box,
+    Button,
     Heading,
     HStack,
     Spinner,
     Text,
-    VStack,
-    Button,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
-import React, { FC, memo, useState, useEffect } from 'react';
 import { last } from 'lodash/fp';
-import { CheckCircleIcon, EmptyTransactionIcon } from '@explorer/ui';
+import { FC, memo, useEffect, useState } from 'react';
 import usePoolActivities, {
     Activity as ActivityType,
 } from '../../graphql/hooks/usePoolActivities';
 import { formatValue } from '../../utils/numberFormatter';
+import { CheckCircleIcon, EmptyTransactionIcon } from '../Icons';
 
 export interface Props {
     userAccount: string;

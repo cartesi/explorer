@@ -21,9 +21,9 @@ import {
     VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { PencilIconWhite } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IAllowanceSectionProps {

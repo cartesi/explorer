@@ -17,9 +17,9 @@ import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
 
-const walletMod = `'../../../../src/components/wallet/useWallet'`;
-const servicesStakingMod = `../../../../src/services/staking`;
-const servicesTokenMod = `../../../../src/services/token`;
+const walletMod = '../../../../src/components/wallet/useWallet';
+const servicesStakingMod = '../../../../src/services/staking';
+const servicesTokenMod = '../../../../src/services/token';
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);

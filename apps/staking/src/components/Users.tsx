@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { ChangeEvent, FC, useState } from 'react';
-import { VStack, Flex } from '@chakra-ui/react';
-import UserTable from './users/UserTable';
+import { Flex, VStack } from '@chakra-ui/react';
+import { ChangeEvent, FC, useState } from 'react';
 import useUsers from '../graphql/hooks/useUsers';
-import { Pagination } from '@explorer/ui';
 import { UserSort } from '../graphql/models';
+import Pagination from './Pagination';
 import PerPageSelect from './PerPageSelect';
+import UserTable from './users/UserTable';
 
 interface UsersProps {
     chainId: number;

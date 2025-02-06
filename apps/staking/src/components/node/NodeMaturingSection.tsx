@@ -20,9 +20,9 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-import { TimeIcon } from '@explorer/ui';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
+import { TimeIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeMaturingSection {
