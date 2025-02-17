@@ -9,23 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import axios from 'axios';
 import {
-    getAllChains,
     allChainsUrl,
-    getChainUrl,
-    getChain,
     chainErrorData,
     convertChainIdToNetworkId,
     convertNetworkIdToChainId,
+    getAllChains,
+    getChain,
     getChainByChainId,
     getChainByKeyValue,
     getChainByNetworkId,
+    getChainUrl,
     IChainData,
 } from '../../src/services/chain';
 
-jest.mock('axios');
-const mockAxiosGet = axios.get as jest.MockedFunction<typeof axios.get>;
+global.fetch = jest.fn();
+const mockFetchGet = global.fetch as jest.MockedFunction<typeof global.fetch>;
+
 const allChains = [
     {
         name: 'ethereum',
@@ -42,11 +42,13 @@ const allChains = [
 ] as unknown as IChainData[];
 
 describe('chain service', () => {
-    it('should invoke GET http request with correct endpoint', async () => {
+    it('should invoke GET http request for all chains with correct endpoint', async () => {
         let url = null;
-        mockAxiosGet.mockImplementation((endpoint) => {
+        mockFetchGet.mockImplementation((endpoint) => {
             url = endpoint;
-            return Promise.resolve({ data: {} });
+            return Promise.resolve({
+                json: () => new Promise((resolve) => resolve({})),
+            } as Response);
         });
 
         await getAllChains();
@@ -54,12 +56,14 @@ describe('chain service', () => {
         expect(url).toBe(allChainsUrl);
     });
 
-    it('should invoke GET http request with correct chain url', async () => {
+    it('should invoke GET http request for specific chain with correct chain url', async () => {
         const chainId = 5;
         let url = null;
-        mockAxiosGet.mockImplementation((endpoint) => {
+        mockFetchGet.mockImplementation((endpoint) => {
             url = endpoint;
-            return Promise.resolve({ data: {} });
+            return Promise.resolve({
+                json: () => new Promise((resolve) => resolve({})),
+            } as Response);
         });
 
         await getChain(chainId);
@@ -69,8 +73,10 @@ describe('chain service', () => {
 
     it('should invoke GET http request with correct chain url', async () => {
         const chainId = 5;
-        mockAxiosGet.mockImplementation(() => {
-            return Promise.reject({ data: {} });
+        mockFetchGet.mockImplementation(() => {
+            return Promise.reject({
+                json: () => new Promise((resolve) => resolve({})),
+            } as Response);
         });
 
         const result = await getChain(chainId);
@@ -85,12 +91,15 @@ describe('chain service', () => {
     it('should return networkId when invoking convertChainIdToNetworkId function', async () => {
         const chainId = 5;
         const networkId = 2;
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: {
-                    networkId,
-                },
-            });
+                json: () =>
+                    new Promise((resolve) =>
+                        resolve({
+                            networkId,
+                        })
+                    ),
+            } as Response);
         });
 
         const result = await convertChainIdToNetworkId(chainId);
@@ -101,12 +110,15 @@ describe('chain service', () => {
     it('should return networkId when invoking getChainByChainId function', async () => {
         const chainId = 5;
         const networkId = 2;
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: {
-                    networkId,
-                },
-            });
+                json: () =>
+                    new Promise((resolve) =>
+                        resolve({
+                            networkId,
+                        })
+                    ),
+            } as Response);
         });
 
         const result = await getChainByChainId(chainId);
@@ -115,10 +127,10 @@ describe('chain service', () => {
     });
 
     it('should return correct chainData when invoking getChainByKeyValue function', async () => {
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: allChains,
-            });
+                json: () => new Promise((resolve) => resolve(allChains)),
+            } as Response);
         });
 
         const key = 'name';
@@ -129,10 +141,10 @@ describe('chain service', () => {
     });
 
     it('should throw error when invoking getChainByKeyValue function with key/value that does not match any chain', async () => {
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: allChains,
-            });
+                json: () => new Promise((resolve) => resolve(allChains)),
+            } as Response);
         });
 
         const key = 'name';
@@ -151,10 +163,10 @@ describe('chain service', () => {
             ...chain,
             networkId: index + 1,
         }));
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: chains,
-            });
+                json: () => new Promise((resolve) => resolve(chains)),
+            } as Response);
         });
 
         const result = await getChainByNetworkId(networkId);
@@ -171,10 +183,10 @@ describe('chain service', () => {
             networkId: index + 1,
             chainId: index + 1,
         }));
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data: chains,
-            });
+                json: () => new Promise((resolve) => resolve(chains)),
+            } as Response);
         });
 
         const result = await convertNetworkIdToChainId(networkId);

@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import axios from 'axios';
 import Cors from 'cors';
-import { FixedNumber, constants } from 'ethers';
+import { constants, FixedNumber } from 'ethers';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { getEstimatedRewardRate, getRewardRate } from '../../../utils/reward';
@@ -62,9 +61,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
-    const marketData = await axios.get(endpoint);
+    const response = await fetch(endpoint);
+    const marketData = await response.json();
     const circulatingSupply = Math.round(
-        marketData.data.market_data.circulating_supply
+        marketData.market_data.circulating_supply
     );
 
     let projectedAnnualEarnings = 0,
@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { activeStake } = getEstimatedRewardRate(blocks, constants.One, 0, 0);
 
     res.json({
-        price: +marketData.data.market_data.current_price.usd.toFixed(4),
+        price: +marketData.market_data.current_price.usd.toFixed(4),
         circulatingSupply,
         totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
         totalUsers: summary.totalUsers,
