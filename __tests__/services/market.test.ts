@@ -12,7 +12,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { endpoint, useMarketInformation } from '../../src/services/market';
 
-jest.mock('axios');
 global.fetch = jest.fn();
 const mockFetchGet = global.fetch as jest.MockedFunction<typeof global.fetch>;
 
