@@ -10,18 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { act, renderHook, waitFor } from '@testing-library/react';
-import axios from 'axios';
-import { useMarketInformation, endpoint } from '../../src/services/market';
+import { endpoint, useMarketInformation } from '../../src/services/market';
 
 jest.mock('axios');
-const mockAxiosGet = axios.get as jest.MockedFunction<typeof axios.get>;
+global.fetch = jest.fn();
+const mockFetchGet = global.fetch as jest.MockedFunction<typeof global.fetch>;
 
 describe('market service', () => {
     it('should invoke GET http request with correct endpoint', async () => {
         let url = null;
-        mockAxiosGet.mockImplementation((endpoint) => {
+        mockFetchGet.mockImplementation((endpoint) => {
             url = endpoint;
-            return Promise.resolve({ data: {} });
+            return Promise.resolve({
+                json: () => new Promise((resolve) => resolve({})),
+            } as Response);
         });
 
         await act(async () => {
@@ -45,10 +47,10 @@ describe('market service', () => {
                 circulating_supply: 10,
             },
         };
-        mockAxiosGet.mockImplementation(() => {
+        mockFetchGet.mockImplementation(() => {
             return Promise.resolve({
-                data,
-            });
+                json: () => new Promise((resolve) => resolve(data)),
+            } as Response);
         });
 
         const { result } = renderHook(() => useMarketInformation());
