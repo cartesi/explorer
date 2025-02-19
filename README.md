@@ -1,70 +1,108 @@
-# Explorer
+# Cartesi Staking Explorer
 
-This is a monorepo holding up two explorer applications from Cartesi. One is the well established Staking platform where users can participate in the network running they own private node, becoming a pool manager and/or also becoming a staking delegator. The second application is the new Rollup's explorer that will support Dapp developers.
+This web application shows several informations about Cartesi Proof of Stake:
 
-## What's inside?
+-   node public address
+-   node balance
+-   current node owner
+-   action to claim a node through metamask
+-   action to release a node from the current owner
 
-This monorepo uses [Yarn v1](https://classic.yarnpkg.com/) as a package manager and is controlled by [turborepo](https://turbo.build/repo).
+## Running locally
 
-### Package Installation
+This is a [Next.js](https://nextjs.org) application which uses smart contracts deployed by the [pos-dlib](https://github.com/cartesi/pos-dlib) and [staking-pool](https://github.com/cartesi/staking-pool) projects.
+In order to run the application locally you need to:
 
-You can add, remove and upgrade packages from within your monorepo using your package manager's built-in commands:
+1. Run a localhost hardhat node with all contracts deployed
+2. Run a local graph node reading from the local hardhat node and deploy the subgraph
+3. Run the application
+4. Open application in browser and switch to a local network in MetaMask
 
-`yarn workspace <workspace> add <package>`
+### Running a local hardhat node
 
-> Refer to Turborepo [package-installation](https://turbo.build/repo/docs/handbook/package-installation) session for more information.
-
-### Apps and Packages
-
--   `staking`: The staking explorer also a [Next.js](https://nextjs.org/) app
--   `ui`: House to core react components for [staking](./apps//staking/) applications.
--   `services`: Holds common logic to share between apps e.g ENS service.
--   `utils`: Holds utilities used inside the packages and also Apps.
--   `wallet`: Holds common implementation of a web3 wallet to be shared between apps.
--   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
--   `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
--   [TypeScript](https://www.typescriptlang.org/) for static type checking
--   [ESLint](https://eslint.org/) for code linting
--   [Prettier](https://prettier.io) for code formatting
-
-### Develop
-
-To develop all apps and packages, run the following command:
+This can be done from the [staking-pool](https://github.com/cartesi/staking-pool) project by running:
 
 ```
-yarn run dev
+$ cd staking-pool
+$ yarn start --export ../explorer/src/services/contracts/localhost.json
 ```
 
-> Note: When running turborepo tasks like `dev` or `build` it will run apps like staking in parallel. e.g. when you want only to do `dev` on staking app, you should filter the task
+This will run a local hardhat node running at http://127.0.0.1:8545/ and deploy all smart contracts.
+Among the contracts are:
 
-The filtering should be done by the **name** inside the package.json of the targeted `apps/*`
+-   CartesiToken: the CTSI token contract. Minter is the first account, and holds 1B tokens initially.
+-   StakingImpl: the staking contract.
+-   WorkerManagerAuthManagerImpl: used to hire worker nodes.
+-   PoS: proof of stake smart contract, holds the chains. Starts with no chain created.
+-   StakingPoolFactoryImpl: factory of new staking pools.
+
+### Running a local graph node
+
+The application uses a subgraph powered by thegraph to consolidate blockchain information and serve using a GraphQL endpoint.
+
+-   Clone the graph node from [GitHub](git@github.com:graphprotocol/graph-node.git).
+-   Copy the file `docker/docker-compose.yml` to `docker/docker-compose-localhost.yml`
+-   Modify line [20](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L20) to `ethereum: 'localhost:http://host.docker.internal:8545/'`
+-   Modify line [27](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L27) to `./data_localhost/ipfs:/data/ipfs`
+-   Modify line [38](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L38) to `./data_localhost/postgres:/var/lib/postgresql/data`
+
+Then run:
 
 ```
-yarn run dev --filter staking
+$ cd docker
+$ docker-compose -f docker-compose-localhost.yml up
 ```
+
+Every time you reset your local hardhat node you will need to delete the `data_localhost` folder that is created by the `docker-compose` command before running it again.
+
+The next step is the deploy the subgraph to the local graph node.
+Checkout the subgraph project from [GitHub](https://github.com/cartesi-corp/subgraph).
+Then yarn link the project to the local `staking-pool` project by running `yarn link` at the `staking-pool` project and than `yarn link @cartesi/staking-pool` at the `subgraph` project.
+
+Then run the following commands:
+
+```
+$ yarn prepare:localhost
+$ yarn create:localhost
+$ yarn deploy:localhost
+```
+
+### Environment variables
+
+There are two files in the explorer project the`.env.development` and `.env.production`. They set default values e.g. config for [Unleash](https://www.getunleash.io/) that is our feature-flag provider. You can create a file called `.env.development.local` that is gitignored so you can add your secrets there.
+
+The next step is to create an account on [Infura](https://infura.io/) or any other node-rpc. Create a project so you can have access to a node-rpc endpoint.
+
+On your `.env.development.local` set the following var:
+
+-   NEXT_PUBLIC_RPC_URL_1=your_mainnet_node_rpc_endpoint_goes_here
+
+> We support ethereum Mainnet(1), Sepolia(11155111) and Devnet (31337),
+
+Check the `.env` to see the available variables. [additional.d.ts](./additional.d.ts) also includes `process.env` declarations for improved IDE autocomplete.
+
+<br>
+
+> You can read more about **nextJS** env vars [here](https://nextjs.org/docs/basic-features/environment-variables)
+
+### Run the application
+
+Simply run:
+
+```
+$ yarn dev
+```
+
+### Open application and setup MetaMask
+
+Open the application in your browser at http://localhost:3000
+Open MetaMask and switch to a network configured to the url http://localhost:8545 and Chain ID 31337.
 
 ### Test coverage reporting
 
 We are using [Coveralls](https://coveralls.io/) as a reporting tool for our tests' coverage. Each workspace that has tests, generates coverage report for them as well using the `test:ci` npm script. At each build we merge coverage reports for all workspaces, and then send the merged report to Coveralls.
 
 To include a new workspace that has tests in the merged coverage report, all you need to do is provide in its dedicated `package.json` file the `test:ci` script (found in existing workspaces).
-
-### Build
-
-To build all apps, run the following command:
-
-```
-yarn run build
-```
-
-> Note: We are not building the packages since it is only for internal use. **The transpilation/compilation is delegated to the application using the package.** _That may change in the future._
 
 ### Release
 
@@ -73,14 +111,3 @@ The project use **tags** that represent releases, including a branch to signal c
 That is as follows:
 
 -   Combined tag name `v` + SemVer format **tag** (e.g. v3.4.0) to pinpoint repository state on a given production release.
-
-## Turborepo Useful Links
-
-Learn more about the power of Turborepo:
-
--   [Pipelines](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
--   [Caching](https://turbo.build/repo/docs/core-concepts/caching)
--   [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
--   [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
--   [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
--   [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
