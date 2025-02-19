@@ -25,9 +25,6 @@ jobs:
             - name: Run Tests
               run: yarn test:ci
 
-            - name: Merge coveralls reports
-              run: yarn coveralls
-
             - name: Publish coveralls report
               uses: coverallsapp/github-action@master
               with:
