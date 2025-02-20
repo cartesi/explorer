@@ -15,7 +15,7 @@ import { ServiceResult } from '../types';
 import { isCartesiUser } from '../utils';
 import { default as Repository } from './AddressENSRepository';
 import { getENSData } from './functions';
-import { AddressEns } from './types';
+import { AddressEns, ENSAddressData } from './types';
 
 const ALLOWED_FIELDS = [
     'id',
@@ -34,6 +34,25 @@ const ENS_ENTRY_TTL = defaultTo(
     defaultTTL,
     parseInt(process.env.ENS_ENTRY_TTL ?? '')
 );
+
+const MAX_ENTRIES_PER_REQ = 900;
+
+type StaleEntries = Awaited<ReturnType<typeof Repository.getAllStaleEntries>>;
+
+const getFreshData = async (staleList: StaleEntries) => {
+    const partitions = Math.ceil(staleList.length / MAX_ENTRIES_PER_REQ);
+    const promises: Promise<ENSAddressData[]>[] = [];
+
+    console.info(`Breaking into ${partitions} concurrent calls`);
+
+    for (let i = 1; i <= partitions; i++) {
+        promises.push(getENSData(staleList.splice(0, MAX_ENTRIES_PER_REQ)));
+    }
+
+    const responses = await Promise.all(promises);
+
+    return responses.flat();
+};
 
 export default class AddressENSService {
     static async getEntry(
@@ -100,7 +119,7 @@ export default class AddressENSService {
             if (staleList.length === 0)
                 return { ok: true, data: { success: true, count: 0 } };
             console.info(`(Total stale entries): ${staleList.length}`);
-            const refreshedList = await getENSData(staleList);
+            const refreshedList = await getFreshData(staleList);
 
             const updatedEntries = await Repository.updateBulk(
                 refreshedList as AddressEns[]
