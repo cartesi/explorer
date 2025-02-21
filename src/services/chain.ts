@@ -9,8 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import axios from 'axios';
-
 export interface IChainData {
     name: string;
     chain: string;
@@ -31,8 +29,8 @@ export interface IChainData {
 export const allChainsUrl = 'https://chainid.network/chains.json';
 
 export async function getAllChains(): Promise<IChainData[]> {
-    const response = await axios.get(allChainsUrl);
-    return response.data;
+    const response = await fetch(allChainsUrl);
+    return await response.json();
 }
 
 export const getChainUrl = (chainId: number) =>
@@ -51,8 +49,8 @@ export const chainErrorData = {
 
 export async function getChain(chainId: number): Promise<IChainData> {
     try {
-        const response = await axios.get(getChainUrl(chainId));
-        return response.data;
+        const response = await fetch(getChainUrl(chainId));
+        return await response.json();
     } catch (e) {
         return {
             ...chainErrorData,

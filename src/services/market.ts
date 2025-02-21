@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 export type MarketInformation = {
     price?: number;
@@ -29,9 +28,10 @@ export const useMarketInformation = () => {
     useEffect(() => {
         setLoading(true);
         setError('');
-        axios
-            .get(endpoint)
-            .then(({ data }) => {
+
+        fetch(endpoint)
+            .then((res) => res.json())
+            .then((data) => {
                 setLoading(false);
                 setError('');
                 setMarketInformation({
