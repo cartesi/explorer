@@ -194,7 +194,9 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                             x: {
                                 grid: {
                                     display: false,
-                                    borderColor: tickColor,
+                                },
+                                border: {
+                                    color: tickColor,
                                 },
                                 ticks: {
                                     callback: (_, index) => {
@@ -214,7 +216,9 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                                 min: minY,
                                 grid: {
                                     display: false,
-                                    borderColor: tickColor,
+                                },
+                                border: {
+                                    color: tickColor,
                                 },
                                 ticks: {
                                     stepSize,
