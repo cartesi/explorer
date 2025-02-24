@@ -51,7 +51,8 @@ module.exports = {
                               !/@web3-onboard/.test(filename) &&
                               !/abitype/.test(filename) &&
                               !/unstorage/.test(filename) &&
-                              !/ox/.test(filename)
+                              !/ox/.test(filename) &&
+                              !/chart.js/.test(filename)
                           );
                       },
                   }
