@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Meta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Address from '../components/Address';
 import { StakePlusIcon } from '../components/Icons';
 
@@ -17,9 +17,9 @@ export default {
     title: 'Address',
     component: Address,
     argTypes: {},
-} as Meta<typeof Address>;
+} as ComponentMeta<typeof Address>;
 
-const Template = (args) => (
+const Template: ComponentStory<typeof Address> = (args) => (
     <Address {...args} address="0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D" />
 );
 
