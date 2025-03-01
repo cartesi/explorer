@@ -116,7 +116,7 @@
         "@vitest/coverage-v8": "^3.0.7",
         "babel-jest": "29.5.0",
         "babel-loader": "9.1.2",
-        "chromatic": "5.10.2",
+        "chromatic": "^11.26.1",
         "dotenv-cli": "7.2.1",
         "drizzle-kit": "^0.30.0",
         "eslint": "7.32.0",
