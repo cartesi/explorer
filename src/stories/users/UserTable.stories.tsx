@@ -9,23 +9,27 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import UserTable from '../../components/users/UserTable';
+import UserTable, { UserTableProps } from '../../components/users/UserTable';
 
 export default {
     title: 'Users/Table',
     component: UserTable,
     argTypes: {},
-} as ComponentMeta<typeof UserTable>;
+} as Meta<typeof UserTable>;
 
-const Template: ComponentStory<typeof UserTable> = (args) => (
-    <UserTable {...args} />
-);
+type Story = StoryObj<typeof UserTable>;
 
-export const Loading = Template.bind({});
-Loading.args = {
-    loading: true,
+const Template: Story = {
+    render: (args) => <UserTable {...args} />,
+};
+
+export const Loading: Story = {
+    args: {
+        loading: true,
+    },
+    ...Template,
 };
 
 const data = [
@@ -63,15 +67,19 @@ const data = [
     },
 ];
 
-export const Default = Template.bind({});
-Default.args = {
-    loading: false,
-    sort: 'balance',
-    data,
+export const Default: Story = {
+    args: {
+        loading: false,
+        sort: 'balance',
+        data: data as UserTableProps['data'],
+    },
+    ...Template,
 };
 
-export const NoItens = Template.bind({});
-NoItens.args = {
-    loading: false,
-    data: [],
+export const NoItems: Story = {
+    args: {
+        loading: false,
+        data: [],
+    },
+    ...Template,
 };

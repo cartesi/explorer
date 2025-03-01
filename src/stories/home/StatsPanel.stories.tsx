@@ -10,24 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import StatsPanelComponent from '../../components/home/StatsPanel';
 import { Nodes, TotalStaked, APR, ParticipationRate } from '../Stats.stories';
+import Stats from '../../components/Stats';
 
 export default {
     title: 'Home/Stats Panel',
     component: StatsPanelComponent,
     argTypes: {},
-} as ComponentMeta<typeof StatsPanelComponent>;
+} as Meta<typeof StatsPanelComponent>;
 
-export const StatsPanel: ComponentStory<typeof StatsPanelComponent> = (
-    args
-) => (
-    <StatsPanelComponent {...args}>
-        <Nodes {...Nodes.args} />
-        <TotalStaked {...TotalStaked.args} />
-        <APR {...APR.args} />
-        <ParticipationRate {...ParticipationRate.args} />
-    </StatsPanelComponent>
-);
+type Story = StoryObj<typeof StatsPanelComponent>;
+
+export const StatsPanel: Story = {
+    render: (args) => (
+        <StatsPanelComponent {...args}>
+            <Stats {...Nodes.args} label="Stats" />
+            <Stats {...TotalStaked.args} label="Total Staked" />
+            <Stats {...APR.args} label="APR" />
+            <Stats {...ParticipationRate.args} label="Participation Rate" />
+        </StatsPanelComponent>
+    ),
+};

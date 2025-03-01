@@ -10,36 +10,45 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { Meta, StoryObj } from '@storybook/react';
+import blocks from './blocks.json';
 import BlockMiniCard from '../../components/block/BlockMiniCard';
+import { Block } from '../../graphql/models';
+
+const block = blocks[0] as unknown as Block;
 
 export default {
     title: 'BlockMiniCard',
     component: BlockMiniCard,
     argTypes: {},
-} as ComponentMeta<typeof BlockMiniCard>;
+} as Meta<typeof BlockMiniCard>;
 
-const Template: ComponentStory<typeof BlockMiniCard> = (args) => (
-    <BlockMiniCard {...args} />
-);
+type Story = StoryObj<typeof BlockMiniCard>;
 
-import blocks from './blocks.json';
-
-export const Complete = Template.bind({});
-Complete.args = {
-    block: blocks[0],
+const Template: Story = {
+    render: (args) => <BlockMiniCard {...args} />,
 };
 
-export const NoProtocol = Template.bind({});
-NoProtocol.args = {
-    block: blocks[0],
-    showProtocol: false,
+export const Complete: Story = {
+    args: {
+        block,
+    },
+    ...Template,
 };
 
-export const OnlyNumber = Template.bind({});
-OnlyNumber.args = {
-    block: blocks[0],
-    showChain: false,
-    showProtocol: false,
+export const NoProtocol: Story = {
+    args: {
+        block,
+        showProtocol: false,
+    },
+    ...Template,
+};
+
+export const OnlyNumber: Story = {
+    args: {
+        block,
+        showChain: false,
+        showProtocol: false,
+    },
+    ...Template,
 };

@@ -9,16 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { NavBar } from '../../components/header/NavBar';
+import { Meta, StoryObj } from '@storybook/react';
+import { NavBar } from '../../components/header';
 
 export default {
     title: 'Header/NavBar',
     component: NavBar,
     argTypes: {},
-} as ComponentMeta<typeof NavBar>;
+} as Meta<typeof NavBar>;
 
-const Template: ComponentStory<typeof NavBar> = (args) => <NavBar {...args} />;
+type Story = StoryObj<typeof NavBar>;
+
+const Template: Story = {
+    render: (args) => <NavBar {...args} />,
+};
 
 const defaultProps = {
     links: [
@@ -45,9 +49,7 @@ const defaultProps = {
     ],
 };
 
-export const Standard = Template.bind({});
-Standard.args = { ...defaultProps };
-Standard.story = {
+export const Standard: Story = {
     parameters: {
         nextRouter: {
             path: '/pools/[id]',
@@ -57,4 +59,6 @@ Standard.story = {
             },
         },
     },
+    args: { ...defaultProps },
+    ...Template,
 };

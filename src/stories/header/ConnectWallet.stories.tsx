@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ConnectWallet } from '../../components/header/ConnectWallet';
-import { UnsupportedNetworkError } from '../../components/wallet/errors/UnsupportedNetworkError';
+import { Meta, StoryObj } from '@storybook/react';
+import { ConnectWallet } from '../../components/header';
+import { UnsupportedNetworkError } from '../../components/wallet';
 
 const defaultWallet = {
     active: false,
@@ -23,21 +23,27 @@ export default {
     title: 'Header/ConnectWallet',
     component: ConnectWallet,
     argTypes: {},
-} as ComponentMeta<typeof ConnectWallet>;
+} as Meta<typeof ConnectWallet>;
 
-const Template: ComponentStory<typeof ConnectWallet> = (args) => (
-    <ConnectWallet {...args} />
-);
+type Story = StoryObj<typeof ConnectWallet>;
 
-export const ConnectToWallet = Template.bind({});
-ConnectToWallet.args = {
-    wallet: defaultWallet,
+const Template: Story = {
+    render: (args) => <ConnectWallet {...args} />,
 };
 
-export const UnsupportedNetwork = Template.bind({});
-UnsupportedNetwork.args = {
-    wallet: {
-        ...defaultWallet,
-        error: new UnsupportedNetworkError(1),
+export const ConnectToWallet: Story = {
+    args: {
+        wallet: defaultWallet,
     },
+    ...Template,
+};
+
+export const UnsupportedNetwork: Story = {
+    args: {
+        wallet: {
+            ...defaultWallet,
+            error: new UnsupportedNetworkError(1),
+        },
+    },
+    ...Template,
 };

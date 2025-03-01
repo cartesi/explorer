@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import PendingNode from '../../components/node/PendingNode';
 import { ethers } from 'ethers';
@@ -19,24 +19,30 @@ export default {
     title: 'Node/Pending Node',
     component: PendingNode,
     argTypes: {},
-} as ComponentMeta<typeof PendingNode>;
+} as Meta<typeof PendingNode>;
 
-const Template: ComponentStory<typeof PendingNode> = (args) => (
-    <PendingNode {...args} />
-);
+type Story = StoryObj<typeof PendingNode>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    chainId: 5,
-    user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    balance: ethers.utils.parseEther('0.1'),
+const Template: Story = {
+    render: (args) => <PendingNode {...args} />,
 };
 
-export const SomeoneElse = Template.bind({});
-SomeoneElse.args = {
-    account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    chainId: 5,
-    user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
-    balance: ethers.utils.parseEther('0.1'),
+export const Basic: Story = {
+    args: {
+        account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        chainId: 5,
+        user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        balance: ethers.utils.parseEther('0.1'),
+    },
+    ...Template,
+};
+
+export const SomeoneElse: Story = {
+    args: {
+        account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        chainId: 5,
+        user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
+        balance: ethers.utils.parseEther('0.1'),
+    },
+    ...Template,
 };

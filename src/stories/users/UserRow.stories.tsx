@@ -10,23 +10,28 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Table, Tbody } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import UserRow from '../../components/users/UserRow';
+import UserRow, { UserRowProps } from '../../components/users/UserRow';
+import { StakingPool } from '../../graphql/models';
 
 export default {
     title: 'Users/Item',
     component: UserRow,
     argTypes: {},
-} as ComponentMeta<typeof UserRow>;
+} as Meta<typeof UserRow>;
 
-const Template: ComponentStory<typeof UserRow> = (args) => (
-    <Table>
-        <Tbody>
-            <UserRow {...args} />
-        </Tbody>
-    </Table>
-);
+type Story = StoryObj<typeof UserRow>;
+
+const Template: Story = {
+    render: (args) => (
+        <Table>
+            <Tbody>
+                <UserRow {...args} />
+            </Tbody>
+        </Table>
+    ),
+};
 
 const user = {
     id: '0xe6eb0a6687a658c3af15a26879ce2c9f1385dcf6',
@@ -35,20 +40,18 @@ const user = {
     totalBlocks: 234,
     totalReward: '29000000000000000000000',
     pool: undefined,
+} as UserRowProps['user'];
+
+export const User: Story = {
+    args: {
+        user,
+    },
+    ...Template,
 };
 
-export const User = Template.bind({});
-User.args = {
-    user,
-};
-
-export const Pool = Template.bind({});
-Pool.args = {
-    user: { ...user, pool: { manager: user.id } },
-};
-
-export const PoolOwner = Template.bind({});
-PoolOwner.args = {
-    account: user.id,
-    user: { ...user, pool: { manager: user.id } },
+export const Pool: Story = {
+    args: {
+        user: { ...user, pool: { manager: user.id } as StakingPool },
+    },
+    ...Template,
 };
