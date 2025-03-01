@@ -10,21 +10,25 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { WalletMobileModal } from '../../../components/header/modals/WalletMobileModal';
 
 export default {
     title: 'Header/Modals/WalletMobileModal',
     component: WalletMobileModal,
     argTypes: {},
-} as ComponentMeta<typeof WalletMobileModal>;
+} as Meta<typeof WalletMobileModal>;
 
-const Template: ComponentStory<typeof WalletMobileModal> = (args) => (
-    <WalletMobileModal {...args} />
-);
+type Story = StoryObj<typeof WalletMobileModal>;
 
-export const Default = Template.bind({});
-Default.args = {
-    isOpen: true,
-    onClose: () => undefined,
+const Template: Story = {
+    render: (args) => <WalletMobileModal {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        isOpen: true,
+        onClose: () => undefined,
+    },
+    ...Template,
 };

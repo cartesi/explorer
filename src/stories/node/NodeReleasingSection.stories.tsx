@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { NodeReleasingSection } from '../../components/node/NodeReleasingSection';
 import { ethers } from 'ethers';
@@ -19,19 +19,25 @@ export default {
     title: 'Node/NodeReleasingSection',
     component: NodeReleasingSection,
     argTypes: {},
-} as ComponentMeta<typeof NodeReleasingSection>;
+} as Meta<typeof NodeReleasingSection>;
 
-const Template: ComponentStory<typeof NodeReleasingSection> = (args) => (
-    <NodeReleasingSection {...args} />
-);
+type Story = StoryObj<typeof NodeReleasingSection>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    releasingBalance: ethers.utils.parseEther('3.34'),
-    releasingLeftShort: '1 days, 4 hours',
+const Template: Story = {
+    render: (args) => <NodeReleasingSection {...args} />,
 };
 
-export const NoBalance = Template.bind({});
-NoBalance.args = {
-    releasingBalance: ethers.utils.parseEther('0'),
+export const Basic: Story = {
+    args: {
+        releasingBalance: ethers.utils.parseEther('3.34'),
+        releasingLeftShort: '1 days, 4 hours',
+    },
+    ...Template,
+};
+
+export const NoBalance: Story = {
+    args: {
+        releasingBalance: ethers.utils.parseEther('0'),
+    },
+    ...Template,
 };

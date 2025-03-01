@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { NodeHiredBanner } from '../../components/node/NodeHiredBanner';
 
@@ -18,10 +18,14 @@ export default {
     title: 'Node/NodeHiredBanner',
     component: NodeHiredBanner,
     argTypes: {},
-} as ComponentMeta<typeof NodeHiredBanner>;
+} as Meta<typeof NodeHiredBanner>;
 
-const Template: ComponentStory<typeof NodeHiredBanner> = (args) => (
-    <NodeHiredBanner {...args} />
-);
+type Story = StoryObj<typeof NodeHiredBanner>;
 
-export const Basic = Template.bind({});
+const Template: Story = {
+    render: (args) => <NodeHiredBanner {...args} />,
+};
+
+export const Basic: Story = {
+    ...Template,
+};

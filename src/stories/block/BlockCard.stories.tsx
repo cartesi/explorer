@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import BlockCard from '../../components/block/BlockCard';
 import blocks from './blocks.json';
@@ -21,26 +21,35 @@ export default {
     argTypes: {
         highlightColor: { control: 'color' },
     },
-} as ComponentMeta<typeof BlockCard>;
+} as Meta<typeof BlockCard>;
 
-const Template: ComponentStory<typeof BlockCard> = (args) => (
-    <BlockCard block={blocks[0]} {...args} />
-);
+type Story = StoryObj<typeof BlockCard>;
 
-export const Default = Template.bind({});
-Default.args = {};
-
-export const HighlightId = Template.bind({});
-HighlightId.args = {
-    highlight: 'id',
+const Template: Story = {
+    render: (args) => <BlockCard block={blocks[0]} {...args} />,
 };
 
-export const HighlightProducer = Template.bind({});
-HighlightProducer.args = {
-    highlight: 'producer',
+export const Default: Story = {
+    ...Template,
 };
 
-export const HighlightNode = Template.bind({});
-HighlightNode.args = {
-    highlight: 'node',
+export const HighlightId: Story = {
+    args: {
+        highlight: 'id',
+    },
+    ...Template,
+};
+
+export const HighlightProducer: Story = {
+    args: {
+        highlight: 'producer',
+    },
+    ...Template,
+};
+
+export const HighlightNode: Story = {
+    args: {
+        highlight: 'node',
+    },
+    ...Template,
 };
