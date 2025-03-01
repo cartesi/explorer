@@ -33,6 +33,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
+import { FocusableElement } from '@chakra-ui/utils';
 
 export interface IStakingStakeModalProps {
     balance: BigNumber;
@@ -58,7 +59,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
         BigNumber.from(0)
     );
     const formattedStakedValue = formatBigNumber(stakedValue);
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
     const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
     const helperTextColor = useColorModeValue('gray.600', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');

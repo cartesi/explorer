@@ -33,6 +33,7 @@ import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FC, useEffect, useRef, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
+import { FocusableElement } from '@chakra-ui/utils';
 
 interface INodeStakeModalProps {
     allowance: BigNumber;
@@ -66,7 +67,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
         return numberFormat.format(parseFloat(formatUnits(value, 18)));
     };
 
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
