@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakingDepositModal } from '../../../components/stake/modals/StakingDepositModal';
 import { BigNumber } from 'ethers';
 
@@ -20,26 +20,32 @@ export default {
     title: 'Stake/Modals/StakingDepositModal',
     component: StakingDepositModal,
     argTypes: {},
-} as ComponentMeta<typeof StakingDepositModal>;
+} as Meta<typeof StakingDepositModal>;
 
-const Template: ComponentStory<typeof StakingDepositModal> = (args) => (
-    <StakingDepositModal {...args} />
-);
+type Story = StoryObj<typeof StakingDepositModal>;
 
-export const Default = Template.bind({});
-Default.args = {
-    allowance: BigNumber.from(defaultValue),
-    balance: BigNumber.from(defaultValue),
-    disclosure: {
-        onClose: () => undefined,
-    },
-    isOpen: true,
-    onClose: () => undefined,
-    onSave: () => undefined,
+const Template: Story = {
+    render: (args) => <StakingDepositModal {...args} />,
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
-    ...Default.args,
-    allowance: BigNumber.from(0),
+export const Default: Story = {
+    args: {
+        allowance: BigNumber.from(defaultValue),
+        balance: BigNumber.from(defaultValue),
+        disclosure: {
+            onClose: () => undefined,
+        },
+        isOpen: true,
+        onClose: () => undefined,
+        onSave: () => undefined,
+    },
+    ...Template,
+};
+
+export const ZeroAllowance: Story = {
+    args: {
+        ...Default.args,
+        allowance: BigNumber.from(0),
+    },
+    ...Template,
 };

@@ -10,9 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Staking } from '../../components/stake/Staking';
 import { BigNumber } from 'ethers';
+import { Transaction } from '../../services/transaction';
 
 const defaultValue = '1000000000000000000000';
 
@@ -32,26 +33,29 @@ export default {
     title: 'Stake/Staking',
     component: Staking,
     argTypes: {},
-} as ComponentMeta<typeof Staking>;
+} as Meta<typeof Staking>;
 
-const Template: ComponentStory<typeof Staking> = (args) => (
-    <Staking {...args} />
-);
+type Story = StoryObj<typeof Staking>;
 
-export const Default = Template.bind({});
-Default.args = {
-    userWalletBalance: BigNumber.from(defaultValue),
-    allowance: BigNumber.from(defaultValue),
-    userPoolBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(defaultValue),
-    stakedBalance: BigNumber.from(defaultValue),
-    depositTimestamp: new Date(new Date().setFullYear(2023)),
-    lockTime: 1000,
-    poolTransaction: defaultTransaction,
-    tokenTransaction: defaultTransaction,
-    onApprove: () => undefined,
-    onDeposit: () => undefined,
-    onWithdraw: () => undefined,
-    onStake: () => undefined,
-    onUnstake: () => undefined,
+const Template: Story = {
+    render: (args) => <Staking {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        userWalletBalance: BigNumber.from(defaultValue),
+        allowance: BigNumber.from(defaultValue),
+        userPoolBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(defaultValue),
+        stakedBalance: BigNumber.from(defaultValue),
+        depositTimestamp: new Date(new Date().setFullYear(2023)),
+        lockTime: 1000,
+        tokenTransaction: defaultTransaction as unknown as Transaction<string>,
+        onApprove: () => undefined,
+        onDeposit: () => undefined,
+        onWithdraw: () => undefined,
+        onStake: () => undefined,
+        onUnstake: () => undefined,
+    },
+    ...Template,
 };

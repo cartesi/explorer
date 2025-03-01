@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolPerformanceStat from '../../../components/stake/stats/PoolPerformanceStat';
 
 const defaultAddress = '0x2942aa4356783892c624125acfbbb80d29629a9d';
@@ -18,19 +18,25 @@ export default {
     title: 'Stake/Stats/PoolPerformanceStat',
     component: PoolPerformanceStat,
     argTypes: {},
-} as ComponentMeta<typeof PoolPerformanceStat>;
+} as Meta<typeof PoolPerformanceStat>;
 
-const Template: ComponentStory<typeof PoolPerformanceStat> = (args) => (
-    <PoolPerformanceStat {...args} />
-);
+type Story = StoryObj<typeof PoolPerformanceStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    address: defaultAddress,
-    location: 'Stara Zagora, Bulgaria',
+const Template: Story = {
+    render: (args) => <PoolPerformanceStat {...args} />,
 };
 
-export const WithoutLocation = Template.bind({});
-WithoutLocation.args = {
-    address: defaultAddress,
+export const Default: Story = {
+    args: {
+        address: defaultAddress,
+        location: 'Sofia, Bulgaria',
+    },
+    ...Template,
+};
+
+export const WithoutLocation: Story = {
+    args: {
+        address: defaultAddress,
+    },
+    ...Template,
 };

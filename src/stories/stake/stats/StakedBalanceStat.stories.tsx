@@ -10,22 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import StakedBalanceStat from '../../../components/stake/stats/StakedBalanceStat';
+import { BigNumber } from 'ethers';
 
-const defaultValue = '100000000000000000000';
+const defaultValue = BigNumber.from('100000000000000000000');
 
 export default {
     title: 'Stake/Stats/StakedBalanceStat',
     component: StakedBalanceStat,
     argTypes: {},
-} as ComponentMeta<typeof StakedBalanceStat>;
+} as Meta<typeof StakedBalanceStat>;
 
-const Template: ComponentStory<typeof StakedBalanceStat> = (args) => (
-    <StakedBalanceStat {...args} />
-);
+type Story = StoryObj<typeof StakedBalanceStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    stakedBalance: defaultValue,
+const Template: Story = {
+    render: (args) => <StakedBalanceStat {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        stakedBalance: defaultValue,
+    },
+    ...Template,
 };

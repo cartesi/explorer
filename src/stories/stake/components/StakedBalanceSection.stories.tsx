@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakedBalanceSection } from '../../../components/stake/components/StakedBalanceSection';
 import { BigNumber } from 'ethers';
 
@@ -20,20 +20,26 @@ export default {
     title: 'Stake/Components/StakedBalanceSection',
     component: StakedBalanceSection,
     argTypes: {},
-} as ComponentMeta<typeof StakedBalanceSection>;
+} as Meta<typeof StakedBalanceSection>;
 
-const Template: ComponentStory<typeof StakedBalanceSection> = (args) => (
-    <StakedBalanceSection {...args} />
-);
+type Story = StoryObj<typeof StakedBalanceSection>;
 
-export const Default = Template.bind({});
-Default.args = {
-    stakedBalance: BigNumber.from(defaultValue),
-    onUnstakeClick: () => undefined,
+const Template: Story = {
+    render: (args) => <StakedBalanceSection {...args} />,
 };
 
-export const ZeroStakedBalance = Template.bind({});
-ZeroStakedBalance.args = {
-    ...Default.args,
-    stakedBalance: BigNumber.from(0),
+export const Default: Story = {
+    args: {
+        stakedBalance: BigNumber.from(defaultValue),
+        onUnstakeClick: () => undefined,
+    },
+    ...Template,
+};
+
+export const ZeroStakedBalance: Story = {
+    args: {
+        ...Default.args,
+        stakedBalance: BigNumber.from(0),
+    },
+    ...Template,
 };

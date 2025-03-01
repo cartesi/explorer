@@ -10,18 +10,21 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakingTabNavigation } from '../../components/stake/StakingTabNavigation';
 
 export default {
     title: 'Stake/StakingTabNavigation',
     component: StakingTabNavigation,
     argTypes: {},
-} as ComponentMeta<typeof StakingTabNavigation>;
+} as Meta<typeof StakingTabNavigation>;
 
-const Template: ComponentStory<typeof StakingTabNavigation> = (args) => (
-    <StakingTabNavigation {...args} />
-);
+type Story = StoryObj<typeof StakingTabNavigation>;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Template: Story = {
+    render: (args) => <StakingTabNavigation {...args} />,
+};
+
+export const Default: Story = {
+    ...Template,
+};

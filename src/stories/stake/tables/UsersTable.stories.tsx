@@ -10,39 +10,48 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import UsersTable from '../../../components/stake/tables/UsersTable';
 import stakingUsersData from './stakingUsersData';
+import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 
 export default {
     title: 'Stake/UsersTable',
     component: UsersTable,
     argTypes: {},
-} as ComponentMeta<typeof UsersTable>;
+} as Meta<typeof UsersTable>;
 
-const Template: ComponentStory<typeof UsersTable> = (args) => (
-    <UsersTable {...args} />
-);
+type Story = StoryObj<typeof UsersTable>;
+
+const Template: Story = {
+    render: (args) => <UsersTable {...args} />,
+};
 
 const defaultProps = {
     chainId: 5,
     loading: false,
-    data: stakingUsersData,
+    data: stakingUsersData as unknown as PoolBalanceWithAccumulatedShares[],
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    ...defaultProps,
-    loading: true,
+export const Loading: Story = {
+    args: {
+        ...defaultProps,
+        loading: true,
+    },
+    ...Template,
 };
 
-export const NoItems = Template.bind({});
-NoItems.args = {
-    ...defaultProps,
-    data: [],
+export const NoItems: Story = {
+    args: {
+        ...defaultProps,
+        data: [],
+    },
+    ...Template,
 };

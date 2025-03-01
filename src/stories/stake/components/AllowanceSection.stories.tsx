@@ -10,30 +10,36 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
 import { BigNumber } from 'ethers';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = BigNumber.from('10000000000000000000000000000');
 
 export default {
     title: 'Stake/Components/AllowanceSection',
     component: AllowanceSection,
     argTypes: {},
-} as ComponentMeta<typeof AllowanceSection>;
+} as Meta<typeof AllowanceSection>;
 
-const Template: ComponentStory<typeof AllowanceSection> = (args) => (
-    <AllowanceSection {...args} />
-);
+type Story = StoryObj<typeof AllowanceSection>;
 
-export const Default = Template.bind({});
-Default.args = {
-    allowance: defaultValue,
-    onAllowanceClick: () => undefined,
+const Template: Story = {
+    render: (args) => <AllowanceSection {...args} />,
 };
 
-export const ZeroAllowance = Template.bind({});
-ZeroAllowance.args = {
-    ...Default.args,
-    allowance: BigNumber.from(0),
+export const Default: Story = {
+    args: {
+        allowance: defaultValue,
+        onAllowanceClick: () => undefined,
+    },
+    ...Template,
+};
+
+export const ZeroAllowance: Story = {
+    args: {
+        ...Default.args,
+        allowance: BigNumber.from(0),
+    },
+    ...Template,
 };
