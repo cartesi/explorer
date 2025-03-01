@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Text } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import AddressText from '../components/AddressText';
 import data from './mock/poolsExtended.json';
 
@@ -18,17 +18,23 @@ export default {
     title: 'Address Text',
     component: AddressText,
     argTypes: {},
-} as ComponentMeta<typeof AddressText>;
+} as Meta<typeof AddressText>;
 
-const Template: ComponentStory<typeof AddressText> = (args) => (
-    <AddressText {...args}>
-        <Text>Staking Pool</Text>
-    </AddressText>
-);
+type Story = StoryObj<typeof AddressText>;
 
-export const Default = Template.bind({});
-Default.args = {
-    address: data.data.allStakingPools.nodes[0].id,
-    chainId: 5,
-    color: 'black',
+const Template: Story = {
+    render: (args) => (
+        <AddressText {...args}>
+            <Text>Staking Pool</Text>
+        </AddressText>
+    ),
+};
+
+export const Default: Story = {
+    args: {
+        address: data.data.allStakingPools.nodes[0].id,
+        chainId: 5,
+        color: 'black',
+    },
+    ...Template,
 };

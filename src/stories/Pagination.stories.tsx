@@ -9,37 +9,51 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Pagination from '../components/Pagination';
 
 export default {
     title: 'Pagination',
     component: Pagination,
     argTypes: {},
-} as ComponentMeta<typeof Pagination>;
+} as Meta<typeof Pagination>;
 
-const Template: ComponentStory<typeof Pagination> = (args) => (
-    <Pagination {...args} />
-);
+type Story = StoryObj<typeof Pagination>;
 
-export const FirstPage = Template.bind({});
-FirstPage.args = { pages: 5, currentPage: 1 };
+const Template: Story = {
+    render: (args) => <Pagination {...args} />,
+};
 
-export const MiddlePage = Template.bind({});
-MiddlePage.args = { pages: 5, currentPage: 3 };
+export const FirstPage: Story = {
+    args: { pages: 5, currentPage: 1 },
+    ...Template,
+};
 
-export const LastPage = Template.bind({});
-LastPage.args = { pages: 5, currentPage: 5 };
+export const MiddlePage: Story = {
+    args: { pages: 5, currentPage: 3 },
+    ...Template,
+};
 
-export const OnePage = Template.bind({});
-OnePage.args = { pages: 1 };
+export const LastPage: Story = {
+    args: { pages: 5, currentPage: 5 },
+    ...Template,
+};
 
-export const NoPages = Template.bind({});
-NoPages.args = { pages: 0 };
+export const OnePage: Story = {
+    args: { pages: 1 },
+    ...Template,
+};
 
-export const WithNumbers = Template.bind({});
-WithNumbers.args = {
-    pages: 10,
-    currentPage: 0,
-    showPageNumbers: true,
+export const NoPages: Story = {
+    args: { pages: 0 },
+    ...Template,
+};
+
+export const WithNumbers: Story = {
+    args: {
+        pages: 10,
+        currentPage: 0,
+        showPageNumbers: true,
+    },
+    ...Template,
 };

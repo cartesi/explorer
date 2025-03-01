@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Footer from '../components/Footer';
-import { WalletConnectionContext } from '../components/wallet/provider';
+import { WalletConnectionContext } from '../components/wallet';
 
 export default {
     title: 'Footer',
     component: Footer,
     argTypes: {},
-} as ComponentMeta<typeof Footer>;
+} as Meta<typeof Footer>;
 
 const initialContextState = {
     active: false,
@@ -25,16 +25,20 @@ const initialContextState = {
     deactivate: () => Promise.resolve(),
 };
 
-const Template: ComponentStory<typeof Footer> = (args) => {
-    const hasContracts = args.contracts.length > 0;
-    const chainId = hasContracts ? 1 : undefined;
-    return (
-        <WalletConnectionContext.Provider
-            value={{ chainId, ...initialContextState }}
-        >
-            <Footer {...args} />
-        </WalletConnectionContext.Provider>
-    );
+type Story = StoryObj<typeof Footer>;
+
+const Template: Story = {
+    render: (args) => {
+        const hasContracts = args.contracts.length > 0;
+        const chainId = hasContracts ? 1 : undefined;
+        return (
+            <WalletConnectionContext.Provider
+                value={{ chainId, ...initialContextState }}
+            >
+                <Footer {...args} />
+            </WalletConnectionContext.Provider>
+        );
+    },
 };
 
 const links = [
@@ -67,14 +71,18 @@ const contracts = [
     },
 ];
 
-export const Standard = Template.bind({});
-Standard.args = {
-    links,
-    contracts,
+export const Standard: Story = {
+    args: {
+        links,
+        contracts,
+    },
+    ...Template,
 };
 
-export const NotConnected = Template.bind({});
-NotConnected.args = {
-    links,
-    contracts: [],
+export const NotConnected = {
+    args: {
+        links,
+        contracts: [],
+    },
+    ...Template,
 };

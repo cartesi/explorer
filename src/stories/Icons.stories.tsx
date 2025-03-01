@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import {
     ActiveNodeIcon,
@@ -277,9 +277,14 @@ export default {
     title: 'Icons',
     component: Icons,
     argTypes: {},
-} as ComponentMeta<typeof Icons>;
+} as Meta<typeof Icons>;
 
-const Template: ComponentStory<typeof Icons> = () => <Icons />;
+type Story = StoryObj<typeof Icons>;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Template: Story = {
+    render: () => <Icons />,
+};
+
+export const Default = {
+    ...Template,
+};
