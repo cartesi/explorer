@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import CommissionStat from '../../../components/stake/stats/CommissionStat';
 
 const defaultCommissionPercentage = 50;
 const defaultFee = {
-    id: 1,
+    id: '1',
     commission: 25,
     gas: 20,
     created: 1657193076608,
@@ -27,21 +27,27 @@ export default {
     title: 'Stake/Stats/CommissionStat',
     component: CommissionStat,
     argTypes: {},
-} as ComponentMeta<typeof CommissionStat>;
+} as Meta<typeof CommissionStat>;
 
-const Template: ComponentStory<typeof CommissionStat> = (args) => (
-    <CommissionStat {...args} />
-);
+type Story = StoryObj<typeof CommissionStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    commissionPercentage: defaultCommissionPercentage,
-    fee: defaultFee,
-    location: defaultLocation,
+const Template: Story = {
+    render: (args) => <CommissionStat {...args} />,
 };
 
-export const ZeroCommissionPercentage = Template.bind({});
-ZeroCommissionPercentage.args = {
-    ...Default.args,
-    commissionPercentage: 0,
+export const Default: Story = {
+    args: {
+        commissionPercentage: defaultCommissionPercentage,
+        fee: defaultFee,
+        location: defaultLocation,
+    },
+    ...Template,
+};
+
+export const ZeroCommissionPercentage: Story = {
+    args: {
+        ...Default.args,
+        commissionPercentage: 0,
+    },
+    ...Template,
 };

@@ -10,47 +10,55 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { InfoBanner } from '../../components/stake/InfoBanner';
 
 export default {
     title: 'Stake/InfoBanner',
     component: InfoBanner,
     argTypes: {},
-} as ComponentMeta<typeof InfoBanner>;
+} as Meta<typeof InfoBanner>;
 
-const Template: ComponentStory<typeof InfoBanner> = (args) => (
-    <InfoBanner {...args} />
-);
+type Story = StoryObj<typeof InfoBanner>;
 
-export const Default = Template.bind({});
-Default.args = {
-    isOpen: true,
-    isClosable: true,
-    isExpandable: false,
-    isExpanded: false,
-    content: (
-        <div>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda
-            consequuntur debitis delectus, laudantium nostrum numquam odit
-            officiis quas. Consequuntur doloribus hic illum minima minus odit,
-            velit voluptatibus. Aspernatur, enim, libero.
-        </div>
-    ),
+const Template: Story = {
+    render: (args) => <InfoBanner {...args} />,
 };
 
-export const Expanded = Template.bind({});
-Expanded.args = {
-    ...Default.args,
-    isClosable: false,
-    isExpandable: true,
-    isExpanded: true,
+export const Default: Story = {
+    args: {
+        isOpen: true,
+        isClosable: true,
+        isExpandable: false,
+        isExpanded: false,
+        content: (
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Assumenda consequuntur debitis delectus, laudantium nostrum
+                numquam odit officiis quas. Consequuntur doloribus hic illum
+                minima minus odit, velit voluptatibus. Aspernatur, enim, libero.
+            </div>
+        ),
+    },
+    ...Template,
 };
 
-export const Collapsed = Template.bind({});
-Collapsed.args = {
-    ...Default.args,
-    isClosable: false,
-    isExpandable: true,
-    isExpanded: false,
+export const Expanded: Story = {
+    args: {
+        ...Default.args,
+        isClosable: false,
+        isExpandable: true,
+        isExpanded: true,
+    },
+    ...Template,
+};
+
+export const Collapsed: Story = {
+    args: {
+        ...Default.args,
+        isClosable: false,
+        isExpandable: true,
+        isExpanded: false,
+    },
+    ...Template,
 };

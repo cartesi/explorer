@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolsOverview from '../../../components/stake/components/PoolsOverview';
 import { BigNumber } from 'ethers';
 
@@ -18,11 +18,13 @@ export default {
     title: 'Stake/Components/PoolsOverview',
     component: PoolsOverview,
     argTypes: {},
-} as ComponentMeta<typeof PoolsOverview>;
+} as Meta<typeof PoolsOverview>;
 
-const Template: ComponentStory<typeof PoolsOverview> = (args) => (
-    <PoolsOverview {...args} />
-);
+type Story = StoryObj<typeof PoolsOverview>;
+
+const Template: Story = {
+    render: (args) => <PoolsOverview {...args} />,
+};
 
 const defaultProps = {
     balance: BigNumber.from('10000000000000000000000'),
@@ -33,15 +35,17 @@ const defaultProps = {
         totalPools: 3,
         totalStakers: 4,
         totalNodes: 5,
-        totalStaked: 6,
+        totalStaked: '6',
         totalBlocks: 7,
-        totalReward: 8,
+        totalReward: '8',
         totalProtocols: 9,
         totalChains: 10,
     },
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };

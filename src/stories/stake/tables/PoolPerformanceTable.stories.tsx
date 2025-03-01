@@ -10,35 +10,34 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolPerformanceTable from '../../../components/stake/tables/PoolPerformanceTable';
 import stakingPoolsData from './stakingPoolsData';
+import { StakingPool, StakingPoolSort } from '../../../graphql/models';
 
 export default {
     title: 'Stake/PoolPerformanceTable',
     component: PoolPerformanceTable,
     argTypes: {},
-} as ComponentMeta<typeof PoolPerformanceTable>;
+} as Meta<typeof PoolPerformanceTable>;
 
-const Template: ComponentStory<typeof PoolPerformanceTable> = (args) => (
-    <PoolPerformanceTable {...args} />
-);
+type Story = StoryObj<typeof PoolPerformanceTable>;
+
+const Template: Story = {
+    render: (args) => <PoolPerformanceTable {...args} />,
+};
 
 const defaultProps = {
     account: '0x17b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
     chainId: 5,
     loading: false,
-    sort: 'commissionPercentage',
-    data: stakingPoolsData,
+    sort: 'commissionPercentage' as StakingPoolSort,
+    data: stakingPoolsData as unknown as StakingPool[],
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
-};
-
-export const WithManageButton = Template.bind({});
-WithManageButton.args = {
-    ...defaultProps,
-    account: stakingPoolsData[0].manager,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };

@@ -10,18 +10,21 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { PoolHeader } from '../../components/stake/PoolHeader';
 
 export default {
     title: 'Stake/PoolHeader',
     component: PoolHeader,
     argTypes: {},
-} as ComponentMeta<typeof PoolHeader>;
+} as Meta<typeof PoolHeader>;
 
-const Template: ComponentStory<typeof PoolHeader> = (args) => (
-    <PoolHeader {...args} />
-);
+type Story = StoryObj<typeof PoolHeader>;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Template: Story = {
+    render: (args) => <PoolHeader {...args} />,
+};
+
+export const Default: Story = {
+    ...Template,
+};

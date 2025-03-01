@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
 import { BigNumber } from 'ethers';
 
@@ -28,32 +28,34 @@ export default {
     title: 'Stake/PoolStatsPanel',
     component: PoolStatsPanel,
     argTypes: {},
-} as ComponentMeta<typeof PoolStatsPanel>;
+} as Meta<typeof PoolStatsPanel>;
 
-const Template: ComponentStory<typeof PoolStatsPanel> = (args) => (
-    <PoolStatsPanel {...args} />
-);
+type Story = StoryObj<typeof PoolStatsPanel>;
 
-export const Default = Template.bind({});
-Default.args = {
-    address: 'General Gurko 75 str',
-    stakedBalance: BigNumber.from(defaultValue),
-    totalBlocks: 100,
-    totalUsers: 50,
-    productionInterval: 1000,
-    totalReward: defaultValue,
-    commissionPercentage: 15,
-    fee: defaultStakingPoolFee,
-    amount: BigNumber.from(defaultValue),
-    pool: BigNumber.from(defaultValue),
-    stake: BigNumber.from(defaultValue),
-    withdraw: BigNumber.from(defaultValue),
-    stakingMature: BigNumber.from(defaultValue),
-    stakingMaturing: BigNumber.from(defaultValue),
-    stakingReleasing: BigNumber.from(defaultValue),
-    stakingReleased: BigNumber.from(defaultValue),
-    stakingMaturingTimestamp: new Date(),
-    stakingReleasingTimestamp: new Date(),
-    hideZeros: false,
-    onRebalance: () => undefined,
+const Template: Story = {
+    render: (args) => <PoolStatsPanel {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        address: 'General Gurko 75 str',
+        stakedBalance: BigNumber.from(defaultValue),
+        totalBlocks: 100,
+        totalUsers: 50,
+        productionInterval: 1000,
+        totalReward: defaultValue,
+        commissionPercentage: 15,
+        fee: defaultStakingPoolFee,
+        pool: BigNumber.from(defaultValue),
+        stake: BigNumber.from(defaultValue),
+        withdraw: BigNumber.from(defaultValue),
+        stakingMature: BigNumber.from(defaultValue),
+        stakingMaturing: BigNumber.from(defaultValue),
+        stakingReleasing: BigNumber.from(defaultValue),
+        stakingReleased: BigNumber.from(defaultValue),
+        stakingMaturingTimestamp: new Date(),
+        stakingReleasingTimestamp: new Date(),
+        onRebalance: () => undefined,
+    },
+    ...Template,
 };
