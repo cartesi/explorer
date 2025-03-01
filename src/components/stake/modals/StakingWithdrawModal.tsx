@@ -34,6 +34,7 @@ import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
+import { FocusableElement } from '@chakra-ui/utils';
 
 export interface IStakingWithdrawModalProps {
     isOpen: boolean;
@@ -53,7 +54,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const [withdrawFullAmount, setWithdrawFullAmount] =
         useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
     const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
