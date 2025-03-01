@@ -10,33 +10,39 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import MarketInfoPanel from '../../components/home/MarketInfoPanel';
+import { Meta, StoryObj } from '@storybook/react';
+import MarketInfoPanel, {
+    MarketInfoUnit,
+} from '../../components/home/MarketInfoPanel';
 
 export default {
     title: 'Home/Market Info Panel',
     component: MarketInfoPanel,
     argTypes: {},
-} as ComponentMeta<typeof MarketInfoPanel>;
+} as Meta<typeof MarketInfoPanel>;
 
-const Template: ComponentStory<typeof MarketInfoPanel> = (args) => (
-    <MarketInfoPanel {...args} />
-);
+type Story = StoryObj<typeof MarketInfoPanel>;
+
+const Template: Story = {
+    render: (args) => <MarketInfoPanel {...args} />,
+};
 
 const defaultProps = {
     label: 'Price',
     value: 123441206,
-    unit: 'USD',
+    unit: 'USD' as MarketInfoUnit,
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: { ...defaultProps },
+    ...Template,
 };
 
-export const CTSI = Template.bind({});
-CTSI.args = {
-    ...defaultProps,
-    value: 380469518,
-    unit: 'CTSI',
+export const CTSI: Story = {
+    args: {
+        ...defaultProps,
+        value: 380469518,
+        unit: 'CTSI',
+    },
+    ...Template,
 };

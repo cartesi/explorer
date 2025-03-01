@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Stack } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import SetAllowance from '../../components/node/steps/SetAllowance';
 
@@ -21,21 +21,25 @@ export default {
     parameters: {
         layout: 'fullscreen',
     },
-} as ComponentMeta<typeof SetAllowance>;
+} as Meta<typeof SetAllowance>;
 
-const Template: ComponentStory<typeof SetAllowance> = (args) => {
-    return (
-        <Stack
-            bg="gray.80"
-            spacing={8}
-            px={{ base: 0, lg: '12vw', xl: '18vw' }}
-            py={{ base: 0, sm: 'yvw' }}
-            direction="column"
-            alignItems="stretch"
-        >
-            <SetAllowance stepNumber={4} inFocus />
-        </Stack>
-    );
+type Story = StoryObj<typeof SetAllowance>;
+
+const Template: Story = {
+    render: () => {
+        return (
+            <Stack
+                bg="gray.80"
+                spacing={8}
+                px={{ base: 0, lg: '12vw', xl: '18vw' }}
+                py={{ base: 0, sm: 'yvw' }}
+                direction="column"
+                alignItems="stretch"
+            >
+                <SetAllowance stepNumber={4} inFocus />
+            </Stack>
+        );
+    },
 };
 
-export const Desktop = Template.bind({});
+export const Desktop: Story = { ...Template };

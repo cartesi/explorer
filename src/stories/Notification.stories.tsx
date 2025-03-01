@@ -10,101 +10,117 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Stack } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ConnectWallet } from '../components/header/ConnectWallet';
-import { Notification, NotificationProps } from '../components/Notification';
+import { Meta, StoryObj } from '@storybook/react';
+import { ConnectWallet } from '../components/header';
+import { Notification } from '../components/Notification';
 
 export default {
     title: 'Notification',
     component: Notification,
     argTypes: {},
-} as ComponentMeta<typeof Notification>;
+} as Meta<typeof Notification>;
 
-const Template: ComponentStory<typeof Notification> = (args) => {
-    return (
-        <Stack
-            bg="gray.80"
-            spacing={8}
-            px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
-            pt={{ base: 8, sm: '3vw' }}
-            pb={{ base: 8, sm: '5vw' }}
-            direction={{ base: 'column' }}
-            alignItems={{ base: 'flex-start', md: 'center' }}
-            justifyContent={['flex-start', 'center']}
-        >
-            <Notification
-                id="notification"
-                title={args.title}
-                subtitle={args.subtitle}
-                onClose={args.onClose}
-                status={args.status}
+type Story = StoryObj<typeof Notification>;
+
+const Template: Story = {
+    render: (args) => {
+        return (
+            <Stack
+                bg="gray.80"
+                spacing={8}
+                px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
+                pt={{ base: 8, sm: '3vw' }}
+                pb={{ base: 8, sm: '5vw' }}
+                direction={{ base: 'column' }}
+                alignItems={{ base: 'flex-start', md: 'center' }}
+                justifyContent={['flex-start', 'center']}
             >
-                {args.children}
-            </Notification>
-            ;
-        </Stack>
-    );
+                <Notification
+                    id="notification"
+                    title={args.title}
+                    subtitle={args.subtitle}
+                    onClose={args.onClose}
+                    status={args.status}
+                >
+                    {args.children}
+                </Notification>
+            </Stack>
+        );
+    },
 };
 
-export const Info = Template.bind({});
-Info.args = {
-    title: 'My info notification',
-    status: 'info',
-    onClose: () => undefined,
-} as NotificationProps;
+export const Info: Story = {
+    args: {
+        title: 'My info notification',
+        status: 'info',
+        onClose: () => undefined,
+    },
+    ...Template,
+};
 
-export const InfoWithSubtitle = Template.bind({});
-InfoWithSubtitle.args = {
-    title: 'My info notification',
-    subtitle: 'All operations accepted',
-    status: 'info',
-    onClose: () => undefined,
-} as NotificationProps;
+export const InfoWithSubtitle: Story = {
+    args: {
+        title: 'My info notification',
+        subtitle: 'All operations accepted',
+        status: 'info',
+        onClose: () => undefined,
+    },
+    ...Template,
+};
 
-export const Warning = Template.bind({});
-Warning.args = {
-    title: 'Warning notification',
-    status: 'warning',
-    onClose: () => undefined,
-} as NotificationProps;
+export const Warning: Story = {
+    args: {
+        title: 'Warning notification',
+        status: 'warning',
+        onClose: () => undefined,
+    },
+    ...Template,
+};
 
-export const Error = Template.bind({});
-Error.args = {
-    title: 'Error notification',
-    status: 'error',
-    onClose: () => undefined,
-} as NotificationProps;
+export const Error: Story = {
+    args: {
+        title: 'Error notification',
+        status: 'error',
+        onClose: () => undefined,
+    },
+    ...Template,
+};
 
-export const Success = Template.bind({});
-Success.args = {
-    title: 'Success notification',
-    status: 'success',
-    onClose: () => undefined,
-} as NotificationProps;
+export const Success: Story = {
+    args: {
+        title: 'Success notification',
+        status: 'success',
+        onClose: () => undefined,
+    },
+    ...Template,
+};
 
-export const WithClosingButton = Template.bind({});
-WithClosingButton.args = {
-    title: 'Closable notification',
-    status: 'success',
-    onClose: () => alert('Close button clicked'),
-} as NotificationProps;
+export const WithClosingButton: Story = {
+    args: {
+        title: 'Closable notification',
+        status: 'success',
+        onClose: () => alert('Close button clicked'),
+    },
+    ...Template,
+};
 
-export const WithActionableChildren = Template.bind({});
-WithActionableChildren.args = {
-    title: 'Notification with action',
-    status: 'warning',
-    displayName: 'WithActionableChildren',
-    children: (
-        <ConnectWallet
-            wallet={{
-                active: false,
-                activate: () => {
-                    alert('connecting wallet');
-                    return Promise.resolve();
-                },
-                deactivate: () => Promise.resolve(),
-            }}
-        />
-    ),
-    onClose: () => undefined,
-} as NotificationProps;
+export const WithActionableChildren: Story = {
+    args: {
+        title: 'Notification with action',
+        status: 'warning',
+        children: (
+            <ConnectWallet
+                wallet={{
+                    active: false,
+                    activate: () => {
+                        alert('connecting wallet');
+                        return Promise.resolve();
+                    },
+                    deactivate: () => Promise.resolve(),
+                }}
+            />
+        ),
+        onClose: () => undefined,
+    },
+    ...Template,
+};

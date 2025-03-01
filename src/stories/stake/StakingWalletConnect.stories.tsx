@@ -10,20 +10,24 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakingWalletConnect } from '../../components/stake/StakingWalletConnect';
 
 export default {
     title: 'Stake/StakingWalletConnect',
     component: StakingWalletConnect,
     argTypes: {},
-} as ComponentMeta<typeof StakingWalletConnect>;
+} as Meta<typeof StakingWalletConnect>;
 
-const Template: ComponentStory<typeof StakingWalletConnect> = (args) => (
-    <StakingWalletConnect {...args} />
-);
+type Story = StoryObj<typeof StakingWalletConnect>;
 
-export const Default = Template.bind({});
-Default.args = {
-    onConnect: () => undefined,
+const Template: Story = {
+    render: (args) => <StakingWalletConnect {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        onConnect: () => undefined,
+    },
+    ...Template,
 };

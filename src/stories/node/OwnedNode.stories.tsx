@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import OwnedNode from '../../components/node/OwnedNode';
 import { ethers } from 'ethers';
@@ -19,38 +19,46 @@ export default {
     title: 'Node/Owned Node',
     component: OwnedNode,
     argTypes: {},
-} as ComponentMeta<typeof OwnedNode>;
+} as Meta<typeof OwnedNode>;
 
-const Template: ComponentStory<typeof OwnedNode> = (args) => (
-    <OwnedNode {...args} />
-);
+type Story = StoryObj<typeof OwnedNode>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    authorized: true,
-    chainId: 5,
-    user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    nodeBalance: ethers.utils.parseEther('0.1'),
-    userBalance: ethers.utils.parseEther('2.345'),
+const Template: Story = {
+    render: (args) => <OwnedNode {...args} />,
 };
 
-export const SomeoneElse = Template.bind({});
-SomeoneElse.args = {
-    account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    authorized: true,
-    chainId: 5,
-    user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
-    nodeBalance: ethers.utils.parseEther('0.1'),
-    userBalance: ethers.utils.parseEther('2.345'),
+export const Basic: Story = {
+    args: {
+        account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        authorized: true,
+        chainId: 5,
+        user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        nodeBalance: ethers.utils.parseEther('0.1'),
+        userBalance: ethers.utils.parseEther('2.345'),
+    },
+    ...Template,
 };
 
-export const Unauthorized = Template.bind({});
-Unauthorized.args = {
-    account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    authorized: false,
-    chainId: 5,
-    user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    nodeBalance: ethers.utils.parseEther('0.1'),
-    userBalance: ethers.utils.parseEther('2.345'),
+export const SomeoneElse: Story = {
+    args: {
+        account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        authorized: true,
+        chainId: 5,
+        user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
+        nodeBalance: ethers.utils.parseEther('0.1'),
+        userBalance: ethers.utils.parseEther('2.345'),
+    },
+    ...Template,
+};
+
+export const Unauthorized: Story = {
+    args: {
+        account: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        authorized: false,
+        chainId: 5,
+        user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        nodeBalance: ethers.utils.parseEther('0.1'),
+        userBalance: ethers.utils.parseEther('2.345'),
+    },
+    ...Template,
 };

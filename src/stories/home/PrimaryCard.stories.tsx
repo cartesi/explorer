@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { ChartIcon } from '../../components/Icons';
 
 import PrimaryCard from '../../components/home/PrimaryCard';
@@ -23,14 +23,17 @@ export default {
     title: 'Home/PrimaryCard',
     component: PrimaryCard,
     argTypes: {},
-} as ComponentMeta<typeof PrimaryCard>;
+} as Meta<typeof PrimaryCard>;
 
-const Template: ComponentStory<typeof PrimaryCard> = ({
-    children,
-    ...restProps
-}) => <PrimaryCard {...restProps}>{children}</PrimaryCard>;
+type Story = StoryObj<typeof PrimaryCard>;
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+const Template: Story = {
+    render: ({ children, ...restProps }) => (
+        <PrimaryCard {...restProps}>{children}</PrimaryCard>
+    ),
+};
+
+export const Default: Story = {
+    args: { ...defaultProps },
+    ...Template,
 };

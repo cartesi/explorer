@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { PoolBalanceSection } from '../../../components/stake/components/PoolBalanceSection';
 import { BigNumber } from 'ethers';
 
@@ -20,28 +20,36 @@ export default {
     title: 'Stake/Components/PoolBalanceSection',
     component: PoolBalanceSection,
     argTypes: {},
-} as ComponentMeta<typeof PoolBalanceSection>;
+} as Meta<typeof PoolBalanceSection>;
 
-const Template: ComponentStory<typeof PoolBalanceSection> = (args) => (
-    <PoolBalanceSection {...args} />
-);
+type Story = StoryObj<typeof PoolBalanceSection>;
 
-export const Default = Template.bind({});
-Default.args = {
-    userPoolBalance: BigNumber.from(defaultValue),
-    isPoolBalanceLocked: false,
-    onStakeClick: () => undefined,
-    onWithdrawClick: () => undefined,
+const Template: Story = {
+    render: (args) => <PoolBalanceSection {...args} />,
 };
 
-export const PoolBalanceLocked = Template.bind({});
-PoolBalanceLocked.args = {
-    ...Default.args,
-    isPoolBalanceLocked: true,
+export const Default: Story = {
+    args: {
+        userPoolBalance: BigNumber.from(defaultValue),
+        isPoolBalanceLocked: false,
+        onStakeClick: () => undefined,
+        onWithdrawClick: () => undefined,
+    },
+    ...Template,
 };
 
-export const ZeroUserPoolBalance = Template.bind({});
-ZeroUserPoolBalance.args = {
-    ...Default.args,
-    userPoolBalance: BigNumber.from(0),
+export const PoolBalanceLocked: Story = {
+    args: {
+        ...Default.args,
+        isPoolBalanceLocked: true,
+    },
+    ...Template,
+};
+
+export const ZeroUserPoolBalance: Story = {
+    args: {
+        ...Default.args,
+        userPoolBalance: BigNumber.from(0),
+    },
+    ...Template,
 };

@@ -10,45 +10,56 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { CTSINumberInput } from '../../components/stake/CTSINumberInput';
 
 export default {
     title: 'Stake/CTSINumberInput',
     component: CTSINumberInput,
     argTypes: {},
-} as ComponentMeta<typeof CTSINumberInput>;
+} as Meta<typeof CTSINumberInput>;
 
-const Template: ComponentStory<typeof CTSINumberInput> = (args) => (
-    <CTSINumberInput {...args} />
-);
+type Story = StoryObj<typeof CTSINumberInput>;
 
-export const Default = Template.bind({});
-Default.args = {};
-
-export const WithValue = Template.bind({});
-WithValue.args = {
-    ...Default.args,
-    value: 1000,
+const Template: Story = {
+    render: (args) => <CTSINumberInput {...args} />,
 };
 
-export const WithMinValue = Template.bind({});
-WithMinValue.args = {
-    ...Default.args,
-    value: 1000,
-    min: 1000,
+export const Default: Story = {
+    ...Template,
 };
 
-export const WithMaxValue = Template.bind({});
-WithMaxValue.args = {
-    ...Default.args,
-    value: 1000,
-    max: 1000,
+export const WithValue: Story = {
+    args: {
+        ...Default.args,
+        value: 1000,
+    },
+    ...Template,
 };
 
-export const WithMaxPrecision = Template.bind({});
-WithMaxPrecision.args = {
-    ...Default.args,
-    value: 1000.55,
-    maxPrecision: 2,
+export const WithMinValue: Story = {
+    args: {
+        ...Default.args,
+        value: 1000,
+        min: 1000,
+    },
+    ...Template,
+};
+
+export const WithMaxValue: Story = {
+    args: {
+        ...Default.args,
+        value: 1000,
+        max: 1000,
+    },
+    ...Template,
+};
+
+export const WithMaxPrecision: Story = {
+    args: {
+        ...Default.args,
+        value: 1000.55,
+        maxPrecision: 2,
+    },
+    ...Template,
 };

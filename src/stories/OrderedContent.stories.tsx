@@ -10,73 +10,80 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { SimpleGrid } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import {
-    OrderedContent,
-    OrderedContentProps,
-} from '../components/OrderedContent';
+import { OrderedContent } from '../components/OrderedContent';
 
 export default {
     title: 'Ordered Content',
     component: OrderedContent,
     argTypes: {},
-} as ComponentMeta<typeof OrderedContent>;
+} as Meta<typeof OrderedContent>;
 
-const SimpleStory: ComponentStory<typeof OrderedContent> = (args) => {
-    return <OrderedContent {...args} />;
-};
+type Story = StoryObj<typeof OrderedContent>;
 
-const WithGridTemplate: ComponentStory<typeof OrderedContent> = (args) => {
-    return (
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={3}>
-            <OrderedContent
-                title={args.title}
-                orderedItems={args.orderedItems}
-                stackProps={args.stackProps}
-            />
-            <OrderedContent
-                title={args.title}
-                orderedItems={args.orderedItems}
-                stackProps={args.stackProps}
-            />
-            <OrderedContent
-                title={args.title}
-                orderedItems={args.orderedItems}
-                stackProps={args.stackProps}
-            />
-            <OrderedContent
-                title={args.title}
-                orderedItems={args.orderedItems}
-                stackProps={args.stackProps}
-            />
-            <OrderedContent
-                title={args.title}
-                orderedItems={args.orderedItems}
-                stackProps={args.stackProps}
-            />
-        </SimpleGrid>
-    );
-};
-
-export const Simple = SimpleStory.bind({});
-Simple.args = {
-    title: 'Main responsabilities:',
-    orderedItems: [
-        'Must guarantee availability 24/7',
-        'Make sure the node always have funds',
-    ],
-} as OrderedContentProps;
-
-export const MultipleInAGrid = WithGridTemplate.bind({});
-MultipleInAGrid.args = {
-    title: 'Main responsabilities:',
-    orderedItems: [
-        'Must guarantee availability 24/7',
-        'Make sure the node always have funds',
-    ],
-    stackProps: {
-        boxShadow: 'md',
-        borderRadius: 6,
+const Template: Story = {
+    render: (args) => {
+        return <OrderedContent {...args} />;
     },
-} as OrderedContentProps;
+};
+
+const WithGridTemplate: Story = {
+    render: (args) => {
+        return (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={3}>
+                <OrderedContent
+                    title={args.title}
+                    orderedItems={args.orderedItems}
+                    stackProps={args.stackProps}
+                />
+                <OrderedContent
+                    title={args.title}
+                    orderedItems={args.orderedItems}
+                    stackProps={args.stackProps}
+                />
+                <OrderedContent
+                    title={args.title}
+                    orderedItems={args.orderedItems}
+                    stackProps={args.stackProps}
+                />
+                <OrderedContent
+                    title={args.title}
+                    orderedItems={args.orderedItems}
+                    stackProps={args.stackProps}
+                />
+                <OrderedContent
+                    title={args.title}
+                    orderedItems={args.orderedItems}
+                    stackProps={args.stackProps}
+                />
+            </SimpleGrid>
+        );
+    },
+};
+
+export const Simple: Story = {
+    args: {
+        title: 'Main responsibilities:',
+        orderedItems: [
+            'Must guarantee availability 24/7',
+            'Make sure the node always have funds',
+        ],
+    },
+    ...Template,
+};
+
+export const MultipleInAGrid: Story = {
+    args: {
+        title: 'Main responsibilities:',
+        orderedItems: [
+            'Must guarantee availability 24/7',
+            'Make sure the node always have funds',
+        ],
+        stackProps: {
+            boxShadow: 'md',
+            borderRadius: 6,
+        },
+    },
+    ...WithGridTemplate,
+};

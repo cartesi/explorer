@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakingStakeModal } from '../../../components/stake/modals/StakingStakeModal';
 import { BigNumber } from 'ethers';
 
@@ -20,20 +20,24 @@ export default {
     title: 'Stake/Modals/StakingStakeModal',
     component: StakingStakeModal,
     argTypes: {},
-} as ComponentMeta<typeof StakingStakeModal>;
+} as Meta<typeof StakingStakeModal>;
 
-const Template: ComponentStory<typeof StakingStakeModal> = (args) => (
-    <StakingStakeModal {...args} />
-);
+type Story = StoryObj<typeof StakingStakeModal>;
 
-export const Default = Template.bind({});
-Default.args = {
-    balance: BigNumber.from(defaultValue),
-    userBalance: BigNumber.from(defaultValue),
-    disclosure: {
+const Template: Story = {
+    render: (args) => <StakingStakeModal {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        balance: BigNumber.from(defaultValue),
+        userBalance: BigNumber.from(defaultValue),
+        disclosure: {
+            onClose: () => undefined,
+        },
+        isOpen: true,
         onClose: () => undefined,
+        onSave: () => undefined,
     },
-    isOpen: true,
-    onClose: () => undefined,
-    onSave: () => undefined,
+    ...Template,
 };

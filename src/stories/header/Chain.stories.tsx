@@ -9,28 +9,41 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Chain from '../../components/header/Chain';
 
 export default {
     title: 'Header/Chain',
     component: Chain,
     argTypes: {},
-} as ComponentMeta<typeof Chain>;
+} as Meta<typeof Chain>;
 
-const Template: ComponentStory<typeof Chain> = (args) => <Chain {...args} />;
+type Story = StoryObj<typeof Chain>;
 
-export const Mainnet = Template.bind({});
-Mainnet.args = { chainId: 1 };
+const Template: Story = {
+    render: (args) => <Chain {...args} />,
+};
 
-export const ExplicitMainnet = Template.bind({});
-ExplicitMainnet.args = { chainId: 1, showMainnet: true };
+export const Mainnet: Story = {
+    args: { chainId: 1 },
+    ...Template,
+};
 
-export const Sepolia = Template.bind({});
-Sepolia.args = { chainId: 11155111 };
+export const ExplicitMainnet: Story = {
+    args: { chainId: 1, showMainnet: true },
+    ...Template,
+};
 
-export const Localhost = Template.bind({});
-Localhost.args = { chainId: 31337 };
+export const Sepolia: Story = {
+    args: { chainId: 11155111 },
+    ...Template,
+};
 
-export const Disconnected = Template.bind({});
-Disconnected.args = {};
+export const Localhost: Story = {
+    args: { chainId: 31337 },
+    ...Template,
+};
+
+export const Disconnected: Story = {
+    ...Template,
+};

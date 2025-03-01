@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
 import { ethers } from 'ethers';
@@ -19,11 +19,13 @@ export default {
     title: 'Node/NodeInfoSection',
     component: NodeInfoSection,
     argTypes: {},
-} as ComponentMeta<typeof NodeInfoSection>;
+} as Meta<typeof NodeInfoSection>;
 
-const Template: ComponentStory<typeof NodeInfoSection> = (args) => (
-    <NodeInfoSection {...args} />
-);
+type Story = StoryObj<typeof NodeInfoSection>;
+
+const Template: Story = {
+    render: (args) => <NodeInfoSection {...args} />,
+};
 
 const defaultProps = {
     address: '0xb00299b573a9deee20e6a242416188d1033e325f',
@@ -31,27 +33,35 @@ const defaultProps = {
     nodeBalance: ethers.utils.parseEther('2.345'),
 };
 
-export const NodeHire = Template.bind({});
-NodeHire.args = { ...defaultProps };
-
-export const NodeInfo = Template.bind({});
-NodeInfo.args = {
-    ...defaultProps,
-    isOwned: true,
+export const NodeHire: Story = {
+    args: { ...defaultProps },
+    ...Template,
 };
 
-export const NodeAuthorize = Template.bind({});
-NodeAuthorize.args = {
-    ...defaultProps,
-    isAuthorized: false,
-    onAuthorize: () =>
-        alert('Wallet signature confirmation would open instead! =)'),
+export const NodeInfo: Story = {
+    args: {
+        ...defaultProps,
+        ownerAccount: '0x2942aa4356783892c624125acfbbb80d29629a9d',
+    },
+    ...Template,
 };
 
-export const NodeAuthorizing = Template.bind({});
-NodeAuthorizing.args = {
-    ...defaultProps,
-    isAuthorizing: true,
-    isAuthorized: false,
-    onAuthorize: () => null,
+export const NodeAuthorize: Story = {
+    args: {
+        ...defaultProps,
+        isAuthorized: false,
+        onAuthorize: () =>
+            alert('Wallet signature confirmation would open instead! =)'),
+    },
+    ...Template,
+};
+
+export const NodeAuthorizing: Story = {
+    args: {
+        ...defaultProps,
+        isAuthorizing: true,
+        isAuthorized: false,
+        onAuthorize: () => null,
+    },
+    ...Template,
 };

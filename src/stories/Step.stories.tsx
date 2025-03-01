@@ -20,146 +20,152 @@ import {
     Text,
     UnorderedList,
 } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import {
-    Step,
-    StepActions,
-    StepBody,
-    StepProps,
-    StepStatus,
-} from '../components/Step';
+import { Meta, StoryObj } from '@storybook/react';
+import { Step, StepActions, StepBody, StepStatus } from '../components/Step';
 
 export default {
     title: 'Step',
     component: Step,
     argTypes: {},
-} as ComponentMeta<typeof Step>;
+} as Meta<typeof Step>;
 
-const Template: ComponentStory<typeof Step> = (args) => {
-    return (
-        <Stack
-            bg="gray.80"
-            spacing={8}
-            px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
-            py={{ base: 8, sm: 'yvw' }}
-            direction="column"
-            alignItems="stretch"
-        >
-            <Step {...args}>
-                <StepActions>
-                    <Button colorScheme="blue">NEXT</Button>
-                </StepActions>
-                <StepBody>
-                    <Heading as="h3" size="sm" my={4}>
-                        Start By installing Docker Enginer
-                    </Heading>
-                    <UnorderedList pl={2}>
-                        <ListItem>
-                            <Link
-                                color="blue.300"
-                                href="https://docs.docker.com/desktop/mac/install/"
-                                target="_blank"
-                            >
-                                Download for Mac (macOS)
-                            </Link>
-                        </ListItem>
-                        <ListItem>
-                            <Link
-                                color="blue.300"
-                                href="https://docs.docker.com/desktop/windows/install/"
-                                target="_blank"
-                            >
-                                Download for Windows
-                            </Link>
-                        </ListItem>
-                    </UnorderedList>
-                    <Heading as="h3" size="sm" my={4}>
-                        Customizing Ethereum node
-                    </Heading>
-                    <Text>
-                        You can customize your Ethereum node by a third-party,
-                        and you have to register with the third-party software
-                        before next step.
-                    </Text>
+type Story = StoryObj<typeof Step>;
 
-                    <Heading as="h3" size="sm" my={4}>
-                        Ethereum Gateway
-                    </Heading>
-                    <Flex
-                        alignItems="baseline"
-                        p={6}
-                        border="solid 1px var(--chakra-colors-gray-200)"
-                    >
-                        <Flex direction="column">
-                            <Box>
-                                <Link
-                                    href="https://infura.io/"
-                                    target="_blank"
-                                    color="teal.light"
-                                    fontWeight="medium"
-                                    textDecorationLine="underline"
-                                    fontSize="md"
-                                >
-                                    1. Infura
-                                </Link>{' '}
-                                or{' '}
-                                <Link
-                                    href="https://www.alchemy.com/"
-                                    target="_blank"
-                                    color="teal.light"
-                                    fontWeight="medium"
-                                    textDecorationLine="underline"
-                                    fontSize="md"
-                                >
-                                    2. Alchemy
-                                </Link>
-                            </Box>
-                            <Text fontSize="sm" fontWeight="normal">
-                                (The recommended third party)
-                            </Text>
-                        </Flex>
-                        <UnorderedList ml={12}>
-                            <ListItem>Relatively stable.</ListItem>
+const Template: Story = {
+    render: (args) => {
+        return (
+            <Stack
+                bg="gray.80"
+                spacing={8}
+                px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
+                py={{ base: 8, sm: 'yvw' }}
+                direction="column"
+                alignItems="stretch"
+            >
+                <Step {...args}>
+                    <StepActions>
+                        <Button colorScheme="blue">NEXT</Button>
+                    </StepActions>
+                    <StepBody>
+                        <Heading as="h3" size="sm" my={4}>
+                            Start By installing Docker Enginer
+                        </Heading>
+                        <UnorderedList pl={2}>
                             <ListItem>
-                                Have to register and setup in advance
+                                <Link
+                                    color="blue.300"
+                                    href="https://docs.docker.com/desktop/mac/install/"
+                                    target="_blank"
+                                >
+                                    Download for Mac (macOS)
+                                </Link>
+                            </ListItem>
+                            <ListItem>
+                                <Link
+                                    color="blue.300"
+                                    href="https://docs.docker.com/desktop/windows/install/"
+                                    target="_blank"
+                                >
+                                    Download for Windows
+                                </Link>
                             </ListItem>
                         </UnorderedList>
-                    </Flex>
-                </StepBody>
-            </Step>
-        </Stack>
-    );
+                        <Heading as="h3" size="sm" my={4}>
+                            Customizing Ethereum node
+                        </Heading>
+                        <Text>
+                            You can customize your Ethereum node by a
+                            third-party, and you have to register with the
+                            third-party software before next step.
+                        </Text>
+
+                        <Heading as="h3" size="sm" my={4}>
+                            Ethereum Gateway
+                        </Heading>
+                        <Flex
+                            alignItems="baseline"
+                            p={6}
+                            border="solid 1px var(--chakra-colors-gray-200)"
+                        >
+                            <Flex direction="column">
+                                <Box>
+                                    <Link
+                                        href="https://infura.io/"
+                                        target="_blank"
+                                        color="teal.light"
+                                        fontWeight="medium"
+                                        textDecorationLine="underline"
+                                        fontSize="md"
+                                    >
+                                        1. Infura
+                                    </Link>{' '}
+                                    or{' '}
+                                    <Link
+                                        href="https://www.alchemy.com/"
+                                        target="_blank"
+                                        color="teal.light"
+                                        fontWeight="medium"
+                                        textDecorationLine="underline"
+                                        fontSize="md"
+                                    >
+                                        2. Alchemy
+                                    </Link>
+                                </Box>
+                                <Text fontSize="sm" fontWeight="normal">
+                                    (The recommended third party)
+                                </Text>
+                            </Flex>
+                            <UnorderedList ml={12}>
+                                <ListItem>Relatively stable.</ListItem>
+                                <ListItem>
+                                    Have to register and setup in advance
+                                </ListItem>
+                            </UnorderedList>
+                        </Flex>
+                    </StepBody>
+                </Step>
+            </Stack>
+        );
+    },
 };
 
-export const Optional = Template.bind({});
-Optional.args = {
-    stepNumber: 1,
-    title: 'Pool ENS',
-    subtitle: 'Registering a ENS domain and setting it up.',
-    status: StepStatus.ACTIVE,
-    optionalText: 'This step could be skipped.',
-} as StepProps;
+export const Optional: Story = {
+    args: {
+        stepNumber: 1,
+        title: 'Pool ENS',
+        subtitle: 'Registering a ENS domain and setting it up.',
+        status: StepStatus.ACTIVE,
+        optionalText: 'This step could be skipped.',
+    },
+    ...Template,
+};
 
-export const Active = Template.bind({});
-Active.args = {
-    stepNumber: 1,
-    title: 'Customizing your Ethereum Node',
-    subtitle: 'There are a few steps to prepare for your setting',
-    status: StepStatus.ACTIVE,
-} as StepProps;
+export const Active: Story = {
+    args: {
+        stepNumber: 1,
+        title: 'Customizing your Ethereum Node',
+        subtitle: 'There are a few steps to prepare for your setting',
+        status: StepStatus.ACTIVE,
+    },
+    ...Template,
+};
 
-export const Complete = Template.bind({});
-Complete.args = {
-    stepNumber: 1,
-    title: 'Customizing your Ethereum Node',
-    subtitle: 'There are a few steps to prepare for your setting',
-    status: StepStatus.COMPLETED,
-} as StepProps;
+export const Complete: Story = {
+    args: {
+        stepNumber: 1,
+        title: 'Customizing your Ethereum Node',
+        subtitle: 'There are a few steps to prepare for your setting',
+        status: StepStatus.COMPLETED,
+    },
+    ...Template,
+};
 
-export const Inactive = Template.bind({});
-Inactive.args = {
-    stepNumber: 1,
-    title: 'Customizing your Ethereum Node',
-    subtitle: 'There are a few steps to prepare for your setting',
-    status: StepStatus.NOT_ACTIVE,
-} as StepProps;
+export const Inactive: Story = {
+    args: {
+        stepNumber: 1,
+        title: 'Customizing your Ethereum Node',
+        subtitle: 'There are a few steps to prepare for your setting',
+        status: StepStatus.NOT_ACTIVE,
+    },
+    ...Template,
+};

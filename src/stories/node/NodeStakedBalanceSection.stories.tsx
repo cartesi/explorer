@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { NodeStakedBalanceSection } from '../../components/node/NodeStakedBalanceSection';
 import { ethers } from 'ethers';
@@ -19,13 +19,17 @@ export default {
     title: 'Node/NodeStakedBalanceSection',
     component: NodeStakedBalanceSection,
     argTypes: {},
-} as ComponentMeta<typeof NodeStakedBalanceSection>;
+} as Meta<typeof NodeStakedBalanceSection>;
 
-const Template: ComponentStory<typeof NodeStakedBalanceSection> = (args) => (
-    <NodeStakedBalanceSection {...args} />
-);
+type Story = StoryObj<typeof NodeStakedBalanceSection>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    stakedBalance: ethers.utils.parseEther('0.0'),
+const Template: Story = {
+    render: (args) => <NodeStakedBalanceSection {...args} />,
+};
+
+export const Basic: Story = {
+    args: {
+        stakedBalance: ethers.utils.parseEther('0.0'),
+    },
+    ...Template,
 };

@@ -10,27 +10,33 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import UsersStat from '../../../components/stake/stats/UsersStat';
 
 export default {
     title: 'Stake/Stats/UsersStat',
     component: UsersStat,
     argTypes: {},
-} as ComponentMeta<typeof UsersStat>;
+} as Meta<typeof UsersStat>;
 
-const Template: ComponentStory<typeof UsersStat> = (args) => (
-    <UsersStat {...args} />
-);
+type Story = StoryObj<typeof UsersStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    totalUsers: 100,
-    location: 'General Gurko Str. 75',
+const Template: Story = {
+    render: (args) => <UsersStat {...args} />,
 };
 
-export const WithoutLocation = Template.bind({});
-Default.args = {
-    ...Default.args,
-    location: undefined,
+export const Default: Story = {
+    args: {
+        totalUsers: 100,
+        location: 'General Gurko Str. 75',
+    },
+    ...Template,
+};
+
+export const WithoutLocation: Story = {
+    args: {
+        ...Default.args,
+        location: undefined,
+    },
+    ...Template,
 };

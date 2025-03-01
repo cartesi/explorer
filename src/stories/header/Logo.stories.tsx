@@ -9,29 +9,34 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Logo } from '../../components/header/Logo';
+import { Meta, StoryObj } from '@storybook/react';
+import { Logo } from '../../components/header';
 
 export default {
     title: 'Header/Logo',
     component: Logo,
     argTypes: {},
-} as ComponentMeta<typeof Logo>;
+} as Meta<typeof Logo>;
 
-const Template: ComponentStory<typeof Logo> = (args) => (
-    <div
-        style={{
-            width: 200,
-            height: 100,
-            backgroundColor: 'black',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}
-    >
-        <Logo {...args} />
-    </div>
-);
+type Story = StoryObj<typeof Logo>;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Template: Story = {
+    render: (args) => (
+        <div
+            style={{
+                width: 200,
+                height: 100,
+                backgroundColor: 'black',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Logo {...args} />
+        </div>
+    ),
+};
+
+export const Default: Story = {
+    ...Template,
+};

@@ -10,35 +10,43 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import TimerButton from '../components/TimerButton';
 
 export default {
     title: 'Base/TimerButton',
     component: TimerButton,
     argTypes: {},
-} as ComponentMeta<typeof TimerButton>;
+} as Meta<typeof TimerButton>;
 
-const Template: ComponentStory<typeof TimerButton> = (args) => (
-    <TimerButton {...args} />
-);
+type Story = StoryObj<typeof TimerButton>;
 
-export const MediumButton = Template.bind({});
-MediumButton.args = {
-    children: 'Medium button',
-    remainingTime: Date.now() + 60000,
+const Template: Story = {
+    render: (args) => <TimerButton {...args} />,
 };
 
-export const LargeButton = Template.bind({});
-LargeButton.args = {
-    size: 'lg',
-    children: 'Large button',
-    remainingTime: Date.now() + 600000,
+export const MediumButton: Story = {
+    args: {
+        children: 'Medium button',
+        remainingTime: Date.now() + 60000,
+    },
+    ...Template,
 };
 
-export const SmallButton = Template.bind({});
-SmallButton.args = {
-    size: 'sm',
-    children: 'Small button',
-    remainingTime: Date.now() + 6000000,
+export const LargeButton: Story = {
+    args: {
+        size: 'lg',
+        children: 'Large button',
+        remainingTime: Date.now() + 600000,
+    },
+    ...Template,
+};
+
+export const SmallButton: Story = {
+    args: {
+        size: 'sm',
+        children: 'Small button',
+        remainingTime: Date.now() + 6000000,
+    },
+    ...Template,
 };

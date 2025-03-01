@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Text } from '@chakra-ui/react';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { parseUnits } from 'ethers/lib/utils';
 import { BsClockHistory } from 'react-icons/bs';
 import { FaCoins, FaPercentage, FaUsers, FaWallet } from 'react-icons/fa';
@@ -21,7 +21,7 @@ export default {
     title: 'BigNumber Text',
     component: BigNumberText,
     argTypes: {},
-} as ComponentMeta<typeof BigNumberText>;
+} as Meta<typeof BigNumberText>;
 
 export const Number = () => (
     <BigNumberText value={13} icon={FaUsers}>

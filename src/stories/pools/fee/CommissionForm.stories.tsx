@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import CommissionForm from '../../../components/pools/fee/CommissionForm';
 
@@ -17,38 +17,44 @@ export default {
     title: 'Pools/Fee/CommissionForm',
     component: CommissionForm,
     argTypes: {},
-} as ComponentMeta<typeof CommissionForm>;
+} as Meta<typeof CommissionForm>;
 
-const Template: ComponentStory<typeof CommissionForm> = (args) => (
-    <CommissionForm {...args} />
-);
+type Story = StoryObj<typeof CommissionForm>;
+
+const Template: Story = {
+    render: (args) => <CommissionForm {...args} />,
+};
 
 const now = new Date();
 
-export const FlatRate = Template.bind({});
-FlatRate.args = {
-    currentValue: 14.5,
-    unit: '%',
-    min: 0,
-    max: 100,
-    maxRaise: 5,
-    maxDigits: 2,
-    increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
-    nextIncrease: new Date(now.getTime() - 60 * 1000),
-    helperText:
-        'Commission is set as a fixed percentage of every block reward (CTSI)',
+export const FlatRate: Story = {
+    args: {
+        currentValue: 14.5,
+        unit: '%',
+        min: 0,
+        max: 100,
+        maxRaise: 5,
+        maxDigits: 2,
+        increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
+        nextIncrease: new Date(now.getTime() - 60 * 1000),
+        helperText:
+            'Commission is set as a fixed percentage of every block reward (CTSI)',
+    },
+    ...Template,
 };
 
-export const IncreaseLocked = Template.bind({});
-IncreaseLocked.args = {
-    currentValue: 14.5,
-    unit: '%',
-    min: 0,
-    max: 100,
-    maxRaise: 5,
-    maxDigits: 2,
-    increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
-    nextIncrease: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
-    helperText:
-        'Commission is set as a fixed percentage of every block reward (CTSI)',
+export const IncreaseLocked: Story = {
+    args: {
+        currentValue: 14.5,
+        unit: '%',
+        min: 0,
+        max: 100,
+        maxRaise: 5,
+        maxDigits: 2,
+        increaseWaitPeriod: 60 * 60 * 24 * 7, // 7 days
+        nextIncrease: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
+        helperText:
+            'Commission is set as a fixed percentage of every block reward (CTSI)',
+    },
+    ...Template,
 };

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Stats from '../components/Stats';
 
@@ -18,42 +18,56 @@ export default {
     title: 'Stats',
     component: Stats,
     argTypes: {},
-} as ComponentMeta<typeof Stats>;
+} as Meta<typeof Stats>;
 
-const Template: ComponentStory<typeof Stats> = (args) => <Stats {...args} />;
+type Story = StoryObj<typeof Stats>;
 
-export const Nodes = Template.bind({});
-Nodes.args = {
-    label: '# Active Nodes',
-    value: 274,
+const Template: Story = {
+    render: (args) => <Stats {...args} />,
 };
 
-export const TotalStaked = Template.bind({});
-TotalStaked.args = {
-    label: 'TotalStaked',
-    value: 86283342,
-    fractionDigits: 2,
-    help: 'Total amount of CTSI locked in the staking contract, currently  in the status "staked"',
+export const Nodes: Story = {
+    args: {
+        label: '# Active Nodes',
+        value: 274,
+    },
+    ...Template,
 };
 
-export const APR = Template.bind({});
-APR.args = {
-    label: 'Projected Annual Earnings',
-    value: 0.616329,
-    unit: 'percent',
-    fractionDigits: 1,
+export const TotalStaked: Story = {
+    args: {
+        label: 'TotalStaked',
+        value: 86283342,
+        fractionDigits: 2,
+        help: 'Total amount of CTSI locked in the staking contract, currently  in the status "staked"',
+    },
+    ...Template,
 };
 
-export const ParticipationRate = Template.bind({});
-ParticipationRate.args = {
-    label: 'Participation Rate',
-    value: 0.2277428,
-    unit: 'percent',
-    fractionDigits: 1,
+export const APR: Story = {
+    args: {
+        label: 'Projected Annual Earnings',
+        value: 0.616329,
+        unit: 'percent',
+        fractionDigits: 1,
+    },
+    ...Template,
 };
 
-export const NoValue = Template.bind({});
-NoValue.args = {
-    label: 'Participation Rate',
-    value: undefined,
+export const ParticipationRate: Story = {
+    args: {
+        label: 'Participation Rate',
+        value: 0.2277428,
+        unit: 'percent',
+        fractionDigits: 1,
+    },
+    ...Template,
+};
+
+export const NoValue: Story = {
+    args: {
+        label: 'Participation Rate',
+        value: undefined,
+    },
+    ...Template,
 };

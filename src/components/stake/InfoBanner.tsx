@@ -25,7 +25,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { isObject } from 'lodash';
-import React, { FC } from 'react';
+import React, { FC, JSX } from 'react';
 
 export interface IInfoBannerProps extends Omit<AlertProps, 'content'> {
     isOpen?: boolean;

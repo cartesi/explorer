@@ -11,40 +11,49 @@
 
 import React from 'react';
 import { DateTime } from 'luxon';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import UsersChart from '../../components/stake/UsersChart';
 import stakingPoolUserHistories from './stakingPoolUserHistories';
+import { StakingPoolUserHistory } from '../../graphql/models';
 
 export default {
     title: 'Stake/UsersChart',
     component: UsersChart,
     argTypes: {},
-} as ComponentMeta<typeof UsersChart>;
+} as Meta<typeof UsersChart>;
 
-const Template: ComponentStory<typeof UsersChart> = (args) => (
-    <UsersChart {...args} />
-);
+type Story = StoryObj<typeof UsersChart>;
+
+const Template: Story = {
+    render: (args) => <UsersChart {...args} />,
+};
 
 const defaultProps = {
-    data: stakingPoolUserHistories,
+    data: stakingPoolUserHistories as unknown as StakingPoolUserHistory[],
     month: DateTime.fromJSDate(new Date()),
     totalUsers: 100,
     loading: false,
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    ...defaultProps,
-    loading: true,
+export const Loading: Story = {
+    args: {
+        ...defaultProps,
+        loading: true,
+    },
+    ...Template,
 };
 
-export const NoItems = Template.bind({});
-NoItems.args = {
-    ...defaultProps,
-    totalUsers: 0,
+export const NoItems: Story = {
+    args: {
+        ...defaultProps,
+        totalUsers: 0,
+    },
+    ...Template,
 };

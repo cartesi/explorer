@@ -10,18 +10,21 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StakingGuide } from '../../components/stake/StakingGuide';
 
 export default {
     title: 'Stake/StakingGuide',
     component: StakingGuide,
     argTypes: {},
-} as ComponentMeta<typeof StakingGuide>;
+} as Meta<typeof StakingGuide>;
 
-const Template: ComponentStory<typeof StakingGuide> = (args) => (
-    <StakingGuide {...args} />
-);
+type Story = StoryObj<typeof StakingGuide>;
 
-export const Default = Template.bind({});
-Default.args = {};
+const Template: Story = {
+    render: (args) => <StakingGuide {...args} />,
+};
+
+export const Default: Story = {
+    ...Template,
+};
