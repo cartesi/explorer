@@ -10,25 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import SearchInput from '../components/SearchInput';
 
 export default {
     title: 'Search Input',
     component: SearchInput,
-} as ComponentMeta<typeof SearchInput>;
+} as Meta<typeof SearchInput>;
 
-const Template: ComponentStory<typeof SearchInput> = (args) => (
-    <SearchInput {...args} />
-);
+type Story = StoryObj<typeof SearchInput>;
 
-export const Simple = Template.bind({});
-Simple.args = {};
+const Template: Story = {
+    render: (args) => <SearchInput {...args} />,
+};
 
-export const Dark = Template.bind({});
-Dark.args = {};
-Dark.parameters = {
-    backgrounds: {
-        default: 'dark',
+export const Simple: Story = { ...Template };
+
+export const Dark: Story = {
+    parameters: {
+        backgrounds: {
+            default: 'dark',
+        },
     },
+    ...Template,
 };

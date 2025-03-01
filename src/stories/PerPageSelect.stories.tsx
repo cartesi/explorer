@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import PerPageSelect from '../components/PerPageSelect';
 
@@ -18,15 +18,19 @@ export default {
     title: 'PerPageSelect',
     component: PerPageSelect,
     argTypes: {},
-} as ComponentMeta<typeof PerPageSelect>;
+} as Meta<typeof PerPageSelect>;
 
-const Template: ComponentStory<typeof PerPageSelect> = (args) => (
-    <PerPageSelect {...args} />
-);
+type Story = StoryObj<typeof PerPageSelect>;
 
-export const Default = Template.bind({});
-Default.args = {
-    value: 10,
-    options: [10, 20, 30],
-    onChange: () => undefined,
+const Template: Story = {
+    render: (args) => <PerPageSelect {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        value: 10,
+        options: [10, 20, 30],
+        onChange: () => undefined,
+    },
+    ...Template,
 };
