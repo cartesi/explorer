@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.4] - 2025-03-01
+
+- Major refactoring bringing it back to be a single repository instead of monorepo.
+
 ## [3.9.3] - 2025-02-03
 
 -   Bugfix applied in the user search inside the pool's users page.
@@ -410,7 +414,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.3...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.4...HEAD
+[3.9.4]: https://github.com/cartesi/explorer/compare/v3.9.4...v3.9.3
 [3.9.3]: https://github.com/cartesi/explorer/compare/v3.9.3...v3.9.2
 [3.9.2]: https://github.com/cartesi/explorer/compare/v3.9.2...v3.9.1
 [3.9.1]: https://github.com/cartesi/explorer/compare/v3.9.1...v3.9.0
