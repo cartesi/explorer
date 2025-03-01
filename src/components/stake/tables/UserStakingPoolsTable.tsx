@@ -47,8 +47,8 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     const columns = useBreakpointValue([3, 3, 4, 8]);
     const stakeText = useBreakpointValue(['Info', 'Info', 'Stake/Info']);
     const hasItems = data?.length > 0;
-    const thRef = useRef<HTMLTableCellElement>();
-    const tableRef = useRef<HTMLDivElement>();
+    const thRef = useRef<HTMLTableCellElement>(null);
+    const tableRef = useRef<HTMLDivElement>(null);
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
     const borderColor = useColorModeValue(
         'transparent',
