@@ -14,8 +14,8 @@ import { SelectAddressENS } from '../../../db/schemas';
 import { ServiceResult } from '../types';
 import { isCartesiUser } from '../utils';
 import { default as Repository } from './AddressENSRepository';
-import { getENSData } from './functions';
-import { AddressEns } from './types';
+import { getENSData, getFreshENSData } from './functions';
+import { AddressEns, ENSAddressData } from './types';
 
 const ALLOWED_FIELDS = [
     'id',
@@ -54,7 +54,8 @@ export default class AddressENSService {
                 };
             }
 
-            const [ensData] = await getENSData([{ address }]);
+            const ensPayload = await getENSData([{ address }]);
+            const [ensData] = ensPayload.data;
 
             const createdEntry = await Repository.create({
                 ...ensData,
@@ -100,11 +101,36 @@ export default class AddressENSService {
             if (staleList.length === 0)
                 return { ok: true, data: { success: true, count: 0 } };
             console.info(`(Total stale entries): ${staleList.length}`);
-            const refreshedList = await getENSData(staleList);
 
-            const updatedEntries = await Repository.updateBulk(
-                refreshedList as AddressEns[]
+            const ensPayloads = await getFreshENSData(staleList);
+            let refreshedList: AddressEns[] = [];
+            let payloadFailedStateCount = 0;
+
+            for (let i = 0; i < ensPayloads.length; i++) {
+                if (ensPayloads[i].state !== 'ok') {
+                    payloadFailedStateCount++;
+                    continue;
+                }
+                refreshedList = refreshedList.concat(
+                    ensPayloads[i].data as AddressEns[]
+                );
+            }
+
+            const payloadInGoodStateCount =
+                ensPayloads.length - payloadFailedStateCount;
+            console.info(`(ENS Payloads returned): ${ensPayloads.length}`);
+            console.info(
+                `(ENS Payloads in good state): ${payloadInGoodStateCount}`
             );
+
+            console.info(`(Total entries to refresh): ${refreshedList.length}`);
+
+            if (refreshedList.length === 0)
+                return { ok: true, data: { count: 0, success: false } };
+
+            const updatedEntries = await Repository.updateBulk(refreshedList);
+
+            console.info(`(Total entries updated): ${updatedEntries.length}`);
 
             return {
                 ok: true,
