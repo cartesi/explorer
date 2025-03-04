@@ -143,11 +143,15 @@ const addENSName = async (entries: Entry[]): Promise<ENSAddressData[]> => {
 
     const result = entries.map((entry) => {
         const ensInfo = domainsByAddress[entry.address];
-        return {
+        const name = ensInfo?.name || ensInfo?.labelName;
+        const newEntry: ENSAddressData = {
             ...entry,
             hasEns: ensInfo !== undefined,
-            name: ensInfo?.name || ensInfo?.labelName,
         };
+
+        if (name) newEntry.name = name;
+
+        return newEntry;
     });
 
     console.timeEnd(timeLabel);
