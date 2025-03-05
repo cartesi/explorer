@@ -146,14 +146,5 @@
     "engines": {
         "node": "22.x"
     },
-    "packageManager": "yarn@1.22.19",
-    "resolutions": {
-        "@types/react": "19.0.10",
-        "@types/react-dom": "19.0.4"
-    },
-    "eslintConfig": {
-        "extends": [
-            "plugin:storybook/recommended"
-        ]
-    }
+    "packageManager": "yarn@1.22.19"
 }
