@@ -43,6 +43,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { CheckCircleIcon, PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 import { CTSINumberInput } from '../CTSINumberInput';
+import { FocusableElement } from '@chakra-ui/utils';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;
@@ -85,7 +86,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const infoColor = useColorModeValue('black', 'white');
     const checkIconBg = useColorModeValue('dark.gray.senary', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
 
     useEffect(() => {
         if (!isOpen) {

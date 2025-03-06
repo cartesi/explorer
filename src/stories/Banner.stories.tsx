@@ -10,16 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { CopyIcon } from '@chakra-ui/icons';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Banner from '../components/Banner';
 
 export default {
     title: 'Banner',
     component: Banner,
     argTypes: {},
-} as ComponentMeta<typeof Banner>;
+} as Meta<typeof Banner>;
 
-const Template: ComponentStory<typeof Banner> = (args) => <Banner {...args} />;
+type Story = StoryObj<typeof Banner>;
+
+const Template: Story = {
+    render: (args) => <Banner {...args} />,
+};
 
 const defaultProps = {
     Icon: <CopyIcon w={5} h={5} />,
@@ -27,13 +31,17 @@ const defaultProps = {
     children: <span>44</span>,
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };
 
-export const WithoutIcon = Template.bind({});
-WithoutIcon.args = {
-    ...defaultProps,
-    Icon: undefined,
+export const WithoutIcon: Story = {
+    args: {
+        ...defaultProps,
+        Icon: undefined,
+    },
+    ...Template,
 };

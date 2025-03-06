@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { NodeMaturingSection } from '../../components/node/NodeMaturingSection';
 import { ethers } from 'ethers';
@@ -19,18 +19,24 @@ export default {
     title: 'Node/NodeMaturingSection',
     component: NodeMaturingSection,
     argTypes: {},
-} as ComponentMeta<typeof NodeMaturingSection>;
+} as Meta<typeof NodeMaturingSection>;
 
-const Template: ComponentStory<typeof NodeMaturingSection> = (args) => (
-    <NodeMaturingSection {...args} />
-);
+type Story = StoryObj<typeof NodeMaturingSection>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    maturingBalance: ethers.utils.parseEther('2.345'),
+const Template: Story = {
+    render: (args) => <NodeMaturingSection {...args} />,
 };
 
-export const NoBalance = Template.bind({});
-NoBalance.args = {
-    maturingBalance: ethers.utils.parseEther('0'),
+export const Basic: Story = {
+    args: {
+        maturingBalance: ethers.utils.parseEther('2.345'),
+    },
+    ...Template,
+};
+
+export const NoBalance: Story = {
+    args: {
+        maturingBalance: ethers.utils.parseEther('0'),
+    },
+    ...Template,
 };

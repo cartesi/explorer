@@ -9,68 +9,79 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { BigNumber } from 'ethers';
 import { DepositSection } from '../../../components/stake/components/DepositSection';
 import { WalletConnectionContext } from '../../../components/wallet';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = BigNumber.from('10000000000000000000000000000');
 
 export default {
     title: 'Stake/Components/DepositSection',
     component: DepositSection,
     argTypes: {},
-} as ComponentMeta<typeof DepositSection>;
+} as Meta<typeof DepositSection>;
 
-const Template: ComponentStory<typeof DepositSection> = (args) => (
-    <DepositSection {...args} />
-);
+type Story = StoryObj<typeof DepositSection>;
 
-export const Default = Template.bind({});
-Default.args = {
-    userWalletBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(defaultValue),
-    onDepositClick: () => undefined,
+const Template: Story = {
+    render: (args) => <DepositSection {...args} />,
 };
 
-export const ZeroUserWalletBalance = Template.bind({});
-ZeroUserWalletBalance.args = {
-    ...Default.args,
-    userWalletBalance: BigNumber.from(0),
-    userETHBalance: BigNumber.from(defaultValue),
+export const Default: Story = {
+    args: {
+        userWalletBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(defaultValue),
+        onDepositClick: () => undefined,
+    },
+    ...Template,
 };
 
-export const ZeroUserETHBalance = Template.bind({});
-ZeroUserETHBalance.args = {
-    ...Default.args,
-    userWalletBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(0),
+export const ZeroUserWalletBalance: Story = {
+    args: {
+        ...Default.args,
+        userWalletBalance: BigNumber.from(0),
+        userETHBalance: BigNumber.from(defaultValue),
+    },
+    ...Template,
 };
 
-export const ZeroUserWalletBalanceAndZeroUserETHBalance = Template.bind({});
-ZeroUserWalletBalanceAndZeroUserETHBalance.args = {
-    ...Default.args,
-    userWalletBalance: BigNumber.from(0),
-    userETHBalance: BigNumber.from(0),
+export const ZeroUserETHBalance: Story = {
+    args: {
+        ...Default.args,
+        userWalletBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(0),
+    },
+    ...Template,
 };
 
-export const ZeroUserEthBalanceAndUsingGnosisSafe = Template.bind({});
-ZeroUserEthBalanceAndUsingGnosisSafe.args = {
-    ...Default.args,
-    userWalletBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(0),
+export const ZeroUserWalletBalanceAndZeroUserETHBalance: Story = {
+    args: {
+        ...Default.args,
+        userWalletBalance: BigNumber.from(0),
+        userETHBalance: BigNumber.from(0),
+    },
+    ...Template,
 };
-ZeroUserEthBalanceAndUsingGnosisSafe.decorators = [
-    (Story) => (
-        <WalletConnectionContext.Provider
-            value={{
-                active: true,
-                activate: () => null,
-                deactivate: () => null,
-                isGnosisSafe: true,
-            }}
-        >
-            <Story />
-        </WalletConnectionContext.Provider>
-    ),
-];
+
+export const ZeroUserEthBalanceAndUsingGnosisSafe: Story = {
+    args: {
+        ...Default.args,
+        userWalletBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(0),
+    },
+    decorators: [
+        (Story) => (
+            <WalletConnectionContext.Provider
+                value={{
+                    active: true,
+                    activate: () => null,
+                    deactivate: () => null,
+                    isGnosisSafe: true,
+                }}
+            >
+                <Story />
+            </WalletConnectionContext.Provider>
+        ),
+    ],
+};

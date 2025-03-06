@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Rebalance from '../../components/pools/Rebalance';
 import { ethers } from 'ethers';
@@ -19,38 +19,48 @@ export default {
     title: 'Pools/Rebalance',
     component: Rebalance,
     argTypes: {},
-} as ComponentMeta<typeof Rebalance>;
+} as Meta<typeof Rebalance>;
 
-const Template: ComponentStory<typeof Rebalance> = (args) => (
-    <Rebalance {...args} />
-);
+type Story = StoryObj<typeof Rebalance>;
+
+const Template: Story = {
+    render: (args) => <Rebalance {...args} />,
+};
 
 const v = (n: string) => ethers.utils.parseUnits(n, 18);
 
-export const Zero = Template.bind({});
-Zero.args = {
-    stake: v('0'),
-    unstake: v('0'),
-    withdraw: v('0'),
+export const Zero: Story = {
+    args: {
+        stake: v('0'),
+        unstake: v('0'),
+        withdraw: v('0'),
+    },
+    ...Template,
 };
 
-export const Stake = Template.bind({});
-Stake.args = {
-    stake: v('10000'),
-    unstake: v('0'),
-    withdraw: v('0'),
+export const Stake: Story = {
+    args: {
+        stake: v('10000'),
+        unstake: v('0'),
+        withdraw: v('0'),
+    },
+    ...Template,
 };
 
-export const Unstake = Template.bind({});
-Unstake.args = {
-    stake: v('0'),
-    unstake: v('10000'),
-    withdraw: v('0'),
+export const Unstake: Story = {
+    args: {
+        stake: v('0'),
+        unstake: v('10000'),
+        withdraw: v('0'),
+    },
+    ...Template,
 };
 
-export const Withdraw = Template.bind({});
-Withdraw.args = {
-    stake: v('0'),
-    unstake: v('0'),
-    withdraw: v('10000'),
+export const Withdraw: Story = {
+    args: {
+        stake: v('0'),
+        unstake: v('0'),
+        withdraw: v('10000'),
+    },
+    ...Template,
 };

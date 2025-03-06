@@ -10,28 +10,34 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import ProductionIntervalStat from '../../../components/stake/stats/ProductionIntervalStat';
 
 export default {
     title: 'Stake/Stats/ProductionIntervalStat',
     component: ProductionIntervalStat,
     argTypes: {},
-} as ComponentMeta<typeof ProductionIntervalStat>;
+} as Meta<typeof ProductionIntervalStat>;
 
-const Template: ComponentStory<typeof ProductionIntervalStat> = (args) => (
-    <ProductionIntervalStat {...args} />
-);
+type Story = StoryObj<typeof ProductionIntervalStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    totalBlocks: 100,
-    productionInterval: 10000,
-    location: 'Stara Zagora, Bulgaria',
+const Template: Story = {
+    render: (args) => <ProductionIntervalStat {...args} />,
 };
 
-export const WithoutLocation = Template.bind({});
-WithoutLocation.args = {
-    ...Default.args,
-    location: undefined,
+export const Default: Story = {
+    args: {
+        totalBlocks: 100,
+        productionInterval: 10000,
+        location: 'Stara Zagora, Bulgaria',
+    },
+    ...Template,
+};
+
+export const WithoutLocation: Story = {
+    args: {
+        ...Default.args,
+        location: undefined,
+    },
+    ...Template,
 };

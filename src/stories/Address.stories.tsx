@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Address from '../components/Address';
 import { StakePlusIcon } from '../components/Icons';
 
@@ -17,35 +17,56 @@ export default {
     title: 'Address',
     component: Address,
     argTypes: {},
-} as ComponentMeta<typeof Address>;
+} as Meta<typeof Address>;
 
-const Template: ComponentStory<typeof Address> = (args) => (
-    <Address {...args} address="0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D" />
-);
+type Story = StoryObj<typeof Address>;
 
-export const Basic = Template.bind({});
-Basic.args = {};
+const Template: Story = {
+    render: (args) => (
+        <Address
+            {...args}
+            address="0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D"
+        />
+    ),
+};
 
-export const Truncated = Template.bind({});
-Truncated.args = { truncated: true };
+export const Basic: Story = {
+    ...Template,
+};
 
-export const HiddenActions = Template.bind({});
-HiddenActions.args = { hideActions: true };
+export const Truncated: Story = {
+    args: {
+        truncated: true,
+    },
+    ...Template,
+};
 
-export const Responsive = Template.bind({});
-Responsive.args = { responsive: true };
+export const HiddenActions: Story = {
+    args: { hideActions: true },
+    ...Template,
+};
 
-export const TokenLink = Template.bind({});
-TokenLink.args = { type: 'token' };
+export const Responsive: Story = {
+    args: { responsive: true },
+    ...Template,
+};
 
-export const Sepolia = Template.bind({});
-Sepolia.args = { chainId: 11155111 };
+export const TokenLink: Story = {
+    args: { type: 'token' },
+    ...Template,
+};
 
-export const WithName = Template.bind({});
-WithName.args = { name: 'Pool Factory' };
+export const Sepolia: Story = {
+    args: { chainId: 11155111 },
+    ...Template,
+};
 
-export const WithCustomFallbackAvatar = Template.bind({});
-WithCustomFallbackAvatar.args = {
-    shouldDisplayFallbackAvatar: true,
-    fallbackAvatar: StakePlusIcon,
+export const WithName: Story = {
+    args: { name: 'Pool Factory' },
+    ...Template,
+};
+
+export const WithCustomFallbackAvatar: Story = {
+    args: { shouldDisplayFallbackAvatar: true, fallbackAvatar: StakePlusIcon },
+    ...Template,
 };

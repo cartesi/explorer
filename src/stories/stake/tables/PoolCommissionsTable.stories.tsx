@@ -10,26 +10,31 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolCommissionsTable from '../../../components/stake/tables/PoolCommissionsTable';
 import commissionsData from './commissionsData';
+import { StakingPoolFeeHistory } from '../../../graphql/models';
 
 export default {
     title: 'Stake/PoolCommissionsTable',
     component: PoolCommissionsTable,
     argTypes: {},
-} as ComponentMeta<typeof PoolCommissionsTable>;
+} as Meta<typeof PoolCommissionsTable>;
 
-const Template: ComponentStory<typeof PoolCommissionsTable> = (args) => (
-    <PoolCommissionsTable {...args} />
-);
+type Story = StoryObj<typeof PoolCommissionsTable>;
+
+const Template: Story = {
+    render: (args) => <PoolCommissionsTable {...args} />,
+};
 
 const defaultProps = {
     loading: false,
-    data: commissionsData,
+    data: commissionsData as unknown as StakingPoolFeeHistory[],
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    ...defaultProps,
+export const Default: Story = {
+    args: {
+        ...defaultProps,
+    },
+    ...Template,
 };

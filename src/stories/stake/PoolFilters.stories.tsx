@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { PoolFilters } from '../../components/stake/PoolFilters';
 
 const defaultFilters = [
@@ -53,17 +53,21 @@ export default {
     title: 'Stake/PoolFilters',
     component: PoolFilters,
     argTypes: {},
-} as ComponentMeta<typeof PoolFilters>;
+} as Meta<typeof PoolFilters>;
 
-const Template: ComponentStory<typeof PoolFilters> = (args) => (
-    <PoolFilters {...args} />
-);
+type Story = StoryObj<typeof PoolFilters>;
 
-export const Default = Template.bind({});
-Default.args = {
-    filters: defaultFilters,
-    selectedPeriod: null,
-    selectedTypes: [],
-    onSelectedPeriodChange: () => undefined,
-    onSelectedTypesChange: () => undefined,
+const Template: Story = {
+    render: (args) => <PoolFilters {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        filters: defaultFilters,
+        selectedPeriod: null,
+        selectedTypes: [],
+        onSelectedPeriodChange: () => undefined,
+        onSelectedTypesChange: () => undefined,
+    },
+    ...Template,
 };

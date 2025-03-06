@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import EffectiveBalanceStat from '../../../components/stake/stats/EffectiveBalanceStat';
 import { BigNumber } from 'ethers';
 
@@ -20,31 +20,36 @@ export default {
     title: 'Stake/Stats/EffectiveBalanceStat',
     component: EffectiveBalanceStat,
     argTypes: {},
-} as ComponentMeta<typeof EffectiveBalanceStat>;
+} as Meta<typeof EffectiveBalanceStat>;
 
-const Template: ComponentStory<typeof EffectiveBalanceStat> = (args) => (
-    <EffectiveBalanceStat {...args} />
-);
+type Story = StoryObj<typeof EffectiveBalanceStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    stake: BigNumber.from(defaultValue),
-    unstake: BigNumber.from(defaultValue),
-    withdraw: BigNumber.from(defaultValue),
-    stakingMature: BigNumber.from(defaultValue),
-    stakingMaturing: BigNumber.from(defaultValue),
-    stakingReleasing: BigNumber.from(defaultValue),
-    stakingReleased: BigNumber.from(defaultValue),
-    stakingMaturingTimestamp: new Date(),
-    stakingReleasingTimestamp: new Date(),
-    hideZeros: false,
-    onRebalance: () => undefined,
+const Template: Story = {
+    render: (args) => <EffectiveBalanceStat {...args} />,
 };
 
-export const NeedRebalance = Template.bind({});
-NeedRebalance.args = {
-    ...Default.args,
-    stake: BigNumber.from(0),
-    unstake: BigNumber.from(0),
-    withdraw: BigNumber.from(0),
+export const Default: Story = {
+    args: {
+        stake: BigNumber.from(defaultValue),
+        unstake: BigNumber.from(defaultValue),
+        withdraw: BigNumber.from(defaultValue),
+        stakingMature: BigNumber.from(defaultValue),
+        stakingMaturing: BigNumber.from(defaultValue),
+        stakingReleasing: BigNumber.from(defaultValue),
+        stakingReleased: BigNumber.from(defaultValue),
+        stakingMaturingTimestamp: new Date(),
+        stakingReleasingTimestamp: new Date(),
+        onRebalance: () => undefined,
+    },
+    ...Template,
+};
+
+export const NeedRebalance: Story = {
+    args: {
+        ...Default.args,
+        stake: BigNumber.from(0),
+        unstake: BigNumber.from(0),
+        withdraw: BigNumber.from(0),
+    },
+    ...Template,
 };

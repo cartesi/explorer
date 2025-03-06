@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import RetiredNode from '../../components/node/RetiredNode';
 import { ethers } from 'ethers';
@@ -19,22 +19,28 @@ export default {
     title: 'Node/Retired Node',
     component: RetiredNode,
     argTypes: {},
-} as ComponentMeta<typeof RetiredNode>;
+} as Meta<typeof RetiredNode>;
 
-const Template: ComponentStory<typeof RetiredNode> = (args) => (
-    <RetiredNode {...args} />
-);
+type Story = StoryObj<typeof RetiredNode>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    chainId: 5,
-    user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
-    balance: ethers.utils.parseEther('0.1'),
+const Template: Story = {
+    render: (args) => <RetiredNode {...args} />,
 };
 
-export const SomeoneElse = Template.bind({});
-SomeoneElse.args = {
-    chainId: 5,
-    user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
-    balance: ethers.utils.parseEther('0.1'),
+export const Basic: Story = {
+    args: {
+        chainId: 5,
+        user: '0x18930e8a66a1DbE21D00581216789AAB7460Afd0',
+        balance: ethers.utils.parseEther('0.1'),
+    },
+    ...Template,
+};
+
+export const SomeoneElse: Story = {
+    args: {
+        chainId: 5,
+        user: '0x2218B3b41581E3B3fea3d1CB5e37d9C66fa5d3A0',
+        balance: ethers.utils.parseEther('0.1'),
+    },
+    ...Template,
 };

@@ -26,7 +26,7 @@ const Component = (props, ref) => {
         scrolledToRight: false,
     });
 
-    const holder = useRef<HTMLDivElement>();
+    const holder = useRef<HTMLDivElement>(null);
 
     const scrollIndicatorsStyles = useConst(() => ({
         height: '100%',

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import PageHeader from '../components/PageHeader';
 import SearchInput from '../components/SearchInput';
@@ -19,16 +19,21 @@ export default {
     title: 'PageHeader',
     component: PageHeader,
     argTypes: {},
-} as ComponentMeta<typeof PageHeader>;
+} as Meta<typeof PageHeader>;
 
-const Template: ComponentStory<typeof PageHeader> = (args) => (
-    <PageHeader title="Blocks" {...args} />
-);
+type Story = StoryObj<typeof PageHeader>;
 
-export const Simple = Template.bind({});
-Simple.args = {};
+const Template: Story = {
+    render: (args) => <PageHeader title="Blocks" {...args} />,
+};
 
-export const WithSearch = Template.bind({});
-WithSearch.args = {
-    children: [<SearchInput key="1" w={[100, 200, 400, 400]} />],
+export const Simple: Story = {
+    ...Template,
+};
+
+export const WithSearch: Story = {
+    args: {
+        children: [<SearchInput key="1" w={[100, 200, 400, 400]} />],
+    },
+    ...Template,
 };

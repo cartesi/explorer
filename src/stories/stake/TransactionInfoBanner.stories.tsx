@@ -10,8 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { TransactionInfoBanner } from '../../components/stake/TransactionInfoBanner';
+import { Transaction } from '../../services/transaction';
 
 const defaultTransaction = {
     acknowledged: false,
@@ -29,56 +30,66 @@ export default {
     title: 'Stake/TransactionInfoBanner',
     component: TransactionInfoBanner,
     argTypes: {},
-} as ComponentMeta<typeof TransactionInfoBanner>;
+} as Meta<typeof TransactionInfoBanner>;
 
-const Template: ComponentStory<typeof TransactionInfoBanner> = (args) => (
-    <TransactionInfoBanner {...args} />
-);
+type Story = StoryObj<typeof TransactionInfoBanner>;
 
-export const Default = Template.bind({});
-Default.args = {
-    title: 'Deposit set',
-    failTitle: 'Error setting allowance',
-    successDescription: 'New allowance set successfully',
-    transaction: defaultTransaction,
-    onBeginTransaction: () => {
-        console.log('onBeginTransaction::');
-    },
-    onEndTransaction: () => {
-        console.log('onEndTransaction::');
-    },
-    onSuccess: () => {
-        console.log('onSuccess::');
-    },
-    onError: () => {
-        console.log('onError::');
-    },
+const Template: Story = {
+    render: (args) => <TransactionInfoBanner {...args} />,
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    ...Default.args,
-    title: 'Setting deposit...',
-    transaction: null,
-};
-
-export const TransactionError = Template.bind({});
-TransactionError.args = {
-    ...Default.args,
-    transaction: {
-        ...defaultTransaction,
-        error: true,
-    },
-};
-
-export const WithoutHash = Template.bind({});
-WithoutHash.args = {
-    ...Default.args,
-    transaction: {
-        ...defaultTransaction,
-        transaction: {
-            ...defaultTransaction.transaction,
-            hash: undefined,
+export const Default: Story = {
+    args: {
+        title: 'Deposit set',
+        failTitle: 'Error setting allowance',
+        successDescription: 'New allowance set successfully',
+        transaction: defaultTransaction as unknown as Transaction<string>,
+        onBeginTransaction: () => {
+            console.log('onBeginTransaction::');
+        },
+        onEndTransaction: () => {
+            console.log('onEndTransaction::');
+        },
+        onSuccess: () => {
+            console.log('onSuccess::');
+        },
+        onError: () => {
+            console.log('onError::');
         },
     },
+    ...Template,
+};
+
+export const Loading: Story = {
+    args: {
+        ...Default.args,
+        title: 'Setting deposit...',
+        transaction: null,
+    },
+    ...Template,
+};
+
+export const TransactionError: Story = {
+    args: {
+        ...Default.args,
+        transaction: {
+            ...defaultTransaction,
+            error: '',
+        } as unknown as Transaction<string>,
+    },
+    ...Template,
+};
+
+export const WithoutHash: Story = {
+    args: {
+        ...Default.args,
+        transaction: {
+            ...defaultTransaction,
+            transaction: {
+                ...defaultTransaction.transaction,
+                hash: undefined,
+            },
+        } as unknown as Transaction<string>,
+    },
+    ...Template,
 };

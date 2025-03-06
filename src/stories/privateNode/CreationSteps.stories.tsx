@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Stack } from '@chakra-ui/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import CustomizeEthereumNode from '../../components/node/steps/CustomizeEthereumNode';
 import SetUpNode from '../../components/node/steps/SetUpNode';
@@ -25,28 +25,34 @@ export default {
     parameters: {
         layout: 'fullscreen',
     },
-} as ComponentMeta<typeof StepGroup>;
+} as Meta<typeof StepGroup>;
 
-const Template: ComponentStory<typeof StepGroup> = (args) => {
-    return (
-        <Stack
-            bg="gray.80"
-            spacing={8}
-            px={{ base: 0, lg: '12vw', xl: '18vw' }}
-            py={{ base: 0, sm: '5vw' }}
-            direction="column"
-            alignItems="stretch"
-        >
-            <StepGroup
-                steps={[
-                    CustomizeEthereumNode,
-                    SetUpNode,
-                    HireNode,
-                    SetAllowance,
-                ]}
-            />
-        </Stack>
-    );
+type Story = StoryObj<typeof StepGroup>;
+
+const Template: Story = {
+    render: () => {
+        return (
+            <Stack
+                bg="gray.80"
+                spacing={8}
+                px={{ base: 0, lg: '12vw', xl: '18vw' }}
+                py={{ base: 0, sm: '5vw' }}
+                direction="column"
+                alignItems="stretch"
+            >
+                <StepGroup
+                    steps={[
+                        CustomizeEthereumNode,
+                        SetUpNode,
+                        HireNode,
+                        SetAllowance,
+                    ]}
+                />
+            </Stack>
+        );
+    },
 };
 
-export const MobileAndDesktop = Template.bind({});
+export const MobileAndDesktop: Story = {
+    ...Template,
+};

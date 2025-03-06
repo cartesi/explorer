@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { TableResponsiveHolder } from '../components/TableResponsiveHolder';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
@@ -20,7 +20,7 @@ export default {
     title: 'TableResponsiveHolder',
     component: TableResponsiveHolder,
     argTypes: {},
-} as ComponentMeta<typeof TableResponsiveHolder>;
+} as Meta<typeof TableResponsiveHolder>;
 
 const ExampleTable = () => {
     return (
@@ -45,12 +45,18 @@ const ExampleTable = () => {
     );
 };
 
-export const Default: ComponentStory<typeof TableResponsiveHolder> = ({
-    children,
-}) => <TableResponsiveHolder>{children}</TableResponsiveHolder>;
+type Story = StoryObj<typeof TableResponsiveHolder>;
 
-export const WithData: ComponentStory<typeof TableResponsiveHolder> = () => (
-    <TableResponsiveHolder>
-        <ExampleTable />
-    </TableResponsiveHolder>
-);
+export const Default: Story = {
+    render: ({ children }) => (
+        <TableResponsiveHolder>{children}</TableResponsiveHolder>
+    ),
+};
+
+export const WithData: Story = {
+    render: () => (
+        <TableResponsiveHolder>
+            <ExampleTable />
+        </TableResponsiveHolder>
+    ),
+};

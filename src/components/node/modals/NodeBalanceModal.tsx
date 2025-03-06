@@ -34,6 +34,7 @@ import {
 import { BigNumber, constants, ethers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FC, useEffect, useRef, useState } from 'react';
+import { FocusableElement } from '@chakra-ui/utils';
 
 interface INodeBalanceModalProps {
     userBalance: BigNumber;
@@ -50,7 +51,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     const [output, setOutput] = useState<BigNumber>(constants.Zero);
     const [fundsValue, setFundsValue] = useState<any>(0);
 
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { FaCoins, FaWallet } from 'react-icons/fa';
 
 import CTSIText from '../components/CTSIText';
@@ -21,47 +21,59 @@ export default {
     title: 'CTSI Text',
     component: CTSIText,
     argTypes: {},
-} as ComponentMeta<typeof CTSIText>;
+} as Meta<typeof CTSIText>;
 
-const Template: ComponentStory<typeof CTSIText> = (args) => (
-    <CTSIText value="5000100000000000000000000" {...args}>
-        <Text>Wallet Balance</Text>
-    </CTSIText>
-);
+type Story = StoryObj<typeof CTSIText>;
 
-export const Vertical = Template.bind({});
-Vertical.args = {};
-
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-    label: 'Staked Balance',
-    icon: FaCoins,
+const Template: Story = {
+    render: (args) => (
+        <CTSIText value="5000100000000000000000000" {...args}>
+            <Text>Wallet Balance</Text>
+        </CTSIText>
+    ),
 };
 
-export const Horizontal = Template.bind({});
-Horizontal.args = {
-    icon: FaWallet,
-    direction: 'row',
-};
+export const Vertical: Story = { ...Template };
 
-export const FractionalAmount = Template.bind({});
-FractionalAmount.args = {
-    value: ethers.utils.parseUnits('0.0001', 18),
-};
-
-export const HugeAmount = Template.bind({});
-HugeAmount.args = {
-    value: ethers.utils.parseUnits('345812800.12', 18),
-    options: {
-        notation: 'compact',
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
+export const WithIcon: Story = {
+    args: {
+        icon: FaCoins,
     },
+    ...Template,
 };
 
-export const Red = Template.bind({});
-Red.args = {
-    icon: FaWallet,
-    direction: 'row',
-    color: 'red',
+export const Horizontal: Story = {
+    args: {
+        icon: FaWallet,
+        direction: 'row',
+    },
+    ...Template,
+};
+
+export const FractionalAmount: Story = {
+    args: {
+        value: ethers.utils.parseUnits('0.0001', 18),
+    },
+    ...Template,
+};
+
+export const HugeAmount: Story = {
+    args: {
+        value: ethers.utils.parseUnits('345812800.12', 18),
+        options: {
+            notation: 'compact',
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1,
+        },
+    },
+    ...Template,
+};
+
+export const Red: Story = {
+    args: {
+        icon: FaWallet,
+        direction: 'row',
+        color: 'red',
+    },
+    ...Template,
 };

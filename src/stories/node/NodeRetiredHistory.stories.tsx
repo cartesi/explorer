@@ -9,15 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { NodeRetiredHistory } from '../../components/node/NodeRetiredHistory';
-import { NODES } from '../../graphql/queries/nodes';
+import { NODES } from '../../graphql/queries';
 export default {
     title: 'Node/NodeRetiredHistory',
     component: NodeRetiredHistory,
     argTypes: {},
-} as ComponentMeta<typeof NodeRetiredHistory>;
+} as Meta<typeof NodeRetiredHistory>;
 
 const queryVariables = {
     first: 3,
@@ -29,102 +29,112 @@ const queryVariables = {
     orderBy: 'retirementTimestamp',
     orderDirection: 'desc',
 };
-const Template: ComponentStory<typeof NodeRetiredHistory> = (args) => (
-    <NodeRetiredHistory {...args} />
-);
 
-export const Default = Template.bind({});
-Default.args = {
-    address: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
-};
-Default.parameters = {
-    apolloClient: {
-        mocks: [
-            {
-                request: {
-                    query: NODES,
-                    variables: queryVariables,
-                },
-                result: {
-                    data: {
-                        nodes: [
-                            {
-                                id: '0x43551627aafca2f871d4b23d438257b8fcf741d6',
-                                owner: {
-                                    balance: '6000000000000000000000',
-                                    id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
-                                    maturingBalance: '4000000000000000000000',
-                                    maturingTimestamp: '1670819220',
-                                    releasingBalance: '0',
-                                    releasingTimestamp: '0',
-                                    stakedBalance: '2000000000000000000000',
-                                },
-                                retirementTimestamp: '1670485824',
-                                status: 'Retired',
-                                timestamp: '1670477832',
-                                totalBlocks: 0,
-                                totalReward: '0',
-                            },
-                            {
-                                id: '0x8e1237ef9cd3f6fddd77948345b304086e9a8625',
-                                owner: {
-                                    balance: '6000000000000000000000',
-                                    id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
-                                    maturingBalance: '4000000000000000000000',
-                                    maturingTimestamp: '1670819220',
-                                    releasingBalance: '0',
-                                    releasingTimestamp: '0',
-                                    stakedBalance: '2000000000000000000000',
-                                },
-                                retirementTimestamp: '1670926656',
-                                status: 'Retired',
-                                timestamp: '1670914440',
-                                totalBlocks: 1,
-                                totalReward: '10000000000000000000',
-                            },
-                            {
-                                id: '0xa8e2fe2d49bb7cf71764c8d7aef0fef90ab171e5',
-                                owner: {
-                                    balance: '6000000000000000000000',
-                                    id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
-                                    maturingBalance: '4000000000000000000000',
-                                    maturingTimestamp: '1670819220',
-                                    releasingBalance: '0',
-                                    releasingTimestamp: '0',
-                                    stakedBalance: '2000000000000000000000',
-                                },
-                                retirementTimestamp: '1670911056',
-                                status: 'Retired',
-                                timestamp: '1670817480',
-                                totalBlocks: 0,
-                                totalReward: '0',
-                            },
-                        ],
-                    },
-                },
-            },
-        ],
-    },
+type Story = StoryObj<typeof NodeRetiredHistory>;
+
+const Template: Story = {
+    render: (args) => <NodeRetiredHistory {...args} />,
 };
 
-export const Empty = Template.bind({});
-Empty.args = {
-    address: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
-};
-Empty.parameters = {
-    apolloClient: {
-        mocks: [
-            {
-                request: {
-                    query: NODES,
-                    variables: queryVariables,
-                },
-                result: {
-                    data: {
-                        nodes: [],
+export const Default: Story = {
+    args: {
+        address: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+    },
+    parameters: {
+        apolloClient: {
+            mocks: [
+                {
+                    request: {
+                        query: NODES,
+                        variables: queryVariables,
+                    },
+                    result: {
+                        data: {
+                            nodes: [
+                                {
+                                    id: '0x43551627aafca2f871d4b23d438257b8fcf741d6',
+                                    owner: {
+                                        balance: '6000000000000000000000',
+                                        id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+                                        maturingBalance:
+                                            '4000000000000000000000',
+                                        maturingTimestamp: '1670819220',
+                                        releasingBalance: '0',
+                                        releasingTimestamp: '0',
+                                        stakedBalance: '2000000000000000000000',
+                                    },
+                                    retirementTimestamp: '1670485824',
+                                    status: 'Retired',
+                                    timestamp: '1670477832',
+                                    totalBlocks: 0,
+                                    totalReward: '0',
+                                },
+                                {
+                                    id: '0x8e1237ef9cd3f6fddd77948345b304086e9a8625',
+                                    owner: {
+                                        balance: '6000000000000000000000',
+                                        id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+                                        maturingBalance:
+                                            '4000000000000000000000',
+                                        maturingTimestamp: '1670819220',
+                                        releasingBalance: '0',
+                                        releasingTimestamp: '0',
+                                        stakedBalance: '2000000000000000000000',
+                                    },
+                                    retirementTimestamp: '1670926656',
+                                    status: 'Retired',
+                                    timestamp: '1670914440',
+                                    totalBlocks: 1,
+                                    totalReward: '10000000000000000000',
+                                },
+                                {
+                                    id: '0xa8e2fe2d49bb7cf71764c8d7aef0fef90ab171e5',
+                                    owner: {
+                                        balance: '6000000000000000000000',
+                                        id: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+                                        maturingBalance:
+                                            '4000000000000000000000',
+                                        maturingTimestamp: '1670819220',
+                                        releasingBalance: '0',
+                                        releasingTimestamp: '0',
+                                        stakedBalance: '2000000000000000000000',
+                                    },
+                                    retirementTimestamp: '1670911056',
+                                    status: 'Retired',
+                                    timestamp: '1670817480',
+                                    totalBlocks: 0,
+                                    totalReward: '0',
+                                },
+                            ],
+                        },
                     },
                 },
-            },
-        ],
+            ],
+        },
     },
+    ...Template,
+};
+
+export const Empty: Story = {
+    args: {
+        address: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
+    },
+    parameters: {
+        apolloClient: {
+            mocks: [
+                {
+                    request: {
+                        query: NODES,
+                        variables: queryVariables,
+                    },
+                    result: {
+                        data: {
+                            nodes: [],
+                        },
+                    },
+                },
+            ],
+        },
+    },
+    ...Template,
 };

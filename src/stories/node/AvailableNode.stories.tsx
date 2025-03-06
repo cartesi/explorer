@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import AvailableNode from '../../components/node/AvailableNode';
 import { ethers } from 'ethers';
@@ -19,14 +19,20 @@ export default {
     title: 'Node/Available Node',
     component: AvailableNode,
     argTypes: {},
-} as ComponentMeta<typeof AvailableNode>;
+} as Meta<typeof AvailableNode>;
 
-const Template: ComponentStory<typeof AvailableNode> = (args) => (
-    <AvailableNode {...args} />
-);
+type Story = StoryObj<typeof AvailableNode>;
 
-export const Basic = Template.bind({});
-Basic.args = { balance: ethers.utils.parseEther('2.345') };
+const Template: Story = {
+    render: (args) => <AvailableNode {...args} />,
+};
 
-export const ZeroBalance = Template.bind({});
-ZeroBalance.args = { balance: ethers.utils.parseEther('0') };
+export const Basic: Story = {
+    args: { balance: ethers.utils.parseEther('2.345') },
+    ...Template,
+};
+
+export const ZeroBalance: Story = {
+    args: { balance: ethers.utils.parseEther('0') },
+    ...Template,
+};

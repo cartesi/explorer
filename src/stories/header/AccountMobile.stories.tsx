@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import AccountMobile from '../../components/header/AccountMobile';
 import { WalletConnectionContext } from '../../components/wallet';
 
@@ -17,7 +17,7 @@ export default {
     title: 'Header/AccountMobile',
     component: AccountMobile,
     argTypes: {},
-} as ComponentMeta<typeof AccountMobile>;
+} as Meta<typeof AccountMobile>;
 
 const initialContextState = {
     active: true,
@@ -27,13 +27,19 @@ const initialContextState = {
     chainId: 1,
 };
 
-const Template: ComponentStory<typeof AccountMobile> = (args) => (
-    <WalletConnectionContext.Provider value={initialContextState}>
-        <AccountMobile {...args} />
-    </WalletConnectionContext.Provider>
-);
+type Story = StoryObj<typeof AccountMobile>;
 
-export const Default = Template.bind({});
-Default.args = {
-    onApprove: () => undefined,
+const Template: Story = {
+    render: (args) => (
+        <WalletConnectionContext.Provider value={initialContextState}>
+            <AccountMobile {...args} />
+        </WalletConnectionContext.Provider>
+    ),
+};
+
+export const Default: Story = {
+    args: {
+        onApprove: () => undefined,
+    },
+    ...Template,
 };

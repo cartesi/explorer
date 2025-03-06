@@ -32,6 +32,7 @@ import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
+import { FocusableElement } from '@chakra-ui/utils';
 
 interface INodeAllowanceModalProps {
     allowance: BigNumber;
@@ -60,7 +61,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
 
-    const inputFocusRef = useRef();
+    const inputFocusRef = useRef<FocusableElement>(null);
 
     return (
         <>

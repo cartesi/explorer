@@ -10,22 +10,27 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PoolBalanceStat from '../../../components/stake/stats/PoolBalanceStat';
+import { BigNumber } from 'ethers';
 
-const defaultBigNumberValue = '10000000000000000000000000000';
+const defaultBigNumberValue = BigNumber.from('10000000000000000000000000000');
 
 export default {
     title: 'Stake/Stats/PoolBalanceStat',
     component: PoolBalanceStat,
     argTypes: {},
-} as ComponentMeta<typeof PoolBalanceStat>;
+} as Meta<typeof PoolBalanceStat>;
 
-const Template: ComponentStory<typeof PoolBalanceStat> = (args) => (
-    <PoolBalanceStat {...args} />
-);
+type Story = StoryObj<typeof PoolBalanceStat>;
 
-export const Default = Template.bind({});
-Default.args = {
-    pool: defaultBigNumberValue,
+const Template: Story = {
+    render: (args) => <PoolBalanceStat {...args} />,
+};
+
+export const Default: Story = {
+    args: {
+        pool: defaultBigNumberValue,
+    },
+    ...Template,
 };

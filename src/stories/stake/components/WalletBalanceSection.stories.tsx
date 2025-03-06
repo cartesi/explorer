@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { BigNumber } from 'ethers';
 import { WalletBalanceSection } from '../../../components/stake/components/WalletBalanceSection';
 import { WalletConnectionContext } from '../../../components/wallet';
@@ -20,40 +20,48 @@ export default {
     title: 'Stake/Components/WalletBalanceSection',
     component: WalletBalanceSection,
     argTypes: {},
-} as ComponentMeta<typeof WalletBalanceSection>;
+} as Meta<typeof WalletBalanceSection>;
 
-const Template: ComponentStory<typeof WalletBalanceSection> = (args) => (
-    <WalletBalanceSection {...args} />
-);
+type Story = StoryObj<typeof WalletBalanceSection>;
 
-export const Default = Template.bind({});
-Default.args = {
-    userCTSIBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(defaultValue),
+const Template: Story = {
+    render: (args) => <WalletBalanceSection {...args} />,
 };
 
-export const ZeroETHBalance = Template.bind({});
-ZeroETHBalance.args = {
-    userCTSIBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(0),
+export const Default: Story = {
+    args: {
+        userCTSIBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(defaultValue),
+    },
+    ...Template,
 };
 
-export const ZeroETHBalanceWhenUsingGnosisSafe = Template.bind({});
-ZeroETHBalanceWhenUsingGnosisSafe.args = {
-    userCTSIBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(0),
+export const ZeroETHBalance: Story = {
+    args: {
+        userCTSIBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(0),
+    },
+    ...Template,
 };
-ZeroETHBalanceWhenUsingGnosisSafe.decorators = [
-    (Story) => (
-        <WalletConnectionContext.Provider
-            value={{
-                active: true,
-                activate: () => null,
-                deactivate: () => null,
-                isGnosisSafe: true,
-            }}
-        >
-            <Story />
-        </WalletConnectionContext.Provider>
-    ),
-];
+
+export const ZeroETHBalanceWhenUsingGnosisSafe: Story = {
+    args: {
+        userCTSIBalance: BigNumber.from(defaultValue),
+        userETHBalance: BigNumber.from(0),
+    },
+    decorators: [
+        (Story) => (
+            <WalletConnectionContext.Provider
+                value={{
+                    active: true,
+                    activate: () => null,
+                    deactivate: () => null,
+                    isGnosisSafe: true,
+                }}
+            >
+                <Story />
+            </WalletConnectionContext.Provider>
+        ),
+    ],
+    ...Template,
+};
