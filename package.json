@@ -50,7 +50,6 @@
         "@web3-onboard/injected-wallets": "^2.11.3",
         "@web3-onboard/react": "^2.10.1",
         "@web3-onboard/walletconnect": "^2.6.2",
-        "axios": "0.21.4",
         "big-number-input": "1.0.3",
         "chart.js": "4.4.8",
         "cors": "2.8.5",
