@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { GetEnsDomainsQuery } from '../../../graphql/queries/ensDomains';
+import AddressENSRepository from './AddressENSRepository';
 
 export type AddressEns = {
     id: number;
@@ -18,8 +19,6 @@ export type AddressEns = {
     name?: string;
     avatarUrl?: string;
 };
-
-export type StaleEntry = Pick<AddressEns, 'id' | 'address'>;
 
 export type Entry = {
     id?: number;
@@ -34,3 +33,7 @@ export type ENSAddressData = {
     name?: string | null;
     avatarUrl?: string | null;
 };
+
+export type StaleEntry = Awaited<
+    ReturnType<typeof AddressENSRepository.getAllStaleEntries>
+>[number];

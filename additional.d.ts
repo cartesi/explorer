@@ -55,6 +55,13 @@ declare namespace NodeJS {
         HTTP_MAINNET_NODE_RPC: string;
 
         /**
+         * Maximum number of entries per request when fetching ENS information. It is configurable but default and maximum is 900 entries.
+         * Therefore, the number here dictates the relation between entries-limit and concurrent calls to be created when this limit is exceeded.
+         * @default 900
+         */
+        ENS_ENTRIES_PER_REQ_LIMIT: string;
+
+        /**
          * should be a number that set when ENS information about an address
          * is considered staled.
          */

@@ -16,7 +16,24 @@ import {
 } from '../../../graphql/queries/ensDomains';
 import { Network } from '../../../utils/networks';
 import ensClient from '../../apolloENSClient';
-import { ENSAddressData, Entry, QueriedDomain } from './types';
+import { ENSAddressData, Entry, QueriedDomain, StaleEntry } from './types';
+import defaultTo from 'lodash/fp/defaultTo';
+
+type GetDomainsResult = Record<string, QueriedDomain>;
+type PayloadState = 'ok' | 'ens_query_failed';
+type ENSPayload = {
+    state: PayloadState;
+    data: ENSAddressData[];
+};
+
+const defaultMaxEntriesPerReqLimit = 900 as const;
+const MAX_ENTRIES_PER_REQ = Math.min(
+    defaultMaxEntriesPerReqLimit,
+    defaultTo(
+        defaultMaxEntriesPerReqLimit,
+        parseInt(process.env.ENS_ENTRIES_PER_REQ_LIMIT ?? '')
+    )
+);
 
 const httpNodeRpc =
     process.env.HTTP_MAINNET_NODE_RPC ?? 'https://cloudflare-eth.com';
@@ -37,6 +54,7 @@ const ACTION_NAME = {
     getDomains: 'GET_DOMAINS',
     addENSName: 'ADD_ENS_NAME',
     getAvatarUrl: 'GET_AVATAR_URL',
+    getFreshENSData: 'GET_FRESH_ENS_DATA',
 } as const;
 
 const getAvatarUrl = (name: string): Promise<string | null> => {
@@ -53,12 +71,13 @@ const getAvatarUrl = (name: string): Promise<string | null> => {
         });
 };
 
-const addAvatarUrl = async (
-    ensAddressDataList: ENSAddressData[]
-): Promise<ENSAddressData[]> => {
-    const timeLabel = `${ACTION_NAME.addAvatarUrl}(${ensAddressDataList.length})`;
+const addAvatarUrl = async (ensPayload: ENSPayload): Promise<ENSPayload> => {
+    // skip any L1 resolver checks, as the primary query failed.
+    if (ensPayload.state === 'ens_query_failed') return ensPayload;
+
+    const timeLabel = `${ACTION_NAME.addAvatarUrl}(${ensPayload.data.length})`;
     console.time(timeLabel);
-    const listP = ensAddressDataList.map((ensAddressData) => {
+    const listP = ensPayload.data.map((ensAddressData) => {
         if (
             !ensAddressData.hasEns ||
             (ensAddressData.hasEns && !ensAddressData.name)
@@ -76,41 +95,40 @@ const addAvatarUrl = async (
             })
             .catch((reason: any) => {
                 console.error(
-                    `${ACTION_NAME}: (Errored) ${ensAddressData.address} - reason (${reason.message})`
+                    `${ACTION_NAME.addAvatarUrl}: (Errored) ${ensAddressData.address} - reason (${reason.message})`
                 );
                 return ensAddressData;
             });
     });
 
-    const result = await Promise.all(listP);
+    const data = await Promise.all(listP);
     console.timeEnd(timeLabel);
 
-    return result;
+    return { state: 'ok', data };
 };
 
-const getDomains = async (addresses: string[]) => {
+const getDomains = async (addresses: string[]): Promise<GetDomainsResult> => {
     const timeLabel = `${ACTION_NAME.getDomains}(${addresses.length})`;
     console.time(timeLabel);
-    const result = await ensClient
-        .query<GetEnsDomainsQuery>({
-            query: DOMAINS,
-            variables: {
-                first: addresses.length,
-                where: { resolvedAddress_in: addresses },
-                orderBy: 'createdAt',
-                orderDirection: 'asc',
-            },
-        })
-        .catch((reason: any) => {
-            console.error(reason);
-            return {
-                data: {
-                    domains: [],
-                },
-            };
-        });
+    const result = await ensClient.query<GetEnsDomainsQuery>({
+        query: DOMAINS,
+        variables: {
+            first: addresses.length,
+            where: { resolvedAddress_in: addresses },
+            orderBy: 'createdAt',
+            orderDirection: 'asc',
+        },
+    });
 
-    const domains = (result.data.domains ?? []) as QueriedDomain[];
+    const domains = result.data.domains ?? [];
+    const domainsByAddress = domains.reduce((prev, curr) => {
+        const address = curr.resolvedAddress?.id ?? '';
+        return {
+            ...prev,
+            [address]: curr,
+        };
+    }, {} as GetDomainsResult);
+
     console.info(
         `${ACTION_NAME.getDomains}: (Number of addresses): ${addresses.length}`
     );
@@ -119,42 +137,70 @@ const getDomains = async (addresses: string[]) => {
     );
 
     console.timeEnd(timeLabel);
-    return domains;
+
+    return domainsByAddress;
 };
 
-const getDomainsByAddress = (domains: QueriedDomain[]) => {
-    return domains.reduce((prev, curr) => {
-        const address = curr.resolvedAddress?.id ?? '';
-        return {
-            ...prev,
-            [address]: curr,
-        };
-    }, {} as Record<string, QueriedDomain>);
-};
-
-const addENSName = async (entries: Entry[]): Promise<ENSAddressData[]> => {
+const addENSName = async (entries: Entry[]): Promise<ENSPayload> => {
+    if (!entries || (entries && entries.length === 0))
+        return { state: 'ok', data: [] };
     const timeLabel = `${ACTION_NAME.addENSName}(${entries.length})`;
     console.time(timeLabel);
-    if (!entries || (entries && entries.length === 0)) return [];
 
-    const addresses = entries.map((e) => e.address);
-    const domains = await getDomains(addresses);
-    const domainsByAddress = getDomainsByAddress(domains);
+    let state: PayloadState = 'ok';
+    let domainsByAddress: GetDomainsResult;
 
-    const result = entries.map((entry) => {
+    try {
+        const addresses = entries.map((e) => e.address);
+        domainsByAddress = await getDomains(addresses);
+    } catch (error: any) {
+        console.error(error);
+        state = 'ens_query_failed';
+        domainsByAddress = {};
+    }
+
+    const data = entries.map((entry) => {
         const ensInfo = domainsByAddress[entry.address];
-        return {
+        const name = ensInfo?.name || ensInfo?.labelName;
+        const newEntry: ENSAddressData = {
             ...entry,
             hasEns: ensInfo !== undefined,
-            name: ensInfo?.name || ensInfo?.labelName,
         };
+
+        if (name) newEntry.name = name;
+
+        return newEntry;
     });
 
     console.timeEnd(timeLabel);
 
-    return result;
+    return { state, data };
 };
 
 export const getENSData = async (entries: Entry[]) => {
     return addENSName(entries).then(addAvatarUrl);
+};
+
+/**
+ * Receive a list of N entries and break into Y partitions of limited number of entries.
+ * The Y partitions is the number of concurrent requests to be sent.
+ * The return is a list of Y ENS-payloads.
+ *
+ * @returns {Promise<ENSPayload[]>}
+ */
+export const getFreshENSData = async (staleList: StaleEntry[]) => {
+    const partitions = Math.ceil(staleList.length / MAX_ENTRIES_PER_REQ);
+    const promises: Promise<ENSPayload>[] = [];
+    const label = `(${ACTION_NAME.getFreshENSData})`;
+    console.info(`${label}: Maximum items per request ${MAX_ENTRIES_PER_REQ}`);
+    console.info(`${label}: Total stale entries to check ${staleList.length}`);
+    console.info(`${label}: Breaking into ${partitions} concurrent calls`);
+
+    for (let i = 1; i <= partitions; i++) {
+        promises.push(getENSData(staleList.splice(0, MAX_ENTRIES_PER_REQ)));
+    }
+
+    const payloads = await Promise.all(promises);
+
+    return payloads;
 };

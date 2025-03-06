@@ -11,11 +11,15 @@
 import { SelectAddressENS } from '../../../src/db/schemas';
 import { default as Repository } from '../../../src/services/server/ens/AddressENSRepository';
 import AddressENSService from '../../../src/services/server/ens/AddressENSService';
-import { getENSData } from '../../../src/services/server/ens/functions';
+import {
+    getENSData,
+    getFreshENSData,
+} from '../../../src/services/server/ens/functions';
 import { isCartesiUser } from '../../../src/services/server/utils';
 
 jest.mock('../../../src/services/server/ens/functions', () => {
     return {
+        getFreshENSData: jest.fn(),
         getENSData: jest.fn(),
     };
 });
@@ -40,6 +44,7 @@ jest.mock('../../../src/services/server/ens/AddressENSRepository', () => {
 });
 
 const getENSDataMock = jest.mocked(getENSData);
+const getFreshENSDataMock = jest.mocked(getFreshENSData);
 const isCartesiUserMock = jest.mocked(isCartesiUser);
 const repositoryMock = jest.mocked(Repository);
 const address = '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6';
@@ -57,12 +62,11 @@ describe('Address ENS Service', () => {
         .spyOn(console, 'error')
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         .mockImplementation(() => {});
+    const infoLogSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     beforeEach(() => {
-        // defaults to failure
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        jest.spyOn(console, 'info').mockImplementation(() => {});
-        getENSDataMock.mockResolvedValue([]);
+        getFreshENSDataMock.mockResolvedValue([]);
+        getENSDataMock.mockResolvedValue({ state: 'ok', data: [] });
         isCartesiUserMock.mockResolvedValue(false);
         repositoryMock.get.mockResolvedValue(null);
         repositoryMock.getAll.mockResolvedValue([]);
@@ -126,9 +130,10 @@ describe('Address ENS Service', () => {
         it('should return an new entry when not available in the repository', async () => {
             const newAddress = '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dd7';
             isCartesiUserMock.mockResolvedValue(true);
-            getENSDataMock.mockResolvedValue([
-                { address: newAddress, hasEns: false },
-            ]);
+            getENSDataMock.mockResolvedValue({
+                state: 'ok',
+                data: [{ address: newAddress, hasEns: false }],
+            });
 
             const result = await AddressENSService.getEntry(newAddress, 1);
 
@@ -224,19 +229,176 @@ describe('Address ENS Service', () => {
             ];
 
             repositoryMock.getAllStaleEntries.mockResolvedValue(staleEntries);
-            getENSDataMock.mockResolvedValue(freshEntries);
+            getFreshENSDataMock.mockResolvedValue([
+                {
+                    state: 'ok',
+                    data: freshEntries,
+                },
+            ]);
 
             const result = await AddressENSService.refreshEntries();
 
-            expect(getENSDataMock).toHaveBeenCalledTimes(1);
+            expect(getFreshENSDataMock).toHaveBeenCalledTimes(1);
             expect(repositoryMock.updateBulk).toHaveBeenCalledTimes(1);
             expect(result).toEqual({
                 ok: true,
                 data: { success: true, count: 3 },
             });
+
+            expect(infoLogSpy).toHaveBeenCalledTimes(5);
+            expect(infoLogSpy.mock.calls[0][0]).toEqual(
+                '(Total stale entries): 3'
+            );
+            expect(infoLogSpy.mock.calls[1][0]).toEqual(
+                '(ENS Payloads returned): 1'
+            );
+            expect(infoLogSpy.mock.calls[2][0]).toEqual(
+                '(ENS Payloads in good state): 1'
+            );
+            expect(infoLogSpy.mock.calls[3][0]).toEqual(
+                '(Total entries to refresh): 3'
+            );
+            expect(infoLogSpy.mock.calls[4][0]).toEqual(
+                '(Total entries updated): 3'
+            );
         });
 
-        it('should handle any runtime internal errors gracefully', async () => {
+        it('should discard payloads that are not in a good state and log the information', async () => {
+            const staleEntry = {
+                id: validEntry.id,
+                address: validEntry.address,
+                hasEns: validEntry.hasEns,
+            };
+
+            const staleEntries = [
+                { ...staleEntry },
+                { ...staleEntry, id: 2 },
+                { ...staleEntry, id: 3 },
+            ];
+
+            const freshEntries = [
+                {
+                    ...staleEntry,
+                    name: validEntry.name,
+                    avatarUrl: validEntry.avatarUrl,
+                },
+                { ...staleEntry, id: 2, name: 'dev.enzo.eth' },
+                { ...staleEntry, id: 3, name: 'qa.enzo.eth' },
+            ];
+
+            repositoryMock.getAllStaleEntries.mockResolvedValue(staleEntries);
+            getFreshENSDataMock.mockResolvedValue([
+                {
+                    state: 'ok',
+                    data: freshEntries,
+                },
+                {
+                    state: 'ok',
+                    data: freshEntries,
+                },
+                {
+                    state: 'ens_query_failed',
+                    data: freshEntries,
+                },
+            ]);
+
+            const result = await AddressENSService.refreshEntries();
+
+            expect(getFreshENSDataMock).toHaveBeenCalledTimes(1);
+            expect(repositoryMock.updateBulk).toHaveBeenCalledTimes(1);
+            expect(result).toEqual({
+                ok: true,
+                data: { success: true, count: 6 },
+            });
+
+            expect(infoLogSpy).toHaveBeenCalledTimes(5);
+            expect(infoLogSpy.mock.calls[0][0]).toEqual(
+                '(Total stale entries): 3'
+            );
+            expect(infoLogSpy.mock.calls[1][0]).toEqual(
+                '(ENS Payloads returned): 3'
+            );
+            expect(infoLogSpy.mock.calls[2][0]).toEqual(
+                '(ENS Payloads in good state): 2'
+            );
+            expect(infoLogSpy.mock.calls[3][0]).toEqual(
+                '(Total entries to refresh): 6'
+            );
+            expect(infoLogSpy.mock.calls[4][0]).toEqual(
+                '(Total entries updated): 6'
+            );
+        });
+
+        it('should log and signal request completion but mark success as false when all payloads are discarded', async () => {
+            const staleEntry = {
+                id: validEntry.id,
+                address: validEntry.address,
+                hasEns: validEntry.hasEns,
+            };
+
+            const staleEntries = [
+                { ...staleEntry },
+                { ...staleEntry, id: 2 },
+                { ...staleEntry, id: 3 },
+            ];
+
+            const freshEntries = [
+                {
+                    ...staleEntry,
+                    name: validEntry.name,
+                    avatarUrl: validEntry.avatarUrl,
+                },
+                { ...staleEntry, id: 2, name: 'dev.enzo.eth' },
+                { ...staleEntry, id: 3, name: 'qa.enzo.eth' },
+            ];
+
+            repositoryMock.getAllStaleEntries.mockResolvedValue([
+                ...staleEntries,
+                ...staleEntries,
+                ...staleEntries,
+            ]);
+
+            getFreshENSDataMock.mockResolvedValue([
+                {
+                    state: 'ens_query_failed',
+                    data: freshEntries,
+                },
+                {
+                    state: 'ens_query_failed',
+                    data: freshEntries,
+                },
+                {
+                    state: 'ens_query_failed',
+                    data: freshEntries,
+                },
+            ]);
+
+            const result = await AddressENSService.refreshEntries();
+
+            expect(getFreshENSDataMock).toHaveBeenCalledTimes(1);
+            expect(repositoryMock.updateBulk).not.toHaveBeenCalled();
+
+            expect(result).toEqual({
+                ok: true,
+                data: { success: false, count: 0 },
+            });
+
+            expect(infoLogSpy).toHaveBeenCalledTimes(4);
+            expect(infoLogSpy.mock.calls[0][0]).toEqual(
+                '(Total stale entries): 9'
+            );
+            expect(infoLogSpy.mock.calls[1][0]).toEqual(
+                '(ENS Payloads returned): 3'
+            );
+            expect(infoLogSpy.mock.calls[2][0]).toEqual(
+                '(ENS Payloads in good state): 0'
+            );
+            expect(infoLogSpy.mock.calls[3][0]).toEqual(
+                '(Total entries to refresh): 0'
+            );
+        });
+
+        it('should handle db runtime internal errors gracefully', async () => {
             repositoryMock.getAllStaleEntries.mockRejectedValue(
                 new Error('Connection closed')
             );
