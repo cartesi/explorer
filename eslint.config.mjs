@@ -55,6 +55,7 @@ export default [
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
             '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+            '@typescript-eslint/no-unused-vars': 'warn',
             'react/react-in-jsx-scope': 'off',
             'react/no-children-prop': 'warn',
             'react-hooks/rules-of-hooks': 'warn',

@@ -111,7 +111,11 @@ export const useNode = (address: string): Node => {
 
     useEffect(() => {
         // when the address changes clean the state.
-        address ? resetState(address) : resetState('');
+        if (address) {
+            resetState(address);
+        } else {
+            resetState('');
+        }
     }, [address]);
 
     useEffect(() => {

@@ -35,7 +35,7 @@ export const useStakingPoolFactory = () => {
     });
     const [paused, setPaused] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
-    const [loading, setLoading] = useState<Boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [pos, setPoS] = useState<string | null>(null);
 
     const createFlatRateCommission = (commission: number) => {

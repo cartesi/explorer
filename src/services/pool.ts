@@ -52,7 +52,7 @@ export interface StakingPool {
     withdrawBalance: BigNumber;
     depositTimestamp: Date;
     stakeTimestamp: Date;
-    paused: Boolean;
+    paused: boolean;
     amounts: Amounts;
     lockTime: BigNumber;
     pos: string;
@@ -151,7 +151,7 @@ export const useStakingPool = (
     const [pos, setPoS] = useState<string>(null);
 
     // flag if pool is paused for new stakes
-    const [paused, setPaused] = useState<Boolean>(false);
+    const [paused, setPaused] = useState<boolean>(false);
 
     // amounts of tokens to be moved to/from staking contract
     const [amounts, setAmounts] = useState<

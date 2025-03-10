@@ -105,7 +105,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     useEffect(() => {
         if (isStepCompleted) {
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            onComplete?.();
         }
     }, [isStepCompleted]);
 
