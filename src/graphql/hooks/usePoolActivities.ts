@@ -127,7 +127,9 @@ const usePoolActivities = ({
     });
 
     useEffect(() => {
-        data && setActivities(transform(data));
+        if (data) {
+            setActivities(transform(data));
+        }
     }, [data]);
 
     return { activities, loading, error };

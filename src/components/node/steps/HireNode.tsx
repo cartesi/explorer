@@ -96,7 +96,7 @@ const HireNode = ({
         if (isStepCompleted) {
             setNodeAddressAtom(nodeAddress);
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            onComplete?.();
         }
     }, [isStepCompleted]);
 
@@ -162,7 +162,7 @@ const HireNode = ({
                         variant="outline"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
-                            onPrevious && onPrevious();
+                            onPrevious?.();
                         }}
                     >
                         PREVIOUS

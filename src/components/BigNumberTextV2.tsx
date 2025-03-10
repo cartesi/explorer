@@ -19,8 +19,8 @@ import humanizeDuration from 'humanize-duration';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
 type Countdown = {
-    timeLeft: String;
-    timeLabel: String;
+    timeLeft: string;
+    timeLabel: string;
 };
 
 const formatDuration = (ms: number): string[] => {
