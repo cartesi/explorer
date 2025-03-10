@@ -164,10 +164,11 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         unstakeFullAmount !== 'full'
                                     }
                                     onClick={() => {
-                                        unstakeFullAmount === 'full'
-                                            ? onSave('full')
-                                            : onSave('partial', outputUnstake);
-
+                                        if (unstakeFullAmount === 'full') {
+                                            onSave('full');
+                                        } else {
+                                            onSave('partial', outputUnstake);
+                                        }
                                         disclosure.onClose();
                                         onClose();
                                     }}
