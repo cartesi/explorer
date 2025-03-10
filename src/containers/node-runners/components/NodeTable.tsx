@@ -205,7 +205,11 @@ const NodeTableBlock = ({ boxProps }: TableInfo) => {
     ];
 
     useEffect(() => {
-        showAlert ? onOpen() : onClose();
+        if (showAlert) {
+            onOpen();
+        } else {
+            onClose();
+        }
     }, [showAlert, onClose, onOpen]);
 
     return (

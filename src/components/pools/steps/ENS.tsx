@@ -179,7 +179,7 @@ const EthereumNameServer = ({
     useEffect(() => {
         if (isCompleted) {
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            onComplete?.();
             router.push(buildURL(poolAddress));
         }
     }, [isCompleted]);

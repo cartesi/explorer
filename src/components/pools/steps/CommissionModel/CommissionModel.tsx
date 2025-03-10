@@ -10,7 +10,7 @@
 
 import { Button, Stack, useColorModeValue } from '@chakra-ui/react';
 import { atom, useAtom } from 'jotai';
-import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
+import { isEmpty, omit, toNumber } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 import { useStakingPoolFactory } from '../../../../services/poolFactory';
 import { Transaction } from '../../../../services/transaction';
@@ -119,7 +119,7 @@ const CommissionModel = ({
         if (isStepCompleted) {
             updatePoolAddressAtom(poolFactory?.transaction?.result);
             setStepState(COMPLETED);
-            isFunction(onComplete) && onComplete();
+            onComplete?.();
         }
     }, [isStepCompleted]);
 
