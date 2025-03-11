@@ -4,6 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 import 'jest-canvas-mock';
 import { TextDecoder, TextEncoder } from 'util';
 
+process.env.ENS_ENTRIES_PER_REQ_LIMIT = 2;
+
 Object.assign(global, { TextEncoder, TextDecoder });
 
 jest.mock('./src/services/ens', () => {
