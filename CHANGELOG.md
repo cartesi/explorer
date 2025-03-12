@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.0] - 2025-03-12
+
+-   Improve behaviour when refreshing stale address ENS information.
+-   Upgrade core dependencies to its latest versions. e.g. NextJS and React.
+-   Replace third-party dependency to use platform equivalent. i.e. replace axios in favor of fetch for network calls.
+
 ## [3.9.4] - 2025-03-01
 
-- Major refactoring bringing it back to be a single repository instead of monorepo.
+-   Major refactoring bringing it back to be a single repository instead of monorepo.
 
 ## [3.9.3] - 2025-02-03
 
@@ -414,7 +420,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.9.4...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.10.0...HEAD
+[3.10.0]: https://github.com/cartesi/explorer/compare/v3.10.0...v3.9.4
 [3.9.4]: https://github.com/cartesi/explorer/compare/v3.9.4...v3.9.3
 [3.9.3]: https://github.com/cartesi/explorer/compare/v3.9.3...v3.9.2
 [3.9.2]: https://github.com/cartesi/explorer/compare/v3.9.2...v3.9.1
