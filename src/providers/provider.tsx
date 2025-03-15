@@ -1,13 +1,13 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { ThemeProvider } from 'next-themes';
+import { ColorModeScript } from '@chakra-ui/react';
 import theme from '../styles/theme';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
+import Providers from './providers';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
-import { ENSDataProvider } from '../services/ens';
+// import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
 import ApolloContainer from '../components/ApolloContainer';
 
@@ -42,27 +42,16 @@ export default function RootLayout(props: { children: ReactNode }) {
             });
         }
 
-        (async () => {
-            const { data }: { data: AddressEns[] } = await getENSCachedData();
-            setEnsData(data);
-        })();
+        // (async () => {
+        //     const { data }: { data: AddressEns[] } = await getENSCachedData();
+        //     setEnsData(data);
+        // })();
     }, []);
 
     return (
-        <ChakraProvider value={theme}>
-            <ThemeProvider attribute="class" disableTransitionOnChange>
-                <FeatureFlagProvider>
-                    <ENSDataProvider value={ensData}>
-                        <Web3Container>
-                            <GA4TrackerProvider>
-                                <ApolloContainer>
-                                    {props.children}
-                                </ApolloContainer>
-                            </GA4TrackerProvider>
-                        </Web3Container>
-                    </ENSDataProvider>
-                </FeatureFlagProvider>
-            </ThemeProvider>
-        </ChakraProvider>
+        <>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <Providers>{props.children}</Providers>
+        </>
     );
 }

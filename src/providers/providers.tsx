@@ -1,28 +1,23 @@
 'use client';
 
+import { ReactNode, useEffect, useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
-import { FC, ReactNode, useEffect, useState } from 'react';
-import TagManager from 'react-gtm-module';
-import ApolloContainer from '../components/ApolloContainer';
+import { ColorModeScript } from '@chakra-ui/react';
 import theme from '../styles/theme';
-
-import { Fonts } from '../components/Fonts';
-import PageHead from '../components/PageHead';
+import dynamic from 'next/dynamic';
+import TagManager from 'react-gtm-module';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
-import { ENSDataProvider } from '../services/ens';
+// import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
-
-type ComponentType = FC<{ children: ReactNode }>;
+import ApolloContainer from '../components/ApolloContainer';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
-}) as ComponentType;
+});
 
 const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
-}) as ComponentType;
+});
 
 const getENSCachedData = () => {
     const host = location.origin;
@@ -37,10 +32,7 @@ const getENSCachedData = () => {
         });
 };
 
-const Providers = ({
-    Component,
-    pageProps,
-}: AppProps & { Component: ComponentType }) => {
+export default function Providers(props: { children: ReactNode }) {
     const [ensData, setEnsData] = useState<AddressEns[]>([]);
 
     useEffect(() => {
@@ -50,32 +42,23 @@ const Providers = ({
             });
         }
 
-        (async () => {
-            const { data }: { data: AddressEns[] } = await getENSCachedData();
-            setEnsData(data);
-        })();
+        // (async () => {
+        //     const { data }: { data: AddressEns[] } = await getENSCachedData();
+        //     setEnsData(data);
+        // })();
     }, []);
 
     return (
         <ChakraProvider theme={theme}>
-            <PageHead
-                title="Stake CTSI"
-                description="Secure the Cartesi network and earn rewards"
-            />
-            <Fonts />
             <FeatureFlagProvider>
-                <ENSDataProvider value={ensData}>
-                    <Web3Container>
-                        <GA4TrackerProvider>
-                            <ApolloContainer>
-                                <Component {...pageProps} />
-                            </ApolloContainer>
-                        </GA4TrackerProvider>
-                    </Web3Container>
-                </ENSDataProvider>
+                {/*<ENSDataProvider value={ensData}>*/}
+                <Web3Container>
+                    <GA4TrackerProvider>
+                        <ApolloContainer>{props.children}</ApolloContainer>
+                    </GA4TrackerProvider>
+                </Web3Container>
+                {/*</ENSDataProvider>*/}
             </FeatureFlagProvider>
         </ChakraProvider>
     );
-};
-
-export default Providers;
+}

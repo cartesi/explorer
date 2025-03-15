@@ -203,7 +203,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children, ...restProps }) => {
             bg={bg}
             {...restProps}
         >
-            <Header links={headerLinks} />
+            {/*<Header links={headerLinks} />*/}
             <Box width="100%" paddingTop="100px" bg={contentBg}>
                 <>
                     <SyncStatus />
