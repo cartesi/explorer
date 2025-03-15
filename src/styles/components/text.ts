@@ -13,7 +13,7 @@ export const Text = {
     baseStyle: {
         fontWeight: 'normal',
     },
-    variants: {
+    variant: {
         label: {
             fontSize: 'md',
             fontWeight: 'normal',

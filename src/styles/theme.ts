@@ -9,7 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { extendTheme } from '@chakra-ui/react';
+import {
+    defineConfig,
+    createSystem,
+    defaultConfig,
+    mergeConfigs,
+} from '@chakra-ui/react';
 import { Button } from './components/button';
 import { Heading } from './components/heading';
 import { Input } from './components/input';
@@ -24,6 +29,7 @@ import { zIndices } from './foundations/zIndices';
 import { buildOnboardTheme } from './onboard';
 import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
 
+/*
 const theme = extendTheme({
     styles: {
         global: (props: any) => {
@@ -53,5 +59,11 @@ const theme = extendTheme({
     colors,
     zIndices,
 });
+*/
 
-export default theme;
+const theme = defineConfig({});
+
+const config = mergeConfigs(defaultConfig, theme);
+const system = createSystem(config);
+
+export default system;

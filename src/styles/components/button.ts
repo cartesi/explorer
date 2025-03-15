@@ -26,7 +26,7 @@ export const Button = {
             fontSize: 'xs',
         },
     },
-    variants: {
+    variant: {
         outline: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
