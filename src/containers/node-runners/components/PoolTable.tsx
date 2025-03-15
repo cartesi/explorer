@@ -208,19 +208,15 @@ const PoolTable = ({ data }: Props) => {
                                         color={addressColor}
                                         shouldDisplayFallbackAvatar
                                         renderLabel={(label) => (
-                                            <NextLink
+                                            <Button
+                                                as={NextLink}
                                                 href={`/stake/${pool.id}`}
-                                                passHref
+                                                variant="text"
+                                                px={0}
+                                                title="Pool info"
                                             >
-                                                <Button
-                                                    as="a"
-                                                    variant="text"
-                                                    px={0}
-                                                    title="Pool info"
-                                                >
-                                                    {label}
-                                                </Button>
-                                            </NextLink>
+                                                {label}
+                                            </Button>
                                         )}
                                     />
                                 </Td>
@@ -241,26 +237,22 @@ const PoolTable = ({ data }: Props) => {
                                     textAlign="center"
                                     backgroundColor={backgroundHoverColor}
                                 >
-                                    <NextLink
+                                    <Button
+                                        as={NextLink}
                                         href={`/pools/${pool.id}/manage?from=node-runners`}
-                                        passHref
+                                        variant="link"
+                                        color={linkColor}
+                                        _hover={{
+                                            color: linkHoverColor,
+                                        }}
                                     >
-                                        <Button
-                                            as="a"
-                                            variant="link"
-                                            color={linkColor}
-                                            _hover={{
-                                                color: linkHoverColor,
-                                            }}
-                                        >
-                                            <VisuallyHidden>
-                                                Manage pool {pool.id}
-                                            </VisuallyHidden>
-                                            <PencilIcon
-                                                data-testid={`pencil-svg-${pool.id}`}
-                                            />
-                                        </Button>
-                                    </NextLink>
+                                        <VisuallyHidden>
+                                            Manage pool {pool.id}
+                                        </VisuallyHidden>
+                                        <PencilIcon
+                                            data-testid={`pencil-svg-${pool.id}`}
+                                        />
+                                    </Button>
                                 </Td>
                             </Tr>
                         ))}
@@ -347,11 +339,13 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                     >
                         Pool Management
                     </Heading>
-                    <NextLink href="/pools/new" passHref>
-                        <Button as="a" colorScheme={colorScheme}>
-                            CREATE A POOL
-                        </Button>
-                    </NextLink>
+                    <Button
+                        as={NextLink}
+                        href="/pools/new"
+                        colorScheme={colorScheme}
+                    >
+                        CREATE A POOL
+                    </Button>
                 </Stack>
                 <PoolTable data={pools} />
             </Block>

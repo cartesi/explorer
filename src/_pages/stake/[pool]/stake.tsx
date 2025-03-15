@@ -12,7 +12,7 @@
 import { Box } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
 import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
@@ -46,8 +46,8 @@ const PoolStake = ({ formattedAddress }: ENSStaticProps) => {
     const { account, active: isConnected } = useWallet();
 
     // get pool address from path
-    const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
 
     // query block number (continuously)
     const blockNumber = useBlockNumber();

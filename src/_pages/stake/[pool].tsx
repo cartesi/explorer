@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { constants } from 'ethers';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import Layout from '../../components/Layout';
 import { PoolBreadcrumbs } from '../../components/stake/PoolBreadcrumbs';
 import { PoolHeader } from '../../components/stake/PoolHeader';
@@ -18,11 +18,11 @@ import { PoolHeader } from '../../components/stake/PoolHeader';
 import {
     Box,
     Collapse,
-    HStack,
     Heading,
-    VStack,
+    HStack,
     useColorModeValue,
     useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 
 import { QueryResult } from '@apollo/client';
@@ -69,8 +69,8 @@ const PoolInfo = ({ formattedAddress }: ENSStaticProps) => {
     const { account } = useWallet();
 
     // get pool address from path
-    const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
 
     // query block number (continuously)
     const blockNumber = useBlockNumber();

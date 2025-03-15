@@ -125,18 +125,18 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                     textAlign="center"
                 >
                     {isObject(user.pool) ? (
-                        <NextLink href={`/stake/${user.id}`} passHref>
-                            <Link
-                                data-testid="stake-info-link"
-                                title="Stake/info"
-                                color={linkColor}
-                                _hover={{
-                                    color: linkHoverColor,
-                                }}
-                            >
-                                <StakeIcon w={8} h={8} />
-                            </Link>
-                        </NextLink>
+                        <Link
+                            as={NextLink}
+                            href={`/stake/${user.id}`}
+                            data-testid="stake-info-link"
+                            title="Stake/info"
+                            color={linkColor}
+                            _hover={{
+                                color: linkHoverColor,
+                            }}
+                        >
+                            <StakeIcon w={8} h={8} />
+                        </Link>
                     ) : (
                         <Text>Private node</Text>
                     )}

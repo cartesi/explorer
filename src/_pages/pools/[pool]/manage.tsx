@@ -12,7 +12,7 @@
 import { Box, Button, HStack, Heading, Stack, Text } from '@chakra-ui/react';
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FC, useEffect } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Address from '../../../components/Address';
@@ -62,12 +62,15 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <NextLink href={backLink} passHref>
-                    <Box as="a" display="flex" alignItems="center">
-                        <Box as={AiOutlineLeft} mr={1} />
-                        <Text>{backText}</Text>
-                    </Box>
-                </NextLink>
+                <Box
+                    as={NextLink}
+                    href={backLink}
+                    display="flex"
+                    alignItems="center"
+                >
+                    <Box as={AiOutlineLeft} mr={1} />
+                    <Text>{backText}</Text>
+                </Box>
             </HStack>
             <Box
                 bg="dark.gray.tertiary"
@@ -88,17 +91,16 @@ const PoolNode: FC = () => {
                                     fontSize={'3xl'}
                                 />
 
-                                <NextLink href={`/stake/${address}`} passHref>
-                                    <Button
-                                        as="a"
-                                        variant="text"
-                                        size="sm"
-                                        pl={0}
-                                        title="Pool info"
-                                    >
-                                        <SimpleChartIcon w={6} h={6} />
-                                    </Button>
-                                </NextLink>
+                                <Button
+                                    as={NextLink}
+                                    href={`/stake/${address}`}
+                                    variant="text"
+                                    size="sm"
+                                    pl={0}
+                                    title="Pool info"
+                                >
+                                    <SimpleChartIcon w={6} h={6} />
+                                </Button>
                             </HStack>
                         )}
                     </Heading>

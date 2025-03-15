@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { isArray, isObject, uniqueId } from 'lodash';
 import { DateTime } from 'luxon';
-import { useRouter } from 'next/router';
+import { useRouter, useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
@@ -72,7 +72,8 @@ const PoolUsers = ({ formattedAddress }: ENSStaticProps) => {
     const sectionBg = useColorModeValue('white', 'dark.gray.primary');
     const { account, chainId } = useWallet();
     const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
     const stakingPool = useStakingPoolQuery(address);
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);

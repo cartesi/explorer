@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStaking } from '../../../services/staking';

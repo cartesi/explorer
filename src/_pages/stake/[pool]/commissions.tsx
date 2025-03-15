@@ -11,7 +11,7 @@
 
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { isArray } from 'lodash';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Layout from '../../../components/Layout';
 import PageHead from '../../../components/PageHead';
@@ -41,8 +41,8 @@ export async function getStaticProps(context: Context) {
 }
 
 const PoolCommissions = ({ formattedAddress }: ENSStaticProps) => {
-    const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
     const { account } = useWallet();
     const stakingPool = useStakingPoolQuery(address);
     const [dataPageNumber, setDataPageNumber] = useState<number>(0);

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC, FunctionComponent, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import {
     Button,
     Center,
@@ -117,9 +117,7 @@ interface BlocksProps {
 }
 
 const Blocks: FC<BlocksProps> = ({ chainId }) => {
-    const router = useRouter();
-
-    let { block: blockId } = router.query;
+    let { block: blockId } = useParams();
     // TODO: use blockId
     blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
 

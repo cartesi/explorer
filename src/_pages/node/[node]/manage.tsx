@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 
@@ -187,12 +187,15 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <NextLink href="/node-runners" passHref>
-                    <Box as="a" display="flex" alignItems="center">
-                        <Box as={AiOutlineLeft} mr={1} />
-                        <Text>Back</Text>
-                    </Box>
-                </NextLink>
+                <Box
+                    as={NextLink}
+                    href="/node-runners"
+                    display="flex"
+                    alignItems="center"
+                >
+                    <Box as={AiOutlineLeft} mr={1} />
+                    <Text>Back</Text>
+                </Box>
             </HStack>
 
             <Box

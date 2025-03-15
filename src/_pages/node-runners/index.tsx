@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import Layout from '../../components/Layout';
 import PageHead from '../../components/PageHead';

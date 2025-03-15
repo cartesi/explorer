@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { isString } from 'lodash';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import AddressText from '../AddressText';
 import { SettingsIcon } from '../Icons';
 import { useWallet } from '../wallet';
@@ -32,8 +32,8 @@ export interface PoolHeaderProps {
 }
 
 export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
-    const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
     const { chainId } = useWallet();
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
 
@@ -51,17 +51,16 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
             >
                 <VStack alignItems="flex-start" pb="5">
                     <HStack alignItems="flex-start">
-                        <NextLink href="/stake" passHref>
-                            <Button
-                                as="a"
-                                leftIcon={<ArrowBackIcon />}
-                                variant="text"
-                                size="sm"
-                                px="0"
-                            >
-                                Staking pool
-                            </Button>
-                        </NextLink>
+                        <Button
+                            as={NextLink}
+                            href="/stake"
+                            leftIcon={<ArrowBackIcon />}
+                            variant="text"
+                            size="sm"
+                            px="0"
+                        >
+                            Staking pool
+                        </Button>
                     </HStack>
 
                     <HStack>
@@ -72,23 +71,19 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                         />
 
                         {isManager && (
-                            <NextLink
+                            <Button
+                                as={NextLink}
                                 href={`/pools/${address}/manage${
                                     isString(from) ? `?from=${from}` : ''
                                 }`}
-                                passHref
+                                variant="text"
+                                size="sm"
+                                pl={0}
+                                data-testid="pool-management-link"
+                                title="Manage pool"
                             >
-                                <Button
-                                    as="a"
-                                    variant="text"
-                                    size="sm"
-                                    pl={0}
-                                    data-testid="pool-management-link"
-                                    title="Manage pool"
-                                >
-                                    <SettingsIcon w={iconSize} h={iconSize} />
-                                </Button>
-                            </NextLink>
+                                <SettingsIcon w={iconSize} h={iconSize} />
+                            </Button>
                         )}
                     </HStack>
                 </VStack>
