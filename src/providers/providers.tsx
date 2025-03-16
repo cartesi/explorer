@@ -7,6 +7,7 @@ import theme from '../styles/theme';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
+import { Fonts } from '../components/Fonts';
 // import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
 import ApolloContainer from '../components/ApolloContainer';
@@ -50,6 +51,7 @@ export default function Providers(props: { children: ReactNode }) {
 
     return (
         <ChakraProvider theme={theme}>
+            <Fonts />
             <FeatureFlagProvider>
                 {/*<ENSDataProvider value={ensData}>*/}
                 <Web3Container>
