@@ -9,30 +9,32 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+'use client';
+
 import { Box } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { useParams } from 'next/navigation';
-import Layout from '../../../components/Layout';
-import PageHead from '../../../components/PageHead';
-import { PoolBreadcrumbs } from '../../../components/stake/PoolBreadcrumbs';
-import { PoolHeader } from '../../../components/stake/PoolHeader';
-import { Staking } from '../../../components/stake/Staking';
-import { StakingActivity } from '../../../components/stake/StakingActivity';
-import { StakingDashboard } from '../../../components/stake/StakingDashboard';
-import { StakingGuide } from '../../../components/stake/StakingGuide';
-import { useWallet } from '../../../components/wallet';
-import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
-import { useBalance, useBlockNumber } from '../../../services/eth';
-import { useStakingPool } from '../../../services/pool';
-import { useCartesiToken } from '../../../services/token';
-import { Operation } from '../../../types/stake';
+import Layout from '../../../../components/Layout';
+import PageHead from '../../../../components/PageHead';
+import { PoolBreadcrumbs } from '../../../../components/stake/PoolBreadcrumbs';
+import { PoolHeader } from '../../../../components/stake/PoolHeader';
+import { Staking } from '../../../../components/stake/Staking';
+import { StakingActivity } from '../../../../components/stake/StakingActivity';
+import { StakingDashboard } from '../../../../components/stake/StakingDashboard';
+import { StakingGuide } from '../../../../components/stake/StakingGuide';
+import { useWallet } from '../../../../components/wallet';
+import useStakingPoolQuery from '../../../../graphql/hooks/useStakingPool';
+import { useBalance, useBlockNumber } from '../../../../services/eth';
+import { useStakingPool } from '../../../../services/pool';
+import { useCartesiToken } from '../../../../services/token';
+import { Operation } from '../../../../types/stake';
 import {
     Context,
     ENSStaticProps,
     getENSStaticProps,
     getPoolsStaticPaths,
-} from '../../../utils/staticGeneration';
+} from '../../../../utils/staticGeneration';
 
 export async function getStaticPaths() {
     return getPoolsStaticPaths();
