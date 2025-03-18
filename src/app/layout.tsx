@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import Providers from './providers';
+import Providers from '../providers/Providers';
 
 interface LayoutProps {
     children: ReactNode;
