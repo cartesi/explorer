@@ -6,7 +6,7 @@ module.exports = {
         '!<rootDir>/src/graphql/models.ts',
         '!<rootDir>/src/stories/**',
         '!<rootDir>/src/styles/**',
-        '!<rootDir>/src/pages/**',
+        '!<rootDir>/src/_pages/**',
         '!<rootDir>/src/types/**',
         '!<rootDir>/src/graphql/queries/**',
         '!**/*.d.ts',

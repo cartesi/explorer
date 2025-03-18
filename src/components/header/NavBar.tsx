@@ -23,7 +23,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet/useWallet';
 import { Account } from './Account';
@@ -39,7 +39,7 @@ export interface NavLinkProps {
 
 export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
     const router = useRouter();
-    const isActive = router.asPath === href;
+    const isActive = false; // router.asPath === href;
     const bg = useColorModeValue('dark.secondary', 'dark.primary');
     const pseudoProps = {
         content: '""',
