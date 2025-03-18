@@ -17,23 +17,6 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
     ssr: false,
 });
 
-const Card = () => {
-    const colorScheme = useColorModeValue('teal', 'cyan');
-    return (
-        <Button
-            data-testid="card-action-button"
-            ml={{ base: 0, lg: 2 }}
-            colorScheme={colorScheme}
-            fontWeight={500}
-            width="full"
-            h={{ base: 12, lg: 14 }}
-            w="16rem"
-        >
-            Hey there
-        </Button>
-    );
-};
-
 export default function RootLayout(props: { children: React.ReactNode }) {
     return (
         <ChakraProvider theme={theme}>
