@@ -99,9 +99,9 @@ export const getAddress = (
     }
 
     const address = contract.address;
-    console.log(
-        `${name} resolved to address ${address} at network ${chain.name} (${chainId})`
-    );
+    // console.log(
+    //     `${name} resolved to address ${address} at network ${chain.name} (${chainId})`
+    // );
     return address;
 };
 

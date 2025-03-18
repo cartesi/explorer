@@ -23,7 +23,7 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import { MouseEventHandler, ReactElement, ReactNode } from 'react';
+import { MouseEventHandler, ReactElement, ReactNode, useEffect } from 'react';
 
 export interface CardProps extends Omit<StackProps, 'title'> {
     id?: string;
@@ -56,6 +56,12 @@ export const Card = ({
     const tooltipBg = useColorModeValue('white', 'dark.gray.secondary');
     const tooltipColor = useColorModeValue('black', 'white');
     const { isOpen, onToggle } = useDisclosure();
+
+    useEffect(() => {
+        console.log('colorScheme::', colorScheme);
+        console.log('bg::', bg);
+    }, [colorScheme, bg]);
+
     return (
         <Stack
             id={id}
@@ -120,6 +126,7 @@ export const Card = ({
                         ml={{ base: 0, lg: 2 }}
                         colorScheme={colorScheme}
                         onClick={onButtonClick}
+                        variant="solid"
                         fontWeight={500}
                         width="full"
                         h={{ base: 12, lg: 14 }}

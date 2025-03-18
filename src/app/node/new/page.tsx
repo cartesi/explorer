@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Cartesi Pte. Ltd.
+// Copyright (C) 2022 Cartesi Pte. Ltd.
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -9,14 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
+import NewNode from '../../../components/node/NewNode';
 import { Metadata } from 'next';
-import Blocks from '../../components/block/Blocks';
 
 export const metadata: Metadata = {
-    title: 'Cartesi Proof of Stake Blocks',
+    title: 'Create a Cartesi node',
+    description: 'Create a Cartesi node',
 };
 
-export default function BlocksPage() {
-    return <Blocks />;
+export default function NewNodePage() {
+    return <NewNode />;
 }

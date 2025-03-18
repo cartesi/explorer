@@ -33,6 +33,7 @@
         "@chakra-ui/icons": "2.0.12",
         "@chakra-ui/react": "2.4.4",
         "@chakra-ui/theme-tools": "2.0.12",
+        "@chakra-ui/next-js": "^2.4.2",
         "@emotion/react": "11.11.1",
         "@emotion/styled": "11.11.0",
         "@ethersproject/bignumber": "5.7.0",

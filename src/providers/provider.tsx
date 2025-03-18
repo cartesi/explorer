@@ -1,15 +1,14 @@
 'use client';
 
+// import { CacheProvider } from '@chakra-ui/next-js';
 import { ReactNode, useEffect, useState } from 'react';
 import { ColorModeScript } from '@chakra-ui/react';
 import theme from '../styles/theme';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
 import Providers from './providers';
-import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 // import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
-import ApolloContainer from '../components/ApolloContainer';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,

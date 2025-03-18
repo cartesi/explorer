@@ -23,24 +23,18 @@ import {
 import Link from 'next/link';
 import { FC } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
-import Layout from '../../../../components/Layout';
-import PageHead from '../../../../components/PageHead';
-import { StepGroup } from '../../../../components/StepGroup';
-import CustomizeEthereumNode from '../../../../components/node/steps/CustomizeEthereumNode';
-import HireNode from '../../../../components/node/steps/HireNode';
-import SetAllowance from '../../../../components/node/steps/SetAllowance';
-import SetUpNode from '../../../../components/node/steps/SetUpNode';
+import Layout from '../Layout';
+import { StepGroup } from '../StepGroup';
+import CustomizeEthereumNode from './steps/CustomizeEthereumNode';
+import HireNode from './steps/HireNode';
+import SetAllowance from './steps/SetAllowance';
+import SetUpNode from './steps/SetUpNode';
 
 const NewNode: FC = () => {
     const bgSection = useColorModeValue('gray.80', 'dark.gray.primary');
     const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
     return (
         <Layout>
-            <PageHead
-                title="Create a Cartesi node"
-                description="Create a Cartesi node"
-            />
-
             <HStack
                 bg={'dark.gray.tertiary'}
                 color="white"

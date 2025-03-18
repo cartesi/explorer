@@ -1,8 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from '../styles/theme';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
@@ -50,17 +49,19 @@ export default function Providers(props: { children: ReactNode }) {
     }, []);
 
     return (
-        <ChakraProvider theme={theme}>
-            <Fonts />
-            <FeatureFlagProvider>
-                {/*<ENSDataProvider value={ensData}>*/}
-                <Web3Container>
-                    <GA4TrackerProvider>
-                        <ApolloContainer>{props.children}</ApolloContainer>
-                    </GA4TrackerProvider>
-                </Web3Container>
-                {/*</ENSDataProvider>*/}
-            </FeatureFlagProvider>
-        </ChakraProvider>
+        <>
+            <ChakraProvider theme={theme}>
+                <Fonts />
+                <FeatureFlagProvider>
+                    {/*<ENSDataProvider value={ensData}>*/}
+                    <Web3Container>
+                        <GA4TrackerProvider>
+                            <ApolloContainer>{props.children}</ApolloContainer>
+                        </GA4TrackerProvider>
+                    </Web3Container>
+                    {/*</ENSDataProvider>*/}
+                </FeatureFlagProvider>
+            </ChakraProvider>
+        </>
     );
 }

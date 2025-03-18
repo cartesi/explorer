@@ -43,6 +43,7 @@ export const Button = {
             return;
         },
         solid: (props: { colorScheme: string; colorMode: string }) => {
+            console.log('solid::', props.colorMode);
             if (props.colorScheme === 'darkGray') {
                 return {
                     bg: props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
@@ -215,6 +216,7 @@ export const Button = {
             };
         },
         ghost: (props: { colorScheme: string; colorMode: string }) => {
+            console.log('ghost::', props);
             if (props.colorScheme === 'darkGray') {
                 return {
                     textTransform: 'uppercase',

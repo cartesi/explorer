@@ -9,14 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import NodeRunners from '../../components/node-runners/NodeRunners';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-    title: 'Node Runners - Get started with Cartesi staking',
-    description: 'Node Runners - Get started with Cartesi staking',
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
+import Layout from '../Layout';
+import { useWallet } from '../wallet';
+import { NodeRunnersContainer } from '../../containers/node-runners/NodeRunnerContainer';
+
+const NodeRunners: FC = () => {
+    const wallet = useWallet();
+    const router = useRouter();
+
+    return (
+        <Layout>
+            <NodeRunnersContainer wallet={wallet} router={router} />
+        </Layout>
+    );
 };
 
-export default function NodeRunnersPage() {
-    return <NodeRunners />;
-}
+export default NodeRunners;

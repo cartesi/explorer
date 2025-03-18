@@ -166,9 +166,9 @@ export const handlerBuilder =
             const chainIdsAsNumbers = chainIds.map((id) => parseInt(id, 16));
             const error = checkNetwork(chainId, chainIdsAsNumbers);
 
-            console.info(
-                `Account: ${account}\nChain id: ${chainId}\nWallet Label: ${label}`
-            );
+            // console.info(
+            //     `Account: ${account}\nChain id: ${chainId}\nWallet Label: ${label}`
+            // );
 
             stateUpdateCb(
                 (state) =>
