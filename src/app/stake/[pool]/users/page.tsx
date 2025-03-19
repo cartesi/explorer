@@ -1,10 +1,10 @@
 import {
     getENSStaticProps,
     getPoolsStaticPaths,
-} from '../../../utils/staticGeneration';
+} from '../../../../utils/staticGeneration';
 import { FC } from 'react';
-import StakePool from '../../../components/stake/StakePool';
 import { notFound } from 'next/navigation';
+import StakePoolUsers from '../../../../components/stake/StakePoolUsers';
 
 export const revalidate = 60 * 60 * 24;
 
@@ -21,12 +21,12 @@ export async function generateMetadata(props: StakePoolPageProps) {
     const data = await getENSStaticProps({ params });
 
     return {
-        title: `Cartesi pool info - ${data.formattedAddress}`,
-        description: `Cartesi pool info - ${data.formattedAddress}`,
+        title: `Pool users - ${data.formattedAddress}`,
+        description: `Pool users - ${data.formattedAddress}`,
     };
 }
 
-const StakePoolPage: FC<StakePoolPageProps> = async (props) => {
+const StakePoolUsersPage: FC<StakePoolPageProps> = async (props) => {
     const params = await props.params;
     const data = await getENSStaticProps({ params });
 
@@ -34,7 +34,7 @@ const StakePoolPage: FC<StakePoolPageProps> = async (props) => {
         notFound();
     }
 
-    return <StakePool />;
+    return <StakePoolUsers />;
 };
 
-export default StakePoolPage;
+export default StakePoolUsersPage;
