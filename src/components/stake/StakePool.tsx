@@ -14,8 +14,8 @@
 import { constants } from 'ethers';
 import { useParams } from 'next/navigation';
 import Layout from '../../components/Layout';
-import { PoolBreadcrumbs } from '../stake/PoolBreadcrumbs';
-import { PoolHeader } from '../stake/PoolHeader';
+import { PoolBreadcrumbs } from './PoolBreadcrumbs';
+import { PoolHeader } from './PoolHeader';
 
 import {
     Box,
@@ -29,8 +29,8 @@ import {
 
 import { QueryResult } from '@apollo/client';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { PoolActivity } from '../stake/PoolActivity';
-import PoolStatsPanel from '../stake/PoolStatsPanel';
+import { PoolActivity } from './PoolActivity';
+import PoolStatsPanel from './PoolStatsPanel';
 import { useWallet } from '../wallet';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
