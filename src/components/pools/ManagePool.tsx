@@ -14,21 +14,23 @@
 import { Box, Button, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
-import Address from '../../../components/Address';
-import { SimpleChartIcon } from '../../../components/Icons';
-import Layout from '../../../components/Layout';
-import { useWallet } from '../../../components/wallet';
-import { PoolManageContainer } from '../../../containers/pool-manage/PoolManageContainer';
-import useStakingPoolQuery from '../../../graphql/hooks/useStakingPool';
+import Address from '../Address';
+import { SimpleChartIcon } from '../Icons';
+import Layout from '../Layout';
+import { useWallet } from '../wallet';
+import { PoolManageContainer } from '../../containers/pool-manage/PoolManageContainer';
+import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-const ManagePool: FC = () => {
+const PoolNode: FC = () => {
     const { account, chainId, active } = useWallet();
     const router = useRouter();
-    const address = router.query.pool as string;
-    const from = router.query.from as string;
+    const params = useParams();
+    const address = params.pool as string;
+    const searchParams = useSearchParams();
+    const from = searchParams.get('from') as string;
     const stakingPool = useStakingPoolQuery(address);
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
     const hasFrom = isString(from);
@@ -108,4 +110,4 @@ const ManagePool: FC = () => {
     );
 };
 
-export default ManagePool;
+export default PoolNode;
