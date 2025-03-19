@@ -11,13 +11,13 @@
 
 import { Heading, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { NextRouter } from 'next/router';
 import { SlideDown } from '../../../components/animation/SlideDown';
 import { Card } from '../../../components/Card';
 import { AllowanceIcon, WalletIcon } from '../../../components/Icons';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { hasPoolsAtom, hasPrivateNodeAtom } from '../atoms';
 import Block from './Block';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const mainResponsibilities = 'Main responsibilities:';
 const privateNodeResponsibilities = [
@@ -31,7 +31,7 @@ const publicPoolResponsibilities = [
 ];
 
 interface CreationPathProps {
-    router: NextRouter;
+    router: AppRouterInstance;
 }
 
 const CreationPath = ({ router }: CreationPathProps) => {
