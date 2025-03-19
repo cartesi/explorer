@@ -48,12 +48,7 @@ export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
         },
     });
 
-    const paths = data.stakingPools.map((p) => ({ params: { pool: p.id } }));
-
-    return {
-        paths,
-        fallback: 'blocking',
-    };
+    return data.stakingPools.map((p) => ({ pool: p.id }));
 }
 
 export type Context = {
@@ -66,9 +61,14 @@ export type ENSStaticProps = {
     formattedAddress: string;
 };
 
-export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
+export type GetENSStaticPropsModel = {
+    formattedAddress?: string;
+    notFound?: boolean;
+};
+
+export const getENSStaticProps = async ({
     params,
-}: Context) => {
+}: Context): Promise<GetENSStaticPropsModel> => {
     const { mainnetClient, sepoliaClient } = getGraphQLClients();
 
     const queryConfig = {
@@ -109,11 +109,5 @@ export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
 
     const formattedAddress = formatEnsName(params.pool, domain?.name);
 
-    return {
-        props: {
-            formattedAddress,
-        },
-        // re-run the StaticProps once daily
-        revalidate: inSeconds,
-    };
+    return { formattedAddress };
 };
