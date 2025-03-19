@@ -35,7 +35,6 @@ import BlocksChart from '../../components/BlocksChart';
 import BlockCard from '../../components/block/BlockCard';
 import SearchInput from '../../components/SearchInput';
 import PageHeader from '../../components/PageHeader';
-import PageHead from '../../components/PageHead';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWallet } from '../wallet';
 
@@ -138,8 +137,6 @@ const Blocks: FC = () => {
 
     return (
         <Layout>
-            <PageHead title="Cartesi Proof of Stake Blocks" />
-
             <PageHeader title="Blocks">
                 <SearchInput
                     w={[100, 200, 400, 400]}
