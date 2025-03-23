@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import Providers from '../providers/Providers';
 import { Metadata } from 'next';
-import { getEnsData } from '../utils/get-ens-data';
+import { getEnsData } from '../utils/getEnsData';
 
 export const metadata: Metadata = {
     title: {
