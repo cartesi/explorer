@@ -26,6 +26,23 @@ module.exports = {
                     },
                 ],
             },
+            {
+                source: '/api/:chain/stats',
+                headers: [
+                    {
+                        key: 'Access-Control-Allow-Origin',
+                        value: '*',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Methods',
+                        value: 'GET, HEAD',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Headers',
+                        value: 'Content-Type, Authorization',
+                    },
+                ],
+            },
         ];
     },
 };
