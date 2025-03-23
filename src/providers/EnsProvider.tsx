@@ -11,37 +11,16 @@
 
 'use client';
 
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
 
-const getENSCachedData = async () => {
-    const endpoint = `${location.origin}/api/mainnet/ens`;
-    try {
-        const response = await fetch(endpoint);
-        return await response.json();
-    } catch (reason) {
-        console.error(
-            `Fetching ENS cached data failed.\nReason: ${reason.message}`
-        );
-        return { data: [] };
-    }
-};
-
 interface EnsProviderProps {
     children: ReactNode;
+    ensData: AddressEns[];
 }
 
-const EnsProvider: FC<EnsProviderProps> = ({ children }) => {
-    const [ensData, setEnsData] = useState<AddressEns[]>([]);
-
-    useEffect(() => {
-        (async () => {
-            const { data }: { data: AddressEns[] } = await getENSCachedData();
-            setEnsData(data);
-        })();
-    }, []);
-
+const EnsProvider: FC<EnsProviderProps> = ({ children, ensData }) => {
     return <ENSDataProvider value={ensData}>{children}</ENSDataProvider>;
 };
 
