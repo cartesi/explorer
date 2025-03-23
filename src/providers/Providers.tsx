@@ -6,6 +6,7 @@ import ApolloContainer from '../components/ApolloContainer';
 import dynamic from 'next/dynamic';
 import { FC, ReactNode } from 'react';
 import EnsProvider from './EnsProvider';
+import { AddressEns } from '../services/server/ens/types';
 
 const FeatureFlagProvider = dynamic(() => import('../utils/featureFlags'), {
     ssr: false,
@@ -17,13 +18,14 @@ const Web3Container = dynamic(() => import('../components/Web3Container'), {
 
 interface ProvidersProps {
     children: ReactNode;
+    ensData: AddressEns[];
 }
 
-const Providers: FC<ProvidersProps> = ({ children }) => {
+const Providers: FC<ProvidersProps> = ({ children, ensData }) => {
     return (
         <ThemeProvider>
             <FeatureFlagProvider>
-                <EnsProvider>
+                <EnsProvider ensData={ensData}>
                     <Web3Container>
                         <GA4TrackerProvider>
                             <ApolloContainer>{children}</ApolloContainer>

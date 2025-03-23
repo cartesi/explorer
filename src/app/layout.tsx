@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react';
 import Providers from '../providers/Providers';
 import { Metadata } from 'next';
+import { getEnsData } from '../utils/get-ens-data';
 
 export const metadata: Metadata = {
     title: {
@@ -17,14 +18,16 @@ interface LayoutProps {
     children: ReactNode;
 }
 
-const Layout: FC<LayoutProps> = ({ children }) => {
+const Layout: FC<LayoutProps> = async ({ children }) => {
+    const ensData = await getEnsData();
+
     return (
         <html lang="en">
             <head>
                 <link rel="preconnect" href="https://tinygraphs.cartesi.io" />
             </head>
             <body>
-                <Providers>{children}</Providers>
+                <Providers ensData={ensData}>{children}</Providers>
             </body>
         </html>
     );

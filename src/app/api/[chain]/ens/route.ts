@@ -12,7 +12,7 @@
 import AddressENSService from '../../../../services/server/ens/AddressENSService';
 import handleResponse from '../../../../services/server/handleResponse';
 
-const handler = async () => {
+export const handler = async () => {
     const result = await AddressENSService.listAll();
     return handleResponse(result);
 };
