@@ -9,30 +9,36 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { ServiceError, ServiceResult } from './types';
 
-const handleResponse = <T>(
-    result: ServiceResult<T>,
-    res: NextApiResponse,
-    statusCode = 200
-) => {
-    if (result.ok === true)
-        return res.status(statusCode).json({ data: result.data });
+const handleResponse = <T>(result: ServiceResult<T>, statusCode = 200) => {
+    if (result.ok === true) {
+        return NextResponse.json({ data: result.data }, { status: statusCode });
+    }
 
-    handleError(result.error, res);
+    return handleError(result.error);
 };
 
-const handleError = (error: ServiceError, res: NextApiResponse) => {
+const handleError = (error: ServiceError) => {
     switch (error) {
         case 'unauthorized':
-            return res.status(401).send('Unauthorized');
+            return NextResponse.json(
+                { message: 'Unauthorized' },
+                { status: 401 }
+            );
         case 'method_not_allowed':
-            return res.status(405).send('Method not allowed');
+            return NextResponse.json(
+                { message: 'Method not allowed' },
+                { status: 405 }
+            );
         case 'not_an_user':
-            return res.status(404).send('Not found');
+            return NextResponse.json({ message: 'Not found' }, { status: 404 });
         default:
-            return res.status(500).json({ message: 'Something went wrong.' });
+            return NextResponse.json(
+                { message: 'Something went wrong.' },
+                { status: 500 }
+            );
     }
 };
 
