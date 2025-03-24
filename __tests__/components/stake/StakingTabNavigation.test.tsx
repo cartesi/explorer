@@ -11,21 +11,23 @@
 
 import { render, screen } from '@testing-library/react';
 import { StakingTabNavigation } from '../../../src/components/stake/StakingTabNavigation';
-import { NextRouter, useRouter } from 'next/router';
+import { useParams, usePathname } from 'next/navigation';
 import { withChakraTheme } from '../../test-utilities';
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,
-        useRouter: jest.fn(),
+        usePathname: jest.fn(),
+        useParams: jest.fn(),
     };
 });
 
 const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>;
+const usePathnameMock = usePathname as jest.MockedFunction<typeof usePathname>;
 
 const EStakingTabNavigation = withChakraTheme(StakingTabNavigation);
 
@@ -35,11 +37,9 @@ describe('Staking Tab Navigation', () => {
 
     beforeEach(() => {
         // default mock return
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: address,
-            },
-        } as unknown as NextRouter);
+        useParamsMock.mockReturnValue({
+            pool: address,
+        });
     });
 
     afterEach(() => {
@@ -71,12 +71,11 @@ describe('Staking Tab Navigation', () => {
     });
 
     it('Should activate stake tab', () => {
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: address,
-            },
+        useParamsMock.mockReturnValue({
+            pool: address,
             pathname: '/stake/[pool]/stake',
-        } as unknown as NextRouter);
+        });
+        usePathnameMock.mockReturnValue('/stake/[pool]/stake');
 
         renderComponent();
 
@@ -87,12 +86,10 @@ describe('Staking Tab Navigation', () => {
     });
 
     it('Should activate pool info tab', () => {
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: address,
-            },
-            pathname: '/stake/[pool]',
-        } as unknown as NextRouter);
+        useParamsMock.mockReturnValue({
+            pool: address,
+        });
+        usePathnameMock.mockReturnValue('/stake/[pool]');
 
         const { rerender } = renderComponent();
 
@@ -103,12 +100,10 @@ describe('Staking Tab Navigation', () => {
             null
         );
 
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: address,
-            },
-            pathname: '/stake/[pool]/users',
-        } as unknown as NextRouter);
+        useParamsMock.mockReturnValue({
+            pool: address,
+        });
+        usePathnameMock.mockReturnValue('/stake/[pool]/users');
 
         rerender(<EStakingTabNavigation />);
 
@@ -119,12 +114,11 @@ describe('Staking Tab Navigation', () => {
             null
         );
 
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: address,
-            },
+        useParamsMock.mockReturnValue({
+            pool: address,
             pathname: '/stake/[pool]/commissions',
-        } as unknown as NextRouter);
+        });
+        usePathnameMock.mockReturnValue('/stake/[pool]/commissions');
 
         rerender(<EStakingTabNavigation />);
 

@@ -9,7 +9,7 @@ import {
 
 import { useBreakpointValue } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import ENS from '../../../../src/components/pools/steps/ENS';
 import { StepStatus } from '../../../../src/components/Step';
 import { useStepState } from '../../../../src/components/StepGroup';
@@ -58,8 +58,8 @@ jest.mock(stakingPoolMod, () => {
     };
 });
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,
