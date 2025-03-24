@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 import Providers from '../providers/Providers';
 import { Metadata } from 'next';
 import { getEnsData } from '../utils/getEnsData';
+import AddressENSService from '../services/server/ens/AddressENSService';
 
 export const metadata: Metadata = {
     title: {

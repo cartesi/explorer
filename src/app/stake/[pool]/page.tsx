@@ -6,7 +6,7 @@ import { FC } from 'react';
 import StakePool from '../../../components/stake/StakePool';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 60 * 60 * 24;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
     return getPoolsStaticPaths();
