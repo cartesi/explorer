@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { GetStaticProps } from 'next';
 import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { DOMAINS } from '../graphql/queries/ensDomains';
@@ -25,19 +24,7 @@ const getGraphQLClients = () => {
     };
 };
 
-type PoolId = {
-    pool: string;
-};
-
-type PoolStaticPathsRet = {
-    paths: PoolId[];
-    fallback: boolean | string;
-};
-
-// Once daily
-const inSeconds = 60 * 60 * 24;
-
-export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
+export async function getPoolsStaticPaths() {
     const { mainnetClient } = getGraphQLClients();
     const { data } = await mainnetClient.query({
         query: STAKING_POOLS_IDS,
@@ -55,10 +42,6 @@ export type Context = {
     params: {
         pool: string;
     };
-};
-
-export type ENSStaticProps = {
-    formattedAddress: string;
 };
 
 export type GetENSStaticPropsModel = {
