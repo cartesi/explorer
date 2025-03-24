@@ -57,7 +57,7 @@ describe('Footer component', () => {
             expect(onPageClick).toHaveBeenCalled();
         });
 
-        it('should display previous and next buttons when multiple _pages exist', () => {
+        it('should display previous and next buttons when multiple pages exist', () => {
             const { container } = render(
                 <PaginationComponent {...defaultPaginationProps} pages={2} />
             );

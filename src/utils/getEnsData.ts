@@ -1,10 +1,8 @@
 'use server';
 
-import { handler } from '../app/api/[chain]/ens/route';
+import AddressENSService from '../services/server/ens/AddressENSService';
 
 export const getEnsData = async () => {
-    const res = await handler();
-    const jsonRes = await res.json();
-
-    return jsonRes.status === 200 ? jsonRes.data : [];
+    const result = await AddressENSService.listAll();
+    return result.ok ? result.data : [];
 };
