@@ -11,19 +11,19 @@
 
 import { render, screen } from '@testing-library/react';
 import { PoolTabNavigation } from '../../../src/components/stake/PoolTabNavigation';
-import { NextRouter, useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { withChakraTheme } from '../../test-utilities';
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,
-        useRouter: jest.fn(),
+        useParams: jest.fn(),
     };
 });
 
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>;
 
 const EPoolTabNavigation = withChakraTheme(PoolTabNavigation);
 
@@ -33,11 +33,9 @@ describe('PoolTabNavigation', () => {
 
     beforeEach(() => {
         // default mock return
-        mockUseRouter.mockReturnValue({
-            query: {
-                pool: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
-            },
-        } as unknown as NextRouter);
+        useParamsMock.mockReturnValue({
+            pool: '0x51937974a767da96dc1c3f9a7b07742e256f0ffe',
+        });
     });
 
     afterEach(() => {
