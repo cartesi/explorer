@@ -7,7 +7,7 @@
         }
     ],
     "functions": {
-        "src/app/api/cron/ens-update-stale/route.ts": {
+        "src/app/api/cron/ens-update-stale/*": {
             "maxDuration": 30
         }
     }
