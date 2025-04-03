@@ -65,6 +65,7 @@ export default [
             '@next/next/no-html-link-for-pages': 'off',
             'react/jsx-key': 'off',
             'no-undef': 'off',
+            '@typescript-eslint/no-unused-expressions': 'off',
         },
     },
 ];
