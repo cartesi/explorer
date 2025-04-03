@@ -295,11 +295,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const colorScheme = useColorModeValue('teal', 'cyan');
 
     useEffect(() => {
-        if (showAlert) {
-            onOpen();
-        } else {
-            onClose();
-        }
+        showAlert ? onOpen() : onClose();
     }, [showAlert, onClose, onOpen]);
 
     return (
