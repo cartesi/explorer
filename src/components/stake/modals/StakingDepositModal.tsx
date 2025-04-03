@@ -51,7 +51,7 @@ export interface IStakingDepositModalProps {
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (amount: BigNumber, where: String) => void;
+    onSave: (amount: BigNumber, where: string) => void;
 }
 
 export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
@@ -71,7 +71,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
 
-    const [allowanceStep, setAllowanceStep] = useState<Boolean>(false);
+    const [allowanceStep, setAllowanceStep] = useState<boolean>(false);
 
     const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
         constants.Zero

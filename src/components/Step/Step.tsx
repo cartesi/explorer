@@ -116,8 +116,7 @@ export const Step = ({
     });
 
     useEffect(() => {
-        if (status === StepStatus.ACTIVE)
-            onActive && onActive({ title, subtitle });
+        if (status === StepStatus.ACTIVE) onActive?.({ title, subtitle });
     }, [status]);
 
     useEffect(() => {

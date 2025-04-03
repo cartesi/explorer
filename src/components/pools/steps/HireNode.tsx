@@ -18,7 +18,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { isEmpty, omit } from 'lodash/fp';
+import { isEmpty, isFunction, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 
 import { useWallet } from '../../wallet';
@@ -105,7 +105,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     useEffect(() => {
         if (isStepCompleted) {
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            isFunction(onComplete) && onComplete();
         }
     }, [isStepCompleted]);
 

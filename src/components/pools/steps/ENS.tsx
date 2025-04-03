@@ -27,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
-import { trim } from 'lodash/fp';
+import { isFunction, trim } from 'lodash/fp';
 import { useRouter } from 'next/router';
 import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useStakingPool } from '../../../services/pool';
@@ -179,7 +179,7 @@ const EthereumNameServer = ({
     useEffect(() => {
         if (isCompleted) {
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            isFunction(onComplete) && onComplete();
             router.push(buildURL(poolAddress));
         }
     }, [isCompleted]);

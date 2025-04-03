@@ -19,8 +19,8 @@ import { IconType } from 'react-icons';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration' | 'number';
 type Countdown = {
-    timeLeft: String;
-    timeLabel: String;
+    timeLeft: string;
+    timeLabel: string;
 };
 
 const formatDuration = (ms: number): string[] => {

@@ -18,7 +18,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { isEmpty, omit } from 'lodash/fp';
+import { isEmpty, isFunction, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 
 import { useWallet } from '../../wallet';
@@ -96,7 +96,7 @@ const HireNode = ({
         if (isStepCompleted) {
             setNodeAddressAtom(nodeAddress);
             setStepState(COMPLETED);
-            onComplete && onComplete();
+            isFunction(onComplete) && onComplete();
         }
     }, [isStepCompleted]);
 
@@ -162,7 +162,7 @@ const HireNode = ({
                         variant="outline"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
-                            onPrevious && onPrevious();
+                            isFunction(onPrevious) && onPrevious();
                         }}
                     >
                         PREVIOUS
