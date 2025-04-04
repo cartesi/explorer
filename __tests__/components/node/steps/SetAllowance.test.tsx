@@ -9,7 +9,7 @@ import {
     waitFor,
 } from '@testing-library/react';
 import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import SetAllowance from '../../../../src/components/node/steps/SetAllowance';
 import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useStaking } from '../../../../src/services/staking';
@@ -57,8 +57,8 @@ jest.mock('jotai', () => {
     };
 });
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,

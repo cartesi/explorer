@@ -5,5 +5,10 @@
             "path": "/api/cron/ens-update-stale",
             "schedule": "0 0 * * *"
         }
-    ]
+    ],
+    "functions": {
+        "src/app/api/cron/ens-update-stale/route.ts": {
+            "maxDuration": 30
+        }
+    }
 }

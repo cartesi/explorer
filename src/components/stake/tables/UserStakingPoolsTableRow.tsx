@@ -143,17 +143,17 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     mr={{ base: 0, lg: 6 }}
                     ml="auto"
                 >
-                    <NextLink href={`/stake/${balance.pool.id}`} passHref>
-                        <Link
-                            data-testid="stake-info-link"
-                            color={linkColor}
-                            _hover={{
-                                color: linkHoverColor,
-                            }}
-                        >
-                            <StakeIcon w={8} h={8} />
-                        </Link>
-                    </NextLink>
+                    <Link
+                        as={NextLink}
+                        href={`/stake/${balance.pool.id}`}
+                        data-testid="stake-info-link"
+                        color={linkColor}
+                        _hover={{
+                            color: linkHoverColor,
+                        }}
+                    >
+                        <StakeIcon w={8} h={8} />
+                    </Link>
                 </Box>
             </Td>
         </Tr>

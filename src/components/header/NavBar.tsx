@@ -23,9 +23,9 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { FC, ReactNode } from 'react';
-import { useWallet } from '../wallet/useWallet';
+import { useWallet } from '../wallet';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
 import { ConnectWallet } from './ConnectWallet';
@@ -38,8 +38,8 @@ export interface NavLinkProps {
 }
 
 export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
-    const router = useRouter();
-    const isActive = router.asPath === href;
+    const pathname = usePathname();
+    const isActive = pathname === href;
     const bg = useColorModeValue('dark.secondary', 'dark.primary');
     const pseudoProps = {
         content: '""',
@@ -53,23 +53,23 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
     };
 
     return (
-        <NextLink href={href} passHref>
-            <Link
-                position="relative"
-                px={2}
-                py={1}
-                width="fit-content"
-                aria-current={isActive ? 'page' : undefined}
-                _hover={{
-                    _after: pseudoProps,
-                }}
-                _activeLink={{
-                    _after: pseudoProps,
-                }}
-            >
-                {children}
-            </Link>
-        </NextLink>
+        <Link
+            as={NextLink}
+            href={href}
+            position="relative"
+            px={2}
+            py={1}
+            width="fit-content"
+            aria-current={isActive ? 'page' : undefined}
+            _hover={{
+                _after: pseudoProps,
+            }}
+            _activeLink={{
+                _after: pseudoProps,
+            }}
+        >
+            {children}
+        </Link>
     );
 };
 

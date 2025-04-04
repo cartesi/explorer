@@ -22,13 +22,11 @@ export interface IconLinkProps {
 const IconLink: FC<IconLinkProps> = (props) => {
     const { href, icon, tooltip } = props;
     return (
-        <NextLink href={href} passHref>
-            <Link>
-                <Tooltip placement="top" label={tooltip}>
-                    <span>{icon}</span>
-                </Tooltip>
-            </Link>
-        </NextLink>
+        <Link as={NextLink} href={href}>
+            <Tooltip placement="top" label={tooltip}>
+                <span>{icon}</span>
+            </Tooltip>
+        </Link>
     );
 };
 

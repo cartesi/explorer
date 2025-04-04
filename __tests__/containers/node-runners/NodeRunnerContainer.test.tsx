@@ -21,7 +21,8 @@ import {
     waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
-import { NextRouter } from 'next/router';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
 import { act } from 'react';
 import { UseWallet } from '../../../src/components/wallet/useWallet';
 import { NodeRunnersContainer } from '../../../src/containers/node-runners/NodeRunnerContainer';
@@ -99,7 +100,7 @@ const buildWallet = (): UseWallet => ({
 
 describe('NodeRunners container (Landing Page)', () => {
     let wallet: UseWallet;
-    let router: NextRouter;
+    let router: AppRouterInstance;
 
     beforeEach(() => {
         // mocking what is necessary in a default state.

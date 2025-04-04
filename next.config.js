@@ -7,6 +7,11 @@ const ContentSecurityPolicy = `
 
 module.exports = {
     reactStrictMode: true,
+    webpack: (config) => {
+        config.resolve.fallback = { fs: false, net: false, tls: false };
+        config.externals.push('pino-pretty', 'encoding');
+        return config;
+    },
     async headers() {
         return [
             {
@@ -18,6 +23,23 @@ module.exports = {
                             /\s{2,}/g,
                             ' '
                         ).trim(),
+                    },
+                ],
+            },
+            {
+                source: '/api/:chain/stats',
+                headers: [
+                    {
+                        key: 'Access-Control-Allow-Origin',
+                        value: '*',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Methods',
+                        value: 'GET, HEAD',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Headers',
+                        value: 'Content-Type, Authorization',
                     },
                 ],
             },

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { NextRouter } from 'next/router';
 import { useEffect } from 'react';
 import { UseWallet } from '../../components/wallet';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
@@ -31,10 +30,11 @@ import CreationPath from './components/CreationPath';
 import NodeTable from './components/NodeTable';
 import PoolTable from './components/PoolTable';
 import { NodeInfo, PoolInfo } from './interfaces';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;
-    router: NextRouter;
+    router: AppRouterInstance;
 }
 
 const Header = () => (

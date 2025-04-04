@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { GetStaticProps } from 'next';
 import { Domain, StakingPoolData } from '../graphql/models';
 import { STAKING_POOL, STAKING_POOLS_IDS } from '../graphql/queries';
 import { DOMAINS } from '../graphql/queries/ensDomains';
@@ -25,19 +24,7 @@ const getGraphQLClients = () => {
     };
 };
 
-type PoolId = {
-    pool: string;
-};
-
-type PoolStaticPathsRet = {
-    paths: PoolId[];
-    fallback: boolean | string;
-};
-
-// Once daily
-const inSeconds = 60 * 60 * 24;
-
-export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
+export async function getPoolsStaticPaths() {
     const { mainnetClient } = getGraphQLClients();
     const { data } = await mainnetClient.query({
         query: STAKING_POOLS_IDS,
@@ -48,12 +35,7 @@ export async function getPoolsStaticPaths(): Promise<PoolStaticPathsRet> {
         },
     });
 
-    const paths = data.stakingPools.map((p) => ({ params: { pool: p.id } }));
-
-    return {
-        paths,
-        fallback: 'blocking',
-    };
+    return data.stakingPools.map((p) => ({ pool: p.id }));
 }
 
 export type Context = {
@@ -62,13 +44,14 @@ export type Context = {
     };
 };
 
-export type ENSStaticProps = {
-    formattedAddress: string;
+export type GetENSStaticPropsModel = {
+    formattedAddress?: string;
+    notFound?: boolean;
 };
 
-export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
+export const getENSStaticProps = async ({
     params,
-}: Context) => {
+}: Context): Promise<GetENSStaticPropsModel> => {
     const { mainnetClient, sepoliaClient } = getGraphQLClients();
 
     const queryConfig = {
@@ -109,11 +92,5 @@ export const getENSStaticProps: GetStaticProps<ENSStaticProps> = async ({
 
     const formattedAddress = formatEnsName(params.pool, domain?.name);
 
-    return {
-        props: {
-            formattedAddress,
-        },
-        // re-run the StaticProps once daily
-        revalidate: inSeconds,
-    };
+    return { formattedAddress };
 };
