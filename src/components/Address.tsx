@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
     HStack,
@@ -20,14 +19,16 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
-    useColorModeValue,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { MdOutlineContentCopy } from 'react-icons/md';
 import React, { FC, useState } from 'react';
 import { useENS } from '../services/ens';
 import { etherscanLinks, Network } from '../utils/networks';
 import { truncateString } from '../utils/stringUtils';
 import { StakeCircledIcon } from './Icons';
+import { useColorModeValue } from './ui/color-mode';
 
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
 
@@ -73,7 +74,8 @@ const Address: FC<AddressProps> = (props) => {
     const addressEnsInfo = useENS(address, { enabled: withEns });
     const ensEntry = ens ? addressEnsInfo : null;
 
-    const { hasCopied, onCopy } = useClipboard(address);
+    // const { hasCopied, onCopy } = useClipboard({ value: address });
+    const clipboard = useClipboard({ value: address });
     const [hover, setHover] = useState(false);
     const [hasAvatarError, setAvatarError] = useState<boolean>(false);
     const FallbackAvatar = fallbackAvatar || StakeCircledIcon;
@@ -142,7 +144,7 @@ const Address: FC<AddressProps> = (props) => {
                 </Text>
             )}
 
-            {showActions && !hasCopied && (
+            {showActions && !clipboard.copied && (
                 <Button
                     variant="ghost"
                     display="flex"
@@ -162,13 +164,13 @@ const Address: FC<AddressProps> = (props) => {
                     minW="auto"
                     h="auto"
                     title="Copy"
-                    onClick={onCopy}
+                    onClick={clipboard.copy}
                     data-testid="copy-icon"
                 >
-                    <CopyIcon fontSize={fontSize} w={iconSize} h={iconSize} />
+                    <MdOutlineContentCopy width={iconSize} height={iconSize} />
                 </Button>
             )}
-            {hasCopied && <Text fontSize="sm">Copied</Text>}
+            {clipboard.copied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link
                     href={externalLink}
@@ -179,13 +181,12 @@ const Address: FC<AddressProps> = (props) => {
                     _hover={{
                         color: hoverIconColor,
                     }}
+                    mr={linkMargin}
                 >
-                    <ExternalLinkIcon
-                        fontSize={fontSize}
+                    <FaExternalLinkAlt
                         data-testid="external-link-icon"
-                        mr={linkMargin}
-                        w={iconSize}
-                        h={iconSize}
+                        width={iconSize}
+                        height={iconSize}
                     />
                 </Link>
             )}
