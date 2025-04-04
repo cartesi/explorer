@@ -154,26 +154,22 @@ const NodeTable = () => {
                                     textAlign="center"
                                     backgroundColor={backgroundHoverColor}
                                 >
-                                    <NextLink
+                                    <Button
+                                        as={NextLink}
                                         href={`/node/${node.id}/manage`}
-                                        passHref
+                                        variant="link"
+                                        color={linkColor}
+                                        _hover={{
+                                            color: linkHoverColor,
+                                        }}
                                     >
-                                        <Button
-                                            as="a"
-                                            variant="link"
-                                            color={linkColor}
-                                            _hover={{
-                                                color: linkHoverColor,
-                                            }}
-                                        >
-                                            <VisuallyHidden>
-                                                Manage node {node.id}
-                                            </VisuallyHidden>
-                                            <PencilIcon
-                                                data-testid={`pencil-svg-${node.id}`}
-                                            />
-                                        </Button>
-                                    </NextLink>
+                                        <VisuallyHidden>
+                                            Manage node {node.id}
+                                        </VisuallyHidden>
+                                        <PencilIcon
+                                            data-testid={`pencil-svg-${node.id}`}
+                                        />
+                                    </Button>
                                 </Td>
                             </Tr>
                         ))}

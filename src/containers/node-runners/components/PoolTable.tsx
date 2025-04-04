@@ -208,19 +208,15 @@ const PoolTable = ({ data }: Props) => {
                                         color={addressColor}
                                         shouldDisplayFallbackAvatar
                                         renderLabel={(label) => (
-                                            <NextLink
+                                            <Button
+                                                as={NextLink}
                                                 href={`/stake/${pool.id}`}
-                                                passHref
+                                                variant="text"
+                                                px={0}
+                                                title="Pool info"
                                             >
-                                                <Button
-                                                    as="a"
-                                                    variant="text"
-                                                    px={0}
-                                                    title="Pool info"
-                                                >
-                                                    {label}
-                                                </Button>
-                                            </NextLink>
+                                                {label}
+                                            </Button>
                                         )}
                                     />
                                 </Td>
