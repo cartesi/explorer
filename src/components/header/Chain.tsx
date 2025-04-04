@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Tag, TagLabel, TagProps } from '@chakra-ui/react';
+import { Tag, TagRootProps } from '@chakra-ui/react';
 import { chains } from 'eth-chains';
 import { FC } from 'react';
 
@@ -35,7 +35,7 @@ const getChainInfo = (chainId: number) => {
     };
 };
 
-export interface ChainProps extends TagProps {
+export interface ChainProps extends TagRootProps {
     chainId?: number;
     showMainnet?: boolean;
 }
@@ -65,13 +65,13 @@ const Chain: FC<ChainProps> = (props) => {
     }
 
     return (
-        <Tag
+        <Tag.Root
             borderRadius="full"
             colorScheme={colorSchemes[chainId] || defaultColorScheme}
             {...tagProps}
         >
-            <TagLabel>{chain.name}</TagLabel>
-        </Tag>
+            <Tag.Label>{chain.name}</Tag.Label>
+        </Tag.Root>
     );
 };
 

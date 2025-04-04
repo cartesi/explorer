@@ -25,7 +25,8 @@ export const Logo: FC<BoxProps> = (props) => {
                 _focus={{ outline: 'none' }}
                 title="Cartesi logo"
             >
-                <CartesiLogo color="white" width={width} height={height} />
+                ...
+                {/*<CartesiLogo color="white" width={width} height={height} />*/}
             </Link>
         </Box>
     );

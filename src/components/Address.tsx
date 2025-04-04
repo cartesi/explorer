@@ -87,7 +87,7 @@ const Address: FC<AddressProps> = (props) => {
     });
     const linkMargin = useBreakpointValue({ base: 7, sm: 0 });
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
-    const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
+    const [isLargerThan555] = useMediaQuery(['(min-width: 555px)']);
     const hoverIconColor = useColorModeValue('light.primary', 'dark.primary');
 
     const label =
@@ -173,7 +173,8 @@ const Address: FC<AddressProps> = (props) => {
                 <Link
                     href={externalLink}
                     display="flex"
-                    isExternal
+                    target="_blank"
+                    rel="noopener noreferrer"
                     title="External link"
                     _hover={{
                         color: hoverIconColor,

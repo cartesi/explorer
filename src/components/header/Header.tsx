@@ -11,9 +11,10 @@
 
 import { FC } from 'react';
 import { NavBar, HeaderLink } from './NavBar';
-import theme from '../../styles/theme';
+// import theme from '../../styles/theme';
 
 export type Props = { links: HeaderLink[] };
 export const Header: FC<Props> = ({ links }) => {
-    return <NavBar w="100%" zIndex={theme.zIndices.xxl} links={links} />;
+    // return <NavBar w="100%" zIndex={theme.zIndices.xxl} links={links} />;
+    return <NavBar w="100%" links={links} />;
 };

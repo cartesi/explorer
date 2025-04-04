@@ -9,49 +9,56 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { extendTheme } from '@chakra-ui/react';
-import { Button } from './components/button';
-import { Heading } from './components/heading';
-import { Input } from './components/input';
-import { Link } from './components/link';
-import { Modal } from './components/modal';
-import { Table } from './components/table';
-import { Text } from './components/text';
-import { formsTheme } from './formsTheme';
+import { createSystem, defaultConfig } from '@chakra-ui/react';
+// import { Button } from './components/button';
+// import { Heading } from './components/heading';
+// import { Input } from './components/input';
+// import { Link } from './components/link';
+// import { Modal } from './components/modal';
+// import { Table } from './components/table';
+// import { Text } from './components/text';
+// import { formsTheme } from './formsTheme';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { zIndices } from './foundations/zIndices';
-import { buildOnboardTheme } from './onboard';
-import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
+// import { buildOnboardTheme } from './onboard';
+// import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
 
-const theme = extendTheme({
-    styles: {
-        global: (props: any) => {
-            return {
-                'html, body': {
-                    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-                },
-                ...onboardThemeV1(props),
-                ...buildOnboardTheme(props),
-                ...formsTheme(),
-            };
+const theme = createSystem(defaultConfig, {
+    // styles: {
+    //     global: (props: any) => {
+    //         return {
+    //             'html, body': {
+    //                 color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    //             },
+    //             ...onboardThemeV1(props),
+    //             ...buildOnboardTheme(props),
+    //             ...formsTheme(),
+    //         };
+    //     },
+    // },
+    // config: {
+    //     initialColorMode: 'dark',
+    // },
+    // components: {
+    //     Heading,
+    //     Text,
+    //     Button,
+    //     Link,
+    //     Modal,
+    //     Table,
+    //     Input,
+    // },
+    // fonts,
+    // colors,
+    // zIndices,
+    theme: {
+        tokens: {
+            fonts,
+            colors,
+            zIndex: zIndices,
         },
     },
-    config: {
-        initialColorMode: 'dark',
-    },
-    components: {
-        Heading,
-        Text,
-        Button,
-        Link,
-        Modal,
-        Table,
-        Input,
-    },
-    fonts,
-    colors,
-    zIndices,
 });
 
 export default theme;
