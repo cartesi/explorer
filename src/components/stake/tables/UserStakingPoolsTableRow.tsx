@@ -145,7 +145,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 >
                     <Link
                         as={NextLink}
-                        href={`/stake/${balance.pool.id}`}
+                        href={`/src/_app/stake/${balance.pool.id}`}
                         data-testid="stake-info-link"
                         color={linkColor}
                         _hover={{

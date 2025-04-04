@@ -13,10 +13,10 @@ import {
     Button,
     HStack,
     Menu,
-    MenuButton,
+    // MenuButton,
     Tag,
     TagLabel,
-    useColorModeValue,
+    // useColorModeValue,
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
@@ -26,6 +26,7 @@ import { truncateString } from '../../utils/stringUtils';
 import { PaginationIcon } from '../Icons';
 import { useWallet } from '../wallet';
 import WalletMenu from './menu/WalletMenu';
+import { useColorModeValue } from '../ui/color-mode';
 
 export const Account: FC = () => {
     const { account = '' } = useWallet();
@@ -41,11 +42,11 @@ export const Account: FC = () => {
     return (
         <>
             {hasAccount && (
-                <Tag p={0} borderRadius="0">
-                    <Menu closeOnSelect={false}>
-                        {({ isOpen }) => (
+                <Tag.Root p={0} borderRadius="0">
+                    <Menu.Root closeOnSelect={false}>
+                        {({ open }) => (
                             <>
-                                <MenuButton
+                                <Menu.Trigger
                                     borderRadius={0}
                                     bg={bgColor}
                                     h={10}
@@ -59,7 +60,7 @@ export const Account: FC = () => {
                                             color={color}
                                             style={{
                                                 transition: 'ease-in-out 0.1s',
-                                                transform: isOpen
+                                                transform: open
                                                     ? 'rotate(180deg)'
                                                     : 'rotate(0deg)',
                                             }}
@@ -83,13 +84,13 @@ export const Account: FC = () => {
                                             {address}
                                         </TagLabel>
                                     </HStack>
-                                </MenuButton>
+                                </Menu.Trigger>
 
                                 <WalletMenu />
                             </>
                         )}
-                    </Menu>
-                </Tag>
+                    </Menu.Root>
+                </Tag.Root>
             )}
         </>
     );

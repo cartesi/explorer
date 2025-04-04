@@ -10,9 +10,19 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const zIndices = {
-    sm: 1010,
-    md: 1020,
-    lg: 1030,
-    xl: 1040,
-    xxl: 1050,
+    sm: {
+        value: 1010,
+    },
+    md: {
+        value: 1020,
+    },
+    lg: {
+        value: 1030,
+    },
+    xl: {
+        value: 1040,
+    },
+    xxl: {
+        value: 1050,
+    },
 };

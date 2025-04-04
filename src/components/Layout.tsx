@@ -17,7 +17,6 @@ import {
     StackProps,
     Text,
     useBreakpointValue,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
@@ -30,8 +29,9 @@ import {
     useWorkerManagerContract,
 } from '../services/contracts';
 import Footer from './Footer';
-import { Header } from './header';
-import SyncStatus from './SyncStatus';
+// import { Header } from './header';
+// import SyncStatus from './SyncStatus';
+import { useColorModeValue } from './ui/color-mode';
 
 interface ComponentProps {
     children: React.ReactNode;
@@ -203,13 +203,13 @@ const PageLayout: FC<PageLayoutProps> = ({ children, ...restProps }) => {
             bg={bg}
             {...restProps}
         >
-            <Header links={headerLinks} />
-            <Box width="100%" paddingTop="100px" bg={contentBg}>
-                <>
-                    <SyncStatus />
-                    {children}
-                </>
-            </Box>
+            {/*<Header links={headerLinks} />*/}
+            {/*<Box width="100%" paddingTop="100px" bg={contentBg}>*/}
+            {/*    <>*/}
+            {/*        <SyncStatus />*/}
+            {/*        {children}*/}
+            {/*    </>*/}
+            {/*</Box>*/}
             <Footer
                 links={footerLinks}
                 support={footerSupport}

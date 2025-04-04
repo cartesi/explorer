@@ -9,16 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    BoxProps,
-    Button,
-    HStack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { UnsupportedNetworkError, UseWallet } from '../wallet';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
