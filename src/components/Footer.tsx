@@ -19,16 +19,17 @@ import {
     SimpleGrid,
     Stack,
     Text,
-    // VisuallyHidden,
-    // chakra,
+    VisuallyHidden,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import theme from '../styles/theme';
 import Address from './Address';
-// import { CartesiTranparent } from './Icons';
+import { CartesiTranparent } from './Icons';
 import { useWallet } from './wallet/useWallet';
 import { useColorModeValue } from './ui/color-mode';
+
+console.log('theme.tokens.allTokens::', theme.tokens.allTokens);
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
@@ -52,28 +53,29 @@ const SocialButton = ({
     label: string;
     href: string;
 }) => {
-    return null;
-    // return (
-    //     <chakra.button
-    //         bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-    //         rounded="full"
-    //         w={8}
-    //         h={8}
-    //         cursor="pointer"
-    //         as="a"
-    //         href={href}
-    //         display="inline-flex"
-    //         alignItems="center"
-    //         justifyContent="center"
-    //         transition="background 0.3s ease"
-    //         _hover={{
-    //             bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
-    //         }}
-    //     >
-    //         <VisuallyHidden>{label}</VisuallyHidden>
-    //         {children}
-    //     </chakra.button>
-    // );
+    return (
+        <Link
+            bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+            rounded="full"
+            w={8}
+            h={8}
+            cursor="pointer"
+            as="a"
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
+            transition="background 0.3s ease"
+            _hover={{
+                bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+            }}
+        >
+            <VisuallyHidden>{label}</VisuallyHidden>
+            {children}
+        </Link>
+    );
 };
 
 export type FooterLink = { label: string; href: string };
@@ -123,8 +125,8 @@ const Footer: FC<FooterProps> = (props) => {
                         <ListHeader>Support Center</ListHeader>
                         <SimpleGrid
                             columns={{ base: 1, md: 2 }}
-                            // spacing={2}
                             marginTop={4}
+                            gap={2}
                         >
                             {support.map(({ label, href }, index) => (
                                 <Link
@@ -145,13 +147,13 @@ const Footer: FC<FooterProps> = (props) => {
                             .filter(({ address }) => address)
                             .map(({ name, address }, index) => (
                                 <Box mt={4} mb="-2" key={index}>
-                                    {/*<Address*/}
-                                    {/*    address={address ?? ''}*/}
-                                    {/*    name={name}*/}
-                                    {/*    key={index}*/}
-                                    {/*    chainId={chainId}*/}
-                                    {/*    truncated*/}
-                                    {/*/>*/}
+                                    <Address
+                                        address={address ?? ''}
+                                        name={name}
+                                        key={index}
+                                        chainId={chainId}
+                                        truncated
+                                    />
                                 </Box>
                             ))}
                     </GridItem>
@@ -180,14 +182,13 @@ const Footer: FC<FooterProps> = (props) => {
                 gap={4}
             >
                 <GridItem colStart={10} colEnd={-1}>
-                    {/*<Stack direction={'row'} spacing={6}>*/}
-                    <Stack direction={'row'}>
-                        {/*<SocialButton*/}
-                        {/*    label="Cartesi"*/}
-                        {/*    href="https://cartesi.io/"*/}
-                        {/*>*/}
-                        {/*    <CartesiTranparent />*/}
-                        {/*</SocialButton>*/}
+                    <Stack direction={'row'} gap={6}>
+                        <SocialButton
+                            label="Cartesi"
+                            href="https://cartesi.io/"
+                        >
+                            <CartesiTranparent />
+                        </SocialButton>
                         <SocialButton
                             label="Github"
                             href="https://github.com/cartesi"
