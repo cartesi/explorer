@@ -29,12 +29,10 @@ import { CartesiTranparent } from './Icons';
 import { useWallet } from './wallet/useWallet';
 import { useColorModeValue } from './ui/color-mode';
 
-console.log('theme.tokens.allTokens::', theme.tokens.allTokens);
-
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
         <Text
-            // fontFamily={theme.fonts.heading}
+            fontFamily={theme.tokens.getVar('fonts.heading')}
             fontWeight="600"
             fontSize="lg"
             mb={2}

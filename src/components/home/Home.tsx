@@ -40,7 +40,6 @@ const Home = () => {
 
     return (
         <Layout>
-            <p>hey there</p>
             {/*<Box bg={bg}>*/}
             {/*    <HomeHeader />*/}
 
