@@ -14,22 +14,25 @@ import {
     Box,
     BoxProps,
     Flex,
-    // FlexProps,
     HStack,
-    // IconButton,
+    IconButton,
     Link,
-    // Stack,
+    Stack,
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet';
-// import { Account } from './Account';
-// import AccountMobile from './AccountMobile';
-// import { ConnectWallet } from './ConnectWallet';
-// import { Logo } from './Logo';
-// import { SelectedChain } from './SelectedChain';
+import { Account } from './Account';
+import AccountMobile from './AccountMobile';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
+import { RxHamburgerMenu } from 'react-icons/rx';
+
+import { ConnectWallet } from './ConnectWallet';
+import { Logo } from './Logo';
+import { SelectedChain } from './SelectedChain';
 import { useColorModeValue, useColorMode } from '../ui/color-mode';
 
 export interface NavLinkProps {
@@ -62,11 +65,10 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
             width="fit-content"
             aria-current={isActive ? 'page' : undefined}
             _hover={{
+                textDecoration: 'none',
                 _after: pseudoProps,
             }}
-            // _activeLink={{
-            //     _after: pseudoProps,
-            // }}
+            _after={isActive ? pseudoProps : undefined}
         >
             {children}
         </Link>
@@ -88,91 +90,96 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
     const wallet = useWallet();
     const { open, onOpen, onClose } = useDisclosure();
 
-    return null;
-    // return (
-    //     <Box
-    //         bg="dark.gray.tertiary"
-    //         color="white"
-    //         px="6vw"
-    //         position="fixed"
-    //         {...props}
-    //     >
-    //         <Flex h="100px" alignItems="center" justifyContent="space-between">
-    //             {/*<HStack*/}
-    //             {/*    // spacing={8}*/}
-    //             {/*    alignItems="center"*/}
-    //             {/*    data-testid="links-container"*/}
-    //             {/*>*/}
-    //             {/*    /!*<Logo mr={{ base: 0, sm: 2 }} />*!/*/}
-    //             {/*    /!*<SelectedChain display={{ base: 'none', md: 'flex' }} />*!/*/}
-    //             {/*    /!*<SelectedChain />*!/*/}
-    //             {/*    /!*<HStack*!/*/}
-    //             {/*    /!*    as="nav"*!/*/}
-    //             {/*    /!*    // spacing={{ base: '4', md: '6' }}*!/*/}
-    //             {/*    /!*    display={{ base: 'none', md: 'flex' }}*!/*/}
-    //             {/*    /!*>*!/*/}
-    //             {/*    /!*    {links.map(({ key, label, href }) => (*!/*/}
-    //             {/*    /!*        <NavLink key={key} href={href}>*!/*/}
-    //             {/*    /!*            {label}*!/*/}
-    //             {/*    /!*        </NavLink>*!/*/}
-    //             {/*    /!*    ))}*!/*/}
-    //             {/*    /!*</HStack>*!/*/}
-    //             {/*</HStack>*/}
-    //
-    //             {/*<Flex alignItems="center">*/}
-    //             {/*    <IconButton*/}
-    //             {/*        size="sm"*/}
-    //             {/*        bg="transparent"*/}
-    //             {/*        borderRadius="full"*/}
-    //             {/*        mx={2}*/}
-    //             {/*        _hover={{ bg: 'gray.800' }}*/}
-    //             {/*        aria-label="Toggle dark mode"*/}
-    //             {/*        data-testid="theme-toggle-button"*/}
-    //             {/*        // icon={*/}
-    //             {/*        //     colorMode === 'light' ? <MoonIcon /> : <SunIcon />*/}
-    //             {/*        // }*/}
-    //             {/*        onClick={toggleColorMode}*/}
-    //             {/*    />*/}
-    //
-    //             {/*    <ConnectWallet*/}
-    //             {/*        display={{ base: 'none', md: 'flex' }}*/}
-    //             {/*        wallet={wallet}*/}
-    //             {/*    />*/}
-    //
-    //             {/*    <IconButton*/}
-    //             {/*        size="md"*/}
-    //             {/*        bg="transparent"*/}
-    //             {/*        // icon={open ? <CloseIcon /> : <HamburgerIcon />}*/}
-    //             {/*        aria-label="Open Menu"*/}
-    //             {/*        data-testid="menu-button"*/}
-    //             {/*        display={{ md: 'none' }}*/}
-    //             {/*        onClick={open ? onClose : onOpen}*/}
-    //             {/*        _hover={{ bg: 'gray.800' }}*/}
-    //             {/*    />*/}
-    //             {/*    /!*<Box display={{ base: 'none', md: 'flex' }}>*!/*/}
-    //             {/*    /!*    <Account />*!/*/}
-    //             {/*    /!*</Box>*!/*/}
-    //             {/*</Flex>*/}
-    //         </Flex>
-    //
-    //         {/*{open && (*/}
-    //         {/*    <Box pb={5} display={{ md: 'none' }} data-testid="mobile-menu">*/}
-    //         {/*        /!*<Stack as="nav" spacing={4}>*!/*/}
-    //         {/*        <Stack as="nav">*/}
-    //         {/*            {links.map(({ label, key, href }) => (*/}
-    //         {/*                <NavLink key={key} href={href}>*/}
-    //         {/*                    {label}*/}
-    //         {/*                </NavLink>*/}
-    //         {/*            ))}*/}
-    //         {/*            /!*<AccountMobile />*!/*/}
-    //
-    //         {/*            <ConnectWallet*/}
-    //         {/*                wallet={wallet}*/}
-    //         {/*                onClick={open ? onClose : onOpen}*/}
-    //         {/*            />*/}
-    //         {/*        </Stack>*/}
-    //         {/*    </Box>*/}
-    //         {/*)}*/}
-    //     </Box>
-    // );
+    return (
+        <Box
+            bg="dark.gray.tertiary"
+            color="white"
+            px="6vw"
+            position="fixed"
+            {...props}
+        >
+            <Flex h="100px" alignItems="center" justifyContent="space-between">
+                <HStack
+                    gap={8}
+                    alignItems="center"
+                    data-testid="links-container"
+                >
+                    <Logo mr={{ base: 0, sm: 2 }} />
+                    <SelectedChain display={{ base: 'none', md: 'flex' }} />
+                    <HStack
+                        as="nav"
+                        gap={{ base: '4', md: '6' }}
+                        display={{ base: 'none', md: 'flex' }}
+                    >
+                        {links.map(({ key, label, href }) => (
+                            <NavLink key={key} href={href}>
+                                {label}
+                            </NavLink>
+                        ))}
+                    </HStack>
+                </HStack>
+
+                <Flex alignItems="center">
+                    <IconButton
+                        size="sm"
+                        bg="transparent"
+                        borderRadius="full"
+                        mx={2}
+                        _hover={{ bg: 'gray.800' }}
+                        aria-label="Toggle dark mode"
+                        data-testid="theme-toggle-button"
+                        onClick={toggleColorMode}
+                    >
+                        {colorMode === 'light' ? (
+                            <FaMoon />
+                        ) : (
+                            <FaSun color="white" />
+                        )}
+                    </IconButton>
+
+                    <ConnectWallet
+                        display={{ base: 'none', md: 'flex' }}
+                        wallet={wallet}
+                    />
+
+                    <IconButton
+                        size="md"
+                        bg="transparent"
+                        aria-label="Open Menu"
+                        data-testid="menu-button"
+                        display={{ md: 'none' }}
+                        onClick={open ? onClose : onOpen}
+                        _hover={{ bg: 'gray.800' }}
+                    >
+                        {open ? (
+                            <IoClose color="white" />
+                        ) : (
+                            <RxHamburgerMenu color="white" />
+                        )}
+                    </IconButton>
+                    <Box display={{ base: 'none', md: 'flex' }}>
+                        <Account />
+                    </Box>
+                </Flex>
+            </Flex>
+
+            {open && (
+                <Box pb={5} display={{ md: 'none' }} data-testid="mobile-menu">
+                    <Stack as="nav" gap={4}>
+                        {links.map(({ label, key, href }) => (
+                            <NavLink key={key} href={href}>
+                                {label}
+                            </NavLink>
+                        ))}
+                        <AccountMobile />
+
+                        <ConnectWallet
+                            wallet={wallet}
+                            onClick={open ? onClose : onOpen}
+                        />
+                    </Stack>
+                </Box>
+            )}
+        </Box>
+    );
 };

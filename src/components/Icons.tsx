@@ -9,10 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// import { createIcon, Icon, IconProps } from '@chakra-ui/icons';
 import { FC, SVGAttributes, SVGProps } from 'react';
 import { useColorModeValue } from './ui/color-mode';
-import { createIcon } from '../utils/createIcon';
 
 interface IconProps extends SVGAttributes<SVGElement> {
     width?: string;

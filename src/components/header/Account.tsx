@@ -9,16 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Button,
-    HStack,
-    Menu,
-    // MenuButton,
-    Tag,
-    TagLabel,
-    // useColorModeValue,
-} from '@chakra-ui/react';
-import { FC } from 'react';
+import { Button, HStack, Menu, Tag, TagLabel, Portal } from '@chakra-ui/react';
+import { FC, useState } from 'react';
 import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import theme from '../../styles/theme';
@@ -38,57 +30,63 @@ export const Account: FC = () => {
     const hoverStyle = useColorModeValue({ bg: 'white' }, { bg: 'white' });
     const colorScheme = useColorModeValue('gray', undefined);
     const address = ens.name || truncateString(ens.address || account);
+    const [opened, setOpened] = useState(false);
 
     return (
         <>
             {hasAccount && (
                 <Tag.Root p={0} borderRadius="0">
-                    <Menu.Root closeOnSelect={false}>
-                        {({ open }) => (
-                            <>
-                                <Menu.Trigger
-                                    borderRadius={0}
-                                    bg={bgColor}
-                                    h={10}
-                                    pl={4}
-                                    pr={1}
-                                    as={Button}
-                                    rightIcon={
-                                        <PaginationIcon
-                                            height="32px"
-                                            width="32px"
-                                            color={color}
-                                            style={{
-                                                transition: 'ease-in-out 0.1s',
-                                                transform: open
-                                                    ? 'rotate(180deg)'
-                                                    : 'rotate(0deg)',
-                                            }}
-                                        />
-                                    }
-                                    _expanded={expandedStyle}
-                                    _hover={hoverStyle}
-                                    colorScheme={colorScheme}
-                                >
-                                    <HStack h={10}>
-                                        <JazzIcon
-                                            diameter={15}
-                                            seed={jsNumberForAddress(account)}
-                                        />
+                    <Menu.Root
+                        onOpenChange={({ open }) => {
+                            setOpened(open);
+                        }}
+                    >
+                        <Menu.Trigger asChild>
+                            <Button
+                                borderRadius={0}
+                                bg={bgColor}
+                                h={10}
+                                pl={4}
+                                pr={1}
+                                _expanded={expandedStyle}
+                                _hover={hoverStyle}
+                                colorScheme={colorScheme}
+                            >
+                                <HStack h={10}>
+                                    <JazzIcon
+                                        diameter={15}
+                                        seed={jsNumberForAddress(account)}
+                                    />
 
-                                        <TagLabel
-                                            color={color}
-                                            fontSize="sm"
-                                            fontFamily={theme.fonts.body}
-                                        >
-                                            {address}
-                                        </TagLabel>
-                                    </HStack>
-                                </Menu.Trigger>
+                                    <TagLabel
+                                        color={color}
+                                        fontSize="sm"
+                                        fontFamily={theme.tokens.getVar(
+                                            'fonts.body'
+                                        )}
+                                    >
+                                        {address}
+                                    </TagLabel>
+                                </HStack>
 
+                                <PaginationIcon
+                                    color={color}
+                                    style={{
+                                        width: 32,
+                                        height: 32,
+                                        transition: 'ease-in-out 0.1s',
+                                        transform: opened
+                                            ? 'rotate(180deg)'
+                                            : 'rotate(0deg)',
+                                    }}
+                                />
+                            </Button>
+                        </Menu.Trigger>
+                        <Portal>
+                            <Menu.Positioner>
                                 <WalletMenu />
-                            </>
-                        )}
+                            </Menu.Positioner>
+                        </Portal>
                     </Menu.Root>
                 </Tag.Root>
             )}

@@ -15,7 +15,7 @@ import { FC } from 'react';
 import { CartesiLogo } from '../Icons';
 
 export const Logo: FC<BoxProps> = (props) => {
-    const [width, height] = useToken('space', ['48', '20']);
+    const [width, height] = useToken('space', ['192', '80']);
 
     return (
         <Box {...props}>
@@ -25,8 +25,7 @@ export const Logo: FC<BoxProps> = (props) => {
                 _focus={{ outline: 'none' }}
                 title="Cartesi logo"
             >
-                ...
-                {/*<CartesiLogo color="white" width={width} height={height} />*/}
+                <CartesiLogo color="white" width={width} height={height} />
             </Link>
         </Box>
     );
