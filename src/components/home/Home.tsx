@@ -11,13 +11,13 @@
 
 'use client';
 
-// import { Box, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 import { useState } from 'react';
-// import BlockMiniCard from '../block/BlockMiniCard';
-// import HomeHeader from './Header';
-// import Stats from './Stats';
+import BlockMiniCard from '../block/BlockMiniCard';
+import HomeHeader from './Header';
+import Stats from './Stats';
 import Layout from '../Layout';
-// import SearchInput from '../SearchInput';
+import SearchInput from '../SearchInput';
 // import Users from '../Users';
 import { useWallet } from '../wallet';
 import useBlocks from '../../graphql/hooks/useBlocks';
@@ -40,62 +40,62 @@ const Home = () => {
 
     return (
         <Layout>
-            {/*<Box bg={bg}>*/}
-            {/*    <HomeHeader />*/}
+            <Box bg={bg}>
+                <HomeHeader />
 
-            {/*    <Stats />*/}
+                <Stats />
 
-            {/*    <Box*/}
-            {/*        bg={sectionBg}*/}
-            {/*        w="100%"*/}
-            {/*        shadow="md"*/}
-            {/*        mt={10}*/}
-            {/*        py={{ base: 6, md: 10 }}*/}
-            {/*        px={{ base: '6vw', xl: '12vw' }}*/}
-            {/*    >*/}
-            {/*        <Heading as="h1" fontSize={['1xl', '2xl']} mb={4}>*/}
-            {/*            Blocks*/}
-            {/*        </Heading>*/}
+                <Box
+                    bg={sectionBg}
+                    w="100%"
+                    shadow="sm"
+                    mt={10}
+                    py={{ base: 6, md: 10 }}
+                    px={{ base: '6vw', xl: '12vw' }}
+                >
+                    <Heading as="h1" fontSize={['1xl', '2xl']} mb={4}>
+                        Blocks
+                    </Heading>
 
-            {/*        <SimpleGrid columns={{ md: 2, '2xl': 4 }} spacing={6}>*/}
-            {/*            {blocks.slice(0, 4).map((block) => (*/}
-            {/*                <BlockMiniCard*/}
-            {/*                    chainId={chainId}*/}
-            {/*                    block={block}*/}
-            {/*                    key={block.id}*/}
-            {/*                />*/}
-            {/*            ))}*/}
-            {/*        </SimpleGrid>*/}
-            {/*    </Box>*/}
+                    <SimpleGrid columns={{ md: 2, '2xl': 4 }} gap={6}>
+                        {blocks.slice(0, 4).map((block) => (
+                            <BlockMiniCard
+                                chainId={chainId}
+                                block={block}
+                                key={block.id}
+                            />
+                        ))}
+                    </SimpleGrid>
+                </Box>
 
-            {/*    <Box*/}
-            {/*        bg={sectionBg}*/}
-            {/*        w="100%"*/}
-            {/*        shadow="md"*/}
-            {/*        mt={10}*/}
-            {/*        py={{ base: 6, md: 10 }}*/}
-            {/*        px={{ base: '6vw', xl: '12vw' }}*/}
-            {/*    >*/}
-            {/*        <HStack justify="space-between" align="center" mb={6}>*/}
-            {/*            <Heading as="h1" fontSize={['1xl', '2xl']}>*/}
-            {/*                Block Producers*/}
-            {/*            </Heading>*/}
-            {/*            <SearchInput*/}
-            {/*                w={[100, 200, 400, 500]}*/}
-            {/*                flex={{ base: 1, md: 'initial' }}*/}
-            {/*                placeholder="Search Pool Address..."*/}
-            {/*                onSearchChange={(e) =>*/}
-            {/*                    setUserSearch(e.target.value)*/}
-            {/*                }*/}
-            {/*            />*/}
-            {/*        </HStack>*/}
-            {/*        <Users*/}
-            {/*            chainId={chainId}*/}
-            {/*            search={userSearch}*/}
-            {/*            totalItems={summary?.totalUsers}*/}
-            {/*        />*/}
-            {/*    </Box>*/}
-            {/*</Box>*/}
+                <Box
+                    bg={sectionBg}
+                    w="100%"
+                    shadow="sm"
+                    mt={10}
+                    py={{ base: 6, md: 10 }}
+                    px={{ base: '6vw', xl: '12vw' }}
+                >
+                    <HStack justify="space-between" align="center" mb={6}>
+                        <Heading as="h1" fontSize={['1xl', '2xl']}>
+                            Block Producers
+                        </Heading>
+                        {/*<SearchInput*/}
+                        {/*    w={[100, 200, 400, 500]}*/}
+                        {/*    flex={{ base: 1, md: 'initial' }}*/}
+                        {/*    placeholder="Search Pool Address..."*/}
+                        {/*    onSearchChange={(e) =>*/}
+                        {/*        setUserSearch(e.target.value)*/}
+                        {/*    }*/}
+                        {/*/>*/}
+                    </HStack>
+                    {/*<Users*/}
+                    {/*    chainId={chainId}*/}
+                    {/*    search={userSearch}*/}
+                    {/*    totalItems={summary?.totalUsers}*/}
+                    {/*/>*/}
+                </Box>
+            </Box>
         </Layout>
     );
 };

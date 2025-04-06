@@ -9,15 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Icon } from '@chakra-ui/icons';
-import {
-    Box,
-    Flex,
-    IconProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+// import { Icon } from '@chakra-ui/icons';
+import { Box, Flex, IconProps, Text } from '@chakra-ui/react';
 import { FixedNumber } from 'ethers';
 import { FC } from 'react';
 import useBlocks from '../../graphql/hooks/useBlocks';
@@ -38,6 +31,12 @@ import {
 } from '../Icons';
 import MarketInfoPanel from './MarketInfoPanel';
 import PrimaryCard from './PrimaryCard';
+import { useColorModeValue } from '../ui/color-mode';
+import theme from '../../styles/theme';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import { Tooltip } from '../Tooltip';
+
+console.log("theme.tokens.getVar('size.6')::", theme.tokens.getVar('size.6'));
 
 const HomeStats = () => {
     const sectionBg = useColorModeValue('white', 'dark.gray.primary');
@@ -57,11 +56,13 @@ const HomeStats = () => {
 
     const bannerIconColor = useColorModeValue('light.primary', 'dark.primary');
 
+    const iconColor = useColorModeValue('light.primary', 'dark.primary');
+
     return (
         <Box
             bg={sectionBg}
             w="100%"
-            shadow="md"
+            shadow="sm"
             pb={{ base: 6, md: 12 }}
             px={{ base: '6vw', xl: '12vw' }}
         >
@@ -81,7 +82,13 @@ const HomeStats = () => {
                 py={{ base: 2, md: 8 }}
             >
                 <PrimaryCard
-                    icon={ChartIcon as FC<IconProps>}
+                    icon={
+                        <Box color={iconColor}>
+                            <ChartIcon
+                                style={{ width: '1.5rem', height: '1.5rem' }}
+                            />
+                        </Box>
+                    }
                     mt={4}
                     mb={{ base: 4, md: 0 }}
                     mr={2}
@@ -95,7 +102,13 @@ const HomeStats = () => {
                 </PrimaryCard>
 
                 <PrimaryCard
-                    icon={MarketCapICon as FC<IconProps>}
+                    icon={
+                        <Box color={iconColor}>
+                            <MarketCapICon
+                                style={{ width: '1.5rem', height: '1.5rem' }}
+                            />
+                        </Box>
+                    }
                     mt={4}
                     mb={{ base: 4, md: 0 }}
                     mr={2}
@@ -106,7 +119,8 @@ const HomeStats = () => {
                             <Flex>
                                 <Text mr={2}>CTSI Market Cap</Text>
                                 <Tooltip
-                                    label={
+                                    showArrow
+                                    content={
                                         <>
                                             <Text>
                                                 Market Cap = Current Price x
@@ -120,9 +134,10 @@ const HomeStats = () => {
                                             </Text>
                                         </>
                                     }
-                                    placement="top"
+                                    positioning={{ placement: 'top' }}
+                                    openDelay={0}
                                 >
-                                    <Icon />
+                                    <FaRegQuestionCircle />
                                 </Tooltip>
                             </Flex>
                         }
@@ -132,7 +147,13 @@ const HomeStats = () => {
                 </PrimaryCard>
 
                 <PrimaryCard
-                    icon={CircleSupplyIcon as FC<IconProps>}
+                    icon={
+                        <Box color={iconColor}>
+                            <CircleSupplyIcon
+                                style={{ width: '1.5rem', height: '1.5rem' }}
+                            />
+                        </Box>
+                    }
                     mt={4}
                     minWidth="calc(33.33% - 0.8rem)"
                 >
@@ -141,10 +162,12 @@ const HomeStats = () => {
                             <Flex>
                                 <Text mr={2}>Circ. Supply</Text>
                                 <Tooltip
-                                    label="The number of coins that are currently circulating in the market and are able to be purchased or sold."
-                                    placement="top"
+                                    showArrow
+                                    content="The number of coins that are currently circulating in the market and are able to be purchased or sold."
+                                    positioning={{ placement: 'top' }}
+                                    openDelay={0}
                                 >
-                                    <Icon />
+                                    <FaRegQuestionCircle />
                                 </Tooltip>
                             </Flex>
                         }
@@ -176,19 +199,21 @@ const HomeStats = () => {
                         <Flex alignItems="center">
                             <Text mr={2}># Active Nodes</Text>
                             <Tooltip
-                                label="Nodes registered in the Cartesi Network"
-                                placement="top"
+                                showArrow
+                                content="Nodes registered in the Cartesi Network"
+                                positioning={{ placement: 'top' }}
+                                openDelay={0}
                             >
-                                <Icon />
+                                <FaRegQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
                     Icon={
-                        <ActiveNodeIcon
-                            color={bannerIconColor}
-                            width={7}
-                            height={7}
-                        />
+                        <Box color={bannerIconColor}>
+                            <ActiveNodeIcon
+                                style={{ width: '1.75rem', height: '1.75rem' }}
+                            />
+                        </Box>
                     }
                     width={{
                         base: '100%',
@@ -207,19 +232,21 @@ const HomeStats = () => {
                         <Flex alignItems="center">
                             <Text mr={2}>Total Staked (CTSI)</Text>
                             <Tooltip
-                                label="Total amount of CTSI locked in the staking contract, currently in the status 'staked'"
-                                placement="top"
+                                showArrow
+                                content="Total amount of CTSI locked in the staking contract, currently in the status 'staked'"
+                                positioning={{ placement: 'top' }}
+                                openDelay={0}
                             >
-                                <Icon />
+                                <FaRegQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
                     Icon={
-                        <TotalStakedIcon
-                            color={bannerIconColor}
-                            width={7}
-                            height={7}
-                        />
+                        <Box color={bannerIconColor}>
+                            <TotalStakedIcon
+                                style={{ width: '1.75rem', height: '1.75rem' }}
+                            />
+                        </Box>
                     }
                     width={{
                         base: '100%',
@@ -247,19 +274,21 @@ const HomeStats = () => {
                         <Flex alignItems="center">
                             <Text mr={2}>Projected Annual Earnings</Text>
                             <Tooltip
-                                label="Total annual CTSI distributed in the network divided by the effective total stake."
-                                placement="top"
+                                showArrow
+                                content="Total annual CTSI distributed in the network divided by the effective total stake."
+                                positioning={{ placement: 'top' }}
+                                openDelay={0}
                             >
-                                <Icon />
+                                <FaRegQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
                     Icon={
-                        <PrizeIcon
-                            color={bannerIconColor}
-                            width={7}
-                            height={7}
-                        />
+                        <Box color={bannerIconColor}>
+                            <PrizeIcon
+                                style={{ width: '1.75rem', height: '1.75rem' }}
+                            />
+                        </Box>
                     }
                     width={{
                         base: '100%',
@@ -287,19 +316,21 @@ const HomeStats = () => {
                         <Flex alignItems="center">
                             <Text mr={2}>Participation Rate</Text>
                             <Tooltip
-                                label="Total Staked / Circ. Supply"
-                                placement="top"
+                                showArrow
+                                content="Total Staked / Circ. Supply"
+                                positioning={{ placement: 'top' }}
+                                openDelay={0}
                             >
-                                <Icon />
+                                <FaRegQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
                     Icon={
-                        <GridIcon
-                            color={bannerIconColor}
-                            width={7}
-                            height={7}
-                        />
+                        <Box color={bannerIconColor}>
+                            <GridIcon
+                                style={{ width: '1.75rem', height: '1.75rem' }}
+                            />
+                        </Box>
                     }
                     width={{
                         base: '100%',

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// import { TimeIcon } from '@chakra-ui/icons';
 import {
     Box,
     BoxProps,
@@ -20,6 +19,7 @@ import {
     Spacer,
     Text,
 } from '@chakra-ui/react';
+import { IoMdTime } from 'react-icons/io';
 import humanizeDuration from 'humanize-duration';
 import { FunctionComponent } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
@@ -62,7 +62,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
         <Box {...boxProps}>
             <Center p={2}>
                 <HStack>
-                    {/*<TimeIcon />*/}
+                    <IoMdTime style={{ width: '1.25rem', height: '1.25rem' }} />
                     <Text>
                         {humanizeDuration(Date.now() - block.timestamp * 1000, {
                             units: ['m'],

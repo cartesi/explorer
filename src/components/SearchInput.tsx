@@ -15,9 +15,9 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
+import { useColorModeValue } from './ui/color-mode';
 
 export interface SearchInputProps extends InputGroupProps {
     placeholder?: string;
