@@ -69,8 +69,7 @@ describe('UserRow component', () => {
         };
         render(<Component {...props} user={user} />);
 
-        const stakeInfoLink = screen.getByTestId('stake-info-link')
-            .parentNode as HTMLElement;
+        const stakeInfoLink = screen.getByTestId('stake-info-link');
         expect(stakeInfoLink.getAttribute('href')).toBe(`/stake/${user.id}`);
     });
 });

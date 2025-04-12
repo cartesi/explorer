@@ -59,8 +59,7 @@ describe('User Staking Pools Table Row', () => {
     it('should have href to stake info page', () => {
         renderComponent(defaultProps);
 
-        const stakeInfoLink =
-            screen.getByTestId('stake-info-link').parentElement;
+        const stakeInfoLink = screen.getByTestId('stake-info-link');
         expect(stakeInfoLink.getAttribute('href')).toBe(
             `/stake/${balance.pool.id}`
         );
