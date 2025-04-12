@@ -185,7 +185,9 @@ const Footer: FC<FooterProps> = (props) => {
                             label="Cartesi"
                             href="https://cartesi.io/"
                         >
-                            <CartesiTranparent />
+                            <CartesiTranparent
+                                style={{ width: '1.5rem', height: '1.5rem' }}
+                            />
                         </SocialButton>
                         <SocialButton
                             label="Github"

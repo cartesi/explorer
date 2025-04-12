@@ -18,7 +18,7 @@ import HomeHeader from './Header';
 import Stats from './Stats';
 import Layout from '../Layout';
 import SearchInput from '../SearchInput';
-// import Users from '../Users';
+import Users from '../Users';
 import { useWallet } from '../wallet';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -80,20 +80,20 @@ const Home = () => {
                         <Heading as="h1" fontSize={['1xl', '2xl']}>
                             Block Producers
                         </Heading>
-                        {/*<SearchInput*/}
-                        {/*    w={[100, 200, 400, 500]}*/}
-                        {/*    flex={{ base: 1, md: 'initial' }}*/}
-                        {/*    placeholder="Search Pool Address..."*/}
-                        {/*    onSearchChange={(e) =>*/}
-                        {/*        setUserSearch(e.target.value)*/}
-                        {/*    }*/}
-                        {/*/>*/}
+                        <SearchInput
+                            w={[100, 200, 400, 500]}
+                            flex={{ base: 1, md: 'initial' }}
+                            placeholder="Search Pool Address..."
+                            onSearchChange={(e) =>
+                                setUserSearch(e.target.value)
+                            }
+                        />
                     </HStack>
-                    {/*<Users*/}
-                    {/*    chainId={chainId}*/}
-                    {/*    search={userSearch}*/}
-                    {/*    totalItems={summary?.totalUsers}*/}
-                    {/*/>*/}
+                    <Users
+                        chainId={chainId}
+                        search={userSearch}
+                        totalItems={summary?.totalUsers}
+                    />
                 </Box>
             </Box>
         </Layout>

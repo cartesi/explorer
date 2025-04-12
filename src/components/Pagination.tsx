@@ -9,10 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, HStack, Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { GhostButton } from './GhostButton';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { useColorModeValue } from './ui/color-mode';
+import theme from '../styles/theme';
 
 export interface PaginationProps {
     currentPage: number;
@@ -70,10 +72,13 @@ const Pagination: FC<PaginationProps> = (props) => {
                 >
                     <ChevronLeftIcon
                         display="flex"
-                        width={3}
-                        height={3}
+                        style={{ width: '0.75rem', height: '0.75rem' }}
                         color={
-                            isAfterFirstPage ? activeArrowBg : inactiveArrowBg
+                            isAfterFirstPage
+                                ? theme.tokens.getVar(`colors.${activeArrowBg}`)
+                                : theme.tokens.getVar(
+                                      `colors.${inactiveArrowBg}`
+                                  )
                         }
                     />
                 </GhostButton>
@@ -138,10 +143,13 @@ const Pagination: FC<PaginationProps> = (props) => {
                 >
                     <ChevronRightIcon
                         display="flex"
-                        width={3}
-                        height={3}
+                        style={{ width: '0.75rem', height: '0.75rem' }}
                         color={
-                            isBeforeLastPage ? activeArrowBg : inactiveArrowBg
+                            isBeforeLastPage
+                                ? theme.tokens.getVar(`colors.${activeArrowBg}`)
+                                : theme.tokens.getVar(
+                                      `colors.${inactiveArrowBg}`
+                                  )
                         }
                     />
                 </GhostButton>

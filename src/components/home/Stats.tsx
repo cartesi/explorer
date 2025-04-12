@@ -10,9 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 // import { Icon } from '@chakra-ui/icons';
-import { Box, Flex, IconProps, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { FixedNumber } from 'ethers';
-import { FC } from 'react';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useSummary from '../../graphql/hooks/useSummary';
 import { useMarketInformation } from '../../services/market';
@@ -32,11 +31,8 @@ import {
 import MarketInfoPanel from './MarketInfoPanel';
 import PrimaryCard from './PrimaryCard';
 import { useColorModeValue } from '../ui/color-mode';
-import theme from '../../styles/theme';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import { Tooltip } from '../Tooltip';
-
-console.log("theme.tokens.getVar('size.6')::", theme.tokens.getVar('size.6'));
 
 const HomeStats = () => {
     const sectionBg = useColorModeValue('white', 'dark.gray.primary');

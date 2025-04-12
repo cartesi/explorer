@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Flex, VStack } from '@chakra-ui/react';
-import { ChangeEvent, FC, useState } from 'react';
+import { FC, useState } from 'react';
 import useUsers from '../graphql/hooks/useUsers';
 import { UserSort } from '../graphql/models';
 import Pagination from './Pagination';
@@ -60,8 +60,8 @@ const Users: FC<UsersProps> = (props) => {
                     <PerPageSelect
                         value={rowsPerPage}
                         options={options}
-                        onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                            setRowsPerPage(Number(event.currentTarget.value));
+                        onChange={(value: string) => {
+                            setRowsPerPage(Number(value));
                             setPageNumber(0);
                         }}
                     />

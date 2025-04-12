@@ -65,7 +65,7 @@ const Address: FC<AddressProps> = (props) => {
         fallbackAvatar,
         renderLabel = (children) => <>{children}</>,
         color,
-        fontSize,
+        fontSize = '1rem',
         ...restProps
     } = props;
 

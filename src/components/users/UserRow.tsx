@@ -13,11 +13,9 @@ import {
     Box,
     IconProps,
     Link,
+    Table,
     TableRowProps,
-    Td,
     Text,
-    Tr,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { isObject } from 'lodash';
 import NextLink from 'next/link';
@@ -25,6 +23,7 @@ import { FC } from 'react';
 import { User } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
 import Address from '../Address';
+import { useColorModeValue } from '../ui/color-mode';
 import {
     StakeCircledIcon,
     StakeCircledOutlinedIcon,
@@ -49,21 +48,24 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
     const isPool = isObject(user.pool);
 
     return (
-        <Tr
+        <Table.Row
             key={user.id}
             backgroundColor={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
             data-testid="user-row"
             {...restProps}
         >
-            <Td borderColor={borderColor} paddingTop={4} paddingBottom={4}>
+            <Table.Cell
+                borderColor={borderColor}
+                paddingTop={4}
+                paddingBottom={4}
+            >
                 <Address
                     ens
                     address={user.id}
                     chainId={chainId}
                     responsive
                     truncated
-                    size="md"
                     textDecoration="underline"
                     px="0.5rem"
                     py="0.25rem"
@@ -76,33 +78,29 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                             : StakeCircledOutlinedIcon) as FC<IconProps>
                     }
                 />
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
             >
                 {user.totalBlocks}
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
             >
                 {formatCTSI(user.balance, 0)} CTSI
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
             >
                 {formatCTSI(user.totalReward, 0)} CTSI
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
                 borderColor={borderColor}
                 position={{ base: 'sticky', md: 'initial' }}
                 top={0}
@@ -135,14 +133,16 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                                 color: linkHoverColor,
                             }}
                         >
-                            <StakeIcon w={8} h={8} />
+                            <StakeIcon
+                                style={{ width: '2rem', height: '2rem' }}
+                            />
                         </Link>
                     ) : (
                         <Text>Private node</Text>
                     )}
                 </Box>
-            </Td>
-        </Tr>
+            </Table.Cell>
+        </Table.Row>
     );
 };
 

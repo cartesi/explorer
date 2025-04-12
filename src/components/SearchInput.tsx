@@ -10,16 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { ChangeEventHandler, FunctionComponent } from 'react';
-import {
-    InputGroupProps,
-    Input,
-    InputGroup,
-    InputLeftElement,
-} from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputGroupProps } from '@chakra-ui/react';
 import { useColorModeValue } from './ui/color-mode';
+import { FaSearch } from 'react-icons/fa';
 
-export interface SearchInputProps extends InputGroupProps {
+export interface SearchInputProps extends Omit<InputGroupProps, 'children'> {
     placeholder?: string;
     onSearchChange?: ChangeEventHandler<HTMLInputElement> | undefined;
 }
@@ -34,11 +29,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const textColor = useColorModeValue('gray.900', 'white');
 
     return (
-        <InputGroup {...rest}>
-            <InputLeftElement pointerEvents="none">
-                <SearchIcon color={textColor} />
-            </InputLeftElement>
-
+        <InputGroup {...rest} startElement={<FaSearch color={textColor} />}>
             <Input
                 _placeholder={{
                     color: placeholderColor,
