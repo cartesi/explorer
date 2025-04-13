@@ -1,0 +1,14 @@
+import { defineRecipe } from '@chakra-ui/react';
+
+export const headingRecipe = defineRecipe({
+    base: {
+        fontWeight: 'normal',
+    },
+    variants: {
+        size: {
+            xl: {
+                fontSize: '4xl',
+            },
+        },
+    },
+});

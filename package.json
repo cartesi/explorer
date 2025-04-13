@@ -21,7 +21,8 @@
         "lint:fix": "yarn lint --fix",
         "chromatic": "chromatic --exit-zero-on-changes",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "chakra-types": "chakra typegen ./src/styles/theme.ts"
     },
     "dependencies": {
         "@apollo/client": "3.4.13",
@@ -88,6 +89,7 @@
         "@babel/core": "7.22.8",
         "@babel/plugin-proposal-class-properties": "7.18.6",
         "@babel/plugin-proposal-private-methods": "7.18.6",
+        "@chakra-ui/cli": "^3.15.1",
         "@chromatic-com/storybook": "^3.2.5",
         "@eslint/compat": "^1.2.7",
         "@eslint/eslintrc": "^3.3.0",

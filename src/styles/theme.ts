@@ -11,18 +11,19 @@
 
 import { createSystem, defaultConfig } from '@chakra-ui/react';
 // import { Button } from './components/button';
-// import { Heading } from './components/heading';
 // import { Input } from './components/input';
-// import { Link } from './components/link';
 // import { Modal } from './components/modal';
-// import { Table } from './components/table';
-// import { Text } from './components/text';
 // import { formsTheme } from './formsTheme';
+// import { buildOnboardTheme } from './onboard';
+// import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { zIndices } from './foundations/zIndices';
-// import { buildOnboardTheme } from './onboard';
-// import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
+import { tableRecipe } from './recipes/table';
+import { buttonRecipe } from './recipes/button';
+import { linkRecipe } from './recipes/link';
+import { textRecipe } from './recipes/text';
+import { headingRecipe } from './recipes/heading';
 
 const theme = createSystem(defaultConfig, {
     // styles: {
@@ -41,22 +42,24 @@ const theme = createSystem(defaultConfig, {
     //     initialColorMode: 'dark',
     // },
     // components: {
-    //     Heading,
-    //     Text,
     //     Button,
-    //     Link,
     //     Modal,
-    //     Table,
     //     Input,
     // },
-    // fonts,
-    // colors,
-    // zIndices,
     theme: {
         tokens: {
             fonts,
             colors,
             zIndex: zIndices,
+        },
+        recipes: {
+            button: buttonRecipe,
+            link: linkRecipe,
+            text: textRecipe,
+            heading: headingRecipe,
+        },
+        slotRecipes: {
+            table: tableRecipe,
         },
     },
 });

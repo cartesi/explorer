@@ -9,17 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Table,
-    TableProps,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Tr,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Button, Table, Text } from '@chakra-ui/react';
 import { FC } from 'react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { Block } from '../../graphql/models';
 import { formatCTSI } from '../../utils/token';
@@ -27,7 +19,7 @@ import Address from '../Address';
 
 export type BlockHighlightProp = 'id' | 'node' | 'producer';
 
-interface BlockTableProps extends TableProps {
+interface BlockTableProps {
     chainId: number;
     block: Block;
     highlight?: BlockHighlightProp;
@@ -35,66 +27,57 @@ interface BlockTableProps extends TableProps {
 }
 
 const BlockTable: FC<BlockTableProps> = (props) => {
-    const {
-        chainId,
-        block,
-        highlight,
-        highlightColor = 'lightyellow',
-        ...tableProps
-    } = props;
+    const { chainId, block, highlight, highlightColor = 'lightyellow' } = props;
     const addressColor = useColorModeValue('gray.800', 'white');
 
     return (
-        <Table
-            {...tableProps}
-            variant="clear"
-            size="sm"
-            data-testid="block-table"
-        >
-            <Tbody>
-                <Tr bg={highlight === 'id' && highlightColor}>
-                    <Th>Block {highlight}</Th>
-                    <Td>
+        <Table.Root variant="clear" size="sm" data-testid="block-table">
+            <Table.Body>
+                <Table.Row bg={highlight === 'id' && highlightColor}>
+                    <Table.Cell>Block {highlight}</Table.Cell>
+                    <Table.Cell>
                         <Text>{block.number}</Text>
-                    </Td>
-                </Tr>
-                <Tr>
-                    <Th>Chain</Th>
-                    <Td>{block.chain.number}</Td>
-                </Tr>
-                <Tr>
-                    <Th>Protocol</Th>
-                    <Td>{block.chain.protocol.version}</Td>
-                </Tr>
-                <Tr>
-                    <Th>Date</Th>
-                    <Td>{new Date(block.timestamp * 1000).toUTCString()}</Td>
-                </Tr>
-                <Tr bg={highlight === 'producer' && highlightColor}>
-                    <Th>Producer</Th>
-                    <Td>
+                    </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>Chain</Table.Cell>
+                    <Table.Cell>{block.chain.number}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>Protocol</Table.Cell>
+                    <Table.Cell>{block.chain.protocol.version}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>Date</Table.Cell>
+                    <Table.Cell>
+                        {new Date(block.timestamp * 1000).toUTCString()}
+                    </Table.Cell>
+                </Table.Row>
+                <Table.Row bg={highlight === 'producer' && highlightColor}>
+                    <Table.Cell>Producer</Table.Cell>
+                    <Table.Cell>
                         <Address
                             address={block.producer.id}
                             chainId={chainId}
                             responsive
                             color={addressColor}
                         />
-                    </Td>
-                </Tr>
-                <Tr bg={highlight === 'node' && highlightColor}>
-                    <Th>Node</Th>
-                    <Td>
+                    </Table.Cell>
+                </Table.Row>
+                <Table.Row bg={highlight === 'node' && highlightColor}>
+                    <Table.Cell>Node</Table.Cell>
+                    <Table.Cell>
                         <Address
                             address={block.node.id}
                             chainId={chainId}
                             responsive
                             color={addressColor}
                         />
-                    </Td>
-                </Tr>
-                <Tr>
-                    <Th>Hash</Th>
-                    <Td>
+                    </Table.Cell>
+                </Table.Row>
+                <Table.Cell>
+                    <Table.Row>Hash</Table.Row>
+                    <Table.Row>
                         <Address
                             type="tx"
                             address={block.id}
@@ -102,14 +85,14 @@ const BlockTable: FC<BlockTableProps> = (props) => {
                             truncated
                             color={addressColor}
                         />
-                    </Td>
-                </Tr>
-                <Tr>
-                    <Th>Reward</Th>
-                    <Td>{formatCTSI(block.reward, 18)} CTSI</Td>
-                </Tr>
-            </Tbody>
-        </Table>
+                    </Table.Row>
+                </Table.Cell>
+                <Table.Row>
+                    <Table.Cell>Reward</Table.Cell>
+                    <Table.Cell>{formatCTSI(block.reward, 18)} CTSI</Table.Cell>
+                </Table.Row>
+            </Table.Body>
+        </Table.Root>
     );
 };
 

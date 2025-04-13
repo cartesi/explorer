@@ -20,12 +20,10 @@ import {
     Spinner,
     StackProps,
     Tag,
-    TagCloseButton,
-    TagLabel,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { FaEllipsisH } from 'react-icons/fa';
+import { useColorModeValue } from '../ui/color-mode';
 
 import Layout from '../../components/Layout';
 import useBlocks from '../../graphql/hooks/useBlocks';
@@ -45,13 +43,15 @@ interface FilterProps {
 }
 
 const Filter: FunctionComponent<FilterProps> = ({ label, value, onDelete }) => (
-    <HStack spacing={4} justify="flex-start">
-        <Tag borderRadius="full" variant="solid">
-            <TagLabel>
+    <HStack gap={4} justify="flex-start">
+        <Tag.Root borderRadius="full" variant="solid">
+            <Tag.Label>
                 {label}: {value}
-            </TagLabel>
-            <TagCloseButton onClick={onDelete} />
-        </Tag>
+            </Tag.Label>
+            <Tag.EndElement>
+                <Tag.CloseTrigger onClick={onDelete} />
+            </Tag.EndElement>
+        </Tag.Root>
     </HStack>
 );
 
@@ -91,7 +91,7 @@ const BlockList = (props: BlockListProps) => {
     }
 
     return (
-        <VStack spacing={5} {...stackProps}>
+        <VStack gap={5} {...stackProps}>
             {filterField && <Filter label={filterField} value={filterValue} />}
             {blocks.map((block) => {
                 return (

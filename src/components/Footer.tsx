@@ -16,6 +16,7 @@ import {
     Grid,
     GridItem,
     Link,
+    LinkProps,
     SimpleGrid,
     Stack,
     Text,
