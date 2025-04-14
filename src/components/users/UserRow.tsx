@@ -125,7 +125,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                     {isObject(user.pool) ? (
                         <Link
                             as={NextLink}
-                            href={`/src/_app/stake/${user.id}`}
+                            href={`/stake/${user.id}`}
                             data-testid="stake-info-link"
                             title="Stake/info"
                             color={linkColor}

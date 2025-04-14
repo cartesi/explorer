@@ -343,7 +343,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                     >
                         Pool Management
                     </Heading>
-                    <NextLink href="/src/_app/pools/new" passHref>
+                    <NextLink href="/pools/new" passHref>
                         <Button as="a" colorScheme={colorScheme}>
                             CREATE A POOL
                         </Button>

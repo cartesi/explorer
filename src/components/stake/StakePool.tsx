@@ -19,16 +19,16 @@ import { PoolHeader } from './PoolHeader';
 
 import {
     Box,
-    Collapse,
+    Collapsible,
     Heading,
     HStack,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { QueryResult } from '@apollo/client';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import { FaChevronDown } from 'react-icons/fa';
 import { PoolActivity } from './PoolActivity';
 import PoolStatsPanel from './PoolStatsPanel';
 import { useWallet } from '../wallet';
@@ -85,8 +85,8 @@ const StakePool = () => {
 
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
-    const { isOpen, onToggle } = useDisclosure({
-        defaultIsOpen: true,
+    const disclosure = useDisclosure({
+        open: true,
     });
 
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
@@ -102,7 +102,7 @@ const StakePool = () => {
                 backgroundColor={bg}
             >
                 <HStack
-                    spacing={4}
+                    gap={4}
                     align="center"
                     justify="space-between"
                     mb={2}
@@ -111,7 +111,7 @@ const StakePool = () => {
                         lg: 'none',
                     }}
                     cursor="pointer"
-                    onClick={onToggle}
+                    onClick={disclosure.onToggle}
                 >
                     <Heading
                         size="lg"
@@ -122,64 +122,70 @@ const StakePool = () => {
                         Overview
                     </Heading>
 
-                    <Box transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}>
-                        <ChevronDownIcon w={6} h={6} />
+                    <Box
+                        transform={
+                            disclosure.open ? 'rotate(180deg)' : 'rotate(0deg)'
+                        }
+                    >
+                        <FaChevronDown width={6} height={6} />
                     </Box>
                 </HStack>
 
-                <Collapse in={isOpen}>
-                    <VStack spacing={5}>
-                        <PoolStatsPanel
-                            address={address}
-                            productionInterval={productionInterval}
-                            stakedBalance={amount}
-                            totalBlocks={stakingPool?.user?.totalBlocks}
-                            totalReward={stakingPool?.user?.totalReward}
-                            totalUsers={stakingPool?.totalUsers}
-                            commissionPercentage={
-                                stakingPool?.commissionPercentage
-                            }
-                            fee={stakingPool?.fee}
-                            pool={poolBalance}
-                            stake={amounts?.stake}
-                            unstake={amounts?.unstake}
-                            withdraw={amounts?.withdraw}
-                            stakingMature={staking?.stakedBalance}
-                            stakingMaturing={staking?.maturingBalance}
-                            stakingReleasing={
-                                staking?.releasingTimestamp?.getTime() >
-                                Date.now()
-                                    ? staking.releasingBalance
-                                    : constants.Zero
-                            }
-                            stakingReleased={
-                                staking?.releasingTimestamp?.getTime() <=
-                                Date.now()
-                                    ? staking.releasingBalance
-                                    : constants.Zero
-                            }
-                            stakingMaturingTimestamp={
-                                staking?.maturingTimestamp
-                            }
-                            stakingReleasingTimestamp={
-                                staking?.releasingTimestamp
-                            }
-                            onRebalance={rebalance}
-                        />
-                    </VStack>
-                </Collapse>
+                {/*<Collapsible.Root unmountOnExit open={disclosure.open}>*/}
+                {/*    <Collapsible.Content>*/}
+                {/*        <VStack gap={5}>*/}
+                {/*            <PoolStatsPanel*/}
+                {/*                address={address}*/}
+                {/*                productionInterval={productionInterval}*/}
+                {/*                stakedBalance={amount}*/}
+                {/*                totalBlocks={stakingPool?.user?.totalBlocks}*/}
+                {/*                totalReward={stakingPool?.user?.totalReward}*/}
+                {/*                totalUsers={stakingPool?.totalUsers}*/}
+                {/*                commissionPercentage={*/}
+                {/*                    stakingPool?.commissionPercentage*/}
+                {/*                }*/}
+                {/*                fee={stakingPool?.fee}*/}
+                {/*                pool={poolBalance}*/}
+                {/*                stake={amounts?.stake}*/}
+                {/*                unstake={amounts?.unstake}*/}
+                {/*                withdraw={amounts?.withdraw}*/}
+                {/*                stakingMature={staking?.stakedBalance}*/}
+                {/*                stakingMaturing={staking?.maturingBalance}*/}
+                {/*                stakingReleasing={*/}
+                {/*                    staking?.releasingTimestamp?.getTime() >*/}
+                {/*                    Date.now()*/}
+                {/*                        ? staking.releasingBalance*/}
+                {/*                        : constants.Zero*/}
+                {/*                }*/}
+                {/*                stakingReleased={*/}
+                {/*                    staking?.releasingTimestamp?.getTime() <=*/}
+                {/*                    Date.now()*/}
+                {/*                        ? staking.releasingBalance*/}
+                {/*                        : constants.Zero*/}
+                {/*                }*/}
+                {/*                stakingMaturingTimestamp={*/}
+                {/*                    staking?.maturingTimestamp*/}
+                {/*                }*/}
+                {/*                stakingReleasingTimestamp={*/}
+                {/*                    staking?.releasingTimestamp*/}
+                {/*                }*/}
+                {/*                onRebalance={rebalance}*/}
+                {/*            />*/}
+                {/*        </VStack>*/}
+                {/*    </Collapsible.Content>*/}
+                {/*</Collapsible.Root>*/}
             </Box>
-            <Box
-                px={{ base: '6vw', xl: '12vw' }}
-                py={{ base: 8, sm: 12, lg: 16 }}
-                backgroundColor={bg}
-            >
-                <Heading as="h2" size="lg" mb={4}>
-                    Pool Activity
-                </Heading>
+            {/*<Box*/}
+            {/*    px={{ base: '6vw', xl: '12vw' }}*/}
+            {/*    py={{ base: 8, sm: 12, lg: 16 }}*/}
+            {/*    backgroundColor={bg}*/}
+            {/*>*/}
+            {/*    <Heading as="h2" size="lg" mb={4}>*/}
+            {/*        Pool Activity*/}
+            {/*    </Heading>*/}
 
-                <PoolActivity poolAddress={address} />
-            </Box>
+            {/*    <PoolActivity poolAddress={address} />*/}
+            {/*</Box>*/}
         </Layout>
     );
 };

@@ -9,11 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
 import { SimpleChartIcon, StakeIcon } from '../Icons';
+import { useColorModeValue } from '../ui/color-mode';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
@@ -58,7 +59,7 @@ export const StakingTabNavigation: FC = () => {
                         color,
                     }}
                     borderRadius="0.6rem 0.6rem 0 0"
-                    leftIcon={<tab.Icon w="24px" h="24px" />}
+                    leftIcon={<tab.Icon width="24px" height="24px" />}
                     isActive={tab.isActive}
                     variant={tab.variant}
                 >

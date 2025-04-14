@@ -13,8 +13,8 @@ import { FC, SVGAttributes, SVGProps } from 'react';
 import { useColorModeValue } from './ui/color-mode';
 
 interface IconProps extends SVGAttributes<SVGElement> {
-    width?: string;
-    height?: string;
+    width?: string | number;
+    height?: string | number;
 }
 
 export const PencilIcon: FC<IconProps> = (props) => {
@@ -1276,13 +1276,6 @@ export const SettingsIcon: FC<IconProps> = (props) => {
             </g>
         </svg>
     );
-};
-
-// DAPPS ICONS
-
-const defaultProps = {
-    fill: 'none',
-    xmlns: 'http://www.w3.org/2000/svg',
 };
 
 export const DappIcon: FC<IconProps> = (props) => {

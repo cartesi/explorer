@@ -209,7 +209,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                 >
                     <Link
                         as={NextLink}
-                        href={`/src/_app/stake/${pool.id}`}
+                        href={`/stake/${pool.id}`}
                         data-testid="stake-info-link"
                         color={linkColor}
                         _hover={{
