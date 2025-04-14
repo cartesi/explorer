@@ -10,18 +10,18 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { ChakraProvider } from '@chakra-ui/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import ApolloContainer from '../components/ApolloContainer';
-import theme from '../styles/theme';
-
 import { Fonts } from '../components/Fonts';
 import PageHead from '../components/PageHead';
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
+import theme from '../styles/theme';
 
 type ComponentType = FC<{ children: ReactNode }>;
 
@@ -66,24 +66,27 @@ const App = ({
     }, []);
 
     return (
-        <ChakraProvider theme={theme}>
-            <PageHead
-                title="Stake CTSI"
-                description="Secure the Cartesi network and earn rewards"
-            />
-            <Fonts />
-            <FeatureFlagProvider>
-                <ENSDataProvider value={ensData}>
-                    <Web3Container>
-                        <GA4TrackerProvider>
-                            <ApolloContainer>
-                                <Component {...pageProps} />
-                            </ApolloContainer>
-                        </GA4TrackerProvider>
-                    </Web3Container>
-                </ENSDataProvider>
-            </FeatureFlagProvider>
-        </ChakraProvider>
+        <>
+            <ChakraProvider theme={theme}>
+                <PageHead
+                    title="Stake CTSI"
+                    description="Secure the Cartesi network and earn rewards"
+                />
+                <Fonts />
+                <FeatureFlagProvider>
+                    <ENSDataProvider value={ensData}>
+                        <Web3Container>
+                            <GA4TrackerProvider>
+                                <ApolloContainer>
+                                    <Component {...pageProps} />
+                                </ApolloContainer>
+                            </GA4TrackerProvider>
+                        </Web3Container>
+                    </ENSDataProvider>
+                </FeatureFlagProvider>
+            </ChakraProvider>
+            <SpeedInsights />
+        </>
     );
 };
 
