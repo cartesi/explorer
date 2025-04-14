@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.1] - 2025-04-15
+
+-   Added Vercel speed metrics library. The previous way of acquiring information about the speed of the web application was deprecated.
+
 ## [3.10.0] - 2025-03-12
 
 -   Improve behaviour when refreshing stale address ENS information.
@@ -420,7 +424,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.10.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.10.1...HEAD
+[3.10.1]: https://github.com/cartesi/explorer/compare/v3.10.1...v3.10.0
 [3.10.0]: https://github.com/cartesi/explorer/compare/v3.10.0...v3.9.4
 [3.9.4]: https://github.com/cartesi/explorer/compare/v3.9.4...v3.9.3
 [3.9.3]: https://github.com/cartesi/explorer/compare/v3.9.3...v3.9.2
