@@ -9,21 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ArrowDownIcon } from '@chakra-ui/icons';
 import {
     Flex,
     HStack,
     Spinner,
     Table,
     TableColumnHeaderProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
     useBreakpointValue,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC, useRef } from 'react';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';
@@ -33,6 +26,8 @@ import { GhostButton } from '../../GhostButton';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import { SlideInOut } from '../../animation/SlideInOut';
 import PoolPerformanceTableRow from './PoolPerformanceTableRow';
+import { useColorModeValue } from '../../ui/color-mode';
+import { FaArrowDown } from 'react-icons/fa';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
@@ -66,12 +61,13 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     );
 
     const thProps: TableColumnHeaderProps = {
+        color: 'white',
         borderColor: topBorderColor,
         bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         paddingTop: 4,
         paddingBottom: 4,
     };
@@ -83,14 +79,14 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th {...thProps} borderTopLeftRadius="6px">
+            <Table.Root width="max-content">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell {...thProps} borderTopLeftRadius="6px">
                             Pool Address
-                        </Th>
+                        </Table.Cell>
 
-                        <Th isNumeric {...thProps}>
+                        <Table.Cell {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
                                     height="auto"
@@ -98,22 +94,24 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     fontWeight={400}
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
-                                    fontFamily={theme.fonts.body}
+                                    fontFamily={theme.tokens.getVar(
+                                        'fonts.body'
+                                    )}
                                     onClick={() => onSort('totalUsers')}
                                 >
                                     Total Users
                                 </GhostButton>
                                 {sort == 'totalUsers' && (
-                                    <ArrowDownIcon
-                                        marginLeft={4}
+                                    <FaArrowDown
                                         width={5}
                                         height={5}
+                                        style={{ marginLeft: '1rem' }}
                                     />
                                 )}
                             </Flex>
-                        </Th>
+                        </Table.Cell>
 
-                        <Th isNumeric {...thProps}>
+                        <Table.Cell {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
                                     height="auto"
@@ -121,40 +119,41 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     fontWeight={400}
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
-                                    fontFamily={theme.fonts.body}
+                                    fontFamily={theme.tokens.getVar(
+                                        'fonts.body'
+                                    )}
                                     onClick={() => onSort('amount')}
                                 >
                                     Total Staked
                                 </GhostButton>
                                 {sort == 'amount' && (
-                                    <ArrowDownIcon
-                                        marginLeft={4}
+                                    <FaArrowDown
                                         width={5}
                                         height={5}
+                                        style={{ marginLeft: '1rem' }}
                                     />
                                 )}
                             </Flex>
-                        </Th>
+                        </Table.Cell>
 
-                        <Th isNumeric {...thProps}>
-                            Total Rewards
-                        </Th>
+                        <Table.Cell {...thProps}>Total Rewards</Table.Cell>
 
-                        <Th
-                            isNumeric
+                        <Table.Cell
                             whiteSpace="nowrap"
                             data-testid=""
                             {...thProps}
                         >
                             <Text whiteSpace="nowrap">7-days % (Annual)</Text>
-                        </Th>
+                        </Table.Cell>
 
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             <Text whiteSpace="nowrap">30-days % (Annual)</Text>
-                        </Th>
+                        </Table.Cell>
 
-                        <Th {...thProps}>Configured Commission</Th>
-                        <Th {...thProps}>
+                        <Table.Cell {...thProps}>
+                            Configured Commission
+                        </Table.Cell>
+                        <Table.Cell {...thProps}>
                             <Flex
                                 height="auto"
                                 direction={'row'}
@@ -166,7 +165,9 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     fontWeight={400}
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
-                                    fontFamily={theme.fonts.body}
+                                    fontFamily={theme.tokens.getVar(
+                                        'fonts.body'
+                                    )}
                                     onClick={() =>
                                         onSort('commissionPercentage')
                                     }
@@ -174,27 +175,25 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Accrued Commission
                                 </GhostButton>{' '}
                                 {sort == 'commissionPercentage' && (
-                                    <ArrowDownIcon
-                                        marginLeft={4}
+                                    <FaArrowDown
                                         width={5}
                                         height={5}
+                                        style={{ marginLeft: '1rem' }}
                                     />
                                 )}
                             </Flex>
-                        </Th>
+                        </Table.Cell>
 
-                        <Th
-                            isNumeric
+                        <Table.Cell
                             position="initial"
                             ref={thRef}
                             borderTopRightRadius="6px"
                             {...thProps}
                         >
                             {stakeText}
-                        </Th>
+                        </Table.Cell>
                         {threshold.isBelow && (
-                            <Th
-                                isNumeric
+                            <Table.Cell
                                 position="sticky"
                                 top={0}
                                 right={0}
@@ -212,21 +211,21 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 <SlideInOut display={true}>
                                     {stakeText}
                                 </SlideInOut>
-                            </Th>
+                            </Table.Cell>
                         )}
-                    </Tr>
-                </Thead>
+                    </Table.Row>
+                </Table.Header>
 
-                <Tbody>
+                <Table.Body>
                     {loading ? (
-                        <Tr>
-                            <Td colSpan={colSpans} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={colSpans} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : hasItems ? (
                         data.map((pool) => (
                             <PoolPerformanceTableRow
@@ -237,14 +236,14 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                             />
                         ))
                     ) : (
-                        <Tr>
-                            <Td colSpan={colSpans} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={colSpans} textAlign="center">
                                 <Text>No items</Text>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };

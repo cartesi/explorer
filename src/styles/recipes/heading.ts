@@ -8,6 +8,7 @@ export const headingRecipe = defineRecipe({
         size: {
             xl: {
                 fontSize: '4xl',
+                lineHeight: 1.2,
             },
         },
     },

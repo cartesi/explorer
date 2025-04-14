@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
     BoxProps,
@@ -26,9 +25,10 @@ import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { MdOutlineWbSunny } from 'react-icons/md';
 
 import { ConnectWallet } from './ConnectWallet';
 import { Logo } from './Logo';
@@ -64,6 +64,7 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
             py={1}
             width="fit-content"
             aria-current={isActive ? 'page' : undefined}
+            color="white"
             _hover={{
                 textDecoration: 'none',
                 _after: pseudoProps,
@@ -133,7 +134,7 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                         {colorMode === 'light' ? (
                             <FaMoon />
                         ) : (
-                            <FaSun color="white" />
+                            <MdOutlineWbSunny color="white" />
                         )}
                     </IconButton>
 

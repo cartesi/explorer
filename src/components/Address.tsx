@@ -47,6 +47,7 @@ export interface AddressProps extends TextProps {
     noActions?: boolean;
     shouldDisplayFallbackAvatar?: boolean;
     fallbackAvatar?: FC<IconProps>;
+    iconColor?: string;
     renderLabel?: (label: React.ReactNode) => React.ReactNode;
 }
 
@@ -65,6 +66,7 @@ const Address: FC<AddressProps> = (props) => {
         fallbackAvatar,
         renderLabel = (children) => <>{children}</>,
         color,
+        iconColor,
         fontSize = '1rem',
         ...restProps
     } = props;
@@ -149,6 +151,7 @@ const Address: FC<AddressProps> = (props) => {
                     variant="ghost"
                     display="flex"
                     p={0}
+                    color={iconColor ? iconColor : undefined}
                     _hover={{
                         background: 'transparent',
                         color: hoverIconColor,
@@ -178,6 +181,7 @@ const Address: FC<AddressProps> = (props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="External link"
+                    color={iconColor ? iconColor : undefined}
                     _hover={{
                         color: hoverIconColor,
                     }}

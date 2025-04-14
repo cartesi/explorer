@@ -7,6 +7,12 @@ export const linkRecipe = defineRecipe({
                 _hover: {
                     textDecoration: 'none',
                 },
+                _focus: {
+                    outline: 'none',
+                },
+                _active: {
+                    outline: 'none',
+                },
             },
         },
     },

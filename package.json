@@ -61,6 +61,7 @@
         "eth-chains": "2.0.0",
         "eth-rpc-errors": "4.0.3",
         "ethers": "5.4.7",
+        "framer-motion": "10.13.0",
         "graphql": "15.6.0",
         "humanize-duration": "3.29.0",
         "jotai": "1.7.0",

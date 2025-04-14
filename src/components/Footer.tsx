@@ -16,7 +16,6 @@ import {
     Grid,
     GridItem,
     Link,
-    LinkProps,
     SimpleGrid,
     Stack,
     Text,
@@ -112,6 +111,7 @@ const Footer: FC<FooterProps> = (props) => {
                                     key={index}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    color="white"
                                     _hover={{ color: linkHoverColor }}
                                 >
                                     {label}
@@ -133,6 +133,7 @@ const Footer: FC<FooterProps> = (props) => {
                                     key={index}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    color="white"
                                     _hover={{ color: linkHoverColor }}
                                 >
                                     {label}
@@ -152,6 +153,7 @@ const Footer: FC<FooterProps> = (props) => {
                                         key={index}
                                         chainId={chainId}
                                         truncated
+                                        iconColor="white"
                                     />
                                 </Box>
                             ))}
@@ -164,6 +166,7 @@ const Footer: FC<FooterProps> = (props) => {
                                 key={index}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                color="white"
                                 _hover={{ color: linkHoverColor }}
                             >
                                 {label}
@@ -187,6 +190,7 @@ const Footer: FC<FooterProps> = (props) => {
                             href="https://cartesi.io/"
                         >
                             <CartesiTranparent
+                                color="white"
                                 style={{ width: '1.5rem', height: '1.5rem' }}
                             />
                         </SocialButton>
@@ -194,25 +198,25 @@ const Footer: FC<FooterProps> = (props) => {
                             label="Github"
                             href="https://github.com/cartesi"
                         >
-                            <FaGithub size={24} />
+                            <FaGithub color="white" size={24} />
                         </SocialButton>
                         <SocialButton
                             label="Discord"
                             href="https://discord.gg/pfXMwXDDfW"
                         >
-                            <FaDiscord size={24} />
+                            <FaDiscord color="white" size={24} />
                         </SocialButton>
                         <SocialButton
                             label="Youtube"
                             href="https://www.youtube.com/@cartesiproject/featured"
                         >
-                            <FaYoutube size={24} />
+                            <FaYoutube color="white" size={24} />
                         </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <FaTwitter size={24} />
+                            <FaTwitter color="white" size={24} />
                         </SocialButton>
                     </Stack>
                 </GridItem>
@@ -224,6 +228,7 @@ const Footer: FC<FooterProps> = (props) => {
                         href="https://github.com/cartesi/explorer/blob/main/AUTHORS"
                         target="_blank"
                         rel="noopener noreferrer"
+                        color="white"
                         _hover={{
                             color: linkHoverColor,
                         }}
@@ -237,6 +242,7 @@ const Footer: FC<FooterProps> = (props) => {
                         href="https://github.com/cartesi/explorer/blob/main/LICENSE"
                         target="_blank"
                         rel="noopener noreferrer"
+                        color="white"
                         _hover={{
                             color: linkHoverColor,
                         }}

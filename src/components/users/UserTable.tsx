@@ -54,6 +54,7 @@ const UserTable: FC<UserTableProps> = ({
     );
     const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const thProps: TableCellProps = {
+        color: 'white',
         bg: 'dark.gray.primary',
         paddingTop: 4,
         paddingBottom: 4,
