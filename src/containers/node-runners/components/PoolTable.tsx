@@ -9,25 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ArrowDownIcon } from '@chakra-ui/icons';
+import { FaArrowDown } from 'react-icons/fa';
 import {
     Box,
     BoxProps,
     Button,
     ButtonProps,
+    Flex,
     Heading,
     HStack,
     Spinner,
     Stack,
     Table,
     TableColumnHeaderProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
@@ -55,6 +50,7 @@ import {
 import { PoolInfo } from '../interfaces';
 import Block from './Block';
 import useDontShowAgain from './useDontShowAgain';
+import { useColorModeValue } from '../../../components/ui/color-mode';
 
 interface Props {
     data: PoolInfo[];
@@ -88,7 +84,7 @@ const PoolTable = ({ data }: Props) => {
         height: 'auto',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         textTransform: 'none',
         _hover: {
             color: buttonHoverColor,
@@ -109,7 +105,7 @@ const PoolTable = ({ data }: Props) => {
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         paddingTop: 4,
         paddingBottom: 4,
     };
@@ -128,79 +124,94 @@ const PoolTable = ({ data }: Props) => {
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th {...thProps}>Address</Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
-                            <GhostButton
-                                {...buttonProps}
-                                onClick={() => setSortBy('amount')}
-                            >
-                                Total Staked
-                            </GhostButton>
-                            {sortBy == 'amount' && <ArrowDownIcon />}
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
-                            <GhostButton
-                                {...buttonProps}
-                                onClick={() => setSortBy('totalUsers')}
-                            >
-                                Total Users
-                            </GhostButton>
-                            {sortBy == 'totalUsers' && <ArrowDownIcon />}
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+            <Table.Root>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell {...thProps}>Address</Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                            <Flex alignItems="center">
+                                <GhostButton
+                                    {...buttonProps}
+                                    onClick={() => setSortBy('amount')}
+                                >
+                                    Total Staked
+                                </GhostButton>
+                                {sortBy == 'amount' && (
+                                    <FaArrowDown
+                                        style={{ marginLeft: '0.25rem' }}
+                                    />
+                                )}
+                            </Flex>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                            <Flex alignItems="center">
+                                <GhostButton
+                                    {...buttonProps}
+                                    onClick={() => setSortBy('totalUsers')}
+                                >
+                                    Total Users
+                                </GhostButton>
+                                {sortBy == 'totalUsers' && (
+                                    <FaArrowDown
+                                        style={{ marginLeft: '0.25rem' }}
+                                    />
+                                )}
+                            </Flex>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Total Rewards
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
-                            <GhostButton
-                                {...buttonProps}
-                                onClick={() =>
-                                    setSortBy('commissionPercentage')
-                                }
-                            >
-                                Commission
-                            </GhostButton>
-                            {sortBy == 'commissionPercentage' && (
-                                <ArrowDownIcon />
-                            )}
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                            <Flex alignItems="center">
+                                <GhostButton
+                                    {...buttonProps}
+                                    onClick={() =>
+                                        setSortBy('commissionPercentage')
+                                    }
+                                >
+                                    Commission
+                                </GhostButton>
+                                {sortBy == 'commissionPercentage' && (
+                                    <FaArrowDown
+                                        style={{ marginLeft: '0.25rem' }}
+                                    />
+                                )}
+                            </Flex>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Pool Balance
-                        </Th>
-                        <Th whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Node Status
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Block Produced
-                        </Th>
-                        <Th position="sticky" right="0" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell position="sticky" right="0" {...thProps}>
                             Manage
-                        </Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {loading && (
-                        <Tr>
-                            <Td colSpan={9}>
+                        <Table.Row>
+                            <Table.Cell colSpan={9}>
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
                     {!loading &&
                         data.map((pool) => (
-                            <Tr key={pool.id}>
-                                <Td>
+                            <Table.Row key={pool.id}>
+                                <Table.Cell>
                                     <Address
                                         ens
                                         chainId={chainId}
                                         address={pool.id}
                                         truncated
-                                        size="md"
                                         minWidth="120px"
                                         textDecoration="underline"
                                         px="0.5rem"
@@ -219,19 +230,19 @@ const PoolTable = ({ data }: Props) => {
                                             </Button>
                                         )}
                                     />
-                                </Td>
-                                <Td isNumeric>{pool.totalStaked}</Td>
-                                <Td isNumeric>{pool.totalUsers}</Td>
-                                <Td isNumeric>{pool.totalRewards}</Td>
-                                <Td isNumeric>{pool.commission}</Td>
-                                <Td isNumeric>
+                                </Table.Cell>
+                                <Table.Cell>{pool.totalStaked}</Table.Cell>
+                                <Table.Cell>{pool.totalUsers}</Table.Cell>
+                                <Table.Cell>{pool.totalRewards}</Table.Cell>
+                                <Table.Cell>{pool.commission}</Table.Cell>
+                                <Table.Cell>
                                     <PoolBalance address={pool.id} />
-                                </Td>
-                                <Td>
+                                </Table.Cell>
+                                <Table.Cell>
                                     <NodeStatus ownerAddress={pool.id} />
-                                </Td>
-                                <Td isNumeric>{pool.blocksProduced}</Td>
-                                <Td
+                                </Table.Cell>
+                                <Table.Cell>{pool.blocksProduced}</Table.Cell>
+                                <Table.Cell
                                     position="sticky"
                                     right="0"
                                     textAlign="center"
@@ -257,11 +268,11 @@ const PoolTable = ({ data }: Props) => {
                                             />
                                         </Button>
                                     </NextLink>
-                                </Td>
-                            </Tr>
+                                </Table.Cell>
+                            </Table.Row>
                         ))}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };
@@ -276,8 +287,8 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
     const showAlert = posV2Enabled && value;
-    const { isOpen, onClose, onOpen } = useDisclosure({
-        defaultIsOpen: showAlert,
+    const { open, onOpen, onClose } = useDisclosure({
+        defaultOpen: showAlert,
     });
 
     const notificationTitle = useMessages('pos.v2');
@@ -292,13 +303,13 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
 
     useEffect(() => {
         showAlert ? onOpen() : onClose();
-    }, [showAlert, onClose, onOpen]);
+    }, [showAlert, onOpen, onClose]);
 
     return (
         pools?.length > 0 && (
             <Block bg={bg} {...boxProps}>
                 <Box>
-                    {isOpen && (
+                    {open && (
                         <Notification
                             data-testid="bannerPoolPoSV2"
                             status="warning"
@@ -339,7 +350,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                         mt={5}
                         mb={{ base: 4, md: 8 }}
                         fontWeight="medium"
-                        lineHeight={6}
+                        lineHeight="1.5rem"
                     >
                         Pool Management
                     </Heading>

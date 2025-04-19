@@ -9,20 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertProps,
-    AlertTitle,
-    CloseButton,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
-import { isFunction } from 'lodash/fp';
+import { Alert, AlertRootProps, CloseButton, VStack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { isFunction } from 'lodash/fp';
+import { useColorModeValue } from './ui/color-mode';
 
-export interface NotificationProps extends Omit<AlertProps, 'title'> {
+export interface NotificationProps extends Omit<AlertRootProps, 'title'> {
     title: ReactNode;
     subtitle?: ReactNode;
     children?: ReactNode;
@@ -44,7 +36,7 @@ export const Notification = ({
     );
 
     return (
-        <Alert
+        <Alert.Root
             alignItems="flex-start"
             boxShadow="sm"
             bg={bg}
@@ -56,25 +48,27 @@ export const Notification = ({
             status={status}
             {...alertProps}
         >
-            <AlertIcon />
-            <VStack alignItems={['flex-start']}>
-                <AlertTitle fontSize="md">{title}</AlertTitle>
-                {subtitle && (
-                    <AlertDescription fontSize="sm">
-                        {subtitle}
-                    </AlertDescription>
-                )}
-                {children ? children : ''}
-            </VStack>
+            <Alert.Indicator />
+            <Alert.Content>
+                <Alert.Title fontSize="md">{title}</Alert.Title>
+                <VStack alignItems={['flex-start']}>
+                    {subtitle && (
+                        <Alert.Description fontSize="sm">
+                            {subtitle}
+                        </Alert.Description>
+                    )}
+                    {children ? children : ''}
+                </VStack>
+            </Alert.Content>
             {isFunction(onClose) && (
                 <CloseButton
-                    position="absolute"
-                    right="2"
-                    top="1"
+                    pos="relative"
+                    top="-2"
+                    insetEnd="-2"
                     role="close-button"
                     onClick={onClose}
                 />
             )}
-        </Alert>
+        </Alert.Root>
     );
 };

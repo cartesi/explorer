@@ -13,22 +13,16 @@ import {
     Box,
     BoxProps,
     Button,
-    HStack,
     Heading,
+    HStack,
     IconProps,
     Spinner,
     Stack,
     Table,
     TableColumnHeaderProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    VisuallyHidden,
-    useColorModeValue,
     useDisclosure,
+    VisuallyHidden,
 } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
@@ -48,6 +42,7 @@ import { useMessages } from '../../../utils/messages';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';
 import Block from './Block';
 import useDontShowAgain from './useDontShowAgain';
+import { useColorModeValue } from '../../../components/ui/color-mode';
 
 interface TableInfo {
     boxProps?: BoxProps;
@@ -72,7 +67,7 @@ const NodeTable = () => {
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         paddingTop: 4,
         paddingBottom: 4,
     };
@@ -91,48 +86,47 @@ const NodeTable = () => {
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table bg={bgTable}>
-                <Thead>
-                    <Tr>
-                        <Th {...thProps}>Node Address</Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+            <Table.Root bg={bgTable}>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell {...thProps}>Node Address</Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Total Staked
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Total Rewards
-                        </Th>
-                        <Th isNumeric whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Block Produced
-                        </Th>
-                        <Th whiteSpace="nowrap" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Node Status
-                        </Th>
-                        <Th position="sticky" right="0" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell position="sticky" right="0" {...thProps}>
                             Manage
-                        </Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {loading && (
-                        <Tr>
-                            <Td colSpan={6}>
+                        <Table.Row>
+                            <Table.Cell colSpan={6}>
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
                     {!loading &&
                         list.map((node) => (
-                            <Tr key={node.id}>
-                                <Td>
+                            <Table.Row key={node.id}>
+                                <Table.Cell>
                                     <Address
                                         chainId={chainId}
                                         ens
                                         address={node.id}
                                         truncated
-                                        size="md"
                                         minWidth="120px"
                                         textDecoration="underline"
                                         px="0.5rem"
@@ -143,12 +137,12 @@ const NodeTable = () => {
                                             StakeCircledOutlinedIcon as FC<IconProps>
                                         }
                                     />
-                                </Td>
-                                <Td isNumeric>{node.totalStaked}</Td>
-                                <Td isNumeric>{node.totalRewards}</Td>
-                                <Td isNumeric>{node.blocksProduced}</Td>
-                                <Td>{node.nodeStatus}</Td>
-                                <Td
+                                </Table.Cell>
+                                <Table.Cell>{node.totalStaked}</Table.Cell>
+                                <Table.Cell>{node.totalRewards}</Table.Cell>
+                                <Table.Cell>{node.blocksProduced}</Table.Cell>
+                                <Table.Cell>{node.nodeStatus}</Table.Cell>
+                                <Table.Cell
                                     position="sticky"
                                     right="0"
                                     textAlign="center"
@@ -170,11 +164,11 @@ const NodeTable = () => {
                                             data-testid={`pencil-svg-${node.id}`}
                                         />
                                     </Button>
-                                </Td>
-                            </Tr>
+                                </Table.Cell>
+                            </Table.Row>
                         ))}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };
@@ -187,8 +181,8 @@ const NodeTableBlock = ({ boxProps }: TableInfo) => {
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
     const showAlert = posV2Enabled && value;
-    const { isOpen, onClose, onOpen } = useDisclosure({
-        defaultIsOpen: showAlert,
+    const { open, onClose, onOpen } = useDisclosure({
+        defaultOpen: showAlert,
     });
 
     const notificationTitle = useMessages('pos.v2');
@@ -208,7 +202,7 @@ const NodeTableBlock = ({ boxProps }: TableInfo) => {
         hasPrivateNode && (
             <Block bg={bg} {...boxProps}>
                 <Box py="2">
-                    {isOpen && (
+                    {open && (
                         <Notification
                             status="warning"
                             title={notificationTitle}

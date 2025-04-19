@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Alert, Box, Button, Icon, useColorModeValue } from '@chakra-ui/react';
-import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { Alert, Box, Button } from '@chakra-ui/react';
 import { SlideDown } from '../../../components/animation/SlideDown';
+import { useColorModeValue } from '../../../components/ui/color-mode';
 
 interface AlertAndConnectProps {
     isVisible: boolean;
@@ -32,16 +32,13 @@ const AlertAndConnect = ({ isVisible, onConnect }: AlertAndConnectProps) => {
                 pb={6}
             >
                 <Box>
-                    <Alert bg="transparent">
-                        <Icon
-                            as={AiOutlineExclamationCircle}
-                            h={5}
-                            w={5}
-                            mr={2}
-                        />
-                        Please connect your wallet if you have created your own
-                        node and pool already
-                    </Alert>
+                    <Alert.Root status="info" bg="transparent">
+                        <Alert.Indicator />
+                        <Alert.Title>
+                            Please connect your wallet if you have created your
+                            own node and pool already
+                        </Alert.Title>
+                    </Alert.Root>
                 </Box>
                 <Button colorScheme="cyan" mt={7} onClick={onConnect}>
                     CONNECT WALLET

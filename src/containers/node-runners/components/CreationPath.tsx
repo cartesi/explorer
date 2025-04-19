@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Heading, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Heading, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { SlideDown } from '../../../components/animation/SlideDown';
 import { Card } from '../../../components/Card';
@@ -18,6 +18,8 @@ import { OrderedContent } from '../../../components/OrderedContent';
 import { hasPoolsAtom, hasPrivateNodeAtom } from '../atoms';
 import Block from './Block';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useColorModeValue } from '../../../components/ui/color-mode';
+import theme from '../../../styles/theme';
 
 const mainResponsibilities = 'Main responsibilities:';
 const privateNodeResponsibilities = [
@@ -52,7 +54,7 @@ const CreationPath = ({ router }: CreationPathProps) => {
                     mt={5}
                     mb={{ base: 4, md: 8 }}
                     fontWeight="medium"
-                    lineHeight={6}
+                    lineHeight="1.5rem"
                 >
                     Create a node or pool in steps
                 </Heading>
@@ -69,7 +71,15 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             subtitle="Earn commissions out of the blocks rewards."
                             iconBg={iconBg}
                             icon={
-                                <AllowanceIcon color={iconColor} w={6} h={6} />
+                                <AllowanceIcon
+                                    color={theme.tokens.getVar(
+                                        `colors.${iconColor}`
+                                    )}
+                                    style={{
+                                        width: '1.5rem',
+                                        height: '1.5rem',
+                                    }}
+                                />
                             }
                             buttonText="CREATE PUBLIC POOL"
                             onButtonClick={() => router.push('/pools/new')}
@@ -93,7 +103,17 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             title="Run a private node"
                             subtitle="You are able to stake directly by running your own node to represent your stake."
                             iconBg={iconBg}
-                            icon={<WalletIcon color={iconColor} w={6} h={6} />}
+                            icon={
+                                <WalletIcon
+                                    color={theme.tokens.getVar(
+                                        `colors.${iconColor}`
+                                    )}
+                                    style={{
+                                        width: '1.5rem',
+                                        height: '1.5rem',
+                                    }}
+                                />
+                            }
                             buttonText={'CREATE MY NODE'}
                             onButtonClick={() => {
                                 router.push('/node/new');

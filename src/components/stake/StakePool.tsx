@@ -85,8 +85,8 @@ const StakePool = () => {
 
     const titleLeftBorder = useColorModeValue('gray.900', 'white');
 
-    const disclosure = useDisclosure({
-        open: true,
+    const { open, onToggle } = useDisclosure({
+        defaultOpen: true,
     });
 
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
@@ -111,7 +111,7 @@ const StakePool = () => {
                         lg: 'none',
                     }}
                     cursor="pointer"
-                    onClick={disclosure.onToggle}
+                    onClick={onToggle}
                 >
                     <Heading
                         size="lg"
@@ -122,11 +122,7 @@ const StakePool = () => {
                         Overview
                     </Heading>
 
-                    <Box
-                        transform={
-                            disclosure.open ? 'rotate(180deg)' : 'rotate(0deg)'
-                        }
-                    >
+                    <Box transform={open ? 'rotate(180deg)' : 'rotate(0deg)'}>
                         <FaChevronDown width={6} height={6} />
                     </Box>
                 </HStack>

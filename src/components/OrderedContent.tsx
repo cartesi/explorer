@@ -27,7 +27,7 @@ export const OrderedContent = memo(
             {...stackProps}
         >
             <p>{title}</p>
-            <Box as="ol" pl={{ base: 4, md: 8 }} type="1">
+            <Box as="ol" pl={{ base: 4, md: 8 }} listStyleType="number">
                 {orderedItems.map((content, i) => (
                     <li id={`text-${i}}`} key={i}>
                         {content}
