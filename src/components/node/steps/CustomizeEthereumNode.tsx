@@ -27,6 +27,7 @@ const { COMPLETED } = StepStatus;
 
 const CustomizeEthereumNode = ({
     stepNumber,
+    currentStep,
     inFocus,
     onComplete,
     onStepActive,
@@ -35,6 +36,8 @@ const CustomizeEthereumNode = ({
     const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'
@@ -46,7 +49,7 @@ const CustomizeEthereumNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
             borderWidth={'1px'}
             borderColor={borderColor}

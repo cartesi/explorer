@@ -70,7 +70,7 @@ const SimpleInput = ({
             </Field.Label>
             <InputGroup
                 endElement={
-                    <Box m={1} mr={2} color="gray" fontSize={12}>
+                    <Box color="gray" fontSize={12}>
                         {inputRightElement}
                     </Box>
                 }
@@ -171,6 +171,8 @@ const EthereumNameServer = ({
     const ensInputIsEmpty = isEmpty(trim(ens));
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
 
     useEffect(() => {
         if (isCompleted) {
@@ -188,11 +190,7 @@ const EthereumNameServer = ({
             status={stepState.status}
             onActive={onStepActive}
             optionalText={useMessages('step.skippable')}
-            bg={
-                stepNumber - 1 === currentStep || stepNumber === currentStep
-                    ? bg
-                    : undefined
-            }
+            bg={isHighlighted ? bg : undefined}
         >
             <StepBody>
                 {!active && !ensInputIsEmpty && (

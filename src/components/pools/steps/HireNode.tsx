@@ -93,6 +93,8 @@ const HireNode = ({
         transactionType === 'hire' && pool?.transaction?.state === 'confirmed';
     const checkboxColorScheme = useColorModeValue('teal', 'gray');
     const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -115,11 +117,7 @@ const HireNode = ({
             title="Hire Node"
             subtitle="At this point, stake your funds using Cartesi Explorer."
             stepNumber={stepNumber}
-            bg={
-                stepNumber - 1 === currentStep || stepNumber <= currentStep
-                    ? bg
-                    : undefined
-            }
+            bg={isHighlighted ? bg : undefined}
             status={stepState.status}
             onActive={onStepActive}
         >

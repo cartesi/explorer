@@ -132,12 +132,11 @@ export const Step = ({
     return (
         <VStack
             boxShadow={state.stepBoxShadow}
-            backgroundColor={state.stepBoxBg}
+            bg={state.stepBoxBg}
             rounded="md"
             className="step-box"
             align="stretch"
             mt={isSmallScreen ? '0px !important' : null}
-            zIndex={1}
             {...stackProps}
         >
             {!isSmallScreen && (

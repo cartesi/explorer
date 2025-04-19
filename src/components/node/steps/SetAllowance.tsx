@@ -9,18 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Stack,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Button, Field, Input, InputGroup, Stack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
 import { useRouter } from 'next/navigation';
@@ -32,6 +21,7 @@ import { useMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { useWallet } from '../../wallet';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
+import { useColorModeValue } from '../../ui/color-mode';
 
 import {
     BaseInput,
@@ -102,15 +92,21 @@ const SetAllowanceInput = ({
     }, [allowanceErrors]);
 
     return (
-        <FormControl
+        <Field.Root
             pr={{ base: 0, md: '20vw' }}
             my={4}
-            isInvalid={!isNil(allowanceErrors)}
+            invalid={!isNil(allowanceErrors)}
         >
-            <FormLabel htmlFor="allowance_amount" fontWeight="medium">
+            <Field.Label htmlFor="allowance_amount" fontWeight="medium">
                 Enter the allowance
-            </FormLabel>
-            <InputGroup>
+            </Field.Label>
+            <InputGroup
+                endElement={
+                    <Box color="gray" fontSize={12}>
+                        CTSI
+                    </Box>
+                }
+            >
                 <Input
                     id="allowance_amount"
                     type="number"
@@ -124,21 +120,14 @@ const SetAllowanceInput = ({
                         trigger('allowance');
                     }}
                 />
-                <InputRightElement
-                    children="CTSI"
-                    m={1}
-                    mr={2}
-                    color="gray"
-                    fontSize={12}
-                />
             </InputGroup>
-            <FormErrorMessage>{allowanceErrors?.message}</FormErrorMessage>
-            <FormHelperText color={helperTxtColor} fontSize={14}>
+            <Field.ErrorText>{allowanceErrors?.message}</Field.ErrorText>
+            <Field.HelperText color={helperTxtColor} fontSize={14}>
                 This is going to be the maximum amount of CTSI that Cartesi’s
                 staking contract will be able to receive from your personal
                 account.
-            </FormHelperText>
-        </FormControl>
+            </Field.HelperText>
+        </Field.Root>
     );
 };
 
@@ -151,7 +140,12 @@ const enableBtnWhen = (
 const buildURL = (nodeAddress: string) =>
     !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/node-runners';
 
-const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
+const SetAllowance = ({
+    stepNumber,
+    currentStep,
+    inFocus,
+    onStepActive,
+}: IStep) => {
     const [hiredNodeAddress] = useAtom(hiredNodeAddressAtom);
     const router = useRouter();
     const wallet = useWallet();
@@ -168,6 +162,8 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
         'dark.border.quaternary'
     );
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
         setErrors((state) => {
@@ -195,9 +191,9 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
-            borderWidth={'1px'}
+            borderWidth={isHighlighted ? '1px' : 0}
             borderColor={borderColor}
             borderStyle={'solid'}
         >
@@ -231,7 +227,7 @@ const SetAllowance = ({ stepNumber, inFocus, onStepActive }: IStep) => {
                         disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
                         colorScheme={buttonColorScheme}
-                        isLoading={transaction.isOngoing}
+                        loading={transaction.isOngoing}
                         onClick={() =>
                             approve(
                                 staking.address,

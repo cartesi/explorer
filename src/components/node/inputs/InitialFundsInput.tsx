@@ -116,7 +116,7 @@ const InitialFundsInput = ({
             </Field.Label>
             <InputGroup
                 endElement={
-                    <Box m={1} mr={2} color="gray" fontSize={12}>
+                    <Box color="gray" fontSize={12}>
                         ETH
                     </Box>
                 }

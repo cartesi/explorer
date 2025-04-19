@@ -63,6 +63,7 @@ const CopyBoard = ({ command, children }) => {
 
 const SetUpNode = ({
     stepNumber,
+    currentStep,
     onComplete,
     onPrevious,
     onStepActive,
@@ -88,6 +89,9 @@ const SetUpNode = ({
         'dark.border.quaternary'
     );
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
+
     return (
         <Step
             title="Set up Node"
@@ -95,9 +99,9 @@ const SetUpNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
-            borderWidth={'1px'}
+            borderWidth={isHighlighted ? '1px' : 0}
             borderColor={borderColor}
             borderStyle={'solid'}
         >

@@ -108,6 +108,8 @@ const CommissionModel = ({
     const isStepCompleted = isPoolCreationCompleted(poolFactory.transaction);
     const colorScheme = useColorModeValue('teal', 'cyan');
     const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -139,11 +141,7 @@ const CommissionModel = ({
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
-            bg={
-                stepNumber - 1 === currentStep || stepNumber <= currentStep
-                    ? bg
-                    : undefined
-            }
+            bg={isHighlighted ? bg : undefined}
         >
             <StepBody>
                 <Stack direction="column" gap={2}>
