@@ -26,8 +26,8 @@ import Layout from '../Layout';
 import { StepGroup } from '../StepGroup';
 import CommissionModel from './steps/CommissionModel';
 import CustomizeEthereumNode from './steps/CustomizeEthereumNode';
-// import EthereumNameServer from './steps/ENS';
-// import HireNode from './steps/HireNode';
+import EthereumNameServer from './steps/ENS';
+import HireNode from './steps/HireNode';
 import SetUpNode from './steps/SetUpNode';
 import { useColorModeValue } from '../ui/color-mode';
 
@@ -96,8 +96,8 @@ const NewPool: FC = () => {
                         CustomizeEthereumNode,
                         SetUpNode,
                         CommissionModel,
-                        // HireNode,
-                        // EthereumNameServer,
+                        HireNode,
+                        EthereumNameServer,
                     ]}
                 />
             </Box>

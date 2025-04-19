@@ -1,10 +1,15 @@
 import { BoxProps, Box, Separator } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
 
-type SeparatorProps = {
+interface SeparatorProps {
     active: boolean;
     boxProps?: BoxProps;
-};
+}
+
+interface VerticalSeparatorProps extends SeparatorProps {
+    currentStep: number;
+    stepNumber: number;
+}
 
 const useStyle = () => {
     const borderColor = useColorModeValue('black', 'white');
@@ -32,18 +37,23 @@ export const HSeparator = (props: SeparatorProps) => {
     );
 };
 
-export const VSeparator = (props: SeparatorProps) => {
+export const VSeparator = (props: VerticalSeparatorProps) => {
+    const { active, currentStep, stepNumber, boxProps } = props;
     const { borderColor } = useStyle();
-    const dividerProps = props.active ? { borderColor, h: 8 } : {};
 
     return (
         <Box
             px={{ base: 7, md: 16 }}
             m="0px !important"
-            h={props.active ? 8 : '0.5rem'}
-            {...props.boxProps}
+            h={active ? 8 : '0.5rem'}
+            {...boxProps}
         >
-            <Separator orientation="vertical" h="3.5rem" {...dividerProps} />
+            <Separator
+                orientation="vertical"
+                height={active ? 8 : 16}
+                borderColor={active ? borderColor : undefined}
+                marginTop={stepNumber - 1 > currentStep ? '-2rem' : 0}
+            />
         </Box>
     );
 };

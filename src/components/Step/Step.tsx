@@ -132,7 +132,7 @@ export const Step = ({
     return (
         <VStack
             boxShadow={state.stepBoxShadow}
-            bg={state.stepBoxBg}
+            backgroundColor={state.stepBoxBg}
             rounded="md"
             className="step-box"
             align="stretch"

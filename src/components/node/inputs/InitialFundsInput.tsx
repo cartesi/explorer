@@ -9,16 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
-    Input,
-    InputGroup,
-    InputRightElement,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Field, Input, InputGroup } from '@chakra-ui/react';
 import { isEmpty, isFunction, isNil } from 'lodash/fp';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,6 +19,7 @@ import { formatValue } from '../../../utils/numberFormatter';
 import { toBigNumber } from '../../../utils/numberParser';
 import { BaseInput, ValidationResult } from '../../BaseInput';
 import { useWallet } from '../../wallet';
+import { useColorModeValue } from '../../ui/color-mode';
 
 type DepositField = 'deposit';
 
@@ -114,15 +106,21 @@ const InitialFundsInput = ({
     }, [depositErrors]);
 
     return (
-        <FormControl
+        <Field.Root
             pr={{ base: 0, md: '20vw' }}
-            isInvalid={!isNil(depositErrors)}
+            invalid={!isNil(depositErrors)}
             {...styleProps}
         >
-            <FormLabel htmlFor="initial_funds" fontWeight="medium">
+            <Field.Label htmlFor="initial_funds" fontWeight="medium">
                 Initial Funds
-            </FormLabel>
-            <InputGroup>
+            </Field.Label>
+            <InputGroup
+                endElement={
+                    <Box m={1} mr={2} color="gray" fontSize={12}>
+                        ETH
+                    </Box>
+                }
+            >
                 <Input
                     size="lg"
                     ref={ref}
@@ -137,19 +135,12 @@ const InitialFundsInput = ({
                         trigger('deposit');
                     }}
                 />
-                <InputRightElement
-                    children="ETH"
-                    m={1}
-                    mr={2}
-                    color="gray"
-                    fontSize={12}
-                />
             </InputGroup>
-            <FormErrorMessage>{depositErrors?.message}</FormErrorMessage>
-            <FormHelperText color={helperTxtColor} fontSize={14}>
+            <Field.ErrorText>{depositErrors?.message}</Field.ErrorText>
+            <Field.HelperText color={helperTxtColor} fontSize={14}>
                 Your balance: {ethBalance} ETH
-            </FormHelperText>
-        </FormControl>
+            </Field.HelperText>
+        </Field.Root>
     );
 };
 

@@ -12,18 +12,14 @@ import {
     Box,
     BoxProps,
     Button,
-    FormControl,
-    FormControlProps,
-    FormErrorMessage,
-    FormLabel,
+    Field,
+    FieldRootProps,
     Input,
     InputGroup,
-    InputRightElement,
     Link,
     Stack,
     Text,
     useBreakpointValue,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
@@ -39,6 +35,7 @@ import TransactionBanner from '../../TransactionBanner';
 import { useWallet } from '../../wallet';
 import { poolAddressAtom } from './CommissionModel';
 import { WalletDisconnectedNotification } from './WalletDisconnectedNotification';
+import { useColorModeValue } from '../../ui/color-mode';
 
 interface SimpleInput {
     label: string;
@@ -47,7 +44,7 @@ interface SimpleInput {
     isInvalid?: boolean;
     inputRightElement?: ReactNode;
     onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
-    formControlProps?: FormControlProps;
+    formControlProps?: FieldRootProps;
     placeholder?: string;
 }
 
@@ -62,34 +59,30 @@ const SimpleInput = ({
     formControlProps,
 }: SimpleInput) => {
     return (
-        <FormControl
+        <Field.Root
             pr={{ base: 0, md: '20vw' }}
-            isInvalid={isInvalid}
-            isDisabled={isDisabled}
+            invalid={isInvalid}
+            disabled={isDisabled}
             {...formControlProps}
         >
-            <FormLabel htmlFor={id} fontWeight="medium">
+            <Field.Label htmlFor={id} fontWeight="medium">
                 {label}
-            </FormLabel>
-            <InputGroup>
+            </Field.Label>
+            <InputGroup
+                endElement={
+                    <Box m={1} mr={2} color="gray" fontSize={12}>
+                        {inputRightElement}
+                    </Box>
+                }
+            >
                 <Input
                     id={id}
                     size="lg"
                     onChange={onChange}
                     placeholder={placeholder}
                 />
-                {inputRightElement && (
-                    <InputRightElement
-                        children={inputRightElement}
-                        m={1}
-                        mr={2}
-                        color="gray"
-                        fontSize={12}
-                    />
-                )}
             </InputGroup>
-            <FormErrorMessage>{}</FormErrorMessage>
-        </FormControl>
+        </Field.Root>
     );
 };
 
@@ -160,6 +153,7 @@ const buildURL = (address: string) =>
 
 const EthereumNameServer = ({
     stepNumber,
+    currentStep,
     inFocus,
     onComplete,
     onStepActive,
@@ -176,6 +170,8 @@ const EthereumNameServer = ({
     const isCompleted = proceed || pool.transaction?.state === 'confirmed';
     const ensInputIsEmpty = isEmpty(trim(ens));
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+
     useEffect(() => {
         if (isCompleted) {
             setStepState(COMPLETED);
@@ -192,6 +188,11 @@ const EthereumNameServer = ({
             status={stepState.status}
             onActive={onStepActive}
             optionalText={useMessages('step.skippable')}
+            bg={
+                stepNumber - 1 === currentStep || stepNumber === currentStep
+                    ? bg
+                    : undefined
+            }
         >
             <StepBody>
                 {!active && !ensInputIsEmpty && (

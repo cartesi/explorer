@@ -140,7 +140,7 @@ const CommissionModel = ({
             status={stepState.status}
             onActive={onStepActive}
             bg={
-                stepNumber - 1 === currentStep || stepNumber === currentStep
+                stepNumber - 1 === currentStep || stepNumber <= currentStep
                     ? bg
                     : undefined
             }

@@ -161,7 +161,11 @@ export const StepGroup = ({ mobileHeaderProps, steps }: StepGroupProps) => {
                             onStepActive={onStepActive}
                         />
                         {!isSmallScreen && !isLast && (
-                            <VSeparator active={currentStep >= stepNumber} />
+                            <VSeparator
+                                currentStep={currentStep}
+                                stepNumber={stepNumber}
+                                active={currentStep >= stepNumber}
+                            />
                         )}
                     </Fragment>
                 );
