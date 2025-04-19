@@ -18,7 +18,6 @@ import {
     Link as ChakraLink,
     Stack,
     Text,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -27,9 +26,10 @@ import Layout from '../Layout';
 import { StepGroup } from '../StepGroup';
 import CommissionModel from './steps/CommissionModel';
 import CustomizeEthereumNode from './steps/CustomizeEthereumNode';
-import EthereumNameServer from './steps/ENS';
-import HireNode from './steps/HireNode';
+// import EthereumNameServer from './steps/ENS';
+// import HireNode from './steps/HireNode';
 import SetUpNode from './steps/SetUpNode';
+import { useColorModeValue } from '../ui/color-mode';
 
 const NewPool: FC = () => {
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
@@ -42,14 +42,11 @@ const NewPool: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={Link}
-                    href="/node-runners"
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>Back</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <Link href="/node-runners">
+                        <Box as={AiOutlineLeft} mr={1} />
+                        <Text>Back</Text>
+                    </Link>
                 </Box>
             </HStack>
             <Box
@@ -99,8 +96,8 @@ const NewPool: FC = () => {
                         CustomizeEthereumNode,
                         SetUpNode,
                         CommissionModel,
-                        HireNode,
-                        EthereumNameServer,
+                        // HireNode,
+                        // EthereumNameServer,
                     ]}
                 />
             </Box>

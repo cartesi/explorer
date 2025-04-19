@@ -11,20 +11,17 @@
 
 import {
     Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertProps,
-    AlertTitle,
+    AlertRootProps,
     Box,
     CloseButton,
     HStack,
     Spinner,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { isFunction } from 'lodash/fp';
 import React, { FC, useEffect, useState } from 'react';
 import { Transaction } from '../../services/transaction';
 import Address from '../Address';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface AlertMessage {
     title?: string;
@@ -32,7 +29,9 @@ export interface AlertMessage {
     successDescription?: React.ReactNode;
 }
 
-export interface ITransactionInfoBannerProps extends AlertProps, AlertMessage {
+export interface ITransactionInfoBannerProps
+    extends AlertRootProps,
+        AlertMessage {
     transaction: Transaction<any>;
     onBeginTransaction?: () => void;
     onEndTransaction?: () => void;
@@ -105,7 +104,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const hash = innerTransaction?.transaction?.hash;
     const chainId = innerTransaction?.transaction?.chainId;
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
-    const variant = useColorModeValue('left-accent', undefined);
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
         `dark.support.${status}`
@@ -113,8 +111,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
 
     return !innerTransaction?.acknowledged ? (
-        <Alert
-            variant={variant}
+        <Alert.Root
             alignItems="flex-start"
             bg={bg}
             status={status}
@@ -124,28 +121,30 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
             {...props}
         >
             {status === 'info' && <Spinner mx={2} />}
-            {status !== 'info' && <AlertIcon color={alertIconColor} />}
-            <Box flex="1">
-                <HStack>
-                    <AlertTitle alignSelf="flex-start">
-                        {isError && failTitle ? failTitle : title}
-                    </AlertTitle>
-                    {hash && (
-                        <Address
-                            address={hash}
-                            type="tx"
-                            truncated
-                            chainId={chainId}
-                            alignItems="flex-start"
-                        />
-                    )}
-                </HStack>
+            {status !== 'info' && <Alert.Indicator color={alertIconColor} />}
+            <Alert.Content>
+                <Box flex="1">
+                    <HStack>
+                        <Alert.Title alignSelf="flex-start">
+                            {isError && failTitle ? failTitle : title}
+                        </Alert.Title>
+                        {hash && (
+                            <Address
+                                address={hash}
+                                type="tx"
+                                truncated
+                                chainId={chainId}
+                                alignItems="flex-start"
+                            />
+                        )}
+                    </HStack>
 
-                <AlertDescription display="block" fontSize={'1rem'}>
-                    {isError && error ? error : ''}
-                    {isSuccess && !isError ? successDescription : ''}
-                </AlertDescription>
-            </Box>
+                    <Alert.Description display="block" fontSize={'1rem'}>
+                        {isError && error ? error : ''}
+                        {isSuccess && !isError ? successDescription : ''}
+                    </Alert.Description>
+                </Box>
+            </Alert.Content>
             {transactionEnded && (
                 <CloseButton
                     position="absolute"
@@ -162,8 +161,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     }}
                 />
             )}
-        </Alert>
-    ) : (
-        <></>
-    );
+        </Alert.Root>
+    ) : null;
 };

@@ -8,15 +8,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    InputGroup,
-    Input,
-    InputRightElement,
-} from '@chakra-ui/react';
-import { ReactNode, ChangeEvent } from 'react';
+import { Box, Field, Input, InputGroup } from '@chakra-ui/react';
+import { ChangeEvent, ReactNode } from 'react';
 
 // TODO: Refactor and move that to a better place to be reused by more specialised Inputs (e.g. NodeInput, InitialFundsInput)
 
@@ -50,15 +43,21 @@ export const SimpleInput = ({
     name,
 }: SimpleInputProps) => {
     return (
-        <FormControl
+        <Field.Root
             pr={{ base: 0, md: '20vw' }}
-            isInvalid={isInvalid}
-            isDisabled={isDisabled}
+            invalid={isInvalid}
+            disabled={isDisabled}
         >
-            <FormLabel htmlFor={id} fontWeight="medium">
+            <Field.Label htmlFor={id} fontWeight="medium">
                 {label}
-            </FormLabel>
-            <InputGroup>
+            </Field.Label>
+            <InputGroup
+                endElement={
+                    <Box m={1} mr={2} color="gray" fontSize={12}>
+                        {inputRightElement}
+                    </Box>
+                }
+            >
                 <Input
                     name={name}
                     type={type || 'text'}
@@ -69,17 +68,8 @@ export const SimpleInput = ({
                     onBlur={onBlur}
                     onFocus={onFocus}
                 />
-                {inputRightElement && (
-                    <InputRightElement
-                        children={inputRightElement}
-                        m={1}
-                        mr={2}
-                        color="gray"
-                        fontSize={12}
-                    />
-                )}
             </InputGroup>
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-        </FormControl>
+            <Field.ErrorText>{errorMessage}</Field.ErrorText>
+        </Field.Root>
     );
 };

@@ -227,7 +227,7 @@ const EthereumNameServer = ({
                     justifyContent={{ base: 'flex-end', md: 'flex-start' }}
                 >
                     <Button
-                        isLoading={pool.transaction?.isOngoing}
+                        loading={pool.transaction?.isOngoing}
                         disabled={pool.transaction?.isOngoing}
                         colorScheme={buttonColorScheme}
                         minWidth={{ base: '10rem' }}

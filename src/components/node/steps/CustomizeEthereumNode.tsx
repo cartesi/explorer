@@ -15,14 +15,13 @@ import {
     Flex,
     Heading,
     Link,
-    ListItem,
     Stack,
     Text,
-    UnorderedList,
-    useColorModeValue,
+    List,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
+import { useColorModeValue } from '../../ui/color-mode';
 
 const { COMPLETED } = StepStatus;
 
@@ -54,7 +53,7 @@ const CustomizeEthereumNode = ({
             borderStyle={'solid'}
         >
             <StepBody>
-                <Heading as="h3" size="sm" my={4}>
+                <Heading as="h3" size="md" my={4}>
                     Ethereum node
                 </Heading>
                 <Text>
@@ -62,7 +61,7 @@ const CustomizeEthereumNode = ({
                     It's important to use a stable and reliable provider.
                 </Text>
 
-                <Heading as="h3" size="sm" my={4}>
+                <Heading as="h3" size="md" my={4}>
                     Ethereum Gateway
                 </Heading>
                 <Flex
@@ -107,15 +106,12 @@ const CustomizeEthereumNode = ({
                             (Recommended third party)
                         </Text>
                     </Flex>
-                    <UnorderedList
-                        ml={{ base: 6, md: 12 }}
-                        pt={{ base: 4, md: 0 }}
-                    >
-                        <ListItem>Relatively stable.</ListItem>
-                        <ListItem>
+                    <List.Root ml={{ base: 6, md: 12 }} pt={{ base: 4, md: 0 }}>
+                        <List.Item>Relatively stable.</List.Item>
+                        <List.Item>
                             Have to register and setup in advance
-                        </ListItem>
-                    </UnorderedList>
+                        </List.Item>
+                    </List.Root>
                 </Flex>
             </StepBody>
             <StepActions>

@@ -1,4 +1,5 @@
-import { BoxProps, Box, useColorModeValue, Divider } from '@chakra-ui/react';
+import { BoxProps, Box, Separator } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 type SeparatorProps = {
     active: boolean;
@@ -26,25 +27,23 @@ export const HSeparator = (props: SeparatorProps) => {
             px={1}
             {...props.boxProps}
         >
-            <Divider w="full" {...dividerProps} />
+            <Separator w="full" {...dividerProps} />
         </Box>
     );
 };
 
 export const VSeparator = (props: SeparatorProps) => {
     const { borderColor } = useStyle();
-    const dividerProps = props.active
-        ? { borderColor, h: 8 }
-        : { marginTop: '-2rem' };
+    const dividerProps = props.active ? { borderColor, h: 8 } : {};
 
     return (
         <Box
             px={{ base: 7, md: 16 }}
             m="0px !important"
-            h={props.active ? 6 : '0.5rem'}
+            h={props.active ? 8 : '0.5rem'}
             {...props.boxProps}
         >
-            <Divider orientation="vertical" h="3.5rem" {...dividerProps} />
+            <Separator orientation="vertical" h="3.5rem" {...dividerProps} />
         </Box>
     );
 };

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// import { Icon } from '@chakra-ui/icons';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { FixedNumber } from 'ethers';
 import useBlocks from '../../graphql/hooks/useBlocks';
