@@ -28,7 +28,7 @@ import { useColorModeValue } from '../../ui/color-mode';
 const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
-    const { copied, copy } = useClipboard(command);
+    const { copied, copy } = useClipboard({ value: command });
     const bgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     return (
         <Flex
@@ -46,7 +46,7 @@ const CopyBoard = ({ command, children }) => {
                     <Box
                         as={MdContentCopy}
                         cursor={'pointer'}
-                        onClick={copy}
+                        onClick={() => copy()}
                         fontSize="xl"
                         minW={6}
                     />

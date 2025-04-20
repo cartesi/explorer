@@ -9,19 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import {
-    AlertIcon,
     Button,
     Link,
-    ListItem,
-    OrderedList,
+    List,
     Stack,
     StackProps,
-    VStack,
     useDisclosure,
-    useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
 import { InfoBanner } from '../stake/InfoBanner';
@@ -48,12 +46,12 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
     const linkColor = useColorModeValue('dark.secondary', 'dark.primary');
 
-    const { isOpen, onToggle } = useDisclosure({
-        defaultIsOpen: showInstructions,
+    const { open, onToggle } = useDisclosure({
+        defaultOpen: showInstructions,
     });
 
     const {
-        isOpen: isOpenAllowanceModal,
+        open: isOpenAllowanceModal,
         onOpen: onOpenAllowanceModal,
         onClose: onCloseStakingPoolAllowanceModal,
     } = useDisclosure();
@@ -67,54 +65,54 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
 
     return (
         <>
-            <VStack spacing={8}>
+            <VStack gap={8}>
                 {showInstructions && (
                     <InfoBanner
                         title="Read carefully before staking!"
                         content={
                             <>
-                                <OrderedList fontSize="sm" mt={2}>
-                                    <ListItem>
+                                <List.Root as="ol" fontSize="sm" mt={2}>
+                                    <List.Item>
                                         This is a PoS system and thus,
                                         probabilistic. It can take a much longer
                                         time for you to produce blocks than the
                                         estimated average.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item>
                                         Estimated rewards can be highly
                                         variable, depending on chance and on the
                                         total amount of CTSI staked by everyone
                                         in the network.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item>
                                         Whenever your node is unavailable, you
                                         miss the chance of producing blocks.
                                         Cartesi's node depends on the
                                         availability of the configured Ethereum
                                         node.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item>
                                         This is a PoS system and thus,
                                         probabilistic. It can take a much longer
                                         time for you to produce blocks than the
                                         estimated average.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item>
                                         Estimated rewards can be highly
                                         variable, depending on chance and on the
                                         total amount of CTSI staked by everyone
                                         in the network.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item>
                                         Whenever your node is unavailable, you
                                         miss the chance of producing blocks.
                                         Cartesi's node depends on the
                                         availability of the configured Ethereum
                                         node.
-                                    </ListItem>
-                                </OrderedList>
+                                    </List.Item>
+                                </List.Root>
                                 <Stack
-                                    spacing={4}
+                                    gap={4}
                                     direction={{ base: 'column', md: 'row' }}
                                     justifyContent="space-between"
                                     mt={6}
@@ -122,7 +120,8 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                 >
                                     <Link
                                         href="#"
-                                        isExternal
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         fontSize="sm"
                                         color={linkColor}
                                         _hover={{
@@ -131,7 +130,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                         }}
                                     >
                                         Learn detailed staking instructions{' '}
-                                        <ExternalLinkIcon />
+                                        <FaExternalLinkAlt />
                                     </Link>
                                     <Button
                                         size="sm"
@@ -146,7 +145,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                 </Stack>
                             </>
                         }
-                        isOpen={isOpen}
+                        isOpen={open}
                         isClosable
                         status="warning"
                         onToggle={onToggle}

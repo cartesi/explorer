@@ -9,14 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    InputGroup,
-    InputRightElement,
-    NumberInput,
-    NumberInputField,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, InputGroup, NumberInput } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -91,7 +85,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
 
     return (
         <InputGroup>
-            <NumberInput
+            <NumberInput.Root
                 value={innerValue}
                 min={min}
                 max={max}
@@ -144,17 +138,87 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 }}
                 onChange={handleOnChange}
             >
-                <NumberInputField />
-                <InputRightElement
-                    color={rightElementColor}
-                    pointerEvents="none"
-                    pl={8}
-                    w={hasNumberSteppers ? 24 : 14}
-                    h="100%"
+                <NumberInput.Label />
+                <NumberInput.ValueText />
+                <NumberInput.Control>
+                    <NumberInput.IncrementTrigger />
+                    <NumberInput.DecrementTrigger />
+                </NumberInput.Control>
+                <InputGroup
+                    startElementProps={{ pointerEvents: 'auto' }}
+                    startElement={
+                        <NumberInput.Scrubber>
+                            <Box>CTSI</Box>
+                        </NumberInput.Scrubber>
+                    }
                 >
-                    <Box>CTSI</Box>
-                </InputRightElement>
-            </NumberInput>
+                    <NumberInput.Input />
+                </InputGroup>
+            </NumberInput.Root>
+            {/*<NumberInput*/}
+            {/*    value={innerValue}*/}
+            {/*    min={min}*/}
+            {/*    max={max}*/}
+            {/*    width="full"*/}
+            {/*    bg={inputBg}*/}
+            {/*    onBeforeInputCapture={(e) => {*/}
+            {/*        const inputText: string = (e as any)?.data;*/}
+
+            {/*        // no -/+ e7 allowed*/}
+            {/*        if (*/}
+            {/*            inputText.includes('-') ||*/}
+            {/*            inputText.includes('+') ||*/}
+            {/*            inputText.includes('e')*/}
+            {/*        ) {*/}
+            {/*            e.preventDefault();*/}
+            {/*            return;*/}
+            {/*        }*/}
+
+            {/*        // in case of double ..*/}
+            {/*        if (inputText === '.' && innerValue.includes('.')) {*/}
+            {/*            e.preventDefault();*/}
+            {/*            return;*/}
+            {/*        }*/}
+
+            {/*        // in case of paste*/}
+            {/*        if (*/}
+            {/*            inputText.includes('.') &&*/}
+            {/*            inputText.split('.')[1].length >= maxPrecision*/}
+            {/*        ) {*/}
+            {/*            e.preventDefault();*/}
+            {/*            return;*/}
+            {/*        }*/}
+
+            {/*        // in case of typing*/}
+            {/*        if (*/}
+            {/*            innerValue.includes('.') &&*/}
+            {/*            innerValue.split('.')[1].length >= maxPrecision*/}
+            {/*        ) {*/}
+            {/*            e.preventDefault();*/}
+            {/*            return;*/}
+            {/*        }*/}
+
+            {/*        if (*/}
+            {/*            parseFloat(innerValue) > max ||*/}
+            {/*            parseFloat(inputText) > max*/}
+            {/*        ) {*/}
+            {/*            e.preventDefault();*/}
+            {/*            if (setMaxOnOverflow) setInnerValue(max.toString());*/}
+            {/*        }*/}
+            {/*    }}*/}
+            {/*    onChange={handleOnChange}*/}
+            {/*>*/}
+            {/*    <NumberInputField />*/}
+            {/*    <InputRightElement*/}
+            {/*        color={rightElementColor}*/}
+            {/*        pointerEvents="none"*/}
+            {/*        pl={8}*/}
+            {/*        w={hasNumberSteppers ? 24 : 14}*/}
+            {/*        h="100%"*/}
+            {/*    >*/}
+            {/*        <Box>CTSI</Box>*/}
+            {/*    </InputRightElement>*/}
+            {/*</NumberInput>*/}
         </InputGroup>
     );
 };

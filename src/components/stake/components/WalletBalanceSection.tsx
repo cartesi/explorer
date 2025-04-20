@@ -9,24 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WarningIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Flex,
-    HStack,
-    Heading,
-    Icon,
-    Text,
-    Tooltip,
-    VStack,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { IoMdWarning } from 'react-icons/io';
+import { Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useMessages } from '../../../utils/messages';
 import { WalletIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 import { useWallet } from '../../wallet';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 export interface IWalletBalanceSectionProps {
     userCTSIBalance: BigNumber;
@@ -49,30 +42,35 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
 
     return (
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '70%' }}>
-            <HStack spacing={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
+            <HStack gap={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
                     bg={bgIcon}
+                    color={iconColor}
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"
                     display="grid"
                     placeContent="center"
                 >
-                    <WalletIcon color={iconColor} w={6} h={6} />{' '}
+                    <WalletIcon style={{ width: '1.5rem', height: '1.5rem' }} />{' '}
                 </Box>
                 <Box>
                     <HStack>
                         <Text color={balanceColor}>Wallet balance</Text>
                         <Tooltip
-                            placement="top"
-                            label="Here you can see your current wallet balance."
-                            fontSize="small"
-                            bg="dark.gray.quaternary"
-                            color="white"
-                            borderRadius={'md'}
-                            opacity={0.9}
+                            showArrow
+                            content="Here you can see your current wallet balance."
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
-                            <Icon color={balanceColor} w={3.5} h={3.5} />
+                            <Box color={balanceColor}>
+                                <FaRegQuestionCircle
+                                    style={{
+                                        width: '0.75rem',
+                                        height: '0.75rem',
+                                    }}
+                                />
+                            </Box>
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">
@@ -86,8 +84,10 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                 </Box>
             </HStack>
             {userETHBalance?.isZero() && !isGnosisSafe && (
-                <HStack spacing={2} alignItems="flex-start">
-                    <WarningIcon color={warningIconColor} />
+                <HStack gap={2} alignItems="flex-start">
+                    <Box color={warningIconColor}>
+                        <IoMdWarning />
+                    </Box>
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
                         transaction fee.
@@ -96,8 +96,10 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             )}
 
             {isGnosisSafe && (
-                <HStack spacing={2} alignItems="flex-start">
-                    <WarningIcon color="orange.500" />
+                <HStack gap={2} alignItems="flex-start">
+                    <Box color="orange.500">
+                        <IoMdWarning />
+                    </Box>
                     <Text fontSize="sm">{ethInfoMessage}</Text>
                 </HStack>
             )}

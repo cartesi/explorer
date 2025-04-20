@@ -14,6 +14,7 @@ import { FaCheck } from 'react-icons/fa';
 import {
     Box,
     Field,
+    Flex,
     Input,
     InputGroup,
     Spinner,
@@ -135,26 +136,20 @@ const NodeInput = ({
             <InputGroup
                 endElement={
                     displayLoader ? (
-                        <Box h="100%">
+                        <Flex h="100%" alignItems="center">
                             <VStack colorPalette="teal">
                                 <Spinner />
-                                <Text color="colorPalette.600">
-                                    Checking node availability...
-                                </Text>
                             </VStack>
-                        </Box>
+                        </Flex>
                     ) : isAvailable ? (
-                        <Box h="100%">
-                            <>
-                                <VisuallyHidden>
-                                    This node is available
-                                </VisuallyHidden>
-                                <FaCheck
-                                    id="node-available-check"
-                                    color="green.500"
-                                />
-                            </>
-                        </Box>
+                        <Flex h="100%" alignItems="center">
+                            <VisuallyHidden>
+                                This node is available
+                            </VisuallyHidden>
+                            <Box color="green.500">
+                                <FaCheck id="node-available-check" />
+                            </Box>
+                        </Flex>
                     ) : null
                 }
             >

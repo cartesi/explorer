@@ -10,29 +10,19 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Box,
     Button,
-    Divider,
-    FormControl,
-    FormHelperText,
-    FormLabel,
-    HStack,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
+    CloseButton,
+    Dialog,
+    Field,
     Text,
     UseDisclosureProps,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
 
 interface INodeAllowanceModalProps {
     allowance: BigNumber;
@@ -61,42 +51,49 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
 
-    const inputFocusRef = useRef<FocusableElement>(null);
-
     return (
-        <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
-            >
-                <ModalOverlay />
-                <ModalContent
+        <Dialog.Root
+            open={isOpen}
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content
                     bg={bgModal}
                     border="1px solid"
                     borderColor={'dark.border.secondary'}
                     borderRadius={'2xl'}
                     color={color}
                 >
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
-                                Set allowance
-                            </Box>
+                    {/*<Box pb={6}>*/}
+                    {/*    <HStack justify="space-between">*/}
+                    {/*        <Box*/}
+                    {/*            fontSize="xl"*/}
+                    {/*            fontWeight="bold"*/}
+                    {/*            p={4}*/}
+                    {/*            pl={8}*/}
+                    {/*            pb={4}*/}
+                    {/*        >*/}
+                    {/*            Set allowance*/}
+                    {/*        </Box>*/}
 
-                            <ModalCloseButton mt="0.5rem !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-                    <ModalBody>
-                        <VStack spacing={5}>
+                    {/*        <ModalCloseButton mt="0.5rem !important" />*/}
+                    {/*    </HStack>*/}
+                    {/*    <Separator />*/}
+                    {/*</Box>*/}
+
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>Your Account</Dialog.Title>
+                    </Dialog.Header>
+                    <Dialog.Body>
+                        <VStack gap={5}>
                             <Text>
                                 This is going to be the maximum amount of CTSI
                                 that Cartesi’s staking contract will be able to
@@ -104,26 +101,27 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                 the total value you wish to allow the CTSI
                                 staking contract to hold.
                             </Text>
-                            <FormControl id="depositAmount">
-                                <FormLabel fontWeight="bold">
+                            <Field.Root id="depositAmount">
+                                <Field.Label fontWeight="bold">
                                     Allowance amount
-                                </FormLabel>
+                                </Field.Label>
                                 <CTSINumberInput
                                     value={allowanceFormatted}
                                     min={0}
-                                    // ref={inputFocusRef}
                                     onChange={(bigNumberValue) => {
                                         setOutputAllowance(bigNumberValue);
                                     }}
                                 />
-                                <FormHelperText>
+                                <Field.HelperText>
                                     In this case, each edit will cost your ETH
                                     gas fee.
-                                </FormHelperText>
-                            </FormControl>
+                                </Field.HelperText>
+                            </Field.Root>
                         </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
+                    </Dialog.Body>
+                    <Dialog.Footer px="0" pt={10}>
+                        <VStack w="full" gap={4}>
+                            <Dialog.ActionTrigger asChild>
                                 <Button
                                     width="full"
                                     colorScheme={colorScheme}
@@ -135,6 +133,8 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                 >
                                     Approve
                                 </Button>
+                            </Dialog.ActionTrigger>
+                            <Dialog.CloseTrigger asChild>
                                 <Button
                                     width="full"
                                     colorScheme="darkGray"
@@ -143,11 +143,11 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                 >
                                     Cancel
                                 </Button>
-                            </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </>
+                            </Dialog.CloseTrigger>
+                        </VStack>
+                    </Dialog.Footer>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };

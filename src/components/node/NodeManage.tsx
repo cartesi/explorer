@@ -21,7 +21,6 @@ import {
     Stack,
     Text,
     useBreakpointValue,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
@@ -30,15 +29,16 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
+import { useColorModeValue } from '../ui/color-mode';
 
 import Layout from '../Layout';
-import { NodeStakeModal } from './modals/NodeStakeModal';
-import { NodeUnstakeModal } from './modals/NodeUnstakeModal';
-import { NodeInfoSection } from './NodeInfoSection';
-import { NodeMaturingSection } from './NodeMaturingSection';
-import { NodeReleasingSection } from './NodeReleasingSection';
-import { NodeRetiredBanner } from './NodeRetiredBanner';
-import { NodeStakedBalanceSection } from './NodeStakedBalanceSection';
+// import { NodeStakeModal } from './modals/NodeStakeModal';
+// import { NodeUnstakeModal } from './modals/NodeUnstakeModal';
+// import { NodeInfoSection } from './NodeInfoSection';
+// import { NodeMaturingSection } from './NodeMaturingSection';
+// import { NodeReleasingSection } from './NodeReleasingSection';
+// import { NodeRetiredBanner } from './NodeRetiredBanner';
+// import { NodeStakedBalanceSection } from './NodeStakedBalanceSection';
 import { NodeStakingDashboard } from './NodeStakingDashboard';
 import { TransactionInfoBanner } from '../stake/TransactionInfoBanner';
 import TransactionBanner from '../TransactionBanner';
@@ -183,14 +183,11 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={NextLink}
-                    href="/node-runners"
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>Back</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <NextLink href="/node-runners">
+                        <Box as={AiOutlineLeft} mr={1} />
+                        <Text>Back</Text>
+                    </NextLink>
                 </Box>
             </HStack>
 
@@ -227,75 +224,75 @@ const ManageNode: FC = () => {
                 </Box>
             )}
 
-            <Box
-                px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
-                pt={{ base: 8 }}
-                pb={4}
-            >
-                <VStack spacing={4} alignItems="stretch">
-                    {currentTransaction === 'authorize' && (
-                        <TransactionBanner
-                            title={useMessages('node.authorize.authorizing')}
-                            failTitle={useMessages('node.authorize.fail')}
-                            successDescription={useMessages(
-                                'node.authorize.success'
-                            )}
-                            transaction={node.transaction}
-                        />
-                    )}
+            {/*<Box*/}
+            {/*    px={{ base: '6vw', lg: '12vw', xl: '18vw' }}*/}
+            {/*    pt={{ base: 8 }}*/}
+            {/*    pb={4}*/}
+            {/*>*/}
+            {/*    <VStack gap={4} alignItems="stretch">*/}
+            {/*        {currentTransaction === 'authorize' && (*/}
+            {/*            <TransactionBanner*/}
+            {/*                title={useMessages('node.authorize.authorizing')}*/}
+            {/*                failTitle={useMessages('node.authorize.fail')}*/}
+            {/*                successDescription={useMessages(*/}
+            {/*                    'node.authorize.success'*/}
+            {/*                )}*/}
+            {/*                transaction={node.transaction}*/}
+            {/*            />*/}
+            {/*        )}*/}
 
-                    {isDepositAlertActive && (
-                        <TransactionBanner
-                            title="Setting deposit..."
-                            failTitle="Error setting deposit"
-                            successDescription="New deposit set successfully."
-                            transaction={node.transaction}
-                            onClose={() => setDepositAlertActive(false)}
-                        />
-                    )}
+            {/*        {isDepositAlertActive && (*/}
+            {/*            <TransactionBanner*/}
+            {/*                title="Setting deposit..."*/}
+            {/*                failTitle="Error setting deposit"*/}
+            {/*                successDescription="New deposit set successfully."*/}
+            {/*                transaction={node.transaction}*/}
+            {/*                onClose={() => setDepositAlertActive(false)}*/}
+            {/*            />*/}
+            {/*        )}*/}
 
-                    {isRetireAlertActive && (
-                        <TransactionBanner
-                            title="Retiring Node..."
-                            failTitle="Error retiring the node"
-                            successDescription="Node retired successfully."
-                            transaction={node.transaction}
-                            onSuccess={() => {
-                                setRetiring(false);
-                                setRetired(true);
-                            }}
-                            onError={() => {
-                                setRetiring(false);
-                                setRetired(false);
-                            }}
-                            onClose={() => setRetireAlertActive(false)}
-                        />
-                    )}
+            {/*        {isRetireAlertActive && (*/}
+            {/*            <TransactionBanner*/}
+            {/*                title="Retiring Node..."*/}
+            {/*                failTitle="Error retiring the node"*/}
+            {/*                successDescription="Node retired successfully."*/}
+            {/*                transaction={node.transaction}*/}
+            {/*                onSuccess={() => {*/}
+            {/*                    setRetiring(false);*/}
+            {/*                    setRetired(true);*/}
+            {/*                }}*/}
+            {/*                onError={() => {*/}
+            {/*                    setRetiring(false);*/}
+            {/*                    setRetired(false);*/}
+            {/*                }}*/}
+            {/*                onClose={() => setRetireAlertActive(false)}*/}
+            {/*            />*/}
+            {/*        )}*/}
 
-                    {isHireAlertActive && (
-                        <TransactionBanner
-                            title="Hiring node..."
-                            failTitle="Error hiring node"
-                            successDescription="Node hired successfully."
-                            transaction={node.transaction}
-                            onSuccess={() => {
-                                setHiring(false);
-                                setRetired(false);
-                            }}
-                            onError={() => {
-                                setHiring(false);
-                                setRetired(true);
-                            }}
-                            onClose={() => setHireAlertActive(false)}
-                        />
-                    )}
-                    {retiredDisclosure.isOpen && (
-                        <NodeRetiredBanner
-                            onClose={retiredDisclosure.onClose}
-                        />
-                    )}
-                </VStack>
-            </Box>
+            {/*        {isHireAlertActive && (*/}
+            {/*            <TransactionBanner*/}
+            {/*                title="Hiring node..."*/}
+            {/*                failTitle="Error hiring node"*/}
+            {/*                successDescription="Node hired successfully."*/}
+            {/*                transaction={node.transaction}*/}
+            {/*                onSuccess={() => {*/}
+            {/*                    setHiring(false);*/}
+            {/*                    setRetired(false);*/}
+            {/*                }}*/}
+            {/*                onError={() => {*/}
+            {/*                    setHiring(false);*/}
+            {/*                    setRetired(true);*/}
+            {/*                }}*/}
+            {/*                onClose={() => setHireAlertActive(false)}*/}
+            {/*            />*/}
+            {/*        )}*/}
+            {/*        {retiredDisclosure.open && (*/}
+            {/*            <NodeRetiredBanner*/}
+            {/*                onClose={retiredDisclosure.onClose}*/}
+            {/*            />*/}
+            {/*        )}*/}
+            {/*    </VStack>*/}
+            {/*</Box>*/}
 
             <Box
                 px={{ base: '6vw', lg: '12vw', xl: '18vw' }}
@@ -303,7 +300,7 @@ const ManageNode: FC = () => {
                 fontSize={'xl'}
             >
                 <Stack
-                    spacing={4}
+                    gap={4}
                     justifyContent="space-between"
                     alignContent="flex-start"
                     mb={4}
@@ -316,64 +313,64 @@ const ManageNode: FC = () => {
                     </Box>
                 </Stack>
 
-                {!node?.ready && !node?.error ? (
-                    <Box
-                        border="1px solid"
-                        borderColor={'dark.border.quaternary'}
-                        borderRadius={4}
-                        px={{ base: 2, lg: 8 }}
-                        py={{ base: 2, lg: 6 }}
-                        display="flex"
-                        justifyContent="center"
-                    >
-                        <Spinner size="xl" />
-                    </Box>
-                ) : (
-                    <NodeInfoSection
-                        ownerAccount={account}
-                        address={activeWorker}
-                        userBalance={userBalance}
-                        nodeBalance={node.balance}
-                        isRetired={isRetired}
-                        isRetiring={isRetiring}
-                        isHiring={isHiring}
-                        isAuthorizing={
-                            currentTransaction === 'authorize' &&
-                            node.transaction.isOngoing
-                        }
-                        isAuthorized={node.authorized}
-                        onAuthorize={() => {
-                            setCurrentTransaction('authorize');
-                            node.authorize();
-                        }}
-                        onRetire={() => {
-                            setCurrentTransaction('retire');
-                            setRetireAlertActive(true);
-                            setRetiring(true);
+                {/*{!node?.ready && !node?.error ? (*/}
+                {/*    <Box*/}
+                {/*        border="1px solid"*/}
+                {/*        borderColor={'dark.border.quaternary'}*/}
+                {/*        borderRadius={4}*/}
+                {/*        px={{ base: 2, lg: 8 }}*/}
+                {/*        py={{ base: 2, lg: 6 }}*/}
+                {/*        display="flex"*/}
+                {/*        justifyContent="center"*/}
+                {/*    >*/}
+                {/*        <Spinner size="xl" />*/}
+                {/*    </Box>*/}
+                {/*) : (*/}
+                {/*    <NodeInfoSection*/}
+                {/*        ownerAccount={account}*/}
+                {/*        address={activeWorker}*/}
+                {/*        userBalance={userBalance}*/}
+                {/*        nodeBalance={node.balance}*/}
+                {/*        isRetired={isRetired}*/}
+                {/*        isRetiring={isRetiring}*/}
+                {/*        isHiring={isHiring}*/}
+                {/*        isAuthorizing={*/}
+                {/*            currentTransaction === 'authorize' &&*/}
+                {/*            node.transaction.isOngoing*/}
+                {/*        }*/}
+                {/*        isAuthorized={node.authorized}*/}
+                {/*        onAuthorize={() => {*/}
+                {/*            setCurrentTransaction('authorize');*/}
+                {/*            node.authorize();*/}
+                {/*        }}*/}
+                {/*        onRetire={() => {*/}
+                {/*            setCurrentTransaction('retire');*/}
+                {/*            setRetireAlertActive(true);*/}
+                {/*            setRetiring(true);*/}
 
-                            node.retire();
-                        }}
-                        onDeposit={(amount) => {
-                            setCurrentTransaction('deposit');
-                            setDepositAlertActive(true);
-                            node.transfer(amount);
-                        }}
-                        onHire={(nodeAddress, funds) => {
-                            setCurrentTransaction('hire');
-                            setHireAlertActive(true);
-                            setHiring(true);
-                            setRetiring(false);
-                            setWorker(nodeAddress);
-                            setHiringFunds(funds);
-                        }}
-                    />
-                )}
+                {/*            node.retire();*/}
+                {/*        }}*/}
+                {/*        onDeposit={(amount) => {*/}
+                {/*            setCurrentTransaction('deposit');*/}
+                {/*            setDepositAlertActive(true);*/}
+                {/*            node.transfer(amount);*/}
+                {/*        }}*/}
+                {/*        onHire={(nodeAddress, funds) => {*/}
+                {/*            setCurrentTransaction('hire');*/}
+                {/*            setHireAlertActive(true);*/}
+                {/*            setHiring(true);*/}
+                {/*            setRetiring(false);*/}
+                {/*            setWorker(nodeAddress);*/}
+                {/*            setHiringFunds(funds);*/}
+                {/*        }}*/}
+                {/*    />*/}
+                {/*)}*/}
                 <Stack
                     direction={{ base: 'column', md: 'row' }}
                     justifyContent="space-between"
                     alignItems={{ base: 'flex-start', md: 'center' }}
                     alignContent="flex-start"
-                    spacing={4}
+                    gap={4}
                     mt={10}
                     mb={{ base: 0, md: 4 }}
                 >
@@ -410,7 +407,7 @@ const ManageNode: FC = () => {
                 </Stack>
 
                 <Box>
-                    <VStack spacing={4} alignItems="stretch">
+                    <VStack gap={4} alignItems="stretch">
                         <TransactionBanner
                             title="Setting allowance..."
                             failTitle="Error setting allowance"
@@ -449,56 +446,56 @@ const ManageNode: FC = () => {
                     </VStack>
                 </Box>
 
-                <Flex
-                    mt={4}
-                    pb={12}
-                    direction={['column', 'column', 'column', 'row']}
-                >
-                    <Box flex="3">
-                        <NodeMaturingSection
-                            maturingBalance={maturingBalance}
-                            maturingLeft={maturingLeft}
-                        />
-                        <NodeStakedBalanceSection
-                            stakedBalance={stakedBalance}
-                        />
-                        <NodeReleasingSection
-                            releasingBalance={releasingBalance}
-                            releasingLeftShort={releasingLeftShort}
-                            onWithdraw={() => {
-                                setCurrentTransaction('withdraw');
-                                setWithdrawAlertActive(true);
-                                withdraw(releasingBalance);
-                            }}
-                        />
-                    </Box>
-                </Flex>
+                {/*<Flex*/}
+                {/*    mt={4}*/}
+                {/*    pb={12}*/}
+                {/*    direction={['column', 'column', 'column', 'row']}*/}
+                {/*>*/}
+                {/*    <Box flex="3">*/}
+                {/*        <NodeMaturingSection*/}
+                {/*            maturingBalance={maturingBalance}*/}
+                {/*            maturingLeft={maturingLeft}*/}
+                {/*        />*/}
+                {/*        <NodeStakedBalanceSection*/}
+                {/*            stakedBalance={stakedBalance}*/}
+                {/*        />*/}
+                {/*        <NodeReleasingSection*/}
+                {/*            releasingBalance={releasingBalance}*/}
+                {/*            releasingLeftShort={releasingLeftShort}*/}
+                {/*            onWithdraw={() => {*/}
+                {/*                setCurrentTransaction('withdraw');*/}
+                {/*                setWithdrawAlertActive(true);*/}
+                {/*                withdraw(releasingBalance);*/}
+                {/*            }}*/}
+                {/*        />*/}
+                {/*    </Box>*/}
+                {/*</Flex>*/}
 
-                <NodeStakeModal
-                    isOpen={stakeDisclosure.isOpen}
-                    onClose={stakeDisclosure.onClose}
-                    allowance={allowance}
-                    disclosure={stakeDisclosure}
-                    onSave={(amount) => {
-                        setCurrentTransaction('stake');
-                        setStakeAlertActive(true);
-                        stake(amount);
-                    }}
-                />
+                {/*<NodeStakeModal*/}
+                {/*    isOpen={stakeDisclosure.open}*/}
+                {/*    onClose={stakeDisclosure.onClose}*/}
+                {/*    allowance={allowance}*/}
+                {/*    disclosure={stakeDisclosure}*/}
+                {/*    onSave={(amount) => {*/}
+                {/*        setCurrentTransaction('stake');*/}
+                {/*        setStakeAlertActive(true);*/}
+                {/*        stake(amount);*/}
+                {/*    }}*/}
+                {/*/>*/}
 
-                {stakedBalance && (
-                    <NodeUnstakeModal
-                        isOpen={unstakeDisclosure.isOpen}
-                        onClose={unstakeDisclosure.onClose}
-                        stakedBalance={stakedBalance}
-                        disclosure={unstakeDisclosure}
-                        onSave={(amount) => {
-                            setCurrentTransaction('unstake');
-                            setUnstakeAlertActive(true);
-                            unstake(amount);
-                        }}
-                    />
-                )}
+                {/*{stakedBalance && (*/}
+                {/*    <NodeUnstakeModal*/}
+                {/*        isOpen={unstakeDisclosure.open}*/}
+                {/*        onClose={unstakeDisclosure.onClose}*/}
+                {/*        stakedBalance={stakedBalance}*/}
+                {/*        disclosure={unstakeDisclosure}*/}
+                {/*        onSave={(amount) => {*/}
+                {/*            setCurrentTransaction('unstake');*/}
+                {/*            setUnstakeAlertActive(true);*/}
+                {/*            unstake(amount);*/}
+                {/*        }}*/}
+                {/*    />*/}
+                {/*)}*/}
             </Box>
 
             {isSmallScreen && (
@@ -507,12 +504,12 @@ const ManageNode: FC = () => {
                     bottom={0}
                     boxShadow="0px -4px 8px rgb(47 32 27 / 4%)"
                     bgColor={stepBoxBg}
-                    zIndex={theme.zIndices.sm}
+                    zIndex={theme.tokens.getVar('zIndex.sm')}
                 >
                     <Stack
                         py={4}
                         px={4}
-                        spacing={4}
+                        gap={4}
                         justifyContent="space-between"
                         direction="row"
                     >
