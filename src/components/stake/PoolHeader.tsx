@@ -15,6 +15,7 @@ import {
     Box,
     Button,
     HStack,
+    Icon,
     Stack,
     useBreakpointValue,
     VStack,
@@ -54,13 +55,8 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                     <HStack alignItems="flex-start">
                         <Button asChild variant="text" size="sm" px="0">
                             <NextLink href="/stake">
-                                <IoArrowBack
-                                    style={{
-                                        width: '1rem',
-                                        height: '1rem',
-                                    }}
-                                />{' '}
-                                Staking pool
+                                <Icon as={IoArrowBack} w={4} h={4} /> Staking
+                                pool
                             </NextLink>
                         </Button>
                     </HStack>

@@ -17,13 +17,14 @@ import {
     Heading,
     Stack,
     Text,
-    useColorModeValue,
+    Icon,
 } from '@chakra-ui/react';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { TimeIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface INodeMaturingSection {
     maturingBalance: BigNumber;
@@ -61,7 +62,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={8} alignItems="center">
+                <HStack gap={8} alignItems="center">
                     <Box
                         w={14}
                         h={14}
@@ -70,7 +71,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                         display="grid"
                         placeContent="center"
                     >
-                        <TimeIcon w={9} h={9} color={iconColor} />
+                        <Icon as={TimeIcon} color={iconColor} w={9} h={9} />
                     </Box>
 
                     <Box>
@@ -91,7 +92,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                 </HStack>
                 <Stack
                     direction={['column', 'row']}
-                    spacing={4}
+                    gap={4}
                     alignItems="center"
                 >
                     {maturingBalance.gt(0) && maturingLeft && (

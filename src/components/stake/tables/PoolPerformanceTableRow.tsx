@@ -13,6 +13,7 @@ import {
     Box,
     Flex,
     HStack,
+    Icon,
     Link,
     Table,
     TableCellProps,
@@ -176,9 +177,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaRegQuestionCircle
-                                style={{ marginLeft: '0.5rem' }}
-                            />
+                            <Icon as={FaRegQuestionCircle} ml={2} />
                         </Tooltip>
                     )}
                 </Flex>
@@ -216,7 +215,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             color: linkHoverColor,
                         }}
                     >
-                        <StakeIcon style={{ width: '2rem', height: '2rem' }} />
+                        <Icon as={StakeIcon} w={8} h={8} />
                     </Link>
                 </Box>
             </Table.Cell>

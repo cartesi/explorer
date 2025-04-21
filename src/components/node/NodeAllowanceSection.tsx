@@ -16,6 +16,7 @@ import {
     Flex,
     Heading,
     HStack,
+    Icon,
     IconButton,
     Text,
     VStack,
@@ -63,14 +64,12 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Box color={color}>
-                                <FaRegQuestionCircle
-                                    style={{
-                                        width: '0.75rem',
-                                        height: '0.75rem',
-                                    }}
-                                />
-                            </Box>
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                color={color}
+                                w={3}
+                                h={3}
+                            />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">

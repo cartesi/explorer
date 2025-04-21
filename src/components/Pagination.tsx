@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, Text } from '@chakra-ui/react';
+import { Button, HStack, Icon, Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { GhostButton } from './GhostButton';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
@@ -70,16 +70,14 @@ const Pagination: FC<PaginationProps> = (props) => {
                         }
                     }}
                 >
-                    <ChevronLeftIcon
-                        display="flex"
-                        style={{ width: '0.75rem', height: '0.75rem' }}
+                    <Icon
+                        as={ChevronLeftIcon}
+                        w={3}
+                        h={3}
                         color={
-                            isAfterFirstPage
-                                ? theme.tokens.getVar(`colors.${activeArrowBg}`)
-                                : theme.tokens.getVar(
-                                      `colors.${inactiveArrowBg}`
-                                  )
+                            isAfterFirstPage ? activeArrowBg : inactiveArrowBg
                         }
+                        display="flex"
                     />
                 </GhostButton>
             )}
@@ -141,15 +139,13 @@ const Pagination: FC<PaginationProps> = (props) => {
                         }
                     }}
                 >
-                    <ChevronRightIcon
+                    <Icon
+                        as={ChevronRightIcon}
+                        w={3}
+                        h={3}
                         display="flex"
-                        style={{ width: '0.75rem', height: '0.75rem' }}
                         color={
-                            isBeforeLastPage
-                                ? theme.tokens.getVar(`colors.${activeArrowBg}`)
-                                : theme.tokens.getVar(
-                                      `colors.${inactiveArrowBg}`
-                                  )
+                            isBeforeLastPage ? activeArrowBg : inactiveArrowBg
                         }
                     />
                 </GhostButton>

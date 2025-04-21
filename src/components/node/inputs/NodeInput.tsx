@@ -18,7 +18,6 @@ import {
     Input,
     InputGroup,
     Spinner,
-    Text,
     VisuallyHidden,
     VStack,
 } from '@chakra-ui/react';

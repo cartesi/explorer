@@ -9,16 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WarningIcon } from '@chakra-ui/icons';
-import {
-    Text,
-    Box,
-    HStack,
-    chakra,
-    CloseButton,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { IoMdWarning } from 'react-icons/io';
+
+import { Text, Box, HStack, chakra, CloseButton } from '@chakra-ui/react';
 import { FC } from 'react';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface NodeRetiredBannerProps {
     onClose?: () => void;
@@ -37,9 +32,11 @@ export const NodeRetiredBanner: FC<NodeRetiredBannerProps> = ({ onClose }) => {
             borderLeftWidth={14}
             borderLeftColor={'orange'}
         >
-            <HStack spacing={2} justifyContent="space-between">
-                <HStack spacing={2} mb={1}>
-                    <WarningIcon color="orange.500" mr={2} />
+            <HStack gap={2} justifyContent="space-between">
+                <HStack gap={2} mb={1}>
+                    <Box color="orange.500" mr={2}>
+                        <IoMdWarning />
+                    </Box>
                     <Text fontSize="sm">
                         <chakra.span fontWeight="bold" fontSize="sm">
                             Your node has been retired

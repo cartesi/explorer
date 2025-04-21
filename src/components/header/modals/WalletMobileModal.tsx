@@ -18,6 +18,7 @@ import {
     Dialog,
     Text,
     useClipboard,
+    Icon,
 } from '@chakra-ui/react';
 import { flow } from 'lodash/fp';
 import { useENS } from '../../../services/ens';
@@ -88,7 +89,8 @@ export const WalletMobileModal = ({
                                     {clipboard.copied ? (
                                         <Text fontSize="xs">Copied</Text>
                                     ) : (
-                                        <CopyIcon
+                                        <Icon
+                                            as={CopyIcon}
                                             onClick={clipboard.copy}
                                             cursor="pointer"
                                             height="19px"

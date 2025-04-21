@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon } from '@chakra-ui/icons';
+import { FaEdit, FaRegQuestionCircle } from 'react-icons/fa';
+
 import {
     Box,
     Button,
@@ -19,11 +20,11 @@ import {
     IconButton,
     Stack,
     Text,
-    Tooltip,
-    useColorModeValue,
     useDisclosure,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { Tooltip } from '../Tooltip';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -34,6 +35,7 @@ import { NodeHireNodeSection } from './NodeHireNodeSection';
 import { NodeRetiredHistory } from './NodeRetiredHistory';
 import { NodeBalanceModal } from './modals/NodeBalanceModal';
 import { NodeRetireModal } from './modals/NodeRetireModal';
+
 export interface INodeInfoSection {
     ownerAccount?: string;
     address: string;
@@ -70,7 +72,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
     const boxShadow = useColorModeValue('sm', 'none');
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const colorScheme = useColorModeValue('teal', 'blue');
-    const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
+    const [isLargerThan554] = useMediaQuery(['(min-width: 555px)']);
     const textFontWeight = isLargerThan554 ? 400 : 600;
 
     const retireModal = useDisclosure();
@@ -114,7 +116,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                         mb={4}
                     >
                         <Stack
-                            spacing={{ base: 2, md: 4 }}
+                            gap={{ base: 2, md: 4 }}
                             direction={{ base: 'row' }}
                             mb={2}
                         >
@@ -129,12 +131,12 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     Node Address
                                 </Text>
                             </Box>
-                            <Text noOfLines={1} flex={1}>
+                            <Text lineClamp={1} flex={1}>
                                 {formattedAddress}
                             </Text>
                         </Stack>
                         <Stack
-                            spacing={{ base: 2, md: 4 }}
+                            gap={{ base: 2, md: 4 }}
                             direction={{ base: 'row' }}
                             mb={2}
                             alignItems="center"
@@ -152,18 +154,18 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     </Text>
                                     <Box display="flex" alignItems="center">
                                         <Tooltip
-                                            placement="bottom"
-                                            label="The node balance is the amount of ETH available in the node’s wallet."
-                                            fontSize="small"
-                                            bg="dark.gray.quaternary"
-                                            color="white"
-                                            borderRadius={'md'}
-                                            opacity={0.9}
+                                            showArrow
+                                            content="The node balance is the amount of ETH available in the node’s wallet."
+                                            positioning={{
+                                                placement: 'bottom',
+                                            }}
+                                            openDelay={0}
                                         >
                                             <Icon
-                                                width={3.5}
-                                                height={3.5}
+                                                as={FaRegQuestionCircle}
                                                 color={tooltipColor}
+                                                w={3}
+                                                h={3}
                                             />
                                         </Tooltip>
                                     </Box>
@@ -181,17 +183,18 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     <IconButton
                                         aria-label="Edit"
                                         size="sm"
-                                        icon={<EditIcon w={4} h={4} />}
                                         variant="ghost"
                                         data-testid="edit-balance-button"
                                         disabled={isRetiring}
                                         onClick={depositModal.onOpen}
-                                    />
+                                    >
+                                        <Icon as={FaEdit} w={4} h={4} />
+                                    </IconButton>
                                 </Box>
                             </HStack>
                         </Stack>
                         <Stack
-                            spacing={{ base: 2, md: 4 }}
+                            gap={{ base: 2, md: 4 }}
                             direction={{ base: 'row' }}
                         >
                             <Box
@@ -207,7 +210,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     </Text>
                                 </HStack>
                             </Box>
-                            <HStack spacing={4} alignItems="flex-end" flex={1}>
+                            <HStack gap={4} alignItems="flex-end" flex={1}>
                                 <Box>
                                     <Text>Hired</Text>
                                 </Box>
@@ -235,7 +238,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                             px={{ base: 4, md: 6 }}
                             minWidth={{ base: 'auto', md: '173px' }}
                             me={2}
-                            isLoading={isAuthorizing}
+                            loading={isAuthorizing}
                             onClick={onAuthorize}
                         >
                             Authorize

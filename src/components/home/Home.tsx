@@ -13,7 +13,7 @@
 
 import { Box, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 import { useState } from 'react';
-import BlockMiniCard from '../block/BlockMiniCard';
+import BlockMiniCard from '../block/BlockMiniCard's;
 import HomeHeader from './Header';
 import Stats from './Stats';
 import Layout from '../Layout';

@@ -76,8 +76,7 @@ const Address: FC<AddressProps> = (props) => {
     const addressEnsInfo = useENS(address, { enabled: withEns });
     const ensEntry = ens ? addressEnsInfo : null;
 
-    // const { hasCopied, onCopy } = useClipboard({ value: address });
-    const clipboard = useClipboard({ value: address });
+    const { copied, copy } = useClipboard({ value: address });
     const [hover, setHover] = useState(false);
     const [hasAvatarError, setAvatarError] = useState<boolean>(false);
     const FallbackAvatar = fallbackAvatar || StakeCircledIcon;
@@ -146,7 +145,7 @@ const Address: FC<AddressProps> = (props) => {
                 </Text>
             )}
 
-            {showActions && !clipboard.copied && (
+            {showActions && !copied && (
                 <Button
                     variant="ghost"
                     display="flex"
@@ -167,13 +166,13 @@ const Address: FC<AddressProps> = (props) => {
                     minW="auto"
                     h="auto"
                     title="Copy"
-                    onClick={clipboard.copy}
+                    onClick={copy}
                     data-testid="copy-icon"
                 >
                     <MdOutlineContentCopy width={iconSize} height={iconSize} />
                 </Button>
             )}
-            {clipboard.copied && <Text fontSize="sm">Copied</Text>}
+            {copied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link
                     href={externalLink}

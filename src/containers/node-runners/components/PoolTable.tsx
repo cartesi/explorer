@@ -18,6 +18,7 @@ import {
     Flex,
     Heading,
     HStack,
+    Icon,
     Spinner,
     Stack,
     Table,
@@ -137,9 +138,7 @@ const PoolTable = ({ data }: Props) => {
                                     Total Staked
                                 </GhostButton>
                                 {sortBy == 'amount' && (
-                                    <FaArrowDown
-                                        style={{ marginLeft: '0.25rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -152,9 +151,7 @@ const PoolTable = ({ data }: Props) => {
                                     Total Users
                                 </GhostButton>
                                 {sortBy == 'totalUsers' && (
-                                    <FaArrowDown
-                                        style={{ marginLeft: '0.25rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -172,9 +169,7 @@ const PoolTable = ({ data }: Props) => {
                                     Commission
                                 </GhostButton>
                                 {sortBy == 'commissionPercentage' && (
-                                    <FaArrowDown
-                                        style={{ marginLeft: '0.25rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>

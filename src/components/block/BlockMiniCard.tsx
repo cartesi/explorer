@@ -15,6 +15,7 @@ import {
     Center,
     Flex,
     HStack,
+    Icon,
     Image,
     Spacer,
     Text,
@@ -62,7 +63,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
         <Box {...boxProps}>
             <Center p={2}>
                 <HStack>
-                    <IoMdTime style={{ width: '1.25rem', height: '1.25rem' }} />
+                    <Icon as={IoMdTime} w={5} h={5} />
                     <Text>
                         {humanizeDuration(Date.now() - block.timestamp * 1000, {
                             units: ['m'],

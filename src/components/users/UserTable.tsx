@@ -13,6 +13,7 @@ import { FaArrowDown } from 'react-icons/fa';
 
 import {
     HStack,
+    Icon,
     Spinner,
     Table,
     TableCellProps,
@@ -93,12 +94,8 @@ const UserTable: FC<UserTableProps> = ({
                             >
                                 Block Produced
                             </GhostButton>
-                            {sort == 'totalBlocks' && (
-                                <FaArrowDown
-                                    width={5}
-                                    height={5}
-                                    style={{ marginLeft: '1rem' }}
-                                />
+                            {sort === 'totalBlocks' && (
+                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                             )}
                         </Table.Cell>
 
@@ -115,11 +112,7 @@ const UserTable: FC<UserTableProps> = ({
                                 Total Staked
                             </GhostButton>
                             {sort == 'balance' && (
-                                <FaArrowDown
-                                    width={5}
-                                    height={5}
-                                    style={{ marginLeft: '1rem' }}
-                                />
+                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                             )}
                         </Table.Cell>
 
@@ -136,11 +129,7 @@ const UserTable: FC<UserTableProps> = ({
                                 Total Rewards
                             </GhostButton>
                             {sort == 'totalReward' && (
-                                <FaArrowDown
-                                    width={5}
-                                    height={5}
-                                    style={{ marginLeft: '1rem' }}
-                                />
+                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                             )}
                         </Table.Cell>
 

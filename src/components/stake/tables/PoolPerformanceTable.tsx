@@ -12,6 +12,7 @@
 import {
     Flex,
     HStack,
+    Icon,
     Spinner,
     Table,
     TableColumnHeaderProps,
@@ -102,11 +103,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Total Users
                                 </GhostButton>
                                 {sort == 'totalUsers' && (
-                                    <FaArrowDown
-                                        width={5}
-                                        height={5}
-                                        style={{ marginLeft: '1rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -127,11 +124,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Total Staked
                                 </GhostButton>
                                 {sort == 'amount' && (
-                                    <FaArrowDown
-                                        width={5}
-                                        height={5}
-                                        style={{ marginLeft: '1rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -175,11 +168,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Accrued Commission
                                 </GhostButton>{' '}
                                 {sort == 'commissionPercentage' && (
-                                    <FaArrowDown
-                                        width={5}
-                                        height={5}
-                                        style={{ marginLeft: '1rem' }}
-                                    />
+                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>

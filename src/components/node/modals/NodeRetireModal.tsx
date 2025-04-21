@@ -9,28 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WarningIcon } from '@chakra-ui/icons';
+import { IoMdWarning } from 'react-icons/io';
+
 import {
     Box,
     Button,
-    Divider,
-    FormControl,
-    FormHelperText,
-    FormLabel,
+    CloseButton,
+    Dialog,
+    Field,
     HStack,
     Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
+    Separator,
     Text,
     UseDisclosureProps,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
+import { useColorModeValue } from '../../ui/color-mode';
 
 interface INodeRetireModalProps {
     address: string;
@@ -48,87 +43,108 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
     const [addressValue, setAddressValue] = useState('');
-    const { isOpen, onClose } = disclosure;
+    const { open, onClose } = disclosure;
 
     useEffect(() => {
         setAddressValue('');
-    }, [isOpen]);
+    }, [open]);
 
     return (
-        <Modal onClose={onClose} isOpen={isOpen} isCentered>
-            <ModalOverlay />
-            <ModalContent
-                bg={bgModal}
-                border="1px solid"
-                borderColor={'dark.border.secondary'}
-                borderRadius={'2xl'}
-                color={color}
-            >
-                <Box pb={6}>
-                    <HStack justify="space-between">
-                        <Box
-                            fontSize="xl"
-                            fontWeight="bold"
-                            p={4}
-                            pl={8}
-                            pb={4}
+        <Dialog.Root
+            open={open}
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content
+                    bg={bgModal}
+                    border="1px solid"
+                    borderColor={'dark.border.secondary'}
+                    borderRadius={'2xl'}
+                    color={color}
+                >
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <Box
+                                fontSize="xl"
+                                fontWeight="bold"
+                                p={4}
+                                pl={8}
+                                pb={4}
+                            >
+                                Retire node
+                            </Box>
+                        </Dialog.Title>
+                        <Separator />
+                    </Dialog.Header>
+                    <Dialog.Body>
+                        <Text mb={8}>
+                            After retiring the node all remaining ETH funds held
+                            by the node will be transferred to your personal
+                            Ethereum account. If you want to participate in the
+                            system, please hire a new node with a new address.
+                        </Text>
+                        <Field.Root id="retireNode" mb="auto">
+                            <Field.Label fontWeight="bold">
+                                Node address
+                            </Field.Label>
+                            <Input
+                                value={addressValue}
+                                onChange={(e) =>
+                                    setAddressValue(e.target.value)
+                                }
+                            />
+                            <Field.HelperText>
+                                Please enter your address to verify your action.
+                            </Field.HelperText>
+                        </Field.Root>
+                    </Dialog.Body>
+                    <Dialog.Footer pb="40px !important">
+                        <VStack
+                            alignItems="flex-start"
+                            flexBasis={{ base: '100%', lg: '100%' }}
+                            px={2}
                         >
-                            Retire node
-                        </Box>
-
-                        <ModalCloseButton mt="8px !important" />
-                    </HStack>
-                    <Divider />
-                </Box>
-                <ModalBody>
-                    <Text mb={8}>
-                        After retiring the node all remaining ETH funds held by
-                        the node will be transferred to your personal Ethereum
-                        account. If you want to participate in the system,
-                        please hire a new node with a new address.
-                    </Text>
-                    <FormControl id="retireNode" mb="auto">
-                        <FormLabel fontWeight="bold">Node address</FormLabel>
-                        <Input
-                            value={addressValue}
-                            onChange={(e) => setAddressValue(e.target.value)}
-                        />
-                        <FormHelperText>
-                            Please enter your address to verify your action.
-                        </FormHelperText>
-                    </FormControl>
-                </ModalBody>
-                <ModalFooter pb="40px !important">
-                    <VStack
-                        alignItems="flex-start"
-                        flexBasis={{ base: '100%', lg: '100%' }}
-                        px={2}
-                    >
-                        <HStack spacing={2} mb={1}>
-                            <WarningIcon color="light.support.alert" />
-                            <Text fontSize="sm">
-                                Once that node is retired, you cannot reuse it.
-                            </Text>
-                        </HStack>
-                        <Button
-                            width="full"
-                            colorScheme={colorScheme}
-                            disabled={address != addressValue?.trim()}
-                            onClick={onConfirmRetire}
-                        >
-                            Retire
-                        </Button>
-                        <Button
-                            width="full"
-                            colorScheme="darkGray"
-                            variant="ghost"
-                            onClick={onClose}
-                        >
-                            Cancel
-                        </Button>
-                    </VStack>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                            <HStack gap={2} mb={1}>
+                                <Box color="light.support.alert">
+                                    <IoMdWarning />
+                                </Box>
+                                <Text fontSize="sm">
+                                    Once that node is retired, you cannot reuse
+                                    it.
+                                </Text>
+                            </HStack>
+                            <Dialog.ActionTrigger asChild>
+                                <Button
+                                    width="full"
+                                    colorScheme={colorScheme}
+                                    disabled={address != addressValue?.trim()}
+                                    onClick={onConfirmRetire}
+                                >
+                                    Retire
+                                </Button>
+                            </Dialog.ActionTrigger>
+                            <Dialog.CloseTrigger asChild>
+                                <Button
+                                    width="full"
+                                    colorScheme="darkGray"
+                                    variant="ghost"
+                                    onClick={onClose}
+                                >
+                                    Cancel
+                                </Button>
+                            </Dialog.CloseTrigger>
+                        </VStack>
+                    </Dialog.Footer>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };

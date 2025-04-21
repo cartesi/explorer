@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, Link, Table, TableCellProps } from '@chakra-ui/react';
+import { Box, Icon, Link, Table, TableCellProps } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, useState } from 'react';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
@@ -141,7 +141,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                             color: linkHoverColor,
                         }}
                     >
-                        <StakeIcon style={{ width: '2rem', height: '2rem' }} />
+                        <Icon as={StakeIcon} w={8} h={8} />
                     </Link>
                 </Box>
             </Table.Cell>

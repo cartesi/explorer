@@ -15,6 +15,7 @@ import {
     Flex,
     Grid,
     GridItem,
+    Icon,
     Link,
     SimpleGrid,
     Stack,
@@ -189,34 +190,36 @@ const Footer: FC<FooterProps> = (props) => {
                             label="Cartesi"
                             href="https://cartesi.io/"
                         >
-                            <CartesiTranparent
+                            <Icon
+                                as={CartesiTranparent}
                                 color="white"
-                                style={{ width: '1.5rem', height: '1.5rem' }}
+                                w={6}
+                                h={6}
                             />
                         </SocialButton>
                         <SocialButton
                             label="Github"
                             href="https://github.com/cartesi"
                         >
-                            <FaGithub color="white" size={24} />
+                            <Icon as={FaGithub} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Discord"
                             href="https://discord.gg/pfXMwXDDfW"
                         >
-                            <FaDiscord color="white" size={24} />
+                            <Icon as={FaDiscord} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Youtube"
                             href="https://www.youtube.com/@cartesiproject/featured"
                         >
-                            <FaYoutube color="white" size={24} />
+                            <Icon as={FaYoutube} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <FaTwitter color="white" size={24} />
+                            <Icon as={FaTwitter} color="white" w={6} h={6} />
                         </SocialButton>
                     </Stack>
                 </GridItem>

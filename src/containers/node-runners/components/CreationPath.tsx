@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Heading, VStack } from '@chakra-ui/react';
+import { Heading, Icon, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { SlideDown } from '../../../components/animation/SlideDown';
 import { Card } from '../../../components/Card';
@@ -71,14 +71,11 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             subtitle="Earn commissions out of the blocks rewards."
                             iconBg={iconBg}
                             icon={
-                                <AllowanceIcon
-                                    color={theme.tokens.getVar(
-                                        `colors.${iconColor}`
-                                    )}
-                                    style={{
-                                        width: '1.5rem',
-                                        height: '1.5rem',
-                                    }}
+                                <Icon
+                                    as={AllowanceIcon}
+                                    w={6}
+                                    h={6}
+                                    color={iconColor}
                                 />
                             }
                             buttonText="CREATE PUBLIC POOL"
@@ -104,14 +101,11 @@ const CreationPath = ({ router }: CreationPathProps) => {
                             subtitle="You are able to stake directly by running your own node to represent your stake."
                             iconBg={iconBg}
                             icon={
-                                <WalletIcon
-                                    color={theme.tokens.getVar(
-                                        `colors.${iconColor}`
-                                    )}
-                                    style={{
-                                        width: '1.5rem',
-                                        height: '1.5rem',
-                                    }}
+                                <Icon
+                                    as={WalletIcon}
+                                    w={6}
+                                    h={6}
+                                    color={iconColor}
                                 />
                             }
                             buttonText={'CREATE MY NODE'}

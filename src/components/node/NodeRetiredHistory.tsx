@@ -11,26 +11,17 @@
 
 import {
     Accordion,
-    AccordionButton,
-    AccordionIcon,
-    AccordionItem,
-    AccordionPanel,
     Box,
     Flex,
     Table,
-    TableContainer,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
     useMediaQuery,
 } from '@chakra-ui/react';
 import { FC, memo } from 'react';
 import { useUserNodes } from '../../graphql/hooks/useNodes';
 import { truncateString } from '../../utils/stringUtils';
+import { useColorModeValue } from '../ui/color-mode';
+
 export interface NodeRetiredHistoryProps {
     address: string;
 }
@@ -41,7 +32,7 @@ interface HistoryProps {
 
 const History: FC<HistoryProps> = memo(
     ({ address, retirementTimestamp, ...restProps }) => {
-        const [isLargerThan554] = useMediaQuery('(min-width: 555px)');
+        const [isLargerThan554] = useMediaQuery(['(min-width: 555px)']);
         const formattedTime = new Date(
             retirementTimestamp * 1000
         ).toUTCString();
@@ -49,15 +40,15 @@ const History: FC<HistoryProps> = memo(
             ? address
             : truncateString(address);
         return (
-            <Tr
+            <Table.Row
                 borderBottomWidth="1px"
                 borderBottomColor="gray.200"
                 borderBottomStyle="solid"
                 {...restProps}
             >
-                <Td>{formattedAddress}</Td>
-                <Td>{formattedTime}</Td>
-            </Tr>
+                <Table.Cell>{formattedAddress}</Table.Cell>
+                <Table.Cell>{formattedTime}</Table.Cell>
+            </Table.Row>
         );
     }
 );
@@ -76,9 +67,9 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
     );
     return (
         <Box mt={8} mb={10}>
-            <Accordion allowToggle>
-                <AccordionItem border="none">
-                    <AccordionButton
+            <Accordion.Root collapsible>
+                <Accordion.Item border="none" value="">
+                    <Accordion.ItemTrigger
                         borderTop="none"
                         borderBottom="none"
                         borderLeftWidth="1px"
@@ -89,54 +80,59 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
                     >
                         <Flex alignItems="center" columnGap={4}>
                             <Text fontSize="xl">Node History</Text>
-                            <AccordionIcon />
+                            <Accordion.ItemIndicator />
                         </Flex>
-                    </AccordionButton>
-                    <AccordionPanel px={0}>
-                        <TableContainer>
-                            <Table variant="unstyled" color={textColor}>
-                                <Thead
-                                    borderBottomWidth="1px"
-                                    borderBottomColor="gray.200"
-                                    borderBottomStyle="solid"
+                    </Accordion.ItemTrigger>
+                    <Accordion.ItemContent px={0}>
+                        <Accordion.ItemBody>
+                            <Table.ScrollArea>
+                                <Table.Root
+                                    variant="unstyled"
+                                    color={textColor}
                                 >
-                                    <Tr>
-                                        <Th>
-                                            <Text
-                                                fontSize="md"
-                                                textTransform="capitalize"
-                                            >
-                                                Node Address
-                                            </Text>
-                                        </Th>
-                                        <Th>
-                                            <Text
-                                                fontSize="md"
-                                                textTransform="capitalize"
-                                            >
-                                                Retire date (GMT)
-                                            </Text>
-                                        </Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody fontSize="md">
-                                    {data?.nodes &&
-                                        data?.nodes.length > 0 &&
-                                        data.nodes.map((node) => (
-                                            <History
-                                                key={node.id}
-                                                address={node.id}
-                                                retirementTimestamp={
-                                                    node.retirementTimestamp
-                                                }
-                                            />
-                                        ))}
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    </AccordionPanel>
-                </AccordionItem>
-            </Accordion>
+                                    <Table.Header
+                                        borderBottomWidth="1px"
+                                        borderBottomColor="gray.200"
+                                        borderBottomStyle="solid"
+                                    >
+                                        <Table.Row>
+                                            <Table.Cell>
+                                                <Text
+                                                    fontSize="md"
+                                                    textTransform="capitalize"
+                                                >
+                                                    Node Address
+                                                </Text>
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <Text
+                                                    fontSize="md"
+                                                    textTransform="capitalize"
+                                                >
+                                                    Retire date (GMT)
+                                                </Text>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body fontSize="md">
+                                        {data?.nodes &&
+                                            data?.nodes.length > 0 &&
+                                            data.nodes.map((node) => (
+                                                <History
+                                                    key={node.id}
+                                                    address={node.id}
+                                                    retirementTimestamp={
+                                                        node.retirementTimestamp
+                                                    }
+                                                />
+                                            ))}
+                                    </Table.Body>
+                                </Table.Root>
+                            </Table.ScrollArea>
+                        </Accordion.ItemBody>
+                    </Accordion.ItemContent>
+                </Accordion.Item>
+            </Accordion.Root>
         </Box>
     );
 };

@@ -10,7 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { IoMdWarning } from 'react-icons/io';
-import { Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import {
+    Box,
+    Flex,
+    Heading,
+    HStack,
+    Icon,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useMessages } from '../../../utils/messages';
@@ -45,14 +53,13 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             <HStack gap={4} alignItems="center" pt={{ base: 4, lg: 0 }}>
                 <Box
                     bg={bgIcon}
-                    color={iconColor}
                     w="4.125rem"
                     h="4.125rem"
                     borderRadius="full"
                     display="grid"
                     placeContent="center"
                 >
-                    <WalletIcon style={{ width: '1.5rem', height: '1.5rem' }} />{' '}
+                    <Icon as={WalletIcon} color={iconColor} w={6} h={6} />{' '}
                 </Box>
                 <Box>
                     <HStack>
@@ -63,14 +70,12 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Box color={balanceColor}>
-                                <FaRegQuestionCircle
-                                    style={{
-                                        width: '0.75rem',
-                                        height: '0.75rem',
-                                    }}
-                                />
-                            </Box>
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                w={3}
+                                h={3}
+                                color={balanceColor}
+                            />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">

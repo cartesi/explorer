@@ -1,4 +1,4 @@
-import { HStack, Stack, Text } from '@chakra-ui/react';
+import { HStack, Icon, Stack, Text } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
@@ -33,12 +33,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             gap={6}
         >
             <Banner
-                Icon={
-                    <PoolsIcon
-                        color={theme.tokens.getVar(`colors.${iconColor}`)}
-                        style={{ width: '2rem', height: '2rem' }}
-                    />
-                }
+                Icon={<Icon as={PoolsIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}># Pools</Text>
@@ -57,12 +52,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             </Banner>
 
             <Banner
-                Icon={
-                    <MyPoolsIcon
-                        color={theme.tokens.getVar(`colors.${iconColor}`)}
-                        style={{ width: '2rem', height: '2rem' }}
-                    />
-                }
+                Icon={<Icon as={MyPoolsIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}>My Pools</Text>
@@ -81,12 +71,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             </Banner>
 
             <Banner
-                Icon={
-                    <MyStakeIcon
-                        color={theme.tokens.getVar(`colors.${iconColor}`)}
-                        style={{ width: '2rem', height: '2rem' }}
-                    />
-                }
+                Icon={<Icon as={MyStakeIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}>My Stake</Text>

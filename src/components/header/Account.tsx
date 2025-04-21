@@ -9,7 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, Menu, Tag, TagLabel, Portal } from '@chakra-ui/react';
+import {
+    Button,
+    HStack,
+    Menu,
+    Tag,
+    TagLabel,
+    Portal,
+    Icon,
+} from '@chakra-ui/react';
 import { FC, useState } from 'react';
 import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
@@ -69,11 +77,12 @@ export const Account: FC = () => {
                                     </TagLabel>
                                 </HStack>
 
-                                <PaginationIcon
+                                <Icon
+                                    as={PaginationIcon}
                                     color={color}
+                                    w={8}
+                                    h={8}
                                     style={{
-                                        width: 32,
-                                        height: 32,
                                         transition: 'ease-in-out 0.1s',
                                         transform: opened
                                             ? 'rotate(180deg)'

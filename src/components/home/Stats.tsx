@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import { FixedNumber } from 'ethers';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useSummary from '../../graphql/hooks/useSummary';
@@ -77,13 +77,7 @@ const HomeStats = () => {
                 py={{ base: 2, md: 8 }}
             >
                 <PrimaryCard
-                    icon={
-                        <Box color={iconColor}>
-                            <ChartIcon
-                                style={{ width: '1.5rem', height: '1.5rem' }}
-                            />
-                        </Box>
-                    }
+                    icon={<Icon w={6} h={6} as={ChartIcon} color={iconColor} />}
                     mt={4}
                     mb={{ base: 4, md: 0 }}
                     mr={2}
@@ -98,11 +92,12 @@ const HomeStats = () => {
 
                 <PrimaryCard
                     icon={
-                        <Box color={iconColor}>
-                            <MarketCapICon
-                                style={{ width: '1.5rem', height: '1.5rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={MarketCapICon}
+                            w={6}
+                            h={6}
+                            color={iconColor}
+                        />
                     }
                     mt={4}
                     mb={{ base: 4, md: 0 }}
@@ -143,11 +138,12 @@ const HomeStats = () => {
 
                 <PrimaryCard
                     icon={
-                        <Box color={iconColor}>
-                            <CircleSupplyIcon
-                                style={{ width: '1.5rem', height: '1.5rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={CircleSupplyIcon}
+                            w={6}
+                            h={6}
+                            color={iconColor}
+                        />
                     }
                     mt={4}
                     minWidth="calc(33.33% - 0.8rem)"
@@ -204,11 +200,12 @@ const HomeStats = () => {
                         </Flex>
                     }
                     Icon={
-                        <Box color={bannerIconColor}>
-                            <ActiveNodeIcon
-                                style={{ width: '1.75rem', height: '1.75rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={ActiveNodeIcon}
+                            w={7}
+                            h={7}
+                            color={bannerIconColor}
+                        />
                     }
                     width={{
                         base: '100%',
@@ -237,11 +234,12 @@ const HomeStats = () => {
                         </Flex>
                     }
                     Icon={
-                        <Box color={bannerIconColor}>
-                            <TotalStakedIcon
-                                style={{ width: '1.75rem', height: '1.75rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={TotalStakedIcon}
+                            w={7}
+                            h={7}
+                            color={bannerIconColor}
+                        />
                     }
                     width={{
                         base: '100%',
@@ -279,11 +277,12 @@ const HomeStats = () => {
                         </Flex>
                     }
                     Icon={
-                        <Box color={bannerIconColor}>
-                            <PrizeIcon
-                                style={{ width: '1.75rem', height: '1.75rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={PrizeIcon}
+                            w={7}
+                            h={7}
+                            color={bannerIconColor}
+                        />
                     }
                     width={{
                         base: '100%',
@@ -321,11 +320,12 @@ const HomeStats = () => {
                         </Flex>
                     }
                     Icon={
-                        <Box color={bannerIconColor}>
-                            <GridIcon
-                                style={{ width: '1.75rem', height: '1.75rem' }}
-                            />
-                        </Box>
+                        <Icon
+                            as={GridIcon}
+                            w={7}
+                            h={7}
+                            color={bannerIconColor}
+                        />
                     }
                     width={{
                         base: '100%',

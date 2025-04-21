@@ -11,6 +11,7 @@
 
 import {
     Box,
+    Icon,
     IconProps,
     Link,
     Table,
@@ -133,9 +134,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                                 color: linkHoverColor,
                             }}
                         >
-                            <StakeIcon
-                                style={{ width: '2rem', height: '2rem' }}
-                            />
+                            <Icon as={StakeIcon} w={8} h={8} />
                         </Link>
                     ) : (
                         <Text>Private node</Text>

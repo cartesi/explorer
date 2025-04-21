@@ -322,18 +322,16 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             aria-label="Edit"
                                             size="sm"
                                             bg="transparent"
-                                            icon={
-                                                <PencilIconWhite
-                                                    style={{
-                                                        height: 24,
-                                                        width: 24,
-                                                    }}
-                                                />
-                                            }
                                             onClick={() => {
                                                 setAllowanceStep(true);
                                             }}
-                                        />
+                                        >
+                                            <Icon
+                                                as={PencilIconWhite}
+                                                w={6}
+                                                h={6}
+                                            />
+                                        </IconButton>
                                     </Box>
                                 </HStack>
 
