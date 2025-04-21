@@ -43,7 +43,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     const rightElementColor = useColorModeValue('gray.300', 'white');
     const inputBg = useColorModeValue('transparent', 'dark.border.quaternary');
 
-    const handleOnChange = (value) => {
+    const handleOnChange = ({ value }) => {
         const numberValue = parseFloat(value);
 
         if (isNaN(numberValue) || numberValue < min) {
@@ -136,23 +136,20 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                         if (setMaxOnOverflow) setInnerValue(max.toString());
                     }
                 }}
-                onChange={handleOnChange}
+                onValueChange={handleOnChange}
             >
                 <NumberInput.Label />
-                <NumberInput.ValueText />
-                <NumberInput.Control>
-                    <NumberInput.IncrementTrigger />
-                    <NumberInput.DecrementTrigger />
-                </NumberInput.Control>
                 <InputGroup
-                    startElementProps={{ pointerEvents: 'auto' }}
                     startElement={
                         <NumberInput.Scrubber>
                             <Box>CTSI</Box>
                         </NumberInput.Scrubber>
                     }
                 >
-                    <NumberInput.Input />
+                    <>
+                        <NumberInput.Control />
+                        <NumberInput.Input paddingInlineStart={12} />
+                    </>
                 </InputGroup>
             </NumberInput.Root>
             {/*<NumberInput*/}

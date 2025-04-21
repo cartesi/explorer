@@ -12,28 +12,21 @@
 import {
     Box,
     Button,
-    Divider,
-    FormControl,
-    FormHelperText,
-    FormLabel,
+    CloseButton,
+    Dialog,
+    Field,
     HStack,
     Link,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
+    Separator,
     Text,
     UseDisclosureProps,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
 
 interface INodeUnstakeModalProps {
     stakedBalance: BigNumber;
@@ -67,10 +60,8 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
         return numberFormat.format(parseFloat(formatUnits(value, 18)));
     };
 
-    const inputFocusRef = useRef<FocusableElement>(null);
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
 
     useEffect(() => {
         if (!isOpen) {
@@ -85,23 +76,30 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
     };
 
     return (
-        <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
-            >
-                <ModalOverlay />
-                <ModalContent
+        <Dialog.Root
+            open={isOpen}
+            placement="center"
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+
+            <Dialog.Positioner>
+                <Dialog.Content
                     bg={bgModal}
                     border="1px solid"
                     borderColor={'dark.border.secondary'}
                     borderRadius={'2xl'}
                     color={color}
                 >
-                    <Box pb={6}>
-                        <HStack justify="space-between">
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
                             <Box
                                 fontSize="xl"
                                 fontWeight="bold"
@@ -111,14 +109,11 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                             >
                                 Unstake
                             </Box>
-
-                            <ModalCloseButton mt="0.5rem !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-
-                    <ModalBody>
-                        <VStack spacing={5}>
+                        </Dialog.Title>
+                        <Separator />
+                    </Dialog.Header>
+                    <Dialog.Body>
+                        <VStack gap={5}>
                             <Text>
                                 Bear in mind that your funds take 48 hours to
                                 become unlocked. Be careful if you want to
@@ -127,11 +122,11 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 restarts with the new unstaking funds added to
                                 the previously “Releasing” balance. Learn more
                             </Text>
-                            <FormControl id="stakeAmount">
+                            <Field.Root id="stakeAmount">
                                 <HStack justify="space-between">
-                                    <FormLabel fontWeight="bold">
+                                    <Field.Label fontWeight="bold">
                                         Unstake Amount
-                                    </FormLabel>
+                                    </Field.Label>
                                     <Link
                                         color={colorScheme}
                                         _hover={{
@@ -150,38 +145,42 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                         setOutputStake(bigNumberValue);
                                     }}
                                 />
-                                <FormHelperText>
+                                <Field.HelperText>
                                     Staked Balance: {toCTSI(stakedBalance)} CTSI
-                                </FormHelperText>
-                            </FormControl>
+                                </Field.HelperText>
+                            </Field.Root>
                         </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
-                                <Button
-                                    width="full"
-                                    colorScheme={colorScheme}
-                                    disabled={outputStake.isZero()}
-                                    onClick={() => {
-                                        onSave(outputStake);
-                                        disclosure.onClose();
-                                        onClose();
-                                    }}
-                                >
-                                    UNSTAKE
-                                </Button>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    CANCEL
-                                </Button>
+                        <Dialog.Footer px="0" pt={10}>
+                            <VStack w="full" gap={4}>
+                                <Dialog.ActionTrigger asChild>
+                                    <Button
+                                        width="full"
+                                        colorScheme={colorScheme}
+                                        disabled={outputStake.isZero()}
+                                        onClick={() => {
+                                            onSave(outputStake);
+                                            disclosure.onClose();
+                                            onClose();
+                                        }}
+                                    >
+                                        UNSTAKE
+                                    </Button>
+                                </Dialog.ActionTrigger>
+                                <Dialog.CloseTrigger asChild>
+                                    <Button
+                                        width="full"
+                                        colorScheme="darkGray"
+                                        variant="ghost"
+                                        onClick={onClose}
+                                    >
+                                        CANCEL
+                                    </Button>
+                                </Dialog.CloseTrigger>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </>
+                        </Dialog.Footer>
+                    </Dialog.Body>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };

@@ -17,6 +17,9 @@ import {
     Text,
     UseDisclosureProps,
     VStack,
+    Separator,
+    HStack,
+    Box,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -54,6 +57,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     return (
         <Dialog.Root
             open={isOpen}
+            placement="center"
             onOpenChange={({ open }) => {
                 if (!open) {
                     onClose();
@@ -69,29 +73,17 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                     borderRadius={'2xl'}
                     color={color}
                 >
-                    {/*<Box pb={6}>*/}
-                    {/*    <HStack justify="space-between">*/}
-                    {/*        <Box*/}
-                    {/*            fontSize="xl"*/}
-                    {/*            fontWeight="bold"*/}
-                    {/*            p={4}*/}
-                    {/*            pl={8}*/}
-                    {/*            pb={4}*/}
-                    {/*        >*/}
-                    {/*            Set allowance*/}
-                    {/*        </Box>*/}
-
-                    {/*        <ModalCloseButton mt="0.5rem !important" />*/}
-                    {/*    </HStack>*/}
-                    {/*    <Separator />*/}
-                    {/*</Box>*/}
-
                     <Dialog.CloseTrigger asChild>
                         <CloseButton size="sm" />
                     </Dialog.CloseTrigger>
                     <Dialog.Header>
-                        <Dialog.Title>Your Account</Dialog.Title>
+                        <Dialog.Title>
+                            <Box fontSize="xl" fontWeight="bold">
+                                Set allowance
+                            </Box>
+                        </Dialog.Title>
                     </Dialog.Header>
+                    <Separator width="full" />
                     <Dialog.Body>
                         <VStack gap={5}>
                             <Text>
@@ -121,29 +113,25 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                     </Dialog.Body>
                     <Dialog.Footer px="0" pt={10}>
                         <VStack w="full" gap={4}>
-                            <Dialog.ActionTrigger asChild>
-                                <Button
-                                    width="full"
-                                    colorScheme={colorScheme}
-                                    onClick={() => {
-                                        onSave(outputAllowance);
-                                        disclosure.onClose();
-                                        onClose();
-                                    }}
-                                >
-                                    Approve
-                                </Button>
-                            </Dialog.ActionTrigger>
-                            <Dialog.CloseTrigger asChild>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    Cancel
-                                </Button>
-                            </Dialog.CloseTrigger>
+                            <Button
+                                width="full"
+                                colorScheme={colorScheme}
+                                onClick={() => {
+                                    onSave(outputAllowance);
+                                    disclosure.onClose();
+                                    onClose();
+                                }}
+                            >
+                                Approve
+                            </Button>
+                            <Button
+                                width="full"
+                                colorScheme="darkGray"
+                                variant="ghost"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </Button>
                         </VStack>
                     </Dialog.Footer>
                 </Dialog.Content>

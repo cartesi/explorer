@@ -45,7 +45,6 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
 
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
 
     const toBigNumber = (value: number, decimals = 18) =>
@@ -86,6 +85,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     return (
         <Dialog.Root
             open={open}
+            placement="center"
             onOpenChange={({ open }) => {
                 if (!open) {
                     onClose();

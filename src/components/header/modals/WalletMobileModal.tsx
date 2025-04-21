@@ -46,6 +46,7 @@ export const WalletMobileModal = ({
         <>
             <Dialog.Root
                 open={isOpen}
+                placement="center"
                 onOpenChange={({ open }) => {
                     if (!open) {
                         onClose();

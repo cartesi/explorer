@@ -471,31 +471,31 @@ const ManageNode: FC = () => {
                     </Box>
                 </Flex>
 
-                {/*<NodeStakeModal*/}
-                {/*    isOpen={stakeDisclosure.open}*/}
-                {/*    onClose={stakeDisclosure.onClose}*/}
-                {/*    allowance={allowance}*/}
-                {/*    disclosure={stakeDisclosure}*/}
-                {/*    onSave={(amount) => {*/}
-                {/*        setCurrentTransaction('stake');*/}
-                {/*        setStakeAlertActive(true);*/}
-                {/*        stake(amount);*/}
-                {/*    }}*/}
-                {/*/>*/}
+                <NodeStakeModal
+                    isOpen={stakeDisclosure.open}
+                    onClose={stakeDisclosure.onClose}
+                    allowance={allowance}
+                    disclosure={stakeDisclosure}
+                    onSave={(amount) => {
+                        setCurrentTransaction('stake');
+                        setStakeAlertActive(true);
+                        stake(amount);
+                    }}
+                />
 
-                {/*{stakedBalance && (*/}
-                {/*    <NodeUnstakeModal*/}
-                {/*        isOpen={unstakeDisclosure.open}*/}
-                {/*        onClose={unstakeDisclosure.onClose}*/}
-                {/*        stakedBalance={stakedBalance}*/}
-                {/*        disclosure={unstakeDisclosure}*/}
-                {/*        onSave={(amount) => {*/}
-                {/*            setCurrentTransaction('unstake');*/}
-                {/*            setUnstakeAlertActive(true);*/}
-                {/*            unstake(amount);*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*)}*/}
+                {stakedBalance && (
+                    <NodeUnstakeModal
+                        isOpen={unstakeDisclosure.open}
+                        onClose={unstakeDisclosure.onClose}
+                        stakedBalance={stakedBalance}
+                        disclosure={unstakeDisclosure}
+                        onSave={(amount) => {
+                            setCurrentTransaction('unstake');
+                            setUnstakeAlertActive(true);
+                            unstake(amount);
+                        }}
+                    />
+                )}
             </Box>
 
             {isSmallScreen && (

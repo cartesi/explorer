@@ -52,6 +52,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     return (
         <Dialog.Root
             open={open}
+            placement="center"
             onOpenChange={({ open }) => {
                 if (!open) {
                     onClose();
