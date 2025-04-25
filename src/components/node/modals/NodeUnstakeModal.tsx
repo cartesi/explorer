@@ -100,18 +100,12 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                     </Dialog.CloseTrigger>
                     <Dialog.Header>
                         <Dialog.Title>
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
+                            <Box fontSize="xl" fontWeight="bold">
                                 Unstake
                             </Box>
                         </Dialog.Title>
-                        <Separator />
                     </Dialog.Header>
+                    <Separator />
                     <Dialog.Body>
                         <VStack gap={5}>
                             <Text>
@@ -152,30 +146,26 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                         </VStack>
                         <Dialog.Footer px="0" pt={10}>
                             <VStack w="full" gap={4}>
-                                <Dialog.ActionTrigger asChild>
-                                    <Button
-                                        width="full"
-                                        colorScheme={colorScheme}
-                                        disabled={outputStake.isZero()}
-                                        onClick={() => {
-                                            onSave(outputStake);
-                                            disclosure.onClose();
-                                            onClose();
-                                        }}
-                                    >
-                                        UNSTAKE
-                                    </Button>
-                                </Dialog.ActionTrigger>
-                                <Dialog.CloseTrigger asChild>
-                                    <Button
-                                        width="full"
-                                        colorScheme="darkGray"
-                                        variant="ghost"
-                                        onClick={onClose}
-                                    >
-                                        CANCEL
-                                    </Button>
-                                </Dialog.CloseTrigger>
+                                <Button
+                                    width="full"
+                                    colorScheme={colorScheme}
+                                    disabled={outputStake.isZero()}
+                                    onClick={() => {
+                                        onSave(outputStake);
+                                        disclosure.onClose();
+                                        onClose();
+                                    }}
+                                >
+                                    UNSTAKE
+                                </Button>
+                                <Button
+                                    width="full"
+                                    colorScheme="darkGray"
+                                    variant="ghost"
+                                    onClick={onClose}
+                                >
+                                    CANCEL
+                                </Button>
                             </VStack>
                         </Dialog.Footer>
                     </Dialog.Body>

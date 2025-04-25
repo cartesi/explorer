@@ -106,18 +106,12 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                     </Dialog.CloseTrigger>
                     <Dialog.Header>
                         <Dialog.Title>
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
+                            <Box fontSize="xl" fontWeight="bold">
                                 Node balance
                             </Box>
                         </Dialog.Title>
-                        <Separator />
                     </Dialog.Header>
+                    <Separator />
                     <Dialog.Body>
                         <VStack gap={5}>
                             <Text>
@@ -149,34 +143,29 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                         </VStack>
                         <Dialog.Footer px="0" pt={10}>
                             <VStack w="full" gap={4}>
-                                <Dialog.ActionTrigger asChild>
-                                    <Button
-                                        width="full"
-                                        colorScheme={colorScheme}
-                                        disabled={
-                                            output.isZero() ||
-                                            output.gt(userBalance)
-                                        }
-                                        onClick={() => {
-                                            onDepositFunds(output);
-                                            disclosure.onClose();
-                                            onClose();
-                                        }}
-                                    >
-                                        Add funds
-                                    </Button>
-                                </Dialog.ActionTrigger>
-
-                                <Dialog.CloseTrigger asChild>
-                                    <Button
-                                        width="full"
-                                        colorScheme="darkGray"
-                                        variant="ghost"
-                                        onClick={onClose}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </Dialog.CloseTrigger>
+                                <Button
+                                    width="full"
+                                    colorScheme={colorScheme}
+                                    disabled={
+                                        output.isZero() ||
+                                        output.gt(userBalance)
+                                    }
+                                    onClick={() => {
+                                        onDepositFunds(output);
+                                        disclosure.onClose();
+                                        onClose();
+                                    }}
+                                >
+                                    Add funds
+                                </Button>
+                                <Button
+                                    width="full"
+                                    colorScheme="darkGray"
+                                    variant="ghost"
+                                    onClick={onClose}
+                                >
+                                    Cancel
+                                </Button>
                             </VStack>
                         </Dialog.Footer>
                     </Dialog.Body>

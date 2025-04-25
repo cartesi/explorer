@@ -73,18 +73,12 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                     </Dialog.CloseTrigger>
                     <Dialog.Header>
                         <Dialog.Title>
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
+                            <Box fontSize="xl" fontWeight="bold">
                                 Retire node
                             </Box>
                         </Dialog.Title>
-                        <Separator />
                     </Dialog.Header>
+                    <Separator />
                     <Dialog.Body>
                         <Text mb={8}>
                             After retiring the node all remaining ETH funds held
@@ -122,26 +116,22 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                                     it.
                                 </Text>
                             </HStack>
-                            <Dialog.ActionTrigger asChild>
-                                <Button
-                                    width="full"
-                                    colorScheme={colorScheme}
-                                    disabled={address != addressValue?.trim()}
-                                    onClick={onConfirmRetire}
-                                >
-                                    Retire
-                                </Button>
-                            </Dialog.ActionTrigger>
-                            <Dialog.CloseTrigger asChild>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    Cancel
-                                </Button>
-                            </Dialog.CloseTrigger>
+                            <Button
+                                width="full"
+                                colorScheme={colorScheme}
+                                disabled={address != addressValue?.trim()}
+                                onClick={onConfirmRetire}
+                            >
+                                Retire
+                            </Button>
+                            <Button
+                                width="full"
+                                colorScheme="darkGray"
+                                variant="ghost"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </Button>
                         </VStack>
                     </Dialog.Footer>
                 </Dialog.Content>

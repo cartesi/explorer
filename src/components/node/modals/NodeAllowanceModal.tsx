@@ -10,16 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
+    Box,
     Button,
     CloseButton,
     Dialog,
     Field,
+    Separator,
     Text,
     UseDisclosureProps,
     VStack,
-    Separator,
-    HStack,
-    Box,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
