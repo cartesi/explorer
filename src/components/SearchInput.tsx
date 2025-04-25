@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { ChangeEventHandler, FunctionComponent } from 'react';
-import { Input, InputGroup, InputGroupProps } from '@chakra-ui/react';
+import { Icon, Input, InputGroup, InputGroupProps } from '@chakra-ui/react';
 import { useColorModeValue } from './ui/color-mode';
 import { FaSearch } from 'react-icons/fa';
 
@@ -29,7 +29,10 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const textColor = useColorModeValue('gray.900', 'white');
 
     return (
-        <InputGroup {...rest} startElement={<FaSearch color={textColor} />}>
+        <InputGroup
+            {...rest}
+            startElement={<Icon as={FaSearch} color={textColor} />}
+        >
             <Input
                 _placeholder={{
                     color: placeholderColor,

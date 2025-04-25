@@ -73,7 +73,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     lg: 3,
                 }}
                 w="full"
-                spacing={4}
+                gap={4}
                 role="balance-stat"
             >
                 <StakedBalanceStat stakedBalance={stakedBalance} />
@@ -98,7 +98,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     lg: 3,
                 }}
                 w="full"
-                spacing={5}
+                gap={5}
                 role="commission-stat"
             >
                 <UsersStat

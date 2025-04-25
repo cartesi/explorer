@@ -127,61 +127,61 @@ const StakePool = () => {
                     </Box>
                 </HStack>
 
-                {/*<Collapsible.Root unmountOnExit open={disclosure.open}>*/}
-                {/*    <Collapsible.Content>*/}
-                {/*        <VStack gap={5}>*/}
-                {/*            <PoolStatsPanel*/}
-                {/*                address={address}*/}
-                {/*                productionInterval={productionInterval}*/}
-                {/*                stakedBalance={amount}*/}
-                {/*                totalBlocks={stakingPool?.user?.totalBlocks}*/}
-                {/*                totalReward={stakingPool?.user?.totalReward}*/}
-                {/*                totalUsers={stakingPool?.totalUsers}*/}
-                {/*                commissionPercentage={*/}
-                {/*                    stakingPool?.commissionPercentage*/}
-                {/*                }*/}
-                {/*                fee={stakingPool?.fee}*/}
-                {/*                pool={poolBalance}*/}
-                {/*                stake={amounts?.stake}*/}
-                {/*                unstake={amounts?.unstake}*/}
-                {/*                withdraw={amounts?.withdraw}*/}
-                {/*                stakingMature={staking?.stakedBalance}*/}
-                {/*                stakingMaturing={staking?.maturingBalance}*/}
-                {/*                stakingReleasing={*/}
-                {/*                    staking?.releasingTimestamp?.getTime() >*/}
-                {/*                    Date.now()*/}
-                {/*                        ? staking.releasingBalance*/}
-                {/*                        : constants.Zero*/}
-                {/*                }*/}
-                {/*                stakingReleased={*/}
-                {/*                    staking?.releasingTimestamp?.getTime() <=*/}
-                {/*                    Date.now()*/}
-                {/*                        ? staking.releasingBalance*/}
-                {/*                        : constants.Zero*/}
-                {/*                }*/}
-                {/*                stakingMaturingTimestamp={*/}
-                {/*                    staking?.maturingTimestamp*/}
-                {/*                }*/}
-                {/*                stakingReleasingTimestamp={*/}
-                {/*                    staking?.releasingTimestamp*/}
-                {/*                }*/}
-                {/*                onRebalance={rebalance}*/}
-                {/*            />*/}
-                {/*        </VStack>*/}
-                {/*    </Collapsible.Content>*/}
-                {/*</Collapsible.Root>*/}
+                <Collapsible.Root unmountOnExit open={open}>
+                    <Collapsible.Content>
+                        <VStack gap={5}>
+                            <PoolStatsPanel
+                                address={address}
+                                productionInterval={productionInterval}
+                                stakedBalance={amount}
+                                totalBlocks={stakingPool?.user?.totalBlocks}
+                                totalReward={stakingPool?.user?.totalReward}
+                                totalUsers={stakingPool?.totalUsers}
+                                commissionPercentage={
+                                    stakingPool?.commissionPercentage
+                                }
+                                fee={stakingPool?.fee}
+                                pool={poolBalance}
+                                stake={amounts?.stake}
+                                unstake={amounts?.unstake}
+                                withdraw={amounts?.withdraw}
+                                stakingMature={staking?.stakedBalance}
+                                stakingMaturing={staking?.maturingBalance}
+                                stakingReleasing={
+                                    staking?.releasingTimestamp?.getTime() >
+                                    Date.now()
+                                        ? staking.releasingBalance
+                                        : constants.Zero
+                                }
+                                stakingReleased={
+                                    staking?.releasingTimestamp?.getTime() <=
+                                    Date.now()
+                                        ? staking.releasingBalance
+                                        : constants.Zero
+                                }
+                                stakingMaturingTimestamp={
+                                    staking?.maturingTimestamp
+                                }
+                                stakingReleasingTimestamp={
+                                    staking?.releasingTimestamp
+                                }
+                                onRebalance={rebalance}
+                            />
+                        </VStack>
+                    </Collapsible.Content>
+                </Collapsible.Root>
             </Box>
-            {/*<Box*/}
-            {/*    px={{ base: '6vw', xl: '12vw' }}*/}
-            {/*    py={{ base: 8, sm: 12, lg: 16 }}*/}
-            {/*    backgroundColor={bg}*/}
-            {/*>*/}
-            {/*    <Heading as="h2" size="lg" mb={4}>*/}
-            {/*        Pool Activity*/}
-            {/*    </Heading>*/}
+            <Box
+                px={{ base: '6vw', xl: '12vw' }}
+                py={{ base: 8, sm: 12, lg: 16 }}
+                backgroundColor={bg}
+            >
+                <Heading as="h2" size="lg" mb={4}>
+                    Pool Activity
+                </Heading>
 
-            {/*    <PoolActivity poolAddress={address} />*/}
-            {/*</Box>*/}
+                <PoolActivity poolAddress={address} />
+            </Box>
         </Layout>
     );
 };

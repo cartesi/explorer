@@ -93,7 +93,9 @@ export const Account: FC = () => {
                         </Menu.Trigger>
                         <Portal>
                             <Menu.Positioner>
-                                <WalletMenu />
+                                <Menu.Content>
+                                    <WalletMenu />
+                                </Menu.Content>
                             </Menu.Positioner>
                         </Portal>
                     </Menu.Root>

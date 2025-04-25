@@ -9,16 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    HStack,
-    Icon,
-    StackProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { FaChevronRight, FaRegQuestionCircle } from 'react-icons/fa';
+import { Box, HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, ReactNode } from 'react';
 import { StakingPoolFee } from '../../../graphql/models';
@@ -26,6 +18,8 @@ import BigNumberTextV2 from '../../BigNumberTextV2';
 import CommissionTextV2 from '../../CommissionTextV2';
 import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolCommisionIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
 
 export interface CommissionStatProps extends StackProps {
     commissionPercentage: number;
@@ -58,7 +52,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                 borderColor={borderColor}
                 cursor={location ? 'pointer' : ''}
             >
-                <HStack spacing={4} align="center" p={4} w="full">
+                <HStack gap={4} align="center" p={4} w="full">
                     <Box
                         w={14}
                         h={14}
@@ -67,7 +61,12 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolCommisionIcon color={iconColor} w={7} h={7} />
+                        <Icon
+                            as={PoolCommisionIcon}
+                            color={iconColor}
+                            w={7}
+                            h={7}
+                        />
                     </Box>
 
                     {commissionPercentage ? (
@@ -79,13 +78,21 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                             <HStack>
                                 <Text role="big-number-text">Commission</Text>
                                 <Tooltip
-                                    label="Effective commission taken by pool manager"
-                                    placement="top"
-                                    fontSize="small"
-                                    bg="black"
-                                    color="white"
+                                    showArrow
+                                    content="Effective commission taken by pool manager"
+                                    positioning={{
+                                        placement: 'top',
+                                    }}
+                                    openDelay={0}
+                                    contentProps={{
+                                        fontSize: 'small',
+                                    }}
                                 >
-                                    <Icon w={3.5} h={3.5} />
+                                    <Icon
+                                        as={FaRegQuestionCircle}
+                                        w={3.5}
+                                        h={3.5}
+                                    />
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>
@@ -97,20 +104,33 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                             <HStack>
                                 <Text role="commission-text">Commission</Text>
                                 <Tooltip
-                                    label="Configured commission taken by pool manager"
-                                    placement="top"
-                                    fontSize="small"
-                                    bg="black"
-                                    color="white"
+                                    showArrow
+                                    content="Configured commission taken by pool manager"
+                                    positioning={{
+                                        placement: 'top',
+                                    }}
+                                    openDelay={0}
+                                    contentProps={{
+                                        fontSize: 'small',
+                                    }}
                                 >
-                                    <Icon w={3.5} h={3.5} />
+                                    <Icon
+                                        as={FaRegQuestionCircle}
+                                        w={3.5}
+                                        h={3.5}
+                                    />
                                 </Tooltip>
                             </HStack>
                         </CommissionTextV2>
                     )}
 
                     {location && (
-                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                        <Icon
+                            as={FaChevronRight}
+                            w={5}
+                            h={5}
+                            role="location-icon"
+                        />
                     )}
                 </HStack>
             </Box>

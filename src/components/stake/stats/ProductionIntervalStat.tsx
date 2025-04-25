@@ -9,21 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    HStack,
-    Icon,
-    StackProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { FaChevronRight, FaRegQuestionCircle } from 'react-icons/fa';
+import { Box, HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, ReactNode } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolProductionIntervalIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
 
 export interface ProductionIntervalStatProps extends StackProps {
     totalBlocks: number;
@@ -56,7 +50,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                 borderWidth="1px"
                 cursor={location ? 'pointer' : ''}
             >
-                <HStack spacing={4} align="center" p={4} w="full">
+                <HStack gap={4} align="center" p={4} w="full">
                     <Box
                         w={14}
                         h={14}
@@ -65,7 +59,8 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolProductionIntervalIcon
+                        <Icon
+                            as={PoolProductionIntervalIcon}
                             color={iconColor}
                             w={7}
                             h={7}
@@ -79,21 +74,34 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                         <HStack>
                             <Text>Production Interval</Text>
                             <Tooltip
-                                label={`Average interval between the last ${Math.min(
+                                showArrow
+                                content={`Average interval between the last ${Math.min(
                                     10,
                                     totalBlocks
                                 )} blocks produced by the pool`}
-                                placement="top"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                positioning={{
+                                    placement: 'top',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
-                                <Icon w={3.5} h={3.5} />
+                                <Icon
+                                    as={FaRegQuestionCircle}
+                                    w={3.5}
+                                    h={3.5}
+                                />
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>
                     {location && (
-                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                        <Icon
+                            as={FaChevronRight}
+                            w={5}
+                            h={5}
+                            role="location-icon"
+                        />
                     )}
                 </HStack>
             </Box>

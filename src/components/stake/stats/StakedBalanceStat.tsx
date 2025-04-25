@@ -9,20 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    HStack,
-    Icon,
-    StackProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Icon, StackProps, Text, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { StakedBalanceIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import { Tooltip } from '../../Tooltip';
 
 export interface StakedBalanceStatProps extends StackProps {
     stakedBalance: BigNumber;
@@ -42,7 +36,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
             flexBasis={{ base: '100%', lg: '33.33%' }}
             flexShrink={0}
         >
-            <HStack spacing={4} align="center" p={4}>
+            <HStack gap={4} align="center" p={4}>
                 <Box
                     bg={iconBackgroundColor}
                     w={14}
@@ -52,7 +46,12 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <StakedBalanceIcon color={iconColor} w={7} h={7} />
+                    <Icon
+                        as={StakedBalanceIcon}
+                        color={iconColor}
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -66,13 +65,22 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                     <HStack>
                         <Text>Staked Balance</Text>
                         <Tooltip
-                            label="Total amount of tokens staked in this pool"
-                            placement="top"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content="Total amount of tokens staked in this pool"
+                            positioning={{
+                                placement: 'top',
+                            }}
+                            openDelay={0}
+                            contentProps={{
+                                fontSize: 'small',
+                            }}
                         >
-                            <Icon role="balance-icon" w={3.5} h={3.5} />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                role="balance-icon"
+                                w={3.5}
+                                h={3.5}
+                            />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

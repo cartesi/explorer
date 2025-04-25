@@ -15,14 +15,10 @@ import {
     HStack,
     Icon,
     Popover,
-    PopoverBody,
-    PopoverContent,
-    PopoverTrigger,
-    StackDivider,
+    Portal,
+    Separator,
     StackProps,
     Text,
-    Tooltip,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
@@ -31,6 +27,9 @@ import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -90,7 +89,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
-            <HStack spacing={4} align="center" p={4} w="full">
+            <HStack gap={4} align="center" p={4} w="full">
                 <Box
                     bg={iconBackgroundColor}
                     w={14}
@@ -100,7 +99,12 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <EffectiveBalanceIcon color={iconColor} w={7} h={7} />
+                    <Icon
+                        as={EffectiveBalanceIcon}
+                        color={iconColor}
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -117,22 +121,35 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             Effective Balance
                         </Text>
                         <Tooltip
-                            label="Amount of mature pool tokens at the Staking contract"
-                            placement="top"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content="Amount of mature pool tokens at the Staking contract"
+                            positioning={{
+                                placement: 'top',
+                            }}
+                            openDelay={0}
+                            contentProps={{
+                                fontSize: 'small',
+                            }}
                         >
-                            <Icon role="balance-icon" w={3.5} h={3.5} />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                role="balance-icon"
+                                w={3.5}
+                                h={3.5}
+                            />
                         </Tooltip>
 
                         {needRebalance && (
                             <Tooltip
-                                label={rebalanceLabel}
-                                placement="top"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                showArrow
+                                content={rebalanceLabel}
+                                positioning={{
+                                    placement: 'top',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
                                 <Box
                                     _hover={{
@@ -141,7 +158,8 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                     }}
                                     onClick={onRebalance}
                                 >
-                                    <RebalanceIcon
+                                    <Icon
+                                        as={RebalanceIcon}
                                         role="rebalance-icon"
                                         w={6}
                                         h={6}
@@ -152,8 +170,11 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                     </HStack>
                 </BigNumberTextV2>
                 <Box>
-                    <Popover placement="bottom" autoFocus={false}>
-                        <PopoverTrigger>
+                    <Popover.Root
+                        autoFocus={false}
+                        positioning={{ placement: 'bottom' }}
+                    >
+                        <Popover.Trigger asChild>
                             <Button
                                 variant="ghost"
                                 bg="rgba(0, 0, 0, 0.1)"
@@ -163,103 +184,143 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 w="auto"
                                 minW="auto"
                             >
-                                <EyeIcon />
+                                <Icon as={EyeIcon} />
                             </Button>
-                        </PopoverTrigger>
-                        <PopoverContent borderRadius="1rem">
-                            <PopoverBody
-                                borderRadius="1rem"
-                                backgroundColor={popoverBodyColor}
-                            >
-                                <VStack
-                                    align="stretch"
-                                    divider={
-                                        <StackDivider borderColor={bgDivider} />
-                                    }
-                                >
-                                    <BigNumberTextV2
-                                        unit="ctsi"
-                                        value={stakingMaturing}
-                                        componentStyle="popover"
-                                        options={{
-                                            notation: 'compact',
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 2,
-                                        }}
-                                        countdown={{
-                                            timeLeft: maturingLeft,
-                                            timeLabel: 'Maturing in ',
-                                        }}
-                                    >
-                                        <HStack justify="space-between">
-                                            <Text>Maturing Balance</Text>
-                                            <Tooltip
-                                                label="Amount of pool tokens maturing at the Staking contract"
-                                                placement="top"
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
+                        </Popover.Trigger>
+                        <Portal>
+                            <Popover.Positioner>
+                                <Popover.Content>
+                                    <Popover.Body>
+                                        <VStack align="stretch">
+                                            <BigNumberTextV2
+                                                unit="ctsi"
+                                                value={stakingMaturing}
+                                                componentStyle="popover"
+                                                options={{
+                                                    notation: 'compact',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 2,
+                                                }}
+                                                countdown={{
+                                                    timeLeft: maturingLeft,
+                                                    timeLabel: 'Maturing in ',
+                                                }}
                                             >
-                                                <Icon w={3.5} h={3.5} />
-                                            </Tooltip>
-                                        </HStack>
-                                    </BigNumberTextV2>
+                                                <HStack justify="space-between">
+                                                    <Text>
+                                                        Maturing Balance
+                                                    </Text>
+                                                    <Tooltip
+                                                        showArrow
+                                                        content="Amount of pool tokens maturing at the Staking contract"
+                                                        positioning={{
+                                                            placement: 'top',
+                                                        }}
+                                                        openDelay={0}
+                                                        contentProps={{
+                                                            fontSize: 'small',
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                FaRegQuestionCircle
+                                                            }
+                                                            w={3.5}
+                                                            h={3.5}
+                                                        />
+                                                    </Tooltip>
+                                                </HStack>
+                                            </BigNumberTextV2>
 
-                                    <BigNumberTextV2
-                                        unit="ctsi"
-                                        value={stakingReleasing}
-                                        componentStyle="popover"
-                                        options={{
-                                            notation: 'compact',
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 2,
-                                        }}
-                                        countdown={{
-                                            timeLeft: releasingLeft,
-                                            timeLabel: 'Releasing in ',
-                                        }}
-                                    >
-                                        <HStack justify="space-between">
-                                            <Text>Releasing Balance</Text>
-                                            <Tooltip
-                                                label="Amount of pool tokens being unstaken at the Staking contract"
-                                                placement="top"
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
-                                            >
-                                                <Icon w={3.5} h={3.5} />
-                                            </Tooltip>
-                                        </HStack>
-                                    </BigNumberTextV2>
+                                            <Separator
+                                                borderColor={bgDivider}
+                                            />
 
-                                    <BigNumberTextV2
-                                        unit="ctsi"
-                                        value={stakingReleased}
-                                        componentStyle="popover"
-                                        options={{
-                                            notation: 'compact',
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 2,
-                                        }}
-                                    >
-                                        <HStack justify="space-between">
-                                            <Text>Released Balance</Text>
-                                            <Tooltip
-                                                label="Amount of pool tokens available for withdraw at the Staking contract"
-                                                placement="top"
-                                                fontSize="small"
-                                                bg="black"
-                                                color="white"
+                                            <BigNumberTextV2
+                                                unit="ctsi"
+                                                value={stakingReleasing}
+                                                componentStyle="popover"
+                                                options={{
+                                                    notation: 'compact',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 2,
+                                                }}
+                                                countdown={{
+                                                    timeLeft: releasingLeft,
+                                                    timeLabel: 'Releasing in ',
+                                                }}
                                             >
-                                                <Icon w={3.5} h={3.5} />
-                                            </Tooltip>
-                                        </HStack>
-                                    </BigNumberTextV2>
-                                </VStack>
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Popover>
+                                                <HStack justify="space-between">
+                                                    <Text>
+                                                        Releasing Balance
+                                                    </Text>
+                                                    <Tooltip
+                                                        showArrow
+                                                        content="Amount of pool tokens being unstaken at the Staking contract"
+                                                        positioning={{
+                                                            placement: 'top',
+                                                        }}
+                                                        openDelay={0}
+                                                        contentProps={{
+                                                            fontSize: 'small',
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                FaRegQuestionCircle
+                                                            }
+                                                            w={3.5}
+                                                            h={3.5}
+                                                        />
+                                                    </Tooltip>
+                                                </HStack>
+                                            </BigNumberTextV2>
+
+                                            <Separator
+                                                borderColor={bgDivider}
+                                            />
+
+                                            <BigNumberTextV2
+                                                unit="ctsi"
+                                                value={stakingReleased}
+                                                componentStyle="popover"
+                                                options={{
+                                                    notation: 'compact',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 2,
+                                                }}
+                                            >
+                                                <HStack justify="space-between">
+                                                    <Text>
+                                                        Released Balance
+                                                    </Text>
+                                                    <Tooltip
+                                                        showArrow
+                                                        content="Amount of pool tokens available for withdraw at the Staking contract"
+                                                        positioning={{
+                                                            placement: 'top',
+                                                        }}
+                                                        openDelay={0}
+                                                        contentProps={{
+                                                            fontSize: 'small',
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                FaRegQuestionCircle
+                                                            }
+                                                            w={3.5}
+                                                            h={3.5}
+                                                        />
+                                                    </Tooltip>
+                                                </HStack>
+                                            </BigNumberTextV2>
+                                        </VStack>
+                                    </Popover.Body>
+                                </Popover.Content>
+                            </Popover.Positioner>
+                        </Portal>
+                    </Popover.Root>
                 </Box>
             </HStack>
         </VStack>

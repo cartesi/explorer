@@ -144,7 +144,7 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
         <>
             <Stack
                 mb={4}
-                spacing={2}
+                gap={2}
                 justify="space-between"
                 align={{
                     base: 'flex-start',
