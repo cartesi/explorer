@@ -11,7 +11,7 @@
 
 import { IoMdWarning } from 'react-icons/io';
 
-import { Text, Box, HStack, chakra, CloseButton } from '@chakra-ui/react';
+import { Box, chakra, CloseButton, HStack, Icon, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
 
@@ -34,9 +34,7 @@ export const NodeRetiredBanner: FC<NodeRetiredBannerProps> = ({ onClose }) => {
         >
             <HStack gap={2} justifyContent="space-between">
                 <HStack gap={2} mb={1}>
-                    <Box color="orange.500" mr={2}>
-                        <IoMdWarning />
-                    </Box>
+                    <Icon as={IoMdWarning} color="orange.500" mr={2} />
                     <Text fontSize="sm">
                         <chakra.span fontWeight="bold" fontSize="sm">
                             Your node has been retired

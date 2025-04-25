@@ -12,23 +12,18 @@
 import {
     Box,
     Button,
-    Divider,
+    Field,
     Flex,
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
     Heading,
     HStack,
     Icon,
     Input,
     InputGroup,
     Link,
+    Separator,
     Stack,
     Switch,
     Text,
-    Tooltip,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { useFlag } from '@unleash/proxy-client-react';
@@ -36,7 +31,7 @@ import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaBalanceScaleLeft } from 'react-icons/fa';
+import { FaBalanceScaleLeft, FaRegQuestionCircle } from 'react-icons/fa';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import { useStakingPool } from '../../services/pool';
@@ -47,6 +42,8 @@ import CTSIText from '../CTSIText';
 import { Notification } from '../Notification';
 import TransactionBanner from '../TransactionBanner';
 import { useWallet } from '../wallet';
+import { useColorModeValue } from '../ui/color-mode';
+import { Tooltip } from '../Tooltip';
 
 const wordingFor = {
     pause: {
@@ -182,7 +179,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
             />
 
             <Stack
-                spacing={4}
+                gap={4}
                 justifyContent="space-between"
                 alignContent="flex-start"
                 mb={10}
@@ -219,12 +216,11 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             minW="10.8125rem"
                             height="2.875rem"
                             textTransform="uppercase"
-                            leftIcon={<FaBalanceScaleLeft />}
-                            isDisabled={isRebalanceButtonDisabled}
-                            isLoading={isRebalancing}
+                            disabled={isRebalanceButtonDisabled}
+                            loading={isRebalancing}
                             onClick={pool.rebalance}
                         >
-                            Rebalance
+                            <Icon as={FaBalanceScaleLeft} /> Rebalance
                         </Button>
 
                         <Flex
@@ -244,13 +240,18 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             </Flex>
 
                             <Tooltip
-                                placement="bottom"
-                                label="Total amount of tokens staked in this pool"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                showArrow
+                                content="Total amount of tokens staked in this pool"
+                                positioning={{
+                                    placement: 'bottom',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
                                 <Icon
+                                    as={FaRegQuestionCircle}
                                     width={3}
                                     height={3}
                                     color="gray.600"
@@ -282,7 +283,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                         colorScheme="darkGray"
                         variant="ghost"
                         mt="1rem !important"
-                        isLoading={pool?.updateTransaction?.isOngoing}
+                        loading={pool?.updateTransaction?.isOngoing}
                         onClick={pool?.update}
                     >
                         Update
@@ -310,18 +311,23 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     mb={2}
                 />
 
-                <FormControl isInvalid={!!errors.ensName}>
+                <Field.Root invalid={!!errors.ensName}>
                     <HStack justify="space-between">
-                        <FormLabel>
+                        <Field.Label>
                             Pool ENS name{' '}
                             <Tooltip
-                                placement="bottom"
-                                label="Enter a registered ENS domain name"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                showArrow
+                                content="Enter a registered ENS domain name"
+                                positioning={{
+                                    placement: 'bottom',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
                                 <Icon
+                                    as={FaRegQuestionCircle}
                                     pb={1}
                                     width={4}
                                     height={4}
@@ -329,7 +335,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     role="pool-icon"
                                 />
                             </Tooltip>
-                        </FormLabel>
+                        </Field.Label>
                     </HStack>
                     <Stack direction={['column', 'row']}>
                         <InputGroup me={6}>
@@ -337,7 +343,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 size="lg"
                                 ref={ref}
                                 name={name}
-                                isInvalid={!!errors.ensName}
                                 onBlur={() => trigger('ensName')}
                                 onChange={(event) => {
                                     onChangeValidate(event);
@@ -352,7 +357,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             minW="10.8125rem"
                             height="2.875rem"
                             textTransform="uppercase"
-                            isDisabled={
+                            disabled={
                                 getValues('ensName') === '' ||
                                 !!touchedFields.ensName ||
                                 !!errors.ensName ||
@@ -365,18 +370,18 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     </Stack>
 
                     {!errors.ensName ? (
-                        <FormHelperText>
+                        <Field.HelperText>
                             After registering an ENS domain and setting it up,
                             set the name here.
-                        </FormHelperText>
+                        </Field.HelperText>
                     ) : (
-                        <FormErrorMessage>
+                        <Field.ErrorText>
                             {errors.ensName?.message}
-                        </FormErrorMessage>
+                        </Field.ErrorText>
                     )}
-                </FormControl>
+                </Field.Root>
 
-                <FormControl pt={4}>
+                <Field.Root pt={4}>
                     <TransactionBanner
                         title={wordingFor.pause.title}
                         failTitle={wordingFor.pause.failTitle}
@@ -396,16 +401,21 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     />
 
                     <HStack justify="space-between">
-                        <FormLabel>
+                        <Field.Label>
                             Staking{' '}
                             <Tooltip
-                                placement="bottom"
-                                label="Open or close the pool for new stakes"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                showArrow
+                                content="Open or close the pool for new stakes"
+                                positioning={{
+                                    placement: 'bottom',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
                                 <Icon
+                                    as={FaRegQuestionCircle}
                                     pb={1}
                                     width={4}
                                     height={4}
@@ -413,62 +423,77 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     role="staking-icon"
                                 />
                             </Tooltip>
-                        </FormLabel>
+                        </Field.Label>
                     </HStack>
                     <HStack>
                         <InputGroup me={6}>
-                            <Switch
-                                colorScheme="teal"
-                                size="lg"
-                                me={3}
-                                defaultChecked
-                                isChecked={!pool.paused}
-                                onChange={() => {
-                                    if (pool.paused) {
-                                        pool.unpause();
-                                    } else {
-                                        pool.pause();
-                                    }
-                                }}
-                            />
+                            <HStack>
+                                <Switch.Root
+                                    checked={!pool.paused}
+                                    defaultChecked
+                                    colorScheme="teal"
+                                    size="lg"
+                                    me={3}
+                                    onCheckedChange={() => {
+                                        if (pool.paused) {
+                                            pool.unpause();
+                                        } else {
+                                            pool.pause();
+                                        }
+                                    }}
+                                >
+                                    <Switch.HiddenInput />
+                                    <Switch.Control>
+                                        <Switch.Thumb />
+                                    </Switch.Control>
+                                    <Switch.Label />
+                                </Switch.Root>
 
-                            <FormLabel htmlFor="isChecked">
-                                Open your pool to accept new stakes
-                            </FormLabel>
+                                <Field.Label htmlFor="isChecked">
+                                    Open your pool to accept new stakes
+                                </Field.Label>
+                            </HStack>
                         </InputGroup>
                     </HStack>
-                </FormControl>
+                </Field.Root>
             </Stack>
 
             <Box mt={10}>
-                <Divider />
-                <HStack mt={4} justify="space-between">
-                    <FormLabel>
-                        Decide to quit{' '}
-                        <Tooltip
-                            placement="bottom"
-                            label="If you don't want to keep the pool active, it can be disabled with our help"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
-                        >
-                            <Icon
-                                pb={1}
-                                width={4}
-                                height={4}
-                                color="gray.600"
-                                role="quit-icon"
-                            />
-                        </Tooltip>
-                    </FormLabel>
-                </HStack>
-                <FormLabel>
-                    If you would like to close the pool, please{' '}
-                    <Link href="mailto:hello@cartesi.io" color={linkColor}>
-                        contact us
-                    </Link>{' '}
-                    and we will be glad to help you.
-                </FormLabel>
+                <Separator />
+                <Field.Root>
+                    <HStack mt={4} justify="space-between">
+                        <Field.Label>
+                            Decide to quit{' '}
+                            <Tooltip
+                                showArrow
+                                content="If you don't want to keep the pool active, it can be disabled with our help"
+                                positioning={{
+                                    placement: 'bottom',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
+                            >
+                                <Icon
+                                    as={FaRegQuestionCircle}
+                                    pb={1}
+                                    width={4}
+                                    height={4}
+                                    color="gray.600"
+                                    role="quit-icon"
+                                />
+                            </Tooltip>
+                        </Field.Label>
+                    </HStack>
+                    <Field.Label>
+                        If you would like to close the pool, please{' '}
+                        <Link href="mailto:hello@cartesi.io" color={linkColor}>
+                            contact us
+                        </Link>{' '}
+                        and we will be glad to help you.
+                    </Field.Label>
+                </Field.Root>
             </Box>
         </Box>
     );
