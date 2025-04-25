@@ -21,7 +21,6 @@ export interface ICTSINumberInputProps {
     min?: number;
     max?: number;
     maxPrecision?: number;
-    hasNumberSteppers?: boolean;
     setMaxOnOverflow?: boolean;
     onChange?: (
         bigNumberValue: BigNumber,
@@ -35,7 +34,6 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     min = 0,
     max,
     maxPrecision = 18,
-    hasNumberSteppers = true,
     setMaxOnOverflow = false,
     onChange,
 }) => {
@@ -140,82 +138,18 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
             >
                 <NumberInput.Label />
                 <InputGroup
-                    startElement={
-                        <NumberInput.Scrubber>
-                            <Box>CTSI</Box>
+                    endElement={
+                        <NumberInput.Scrubber pr={6} pointerEvents="none">
+                            <Box color={rightElementColor}>CTSI</Box>
                         </NumberInput.Scrubber>
                     }
                 >
                     <>
-                        <NumberInput.Control />
-                        <NumberInput.Input paddingInlineStart={12} />
+                        <NumberInput.Control zIndex={100} />
+                        <NumberInput.Input paddingInlineEnd={16} />
                     </>
                 </InputGroup>
             </NumberInput.Root>
-            {/*<NumberInput*/}
-            {/*    value={innerValue}*/}
-            {/*    min={min}*/}
-            {/*    max={max}*/}
-            {/*    width="full"*/}
-            {/*    bg={inputBg}*/}
-            {/*    onBeforeInputCapture={(e) => {*/}
-            {/*        const inputText: string = (e as any)?.data;*/}
-
-            {/*        // no -/+ e7 allowed*/}
-            {/*        if (*/}
-            {/*            inputText.includes('-') ||*/}
-            {/*            inputText.includes('+') ||*/}
-            {/*            inputText.includes('e')*/}
-            {/*        ) {*/}
-            {/*            e.preventDefault();*/}
-            {/*            return;*/}
-            {/*        }*/}
-
-            {/*        // in case of double ..*/}
-            {/*        if (inputText === '.' && innerValue.includes('.')) {*/}
-            {/*            e.preventDefault();*/}
-            {/*            return;*/}
-            {/*        }*/}
-
-            {/*        // in case of paste*/}
-            {/*        if (*/}
-            {/*            inputText.includes('.') &&*/}
-            {/*            inputText.split('.')[1].length >= maxPrecision*/}
-            {/*        ) {*/}
-            {/*            e.preventDefault();*/}
-            {/*            return;*/}
-            {/*        }*/}
-
-            {/*        // in case of typing*/}
-            {/*        if (*/}
-            {/*            innerValue.includes('.') &&*/}
-            {/*            innerValue.split('.')[1].length >= maxPrecision*/}
-            {/*        ) {*/}
-            {/*            e.preventDefault();*/}
-            {/*            return;*/}
-            {/*        }*/}
-
-            {/*        if (*/}
-            {/*            parseFloat(innerValue) > max ||*/}
-            {/*            parseFloat(inputText) > max*/}
-            {/*        ) {*/}
-            {/*            e.preventDefault();*/}
-            {/*            if (setMaxOnOverflow) setInnerValue(max.toString());*/}
-            {/*        }*/}
-            {/*    }}*/}
-            {/*    onChange={handleOnChange}*/}
-            {/*>*/}
-            {/*    <NumberInputField />*/}
-            {/*    <InputRightElement*/}
-            {/*        color={rightElementColor}*/}
-            {/*        pointerEvents="none"*/}
-            {/*        pl={8}*/}
-            {/*        w={hasNumberSteppers ? 24 : 14}*/}
-            {/*        h="100%"*/}
-            {/*    >*/}
-            {/*        <Box>CTSI</Box>*/}
-            {/*    </InputRightElement>*/}
-            {/*</NumberInput>*/}
         </InputGroup>
     );
 };
