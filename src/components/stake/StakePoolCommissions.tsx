@@ -11,7 +11,7 @@
 
 'use client';
 
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { isArray } from 'lodash';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
@@ -25,6 +25,7 @@ import { useWallet } from '../wallet';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import useStakingPoolFeeHistories from '../../graphql/hooks/useStakingPoolFeeHistories';
 import { StakingPoolFeeHistory } from '../../graphql/models';
+import { useColorModeValue } from '../ui/color-mode';
 
 const PoolCommissions: FC = () => {
     const params = useParams();
@@ -95,12 +96,8 @@ const PoolCommissions: FC = () => {
                         <PerPageSelect
                             value={rowsPerPage}
                             options={perPageOptions}
-                            onChange={(
-                                event: ChangeEvent<HTMLSelectElement>
-                            ) => {
-                                setRowsPerPage(
-                                    Number(event.currentTarget.value)
-                                );
+                            onChange={(value) => {
+                                setRowsPerPage(Number(value));
                                 setPageNumber(0);
                             }}
                         />

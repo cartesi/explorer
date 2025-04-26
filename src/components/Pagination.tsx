@@ -14,7 +14,6 @@ import React, { FC } from 'react';
 import { GhostButton } from './GhostButton';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 import { useColorModeValue } from './ui/color-mode';
-import theme from '../styles/theme';
 
 export interface PaginationProps {
     currentPage: number;

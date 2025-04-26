@@ -28,7 +28,6 @@ export interface PerPageSelectProps {
 const PerPageSelect: FC<PerPageSelectProps> = (props) => {
     const { value, options, onChange } = props;
     const borderWidth = useColorModeValue('0 0 1px 0', '0');
-
     const selectOptions = createListCollection({
         items: options.map((option) => ({
             label: option.toString(),

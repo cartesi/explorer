@@ -14,19 +14,14 @@ import {
     Spinner,
     Table,
     TableColumnHeaderProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { StakingPoolFeeHistory } from '../../../graphql/models';
 import theme from '../../../styles/theme';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import PoolCommissionsTableRow from './PoolCommissionsTableRow';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface PoolCommissionsTableProps {
     loading: boolean;
@@ -53,7 +48,7 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         paddingTop: 4,
         paddingBottom: 4,
     };
@@ -64,31 +59,29 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th borderTopLeftRadius="6px" {...thProps}>
+            <Table.Root>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell borderTopLeftRadius="6px" {...thProps}>
                             Date
-                        </Th>
-                        <Th isNumeric {...thProps}>
-                            Commission
-                        </Th>
-                        <Th isNumeric borderTopRightRadius="6px" {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell {...thProps}>Commission</Table.Cell>
+                        <Table.Cell borderTopRightRadius="6px" {...thProps}>
                             Change
-                        </Th>
-                    </Tr>
-                </Thead>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Header>
 
-                <Tbody>
+                <Table.Body>
                     {loading ? (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : hasItems ? (
                         data.map((item) => (
                             <PoolCommissionsTableRow
@@ -97,14 +90,14 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
                             />
                         ))
                     ) : (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <Text>No items</Text>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };

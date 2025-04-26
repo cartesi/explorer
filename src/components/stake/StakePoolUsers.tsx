@@ -13,16 +13,17 @@
 
 import {
     Box,
+    createListCollection,
     Flex,
     Heading,
     HStack,
+    Portal,
     Select,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { isArray, isObject, uniqueId } from 'lodash';
 import { DateTime } from 'luxon';
 import { useParams } from 'next/navigation';
-import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import Layout from '../Layout';
 import Pagination from '../Pagination';
 import PerPageSelect from '../PerPageSelect';
@@ -43,6 +44,7 @@ import {
     StakingPoolUserHistory,
 } from '../../graphql/models';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useColorModeValue } from '../ui/color-mode';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -214,6 +216,26 @@ const PoolUsers: FC = () => {
         setUserHistoriesList(nextValue);
     }, [stakingPoolUserHistories.data?.stakingPoolUserHistories]);
 
+    const selectOptions = createListCollection({
+        items: monthOptions.map((option) => ({
+            label: dateTimeFormat.format(option.date.toMillis()),
+            value: option.id,
+        })),
+    });
+
+    /*
+    {monthOptions.map((option) => (
+        <option
+            key={option.id}
+            value={option.id}
+        >
+            {dateTimeFormat.format(
+                option.date.toMillis()
+            )}
+        </option>
+    ))}
+     */
+
     return (
         <Layout bg={pageBg}>
             <PoolHeader isManager={isManager} from="users" />
@@ -234,8 +256,8 @@ const PoolUsers: FC = () => {
                             </Heading>
 
                             {stakingPool?.totalUsers > 0 && (
-                                <Select
-                                    value={selectedMonth.id}
+                                <Select.Root
+                                    value={[selectedMonth.id]}
                                     width="10rem"
                                     borderLeft="none"
                                     borderTop="none"
@@ -246,12 +268,10 @@ const PoolUsers: FC = () => {
                                         sm: 'sm',
                                         md: 'md',
                                     }}
-                                    onChange={(event) => {
+                                    onValueChange={({ value }) => {
                                         const nextSelectedMonth =
                                             monthOptions.find(
-                                                (month) =>
-                                                    month.id ===
-                                                    event.currentTarget.value
+                                                (month) => month.id === value[0]
                                             );
 
                                         const nextStartTimestamp =
@@ -272,18 +292,36 @@ const PoolUsers: FC = () => {
                                         setStartTimestamp(nextStartTimestamp);
                                         setEndTimestamp(nextEndTimestamp);
                                     }}
+                                    collection={selectOptions}
+                                    size="sm"
                                 >
-                                    {monthOptions.map((option) => (
-                                        <option
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {dateTimeFormat.format(
-                                                option.date.toMillis()
-                                            )}
-                                        </option>
-                                    ))}
-                                </Select>
+                                    <Select.HiddenSelect />
+                                    <Select.Control>
+                                        <Select.Trigger>
+                                            <Select.ValueText />
+                                        </Select.Trigger>
+                                        <Select.IndicatorGroup>
+                                            <Select.Indicator />
+                                        </Select.IndicatorGroup>
+                                    </Select.Control>
+                                    <Portal>
+                                        <Select.Positioner>
+                                            <Select.Content>
+                                                {selectOptions.items.map(
+                                                    (option) => (
+                                                        <Select.Item
+                                                            key={option.value}
+                                                            item={option}
+                                                        >
+                                                            {option.label}
+                                                            <Select.ItemIndicator />
+                                                        </Select.Item>
+                                                    )
+                                                )}
+                                            </Select.Content>
+                                        </Select.Positioner>
+                                    </Portal>
+                                </Select.Root>
                             )}
                         </HStack>
                     </Box>
@@ -343,14 +381,8 @@ const PoolUsers: FC = () => {
                                     <PerPageSelect
                                         value={rowsPerPage}
                                         options={options}
-                                        onChange={(
-                                            event: ChangeEvent<HTMLSelectElement>
-                                        ) => {
-                                            setRowsPerPage(
-                                                Number(
-                                                    event.currentTarget.value
-                                                )
-                                            );
+                                        onChange={(value) => {
+                                            setRowsPerPage(Number(value));
                                             setPageNumber(0);
                                         }}
                                     />

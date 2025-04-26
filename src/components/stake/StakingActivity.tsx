@@ -14,9 +14,9 @@ import {
     Button,
     Heading,
     HStack,
+    Icon,
     Spinner,
     Text,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { last } from 'lodash/fp';
@@ -26,6 +26,7 @@ import usePoolActivities, {
 } from '../../graphql/hooks/usePoolActivities';
 import { formatValue } from '../../utils/numberFormatter';
 import { CheckCircleIcon, EmptyTransactionIcon } from '../Icons';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface Props {
     userAccount: string;
@@ -49,7 +50,7 @@ const Loader = ({ isLoading }) => {
     return (
         <VStack
             alignItems="center"
-            spacing={4}
+            gap={4}
             w="full"
             textAlign="center"
             fontSize="sm"
@@ -124,7 +125,7 @@ export const StakingActivity: FC<Props> = memo(
                 <Heading as="h2" size="md" mb={10}>
                     My staking activities
                 </Heading>
-                <VStack spacing={8} alignItems="flex-start">
+                <VStack gap={8} alignItems="flex-start">
                     {!list && <Loader isLoading={loading} />}
                     {list?.length > 0 && (
                         <>
@@ -132,11 +133,12 @@ export const StakingActivity: FC<Props> = memo(
                                 <HStack
                                     key={index}
                                     justifyContent="flex-start"
-                                    spacing={4}
+                                    gap={4}
                                     alignItems="center"
                                     minW={167}
                                 >
-                                    <CheckCircleIcon
+                                    <Icon
+                                        as={CheckCircleIcon}
                                         w={6}
                                         h={6}
                                         color={checkIconColor}
@@ -158,7 +160,7 @@ export const StakingActivity: FC<Props> = memo(
                                     <Button
                                         variant="link"
                                         colorScheme="blue"
-                                        isLoading={loading}
+                                        loading={loading}
                                         loadingText="Loading..."
                                         textTransform="none"
                                         onClick={() =>
@@ -179,7 +181,7 @@ export const StakingActivity: FC<Props> = memo(
                     {!loading && list?.length === 0 && (
                         <VStack
                             alignItems="center"
-                            spacing={4}
+                            gap={4}
                             w="full"
                             textAlign="center"
                             fontSize="sm"
@@ -193,7 +195,8 @@ export const StakingActivity: FC<Props> = memo(
                                 flexShrink={0}
                                 marginBottom={0}
                             >
-                                <EmptyTransactionIcon
+                                <Icon
+                                    as={EmptyTransactionIcon}
                                     fill={emptyIconBg}
                                     stroke={emptyIconColor}
                                     w={16}
