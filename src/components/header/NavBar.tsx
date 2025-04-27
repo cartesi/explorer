@@ -105,7 +105,7 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                     alignItems="center"
                     data-testid="links-container"
                 >
-                    <Logo mr={{ base: 0, sm: 2 }} />
+                    <Logo mr={{ base: 0, sm: 2 }} mt={2} />
                     <SelectedChain display={{ base: 'none', md: 'flex' }} />
                     <HStack
                         as="nav"

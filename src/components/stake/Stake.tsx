@@ -82,7 +82,7 @@ const StakeHomePage = () => {
                             >
                                 <Heading
                                     as="h1"
-                                    fontSize={['1xl', '2xl']}
+                                    fontSize={['xl', '2xl']}
                                     mb={6}
                                     pl={[8, 8, 0]}
                                 >
@@ -126,7 +126,7 @@ const StakeHomePage = () => {
                             >
                                 <Heading
                                     as="h1"
-                                    fontSize={['1xl', '2xl']}
+                                    fontSize={['xl', '2xl']}
                                     ml={[8, 8, 0]}
                                     mb={[4, 0, 0]}
                                 >

@@ -92,7 +92,11 @@ export const Account: FC = () => {
                             </Button>
                         </Menu.Trigger>
                         <Portal>
-                            <Menu.Positioner>
+                            <Menu.Positioner
+                                zIndex={`${theme.tokens.getVar(
+                                    'zIndex.xxl'
+                                )} !important`}
+                            >
                                 <Menu.Content>
                                     <WalletMenu />
                                 </Menu.Content>

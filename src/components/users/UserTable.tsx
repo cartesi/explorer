@@ -82,7 +82,7 @@ const UserTable: FC<UserTableProps> = ({
                             User
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
@@ -95,11 +95,11 @@ const UserTable: FC<UserTableProps> = ({
                                 Block Produced
                             </GhostButton>
                             {sort === 'totalBlocks' && (
-                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
@@ -111,12 +111,12 @@ const UserTable: FC<UserTableProps> = ({
                             >
                                 Total Staked
                             </GhostButton>
-                            {sort == 'balance' && (
-                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                            {sort === 'balance' && (
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
@@ -128,8 +128,8 @@ const UserTable: FC<UserTableProps> = ({
                             >
                                 Total Rewards
                             </GhostButton>
-                            {sort == 'totalReward' && (
-                                <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                            {sort === 'totalReward' && (
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 

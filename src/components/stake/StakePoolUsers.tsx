@@ -251,7 +251,7 @@ const PoolUsers: FC = () => {
                 >
                     <Box w="100%">
                         <HStack justify="space-between" align="center" mb={6}>
-                            <Heading as="h1" fontSize={['1xl', '2xl']}>
+                            <Heading as="h1" fontSize={['xl', '2xl']}>
                                 Total Users
                             </Heading>
 
@@ -342,7 +342,7 @@ const PoolUsers: FC = () => {
                 >
                     <Box w="100%">
                         <HStack justify="space-between" align="center" mb={6}>
-                            <Heading as="h1" fontSize={['1xl', '2xl']}>
+                            <Heading as="h1" fontSize={['xl', '2xl']}>
                                 Staking Users
                             </Heading>
                             <SearchInput

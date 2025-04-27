@@ -59,7 +59,7 @@ const Chain: FC<ChainProps> = (props) => {
         return null;
     }
 
-    // do not show mainnet, unless explicity asked for
+    // do not show mainnet, unless explicitly asked for
     if (chainId == 1 && !showMainnet) {
         return null;
     }
@@ -67,7 +67,7 @@ const Chain: FC<ChainProps> = (props) => {
     return (
         <Tag.Root
             borderRadius="full"
-            colorScheme={colorSchemes[chainId] || defaultColorScheme}
+            colorPalette={colorSchemes[chainId] || defaultColorScheme}
             {...tagProps}
         >
             <Tag.Label>{chain.name}</Tag.Label>

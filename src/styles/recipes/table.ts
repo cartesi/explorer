@@ -3,6 +3,11 @@ import { tableAnatomy } from '@chakra-ui/react/anatomy';
 
 export const tableRecipe = defineSlotRecipe({
     slots: tableAnatomy.keys(),
+    base: {
+        cell: {
+            fontSize: 'md',
+        },
+    },
     variants: {
         variant: {
             clear: {

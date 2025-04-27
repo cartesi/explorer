@@ -53,7 +53,7 @@ const Users: FC<UsersProps> = (props) => {
                     justifyContent="flex-end"
                     alignItems={{ base: 'flex-end', md: 'center' }}
                     width="100%"
-                    mt="var(--chakra-space-12) !important"
+                    mt={12}
                     overflowX="auto"
                     py={1}
                 >

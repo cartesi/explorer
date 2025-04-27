@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, BoxProps, Link, useToken } from '@chakra-ui/react';
+import { Box, BoxProps, Icon, Link, useToken } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC } from 'react';
 import { CartesiLogo } from '../Icons';
 
 export const Logo: FC<BoxProps> = (props) => {
-    const [width, height] = useToken('space', ['192', '80']);
+    const [width, height] = useToken('space', ['48', '20']);
 
     return (
         <Box {...props}>
@@ -25,7 +25,12 @@ export const Logo: FC<BoxProps> = (props) => {
                 _focus={{ outline: 'none' }}
                 title="Cartesi logo"
             >
-                <CartesiLogo color="white" width={width} height={height} />
+                <Icon
+                    as={CartesiLogo}
+                    color="white"
+                    width={width}
+                    height={height}
+                />
             </Link>
         </Box>
     );

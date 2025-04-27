@@ -53,7 +53,7 @@ const Home = () => {
                     py={{ base: 6, md: 10 }}
                     px={{ base: '6vw', xl: '12vw' }}
                 >
-                    <Heading as="h1" fontSize={['1xl', '2xl']} mb={4}>
+                    <Heading as="h1" fontSize={['xl', '2xl']} mb={4}>
                         Blocks
                     </Heading>
 
@@ -77,7 +77,7 @@ const Home = () => {
                     px={{ base: '6vw', xl: '12vw' }}
                 >
                     <HStack justify="space-between" align="center" mb={6}>
-                        <Heading as="h1" fontSize={['1xl', '2xl']}>
+                        <Heading as="h1" fontSize={['xl', '2xl']}>
                             Block Producers
                         </Heading>
                         <SearchInput

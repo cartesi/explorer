@@ -84,6 +84,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
+                textAlign="right"
             >
                 {user.totalBlocks}
             </Table.Cell>
@@ -91,6 +92,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
+                textAlign="right"
             >
                 {formatCTSI(user.balance, 0)} CTSI
             </Table.Cell>
@@ -98,6 +100,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
+                textAlign="right"
             >
                 {formatCTSI(user.totalReward, 0)} CTSI
             </Table.Cell>
@@ -109,8 +112,6 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                 backgroundColor="inherit"
                 padding={0}
                 data-testid="stake-info-col"
-                paddingTop={4}
-                paddingBottom={4}
             >
                 <Box
                     shadow={{ base: 'md', md: 'none' }}

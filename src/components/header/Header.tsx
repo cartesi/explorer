@@ -19,7 +19,7 @@ export const Header: FC<Props> = ({ links }) => {
     return (
         <NavBar
             w="100%"
-            zIndex={theme.tokens.getVar('zIndex.xxl')}
+            zIndex={theme.tokens.getVar('zIndex.xl')}
             links={links}
         />
     );
