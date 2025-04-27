@@ -9,31 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
-    Button,
-    FormControl,
-    VStack,
-    Text,
-    FormHelperText,
-    FormLabel,
-    Modal,
-    ModalCloseButton,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    Stack,
-    UseDisclosureProps,
     Box,
-    HStack,
-    Divider,
-    useColorModeValue,
+    Button,
+    CloseButton,
+    Dialog,
+    Field,
+    Separator,
+    Stack,
+    Text,
+    UseDisclosureProps,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface IStakingStakeModalProps {
     balance: BigNumber;
@@ -59,7 +51,6 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
         BigNumber.from(0)
     );
     const formattedStakedValue = formatBigNumber(stakedValue);
-    const inputFocusRef = useRef<FocusableElement>(null);
     const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
     const helperTextColor = useColorModeValue('gray.600', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
@@ -81,33 +72,32 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     }, [isOpen]);
 
     return (
-        <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
-            >
-                <ModalOverlay />
-                <ModalContent>
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
+        <Dialog.Root
+            open={isOpen}
+            placement="center"
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content>
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <Box fontSize="xl" fontWeight="bold">
                                 Stake
                             </Box>
+                        </Dialog.Title>
+                    </Dialog.Header>
+                    <Separator width="full" />
 
-                            <ModalCloseButton mt="8px !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-                    <ModalBody>
-                        <VStack spacing={5}>
+                    <Dialog.Body>
+                        <VStack gap={5}>
                             <Text>
                                 By moving your tokens from the pool balance to
                                 your staked balance. Your staked tokens
@@ -115,8 +105,8 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 turn will automatically generate rewards. Learn
                                 more
                             </Text>
-                            <FormControl id="stakeAmount">
-                                <FormLabel mr={0}>
+                            <Field.Root id="stakeAmount">
+                                <Field.Label mr={0}>
                                     <Stack
                                         direction="row"
                                         justify="space-between"
@@ -141,20 +131,20 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                             Max stake
                                         </Button>
                                     </Stack>
-                                </FormLabel>
+                                </Field.Label>
                                 <CTSINumberInput
                                     value={formattedStakedValue}
                                     min={0}
                                     max={userBalanceFormatted}
                                     onChange={setStakedValue}
                                 />
-                                <FormHelperText color={helperTextColor}>
+                                <Field.HelperText color={helperTextColor}>
                                     Allowance: {toCTSI(userBalance)} CTSI
-                                </FormHelperText>
-                            </FormControl>
+                                </Field.HelperText>
+                            </Field.Root>
                         </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
+                        <Dialog.Footer px="0" pt={10}>
+                            <VStack w="full" gap={4}>
                                 <Button
                                     width="full"
                                     colorScheme={colorScheme}
@@ -177,10 +167,10 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                     Cancel
                                 </Button>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </>
+                        </Dialog.Footer>
+                    </Dialog.Body>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };
