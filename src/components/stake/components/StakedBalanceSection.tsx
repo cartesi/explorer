@@ -95,7 +95,7 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                         width="173px"
                         ml="auto"
                         onClick={onUnstakeClick}
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         disabled={stakedBalance.isZero()}
                     >
                         Unstake

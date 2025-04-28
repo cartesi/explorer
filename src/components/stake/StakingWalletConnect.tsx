@@ -49,7 +49,7 @@ export const StakingWalletConnect: FC<StakingTabNavigationProps> = ({
                         onClick={() => {
                             onConnect('metamask');
                         }}
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                     >
                         Connect Your Wallet
                     </Button>

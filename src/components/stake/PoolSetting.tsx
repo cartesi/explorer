@@ -280,7 +280,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     data-testid="posV2Alert"
                 >
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         mt="1rem !important"
                         loading={pool?.updateTransaction?.isOngoing}
@@ -351,7 +351,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             />
                         </InputGroup>
                         <Button
-                            colorScheme="darkGray"
+                            colorPalette="gray"
                             variant="ghost"
                             w={{ base: '100%', md: 'auto' }}
                             minW="10.8125rem"

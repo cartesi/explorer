@@ -180,7 +180,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 </Button>
                                 <Button
                                     width="full"
-                                    colorScheme="darkGray"
+                                    colorPalette="gray"
                                     variant="ghost"
                                     onClick={onClose}
                                 >

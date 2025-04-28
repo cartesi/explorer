@@ -97,7 +97,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                 >
                     {maturingBalance.gt(0) && maturingLeft && (
                         <Button
-                            colorScheme="darkGray"
+                            colorPalette="gray"
                             variant="ghost"
                             mt={[8, 0]}
                             disabled

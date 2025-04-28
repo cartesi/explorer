@@ -126,7 +126,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             </Button>
                             <Button
                                 width="full"
-                                colorScheme="darkGray"
+                                colorPalette="gray"
                                 variant="ghost"
                                 onClick={onClose}
                             >

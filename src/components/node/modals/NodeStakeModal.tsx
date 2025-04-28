@@ -160,7 +160,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                     </Button>
                                     <Button
                                         width="full"
-                                        colorScheme="darkGray"
+                                        colorPalette="gray"
                                         variant="ghost"
                                         onClick={onClose}
                                     >

@@ -161,7 +161,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <Button
                                     width="full"
                                     variant="ghost"
-                                    colorScheme="darkGray"
+                                    colorPalette="gray"
                                     onClick={onClose}
                                 >
                                     Cancel

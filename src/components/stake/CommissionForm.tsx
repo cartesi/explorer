@@ -162,7 +162,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                     </InputGroup>
 
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.8125rem"

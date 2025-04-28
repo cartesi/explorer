@@ -167,7 +167,7 @@ const CommissionModel = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => onPrevious && onPrevious(evt)}

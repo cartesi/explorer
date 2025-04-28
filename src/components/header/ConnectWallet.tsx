@@ -41,7 +41,6 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                     <Button
                         size="md"
                         colorPalette={colorPalette}
-                        disabled
                         onClick={activate}
                         _hover={{
                             bg: hoverBg,

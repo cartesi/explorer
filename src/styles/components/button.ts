@@ -43,6 +43,7 @@ export const Button = {
             return;
         },
         solid: (props: { colorScheme: string; colorMode: string }) => {
+            // Done
             if (props.colorScheme === 'darkGray') {
                 return {
                     bg: props.colorMode === 'dark' ? 'gray.600' : 'gray.900',
@@ -71,6 +72,7 @@ export const Button = {
                 };
             }
 
+            // Done
             if (props.colorScheme === 'blue') {
                 return {
                     bg:

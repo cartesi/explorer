@@ -183,7 +183,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                     </Button>
                                     <Button
                                         width="full"
-                                        colorScheme="darkGray"
+                                        colorPalette="gray"
                                         variant="ghost"
                                         onClick={onClose}
                                     >

@@ -120,7 +120,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                     </Button>
                                     <Button
                                         width="full"
-                                        colorScheme="darkGray"
+                                        colorPalette="gray"
                                         variant="ghost"
                                         onClick={onClose}
                                     >

@@ -8,7 +8,9 @@ export const buttonRecipe = defineRecipe({
     },
     variants: {
         variant: {
-            solid: {},
+            solid: {
+                textTransform: 'uppercase',
+            },
             outline: {},
             ghost: {},
             link: {},
@@ -29,6 +31,46 @@ export const buttonRecipe = defineRecipe({
         },
     },
     compoundVariants: [
+        {
+            variant: 'solid',
+            colorPalette: 'gray',
+            css: {
+                color: 'white',
+                bg: {
+                    base: 'gray.900',
+                    _dark: 'gray.600',
+                },
+                borderWidth: '1px',
+                borderColor: {
+                    base: 'gray.80',
+                    _dark: 'white',
+                },
+                _hover: {
+                    bg: {
+                        base: 'red.100',
+                        _dark: 'gray.500',
+                    },
+                    color: 'white',
+                },
+                _active: {
+                    bg: {
+                        base: 'gray.800',
+                        _dark: 'gray.600',
+                    },
+                    color: 'white',
+                },
+                _disabled: {
+                    color: {
+                        base: 'gray.500',
+                        _dark: 'gray.200',
+                    },
+                    bg: {
+                        base: 'gray.200',
+                        _dark: 'gray.600',
+                    },
+                },
+            },
+        },
         {
             variant: 'solid',
             colorPalette: 'cyan',
@@ -72,7 +114,6 @@ export const buttonRecipe = defineRecipe({
                 },
             },
         },
-
         {
             variant: 'solid',
             colorPalette: 'teal',
@@ -110,6 +151,57 @@ export const buttonRecipe = defineRecipe({
                     },
                     borderColor: {
                         base: 'light.border.quaternary',
+                        _dark: 'dark.border.quaternary',
+                    },
+                },
+            },
+        },
+        {
+            variant: 'solid',
+            colorPalette: 'blue',
+            css: {
+                textTransform: 'uppercase',
+                color: 'gray.900',
+                bg: {
+                    base: 'blue.200',
+                    _dark: 'dark.primary',
+                },
+                borderWidth: '1px',
+                borderColor: {
+                    base: 'gray.80',
+                    _dark: 'white',
+                },
+                _hover: {
+                    bg: {
+                        base: 'blue.100',
+                        _dark: 'dark.primary',
+                    },
+                    color: {
+                        base: 'gray.900',
+                        _dark: 'dark.gray.tertiary',
+                    },
+                },
+                _active: {
+                    bg: {
+                        base: 'blue.100',
+                        _dark: 'dark.primary',
+                    },
+                    color: {
+                        base: 'gray.900',
+                        _dark: 'dark.gray.tertiary',
+                    },
+                },
+                _disabled: {
+                    color: {
+                        base: 'gray.900',
+                        _dark: 'dark.gray.senary',
+                    },
+                    bg: {
+                        base: 'blue.200',
+                        _dark: 'dark.gray.quaternary',
+                    },
+                    borderColor: {
+                        base: 'gray.80',
                         _dark: 'dark.border.quaternary',
                     },
                 },

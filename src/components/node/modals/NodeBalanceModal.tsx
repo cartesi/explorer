@@ -160,7 +160,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 </Button>
                                 <Button
                                     width="full"
-                                    colorScheme="darkGray"
+                                    colorPalette="gray"
                                     variant="ghost"
                                     onClick={onClose}
                                 >

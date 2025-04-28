@@ -110,7 +110,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                     </Button>
                     <Button
                         variant="ghost"
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         width="173px"
                         ml="auto"
                         onClick={onWithdrawClick}

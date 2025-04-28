@@ -383,7 +383,7 @@ const ManageNode: FC = () => {
                     {!isSmallScreen && (
                         <Box>
                             <Button
-                                colorScheme="darkGray"
+                                colorPalette="gray"
                                 variant="ghost"
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"

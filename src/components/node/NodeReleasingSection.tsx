@@ -104,7 +104,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                 >
                     {releasingBalance.gt(0) && releasingLeftShort && (
                         <Button
-                            colorScheme="darkGray"
+                            colorPalette="gray"
                             variant="ghost"
                             mt={[8, 0]}
                             disabled
