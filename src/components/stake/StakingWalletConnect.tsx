@@ -9,16 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Button,
-    HStack,
-    Stack,
-    Text,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Button, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import React, { FC } from 'react';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface StakingTabNavigationProps {
     onConnect: (value: string) => void;
@@ -36,12 +29,12 @@ export const StakingWalletConnect: FC<StakingTabNavigationProps> = ({
                     direction={{ base: 'column', md: 'row' }}
                     w="full"
                     alignItems="center"
-                    spacing={6}
+                    gap={6}
                     p={5}
                 >
                     <HStack
                         flexGrow={1}
-                        spacing="1rem"
+                        gap="1rem"
                         w={{ base: '100%', md: 'auto' }}
                     >
                         <Box>

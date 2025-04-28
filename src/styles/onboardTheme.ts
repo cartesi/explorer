@@ -22,26 +22,27 @@ const ACCOUNT_SELECT_LOAD_MORE = `${ACCOUNT_SELECT} + button`;
 const WALLET_CHECK_SECTION = `${CUSTOM_CLASS}.bn-onboard-wallet-check-section`;
 const WALLET_CHECK_SECTION_WRAPPER = `${WALLET_CHECK_SECTION} > div`;
 
-export const buildOnboardTheme = (props: { colorMode: string }) => {
-    return {
-        [MODAL]: {
-            fontFamily: fonts.body,
-            zIndex: zIndices.lg,
+export const onboardTheme = {
+    [MODAL]: {
+        fontFamily: fonts.body.value,
+        zIndex: zIndices.lg.value,
+    },
+    [`${MODAL_CONTENT}${DARK_MODE}`]: {
+        background: colors.gray[800].value,
+    },
+    [WALLET_CHECK_SECTION_WRAPPER]: {
+        width: '100%',
+    },
+    [ACCOUNT_SELECT]: {
+        maxWidth: '81%',
+        backgroundColor: {
+            base: 'white',
+            _dark: 'gray.800',
         },
-        [`${MODAL_CONTENT}${DARK_MODE}`]: {
-            background: colors.gray[800],
-        },
-        [WALLET_CHECK_SECTION_WRAPPER]: {
-            width: '100%',
-        },
-        [ACCOUNT_SELECT]: {
-            maxWidth: '81%',
-            backgroundColor: props.colorMode === 'dark' ? 'gray.800' : 'white',
-        },
-        [ACCOUNT_SELECT_LOAD_MORE]: {
-            display: 'inline-block !important',
-            flexGrow: 1,
-            height: '2.5rem !important',
-        },
-    };
+    },
+    [ACCOUNT_SELECT_LOAD_MORE]: {
+        display: 'inline-block !important',
+        flexGrow: 1,
+        height: '2.5rem !important',
+    },
 };

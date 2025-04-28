@@ -22,7 +22,7 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
     const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
-    const colorScheme = useColorModeValue('teal', 'cyan');
+    const colorPalette = useColorModeValue('teal', 'cyan');
     const hoverBg = useColorModeValue(
         'linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), #008DA5',
         'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF'
@@ -40,7 +40,8 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                 !active && (
                     <Button
                         size="md"
-                        colorScheme={colorScheme}
+                        colorPalette={colorPalette}
+                        disabled
                         onClick={activate}
                         _hover={{
                             bg: hoverBg,

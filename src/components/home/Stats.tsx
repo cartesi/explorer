@@ -112,12 +112,12 @@ const HomeStats = () => {
                                     showArrow
                                     content={
                                         <>
-                                            <Text>
+                                            <Text fontWeight={500}>
                                                 Market Cap = Current Price x
                                                 Circulating Supply
                                             </Text>
                                             <br />
-                                            <Text>
+                                            <Text fontWeight={500}>
                                                 Refers to the total market value
                                                 of a cryptocurrency’s
                                                 circulating supply.

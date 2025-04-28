@@ -121,6 +121,7 @@ export const Button = {
                     },
                 };
             }
+            // Done
             if (props.colorScheme === 'cyan') {
                 return {
                     bg:
@@ -166,6 +167,7 @@ export const Button = {
                 };
             }
 
+            // Done
             if (props.colorScheme === 'teal') {
                 return {
                     textTransform: 'uppercase',
@@ -210,6 +212,7 @@ export const Button = {
                 };
             }
 
+            // Done
             return {
                 textTransform: 'uppercase',
             };

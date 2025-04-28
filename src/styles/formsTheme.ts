@@ -14,16 +14,14 @@ const LABEL = `${CHAKRA_FORM_CLASS}__label`;
 const ERROR_MESSAGE = `${CHAKRA_FORM_CLASS}__error-message`;
 const HELPER_TEXT = `${CHAKRA_FORM_CLASS}__helper-text`;
 
-export const formsTheme = () => {
-    return {
-        [LABEL]: {
-            marginBottom: '0.75rem !important',
-        },
-        [ERROR_MESSAGE]: {
-            marginTop: '0.75rem !important',
-        },
-        [HELPER_TEXT]: {
-            marginTop: '0.75rem !important',
-        },
-    };
+export const formsTheme = {
+    [LABEL]: {
+        marginBottom: '0.75rem !important',
+    },
+    [ERROR_MESSAGE]: {
+        marginTop: '0.75rem !important',
+    },
+    [HELPER_TEXT]: {
+        marginTop: '0.75rem !important',
+    },
 };

@@ -114,6 +114,9 @@ export const colors = {
             tertiary: {
                 value: 'rgba(0, 141, 165, 0.10)',
             },
+            quaternary: {
+                value: 'rgba(255, 255, 255, 0.10)',
+            },
         },
     },
     gray: {

@@ -13,9 +13,9 @@ import { createSystem, defaultConfig } from '@chakra-ui/react';
 // import { Button } from './components/button';
 // import { Input } from './components/input';
 // import { Modal } from './components/modal';
-// import { formsTheme } from './formsTheme';
-// import { buildOnboardTheme } from './onboard';
-// import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
+import { formsTheme } from './formsTheme';
+import { onboardTheme } from './onboard';
+import { onboardTheme as onboardThemeV1 } from './onboardTheme';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { zIndices } from './foundations/zIndices';
@@ -26,21 +26,17 @@ import { textRecipe } from './recipes/text';
 import { headingRecipe } from './recipes/heading';
 
 const theme = createSystem(defaultConfig, {
-    // styles: {
-    //     global: (props: any) => {
-    //         return {
-    //             'html, body': {
-    //                 color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-    //             },
-    //             ...onboardThemeV1(props),
-    //             ...buildOnboardTheme(props),
-    //             ...formsTheme(),
-    //         };
-    //     },
-    // },
-    // config: {
-    //     initialColorMode: 'dark',
-    // },
+    globalCss: {
+        'html, body': {
+            color: {
+                base: 'gray.950',
+                _dark: 'white',
+            },
+        },
+        ...onboardThemeV1,
+        ...onboardTheme,
+        ...formsTheme,
+    },
     // components: {
     //     Button,
     //     Modal,
