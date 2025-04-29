@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '../providers/Providers';
 import { Metadata } from 'next';
 import AddressENSService from '../services/server/ens/AddressENSService';
@@ -35,6 +36,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
             </head>
             <body>
                 <Providers ensData={ensData}>{children}</Providers>
+                <SpeedInsights />
             </body>
         </html>
     );
