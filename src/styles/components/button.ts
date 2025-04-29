@@ -27,6 +27,7 @@ export const Button = {
         },
     },
     variants: {
+        // Done
         outline: (props: { colorScheme: string; colorMode: string }) => {
             if (props.colorScheme === 'darkGray') {
                 return {
@@ -268,6 +269,7 @@ export const Button = {
                 textTransform: 'uppercase',
             };
         },
+        // Done
         link: (props: { colorScheme: string; colorMode: string }) => {
             return {
                 color:

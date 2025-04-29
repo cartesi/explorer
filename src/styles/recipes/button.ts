@@ -6,14 +6,25 @@ export const buttonRecipe = defineRecipe({
         fontWeight: '500',
         fontFamily: "'Plus Jakarta Sans'",
     },
+    defaultVariants: {
+        size: 'lg',
+    },
     variants: {
         variant: {
             solid: {
                 textTransform: 'uppercase',
             },
             outline: {},
-            ghost: {},
-            link: {},
+            ghost: {
+                textTransform: 'uppercase',
+            },
+            link: {
+                textTransform: 'uppercase',
+                color: {
+                    base: 'dark.gray.tertiary',
+                    _dark: 'dark.primary',
+                },
+            },
         },
         size: {
             xl: {
@@ -31,6 +42,22 @@ export const buttonRecipe = defineRecipe({
         },
     },
     compoundVariants: [
+        {
+            variant: 'outline',
+            colorPalette: 'gray',
+            css: {
+                borderColor: {
+                    base: 'black',
+                    _dark: 'white',
+                },
+                _hover: {
+                    bg: {
+                        base: 'gray.50',
+                        _dark: 'rgba(0, 0, 0, 0.1)',
+                    },
+                },
+            },
+        },
         {
             variant: 'solid',
             colorPalette: 'gray',
@@ -203,6 +230,49 @@ export const buttonRecipe = defineRecipe({
                     borderColor: {
                         base: 'gray.80',
                         _dark: 'dark.border.quaternary',
+                    },
+                },
+            },
+        },
+        {
+            variant: 'ghost',
+            colorPalette: 'gray',
+            css: {
+                textTransform: 'uppercase',
+                color: {
+                    base: 'dark.gray.primary',
+                    _dark: 'dark.gray.senary',
+                },
+                bg: 'transparent',
+                borderWidth: '1px',
+                borderColor: {
+                    base: 'dark.gray.tertiary',
+                    _dark: 'white',
+                },
+                _hover: {
+                    bg: {
+                        base: 'dark.gray.senary',
+                        _dark: 'dark.border.quaternary',
+                    },
+                },
+                _active: {
+                    bg: {
+                        base: 'dark.gray.senary',
+                        _dark: 'dark.border.quaternary',
+                    },
+                },
+                _disabled: {
+                    color: {
+                        base: 'dark.gray.secondary',
+                        _dark: 'dark.gray.senary',
+                    },
+                    bg: {
+                        base: 'light.gray.quaternary',
+                        _dark: 'dark.border.quaternary',
+                    },
+                    borderColor: {
+                        base: 'dark.gray.secondary',
+                        _dark: 'dark.support.disabled',
                     },
                 },
             },
