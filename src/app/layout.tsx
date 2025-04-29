@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     },
 };
 
+export const dynamic = 'force-dynamic';
+
 const getEnsData = async () => {
     const result = await AddressENSService.listAll();
     return result.ok ? result.data : [];
