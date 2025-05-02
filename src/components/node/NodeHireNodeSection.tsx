@@ -106,7 +106,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                     alignItems="flex-end"
                 >
                     <Button
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.813rem"
                         textTransform="uppercase"

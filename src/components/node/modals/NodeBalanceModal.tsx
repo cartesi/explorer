@@ -145,7 +145,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                             <VStack w="full" gap={4}>
                                 <Button
                                     width="full"
-                                    colorScheme={colorScheme}
+                                    colorPalette={colorScheme}
                                     disabled={
                                         output.isZero() ||
                                         output.gt(userBalance)

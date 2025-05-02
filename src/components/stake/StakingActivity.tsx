@@ -159,7 +159,7 @@ export const StakingActivity: FC<Props> = memo(
                                 {!isAllActivitiesLoaded && (
                                     <Button
                                         variant="link"
-                                        colorScheme="blue"
+                                        colorPalette="blue"
                                         loading={loading}
                                         loadingText="Loading..."
                                         textTransform="none"

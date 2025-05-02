@@ -114,14 +114,14 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         <Stack>
                                             <RadioGroup.Item
                                                 value="full"
-                                                colorScheme={radioColorScheme}
+                                                colorPalette={radioColorScheme}
                                             >
                                                 Full amount
                                             </RadioGroup.Item>
 
                                             <RadioGroup.Item
                                                 value="partial"
-                                                colorScheme={radioColorScheme}
+                                                colorPalette={radioColorScheme}
                                             >
                                                 Partial amount
                                             </RadioGroup.Item>
@@ -162,7 +162,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                 <VStack w="full" gap={4}>
                                     <Button
                                         width="full"
-                                        colorScheme={colorScheme}
+                                        colorPalette={colorScheme}
                                         role="withdraw-button"
                                         disabled={
                                             outputWithdraw.isZero() &&

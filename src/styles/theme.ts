@@ -10,9 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { createSystem, defaultConfig } from '@chakra-ui/react';
-// import { Button } from './components/button';
-// import { Input } from './components/input';
-// import { Modal } from './components/modal';
 import { formsTheme } from './formsTheme';
 import { onboardTheme } from './onboard';
 import { onboardTheme as onboardThemeV1 } from './onboardTheme';
@@ -24,6 +21,9 @@ import { buttonRecipe } from './recipes/button';
 import { linkRecipe } from './recipes/link';
 import { textRecipe } from './recipes/text';
 import { headingRecipe } from './recipes/heading';
+import { fieldRecipe } from './recipes/field';
+import { inputRecipe } from './recipes/input';
+import { dialogRecipe } from './recipes/dialog';
 
 const theme = createSystem(defaultConfig, {
     globalCss: {
@@ -37,11 +37,6 @@ const theme = createSystem(defaultConfig, {
         ...onboardTheme,
         ...formsTheme,
     },
-    // components: {
-    //     Button,
-    //     Modal,
-    //     Input,
-    // },
     theme: {
         tokens: {
             fonts,
@@ -53,9 +48,12 @@ const theme = createSystem(defaultConfig, {
             link: linkRecipe,
             text: textRecipe,
             heading: headingRecipe,
+            input: inputRecipe,
         },
         slotRecipes: {
             table: tableRecipe,
+            field: fieldRecipe,
+            dialog: dialogRecipe,
         },
     },
 });

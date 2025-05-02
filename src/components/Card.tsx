@@ -126,7 +126,7 @@ export const Card = ({
                     <Button
                         data-testid="card-action-button"
                         ml={{ base: 0, lg: 2 }}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         onClick={onButtonClick}
                         fontWeight={500}
                         width="full"

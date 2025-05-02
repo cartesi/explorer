@@ -59,7 +59,7 @@ export const DepositSection: FC<IDepositSection> = ({
             </Box>
             <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
-                    colorScheme={colorScheme}
+                    colorPalette={colorScheme}
                     onClick={onDepositClick}
                     width="173px"
                     ml="auto"

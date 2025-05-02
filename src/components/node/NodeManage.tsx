@@ -394,7 +394,7 @@ const ManageNode: FC = () => {
                                 Unstake
                             </Button>
                             <Button
-                                colorScheme={colorScheme}
+                                colorPalette={colorScheme}
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 disabled={isStakeUnstakeDisabled}
@@ -523,7 +523,7 @@ const ManageNode: FC = () => {
                             UNSTAKE
                         </Button>
                         <Button
-                            colorScheme="cyan"
+                            colorPalette="cyan"
                             w={{ base: '100%', md: 'auto' }}
                             disabled={isStakeUnstakeDisabled}
                             onClick={stakeDisclosure.onOpen}

@@ -114,14 +114,14 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     <Stack>
                                         <RadioGroup.Item
                                             value="full"
-                                            colorScheme={radioColorScheme}
+                                            colorPalette={radioColorScheme}
                                         >
                                             Full amount
                                         </RadioGroup.Item>
 
                                         <RadioGroup.Item
                                             value="partial"
-                                            colorScheme={radioColorScheme}
+                                            colorPalette={radioColorScheme}
                                         >
                                             Partial amount
                                         </RadioGroup.Item>
@@ -161,7 +161,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                             <VStack w="full" gap={4}>
                                 <Button
                                     width="full"
-                                    colorScheme={colorScheme}
+                                    colorPalette={colorScheme}
                                     role="unstake-button"
                                     disabled={
                                         outputUnstake.isZero() &&

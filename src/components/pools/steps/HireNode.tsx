@@ -148,7 +148,7 @@ const HireNode = ({
                     defaultChecked
                     mt={5}
                     checked={!pool.paused}
-                    colorScheme={checkboxColorScheme}
+                    colorPalette={checkboxColorScheme}
                     onChange={() => {
                         const tType = pool.paused ? 'unpause' : 'pause';
                         setTransactionType(tType);
@@ -178,7 +178,7 @@ const HireNode = ({
                     <Button
                         disabled={!enableNext || pool.transaction?.isOngoing}
                         loading={pool.transaction?.isOngoing}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             setTransactionType('hire');

@@ -58,7 +58,7 @@ export const Account: FC = () => {
                                 pr={1}
                                 _expanded={expandedStyle}
                                 _hover={hoverStyle}
-                                colorScheme={colorScheme}
+                                colorPalette={colorScheme}
                             >
                                 <HStack h={10}>
                                     <JazzIcon

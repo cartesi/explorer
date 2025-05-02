@@ -109,7 +109,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                 <VStack w="full" gap={4}>
                                     <Button
                                         width="full"
-                                        colorScheme={buttonColorScheme}
+                                        colorPalette={buttonColorScheme}
                                         onClick={() => {
                                             onSave(outputAllowance);
                                             disclosure.onClose();

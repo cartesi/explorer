@@ -180,7 +180,7 @@ const CommissionModel = ({
                             poolFactory?.transaction?.isOngoing
                         }
                         loading={poolFactory?.transaction?.isOngoing}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             poolFactory.createFlatRateCommission(

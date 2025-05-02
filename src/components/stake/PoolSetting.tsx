@@ -431,7 +431,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 <Switch.Root
                                     checked={!pool.paused}
                                     defaultChecked
-                                    colorScheme="teal"
+                                    colorPalette="teal"
                                     size="lg"
                                     me={3}
                                     onCheckedChange={() => {

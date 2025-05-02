@@ -44,7 +44,7 @@ const Template: Story = {
             >
                 <Step {...args}>
                     <StepActions>
-                        <Button colorScheme="blue">NEXT</Button>
+                        <Button colorPalette="blue">NEXT</Button>
                     </StepActions>
                     <StepBody>
                         <Heading as="h3" size="sm" my={4}>

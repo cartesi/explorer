@@ -135,7 +135,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                     <Button
                                         size="sm"
                                         onClick={handleDontShowAgainClick}
-                                        colorScheme="cyan"
+                                        colorPalette="cyan"
                                         variant="link"
                                         fontWeight="600"
                                         textTransform="uppercase"

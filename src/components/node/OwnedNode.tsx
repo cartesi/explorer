@@ -13,6 +13,8 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
     Checkbox,
+    Field,
+    Dialog,
     FormControl,
     FormErrorMessage,
     FormHelperText,
@@ -84,7 +86,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
 
     const mine = account?.toLowerCase() === user.toLowerCase();
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
     const [confirmNoehtherVersion, setConfirmNoehtherVersion] = useState(false);
 
     const onConfirmRetire = () => {
@@ -95,7 +97,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
     return (
         <VStack align="stretch">
             <Stack
-                spacing={[4, 4, 4, 8]}
+                gap={[4, 4, 4, 8]}
                 direction={['column', 'column', 'column', 'row']}
                 align={[undefined, undefined, undefined, 'center']}
             >
@@ -147,7 +149,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                 {mine && (
                     <>
                         <Button
-                            colorScheme="blue"
+                            colorPalette="blue"
                             width="full"
                             onClick={handleSubmit((data) =>
                                 onTransfer(toBigNumber(data.deposit))
@@ -157,14 +159,18 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                         </Button>
                         {!authorized && (
                             <Button
-                                colorScheme="blue"
+                                colorPalette="blue"
                                 onClick={onAuthorize}
                                 width="full"
                             >
                                 Authorize
                             </Button>
                         )}
-                        <Button onClick={onOpen} colorScheme="red" width="full">
+                        <Button
+                            onClick={onOpen}
+                            colorPalette="red"
+                            width="full"
+                        >
                             Retire
                         </Button>
                         <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -203,7 +209,7 @@ const OwnedNode: FC<OwnedNodeProps> = ({
                                 <ModalFooter>
                                     <Button
                                         onClick={onConfirmRetire}
-                                        colorScheme="red"
+                                        colorPalette="red"
                                         mr={3}
                                         disabled={!confirmNoehtherVersion}
                                     >

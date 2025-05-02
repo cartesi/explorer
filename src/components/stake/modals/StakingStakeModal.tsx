@@ -147,7 +147,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             <VStack w="full" gap={4}>
                                 <Button
                                     width="full"
-                                    colorScheme={colorScheme}
+                                    colorPalette={colorScheme}
                                     disabled={stakedValue.isZero()}
                                     data-testid="stake-button"
                                     onClick={() => {

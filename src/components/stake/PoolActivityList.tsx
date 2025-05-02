@@ -213,7 +213,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                             {!isAllActivitiesLoaded && (
                                 <Button
                                     variant="link"
-                                    colorScheme="blue"
+                                    colorPalette="blue"
                                     isLoading={loading}
                                     loadingText="Loading..."
                                     color={loadMoreColor}

@@ -114,7 +114,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     )}
                     {releasingBalance.gt(0) && !releasingLeftShort && (
                         <Button
-                            colorScheme={colorScheme}
+                            colorPalette={colorScheme}
                             mt={[8, 0]}
                             onClick={onWithdraw}
                         >

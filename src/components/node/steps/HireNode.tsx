@@ -167,7 +167,7 @@ const HireNode = ({
                     <Button
                         disabled={!enableNext || node.transaction?.isOngoing}
                         loading={node.transaction?.isOngoing}
-                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
+                        colorPalette={colorMode === 'dark' ? 'cyan' : 'teal'}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => node.hire(toBigNumber(initialFunds))}
                     >

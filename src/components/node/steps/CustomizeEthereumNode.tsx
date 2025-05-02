@@ -124,7 +124,7 @@ const CustomizeEthereumNode = ({
                 >
                     <Button
                         minWidth={{ base: '10rem' }}
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         onClick={(evt) => {
                             setState(COMPLETED);
                             onComplete(evt);

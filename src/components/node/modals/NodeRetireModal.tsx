@@ -118,7 +118,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             </HStack>
                             <Button
                                 width="full"
-                                colorScheme={colorScheme}
+                                colorPalette={colorScheme}
                                 disabled={address != addressValue?.trim()}
                                 onClick={onConfirmRetire}
                             >

@@ -226,7 +226,7 @@ const SetAllowance = ({
                     <Button
                         disabled={!enableBtn}
                         minWidth={{ base: '10rem' }}
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         loading={transaction.isOngoing}
                         onClick={() =>
                             approve(

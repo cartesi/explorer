@@ -117,7 +117,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                                 checkedBg,
                                                                         }}
                                                                         gap={0}
-                                                                        colorScheme={
+                                                                        colorPalette={
                                                                             checkboxColorScheme
                                                                         }
                                                                         py={2}
@@ -198,7 +198,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                             w="100%"
                                                                             flexDirection="row-reverse"
                                                                             justifyContent="space-between"
-                                                                            colorScheme={
+                                                                            colorPalette={
                                                                                 radioColorScheme
                                                                             }
                                                                             value={

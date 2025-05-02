@@ -197,7 +197,7 @@ const SetUpNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState(COMPLETED);

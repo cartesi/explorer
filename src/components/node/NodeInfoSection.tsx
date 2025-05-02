@@ -232,7 +232,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
                     {!isAuthorized ? (
                         <Button
-                            colorScheme={colorScheme}
+                            colorPalette={colorScheme}
                             loadingText="authorizing"
                             w={{ base: 'auto' }}
                             px={{ base: 4, md: 6 }}

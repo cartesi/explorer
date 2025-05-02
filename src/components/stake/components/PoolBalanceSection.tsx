@@ -101,7 +101,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         width="173px"
                         ml="auto"
                         onClick={onStakeClick}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         disabled={
                             isPoolBalanceLocked || userPoolBalance.isZero()
                         }

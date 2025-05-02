@@ -40,7 +40,7 @@ const AlertAndConnect = ({ isVisible, onConnect }: AlertAndConnectProps) => {
                         </Alert.Title>
                     </Alert.Root>
                 </Box>
-                <Button colorScheme="cyan" mt={7} onClick={onConnect}>
+                <Button colorPalette="cyan" mt={7} onClick={onConnect}>
                     CONNECT WALLET
                 </Button>
             </Box>

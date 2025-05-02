@@ -53,7 +53,7 @@ const PendingNode: FC<PendingNodeProps> = ({
                 {account.toLowerCase() === user.toLowerCase() && (
                     <Button
                         onClick={onCancelHire}
-                        colorScheme="blue"
+                        colorPalette="blue"
                         width="full"
                         data-testid="cancel-hire-button"
                     >

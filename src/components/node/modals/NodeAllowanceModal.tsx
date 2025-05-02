@@ -114,7 +114,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                         <VStack w="full" gap={4}>
                             <Button
                                 width="full"
-                                colorScheme={colorScheme}
+                                colorPalette={colorScheme}
                                 onClick={() => {
                                     onSave(outputAllowance);
                                     disclosure.onClose();

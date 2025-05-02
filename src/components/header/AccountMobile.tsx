@@ -38,7 +38,7 @@ const AccountMobile: FC = () => {
         <Tag.Root
             size="md"
             borderRadius="0"
-            colorScheme="gray"
+            colorPalette="gray"
             h={10}
             onClick={onOpenWalletMobileModal}
             key="xs"

@@ -228,7 +228,7 @@ const EthereumNameServer = ({
                     <Button
                         loading={pool.transaction?.isOngoing}
                         disabled={pool.transaction?.isOngoing}
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             if (ensInputIsEmpty) {

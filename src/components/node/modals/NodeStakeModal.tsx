@@ -148,7 +148,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                 <VStack w="full" gap={4}>
                                     <Button
                                         width="full"
-                                        colorScheme={colorScheme}
+                                        colorPalette={colorScheme}
                                         disabled={outputStake.isZero()}
                                         onClick={() => {
                                             onSave(outputStake);

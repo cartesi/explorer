@@ -203,7 +203,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     <VStack w="full">
                                         <Button
                                             width="full"
-                                            colorScheme={colorScheme}
+                                            colorPalette={colorScheme}
                                             onClick={() => {
                                                 onSave(
                                                     outputAllowance,
@@ -419,7 +419,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     <VStack w="full" gap={4}>
                                         <Button
                                             width="full"
-                                            colorScheme={colorScheme}
+                                            colorPalette={colorScheme}
                                             disabled={outputDeposit.isZero()}
                                             role="deposit-button"
                                             onClick={() => {

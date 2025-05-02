@@ -350,7 +350,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
                         Pool Management
                     </Heading>
                     <NextLink href="/pools/new" passHref>
-                        <Button as="a" colorScheme={colorScheme}>
+                        <Button as="a" colorPalette={colorScheme}>
                             CREATE A POOL
                         </Button>
                     </NextLink>
