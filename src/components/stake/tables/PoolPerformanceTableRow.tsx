@@ -59,6 +59,7 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
     return (
         <>
             <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
@@ -68,6 +69,7 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
                 {numberFormat.format(apr(parsedWeekly, 7))})
             </Table.Cell>
             <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
@@ -151,13 +153,21 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                     )}
                 </HStack>
             </Table.Cell>
-            <Table.Cell data-testid="total-users-col" {...tdProps}>
+            <Table.Cell
+                data-testid="total-users-col"
+                textAlign="right"
+                {...tdProps}
+            >
                 {pool.totalUsers}
             </Table.Cell>
-            <Table.Cell data-testid="amount-col" {...tdProps}>
+            <Table.Cell data-testid="amount-col" textAlign="right" {...tdProps}>
                 {formatCTSI(pool.amount, 2)} CTSI
             </Table.Cell>
-            <Table.Cell data-testid="total-reward-col" {...tdProps}>
+            <Table.Cell
+                data-testid="total-reward-col"
+                textAlign="right"
+                {...tdProps}
+            >
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
             </Table.Cell>
 

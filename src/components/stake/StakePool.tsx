@@ -75,7 +75,7 @@ const StakePool = () => {
     // query staking contract with pool address
     const staking = useStaking(address);
 
-    // query thegraph pool data
+    // query the graph pool data
     const stakingPool = useStakingPoolQuery(address);
 
     // query 10 latest blocks for average interval

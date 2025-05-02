@@ -10,6 +10,10 @@ export const headingRecipe = defineRecipe({
                 fontSize: '4xl',
                 lineHeight: 1.2,
             },
+            lg: {
+                fontSize: '3xl',
+                lineHeight: 1.2,
+            },
         },
     },
 });

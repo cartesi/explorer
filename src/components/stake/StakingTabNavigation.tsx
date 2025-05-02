@@ -42,27 +42,37 @@ export const StakingTabNavigation: FC = () => {
     ];
 
     return (
-        <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
+        <HStack alignSelf={{ base: 'center', lg: 'flex-end' }} zIndex={20}>
             {tabs.map((tab) => (
                 <Button
-                    asChild
                     key={tab.href}
                     py={{ lg: 7 }}
                     outline="none"
                     textTransform="none"
-                    _hover={{
-                        bg: 'transparent',
-                    }}
-                    _active={{
-                        bg,
-                        color,
-                    }}
+                    _active={
+                        tab.isActive
+                            ? {
+                                  bg,
+                                  color,
+                              }
+                            : undefined
+                    }
+                    color={tab.isActive ? 'gray.900' : 'white'}
+                    _hover={
+                        tab.isActive
+                            ? undefined
+                            : {
+                                  bg: 'transparent',
+                              }
+                    }
                     borderRadius="0.6rem 0.6rem 0 0"
-                    isActive={tab.isActive}
+                    data-active={tab.isActive}
                     variant={tab.variant as ButtonProps['variant']}
                 >
-                    <tab.Icon width="24px" height="24px" />{' '}
-                    <NextLink href={tab.href}>{tab.text}</NextLink>
+                    <>
+                        <tab.Icon width="24px" height="24px" />{' '}
+                        <NextLink href={tab.href}>{tab.text}</NextLink>
+                    </>
                 </Button>
             ))}
         </HStack>

@@ -184,12 +184,15 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 w="auto"
                                 minW="auto"
                             >
-                                <Icon as={EyeIcon} />
+                                <Icon as={EyeIcon} w={4} h={4} />
                             </Button>
                         </Popover.Trigger>
                         <Portal>
                             <Popover.Positioner>
-                                <Popover.Content>
+                                <Popover.Content
+                                    border="1px solid"
+                                    borderColor="inherit"
+                                >
                                     <Popover.Body>
                                         <VStack align="stretch">
                                             <BigNumberTextV2

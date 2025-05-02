@@ -63,6 +63,7 @@ const NodeTable = () => {
 
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
+        color: 'white',
         bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
@@ -90,13 +91,25 @@ const NodeTable = () => {
                 <Table.Header>
                     <Table.Row>
                         <Table.Cell {...thProps}>Node Address</Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Total Staked
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Total Rewards
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Block Produced
                         </Table.Cell>
                         <Table.Cell whiteSpace="nowrap" {...thProps}>
@@ -138,9 +151,15 @@ const NodeTable = () => {
                                         }
                                     />
                                 </Table.Cell>
-                                <Table.Cell>{node.totalStaked}</Table.Cell>
-                                <Table.Cell>{node.totalRewards}</Table.Cell>
-                                <Table.Cell>{node.blocksProduced}</Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {node.totalStaked}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {node.totalRewards}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {node.blocksProduced}
+                                </Table.Cell>
                                 <Table.Cell>{node.nodeStatus}</Table.Cell>
                                 <Table.Cell
                                     position="sticky"
@@ -240,7 +259,7 @@ const NodeTableBlock = ({ boxProps }: TableInfo) => {
                         mt={5}
                         mb={{ base: 4, md: 8 }}
                         fontWeight="medium"
-                        lineHeight={6}
+                        lineHeight="0.75rem"
                     >
                         Private Node Management
                     </Heading>

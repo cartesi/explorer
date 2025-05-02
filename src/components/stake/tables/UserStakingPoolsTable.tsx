@@ -78,10 +78,17 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                         <Table.Cell {...thProps} borderTopLeftRadius="6px">
                             Pool Address
                         </Table.Cell>
-                        <Table.Cell {...thProps}>Unstaked</Table.Cell>
-                        <Table.Cell {...thProps}>Staked</Table.Cell>
-                        <Table.Cell {...thProps}>% Pool</Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
+                            Unstaked
+                        </Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
+                            Staked
+                        </Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
+                            % Pool
+                        </Table.Cell>
                         <Table.Cell
+                            textAlign="right"
                             ref={thRef}
                             borderTopRightRadius="6px"
                             {...thProps}
@@ -90,6 +97,7 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                         </Table.Cell>
                         {threshold.isBelow && (
                             <Table.Cell
+                                textAlign="right"
                                 position="sticky"
                                 top={0}
                                 right={0}

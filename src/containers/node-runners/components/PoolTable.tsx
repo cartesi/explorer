@@ -102,6 +102,7 @@ const PoolTable = ({ data }: Props) => {
 
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
+        color: 'white',
         bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
@@ -129,7 +130,11 @@ const PoolTable = ({ data }: Props) => {
                 <Table.Header>
                     <Table.Row>
                         <Table.Cell {...thProps}>Address</Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             <Flex alignItems="center">
                                 <GhostButton
                                     {...buttonProps}
@@ -142,7 +147,11 @@ const PoolTable = ({ data }: Props) => {
                                 )}
                             </Flex>
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             <Flex alignItems="center">
                                 <GhostButton
                                     {...buttonProps}
@@ -155,10 +164,18 @@ const PoolTable = ({ data }: Props) => {
                                 )}
                             </Flex>
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Total Rewards
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             <Flex alignItems="center">
                                 <GhostButton
                                     {...buttonProps}
@@ -173,13 +190,21 @@ const PoolTable = ({ data }: Props) => {
                                 )}
                             </Flex>
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Pool Balance
                         </Table.Cell>
                         <Table.Cell whiteSpace="nowrap" {...thProps}>
                             Node Status
                         </Table.Cell>
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             Block Produced
                         </Table.Cell>
                         <Table.Cell position="sticky" right="0" {...thProps}>
@@ -229,17 +254,27 @@ const PoolTable = ({ data }: Props) => {
                                         )}
                                     />
                                 </Table.Cell>
-                                <Table.Cell>{pool.totalStaked}</Table.Cell>
-                                <Table.Cell>{pool.totalUsers}</Table.Cell>
-                                <Table.Cell>{pool.totalRewards}</Table.Cell>
-                                <Table.Cell>{pool.commission}</Table.Cell>
-                                <Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {pool.totalStaked}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {pool.totalUsers}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {pool.totalRewards}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {pool.commission}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
                                     <PoolBalance address={pool.id} />
                                 </Table.Cell>
                                 <Table.Cell>
                                     <NodeStatus ownerAddress={pool.id} />
                                 </Table.Cell>
-                                <Table.Cell>{pool.blocksProduced}</Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    {pool.blocksProduced}
+                                </Table.Cell>
                                 <Table.Cell
                                     position="sticky"
                                     right="0"
@@ -283,7 +318,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const [pools] = useAtom(poolInfoListAtom);
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
-    const showAlert = true; // posV2Enabled && value;
+    const showAlert = posV2Enabled && value;
     const { open, onOpen, onClose } = useDisclosure({
         defaultOpen: showAlert,
     });

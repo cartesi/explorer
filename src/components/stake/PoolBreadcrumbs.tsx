@@ -45,7 +45,11 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
             <Breadcrumb.Root>
                 <Breadcrumb.List>
                     <Breadcrumb.Item>
-                        <Breadcrumb.Link asChild color={color}>
+                        <Breadcrumb.Link
+                            asChild
+                            color={color}
+                            _hover={{ textDecoration: 'underline ' }}
+                        >
                             <NextLink href={`/stake/${address}`}>Pool</NextLink>
                         </Breadcrumb.Link>
                     </Breadcrumb.Item>

@@ -140,6 +140,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
             px={styles[componentStyle].px}
             py={styles[componentStyle].py}
             flexGrow={styles[componentStyle].flexGrow}
+            flexDirection="column"
             {...flexProps}
         >
             {icon && <Icon as={icon} color={props.color} />}
@@ -153,7 +154,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
                 >
                     {valueLabel}
                 </Heading>
-                {unit && value && (
+                {unitLabel !== '' && unit && value && (
                     <>
                         <Text fontSize={'base'}>{unitLabel}</Text>
                         {note && (

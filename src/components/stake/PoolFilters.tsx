@@ -85,19 +85,84 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
 
                     <Portal>
                         <Menu.Positioner>
-                            <Menu.Content p={4} backgroundColor={menuBg}>
+                            <Menu.Content
+                                p={4}
+                                backgroundColor={menuBg}
+                                minW="14rem"
+                            >
                                 {filters.map((filter, index) => (
                                     <Fragment key={index}>
-                                        <Menu.ItemGroup key={index}>
-                                            <Menu.Item value={filter.type}>
-                                                <Heading
-                                                    as="h5"
-                                                    size="sm"
-                                                    mb={2}
+                                        <Menu.ItemGroup>
+                                            <Heading as="h5" size="sm" mb={2}>
+                                                {filter.title}
+                                            </Heading>
+                                            {filter.type === 'checkbox' && (
+                                                <VStack gap={2} align="stretch">
+                                                    {filter.options.map(
+                                                        (option, index) => (
+                                                            <Box
+                                                                key={index}
+                                                                mx={-4}
+                                                            >
+                                                                <Checkbox.Root
+                                                                    _checked={{
+                                                                        bgColor:
+                                                                            checkedBg,
+                                                                    }}
+                                                                    gap={0}
+                                                                    colorPalette={
+                                                                        checkboxColorScheme
+                                                                    }
+                                                                    py={2}
+                                                                    px={4}
+                                                                    w="100%"
+                                                                    flexDirection="row-reverse"
+                                                                    justifyContent="space-between"
+                                                                    _hover={{
+                                                                        cursor: 'pointer',
+                                                                    }}
+                                                                    value={
+                                                                        option.value
+                                                                    }
+                                                                    checked={selectedTypes.includes(
+                                                                        option.value
+                                                                    )}
+                                                                    onCheckedChange={() =>
+                                                                        onSelectedTypesChange(
+                                                                            option.value
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Checkbox.HiddenInput />
+                                                                    <Checkbox.Control />
+                                                                    <Checkbox.Label>
+                                                                        {
+                                                                            option.label
+                                                                        }
+                                                                    </Checkbox.Label>
+                                                                </Checkbox.Root>
+                                                            </Box>
+                                                        )
+                                                    )}
+                                                </VStack>
+                                            )}
+                                            {filter.type === 'radio' && (
+                                                <RadioGroup.Root
+                                                    defaultValue={
+                                                        filter.options.find(
+                                                            (el) =>
+                                                                el.default ===
+                                                                true
+                                                        ).value
+                                                    }
+                                                    onValueChange={({
+                                                        value,
+                                                    }) =>
+                                                        onSelectedPeriodChange(
+                                                            value
+                                                        )
+                                                    }
                                                 >
-                                                    {filter.title}
-                                                </Heading>
-                                                {filter.type === 'checkbox' && (
                                                     <VStack
                                                         gap={2}
                                                         align="stretch"
@@ -106,120 +171,39 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                             (option, index) => (
                                                                 <Box
                                                                     key={index}
-                                                                    style={{
-                                                                        margin: '0 calc(var(--chakra-space-4) * -1)',
-                                                                    }}
                                                                     mx={-4}
                                                                 >
-                                                                    <Checkbox.Root
-                                                                        _checked={{
-                                                                            bgColor:
-                                                                                checkedBg,
-                                                                        }}
+                                                                    <RadioGroup.Item
                                                                         gap={0}
-                                                                        colorPalette={
-                                                                            checkboxColorScheme
-                                                                        }
                                                                         py={2}
                                                                         px={4}
                                                                         w="100%"
                                                                         flexDirection="row-reverse"
                                                                         justifyContent="space-between"
+                                                                        colorPalette={
+                                                                            radioColorScheme
+                                                                        }
                                                                         value={
                                                                             option.value
                                                                         }
-                                                                        checked={selectedTypes.includes(
-                                                                            option.value
-                                                                        )}
-                                                                        onCheckedChange={() =>
-                                                                            onSelectedTypesChange(
-                                                                                option.value
-                                                                            )
-                                                                        }
+                                                                        _hover={{
+                                                                            cursor: 'pointer',
+                                                                        }}
                                                                     >
-                                                                        <Checkbox.HiddenInput />
-                                                                        <Checkbox.Control />
-                                                                        <Checkbox.Label>
+                                                                        <RadioGroup.ItemHiddenInput />
+                                                                        <RadioGroup.ItemIndicator />
+                                                                        <RadioGroup.ItemText>
                                                                             {
                                                                                 option.label
                                                                             }
-                                                                        </Checkbox.Label>
-                                                                    </Checkbox.Root>
+                                                                        </RadioGroup.ItemText>
+                                                                    </RadioGroup.Item>
                                                                 </Box>
                                                             )
                                                         )}
                                                     </VStack>
-                                                )}
-                                                {filter.type === 'radio' && (
-                                                    <RadioGroup.Root
-                                                        defaultValue={
-                                                            filter.options.find(
-                                                                (el) =>
-                                                                    el.default ===
-                                                                    true
-                                                            ).value
-                                                        }
-                                                        onValueChange={({
-                                                            value,
-                                                        }) =>
-                                                            onSelectedPeriodChange(
-                                                                value
-                                                            )
-                                                        }
-                                                    >
-                                                        <VStack
-                                                            gap={2}
-                                                            align="stretch"
-                                                        >
-                                                            {filter.options.map(
-                                                                (
-                                                                    option,
-                                                                    index
-                                                                ) => (
-                                                                    <Box
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        style={{
-                                                                            margin: '0 calc(var(--chakra-space-4) * -1)',
-                                                                        }}
-                                                                        mx={-4}
-                                                                    >
-                                                                        <RadioGroup.Item
-                                                                            gap={
-                                                                                0
-                                                                            }
-                                                                            py={
-                                                                                2
-                                                                            }
-                                                                            px={
-                                                                                4
-                                                                            }
-                                                                            w="100%"
-                                                                            flexDirection="row-reverse"
-                                                                            justifyContent="space-between"
-                                                                            colorPalette={
-                                                                                radioColorScheme
-                                                                            }
-                                                                            value={
-                                                                                option.value
-                                                                            }
-                                                                        >
-                                                                            <RadioGroup.ItemHiddenInput />
-                                                                            <RadioGroup.ItemIndicator />
-                                                                            <RadioGroup.ItemText>
-                                                                                {
-                                                                                    option.label
-                                                                                }
-                                                                            </RadioGroup.ItemText>
-                                                                        </RadioGroup.Item>
-                                                                    </Box>
-                                                                )
-                                                            )}
-                                                        </VStack>
-                                                    </RadioGroup.Root>
-                                                )}
-                                            </Menu.Item>
+                                                </RadioGroup.Root>
+                                            )}
                                         </Menu.ItemGroup>
                                         {index !== filters.length - 1 && (
                                             <Separator my={4} />
@@ -231,7 +215,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     </Portal>
                 </Menu.Root>
             </Box>
-            <Flex mb={4} direction="row" wrap="wrap">
+            <Flex direction="row" wrap="wrap">
                 {selectedPeriod && (
                     <Box p={'1px'} mr={1}>
                         <HStack
@@ -266,7 +250,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                             borderRadius="full"
                             display="inline-flex"
                             align="center"
-                            gap={2}
+                            gap={0}
                         >
                             <Text fontSize="sm" color={badgeColor}>
                                 {
@@ -280,6 +264,8 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                 variant="plain"
                                 size="xs"
                                 px={2}
+                                height="auto"
+                                pr={0}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     onSelectedTypesChange(type);
@@ -288,8 +274,8 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                 <Icon
                                     as={IoMdClose}
                                     color={badgeColor}
-                                    w={3}
-                                    h={3}
+                                    w={6}
+                                    h={6}
                                 />
                             </Button>
                         </HStack>

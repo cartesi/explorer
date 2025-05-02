@@ -90,6 +90,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 />
             </Table.Cell>
             <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="unstaked-col"
                 {...tdProps}
@@ -97,6 +98,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 {formatCTSI(unstakedBalance, 2)} CTSI
             </Table.Cell>
             <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="staked-col"
                 {...tdProps}
@@ -104,6 +106,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 {formatCTSI(stakedBalance, 2)} CTSI
             </Table.Cell>
             <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="percentage-col"
                 {...tdProps}
@@ -111,6 +114,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                 {percentFormatter.format(userShare(balance))}
             </Table.Cell>
             <Table.Cell
+                textAlign="right"
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}

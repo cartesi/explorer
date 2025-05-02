@@ -165,6 +165,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                     <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                         borderTopLeftRadius="6px"
                                     >
                                         From
@@ -172,18 +173,21 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                     <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                     >
                                         Time
                                     </Table.Cell>
                                     <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                     >
                                         Type
                                     </Table.Cell>
                                     <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                         borderTopRightRadius="6px"
                                     >
                                         Amount
@@ -214,7 +218,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                 <Button
                                     variant="link"
                                     colorPalette="blue"
-                                    isLoading={loading}
+                                    loading={loading}
                                     loadingText="Loading..."
                                     color={loadMoreColor}
                                     textTransform="none"

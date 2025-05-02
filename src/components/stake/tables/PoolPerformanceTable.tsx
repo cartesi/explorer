@@ -87,7 +87,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                             Pool Address
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <Flex direction={'row'} alignItems={'center'}>
                                 <GhostButton
                                     height="auto"
@@ -102,14 +102,18 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 >
                                     Total Users
                                 </GhostButton>
-                                {sort == 'totalUsers' && (
+                                {sort === 'totalUsers' && (
                                     <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>
-                            <Flex direction={'row'} alignItems={'center'}>
+                        <Table.Cell textAlign="right" {...thProps}>
+                            <Flex
+                                direction={'row'}
+                                alignItems={'center'}
+                                justifyContent="flex-end"
+                            >
                                 <GhostButton
                                     height="auto"
                                     fontSize="md"
@@ -123,23 +127,30 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 >
                                     Total Staked
                                 </GhostButton>
-                                {sort == 'amount' && (
+                                {sort === 'amount' && (
                                     <Icon as={FaArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
 
-                        <Table.Cell {...thProps}>Total Rewards</Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
+                            Total Rewards
+                        </Table.Cell>
 
                         <Table.Cell
                             whiteSpace="nowrap"
                             data-testid=""
+                            textAlign="right"
                             {...thProps}
                         >
                             <Text whiteSpace="nowrap">7-days % (Annual)</Text>
                         </Table.Cell>
 
-                        <Table.Cell whiteSpace="nowrap" {...thProps}>
+                        <Table.Cell
+                            whiteSpace="nowrap"
+                            textAlign="right"
+                            {...thProps}
+                        >
                             <Text whiteSpace="nowrap">30-days % (Annual)</Text>
                         </Table.Cell>
 
@@ -177,6 +188,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                             position="initial"
                             ref={thRef}
                             borderTopRightRadius="6px"
+                            textAlign="right"
                             {...thProps}
                         >
                             {stakeText}
@@ -186,6 +198,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                 position="sticky"
                                 top={0}
                                 right={0}
+                                textAlign="right"
                                 minWidth={{ base: '80px', md: '127px' }}
                                 height="73px"
                                 padding={0}
