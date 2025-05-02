@@ -68,7 +68,7 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box display="flex" alignItems="center">
+                <Box asChild display="flex" alignItems="center">
                     <NextLink href={backLink}>
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>{backText}</Text>

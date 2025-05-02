@@ -149,20 +149,23 @@ const NodeTable = () => {
                                     backgroundColor={backgroundHoverColor}
                                 >
                                     <Button
-                                        as={NextLink}
-                                        href={`/node/${node.id}/manage`}
+                                        asChild
                                         variant="link"
                                         color={linkColor}
                                         _hover={{
                                             color: linkHoverColor,
                                         }}
                                     >
-                                        <VisuallyHidden>
-                                            Manage node {node.id}
-                                        </VisuallyHidden>
-                                        <PencilIcon
-                                            data-testid={`pencil-svg-${node.id}`}
-                                        />
+                                        <NextLink
+                                            href={`/node/${node.id}/manage`}
+                                        >
+                                            <VisuallyHidden>
+                                                Manage node {node.id}
+                                            </VisuallyHidden>
+                                            <PencilIcon
+                                                data-testid={`pencil-svg-${node.id}`}
+                                            />
+                                        </NextLink>
                                     </Button>
                                 </Table.Cell>
                             </Table.Row>

@@ -11,15 +11,8 @@
 
 'use client';
 
-import {
-    Box,
-    Heading,
-    HStack,
-    Link as ChakraLink,
-    Stack,
-    Text,
-} from '@chakra-ui/react';
-import Link from 'next/link';
+import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { FC } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../Layout';
@@ -42,10 +35,10 @@ const NewNode: FC = () => {
                 pt={5}
             >
                 <Box asChild display="flex" alignItems="center">
-                    <Link href="/node-runners">
+                    <NextLink href="/node-runners">
                         <Box as={AiOutlineLeft} mr={1} />
                         <Text>Back</Text>
-                    </Link>
+                    </NextLink>
                 </Box>
             </HStack>
             <Box
@@ -72,7 +65,7 @@ const NewNode: FC = () => {
                     alignItems="stretch"
                     display={{ base: 'none', md: 'flex' }}
                 >
-                    <ChakraLink
+                    <Link
                         // TODO: Replace with new upcoming tutorial
                         href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
                         target="_blank"
@@ -87,7 +80,7 @@ const NewNode: FC = () => {
                         alignSelf="flex-end"
                     >
                         Learn from tutorial
-                    </ChakraLink>
+                    </Link>
                 </Stack>
                 <StepGroup
                     mobileHeaderProps={{ top: '100px' }}

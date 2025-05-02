@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack } from '@chakra-ui/react';
+import { Button, ButtonProps, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
@@ -45,9 +45,8 @@ export const StakingTabNavigation: FC = () => {
         <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
             {tabs.map((tab) => (
                 <Button
-                    as={NextLink}
+                    asChild
                     key={tab.href}
-                    href={tab.href}
                     py={{ lg: 7 }}
                     outline="none"
                     textTransform="none"
@@ -59,11 +58,11 @@ export const StakingTabNavigation: FC = () => {
                         color,
                     }}
                     borderRadius="0.6rem 0.6rem 0 0"
-                    leftIcon={<tab.Icon width="24px" height="24px" />}
                     isActive={tab.isActive}
-                    variant={tab.variant}
+                    variant={tab.variant as ButtonProps['variant']}
                 >
-                    {tab.text}
+                    <tab.Icon width="24px" height="24px" />{' '}
+                    <NextLink href={tab.href}>{tab.text}</NextLink>
                 </Button>
             ))}
         </HStack>

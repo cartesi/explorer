@@ -19,18 +19,15 @@ export const Logo: FC<BoxProps> = (props) => {
 
     return (
         <Box {...props}>
-            <Link
-                as={NextLink}
-                href="/"
-                _focus={{ outline: 'none' }}
-                title="Cartesi logo"
-            >
-                <Icon
-                    as={CartesiLogo}
-                    color="white"
-                    width={width}
-                    height={height}
-                />
+            <Link asChild _focus={{ outline: 'none' }} title="Cartesi logo">
+                <NextLink href="/">
+                    <Icon
+                        as={CartesiLogo}
+                        color="white"
+                        width={width}
+                        height={height}
+                    />
+                </NextLink>
             </Link>
         </Box>
     );

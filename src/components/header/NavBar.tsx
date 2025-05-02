@@ -57,8 +57,7 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
 
     return (
         <Link
-            as={NextLink}
-            href={href}
+            asChild
             position="relative"
             px={2}
             py={1}
@@ -71,7 +70,7 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
             }}
             _after={isActive ? pseudoProps : undefined}
         >
-            {children}
+            <NextLink href={href}>{children}</NextLink>
         </Link>
     );
 };

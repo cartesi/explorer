@@ -20,11 +20,16 @@ export const buttonRecipe = defineRecipe({
             },
             link: {
                 textTransform: 'uppercase',
+                height: 'auto',
                 color: {
                     base: 'dark.gray.tertiary',
                     _dark: 'dark.primary',
                 },
+                _hover: {
+                    textDecoration: 'underline',
+                },
             },
+            text: {},
         },
         size: {
             xl: {

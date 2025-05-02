@@ -126,8 +126,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                 >
                     {isObject(user.pool) ? (
                         <Link
-                            as={NextLink}
-                            href={`/stake/${user.id}`}
+                            asChild
                             data-testid="stake-info-link"
                             title="Stake/info"
                             color={linkColor}
@@ -135,7 +134,9 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
                                 color: linkHoverColor,
                             }}
                         >
-                            <Icon as={StakeIcon} w={8} h={8} />
+                            <NextLink href={`/stake/${user.id}`}>
+                                <Icon as={StakeIcon} w={8} h={8} />
+                            </NextLink>
                         </Link>
                     ) : (
                         <Text>Private node</Text>

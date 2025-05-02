@@ -207,15 +207,16 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                     ml="auto"
                 >
                     <Link
-                        as={NextLink}
-                        href={`/stake/${pool.id}`}
+                        asChild
                         data-testid="stake-info-link"
                         color={linkColor}
                         _hover={{
                             color: linkHoverColor,
                         }}
                     >
-                        <Icon as={StakeIcon} w={8} h={8} />
+                        <NextLink href={`/stake/${pool.id}`}>
+                            <Icon as={StakeIcon} w={8} h={8} />
+                        </NextLink>
                     </Link>
                 </Box>
             </Table.Cell>

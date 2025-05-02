@@ -215,13 +215,16 @@ const PoolTable = ({ data }: Props) => {
                                         shouldDisplayFallbackAvatar
                                         renderLabel={(label) => (
                                             <Button
-                                                as={NextLink}
-                                                href={`/stake/${pool.id}`}
+                                                asChild
                                                 variant="text"
                                                 px={0}
                                                 title="Pool info"
                                             >
-                                                {label}
+                                                <NextLink
+                                                    href={`/stake/${pool.id}`}
+                                                >
+                                                    {label}
+                                                </NextLink>
                                             </Button>
                                         )}
                                     />
@@ -243,17 +246,16 @@ const PoolTable = ({ data }: Props) => {
                                     textAlign="center"
                                     backgroundColor={backgroundHoverColor}
                                 >
-                                    <NextLink
-                                        href={`/pools/${pool.id}/manage?from=node-runners`}
-                                        passHref
+                                    <Button
+                                        asChild
+                                        variant="link"
+                                        color={linkColor}
+                                        _hover={{
+                                            color: linkHoverColor,
+                                        }}
                                     >
-                                        <Button
-                                            as="a"
-                                            variant="link"
-                                            color={linkColor}
-                                            _hover={{
-                                                color: linkHoverColor,
-                                            }}
+                                        <NextLink
+                                            href={`/pools/${pool.id}/manage?from=node-runners`}
                                         >
                                             <VisuallyHidden>
                                                 Manage pool {pool.id}
@@ -261,8 +263,8 @@ const PoolTable = ({ data }: Props) => {
                                             <PencilIcon
                                                 data-testid={`pencil-svg-${pool.id}`}
                                             />
-                                        </Button>
-                                    </NextLink>
+                                        </NextLink>
+                                    </Button>
                                 </Table.Cell>
                             </Table.Row>
                         ))}
@@ -281,7 +283,7 @@ const PoolTableBlock = ({ boxProps }: PoolTableInfoProps) => {
     const [pools] = useAtom(poolInfoListAtom);
     const posV2Enabled = useFlag('posV2Enabled');
     const { value, handleDontShowAgain } = useDontShowAgain(SHOW_POS_V2_ALERT);
-    const showAlert = posV2Enabled && value;
+    const showAlert = true; // posV2Enabled && value;
     const { open, onOpen, onClose } = useDisclosure({
         defaultOpen: showAlert,
     });
