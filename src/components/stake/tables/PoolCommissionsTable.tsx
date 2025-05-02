@@ -45,6 +45,7 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
         bg: 'dark.gray.primary',
+        color: 'white',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
@@ -65,8 +66,14 @@ const PoolCommissionsTable: FC<PoolCommissionsTableProps> = ({
                         <Table.Cell borderTopLeftRadius="6px" {...thProps}>
                             Date
                         </Table.Cell>
-                        <Table.Cell {...thProps}>Commission</Table.Cell>
-                        <Table.Cell borderTopRightRadius="6px" {...thProps}>
+                        <Table.Cell {...thProps} textAlign="right">
+                            Commission
+                        </Table.Cell>
+                        <Table.Cell
+                            borderTopRightRadius="6px"
+                            {...thProps}
+                            textAlign="right"
+                        >
                             Change
                         </Table.Cell>
                     </Table.Row>

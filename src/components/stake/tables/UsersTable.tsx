@@ -44,6 +44,7 @@ const UsersTable: FC<UsersTableProps> = (props) => {
         textTransform: 'none',
         borderColor: topBorderColor,
         bg: headerColor,
+        color: 'white',
     };
 
     return (
@@ -60,8 +61,14 @@ const UsersTable: FC<UsersTableProps> = (props) => {
                         </Table.Cell>
                         <Table.Cell {...thProps}>Stake Since</Table.Cell>
                         <Table.Cell {...thProps}>Total Staked</Table.Cell>
-                        <Table.Cell {...thProps}>Shares</Table.Cell>
-                        <Table.Cell {...thProps} borderTopRightRadius="6px">
+                        <Table.Cell {...thProps} textAlign="right">
+                            Shares
+                        </Table.Cell>
+                        <Table.Cell
+                            {...thProps}
+                            borderTopRightRadius="6px"
+                            textAlign="right"
+                        >
                             Accumulated Shares
                         </Table.Cell>
                     </Table.Row>

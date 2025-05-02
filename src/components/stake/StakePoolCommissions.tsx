@@ -14,7 +14,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { isArray } from 'lodash';
 import { useParams } from 'next/navigation';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Layout from '../Layout';
 import Pagination from '../Pagination';
 import PerPageSelect from '../PerPageSelect';
@@ -48,7 +48,7 @@ const PoolCommissions: FC = () => {
     const paginatedList = list.slice(startIndex, endIndex);
     const pages = Math.ceil(list.length / rowsPerPage);
     const perPageOptions = Array.from({ length: 3 }).map(
-        (item, index) => (index + 1) * 10
+        (_, index) => (index + 1) * 10
     );
 
     useEffect(() => {
@@ -59,10 +59,18 @@ const PoolCommissions: FC = () => {
                     : lastValue
             );
 
-            setList((lastValue) => [
-                ...lastValue,
-                ...data.stakingPoolFeeHistories,
-            ]);
+            setList((lastValue) =>
+                [...lastValue, ...data.stakingPoolFeeHistories].reduce(
+                    (accumulator, feeHistory) => {
+                        return accumulator.some(
+                            ({ id }) => id === feeHistory.id
+                        )
+                            ? accumulator
+                            : [...accumulator, feeHistory];
+                    },
+                    []
+                )
+            );
         }
     }, [data?.stakingPoolFeeHistories, maxPerPage]);
     const pageBg = useColorModeValue('white', 'dark.gray.primary');
@@ -88,7 +96,7 @@ const PoolCommissions: FC = () => {
                     justifyContent="flex-end"
                     alignItems={{ base: 'flex-end', md: 'center' }}
                     width="100%"
-                    mt="var(--chakra-space-12) !important"
+                    mt={12}
                     overflowX="auto"
                     py={1}
                 >

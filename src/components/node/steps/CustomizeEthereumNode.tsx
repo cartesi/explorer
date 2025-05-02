@@ -71,7 +71,9 @@ const CustomizeEthereumNode = ({
                     direction={{ base: 'column', md: 'row' }}
                     alignItems="baseline"
                     p={{ base: 4, md: 6 }}
-                    border="solid 1px var(--chakra-colors-gray-200)"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.200"
                 >
                     <Flex direction="column">
                         <Box>

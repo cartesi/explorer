@@ -45,6 +45,7 @@ export const StakingTabNavigation: FC = () => {
         <HStack alignSelf={{ base: 'center', lg: 'flex-end' }} zIndex={20}>
             {tabs.map((tab) => (
                 <Button
+                    asChild
                     key={tab.href}
                     py={{ lg: 7 }}
                     outline="none"
@@ -69,10 +70,9 @@ export const StakingTabNavigation: FC = () => {
                     data-active={tab.isActive}
                     variant={tab.variant as ButtonProps['variant']}
                 >
-                    <>
-                        <tab.Icon width="24px" height="24px" />{' '}
-                        <NextLink href={tab.href}>{tab.text}</NextLink>
-                    </>
+                    <NextLink href={tab.href}>
+                        <tab.Icon width="24px" height="24px" /> {tab.text}
+                    </NextLink>
                 </Button>
             ))}
         </HStack>

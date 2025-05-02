@@ -92,8 +92,8 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                 {formatCTSI(stakedBalance, 2)} CTSI
             </Table.Cell>
 
-            <Table.Cell data-testid="shares-col" {...tdProps}>
-                <Flex alignItems="center">
+            <Table.Cell data-testid="shares-col" {...tdProps} textAlign="right">
+                <Flex alignItems="center" justifyContent="flex-end">
                     <Text as="span" mr={1}>
                         {truncateNumber(balance.sharesPercent * 100)}%
                     </Text>
@@ -108,7 +108,11 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                 </Flex>
             </Table.Cell>
 
-            <Table.Cell data-testid="accumulated-shared-col" {...tdProps}>
+            <Table.Cell
+                data-testid="accumulated-shared-col"
+                {...tdProps}
+                textAlign="right"
+            >
                 {truncateNumber(balance.accumulatedSharesPercent * 100)}%
             </Table.Cell>
         </Table.Row>

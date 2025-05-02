@@ -48,8 +48,6 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
             <Select.Root
                 value={[value.toString()]}
                 width="4.625rem"
-                borderWidth={borderWidth}
-                borderColor="gray.900"
                 borderRadius={0}
                 fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
                 onValueChange={({ value }) => {

@@ -374,7 +374,7 @@ const PoolUsers: FC = () => {
                                         md: 'center',
                                     }}
                                     width="100%"
-                                    mt="var(--chakra-space-12) !important"
+                                    mt={12}
                                     overflowX="auto"
                                     py={1}
                                 >

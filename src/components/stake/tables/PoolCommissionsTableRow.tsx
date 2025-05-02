@@ -51,7 +51,11 @@ const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
                 {dateTimeFormat.format(data.timestamp * 1000)}
             </Table.Cell>
 
-            <Table.Cell {...tdProps} data-testid="new-value-col">
+            <Table.Cell
+                {...tdProps}
+                data-testid="new-value-col"
+                textAlign="right"
+            >
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.newValue / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
@@ -60,7 +64,11 @@ const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
                     : formatNumber(data.newValue)}
             </Table.Cell>
 
-            <Table.Cell {...tdProps} data-testid="percentage-col">
+            <Table.Cell
+                {...tdProps}
+                data-testid="percentage-col"
+                textAlign="right"
+            >
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.change / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
