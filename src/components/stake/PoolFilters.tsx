@@ -66,7 +66,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                     <Menu.Trigger asChild>
                         <Button
                             p={1}
-                            variant="unstyled"
+                            variant="plain"
                             _focus={{ outline: 'none' }}
                         >
                             <HStack
@@ -277,7 +277,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                 }
                             </Text>
                             <Button
-                                variant="unstyled"
+                                variant="plain"
                                 size="xs"
                                 px={2}
                                 onClick={(e) => {
