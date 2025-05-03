@@ -24,6 +24,7 @@ import { headingRecipe } from './recipes/heading';
 import { fieldRecipe } from './recipes/field';
 import { inputRecipe } from './recipes/input';
 import { dialogRecipe } from './recipes/dialog';
+import { alertRecipe } from './recipes/alert';
 
 const theme = createSystem(defaultConfig, {
     globalCss: {
@@ -54,6 +55,7 @@ const theme = createSystem(defaultConfig, {
             table: tableRecipe,
             field: fieldRecipe,
             dialog: dialogRecipe,
+            alert: alertRecipe,
         },
     },
 });
