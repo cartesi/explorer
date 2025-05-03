@@ -40,6 +40,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     const [innerValue, setInnerValue] = useState<string>('0');
     const rightElementColor = useColorModeValue('gray.300', 'white');
     const inputBg = useColorModeValue('transparent', 'dark.border.quaternary');
+    const controlsColor = useColorModeValue('gray.900', 'white');
 
     const handleOnChange = ({ value }) => {
         const numberValue = parseFloat(value);
@@ -145,7 +146,14 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                     }
                 >
                     <>
-                        <NumberInput.Control zIndex={100} />
+                        <NumberInput.Control zIndex={100}>
+                            <NumberInput.IncrementTrigger
+                                color={controlsColor}
+                            />
+                            <NumberInput.DecrementTrigger
+                                color={controlsColor}
+                            />
+                        </NumberInput.Control>
                         <NumberInput.Input paddingInlineEnd={16} />
                     </>
                 </InputGroup>

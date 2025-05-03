@@ -54,7 +54,6 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
     });
 
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
-    const variant = useColorModeValue('left-accent', undefined);
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
         `dark.support.${status}`
@@ -66,7 +65,6 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
         isOpen && (
             <Alert.Root
                 position="relative"
-                variant={variant}
                 alignItems="flex-start"
                 boxShadow={boxShadow}
                 bg={bg}

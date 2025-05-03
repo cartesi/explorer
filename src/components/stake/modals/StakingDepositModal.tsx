@@ -79,6 +79,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const infoColor = useColorModeValue('black', 'white');
     const checkIconBg = useColorModeValue('dark.gray.senary', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const iconColor = useColorModeValue('gray.900', 'white');
 
     useEffect(() => {
         if (!isOpen) {
@@ -115,7 +116,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             </Dialog.Header>
                             <Separator width="full" />
 
-                            <Dialog.Body>
+                            <Dialog.Body mt={6}>
                                 <VStack gap={5}>
                                     <HStack w="full" gap={4}>
                                         <Box
@@ -129,7 +130,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 h={5}
                                                 mr={1}
                                             />
-                                            <Tag.Root bg="transparent">
+                                            <Tag.Root
+                                                bg="transparent"
+                                                boxShadow="none"
+                                            >
                                                 <Tag.Label
                                                     fontSize="lg"
                                                     fontWeight="normal"
@@ -159,7 +163,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 color="gray.300"
                                                 pointerEvents="none"
                                             />
-                                            <Tag.Root bg="transparent">
+                                            <Tag.Root
+                                                bg="transparent"
+                                                boxShadow="none"
+                                            >
                                                 <Tag.Label
                                                     fontSize="lg"
                                                     fontWeight="normal"
@@ -232,7 +239,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                             </Dialog.Header>
                             <Separator width="full" />
 
-                            <Dialog.Body>
+                            <Dialog.Body pt={6}>
                                 <VStack gap={5}>
                                     <HStack w="full" gap={4}>
                                         <Box flexGrow="0">
@@ -244,7 +251,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 borderRadius="full"
                                                 color="black"
                                             />
-                                            <Tag.Root bg="transparent">
+                                            <Tag.Root
+                                                bg="transparent"
+                                                boxShadow="none"
+                                            >
                                                 <Tag.Label
                                                     fontSize="lg"
                                                     fontWeight="normal"
@@ -266,7 +276,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 w={5}
                                                 h={5}
                                             />
-                                            <Tag.Root bg="transparent">
+                                            <Tag.Root
+                                                bg="transparent"
+                                                boxShadow="none"
+                                            >
                                                 <Tag.Label
                                                     fontSize="lg"
                                                     fontWeight="normal"
@@ -337,6 +350,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                     as={PencilIconWhite}
                                                     w={6}
                                                     h={6}
+                                                    color={iconColor}
                                                 />
                                             </IconButton>
                                         </Box>
@@ -352,7 +366,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
 
                                     <Field.Root id="depositAmount">
-                                        <Field.Label mr={0}>
+                                        <Field.Label mr={0} width="full">
                                             <Stack
                                                 direction="row"
                                                 justify="space-between"

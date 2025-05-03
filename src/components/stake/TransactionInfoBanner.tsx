@@ -109,10 +109,11 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
         `dark.support.${status}`
     );
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const addressColor = useColorModeValue('gray.900', 'white');
 
     return !innerTransaction?.acknowledged ? (
         <Alert.Root
-            alignItems="flex-start"
+            alignItems="center"
             bg={bg}
             status={status}
             borderRadius="1rem"
@@ -135,6 +136,8 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                                 truncated
                                 chainId={chainId}
                                 alignItems="flex-start"
+                                color={addressColor}
+                                iconColor={addressColor}
                             />
                         )}
                     </HStack>
@@ -147,9 +150,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
             </Alert.Content>
             {transactionEnded && (
                 <CloseButton
-                    position="absolute"
-                    right="8px"
-                    top="8px"
                     role="close-button"
                     onClick={() => {
                         if (innerTransaction) {
