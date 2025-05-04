@@ -54,6 +54,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     return (
         <>
@@ -80,9 +81,9 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                 </Box>
                             </Dialog.Title>
                         </Dialog.Header>
-                        <Separator width="full" />
+                        <Separator width="full" borderColor={separatorColor} />
 
-                        <Dialog.Body>
+                        <Dialog.Body mt={6}>
                             <VStack gap={5}>
                                 <Text>
                                     Last step to receive tokens in your wallet!

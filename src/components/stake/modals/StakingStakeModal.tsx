@@ -54,6 +54,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
     const helperTextColor = useColorModeValue('gray.600', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -94,9 +95,9 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                             </Box>
                         </Dialog.Title>
                     </Dialog.Header>
-                    <Separator width="full" />
+                    <Separator width="full" borderColor={separatorColor} />
 
-                    <Dialog.Body>
+                    <Dialog.Body mt={6}>
                         <VStack gap={5}>
                             <Text>
                                 By moving your tokens from the pool balance to
@@ -106,11 +107,12 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 more
                             </Text>
                             <Field.Root id="stakeAmount">
-                                <Field.Label mr={0}>
+                                <Field.Label mr={0} width="full">
                                     <Stack
                                         direction="row"
                                         justify="space-between"
                                         alignItems="center"
+                                        width="full"
                                     >
                                         <span>Stake Amount</span>
                                         <Button

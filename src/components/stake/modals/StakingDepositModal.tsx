@@ -80,6 +80,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const checkIconBg = useColorModeValue('dark.gray.senary', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
     const iconColor = useColorModeValue('gray.900', 'white');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     useEffect(() => {
         if (!isOpen) {
@@ -114,7 +115,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
                                 </Dialog.Title>
                             </Dialog.Header>
-                            <Separator width="full" />
+                            <Separator
+                                width="full"
+                                borderColor={separatorColor}
+                            />
 
                             <Dialog.Body mt={6}>
                                 <VStack gap={5}>
@@ -237,7 +241,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                     </Box>
                                 </Dialog.Title>
                             </Dialog.Header>
-                            <Separator width="full" />
+                            <Separator
+                                width="full"
+                                borderColor={separatorColor}
+                            />
 
                             <Dialog.Body pt={6}>
                                 <VStack gap={5}>
