@@ -81,6 +81,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const colorScheme = useColorModeValue('teal', 'blue');
     const iconColor = useColorModeValue('gray.900', 'white');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
 
     useEffect(() => {
         if (!isOpen) {
@@ -202,7 +203,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             }}
                                         />
                                         <Field.HelperText
-                                            color={formControlColor}
+                                            color={inputHelperTextColor}
                                         >
                                             First time setting will cost ETH gas
                                             fee. It will display in the wallet
@@ -378,6 +379,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 direction="row"
                                                 justify="space-between"
                                                 alignItems="center"
+                                                width="full"
                                             >
                                                 <span
                                                     style={{
@@ -420,7 +422,9 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                 );
                                             }}
                                         />
-                                        <Field.HelperText>
+                                        <Field.HelperText
+                                            color={inputHelperTextColor}
+                                        >
                                             <Flex align="baseline">
                                                 <Text mr="1">
                                                     Wallet balance:

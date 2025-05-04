@@ -46,6 +46,8 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
+    const inputBorderColor = useColorModeValue(undefined, 'gray.300');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const toBigNumber = (value: number, decimals = 18) =>
         ethers.utils.parseUnits(value.toString(), decimals);
@@ -111,8 +113,8 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                             </Box>
                         </Dialog.Title>
                     </Dialog.Header>
-                    <Separator />
-                    <Dialog.Body>
+                    <Separator borderColor={separatorColor} />
+                    <Dialog.Body mt={6}>
                         <VStack gap={5}>
                             <Text>
                                 You incur transaction fee expenses when you are
@@ -131,12 +133,13 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                 >
                                     <Input
                                         value={fundsValue}
+                                        borderColor={inputBorderColor}
                                         onChange={(e) =>
                                             setFundsValue(e.target.value)
                                         }
                                     />
                                 </InputGroup>
-                                <Field.HelperText>
+                                <Field.HelperText color={inputBorderColor}>
                                     Your balance: {userETHBalance} ETH
                                 </Field.HelperText>
                             </Field.Root>

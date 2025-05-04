@@ -13,6 +13,9 @@ export const tableRecipe = defineSlotRecipe({
             clear: {
                 root: {},
             },
+            unstyled: {
+                root: {},
+            },
         },
     },
 });

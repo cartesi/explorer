@@ -56,6 +56,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     return (
         <Dialog.Root
@@ -80,9 +81,9 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                             </Box>
                         </Dialog.Title>
                     </Dialog.Header>
-                    <Separator width="full" />
+                    <Separator width="full" borderColor={separatorColor} />
 
-                    <Dialog.Body>
+                    <Dialog.Body mt={6}>
                         <VStack gap={5}>
                             <Text>
                                 Unstaked tokens will be transferred to the pool
@@ -99,6 +100,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 <RadioGroup.Root
                                     defaultValue={unstakeFullAmount}
                                     name="unstakeAmount"
+                                    width="full"
                                     onValueChange={({ value }) => {
                                         setUnstakeFullAmount(
                                             value as Operation
@@ -115,15 +117,29 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         <RadioGroup.Item
                                             value="full"
                                             colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
+                                            }}
                                         >
-                                            Full amount
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Full amount
+                                            </RadioGroup.ItemText>
                                         </RadioGroup.Item>
 
                                         <RadioGroup.Item
                                             value="partial"
                                             colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
+                                            }}
                                         >
-                                            Partial amount
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Partial amount
+                                            </RadioGroup.ItemText>
                                         </RadioGroup.Item>
 
                                         <Collapsible.Root

@@ -83,81 +83,73 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     }, [value]);
 
     return (
-        <InputGroup>
-            <NumberInput.Root
-                value={innerValue}
-                min={min}
-                max={max}
-                width="full"
-                bg={inputBg}
-                onBeforeInputCapture={(e) => {
-                    const inputText: string = (e as any)?.data;
+        <NumberInput.Root
+            value={innerValue}
+            min={min}
+            max={max}
+            width="full"
+            bg={inputBg}
+            onBeforeInputCapture={(e) => {
+                const inputText: string = (e as any)?.data;
 
-                    // no -/+ e7 allowed
-                    if (
-                        inputText.includes('-') ||
-                        inputText.includes('+') ||
-                        inputText.includes('e')
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // no -/+ e7 allowed
+                if (
+                    inputText.includes('-') ||
+                    inputText.includes('+') ||
+                    inputText.includes('e')
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of double ..
-                    if (inputText === '.' && innerValue.includes('.')) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of double ..
+                if (inputText === '.' && innerValue.includes('.')) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of paste
-                    if (
-                        inputText.includes('.') &&
-                        inputText.split('.')[1].length >= maxPrecision
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of paste
+                if (
+                    inputText.includes('.') &&
+                    inputText.split('.')[1].length >= maxPrecision
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of typing
-                    if (
-                        innerValue.includes('.') &&
-                        innerValue.split('.')[1].length >= maxPrecision
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of typing
+                if (
+                    innerValue.includes('.') &&
+                    innerValue.split('.')[1].length >= maxPrecision
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    if (
-                        parseFloat(innerValue) > max ||
-                        parseFloat(inputText) > max
-                    ) {
-                        e.preventDefault();
-                        if (setMaxOnOverflow) setInnerValue(max.toString());
-                    }
-                }}
-                onValueChange={handleOnChange}
+                if (
+                    parseFloat(innerValue) > max ||
+                    parseFloat(inputText) > max
+                ) {
+                    e.preventDefault();
+                    if (setMaxOnOverflow) setInnerValue(max.toString());
+                }
+            }}
+            onValueChange={handleOnChange}
+        >
+            <NumberInput.Label />
+            <InputGroup
+                endElement={
+                    <NumberInput.Scrubber pr={6} pointerEvents="none">
+                        <Box color={rightElementColor}>CTSI</Box>
+                    </NumberInput.Scrubber>
+                }
             >
-                <NumberInput.Label />
-                <InputGroup
-                    endElement={
-                        <NumberInput.Scrubber pr={6} pointerEvents="none">
-                            <Box color={rightElementColor}>CTSI</Box>
-                        </NumberInput.Scrubber>
-                    }
-                >
-                    <>
-                        <NumberInput.Control zIndex={100}>
-                            <NumberInput.IncrementTrigger
-                                color={controlsColor}
-                            />
-                            <NumberInput.DecrementTrigger
-                                color={controlsColor}
-                            />
-                        </NumberInput.Control>
-                        <NumberInput.Input paddingInlineEnd={16} />
-                    </>
-                </InputGroup>
-            </NumberInput.Root>
-        </InputGroup>
+                <NumberInput.Input paddingInlineEnd={16} />
+            </InputGroup>
+            <NumberInput.Control zIndex={100}>
+                <NumberInput.IncrementTrigger color={controlsColor} />
+                <NumberInput.DecrementTrigger color={controlsColor} />
+            </NumberInput.Control>
+        </NumberInput.Root>
     );
 };

@@ -49,6 +49,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const helperTextColor = useColorModeValue(formControlColor, 'white');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
@@ -77,9 +78,9 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
                                 </Box>
                             </Dialog.Title>
                         </Dialog.Header>
-                        <Separator />
+                        <Separator width="full" borderColor={separatorColor} />
 
-                        <Dialog.Body>
+                        <Dialog.Body mt={6}>
                             <VStack gap={5}>
                                 <Text>
                                     Additional layer of protection with a max

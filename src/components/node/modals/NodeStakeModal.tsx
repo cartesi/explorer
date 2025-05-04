@@ -62,6 +62,8 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
 
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     useEffect(() => {
         if (!isOpen) {
@@ -105,8 +107,9 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                 </Box>
                             </Dialog.Title>
                         </Dialog.Header>
-                        <Separator />
-                        <Dialog.Body>
+                        <Separator borderColor={separatorColor} />
+
+                        <Dialog.Body mt={6}>
                             <VStack gap={5}>
                                 <Text>
                                     The funds you stake will go to a maturing
@@ -116,7 +119,10 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                     more
                                 </Text>
                                 <Field.Root id="stakeAmount">
-                                    <HStack justify="space-between">
+                                    <HStack
+                                        justify="space-between"
+                                        width="full"
+                                    >
                                         <Field.Label fontWeight="bold">
                                             Stake Amount
                                         </Field.Label>
@@ -125,7 +131,6 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                             _hover={{
                                                 color: colorScheme,
                                             }}
-                                            pb={2}
                                             onClick={handleMaxStake}
                                         >
                                             MAX STAKE
@@ -139,7 +144,9 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                             setOutputStake(bigNumberValue);
                                         }}
                                     />
-                                    <Field.HelperText>
+                                    <Field.HelperText
+                                        color={inputHelperTextColor}
+                                    >
                                         Allowance: {toCTSI(allowance)} CTSI
                                     </Field.HelperText>
                                 </Field.Root>

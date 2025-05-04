@@ -57,6 +57,10 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
 }) => {
     const textColor = useColorModeValue('gray.400', 'white');
     const borderColor = useColorModeValue('black', 'white');
+    const accordionHoverBg = useColorModeValue(
+        'blackAlpha.50',
+        'whiteAlpha.50'
+    );
     const { data } = useUserNodes(
         address,
         3,
@@ -75,8 +79,13 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
                         borderLeftWidth="1px"
                         borderLeftColor={borderColor}
                         borderLeftStyle="solid"
+                        borderRadius={0}
                         paddingX={4}
                         minH={8}
+                        cursor="pointer"
+                        _hover={{
+                            bg: accordionHoverBg,
+                        }}
                     >
                         <Flex alignItems="center" columnGap={4}>
                             <Text fontSize="xl">Node History</Text>

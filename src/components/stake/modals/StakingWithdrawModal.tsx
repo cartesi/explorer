@@ -101,6 +101,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         defaultValue={withdrawFullAmount}
                                         name="unstakeAmount"
                                         colorPalette={radioColorScheme}
+                                        width="100%"
                                         onValueChange={({ value }) => {
                                             setWithdrawFullAmount(value);
 
@@ -116,15 +117,29 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                             <RadioGroup.Item
                                                 value="full"
                                                 colorPalette={radioColorScheme}
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                }}
                                             >
-                                                Full amount
+                                                <RadioGroup.ItemHiddenInput />
+                                                <RadioGroup.ItemIndicator />
+                                                <RadioGroup.ItemText>
+                                                    Full amount
+                                                </RadioGroup.ItemText>
                                             </RadioGroup.Item>
 
                                             <RadioGroup.Item
                                                 value="partial"
                                                 colorPalette={radioColorScheme}
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                }}
                                             >
-                                                Partial amount
+                                                <RadioGroup.ItemHiddenInput />
+                                                <RadioGroup.ItemIndicator />
+                                                <RadioGroup.ItemText>
+                                                    Partial amount
+                                                </RadioGroup.ItemText>
                                             </RadioGroup.Item>
 
                                             <Collapsible.Root

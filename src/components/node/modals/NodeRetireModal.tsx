@@ -42,6 +42,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
     const color = useColorModeValue('dark.gray.primary', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
+    const inputBorderColor = useColorModeValue(undefined, 'gray.300');
     const [addressValue, setAddressValue] = useState('');
     const { open, onClose } = disclosure;
 
@@ -92,11 +93,12 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                             </Field.Label>
                             <Input
                                 value={addressValue}
+                                borderColor={inputBorderColor}
                                 onChange={(e) =>
                                     setAddressValue(e.target.value)
                                 }
                             />
-                            <Field.HelperText>
+                            <Field.HelperText color={inputBorderColor}>
                                 Please enter your address to verify your action.
                             </Field.HelperText>
                         </Field.Root>

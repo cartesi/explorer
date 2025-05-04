@@ -49,6 +49,8 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     const color = useColorModeValue('dark.primary.gray', 'white');
     const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
@@ -82,8 +84,9 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                             </Box>
                         </Dialog.Title>
                     </Dialog.Header>
-                    <Separator width="full" />
-                    <Dialog.Body>
+                    <Separator width="full" borderColor={separatorColor} />
+
+                    <Dialog.Body mt={6}>
                         <VStack gap={5}>
                             <Text>
                                 This is going to be the maximum amount of CTSI
@@ -103,14 +106,14 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
                                         setOutputAllowance(bigNumberValue);
                                     }}
                                 />
-                                <Field.HelperText>
+                                <Field.HelperText color={inputHelperTextColor}>
                                     In this case, each edit will cost your ETH
                                     gas fee.
                                 </Field.HelperText>
                             </Field.Root>
                         </VStack>
                     </Dialog.Body>
-                    <Dialog.Footer px="0" pt={10}>
+                    <Dialog.Footer pt={10}>
                         <VStack w="full" gap={4}>
                             <Button
                                 width="full"

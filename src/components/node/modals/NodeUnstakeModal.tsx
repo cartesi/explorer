@@ -49,6 +49,8 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
     const [outputStake, setOutputStake] = useState<BigNumber>(stakedBalance);
     const [stakedValue, setStakedValue] = useState<any>(0);
     const colorScheme = useColorModeValue('teal', 'cyan');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const toCTSI = (value: BigNumber) => {
         // formatter for CTSI values
@@ -105,8 +107,9 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                             </Box>
                         </Dialog.Title>
                     </Dialog.Header>
-                    <Separator />
-                    <Dialog.Body>
+                    <Separator borderColor={separatorColor} />
+
+                    <Dialog.Body mt={6}>
                         <VStack gap={5}>
                             <Text>
                                 Bear in mind that your funds take 48 hours to
@@ -117,7 +120,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 the previously “Releasing” balance. Learn more
                             </Text>
                             <Field.Root id="stakeAmount">
-                                <HStack justify="space-between">
+                                <HStack justify="space-between" width="full">
                                     <Field.Label fontWeight="bold">
                                         Unstake Amount
                                     </Field.Label>
@@ -126,7 +129,6 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                         _hover={{
                                             color: colorScheme,
                                         }}
-                                        pb={2}
                                         onClick={handleMaxUnstake}
                                     >
                                         MAX UNSTAKE
@@ -139,7 +141,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                         setOutputStake(bigNumberValue);
                                     }}
                                 />
-                                <Field.HelperText>
+                                <Field.HelperText color={inputHelperTextColor}>
                                     Staked Balance: {toCTSI(stakedBalance)} CTSI
                                 </Field.HelperText>
                             </Field.Root>

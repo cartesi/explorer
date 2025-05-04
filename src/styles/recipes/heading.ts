@@ -14,6 +14,10 @@ export const headingRecipe = defineRecipe({
                 fontSize: '3xl',
                 lineHeight: 1.2,
             },
+            md: {
+                fontSize: 'xl',
+                lineHeight: 1.2,
+            },
         },
     },
 });
