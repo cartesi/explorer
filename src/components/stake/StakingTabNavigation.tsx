@@ -21,7 +21,7 @@ export const StakingTabNavigation: FC = () => {
     const params = useParams();
     const address = params.pool as string;
     const pathname = usePathname();
-    const isStakeTabActive = pathname === '/stake/[pool]/stake';
+    const isStakeTabActive = /stake\/.+\/stake/.test(pathname);
     const isPoolInfoTabActive = !isStakeTabActive;
     const tabs = [
         {
