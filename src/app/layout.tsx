@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     },
 };
 
-export const dynamic = 'force-dynamic';
+// Revalidate the layout every day
+export const revalidate = 86400;
 
 const getEnsData = async () => {
     const result = await AddressENSService.listAll();
