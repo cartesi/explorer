@@ -12,6 +12,7 @@
 import {
     Button,
     HStack,
+    Icon,
     IconProps,
     Image,
     Link,
@@ -169,7 +170,7 @@ const Address: FC<AddressProps> = (props) => {
                     onClick={copy}
                     data-testid="copy-icon"
                 >
-                    <MdOutlineContentCopy width={iconSize} height={iconSize} />
+                    <Icon as={MdOutlineContentCopy} w={iconSize} h={iconSize} />
                 </Button>
             )}
             {copied && <Text fontSize="sm">Copied</Text>}
@@ -186,10 +187,11 @@ const Address: FC<AddressProps> = (props) => {
                     }}
                     mr={linkMargin}
                 >
-                    <FaExternalLinkAlt
+                    <Icon
+                        as={FaExternalLinkAlt}
                         data-testid="external-link-icon"
-                        width={iconSize}
-                        height={iconSize}
+                        w={iconSize}
+                        h={iconSize}
                     />
                 </Link>
             )}

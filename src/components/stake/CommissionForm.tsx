@@ -111,7 +111,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
 
     return (
         <Field.Root id="commission" invalid={!!errors.value}>
-            <VStack align="stretch">
+            <VStack align="stretch" width="full">
                 <HStack justify="space-between">
                     <Field.Label>
                         Pool commission{' '}
@@ -128,7 +128,6 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         >
                             <Icon
                                 as={FaRegQuestionCircle}
-                                pb={1}
                                 width={4}
                                 height={4}
                                 color="gray.600"
@@ -145,8 +144,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             <Box
                                 color="gray.300"
                                 pointerEvents="none"
-                                w={14}
-                                h="100%"
+                                fontSize="1rem"
                             >
                                 {unit.toUpperCase()}
                             </Box>

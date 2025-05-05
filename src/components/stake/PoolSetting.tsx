@@ -120,6 +120,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
         'dark.border.quaternary'
     );
     const linkColor = useColorModeValue('teal', 'cyan');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
     const progress = pool.transaction?.receipt?.confirmations || 0;
     const isRebalanceEnabled =
         pool.amounts?.stake > BigNumber.from(0) ||
@@ -328,7 +329,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={FaRegQuestionCircle}
-                                    pb={1}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -337,7 +337,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             </Tooltip>
                         </Field.Label>
                     </HStack>
-                    <Stack direction={['column', 'row']}>
+                    <Stack direction={['column', 'row']} width="full">
                         <InputGroup me={6}>
                             <Input
                                 size="lg"
@@ -370,7 +370,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     </Stack>
 
                     {!errors.ensName ? (
-                        <Field.HelperText>
+                        <Field.HelperText color={inputHelperTextColor}>
                             After registering an ENS domain and setting it up,
                             set the name here.
                         </Field.HelperText>
@@ -416,7 +416,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={FaRegQuestionCircle}
-                                    pb={1}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -427,13 +426,12 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                     </HStack>
                     <HStack>
                         <InputGroup me={6}>
-                            <HStack>
+                            <HStack gap={0}>
                                 <Switch.Root
                                     checked={!pool.paused}
                                     defaultChecked
                                     colorPalette="teal"
                                     size="lg"
-                                    me={3}
                                     onCheckedChange={() => {
                                         if (pool.paused) {
                                             pool.unpause();
@@ -449,7 +447,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     <Switch.Label />
                                 </Switch.Root>
 
-                                <Field.Label htmlFor="isChecked">
+                                <Field.Label>
                                     Open your pool to accept new stakes
                                 </Field.Label>
                             </HStack>
@@ -477,7 +475,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={FaRegQuestionCircle}
-                                    pb={1}
                                     width={4}
                                     height={4}
                                     color="gray.600"
