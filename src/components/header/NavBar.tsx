@@ -14,6 +14,7 @@ import {
     BoxProps,
     Flex,
     HStack,
+    Icon,
     IconButton,
     Link,
     Stack,
@@ -123,17 +124,19 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                     <IconButton
                         size="sm"
                         bg="transparent"
-                        borderRadius="full"
+                        rounded="full"
                         mx={2}
+                        h={10}
+                        w={10}
                         _hover={{ bg: 'gray.800' }}
                         aria-label="Toggle dark mode"
                         data-testid="theme-toggle-button"
                         onClick={toggleColorMode}
                     >
                         {colorMode === 'light' ? (
-                            <FaMoon />
+                            <Icon as={FaMoon} />
                         ) : (
-                            <MdOutlineWbSunny color="white" />
+                            <Icon as={MdOutlineWbSunny} color="white" />
                         )}
                     </IconButton>
 

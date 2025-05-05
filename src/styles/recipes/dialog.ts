@@ -26,6 +26,7 @@ export const dialogRecipe = defineSlotRecipe({
             paddingBottom: 0,
             paddingInlineStart: [6, 8],
             paddingInlineEnd: [6, 8],
+            fontSize: 'md',
         },
         footer: {
             paddingBottom: [6, 10],

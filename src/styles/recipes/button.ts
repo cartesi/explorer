@@ -12,10 +12,14 @@ export const buttonRecipe = defineRecipe({
     variants: {
         variant: {
             solid: {
+                height: 12,
                 textTransform: 'uppercase',
             },
-            outline: {},
+            outline: {
+                height: 12,
+            },
             ghost: {
+                height: 12,
                 textTransform: 'uppercase',
             },
             link: {

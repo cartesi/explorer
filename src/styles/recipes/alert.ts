@@ -5,7 +5,7 @@ export const alertRecipe = defineSlotRecipe({
     slots: alertAnatomy.keys(),
     base: {
         title: {
-            fontSize: '1rem',
+            fontSize: 'md',
             fontWeight: 'bold',
             color: {
                 base: 'gray.900',

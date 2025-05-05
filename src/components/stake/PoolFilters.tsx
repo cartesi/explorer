@@ -135,7 +135,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                 >
                                                                     <Checkbox.HiddenInput />
                                                                     <Checkbox.Control />
-                                                                    <Checkbox.Label>
+                                                                    <Checkbox.Label fontSize="md">
                                                                         {
                                                                             option.label
                                                                         }

@@ -22,8 +22,9 @@ import {
     useClipboard,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { FaExternalLinkAlt } from 'react-icons/fa';
 import { MdOutlineContentCopy } from 'react-icons/md';
+import { LuExternalLink } from 'react-icons/lu';
+
 import React, { FC, useState } from 'react';
 import { useENS } from '../services/ens';
 import { etherscanLinks, Network } from '../utils/networks';
@@ -188,7 +189,7 @@ const Address: FC<AddressProps> = (props) => {
                     mr={linkMargin}
                 >
                     <Icon
-                        as={FaExternalLinkAlt}
+                        as={LuExternalLink}
                         data-testid="external-link-icon"
                         w={iconSize}
                         h={iconSize}

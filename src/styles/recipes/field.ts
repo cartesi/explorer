@@ -9,5 +9,11 @@ export const fieldRecipe = defineSlotRecipe({
                 boxShadow: 'none',
             },
         },
+        label: {
+            fontSize: 'md',
+        },
+        helperText: {
+            fontSize: 'sm',
+        },
     },
 });

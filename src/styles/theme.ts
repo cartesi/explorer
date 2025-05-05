@@ -25,10 +25,12 @@ import { fieldRecipe } from './recipes/field';
 import { inputRecipe } from './recipes/input';
 import { dialogRecipe } from './recipes/dialog';
 import { alertRecipe } from './recipes/alert';
+import { radioGroupRecipe } from './recipes/radioGroup';
 
 const theme = createSystem(defaultConfig, {
     globalCss: {
         'html, body': {
+            fontSize: 'md',
             color: {
                 base: 'gray.950',
                 _dark: 'white',
@@ -56,6 +58,7 @@ const theme = createSystem(defaultConfig, {
             field: fieldRecipe,
             dialog: dialogRecipe,
             alert: alertRecipe,
+            radioGroup: radioGroupRecipe,
         },
     },
 });

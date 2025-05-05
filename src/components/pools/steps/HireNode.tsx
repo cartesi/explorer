@@ -157,7 +157,9 @@ const HireNode = ({
                 >
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
-                    <Checkbox.Label>Accept terms and conditions</Checkbox.Label>
+                    <Checkbox.Label fontSize="md">
+                        Accept terms and conditions
+                    </Checkbox.Label>
                 </Checkbox.Root>
                 <Box px={6} py={4} bg={tipsBgColor} mt={6} rounded="md">
                     <Text>

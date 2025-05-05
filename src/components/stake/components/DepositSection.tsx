@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoMdWarning } from 'react-icons/io';
+import { RiErrorWarningFill } from 'react-icons/ri';
 
 import {
     Box,
@@ -75,16 +75,20 @@ export const DepositSection: FC<IDepositSection> = ({
                         {userWalletBalance.isZero() ? (
                             <>
                                 <Icon
-                                    as={IoMdWarning}
+                                    as={RiErrorWarningFill}
                                     color={warningIconColor}
+                                    w={4}
+                                    h={4}
                                 />{' '}
                                 You have 0 CTSI. Please, add CTSI to deposit.
                             </>
                         ) : noEthAndIsNotASafe ? (
                             <>
                                 <Icon
-                                    as={IoMdWarning}
+                                    as={RiErrorWarningFill}
                                     color={warningIconColor}
+                                    w={4}
+                                    h={4}
                                 />{' '}
                                 You have 0 ETH. You'll need ETH for transaction
                                 fees.

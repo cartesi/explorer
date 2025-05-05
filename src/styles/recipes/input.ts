@@ -14,6 +14,9 @@ export const inputRecipe = defineRecipe({
         _focus: {
             boxShadow: 'none',
         },
+        _placeholder: {
+            fontSize: 'md',
+        },
     },
     variants: {
         variant: {
