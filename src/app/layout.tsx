@@ -2,7 +2,6 @@ import { FC, ReactNode } from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '../providers/Providers';
 import { Metadata } from 'next';
-import AddressENSService from '../services/server/ens/AddressENSService';
 
 export const metadata: Metadata = {
     title: {
@@ -15,28 +14,18 @@ export const metadata: Metadata = {
     },
 };
 
-// Revalidate the layout every day
-export const revalidate = 86400;
-
-const getEnsData = async () => {
-    const result = await AddressENSService.listAll();
-    return result.ok ? result.data : [];
-};
-
 interface LayoutProps {
     children: ReactNode;
 }
 
 const Layout: FC<LayoutProps> = async ({ children }) => {
-    const ensData = await getEnsData();
-
     return (
         <html lang="en">
             <head>
                 <link rel="preconnect" href="https://tinygraphs.cartesi.io" />
             </head>
             <body>
-                <Providers ensData={ensData}>{children}</Providers>
+                <Providers>{children}</Providers>
                 <SpeedInsights />
             </body>
         </html>
