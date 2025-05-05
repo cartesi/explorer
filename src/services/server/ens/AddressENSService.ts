@@ -15,7 +15,7 @@ import { ServiceResult } from '../types';
 import { isCartesiUser } from '../utils';
 import { default as Repository } from './AddressENSRepository';
 import { getENSData, getFreshENSData } from './functions';
-import { AddressEns, ENSAddressData } from './types';
+import { AddressEns } from './types';
 
 const ALLOWED_FIELDS = [
     'id',
