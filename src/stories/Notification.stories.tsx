@@ -27,7 +27,7 @@ const Template: Story = {
         return (
             <Stack
                 bg="gray.80"
-                spacing={8}
+                gap={8}
                 px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
                 pt={{ base: 8, sm: '3vw' }}
                 pb={{ base: 8, sm: '5vw' }}

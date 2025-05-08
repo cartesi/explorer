@@ -15,10 +15,9 @@ import {
     Flex,
     Heading,
     Link,
-    ListItem,
+    List,
     Stack,
     Text,
-    UnorderedList,
 } from '@chakra-ui/react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Step, StepActions, StepBody, StepStatus } from '../components/Step';
@@ -36,7 +35,7 @@ const Template: Story = {
         return (
             <Stack
                 bg="gray.80"
-                spacing={8}
+                gap={8}
                 px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
                 py={{ base: 8, sm: 'yvw' }}
                 direction="column"
@@ -48,10 +47,10 @@ const Template: Story = {
                     </StepActions>
                     <StepBody>
                         <Heading as="h3" size="sm" my={4}>
-                            Start By installing Docker Enginer
+                            Start By installing Docker Engine
                         </Heading>
-                        <UnorderedList pl={2}>
-                            <ListItem>
+                        <List.Root pl={2}>
+                            <List.Item>
                                 <Link
                                     color="blue.300"
                                     href="https://docs.docker.com/desktop/mac/install/"
@@ -59,8 +58,8 @@ const Template: Story = {
                                 >
                                     Download for Mac (macOS)
                                 </Link>
-                            </ListItem>
-                            <ListItem>
+                            </List.Item>
+                            <List.Item>
                                 <Link
                                     color="blue.300"
                                     href="https://docs.docker.com/desktop/windows/install/"
@@ -68,8 +67,8 @@ const Template: Story = {
                                 >
                                     Download for Windows
                                 </Link>
-                            </ListItem>
-                        </UnorderedList>
+                            </List.Item>
+                        </List.Root>
                         <Heading as="h3" size="sm" my={4}>
                             Customizing Ethereum node
                         </Heading>
@@ -115,12 +114,12 @@ const Template: Story = {
                                     (The recommended third party)
                                 </Text>
                             </Flex>
-                            <UnorderedList ml={12}>
-                                <ListItem>Relatively stable.</ListItem>
-                                <ListItem>
+                            <List.Root ml={12}>
+                                <List.Item>Relatively stable.</List.Item>
+                                <List.Item>
                                     Have to register and setup in advance
-                                </ListItem>
-                            </UnorderedList>
+                                </List.Item>
+                            </List.Root>
                         </Flex>
                     </StepBody>
                 </Step>

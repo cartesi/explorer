@@ -9,8 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Icon } from '@chakra-ui/icons';
-import { Flex, FlexProps, HStack, SystemProps, Text } from '@chakra-ui/react';
+import {
+    Flex,
+    FlexProps,
+    HStack,
+    SystemProps,
+    Text,
+    Icon,
+} from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import humanizeDuration from 'humanize-duration';

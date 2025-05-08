@@ -36,6 +36,7 @@ export const Default: Story = {
 export const HighlightId: Story = {
     args: {
         highlight: 'id',
+        highlightColor: 'dark.gray.quaternary',
     },
     ...Template,
 };
@@ -43,6 +44,7 @@ export const HighlightId: Story = {
 export const HighlightProducer: Story = {
     args: {
         highlight: 'producer',
+        highlightColor: 'dark.gray.quaternary',
     },
     ...Template,
 };
@@ -50,6 +52,7 @@ export const HighlightProducer: Story = {
 export const HighlightNode: Story = {
     args: {
         highlight: 'node',
+        highlightColor: 'dark.gray.quaternary',
     },
     ...Template,
 };

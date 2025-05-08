@@ -11,8 +11,13 @@
 
 import { networks } from '../utils/networks';
 import { WalletConnectionProvider } from './wallet';
+import { FC, ReactNode } from 'react';
 
-const Web3Container = ({ children }) => {
+interface Web3ContainerProps {
+    children: ReactNode;
+}
+
+const Web3Container: FC<Web3ContainerProps> = ({ children }) => {
     const chainIds = Object.keys(networks).map(
         (key) => `0x${Number(key).toString(16)}`
     );

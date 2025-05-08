@@ -31,7 +31,7 @@ const Template: Story = {
 const WithGridTemplate: Story = {
     render: (args) => {
         return (
-            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={3}>
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={3}>
                 <OrderedContent
                     title={args.title}
                     orderedItems={args.orderedItems}

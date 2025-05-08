@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CopyIcon } from '@chakra-ui/icons';
+import { MdOutlineContentCopy } from 'react-icons/md';
+import { Icon } from '@chakra-ui/react';
 import { Meta, StoryObj } from '@storybook/react';
 import Banner from '../components/Banner';
 
@@ -26,7 +27,7 @@ const Template: Story = {
 };
 
 const defaultProps = {
-    Icon: <CopyIcon w={5} h={5} />,
+    Icon: <Icon as={MdOutlineContentCopy} w={5} h={5} />,
     Title: <span>Default title</span>,
     children: <span>44</span>,
 };

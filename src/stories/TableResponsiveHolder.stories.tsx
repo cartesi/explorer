@@ -13,7 +13,7 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { TableResponsiveHolder } from '../components/TableResponsiveHolder';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import _ from 'lodash';
 
 export default {
@@ -24,24 +24,24 @@ export default {
 
 const ExampleTable = () => {
     return (
-        <Table variant="simple">
-            <Thead>
-                <Tr>
+        <Table.Root variant="unstyled">
+            <Table.Header>
+                <Table.Row>
                     {_.times(40, (i) => (
-                        <Th key={i}>{i}</Th>
+                        <Table.Cell key={i}>{i}</Table.Cell>
                     ))}
-                </Tr>
-            </Thead>
-            <Tbody>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
                 {_.times(10, (i) => (
-                    <Tr key={i}>
+                    <Table.Row key={i}>
                         {_.times(40, (j) => (
-                            <Td key={j}>{j + i}</Td>
+                            <Table.Cell key={j}>{j + i}</Table.Cell>
                         ))}
-                    </Tr>
+                    </Table.Row>
                 ))}
-            </Tbody>
-        </Table>
+            </Table.Body>
+        </Table.Root>
     );
 };
 
