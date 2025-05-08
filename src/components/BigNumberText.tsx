@@ -13,7 +13,7 @@ import {
     Flex,
     FlexProps,
     HStack,
-    SystemProps,
+    SystemStyleObject,
     Text,
     Icon,
 } from '@chakra-ui/react';
@@ -87,8 +87,8 @@ export interface BigNumberTextProps extends FlexProps {
     icon?: IconType;
     value: BigNumberish;
     nullLabel?: string;
-    direction?: SystemProps['flexDirection'];
-    fontSize?: SystemProps['fontSize'];
+    direction?: SystemStyleObject['flexDirection'];
+    fontSize?: SystemStyleObject['fontSize'];
     unit?: Unit;
     options?: Intl.NumberFormatOptions;
     countdown?: Countdown;
