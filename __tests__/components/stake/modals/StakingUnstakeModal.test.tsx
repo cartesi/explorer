@@ -99,8 +99,10 @@ describe('Staking Unstake Modal', () => {
         const numberInput = getByRole('spinbutton');
 
         fireEvent.focus(numberInput);
-        await userEvent.type(numberInput, '10000', { delay: 0 });
-        await waitFor(() => expect(numberInput).toHaveValue('10000'));
+        await userEvent.type(numberInput, '10000');
+        await waitFor(() => expect(numberInput).toHaveValue('10000'), {
+            timeout: 100,
+        });
 
         const button = getByRole('unstake-button');
 
