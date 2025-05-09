@@ -388,7 +388,7 @@ const ManageNode: FC = () => {
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 me={2}
-                                // disabled={isStakeUnstakeDisabled}
+                                disabled={isStakeUnstakeDisabled}
                                 onClick={unstakeDisclosure.onOpen}
                             >
                                 Unstake
@@ -397,7 +397,7 @@ const ManageNode: FC = () => {
                                 colorPalette={colorScheme}
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
-                                // disabled={isStakeUnstakeDisabled}
+                                disabled={isStakeUnstakeDisabled}
                                 onClick={stakeDisclosure.onOpen}
                             >
                                 Stake

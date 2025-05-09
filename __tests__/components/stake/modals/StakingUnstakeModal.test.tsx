@@ -17,6 +17,7 @@ import {
     StakingUnstakeModal,
 } from '../../../../src/components/stake/modals/StakingUnstakeModal';
 import { withChakraTheme } from '../../../test-utilities';
+import userEvent from '@testing-library/user-event';
 
 const defaultValue = '100000000000000000000000';
 
@@ -79,10 +80,9 @@ describe('Staking Unstake Modal', () => {
         expect(onSave).toHaveBeenCalledWith('full');
     });
 
-    // TODO: Uncomment once we figure out how to invoke change event for number input
-    it.skip('Should invoke onSave callback after partial amount is set', async () => {
+    it('Should invoke onSave callback after partial amount is set', async () => {
         const onSave = jest.fn();
-        const { getByRole, getByText, container } = render(
+        const { getByRole, getByText } = render(
             <EStakingUnstakeModal {...defaultProps} onSave={onSave} />
         );
 
@@ -96,15 +96,12 @@ describe('Staking Unstake Modal', () => {
             expect(getByRole('spinbutton')).toBeInTheDocument()
         );
 
-        const numberInput = getByRole('spinbutton') as HTMLInputElement;
+        const numberInput = getByRole('spinbutton');
 
-        const incrementButton = container.querySelector(
-            '[data-part="increment-trigger"]'
-        ) as HTMLButtonElement;
+        fireEvent.focus(numberInput);
+        await userEvent.type(numberInput, '10000', { delay: 0 });
+        await waitFor(() => expect(numberInput).toHaveValue('10000'));
 
-        fireEvent.click(incrementButton);
-
-        // fireEvent.change(numberInput, { target: { value: '10000' } });
         const button = getByRole('unstake-button');
 
         await waitFor(() => {
