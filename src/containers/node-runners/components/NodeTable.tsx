@@ -90,7 +90,9 @@ const NodeTable = () => {
             <Table.Root bg={bgTable}>
                 <Table.Header>
                     <Table.Row>
-                        <Table.Cell {...thProps}>Node Address</Table.Cell>
+                        <Table.Cell {...thProps} role="columnheader">
+                            Node Address
+                        </Table.Cell>
                         <Table.Cell
                             whiteSpace="nowrap"
                             textAlign="right"

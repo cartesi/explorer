@@ -83,7 +83,7 @@ describe('When user has retired node', () => {
         renderComponent();
         fireEvent.click(screen.getByText('Node History'));
         const { container } = render(<Component {...defaultProps} />);
-        const tbody = container.querySelectorAll('.chakra-table tbody');
+        const tbody = container.querySelectorAll('table');
         expect(tbody.length).toBe(1);
     });
     afterEach(() => {

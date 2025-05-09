@@ -60,21 +60,20 @@ const defaultProps = {
 const EPoolFilters = withChakraTheme(PoolFilters);
 
 describe('Pool Filters', () => {
-    const renderComponent = () => render(<EPoolFilters {...defaultProps} />);
-
     it('Should display add filter text', () => {
-        renderComponent();
+        render(<EPoolFilters {...defaultProps} />);
         expect(screen.getByText('Add Filter')).toBeInTheDocument();
     });
 
-    // TODO: Debug test
-    it.skip('Should display filter titles', async () => {
-        renderComponent();
+    it('Should display filter titles', async () => {
+        render(<EPoolFilters {...defaultProps} />, {
+            container: document.body,
+        });
 
         fireEvent.click(screen.getByText('Add Filter'));
 
         await waitFor(() =>
-            expect(screen.findByTestId('menu-content')).toBeInTheDocument()
+            expect(screen.getByTestId('menu-content')).toBeInTheDocument()
         );
 
         defaultFilters.forEach((filter) => {

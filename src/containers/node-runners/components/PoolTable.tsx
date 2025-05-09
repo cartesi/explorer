@@ -129,7 +129,9 @@ const PoolTable = ({ data }: Props) => {
             <Table.Root>
                 <Table.Header>
                     <Table.Row>
-                        <Table.Cell {...thProps}>Address</Table.Cell>
+                        <Table.Cell {...thProps} role="columnheader">
+                            Address
+                        </Table.Cell>
                         <Table.Cell
                             whiteSpace="nowrap"
                             textAlign="right"
