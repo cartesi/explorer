@@ -6,7 +6,7 @@
         "dev": "run-s db:dev:migrate next:dev",
         "build": "run-s db:prod:migrate next:build",
         "start": "next start",
-        "next:build": "next build",
+        "next:build": "npm run chakra-types && next build",
         "next:dev": "npm run chakra-types && next dev",
         "test": "dotenv -c test -- jest",
         "test:ci": "dotenv -c test -- jest --runInBand --coverage",
