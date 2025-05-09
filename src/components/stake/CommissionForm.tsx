@@ -144,7 +144,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             <Box
                                 color="gray.300"
                                 pointerEvents="none"
-                                fontSize="1rem"
+                                fontSize="md"
                             >
                                 {unit.toUpperCase()}
                             </Box>
