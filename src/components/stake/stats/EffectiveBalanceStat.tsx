@@ -133,7 +133,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                         >
                             <Icon
                                 as={FaRegQuestionCircle}
-                                role="balance-icon"
+                                data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}
                             />
@@ -160,7 +160,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                 >
                                     <Icon
                                         as={RebalanceIcon}
-                                        role="rebalance-icon"
+                                        data-testid="rebalance-icon"
                                         w={6}
                                         h={6}
                                     />

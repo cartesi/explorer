@@ -11,13 +11,16 @@
 import { render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import { NodeStakedBalanceSection } from '../../../src/components/node/NodeStakedBalanceSection';
+import { withChakraTheme } from '../../test-utilities';
+
+const Component = withChakraTheme(NodeStakedBalanceSection);
 
 const TEST_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
 const TEST_BALANCE_CTSI = '87';
 
 describe('NodeStakedBalanceSection component', () => {
     it(`Should be with ${TEST_BALANCE_CTSI} CTSI`, () => {
-        render(<NodeStakedBalanceSection stakedBalance={TEST_BALANCE} />);
+        render(<Component stakedBalance={TEST_BALANCE} />);
 
         expect(screen.getByText(TEST_BALANCE_CTSI)).toBeInTheDocument();
     });

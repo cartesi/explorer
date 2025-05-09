@@ -283,7 +283,7 @@ describe('Pool ENS step', () => {
                 ).toBeInTheDocument();
 
                 expect(
-                    await screen.findByText('Loading...')
+                    await screen.findByRole('progressbar')
                 ).toBeInTheDocument();
             });
 
@@ -381,9 +381,7 @@ describe('Pool ENS step', () => {
                 pool.transaction.isOngoing = true;
                 rerender(<Component inFocus stepNumber={1} />);
 
-                expect(
-                    await findByText(button, 'Loading...')
-                ).toBeInTheDocument();
+                expect(await button.hasAttribute('disabled')).toBe(true);
 
                 fireEvent.click(button);
                 fireEvent.click(button);

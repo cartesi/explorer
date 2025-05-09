@@ -158,7 +158,7 @@ const HireNode = ({
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
                     <Checkbox.Label fontSize="md">
-                        Accept terms and conditions
+                        Allowing your pool to accept new stakes
                     </Checkbox.Label>
                 </Checkbox.Root>
                 <Box px={6} py={4} bg={tipsBgColor} mt={6} rounded="md">

@@ -148,7 +148,12 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaLock width={2.5} height={2.5} />
+                            <Icon
+                                as={FaLock}
+                                width={2.5}
+                                height={2.5}
+                                data-testid="paused-tooltip-icon"
+                            />
                         </Tooltip>
                     )}
                 </HStack>

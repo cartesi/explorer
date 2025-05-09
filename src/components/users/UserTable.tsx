@@ -155,7 +155,7 @@ const UserTable: FC<UserTableProps> = ({
                         <Table.Row>
                             <Table.Cell colSpan={9} textAlign="center">
                                 <HStack justify="center">
-                                    <Spinner />
+                                    <Spinner role="progressbar" />
                                     <Text>Loading...</Text>
                                 </HStack>
                             </Table.Cell>

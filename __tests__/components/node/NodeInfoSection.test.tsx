@@ -16,6 +16,9 @@ import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import { truncateString } from '../../../src/utils/stringUtils';
 import { buildUseUserNodesReturn } from '../../containers/mocks';
+import { withChakraTheme } from '../../test-utilities';
+
+const Component = withChakraTheme(NodeInfoSection);
 
 const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {
@@ -69,7 +72,7 @@ describe('NodeInfoSection component', () => {
     });
 
     it('Should render proper values', () => {
-        render(<NodeInfoSection {...defaultProps} />);
+        render(<Component {...defaultProps} />);
 
         expect(screen.getByText(NODE_BALANCE_ETH)).toBeInTheDocument();
         expect(screen.getByText('ETH')).toBeInTheDocument();
@@ -78,41 +81,41 @@ describe('NodeInfoSection component', () => {
 
     it('Should render full address', () => {
         mockUseMediaQuery.mockReturnValue([true]);
-        render(<NodeInfoSection {...defaultProps} />);
+        render(<Component {...defaultProps} />);
 
         expect(screen.getByText(defaultProps.address)).toBeInTheDocument();
     });
 
     it('Should render truncated address', () => {
         mockUseMediaQuery.mockReturnValue([false]);
-        render(<NodeInfoSection {...defaultProps} />);
+        render(<Component {...defaultProps} />);
         expect(
             screen.getByText(truncateString(defaultProps.address))
         ).toBeInTheDocument();
     });
 
     it('should render node hire form', () => {
-        render(<NodeInfoSection {...defaultProps} isRetired />);
+        render(<Component {...defaultProps} isRetired />);
 
         expect(screen.getByText('Hire node')).toBeInTheDocument();
     });
 
     it('should disable edit balance button while retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiring />);
+        render(<Component {...defaultProps} isRetiring />);
 
         const editBalanceButton = screen.getByTestId('edit-balance-button');
         expect(editBalanceButton.hasAttribute('disabled')).toBe(true);
     });
 
     it('should enable edit balance button when not retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiring={false} />);
+        render(<Component {...defaultProps} isRetiring={false} />);
 
         const editBalanceButton = screen.getByTestId('edit-balance-button');
         expect(editBalanceButton.hasAttribute('disabled')).toBe(false);
     });
 
     it('should disable retire node button while retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiring />);
+        render(<Component {...defaultProps} isRetiring />);
 
         const retireNodeButton = screen
             .getByText('Retire node')
@@ -121,7 +124,7 @@ describe('NodeInfoSection component', () => {
     });
 
     it('should enable retire node button when not retiring', () => {
-        render(<NodeInfoSection {...defaultProps} isRetiring={false} />);
+        render(<Component {...defaultProps} isRetiring={false} />);
 
         const retireNodeButton = screen
             .getByText('Retire node')
@@ -131,7 +134,7 @@ describe('NodeInfoSection component', () => {
 
     it('should display Authorize button when node is not authorized to interact with PoS contract', () => {
         render(
-            <NodeInfoSection
+            <Component
                 {...defaultProps}
                 isAuthorized={false}
                 onAuthorize={jest.fn()}
@@ -143,11 +146,7 @@ describe('NodeInfoSection component', () => {
 
     it('should while authorizing disable the button and display a loading text', () => {
         render(
-            <NodeInfoSection
-                {...defaultProps}
-                isAuthorizing
-                isAuthorized={false}
-            />
+            <Component {...defaultProps} isAuthorizing isAuthorized={false} />
         );
 
         const btn = screen.getByText('authorizing').closest('button');

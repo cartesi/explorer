@@ -256,7 +256,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     width={3}
                                     height={3}
                                     color="gray.600"
-                                    role="balance-icon"
+                                    data-testid="balance-icon"
                                 />
                             </Tooltip>
                         </Flex>
@@ -332,7 +332,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
-                                    role="pool-icon"
+                                    data-testid="pool-icon"
                                 />
                             </Tooltip>
                         </Field.Label>
@@ -419,7 +419,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
-                                    role="staking-icon"
+                                    data-testid="staking-icon"
                                 />
                             </Tooltip>
                         </Field.Label>
@@ -478,7 +478,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                     width={4}
                                     height={4}
                                     color="gray.600"
-                                    role="quit-icon"
+                                    data-testid="quit-icon"
                                 />
                             </Tooltip>
                         </Field.Label>

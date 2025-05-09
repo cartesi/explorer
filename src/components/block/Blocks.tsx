@@ -106,8 +106,8 @@ const BlockList = (props: BlockListProps) => {
                 );
             })}
             <Center>
-                <Button onClick={loadMore} disabled={loading}>
-                    {loading ? <Spinner /> : <FaEllipsisH />}
+                <Button onClick={loadMore} disabled={loading} loading={loading}>
+                    <FaEllipsisH />
                 </Button>
             </Center>
         </VStack>

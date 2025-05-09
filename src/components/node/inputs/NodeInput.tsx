@@ -137,7 +137,7 @@ const NodeInput = ({
                     displayLoader ? (
                         <Flex h="100%" alignItems="center">
                             <VStack colorPalette="teal">
-                                <Spinner />
+                                <Spinner role="progressbar" />
                             </VStack>
                         </Flex>
                     ) : isAvailable ? (

@@ -129,7 +129,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                             as={FaChevronRight}
                             w={5}
                             h={5}
-                            role="location-icon"
+                            data-testid="location-icon"
                         />
                     )}
                 </HStack>

@@ -86,11 +86,7 @@ describe('Customize Ethereum Node Step component', () => {
         it('should call the onComplete callback when clicking the NEXT button', () => {
             const onComplete = jest.fn();
             render(
-                <CustomizeEthereumNode
-                    inFocus
-                    stepNumber={1}
-                    onComplete={onComplete}
-                />
+                <Component inFocus stepNumber={1} onComplete={onComplete} />
             );
 
             fireEvent.click(screen.getByText('NEXT'));

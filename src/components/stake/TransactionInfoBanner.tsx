@@ -119,9 +119,10 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
             borderRadius="1rem"
             borderWidth="1px"
             borderColor={borderColor}
+            role="alert"
             {...props}
         >
-            {status === 'info' && <Spinner mx={2} />}
+            {status === 'info' && <Spinner mx={2} role="progressbar" />}
             {status !== 'info' && <Alert.Indicator color={alertIconColor} />}
             <Alert.Content>
                 <Box flex="1">

@@ -55,7 +55,7 @@ const Loader = ({ isLoading }) => {
             textAlign="center"
             fontSize="sm"
         >
-            <Spinner size="xl" />
+            <Spinner size="xl" role="progressbar" />
             <Text>Loading staking activities with this pool</Text>
         </VStack>
     );

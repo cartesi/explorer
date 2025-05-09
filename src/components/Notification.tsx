@@ -46,6 +46,7 @@ export const Notification = ({
             borderColor={borderColor}
             py="2"
             status={status}
+            role="alert"
             {...alertProps}
         >
             <Alert.Indicator />

@@ -33,14 +33,14 @@ describe('Users Stat', () => {
     it('Should display location icon', () => {
         renderComponent();
 
-        expect(screen.getByRole('location-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('location-icon')).toBeInTheDocument();
     });
 
     it('Should not display location icon', () => {
         render(<EUsersStat totalUsers={100} />);
 
-        expect(() => screen.getByRole('location-icon')).toThrow(
-            'Unable to find an accessible element with the role "location-icon"'
+        expect(() => screen.getByTestId('location-icon')).toThrow(
+            'Unable to find an element'
         );
     });
 
@@ -48,7 +48,7 @@ describe('Users Stat', () => {
         renderComponent();
         const text = 'Number of users who staked in this pool';
 
-        const icon = screen.getByRole('users-icon');
+        const icon = screen.getByTestId('users-icon');
         await act(() => {
             userEvent.hover(icon);
         });

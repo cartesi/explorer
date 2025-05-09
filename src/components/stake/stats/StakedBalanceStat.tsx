@@ -77,7 +77,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                         >
                             <Icon
                                 as={FaRegQuestionCircle}
-                                role="balance-icon"
+                                data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}
                             />

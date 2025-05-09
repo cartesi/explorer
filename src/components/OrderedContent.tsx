@@ -28,7 +28,7 @@ export const OrderedContent = memo(
         >
             <p>{title}</p>
             <List.Root as="ol" pl={{ base: 4, md: 8 }}>
-                {orderedItems.map((content, i) => (
+                {orderedItems.map((content: string, i: number) => (
                     <List.Item
                         id={`text-${i}}`}
                         key={i}

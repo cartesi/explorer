@@ -84,7 +84,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                             >
                                 <Icon
                                     as={FaRegQuestionCircle}
-                                    role="users-icon"
+                                    data-testid="users-icon"
                                     w={3.5}
                                     h={3.5}
                                 />
@@ -96,7 +96,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                             as={FaChevronRight}
                             w={5}
                             h={5}
-                            role="location-icon"
+                            data-testid="location-icon"
                         />
                     )}
                 </HStack>

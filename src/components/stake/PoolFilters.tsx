@@ -89,6 +89,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                 p={4}
                                 backgroundColor={menuBg}
                                 minW="14rem"
+                                data-testid="menu-content"
                             >
                                 {filters.map((filter, index) => (
                                     <Fragment key={index}>

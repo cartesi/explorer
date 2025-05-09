@@ -8,7 +8,6 @@ import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
 import { FaRegQuestionCircle } from 'react-icons/fa';
-import theme from '../../../styles/theme';
 
 export interface PoolsOverviewProps {
     balance: BigNumber;
@@ -43,7 +42,12 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaRegQuestionCircle />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                data-testid="pools-overview-total-tooltip"
+                                w={4}
+                                h={4}
+                            />
                         </Tooltip>
                     </HStack>
                 }
@@ -62,7 +66,12 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaRegQuestionCircle />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                data-testid="pools-overview-balances-tooltip"
+                                w={4}
+                                h={4}
+                            />
                         </Tooltip>
                     </HStack>
                 }
@@ -81,7 +90,12 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaRegQuestionCircle />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                data-testid="pools-overview-stake-tooltip"
+                                w={4}
+                                h={4}
+                            />
                         </Tooltip>
                     </HStack>
                 }

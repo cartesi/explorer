@@ -19,7 +19,6 @@ import { hasPoolsAtom, hasPrivateNodeAtom } from '../atoms';
 import Block from './Block';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useColorModeValue } from '../../../components/ui/color-mode';
-import theme from '../../../styles/theme';
 
 const mainResponsibilities = 'Main responsibilities:';
 const privateNodeResponsibilities = [
