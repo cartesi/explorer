@@ -46,7 +46,7 @@ const CopyBoard = ({ command, children }) => {
                     <Box
                         as={MdContentCopy}
                         cursor={'pointer'}
-                        onClick={() => copy()}
+                        onClick={copy}
                         fontSize="xl"
                         minW={6}
                     />

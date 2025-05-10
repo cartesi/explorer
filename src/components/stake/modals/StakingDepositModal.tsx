@@ -25,7 +25,6 @@ import {
     Tag,
     Text,
     UseDisclosureProps,
-    useToken,
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
@@ -73,7 +72,6 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
 
     const color = useColorModeValue('black', 'white');
     const maxDepositColor = useColorModeValue('dark.secondary', 'dark.primary');
-    const [formControlColor] = useToken('colors', ['form-control-color']);
     const tagColor = useColorModeValue('gray.900', 'white');
     const infoBg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
     const infoColor = useColorModeValue('black', 'white');

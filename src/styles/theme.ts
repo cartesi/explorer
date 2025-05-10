@@ -32,7 +32,7 @@ const theme = createSystem(defaultConfig, {
         'html, body': {
             fontSize: 'md',
             color: {
-                base: 'gray.950',
+                base: 'gray.800',
                 _dark: 'white',
             },
         },

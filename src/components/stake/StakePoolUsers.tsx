@@ -223,19 +223,6 @@ const PoolUsers: FC = () => {
         })),
     });
 
-    /*
-    {monthOptions.map((option) => (
-        <option
-            key={option.id}
-            value={option.id}
-        >
-            {dateTimeFormat.format(
-                option.date.toMillis()
-            )}
-        </option>
-    ))}
-     */
-
     return (
         <Layout bg={pageBg}>
             <PoolHeader isManager={isManager} from="users" />

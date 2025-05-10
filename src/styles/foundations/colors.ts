@@ -160,7 +160,6 @@ export const colors = {
             value: '#1E1941',
         },
     },
-    // grayDark: theme.colors.gray,
     orange: {
         50: {
             value: '#FFFAE6',

@@ -82,7 +82,8 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                                         isString(from) ? `?from=${from}` : ''
                                     }`}
                                 >
-                                    <SettingsIcon
+                                    <Icon
+                                        as={SettingsIcon}
                                         width={iconSize}
                                         height={iconSize}
                                     />
