@@ -38,7 +38,7 @@ module.exports = {
         '<rootDir>/.vscode/',
         '<rootDir>/public/',
     ],
-    testEnvironment: 'jsdom',
+    testEnvironment: './fixJSDOMEnvironment.ts',
     // Common setup you would usually add before each test.
     setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
     transform: {

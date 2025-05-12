@@ -16,7 +16,6 @@ import {
     Spinner,
     Stack,
     Text,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
@@ -31,6 +30,7 @@ import { useUserNode } from '../../graphql/hooks/useNodes';
 import { useBalance } from '../../services/eth';
 import { useNode } from '../../services/node';
 import { useStakingPool } from '../../services/pool';
+import { useColorModeValue } from '../../components/ui/color-mode';
 
 export interface PoolManageContainerProps {
     address: string;
@@ -85,7 +85,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                 pb={4}
                 bg={bg}
             >
-                <VStack spacing={4} alignItems="stretch">
+                <VStack gap={4} alignItems="stretch">
                     <TransactionBanner
                         title="Setting deposit..."
                         failTitle="Error setting deposit"
@@ -120,7 +120,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                         transaction={pool.hireTransaction}
                     />
 
-                    {retiredDisclosure.isOpen && (
+                    {retiredDisclosure.open && (
                         <NodeRetiredBanner
                             onClose={retiredDisclosure.onClose}
                         />
@@ -134,7 +134,7 @@ export const PoolManageContainer: FC<PoolManageContainerProps> = ({
                 fontSize={'xl'}
             >
                 <Stack
-                    spacing={4}
+                    gap={4}
                     justifyContent="space-between"
                     alignContent="flex-start"
                     mb={4}

@@ -9,14 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    HStack,
-    Tag,
-    TagLabel,
-    useColorModeValue,
-    useDisclosure,
-} from '@chakra-ui/react';
+import { Box, HStack, Tag, TagLabel, useDisclosure } from '@chakra-ui/react';
 import { FC } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
@@ -24,12 +17,13 @@ import { truncateStringMobile } from '../../utils/stringUtils';
 import { ArrowsUpDownIcon } from '../Icons';
 import { useWallet } from '../wallet/useWallet';
 import { WalletMobileModal } from './modals/WalletMobileModal';
+import { useColorModeValue } from '../ui/color-mode';
 
 const AccountMobile: FC = () => {
     const { account } = useWallet();
     const ens = useENS(account ?? '');
     const {
-        isOpen: isOpenWalletMobileModal,
+        open: isOpenWalletMobileModal,
         onOpen: onOpenWalletMobileModal,
         onClose: onCloseWalletMobileModal,
     } = useDisclosure();
@@ -41,17 +35,17 @@ const AccountMobile: FC = () => {
     }
 
     return (
-        <Tag
+        <Tag.Root
             size="md"
             borderRadius="0"
-            colorScheme="gray"
+            colorPalette="gray"
             h={10}
             onClick={onOpenWalletMobileModal}
             key="xs"
             bg={bgColor}
             cursor="pointer"
         >
-            <HStack w="full" spacing={4}>
+            <HStack w="full" gap={4}>
                 <Box flexGrow="1" display="flex">
                     <Jazzicon
                         diameter={15}
@@ -80,7 +74,7 @@ const AccountMobile: FC = () => {
                 isOpen={isOpenWalletMobileModal}
                 onClose={onCloseWalletMobileModal}
             />
-        </Tag>
+        </Tag.Root>
     );
 };
 

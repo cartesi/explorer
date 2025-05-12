@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import UserRow from '../../../src/components/users/UserRow';
 import { withChakraTheme } from '../../test-utilities';
 import { formatCTSI } from '../../../src/utils/token';
@@ -31,11 +31,11 @@ const props = {
 };
 
 const TableComponent = (props) => (
-    <Table>
-        <Tbody>
+    <Table.Root>
+        <Table.Body>
             <UserRow {...props} />
-        </Tbody>
-    </Table>
+        </Table.Body>
+    </Table.Root>
 );
 
 const Component = withChakraTheme(TableComponent);

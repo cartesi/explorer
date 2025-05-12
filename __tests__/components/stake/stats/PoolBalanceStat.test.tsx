@@ -36,7 +36,7 @@ describe('Pool Balance Stat', () => {
         const text =
             'Amount of tokens available at the pool contract either for stake or withdraw';
 
-        const icon = screen.getByRole('balance-icon');
+        const icon = screen.getByTestId('balance-icon');
         await act(() => {
             userEvent.hover(icon);
         });

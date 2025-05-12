@@ -30,7 +30,7 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
     onApprove,
 }) => {
     const {
-        isOpen: isOpenStakingPoolAllowanceModal,
+        open: isOpenStakingPoolAllowanceModal,
         onOpen: onOpenStakingPoolAllowanceModal,
         onClose: onCloseStakingPoolAllowanceModal,
     } = useDisclosure();
@@ -39,7 +39,7 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
 
     return (
         <>
-            <VStack role="wallet-balance" spacing={8}>
+            <VStack role="wallet-balance" gap={8}>
                 <Stack
                     direction={{ base: 'column', lg: 'row' }}
                     w="full"

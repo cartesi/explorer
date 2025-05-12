@@ -12,28 +12,21 @@
 import {
     Box,
     Button,
-    Divider,
-    FormControl,
-    FormHelperText,
-    FormLabel,
+    CloseButton,
+    Dialog,
+    Field,
     HStack,
     Link,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
+    Separator,
     Text,
     UseDisclosureProps,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
 
 interface INodeStakeModalProps {
     allowance: BigNumber;
@@ -67,10 +60,10 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
         return numberFormat.format(parseFloat(formatUnits(value, 18)));
     };
 
-    const inputFocusRef = useRef<FocusableElement>(null);
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
+    const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     useEffect(() => {
         if (!isOpen) {
@@ -86,100 +79,106 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
 
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
+            <Dialog.Root
+                open={isOpen}
+                placement="center"
+                onOpenChange={({ open }) => {
+                    if (!open) {
+                        onClose();
+                    }
+                }}
             >
-                <ModalOverlay />
-                <ModalContent
-                    bg={bgModal}
-                    border="1px solid"
-                    borderColor={'dark.border.secondary'}
-                    borderRadius={'2xl'}
-                    color={color}
-                >
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
-                                Stake
-                            </Box>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                    <Dialog.Content
+                        bg={bgModal}
+                        border="1px solid"
+                        borderColor={'dark.border.secondary'}
+                        borderRadius={'2xl'}
+                        color={color}
+                    >
+                        <Dialog.CloseTrigger asChild>
+                            <CloseButton size="sm" />
+                        </Dialog.CloseTrigger>
+                        <Dialog.Header>
+                            <Dialog.Title>
+                                <Box fontSize="xl" fontWeight="bold">
+                                    Stake
+                                </Box>
+                            </Dialog.Title>
+                        </Dialog.Header>
+                        <Separator borderColor={separatorColor} />
 
-                            <ModalCloseButton mt="0.5rem !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-                    <ModalBody>
-                        <VStack spacing={5}>
-                            <Text>
-                                The funds you stake will go to a maturing state.
-                                It takes hours for your staking to achieve
-                                maturity. You will see them in the “Maturing”
-                                bar with a countdown timer. Learn more
-                            </Text>
-                            <FormControl id="stakeAmount">
-                                <HStack justify="space-between">
-                                    <FormLabel fontWeight="bold">
-                                        Stake Amount
-                                    </FormLabel>
-                                    <Link
-                                        color={colorScheme}
-                                        _hover={{
-                                            color: colorScheme,
-                                        }}
-                                        pb={2}
-                                        onClick={handleMaxStake}
+                        <Dialog.Body mt={6}>
+                            <VStack gap={5}>
+                                <Text>
+                                    The funds you stake will go to a maturing
+                                    state. It takes hours for your staking to
+                                    achieve maturity. You will see them in the
+                                    “Maturing” bar with a countdown timer. Learn
+                                    more
+                                </Text>
+                                <Field.Root id="stakeAmount">
+                                    <HStack
+                                        justify="space-between"
+                                        width="full"
                                     >
-                                        MAX STAKE
-                                    </Link>
-                                </HStack>
-                                <CTSINumberInput
-                                    value={stakedValue}
-                                    min={0}
-                                    max={maxAllowanceFormatted}
-                                    onChange={(bigNumberValue) => {
-                                        setOutputStake(bigNumberValue);
-                                    }}
-                                />
-                                <FormHelperText>
-                                    Allowance: {toCTSI(allowance)} CTSI
-                                </FormHelperText>
-                            </FormControl>
-                        </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
-                                <Button
-                                    width="full"
-                                    colorScheme={colorScheme}
-                                    disabled={outputStake.isZero()}
-                                    onClick={() => {
-                                        onSave(outputStake);
-                                        disclosure.onClose();
-                                        onClose();
-                                    }}
-                                >
-                                    STAKE
-                                </Button>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    CANCEL
-                                </Button>
+                                        <Field.Label fontWeight="bold">
+                                            Stake Amount
+                                        </Field.Label>
+                                        <Link
+                                            color={colorScheme}
+                                            _hover={{
+                                                color: colorScheme,
+                                            }}
+                                            onClick={handleMaxStake}
+                                        >
+                                            MAX STAKE
+                                        </Link>
+                                    </HStack>
+                                    <CTSINumberInput
+                                        value={stakedValue}
+                                        min={0}
+                                        max={maxAllowanceFormatted}
+                                        onChange={(bigNumberValue) => {
+                                            setOutputStake(bigNumberValue);
+                                        }}
+                                    />
+                                    <Field.HelperText
+                                        color={inputHelperTextColor}
+                                    >
+                                        Allowance: {toCTSI(allowance)} CTSI
+                                    </Field.HelperText>
+                                </Field.Root>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                            <Dialog.Footer px="0" pt={10}>
+                                <VStack w="full" gap={4}>
+                                    <Button
+                                        width="full"
+                                        colorPalette={colorScheme}
+                                        disabled={outputStake.isZero()}
+                                        onClick={() => {
+                                            onSave(outputStake);
+                                            disclosure.onClose();
+                                            onClose();
+                                        }}
+                                    >
+                                        STAKE
+                                    </Button>
+                                    <Button
+                                        width="full"
+                                        colorPalette="gray"
+                                        variant="ghost"
+                                        onClick={onClose}
+                                    >
+                                        CANCEL
+                                    </Button>
+                                </VStack>
+                            </Dialog.Footer>
+                        </Dialog.Body>
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Dialog.Root>
         </>
     );
 };

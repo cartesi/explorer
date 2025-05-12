@@ -76,7 +76,7 @@ describe('Commission Stat', () => {
             />
         );
 
-        expect(screen.getByRole('location-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('location-icon')).toBeInTheDocument();
     });
 
     it('Should not display location icon', () => {

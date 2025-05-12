@@ -1,17 +1,14 @@
-import { Icon } from '@chakra-ui/icons';
-import {
-    HStack,
-    Stack,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Icon, Stack, Text } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
 import Banner from '../../Banner';
 import CTSIText, { BigNumberText } from '../../CTSIText';
 import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+
 export interface PoolsOverviewProps {
     balance: BigNumber;
     summary: Summary;
@@ -32,15 +29,21 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             w="100%"
             p={[5, 5, 10, 10]}
             px={['6vw', '6vw', '12vw', '12vw']}
-            spacing={6}
+            gap={6}
         >
             <Banner
-                Icon={<PoolsIcon color={iconColor} w={8} h={8} />}
+                Icon={<Icon as={PoolsIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}># Pools</Text>
-                        <Tooltip label="Total number of pools" placement="top">
+                        <Tooltip
+                            showArrow
+                            content="Total number of pools"
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
+                        >
                             <Icon
+                                as={FaRegQuestionCircle}
                                 data-testid="pools-overview-total-tooltip"
                                 w={4}
                                 h={4}
@@ -53,15 +56,18 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             </Banner>
 
             <Banner
-                Icon={<MyPoolsIcon color={iconColor} w={7} h={7} />}
+                Icon={<Icon as={MyPoolsIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}>My Pools</Text>
                         <Tooltip
-                            label="Number of pools user staked"
-                            placement="top"
+                            showArrow
+                            content="Number of pools user staked"
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
                             <Icon
+                                as={FaRegQuestionCircle}
                                 data-testid="pools-overview-balances-tooltip"
                                 w={4}
                                 h={4}
@@ -74,15 +80,18 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
             </Banner>
 
             <Banner
-                Icon={<MyStakeIcon color={iconColor} w={8} h={8} />}
+                Icon={<Icon as={MyStakeIcon} color={iconColor} w={8} h={8} />}
                 Title={
                     <HStack>
                         <Text mr={1}>My Stake</Text>
                         <Tooltip
-                            label="Total user stake in pools"
-                            placement="top"
+                            showArrow
+                            content="Total user stake in pools"
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
                             <Icon
+                                as={FaRegQuestionCircle}
                                 data-testid="pools-overview-stake-tooltip"
                                 w={4}
                                 h={4}

@@ -32,8 +32,10 @@ const Rebalance: FC<RebalanceProps> = (props) => {
                 data-testid="rebalance-button"
                 disabled={disabled}
                 onClick={onRebalance}
-                icon={<FaBalanceScaleLeft />}
-            />
+            >
+                <FaBalanceScaleLeft />
+            </IconButton>
+
             {stake?.gt(0) && <Text>{formatCTSI(stake)} CTSI to stake</Text>}
             {unstake?.gt(0) && (
                 <Text>{formatCTSI(unstake)} CTSI to unstake</Text>

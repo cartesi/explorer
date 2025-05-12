@@ -9,11 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Button, ButtonProps, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
 import { SimpleChartIcon, StakeIcon } from '../Icons';
+import { useColorModeValue } from '../ui/color-mode';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
@@ -41,28 +42,37 @@ export const StakingTabNavigation: FC = () => {
     ];
 
     return (
-        <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
+        <HStack alignSelf={{ base: 'center', lg: 'flex-end' }} zIndex={20}>
             {tabs.map((tab) => (
                 <Button
-                    as={NextLink}
+                    asChild
                     key={tab.href}
-                    href={tab.href}
                     py={{ lg: 7 }}
                     outline="none"
                     textTransform="none"
-                    _hover={{
-                        bg: 'transparent',
-                    }}
-                    _active={{
-                        bg,
-                        color,
-                    }}
+                    _active={
+                        tab.isActive
+                            ? {
+                                  bg,
+                                  color,
+                              }
+                            : undefined
+                    }
+                    color={tab.isActive ? 'gray.900' : 'white'}
+                    _hover={
+                        tab.isActive
+                            ? undefined
+                            : {
+                                  bg: 'transparent',
+                              }
+                    }
                     borderRadius="0.6rem 0.6rem 0 0"
-                    leftIcon={<tab.Icon w="24px" h="24px" />}
-                    isActive={tab.isActive}
-                    variant={tab.variant}
+                    data-active={tab.isActive}
+                    variant={tab.variant as ButtonProps['variant']}
                 >
-                    {tab.text}
+                    <NextLink href={tab.href}>
+                        <tab.Icon width="24px" height="24px" /> {tab.text}
+                    </NextLink>
                 </Button>
             ))}
         </HStack>

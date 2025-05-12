@@ -10,31 +10,24 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    FormControl,
-    Collapse,
-    Radio,
-    RadioGroup,
-    VStack,
-    Text,
-    Stack,
-    Modal,
-    ModalCloseButton,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    UseDisclosureProps,
     Box,
-    HStack,
-    Divider,
-    useColorModeValue,
+    Button,
+    CloseButton,
+    Collapsible,
+    Dialog,
+    Field,
+    RadioGroup,
+    Separator,
+    Stack,
+    Text,
+    UseDisclosureProps,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface IStakingWithdrawModalProps {
     isOpen: boolean;
@@ -54,7 +47,6 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const [withdrawFullAmount, setWithdrawFullAmount] =
         useState<string>('full');
     const inputRef = useRef<HTMLInputElement>(null);
-    const inputFocusRef = useRef<FocusableElement>(null);
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
     const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
@@ -62,146 +54,163 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
+            <Dialog.Root
+                open={isOpen}
+                placement="center"
+                onOpenChange={({ open }) => {
+                    if (!open) {
+                        onClose();
+                    }
+                }}
             >
-                <ModalOverlay />
-                <ModalContent>
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                                mr={10}
-                            >
-                                Withdraw from the pool balance to your wallet
-                            </Box>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                    <Dialog.Content>
+                        <Dialog.CloseTrigger asChild>
+                            <CloseButton size="sm" />
+                        </Dialog.CloseTrigger>
+                        <Dialog.Header>
+                            <Dialog.Title>
+                                <Box fontSize="xl" fontWeight="bold">
+                                    Withdraw from the pool balance to your
+                                    wallet
+                                </Box>
+                            </Dialog.Title>
+                        </Dialog.Header>
+                        <Separator width="full" borderColor={separatorColor} />
 
-                            <ModalCloseButton mt="8px !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-                    <ModalBody>
-                        <VStack spacing={5}>
-                            <Text>
-                                Last step to receive tokens in your wallet!
-                                Depending on the volume of requests, this
-                                process can take up to 96 hours.
-                            </Text>
+                        <Dialog.Body mt={6}>
+                            <VStack gap={5}>
+                                <Text>
+                                    Last step to receive tokens in your wallet!
+                                    Depending on the volume of requests, this
+                                    process can take up to 96 hours.
+                                </Text>
 
-                            <Text>
-                                Please return to complete your withdrawal at the
-                                end of the specified waiting period to avoid
-                                further delays.
-                            </Text>
-                            <FormControl id="amount">
-                                <RadioGroup
-                                    defaultValue={withdrawFullAmount}
-                                    name="unstakeAmount"
-                                >
-                                    <Stack>
-                                        <Radio
-                                            size="lg"
-                                            value="full"
-                                            colorScheme={radioColorScheme}
-                                            onChange={(e) =>
-                                                setWithdrawFullAmount(
-                                                    e.target.value
-                                                )
-                                            }
-                                        >
-                                            Full amount
-                                        </Radio>
-                                        <Radio
-                                            size="lg"
-                                            value="partial"
-                                            colorScheme={radioColorScheme}
-                                            onChange={(e) => {
-                                                setWithdrawFullAmount(
-                                                    e.target.value
-                                                );
+                                <Text>
+                                    Please return to complete your withdrawal at
+                                    the end of the specified waiting period to
+                                    avoid further delays.
+                                </Text>
+                                <Field.Root id="amount">
+                                    <RadioGroup.Root
+                                        defaultValue={withdrawFullAmount}
+                                        name="unstakeAmount"
+                                        colorPalette={radioColorScheme}
+                                        width="100%"
+                                        onValueChange={({ value }) => {
+                                            setWithdrawFullAmount(value);
 
+                                            if (value === 'partial') {
                                                 setOutputWithdraw(
                                                     constants.Zero
                                                 );
                                                 inputRef.current?.focus();
-                                            }}
-                                        >
-                                            Partial amount
-                                        </Radio>
-                                        <Collapse
-                                            in={
-                                                withdrawFullAmount === 'partial'
                                             }
-                                            animateOpacity
-                                            unmountOnExit
-                                        >
-                                            <FormControl
-                                                id="withdrawAmount"
-                                                pl={7}
+                                        }}
+                                    >
+                                        <Stack>
+                                            <RadioGroup.Item
+                                                value="full"
+                                                colorPalette={radioColorScheme}
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                }}
                                             >
-                                                <CTSINumberInput
-                                                    min={0}
-                                                    max={userBalanceFormatted}
-                                                    onChange={(
-                                                        bigNumberValue
-                                                    ) => {
-                                                        setOutputWithdraw(
-                                                            bigNumberValue
-                                                        );
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </Collapse>
-                                    </Stack>
-                                </RadioGroup>
-                            </FormControl>
-                        </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
-                                <Button
-                                    width="full"
-                                    colorScheme={colorScheme}
-                                    role="withdraw-button"
-                                    disabled={
-                                        outputWithdraw.isZero() &&
-                                        withdrawFullAmount !== 'full'
-                                    }
-                                    onClick={() => {
-                                        if (withdrawFullAmount === 'full') {
-                                            onSave(userBalance);
-                                        } else {
-                                            onSave(outputWithdraw);
-                                        }
+                                                <RadioGroup.ItemHiddenInput />
+                                                <RadioGroup.ItemIndicator />
+                                                <RadioGroup.ItemText>
+                                                    Full amount
+                                                </RadioGroup.ItemText>
+                                            </RadioGroup.Item>
 
-                                        disclosure.onClose();
-                                        onClose();
-                                    }}
-                                >
-                                    Withdraw
-                                </Button>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    Cancel
-                                </Button>
+                                            <RadioGroup.Item
+                                                value="partial"
+                                                colorPalette={radioColorScheme}
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <RadioGroup.ItemHiddenInput />
+                                                <RadioGroup.ItemIndicator />
+                                                <RadioGroup.ItemText>
+                                                    Partial amount
+                                                </RadioGroup.ItemText>
+                                            </RadioGroup.Item>
+
+                                            <Collapsible.Root
+                                                open={
+                                                    withdrawFullAmount ===
+                                                    'partial'
+                                                }
+                                                unmountOnExit
+                                            >
+                                                <Collapsible.Content>
+                                                    <Field.Root
+                                                        id="withdrawAmount"
+                                                        pl={7}
+                                                    >
+                                                        <CTSINumberInput
+                                                            min={0}
+                                                            max={
+                                                                userBalanceFormatted
+                                                            }
+                                                            onChange={(
+                                                                bigNumberValue
+                                                            ) => {
+                                                                setOutputWithdraw(
+                                                                    bigNumberValue
+                                                                );
+                                                            }}
+                                                        />
+                                                    </Field.Root>
+                                                </Collapsible.Content>
+                                            </Collapsible.Root>
+                                        </Stack>
+                                    </RadioGroup.Root>
+                                </Field.Root>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                            <Dialog.Footer px="0" pt={10}>
+                                <VStack w="full" gap={4}>
+                                    <Button
+                                        width="full"
+                                        colorPalette={colorScheme}
+                                        role="withdraw-button"
+                                        disabled={
+                                            outputWithdraw.isZero() &&
+                                            withdrawFullAmount !== 'full'
+                                        }
+                                        onClick={() => {
+                                            if (withdrawFullAmount === 'full') {
+                                                onSave(userBalance);
+                                            } else {
+                                                onSave(outputWithdraw);
+                                            }
+
+                                            disclosure.onClose();
+                                            onClose();
+                                        }}
+                                    >
+                                        Withdraw
+                                    </Button>
+                                    <Button
+                                        width="full"
+                                        colorPalette="gray"
+                                        variant="ghost"
+                                        onClick={onClose}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </VStack>
+                            </Dialog.Footer>
+                        </Dialog.Body>
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Dialog.Root>
         </>
     );
 };

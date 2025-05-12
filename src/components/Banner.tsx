@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
-import {
-    Box,
-    BoxProps,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Stack, Text } from '@chakra-ui/react';
 import { isObject } from 'lodash';
+import { useColorModeValue } from './ui/color-mode';
 
 export interface BannerProps extends BoxProps {
     children: React.ReactNode;

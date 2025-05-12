@@ -37,14 +37,14 @@ describe('Staked Balance Stat', () => {
     it('Should display balance icon', () => {
         renderComponent();
 
-        expect(screen.getByRole('balance-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('balance-icon')).toBeInTheDocument();
     });
 
     it('Should display required text  for balance tooltip', async () => {
         renderComponent();
         const text = 'Total amount of tokens staked in this pool';
 
-        const icon = screen.getByRole('balance-icon');
+        const icon = screen.getByTestId('balance-icon');
         await act(() => {
             userEvent.hover(icon);
         });

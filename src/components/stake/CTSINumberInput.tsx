@@ -9,14 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    InputGroup,
-    InputRightElement,
-    NumberInput,
-    NumberInputField,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, InputGroup, NumberInput } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -27,7 +21,6 @@ export interface ICTSINumberInputProps {
     min?: number;
     max?: number;
     maxPrecision?: number;
-    hasNumberSteppers?: boolean;
     setMaxOnOverflow?: boolean;
     onChange?: (
         bigNumberValue: BigNumber,
@@ -41,15 +34,15 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     min = 0,
     max,
     maxPrecision = 18,
-    hasNumberSteppers = true,
     setMaxOnOverflow = false,
     onChange,
 }) => {
     const [innerValue, setInnerValue] = useState<string>('0');
     const rightElementColor = useColorModeValue('gray.300', 'white');
     const inputBg = useColorModeValue('transparent', 'dark.border.quaternary');
+    const controlsColor = useColorModeValue('gray.900', 'white');
 
-    const handleOnChange = (value) => {
+    const handleOnChange = ({ value }) => {
         const numberValue = parseFloat(value);
 
         if (isNaN(numberValue) || numberValue < min) {
@@ -90,71 +83,73 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
     }, [value]);
 
     return (
-        <InputGroup>
-            <NumberInput
-                value={innerValue}
-                min={min}
-                max={max}
-                width="full"
-                bg={inputBg}
-                onBeforeInputCapture={(e) => {
-                    const inputText: string = (e as any)?.data;
+        <NumberInput.Root
+            value={innerValue}
+            min={min}
+            max={max}
+            width="full"
+            bg={inputBg}
+            onBeforeInputCapture={(e) => {
+                const inputText: string = (e as any)?.data;
 
-                    // no -/+ e7 allowed
-                    if (
-                        inputText.includes('-') ||
-                        inputText.includes('+') ||
-                        inputText.includes('e')
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // no -/+ e7 allowed
+                if (
+                    inputText.includes('-') ||
+                    inputText.includes('+') ||
+                    inputText.includes('e')
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of double ..
-                    if (inputText === '.' && innerValue.includes('.')) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of double ..
+                if (inputText === '.' && innerValue.includes('.')) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of paste
-                    if (
-                        inputText.includes('.') &&
-                        inputText.split('.')[1].length >= maxPrecision
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of paste
+                if (
+                    inputText.includes('.') &&
+                    inputText.split('.')[1].length >= maxPrecision
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    // in case of typing
-                    if (
-                        innerValue.includes('.') &&
-                        innerValue.split('.')[1].length >= maxPrecision
-                    ) {
-                        e.preventDefault();
-                        return;
-                    }
+                // in case of typing
+                if (
+                    innerValue.includes('.') &&
+                    innerValue.split('.')[1].length >= maxPrecision
+                ) {
+                    e.preventDefault();
+                    return;
+                }
 
-                    if (
-                        parseFloat(innerValue) > max ||
-                        parseFloat(inputText) > max
-                    ) {
-                        e.preventDefault();
-                        if (setMaxOnOverflow) setInnerValue(max.toString());
-                    }
-                }}
-                onChange={handleOnChange}
+                if (
+                    parseFloat(innerValue) > max ||
+                    parseFloat(inputText) > max
+                ) {
+                    e.preventDefault();
+                    if (setMaxOnOverflow) setInnerValue(max.toString());
+                }
+            }}
+            onValueChange={handleOnChange}
+        >
+            <NumberInput.Label />
+            <InputGroup
+                endElement={
+                    <NumberInput.Scrubber pr={6} pointerEvents="none">
+                        <Box color={rightElementColor}>CTSI</Box>
+                    </NumberInput.Scrubber>
+                }
             >
-                <NumberInputField />
-                <InputRightElement
-                    color={rightElementColor}
-                    pointerEvents="none"
-                    pl={8}
-                    w={hasNumberSteppers ? 24 : 14}
-                    h="100%"
-                >
-                    <Box>CTSI</Box>
-                </InputRightElement>
-            </NumberInput>
-        </InputGroup>
+                <NumberInput.Input paddingInlineEnd={16} />
+            </InputGroup>
+            <NumberInput.Control zIndex={100}>
+                <NumberInput.IncrementTrigger color={controlsColor} />
+                <NumberInput.DecrementTrigger color={controlsColor} />
+            </NumberInput.Control>
+        </NumberInput.Root>
     );
 };

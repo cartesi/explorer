@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
     HStack,
+    Icon,
     IconProps,
     Image,
     Link,
@@ -20,14 +20,17 @@ import {
     TextProps,
     useBreakpointValue,
     useClipboard,
-    useColorModeValue,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { MdOutlineContentCopy } from 'react-icons/md';
+import { LuExternalLink } from 'react-icons/lu';
+
 import React, { FC, useState } from 'react';
 import { useENS } from '../services/ens';
 import { etherscanLinks, Network } from '../utils/networks';
 import { truncateString } from '../utils/stringUtils';
 import { StakeCircledIcon } from './Icons';
+import { useColorModeValue } from './ui/color-mode';
 
 export type AddressType = 'tx' | 'address' | 'contract' | 'token';
 
@@ -46,6 +49,7 @@ export interface AddressProps extends TextProps {
     noActions?: boolean;
     shouldDisplayFallbackAvatar?: boolean;
     fallbackAvatar?: FC<IconProps>;
+    iconColor?: string;
     renderLabel?: (label: React.ReactNode) => React.ReactNode;
 }
 
@@ -64,7 +68,8 @@ const Address: FC<AddressProps> = (props) => {
         fallbackAvatar,
         renderLabel = (children) => <>{children}</>,
         color,
-        fontSize,
+        iconColor,
+        fontSize = '1rem',
         ...restProps
     } = props;
 
@@ -73,7 +78,7 @@ const Address: FC<AddressProps> = (props) => {
     const addressEnsInfo = useENS(address, { enabled: withEns });
     const ensEntry = ens ? addressEnsInfo : null;
 
-    const { hasCopied, onCopy } = useClipboard(address);
+    const { copied, copy } = useClipboard({ value: address });
     const [hover, setHover] = useState(false);
     const [hasAvatarError, setAvatarError] = useState<boolean>(false);
     const FallbackAvatar = fallbackAvatar || StakeCircledIcon;
@@ -87,7 +92,7 @@ const Address: FC<AddressProps> = (props) => {
     });
     const linkMargin = useBreakpointValue({ base: 7, sm: 0 });
     const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
-    const [isLargerThan555] = useMediaQuery('(min-width: 555px)');
+    const [isLargerThan555] = useMediaQuery(['(min-width: 555px)']);
     const hoverIconColor = useColorModeValue('light.primary', 'dark.primary');
 
     const label =
@@ -142,11 +147,12 @@ const Address: FC<AddressProps> = (props) => {
                 </Text>
             )}
 
-            {showActions && !hasCopied && (
+            {showActions && !copied && (
                 <Button
                     variant="ghost"
                     display="flex"
                     p={0}
+                    color={iconColor ? iconColor : undefined}
                     _hover={{
                         background: 'transparent',
                         color: hoverIconColor,
@@ -162,27 +168,29 @@ const Address: FC<AddressProps> = (props) => {
                     minW="auto"
                     h="auto"
                     title="Copy"
-                    onClick={onCopy}
+                    onClick={copy}
                     data-testid="copy-icon"
                 >
-                    <CopyIcon fontSize={fontSize} w={iconSize} h={iconSize} />
+                    <Icon as={MdOutlineContentCopy} w={iconSize} h={iconSize} />
                 </Button>
             )}
-            {hasCopied && <Text fontSize="sm">Copied</Text>}
+            {copied && <Text fontSize="sm">Copied</Text>}
             {showActions && externalLink && (
                 <Link
                     href={externalLink}
                     display="flex"
-                    isExternal
+                    target="_blank"
+                    rel="noopener noreferrer"
                     title="External link"
+                    color={iconColor ? iconColor : undefined}
                     _hover={{
                         color: hoverIconColor,
                     }}
+                    mr={linkMargin}
                 >
-                    <ExternalLinkIcon
-                        fontSize={fontSize}
+                    <Icon
+                        as={LuExternalLink}
                         data-testid="external-link-icon"
-                        mr={linkMargin}
                         w={iconSize}
                         h={iconSize}
                     />

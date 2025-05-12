@@ -9,22 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { EditIcon } from '@chakra-ui/icons';
+import { FaEdit, FaRegQuestionCircle } from 'react-icons/fa';
+
 import {
     Box,
     Flex,
-    HStack,
     Heading,
+    HStack,
     Icon,
     IconButton,
     Text,
-    Tooltip,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
+import { Tooltip } from '../Tooltip';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../pools/staking/CTSI';
+import { useColorModeValue } from '../ui/color-mode';
 
 interface INodeAllowanceSectionProps {
     allowance: BigNumber;
@@ -41,7 +42,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '20%' }}>
             <HStack
                 w="full"
-                spacing={4}
+                gap={4}
                 justify="flex-end"
                 alignItems="center"
                 pt={{ base: 4, lg: 0 }}
@@ -58,15 +59,17 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                     <HStack>
                         <Text color={color}>Allowance</Text>
                         <Tooltip
-                            placement="top"
-                            label="Here you can see your current allowance."
-                            fontSize="small"
-                            bg="dark.gray.quaternary"
-                            color="white"
-                            borderRadius={'md'}
-                            opacity={0.9}
+                            showArrow
+                            content="Here you can see your current wallet balance."
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
-                            <Icon color={color} w={3.5} h={3.5} />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                color={color}
+                                w={3}
+                                h={3}
+                            />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">
@@ -80,10 +83,11 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                     <IconButton
                         aria-label="Edit"
                         size="md"
-                        icon={<EditIcon />}
                         variant="ghost"
                         onClick={onAllowanceClick}
-                    />
+                    >
+                        <FaEdit />
+                    </IconButton>
                 </Box>
             </HStack>
         </VStack>

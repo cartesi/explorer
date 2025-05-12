@@ -51,7 +51,7 @@ describe('UserTable component', () => {
 
     it('should display loading state', () => {
         render(<Component {...props} loading />);
-        expect(screen.getAllByText('Loading...').length).toBe(2);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
 
     it('should display empty state', () => {

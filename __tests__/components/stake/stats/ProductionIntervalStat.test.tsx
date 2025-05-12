@@ -40,7 +40,7 @@ describe('Production Interval Stat', () => {
     it('Should display location icon', () => {
         renderComponent();
 
-        expect(screen.getByRole('location-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('location-icon')).toBeInTheDocument();
     });
 
     it('Should not display location icon', () => {
@@ -51,8 +51,8 @@ describe('Production Interval Stat', () => {
             />
         );
 
-        expect(() => screen.getByRole('location-icon')).toThrow(
-            'Unable to find an accessible element with the role "location-icon"'
+        expect(() => screen.getByTestId('location-icon')).toThrow(
+            'Unable to find an element'
         );
     });
 });

@@ -8,7 +8,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, BoxProps, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, BoxProps, Text } from '@chakra-ui/react';
+import { useColorModeValue } from '../../../ui/color-mode';
 
 export type MessageProps = { content: string; boxProps?: BoxProps };
 export const Message = ({ content, boxProps }: MessageProps) => {

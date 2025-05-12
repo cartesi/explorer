@@ -149,8 +149,7 @@ describe('Pool Performance Table', () => {
 
         const icon = screen
             .getByText('Total Users')
-            .closest('th')
-            .querySelector('svg');
+            .parentNode.querySelector('svg');
         expect(icon).toBeInTheDocument();
     });
 
@@ -162,8 +161,7 @@ describe('Pool Performance Table', () => {
 
         const icon = screen
             .getByText('Total Staked')
-            .closest('th')
-            .querySelector('svg');
+            .parentNode.querySelector('svg');
         expect(icon).toBeInTheDocument();
     });
 
@@ -175,8 +173,7 @@ describe('Pool Performance Table', () => {
 
         const icon = screen
             .getByText('Accrued Commission')
-            .closest('th')
-            .querySelector('svg');
+            .parentNode.querySelector('svg');
         expect(icon).toBeInTheDocument();
     });
 

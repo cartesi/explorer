@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CheckIcon } from '@chakra-ui/icons';
+import { FaCheck } from 'react-icons/fa';
+
 import {
     Box,
     BoxProps,
@@ -19,13 +20,13 @@ import {
     Text,
     VStack,
     useBreakpointValue,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { range } from 'lodash/fp';
 import { Fragment, FunctionComponent, useState } from 'react';
 import theme from '../../styles/theme';
 import { HSeparator, VSeparator } from './Separator';
 import { IStep, IStepMeta } from './interfaces';
+import { useColorModeValue } from '../ui/color-mode';
 
 type HeaderType = {
     currentStep: number;
@@ -59,7 +60,7 @@ const Header = ({
             rounded="sm"
             bgColor={bgColor}
             position="sticky"
-            zIndex={theme.zIndices.lg}
+            zIndex={theme.tokens.getVar('zIndex.lg')}
             top={0}
             px={{ base: 3, md: 12 }}
             py={4}
@@ -96,7 +97,7 @@ const Header = ({
                     const isAhead = number > currentStep;
                     const bgColor = isAhead ? 'gray' : stepNumberBg;
                     const color = isAhead ? 'white' : stepNumberColor;
-                    const StepChecked = isPast ? <CheckIcon /> : null;
+                    const StepChecked = isPast ? <FaCheck /> : null;
 
                     return (
                         <Fragment key={number}>
@@ -133,7 +134,7 @@ export const StepGroup = ({ mobileHeaderProps, steps }: StepGroupProps) => {
     const onStepActive = (data: IStepMeta) => setStepMeta(data);
 
     return (
-        <VStack alignItems="stretch">
+        <VStack alignItems="stretch" gap={0}>
             {isSmallScreen && (
                 <Header
                     currentStep={currentStep}
@@ -153,13 +154,18 @@ export const StepGroup = ({ mobileHeaderProps, steps }: StepGroupProps) => {
                         <Step
                             inFocus={inFocus}
                             stepNumber={stepNumber}
+                            currentStep={currentStep}
                             key={i}
                             onComplete={onComplete}
                             onPrevious={onPrevious}
                             onStepActive={onStepActive}
                         />
                         {!isSmallScreen && !isLast && (
-                            <VSeparator active={currentStep >= stepNumber} />
+                            <VSeparator
+                                currentStep={currentStep}
+                                stepNumber={stepNumber}
+                                active={currentStep >= stepNumber}
+                            />
                         )}
                     </Fragment>
                 );

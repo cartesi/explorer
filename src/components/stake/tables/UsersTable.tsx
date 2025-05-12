@@ -9,24 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    HStack,
-    Spinner,
-    Table,
-    TableCellProps,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Spinner, Table, TableCellProps, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import theme from '../../../styles/theme';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UsersTableRow from './UsersTableRow';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface UsersTableProps {
     chainId: number;
@@ -49,12 +38,13 @@ const UsersTable: FC<UsersTableProps> = (props) => {
     const thProps: TableCellProps = {
         paddingTop: 4,
         paddingBottom: 4,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         fontWeight: 400,
         fontSize: 'md',
         textTransform: 'none',
         borderColor: topBorderColor,
         bg: headerColor,
+        color: 'white',
     };
 
     return (
@@ -63,33 +53,37 @@ const UsersTable: FC<UsersTableProps> = (props) => {
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th {...thProps} borderTopLeftRadius="6px">
+            <Table.Root>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell {...thProps} borderTopLeftRadius="6px">
                             User
-                        </Th>
-                        <Th {...thProps}>Stake Since</Th>
-                        <Th {...thProps}>Total Staked</Th>
-                        <Th isNumeric {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell {...thProps}>Stake Since</Table.Cell>
+                        <Table.Cell {...thProps}>Total Staked</Table.Cell>
+                        <Table.Cell {...thProps} textAlign="right">
                             Shares
-                        </Th>
-                        <Th isNumeric {...thProps} borderTopRightRadius="6px">
+                        </Table.Cell>
+                        <Table.Cell
+                            {...thProps}
+                            borderTopRightRadius="6px"
+                            textAlign="right"
+                        >
                             Accumulated Shares
-                        </Th>
-                    </Tr>
-                </Thead>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Header>
 
-                <Tbody>
+                <Table.Body>
                     {loading ? (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading...</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : hasItems ? (
                         data.map((balance) => (
                             <UsersTableRow
@@ -99,14 +93,14 @@ const UsersTable: FC<UsersTableProps> = (props) => {
                             />
                         ))
                     ) : (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <Text>No items</Text>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };

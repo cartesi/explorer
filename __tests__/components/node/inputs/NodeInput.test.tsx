@@ -12,6 +12,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { NodeInput } from '../../../../src/components/node/inputs/NodeInput';
 import { buildNodeObj } from '../mocks';
+import { withChakraTheme } from '../../../test-utilities';
+
+const NodeInputE = withChakraTheme(NodeInput);
 
 describe('NodeInput component', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -19,7 +22,7 @@ describe('NodeInput component', () => {
     const onChangeStub = jest.fn();
 
     const Component = ({ account, node }) => (
-        <NodeInput
+        <NodeInputE
             account={account}
             node={node}
             onChange={onChangeStub}
@@ -48,9 +51,7 @@ describe('NodeInput component', () => {
             const addressInput = screen.getByLabelText('Node Address');
             fireEvent.change(addressInput, { target: { value: account } });
 
-            expect(
-                screen.getByText('Checking node availability')
-            ).toBeInTheDocument();
+            expect(screen.getByRole('progressbar')).toBeInTheDocument();
         });
 
         it('Should display green checkmark when node is available', () => {

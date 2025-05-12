@@ -14,14 +14,8 @@ import {
     Spinner,
     Table,
     TableColumnHeaderProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
     useBreakpointValue,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC, useRef } from 'react';
 import { PoolBalance } from '../../../graphql/models';
@@ -30,6 +24,7 @@ import { useVisibilityThreshold } from '../../../utils/hooks/useVisibilityThresh
 import { SlideInOut } from '../../animation/SlideInOut';
 import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import UserStakingPoolsTableRow from './UserStakingPoolsTableRow';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface UserStakingPoolsTableProps {
     chainId: number;
@@ -60,11 +55,12 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     );
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,
+        color: 'white',
         bg: 'dark.gray.primary',
         textTransform: 'none',
         fontSize: 'md',
         fontWeight: 400,
-        fontFamily: theme.fonts.body,
+        fontFamily: theme.tokens.getVar('fonts.body'),
         paddingTop: 4,
         paddingBottom: 4,
     };
@@ -76,32 +72,32 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th {...thProps} borderTopLeftRadius="6px">
+            <Table.Root>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell {...thProps} borderTopLeftRadius="6px">
                             Pool Address
-                        </Th>
-                        <Th isNumeric {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
                             Unstaked
-                        </Th>
-                        <Th isNumeric {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
                             Staked
-                        </Th>
-                        <Th isNumeric {...thProps}>
+                        </Table.Cell>
+                        <Table.Cell textAlign="right" {...thProps}>
                             % Pool
-                        </Th>
-                        <Th
-                            isNumeric
+                        </Table.Cell>
+                        <Table.Cell
+                            textAlign="right"
                             ref={thRef}
                             borderTopRightRadius="6px"
                             {...thProps}
                         >
                             {stakeText}
-                        </Th>
+                        </Table.Cell>
                         {threshold.isBelow && (
-                            <Th
-                                isNumeric
+                            <Table.Cell
+                                textAlign="right"
                                 position="sticky"
                                 top={0}
                                 right={0}
@@ -111,21 +107,21 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                                 <SlideInOut display={true}>
                                     {stakeText}
                                 </SlideInOut>
-                            </Th>
+                            </Table.Cell>
                         )}
-                    </Tr>
-                </Thead>
+                    </Table.Row>
+                </Table.Header>
 
-                <Tbody>
+                <Table.Body>
                     {loading ? (
-                        <Tr>
-                            <Td colSpan={columns} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={columns} textAlign="center">
                                 <HStack justify="center">
                                     <Spinner />
                                     <Text>Loading</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : hasItems ? (
                         data.map((balance) => (
                             <UserStakingPoolsTableRow
@@ -137,14 +133,14 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
                             />
                         ))
                     ) : (
-                        <Tr>
-                            <Td colSpan={columns} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={columns} textAlign="center">
                                 <Text>No items</Text>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };

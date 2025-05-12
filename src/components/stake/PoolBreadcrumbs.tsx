@@ -9,16 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Breadcrumb } from '@chakra-ui/react';
 import { useParams } from 'next/navigation';
 import { FC } from 'react';
 import NextLink from 'next/link';
+import { LiaSlashSolid } from 'react-icons/lia';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface IPoolBreadcrumbsProps {
     currentPage: string;
@@ -27,6 +23,8 @@ export interface IPoolBreadcrumbsProps {
 export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
     const params = useParams();
     const address = params.pool as string;
+    const color = useColorModeValue('gray.600', 'gray.100');
+    const separatorColor = useColorModeValue('gray.900', 'white');
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const boxShadow = useColorModeValue('md', 'none');
 
@@ -44,24 +42,32 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
             zIndex={10}
             backgroundColor={bg}
         >
-            <Breadcrumb>
-                <BreadcrumbItem>
-                    <BreadcrumbLink as={NextLink} href={`/stake/${address}`}>
-                        Pool
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-
-                <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink
-                        cursor="default"
-                        _hover={{
-                            textDecoration: 'none',
-                        }}
-                    >
-                        {currentPage}
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-            </Breadcrumb>
+            <Breadcrumb.Root>
+                <Breadcrumb.List>
+                    <Breadcrumb.Item>
+                        <Breadcrumb.Link
+                            asChild
+                            color={color}
+                            _hover={{ textDecoration: 'underline ' }}
+                        >
+                            <NextLink href={`/stake/${address}`}>Pool</NextLink>
+                        </Breadcrumb.Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Separator color={separatorColor}>
+                        <LiaSlashSolid />
+                    </Breadcrumb.Separator>
+                    <Breadcrumb.Item>
+                        <Breadcrumb.CurrentLink
+                            cursor="default"
+                            _hover={{
+                                textDecoration: 'none',
+                            }}
+                        >
+                            {currentPage}
+                        </Breadcrumb.CurrentLink>
+                    </Breadcrumb.Item>
+                </Breadcrumb.List>
+            </Breadcrumb.Root>
         </Box>
     );
 };

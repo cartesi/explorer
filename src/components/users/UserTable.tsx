@@ -9,20 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ArrowDownIcon } from '@chakra-ui/icons';
+import { FaArrowDown } from 'react-icons/fa';
+
 import {
     HStack,
+    Icon,
     Spinner,
     Table,
     TableCellProps,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
     useBreakpointValue,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { User, UserSort } from '../../graphql/models';
@@ -30,6 +26,7 @@ import theme from '../../styles/theme';
 import { GhostButton } from '../GhostButton';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import UserRow from './UserRow';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface UserTableProps {
     chainId: number;
@@ -58,6 +55,7 @@ const UserTable: FC<UserTableProps> = ({
     );
     const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const thProps: TableCellProps = {
+        color: 'white',
         bg: 'dark.gray.primary',
         paddingTop: 4,
         paddingBottom: 4,
@@ -70,86 +68,73 @@ const UserTable: FC<UserTableProps> = ({
             borderWidth="1px"
             borderRadius="6px"
         >
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th
+            <Table.Root>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.Cell
                             {...thProps}
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}
                             borderTopLeftRadius="6px"
-                            fontFamily={theme.fonts.body}
+                            fontFamily={theme.tokens.getVar('fonts.body')}
                         >
                             User
-                        </Th>
+                        </Table.Cell>
 
-                        <Th {...thProps} isNumeric>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
                                 _hover={{ color: buttonHoverColor }}
-                                fontFamily={theme.fonts.body}
+                                fontFamily={theme.tokens.getVar('fonts.body')}
                                 onClick={() => onSort('totalBlocks')}
                             >
                                 Block Produced
                             </GhostButton>
-                            {sort == 'totalBlocks' && (
-                                <ArrowDownIcon
-                                    marginLeft={4}
-                                    width={5}
-                                    height={5}
-                                />
+                            {sort === 'totalBlocks' && (
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
-                        </Th>
+                        </Table.Cell>
 
-                        <Th {...thProps} isNumeric>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
-                                fontFamily={theme.fonts.body}
+                                fontFamily={theme.tokens.getVar('fonts.body')}
                                 _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('balance')}
                             >
                                 Total Staked
                             </GhostButton>
-                            {sort == 'balance' && (
-                                <ArrowDownIcon
-                                    marginLeft={4}
-                                    width={5}
-                                    height={5}
-                                />
+                            {sort === 'balance' && (
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
-                        </Th>
+                        </Table.Cell>
 
-                        <Th {...thProps} isNumeric>
+                        <Table.Cell textAlign="right" {...thProps}>
                             <GhostButton
                                 height="auto"
                                 fontSize="md"
                                 fontWeight={400}
                                 textTransform="none"
-                                fontFamily={theme.fonts.body}
+                                fontFamily={theme.tokens.getVar('fonts.body')}
                                 _hover={{ color: buttonHoverColor }}
                                 onClick={() => onSort('totalReward')}
                             >
                                 Total Rewards
                             </GhostButton>
-                            {sort == 'totalReward' && (
-                                <ArrowDownIcon
-                                    marginLeft={4}
-                                    width={5}
-                                    height={5}
-                                />
+                            {sort === 'totalReward' && (
+                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
                             )}
-                        </Th>
+                        </Table.Cell>
 
-                        <Th
+                        <Table.Cell
                             {...thProps}
-                            isNumeric
                             position={{ base: 'sticky', md: 'initial' }}
                             top={0}
                             right={0}
@@ -157,24 +142,24 @@ const UserTable: FC<UserTableProps> = ({
                             textTransform="none"
                             fontSize="md"
                             fontWeight={400}
-                            fontFamily={theme.fonts.body}
+                            fontFamily={theme.tokens.getVar('fonts.body')}
                             borderTopRightRadius="6px"
                         >
                             {stakeText}
-                        </Th>
-                    </Tr>
-                </Thead>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Header>
 
-                <Tbody>
+                <Table.Body>
                     {loading ? (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <HStack justify="center">
-                                    <Spinner />
+                                    <Spinner role="progressbar" />
                                     <Text>Loading...</Text>
                                 </HStack>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : hasItems ? (
                         data.map((user) => (
                             <UserRow
@@ -184,14 +169,14 @@ const UserTable: FC<UserTableProps> = ({
                             />
                         ))
                     ) : (
-                        <Tr>
-                            <Td colSpan={9} textAlign="center">
+                        <Table.Row>
+                            <Table.Cell colSpan={9} textAlign="center">
                                 <Text>No items</Text>
-                            </Td>
-                        </Tr>
+                            </Table.Cell>
+                        </Table.Row>
                     )}
-                </Tbody>
-            </Table>
+                </Table.Body>
+            </Table.Root>
         </TableResponsiveHolder>
     );
 };

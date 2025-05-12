@@ -13,17 +13,17 @@ import {
     Box,
     Flex,
     IconProps,
-    MenuItem,
+    Menu,
     MenuItemProps,
-    MenuList,
     Text,
     useClipboard,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import React, { FC, useMemo } from 'react';
 import { useENS } from '../../../services/ens';
 import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
 import { useWallet } from '../../wallet/useWallet';
+import { useColorModeValue } from '../../ui/color-mode';
+import theme from '../../../styles/theme';
 
 interface WalletMenuItemProps extends MenuItemProps {
     children: React.ReactNode;
@@ -40,17 +40,19 @@ const WalletMenuItem: FC<WalletMenuItemProps> = ({
         undefined
     );
     return (
-        <MenuItem
+        <Menu.Item
             justifyContent="flex-end"
             borderBottom="1px"
             borderColor={borderColor}
+            borderStyle="solid"
             padding={3}
             bg={bgColor}
+            cursor="pointer"
             _hover={hoverStyle}
             {...restProps}
         >
             {children}
-        </MenuItem>
+        </Menu.Item>
     );
 };
 
@@ -94,12 +96,11 @@ const WalletMenu: FC = () => {
     const { account, library, isHardwareWallet, selectAccount, deactivate } =
         useWallet();
     const ens = useENS(account ?? '');
-    const { hasCopied, onCopy } = useClipboard(account ?? '');
+    const clipboard = useClipboard({ value: account ?? '' });
     const color = useColorModeValue('light.gray.primary', 'white');
     const addressHoverColor = useColorModeValue(undefined, {
         color: 'white',
     });
-    const copyIconColor = useColorModeValue(undefined, { color });
     const menuItems = useMemo(() => {
         const items = [];
 
@@ -125,8 +126,13 @@ const WalletMenu: FC = () => {
     return (
         <>
             {typeof account === 'string' && (
-                <MenuList borderRadius="0" p={0} border={0}>
-                    <WalletMenuItem>
+                <Menu.Content
+                    borderRadius="0"
+                    p={0}
+                    border={0}
+                    zIndex={theme.tokens.getVar('zIndex.xxl')}
+                >
+                    <WalletMenuItem value="address">
                         <Flex>
                             <Text
                                 fontSize={14}
@@ -139,7 +145,7 @@ const WalletMenu: FC = () => {
                                 {ens.address}
                             </Text>
 
-                            {hasCopied ? (
+                            {clipboard.copied ? (
                                 <Text
                                     fontSize="sm"
                                     lineHeight="20px"
@@ -152,15 +158,18 @@ const WalletMenu: FC = () => {
                                     width="20px"
                                     height="20px"
                                     color={color}
-                                    _hover={copyIconColor}
-                                    onClick={onCopy}
+                                    onClick={(event) => {
+                                        clipboard.copy();
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                    }}
                                 />
                             )}
                         </Flex>
                     </WalletMenuItem>
 
                     {menuItems.map((item) => (
-                        <WalletMenuItem key={item.title}>
+                        <WalletMenuItem key={item.title} value={item.title}>
                             <WalletMenuActionItem
                                 color={color}
                                 title={item.title}
@@ -169,7 +178,7 @@ const WalletMenu: FC = () => {
                             />
                         </WalletMenuItem>
                     ))}
-                </MenuList>
+                </Menu.Content>
             )}
         </>
     );

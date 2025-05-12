@@ -10,13 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
+import { Icon } from '@chakra-ui/react';
 import { ChartIcon } from '../../../src/components/Icons';
 import PrimaryCard from '../../../src/components/home/PrimaryCard';
 import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(PrimaryCard);
 const props = {
-    icon: ChartIcon,
+    icon: <Icon as={ChartIcon} />,
 };
 
 describe('PrimaryCard component', () => {

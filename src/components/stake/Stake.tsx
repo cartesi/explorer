@@ -11,13 +11,7 @@
 
 'use client';
 
-import {
-    Box,
-    Heading,
-    HStack,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Heading, HStack, VStack } from '@chakra-ui/react';
 import { constants } from 'ethers';
 import { useState } from 'react';
 import Layout, { PageBody, PagePanel } from '..//Layout';
@@ -30,8 +24,9 @@ import usePoolBalances from '../../graphql/hooks/usePoolBalances';
 import { POOLS_PER_PAGE } from '../../graphql/hooks/useStakingPools';
 import useSummary from '../../graphql/hooks/useSummary';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
+import { useColorModeValue } from '../ui/color-mode';
 
-const Home = () => {
+const StakeHomePage = () => {
     const { account, chainId, active } = useWallet();
     const summary = useSummary();
     const balances = usePoolBalances(account || constants.AddressZero);
@@ -87,7 +82,7 @@ const Home = () => {
                             >
                                 <Heading
                                     as="h1"
-                                    fontSize={['1xl', '2xl']}
+                                    fontSize={['xl', '2xl']}
                                     mb={6}
                                     pl={[8, 8, 0]}
                                 >
@@ -131,7 +126,7 @@ const Home = () => {
                             >
                                 <Heading
                                     as="h1"
-                                    fontSize={['1xl', '2xl']}
+                                    fontSize={['xl', '2xl']}
                                     ml={[8, 8, 0]}
                                     mb={[4, 0, 0]}
                                 >
@@ -162,4 +157,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default StakeHomePage;

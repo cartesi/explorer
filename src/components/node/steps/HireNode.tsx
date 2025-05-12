@@ -9,17 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Button,
-    Stack,
-    Text,
-    useColorMode,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
+import { useColorModeValue, useColorMode } from '../../ui/color-mode';
 
 import { useWallet } from '../../wallet';
 
@@ -51,6 +45,7 @@ const enableNextWhen = (
 
 const HireNode = ({
     stepNumber,
+    currentStep,
     onComplete,
     onPrevious,
     onStepActive,
@@ -83,6 +78,8 @@ const HireNode = ({
         'light.grey.tertiary',
         'dark.border.quaternary'
     );
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const { colorMode } = useColorMode();
 
     useEffect(() => {
@@ -107,9 +104,9 @@ const HireNode = ({
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
-            borderWidth={'1px'}
+            borderWidth={isHighlighted ? '1px' : 0}
             borderColor={borderColor}
             borderStyle={'solid'}
         >
@@ -169,8 +166,8 @@ const HireNode = ({
                     </Button>
                     <Button
                         disabled={!enableNext || node.transaction?.isOngoing}
-                        isLoading={node.transaction?.isOngoing}
-                        colorScheme={colorMode === 'dark' ? 'cyan' : 'teal'}
+                        loading={node.transaction?.isOngoing}
+                        colorPalette={colorMode === 'dark' ? 'cyan' : 'teal'}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => node.hire(toBigNumber(initialFunds))}
                     >
