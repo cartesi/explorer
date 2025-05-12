@@ -9,10 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, HStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, HStack, Icon, Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { GhostButton } from './GhostButton';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { useColorModeValue } from './ui/color-mode';
 
 export interface PaginationProps {
     currentPage: number;
@@ -68,13 +69,14 @@ const Pagination: FC<PaginationProps> = (props) => {
                         }
                     }}
                 >
-                    <ChevronLeftIcon
-                        display="flex"
-                        width={3}
-                        height={3}
+                    <Icon
+                        as={ChevronLeftIcon}
+                        w={3}
+                        h={3}
                         color={
                             isAfterFirstPage ? activeArrowBg : inactiveArrowBg
                         }
+                        display="flex"
                     />
                 </GhostButton>
             )}
@@ -136,10 +138,11 @@ const Pagination: FC<PaginationProps> = (props) => {
                         }
                     }}
                 >
-                    <ChevronRightIcon
+                    <Icon
+                        as={ChevronRightIcon}
+                        w={3}
+                        h={3}
                         display="flex"
-                        width={3}
-                        height={3}
                         color={
                             isBeforeLastPage ? activeArrowBg : inactiveArrowBg
                         }

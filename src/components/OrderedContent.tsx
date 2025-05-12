@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { memo, ReactNode } from 'react';
-import { VStack, Box, StackProps } from '@chakra-ui/react';
+import { List, StackProps, VStack } from '@chakra-ui/react';
 
 export type OrderedContentProps = {
     title: string | ReactNode;
@@ -27,13 +27,17 @@ export const OrderedContent = memo(
             {...stackProps}
         >
             <p>{title}</p>
-            <Box as="ol" pl={{ base: 4, md: 8 }} type="1">
-                {orderedItems.map((content, i) => (
-                    <li id={`text-${i}}`} key={i}>
+            <List.Root as="ol" pl={{ base: 4, md: 8 }}>
+                {orderedItems.map((content: string, i: number) => (
+                    <List.Item
+                        id={`text-${i}}`}
+                        key={i}
+                        _marker={{ color: 'inherit' }}
+                    >
                         {content}
-                    </li>
+                    </List.Item>
                 ))}
-            </Box>
+            </List.Root>
         </VStack>
     )
 );

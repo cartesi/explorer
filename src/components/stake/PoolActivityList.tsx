@@ -15,13 +15,7 @@ import {
     Spinner,
     Stack,
     Table,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { last } from 'lodash/fp';
@@ -35,6 +29,7 @@ import { formatValue } from '../../utils/numberFormatter';
 import Address from '../Address';
 import { TableResponsiveHolder } from '../TableResponsiveHolder';
 import { useWallet } from '../wallet';
+import { useColorModeValue } from '../ui/color-mode';
 
 const ctsiFormatOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: 0,
@@ -53,7 +48,7 @@ const Loader = ({ isLoading }) => {
     return (
         <VStack
             alignItems="center"
-            spacing={4}
+            gap={4}
             w="full"
             textAlign="center"
             fontSize="sm"
@@ -80,14 +75,18 @@ const Activity: FC<ActivityProps> = memo(
         const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
 
         return (
-            <Tr key={index}>
-                <Td borderColor={borderColor}>
+            <Table.Row key={index}>
+                <Table.Cell borderColor={borderColor}>
                     <Address address={accountId} chainId={chainId} truncated />
-                </Td>
-                <Td borderColor={borderColor}>{formattedTime}</Td>
-                <Td borderColor={borderColor}>{type}</Td>
-                <Td borderColor={borderColor}>{formattedAmount} CTSI</Td>
-            </Tr>
+                </Table.Cell>
+                <Table.Cell borderColor={borderColor}>
+                    {formattedTime}
+                </Table.Cell>
+                <Table.Cell borderColor={borderColor}>{type}</Table.Cell>
+                <Table.Cell borderColor={borderColor}>
+                    {formattedAmount} CTSI
+                </Table.Cell>
+            </Table.Row>
         );
     }
 );
@@ -155,38 +154,47 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                         borderWidth="1px"
                         borderRadius="6px"
                     >
-                        <Table>
-                            <Thead>
-                                <Tr key="0" fontFamily={theme.fonts.body}>
-                                    <Th
+                        <Table.Root>
+                            <Table.Header>
+                                <Table.Row
+                                    key="0"
+                                    fontFamily={theme.tokens.getVar(
+                                        'fonts.body'
+                                    )}
+                                >
+                                    <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                         borderTopLeftRadius="6px"
                                     >
                                         From
-                                    </Th>
-                                    <Th
+                                    </Table.Cell>
+                                    <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                     >
                                         Time
-                                    </Th>
-                                    <Th
+                                    </Table.Cell>
+                                    <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                     >
                                         Type
-                                    </Th>
-                                    <Th
+                                    </Table.Cell>
+                                    <Table.Cell
                                         borderColor={topBorderColor}
                                         bg={headerColor}
+                                        color="white"
                                         borderTopRightRadius="6px"
                                     >
                                         Amount
-                                    </Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
+                                    </Table.Cell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
                                 {list.map((activity, index) => (
                                     <Activity
                                         key={index}
@@ -198,19 +206,19 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                         amount={activity.amount}
                                     />
                                 ))}
-                            </Tbody>
-                        </Table>
+                            </Table.Body>
+                        </Table.Root>
                     </TableResponsiveHolder>
                 )}
 
                 {list?.length > 0 && (
-                    <Stack spacing={8} mt={{ base: '6' }} alignItems="center">
+                    <Stack gap={8} mt={{ base: '6' }} alignItems="center">
                         <HStack justifyContent="flex-start" alignItems="center">
                             {!isAllActivitiesLoaded && (
                                 <Button
                                     variant="link"
-                                    colorScheme="blue"
-                                    isLoading={loading}
+                                    colorPalette="blue"
+                                    loading={loading}
                                     loadingText="Loading..."
                                     color={loadMoreColor}
                                     textTransform="none"
@@ -233,7 +241,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                 {!loading && list?.length === 0 && (
                     <VStack
                         alignItems="center"
-                        spacing={4}
+                        gap={4}
                         w="full"
                         textAlign="center"
                         fontSize="sm"

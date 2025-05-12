@@ -9,13 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    StackProps,
-    useColorModeValue,
-    useDisclosure,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Icon, StackProps, useDisclosure, VStack } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FC } from 'react';
@@ -33,6 +27,7 @@ import { StakingDepositModal } from './modals/StakingDepositModal';
 import { StakingStakeModal } from './modals/StakingStakeModal';
 import { StakingUnstakeModal } from './modals/StakingUnstakeModal';
 import { StakingWithdrawModal } from './modals/StakingWithdrawModal';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface StakingProps extends StackProps {
     userWalletBalance: BigNumber; // wallet balance
@@ -101,7 +96,7 @@ export const Staking: FC<StakingProps> = ({
             <StakingInstructions />
 
             <VStack
-                spacing={6}
+                gap={6}
                 alignItems="stretch"
                 width="800px"
                 maxWidth="100%"
@@ -139,8 +134,12 @@ export const Staking: FC<StakingProps> = ({
                         status="info"
                         role="info-banner"
                         icon={
-                            <VStack mr={4} spacing={1}>
-                                <TimerIcon boxSize="6" color={iconColor} />
+                            <VStack mr={4} gap={1}>
+                                <Icon
+                                    as={TimerIcon}
+                                    boxSize="6"
+                                    color={iconColor}
+                                />
                                 <Box fontSize="xs" fontWeight="bold">
                                     {unlock}
                                 </Box>
@@ -184,7 +183,7 @@ export const Staking: FC<StakingProps> = ({
             </VStack>
 
             <StakingDepositModal
-                isOpen={depositDisclosure.isOpen}
+                isOpen={depositDisclosure.open}
                 onClose={depositDisclosure.onClose}
                 allowance={allowance}
                 balance={userWalletBalance}
@@ -199,7 +198,7 @@ export const Staking: FC<StakingProps> = ({
             />
 
             <StakingStakeModal
-                isOpen={stakeDisclosure.isOpen}
+                isOpen={stakeDisclosure.open}
                 onClose={stakeDisclosure.onClose}
                 balance={userWalletBalance}
                 userBalance={userPoolBalance}
@@ -208,7 +207,7 @@ export const Staking: FC<StakingProps> = ({
             />
 
             <StakingWithdrawModal
-                isOpen={withdrawDisclosure.isOpen}
+                isOpen={withdrawDisclosure.open}
                 onClose={withdrawDisclosure.onClose}
                 userBalance={userPoolBalance}
                 disclosure={withdrawDisclosure}
@@ -217,7 +216,7 @@ export const Staking: FC<StakingProps> = ({
 
             {stakedBalance && (
                 <StakingUnstakeModal
-                    isOpen={unstakeDisclosure.isOpen}
+                    isOpen={unstakeDisclosure.open}
                     onClose={unstakeDisclosure.onClose}
                     stakedBalance={stakedBalance}
                     disclosure={unstakeDisclosure}

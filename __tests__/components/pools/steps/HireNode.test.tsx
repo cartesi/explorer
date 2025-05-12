@@ -12,6 +12,7 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import {
     act,
+    findByRole,
     findByText,
     fireEvent,
     render,
@@ -29,6 +30,9 @@ import { useStakingPool } from '../../../../src/services/pool';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../../node/mocks';
 import { buildContractReceipt, buildUseStakingPoolReturn } from '../mocks';
+import { withChakraTheme } from '../../../test-utilities';
+
+const HireNodeE = withChakraTheme(HireNode);
 
 const walletMod = '../../../../src/components/wallet/useWallet';
 const servicesEthMod = `../../../../src/services/eth`;
@@ -144,20 +148,20 @@ describe('HireNode Step', () => {
     });
 
     it('should have access to the pool address created previously shared by atom', () => {
-        render(<HireNode inFocus stepNumber={1} />);
+        render(<HireNodeE inFocus stepNumber={1} />);
 
         expect(useStakingPool).toHaveBeenCalledWith(poolAddress, account);
     });
 
     it('Should render the step-number assigned to it', () => {
-        render(<HireNode stepNumber={1} />);
+        render(<HireNodeE stepNumber={1} />);
 
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     describe('When not in focus', () => {
         it('Should only display the number, the title and the subtitle when not in focus', () => {
-            render(<HireNode stepNumber={1} />);
+            render(<HireNodeE stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
@@ -174,7 +178,7 @@ describe('HireNode Step', () => {
 
     describe('When in focus', () => {
         it('Should display the header content, the body and action buttons', () => {
-            render(<HireNode stepNumber={1} inFocus />);
+            render(<HireNodeE stepNumber={1} inFocus />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
@@ -201,7 +205,7 @@ describe('HireNode Step', () => {
         });
 
         it('Should keep the NEXT button disable when the node address and initial funds are empty', () => {
-            render(<HireNode inFocus stepNumber={1} />);
+            render(<HireNodeE inFocus stepNumber={1} />);
             const button = screen.getByText('NEXT');
             expect(button.hasAttribute('disabled')).toBe(true);
         });
@@ -215,7 +219,7 @@ describe('HireNode Step', () => {
                 activate,
                 deactivate: jest.fn(),
             });
-            render(<HireNode stepNumber={1} inFocus />);
+            render(<HireNodeE stepNumber={1} inFocus />);
 
             expect(
                 screen.getByText('Your wallet is disconnected')
@@ -228,14 +232,14 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 expect(
                     screen
                         .getByText('Allowing your pool to accept new stakes')
-                        .hasAttribute('data-checked')
-                ).toBe(true);
+                        .getAttribute('data-state')
+                ).toBe('checked');
 
                 await act(() => {
                     fireEvent.click(
@@ -248,14 +252,14 @@ describe('HireNode Step', () => {
                 // setting to have the transaction set
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = true;
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
                     await findByText(alert, 'Pausing new stakes')
                 ).toBeInTheDocument();
                 expect(
-                    await findByText(alert, 'Loading...')
+                    await findByRole(alert, 'progressbar')
                 ).toBeInTheDocument();
                 expect(pool.pause).toHaveBeenCalled();
             });
@@ -264,7 +268,7 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 await act(() => {
@@ -278,7 +282,7 @@ describe('HireNode Step', () => {
                 // setting to fail the transaction
                 pool.transaction.acknowledged = false;
                 pool.transaction.error = 'tx metamask: not enough funds';
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -294,7 +298,7 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 await act(() => {
@@ -309,7 +313,7 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = false;
                 pool.transaction.receipt = buildContractReceipt();
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -329,7 +333,7 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 expect(
@@ -351,14 +355,14 @@ describe('HireNode Step', () => {
                 // setting to have the transaction set
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = true;
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
                     await findByText(alert, 'Accepting new stakes')
                 ).toBeInTheDocument();
                 expect(
-                    await findByText(alert, 'Loading...')
+                    await findByRole(alert, 'progressbar')
                 ).toBeInTheDocument();
             });
 
@@ -367,7 +371,7 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 await act(() => {
@@ -381,7 +385,7 @@ describe('HireNode Step', () => {
                 // setting to fail the transaction
                 pool.transaction.acknowledged = false;
                 pool.transaction.error = 'tx metamask: error communicating';
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -401,7 +405,7 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 await act(() => {
@@ -416,7 +420,7 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = false;
                 pool.transaction.receipt = buildContractReceipt();
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -446,7 +450,7 @@ describe('HireNode Step', () => {
 
             it('should display informative notification when hiring node is in due course', async () => {
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -466,20 +470,20 @@ describe('HireNode Step', () => {
                 // emulating transaction state change;
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = true;
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
                     await findByText(alert, 'Hiring node...')
                 ).toBeInTheDocument();
                 expect(
-                    await findByText(alert, 'Loading...')
+                    await findByRole(alert, 'progressbar')
                 ).toBeInTheDocument();
             });
 
             it('should display an error notification when hiring a node failed', async () => {
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -500,7 +504,7 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.error =
                     'tx metamask: something went terribly wrong';
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -523,7 +527,7 @@ describe('HireNode Step', () => {
                     },
                 ]);
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -543,7 +547,7 @@ describe('HireNode Step', () => {
                 // emulating transaction state change;
                 pool.transaction.acknowledged = false;
                 pool.transaction.receipt = buildContractReceipt();
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
                 expect(
@@ -568,7 +572,7 @@ describe('HireNode Step', () => {
                 mockUseNode.mockReturnValue(node);
                 mockUseBalance.mockReturnValue(toBigNumber('5'));
 
-                render(<HireNode inFocus stepNumber={1} />);
+                render(<HireNodeE inFocus stepNumber={1} />);
 
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -598,7 +602,7 @@ describe('HireNode Step', () => {
                 mockUseNode.mockReturnValue(node);
                 mockUseBalance.mockReturnValue(toBigNumber('5'));
 
-                render(<HireNode inFocus stepNumber={1} />);
+                render(<HireNodeE inFocus stepNumber={1} />);
 
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -630,7 +634,7 @@ describe('HireNode Step', () => {
                 mockUseNode.mockReturnValue(node);
                 mockUseBalance.mockReturnValue(toBigNumber('5'));
 
-                render(<HireNode inFocus stepNumber={1} />);
+                render(<HireNodeE inFocus stepNumber={1} />);
 
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -659,7 +663,7 @@ describe('HireNode Step', () => {
                 mockUseBalance.mockReturnValue(toBigNumber('5'));
 
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 const addressInput = screen.getByLabelText('Node Address');
@@ -680,11 +684,9 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.isOngoing = true;
 
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
-                expect(
-                    await findByText(button, 'Loading...')
-                ).toBeInTheDocument();
+                expect(await button.hasAttribute('disabled')).toBe(true);
 
                 // trying to do multiple clicks.
                 fireEvent.click(button);
@@ -698,7 +700,7 @@ describe('HireNode Step', () => {
     describe('When node is hired', () => {
         it('should call onComplete callback, transition the step to a completed state', async () => {
             const Component = () => (
-                <HireNode inFocus stepNumber={1} onComplete={onComplete} />
+                <HireNodeE inFocus stepNumber={1} onComplete={onComplete} />
             );
             const pool = buildUseStakingPoolReturn();
             const node = buildNodeObj('available', '0x00');
@@ -728,7 +730,7 @@ describe('HireNode Step', () => {
             //Emulate transaction submission
             pool.transaction.isOngoing = true;
             rerender(<Component />);
-            expect(await findByText(button, 'Loading...')).toBeInTheDocument();
+            expect(await button.hasAttribute('disabled')).toBe(true);
 
             //Emulate transaction confirmation
             pool.transaction.state = 'confirmed';

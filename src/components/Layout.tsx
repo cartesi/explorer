@@ -17,7 +17,6 @@ import {
     StackProps,
     Text,
     useBreakpointValue,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
@@ -32,6 +31,7 @@ import {
 import Footer from './Footer';
 import { Header } from './header';
 import SyncStatus from './SyncStatus';
+import { useColorModeValue } from './ui/color-mode';
 
 interface ComponentProps {
     children: React.ReactNode;

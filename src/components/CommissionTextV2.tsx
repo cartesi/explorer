@@ -15,10 +15,10 @@ import {
     FlexProps,
     HStack,
     Heading,
-    SystemProps,
+    SystemStyleObject,
     Text,
+    Icon,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
 import { StakingPoolFee } from '../graphql/models';
 
@@ -30,7 +30,7 @@ const formatPercent = (value: number, options?: Intl.NumberFormatOptions) => {
 export interface CommissionTextProps extends FlexProps {
     icon?: IconType;
     value: StakingPoolFee;
-    direction?: SystemProps['flexDirection'];
+    direction?: SystemStyleObject['flexDirection'];
     options?: Intl.NumberFormatOptions;
     componentStyle?: string;
 }
@@ -104,7 +104,7 @@ const CommissionText: FC<CommissionTextProps> = (props) => {
                     {valueLabel}
                 </Heading>
                 {unitLabel && valueLabel && (
-                    <Text size={'base'} color="gray.500">
+                    <Text fontSize={'base'} color="gray.500">
                         {unitLabel}
                     </Text>
                 )}

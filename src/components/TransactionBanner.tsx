@@ -8,12 +8,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { AlertStatus } from '@chakra-ui/react';
+import { AlertRootProps } from '@chakra-ui/react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
     ITransactionInfoBannerProps,
     TransactionInfoBanner,
 } from './stake/TransactionInfoBanner';
+
+type AlertStatus = AlertRootProps['status'];
 
 /**
  * HOC to modify the default behaviour of TransactionInfoBanner
