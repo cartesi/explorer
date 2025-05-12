@@ -67,7 +67,7 @@ const FlatRateCommission = ({
     }, [isDisabled]);
 
     return (
-        <VStack spacing={3}>
+        <VStack gap={3}>
             <SimpleInput
                 name={name}
                 type="number"

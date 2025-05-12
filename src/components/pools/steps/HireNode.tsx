@@ -9,17 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Button,
-    Checkbox,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Button, Checkbox, Stack, Text } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
+import { useColorModeValue } from '../../ui/color-mode';
 
 import { useWallet } from '../../wallet';
 
@@ -74,7 +68,13 @@ const wordingFor = {
     },
 };
 
-const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
+const HireNode = ({
+    stepNumber,
+    currentStep,
+    onComplete,
+    onStepActive,
+    inFocus,
+}: IStep) => {
     const tipsBgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     const colorScheme = useColorModeValue('teal', 'cyan');
     const [poolAddress] = useAtom(poolAddressAtom);
@@ -92,6 +92,9 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
     const isStepCompleted =
         transactionType === 'hire' && pool?.transaction?.state === 'confirmed';
     const checkboxColorScheme = useColorModeValue('teal', 'gray');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -114,6 +117,7 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
             title="Hire Node"
             subtitle="At this point, stake your funds using Cartesi Explorer."
             stepNumber={stepNumber}
+            bg={isHighlighted ? bg : undefined}
             status={stepState.status}
             onActive={onStepActive}
         >
@@ -140,19 +144,23 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                     max={3}
                     min={0.001}
                 />
-                <Checkbox
+                <Checkbox.Root
                     defaultChecked
                     mt={5}
-                    isChecked={!pool.paused}
-                    colorScheme={checkboxColorScheme}
+                    checked={!pool.paused}
+                    colorPalette={checkboxColorScheme}
                     onChange={() => {
                         const tType = pool.paused ? 'unpause' : 'pause';
                         setTransactionType(tType);
                         pool[tType]();
                     }}
                 >
-                    Allowing your pool to accept new stakes
-                </Checkbox>
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label fontSize="md">
+                        Allowing your pool to accept new stakes
+                    </Checkbox.Label>
+                </Checkbox.Root>
                 <Box px={6} py={4} bg={tipsBgColor} mt={6} rounded="md">
                     <Text>
                         You need to specify the amount of ETH you want to give
@@ -171,8 +179,8 @@ const HireNode = ({ stepNumber, onComplete, onStepActive, inFocus }: IStep) => {
                 >
                     <Button
                         disabled={!enableNext || pool.transaction?.isOngoing}
-                        isLoading={pool.transaction?.isOngoing}
-                        colorScheme={colorScheme}
+                        loading={pool.transaction?.isOngoing}
+                        colorPalette={colorScheme}
                         minWidth={{ base: '10rem' }}
                         onClick={() => {
                             setTransactionType('hire');

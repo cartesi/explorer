@@ -12,6 +12,7 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import {
     act,
+    findByRole,
     findByText,
     fireEvent,
     render,
@@ -26,10 +27,13 @@ import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useStakingPoolFactory } from '../../../../src/services/poolFactory';
 import { buildContractReceipt } from '../../node/mocks';
 import { buildUseStakingPoolFactoryReturn } from '../mocks';
+import { withChakraTheme } from '../../../test-utilities';
 
 const poolFactoryPath = '../../../../src/services/poolFactory';
 const walletMod = '../../../../src/components/wallet/useWallet';
 const stepGroupMod = '../../../../src/components/StepGroup';
+
+const Component = withChakraTheme(CommissionModel);
 
 jest.mock(stepGroupMod, () => {
     const originalModule = jest.requireActual(stepGroupMod);
@@ -122,7 +126,7 @@ describe('CommissionModel step component', () => {
 
     describe('When not on focus', () => {
         it('Should only display the number, the title and the subtitle.', () => {
-            render(<CommissionModel stepNumber={1} />);
+            render(<Component stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Commission')).toBeInTheDocument();
@@ -136,7 +140,7 @@ describe('CommissionModel step component', () => {
 
     describe('When in focus', () => {
         it('should display the headers, body and action buttons', () => {
-            render(<CommissionModel stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Commission')).toBeInTheDocument();
@@ -156,15 +160,13 @@ describe('CommissionModel step component', () => {
         });
 
         it('should initialise with CREATE-POOL button disabled while the required field are not filled', () => {
-            render(<CommissionModel stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
             const btn = screen.getByText('CREATE POOL');
             expect(btn.hasAttribute('disabled')).toBe(true);
         });
 
         it('should keep CREATE-POOL button disabled when all required field are filled but wallet is not connected', async () => {
-            const { rerender } = render(
-                <CommissionModel stepNumber={1} inFocus />
-            );
+            const { rerender } = render(<Component stepNumber={1} inFocus />);
 
             await act(() => {
                 const flatRateInput = screen.getByLabelText(
@@ -186,7 +188,7 @@ describe('CommissionModel step component', () => {
                 deactivate: jest.fn(),
             });
 
-            rerender(<CommissionModel stepNumber={1} inFocus />);
+            rerender(<Component stepNumber={1} inFocus />);
 
             await waitFor(() =>
                 expect(
@@ -199,7 +201,7 @@ describe('CommissionModel step component', () => {
     describe('Validations', () => {
         describe('Flat Rate Commission', () => {
             it('should display message when flat rate value is lower than 0', async () => {
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
 
                 await act(() => {
                     fireEvent.change(
@@ -214,7 +216,7 @@ describe('CommissionModel step component', () => {
             });
 
             it('should display message when flat rate value is higher than 100', async () => {
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
 
                 await act(() => {
                     fireEvent.change(
@@ -229,7 +231,7 @@ describe('CommissionModel step component', () => {
             });
 
             it('should display a message when flat rate value has more than 2 decimal places', async () => {
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
 
                 await act(() => {
                     fireEvent.change(
@@ -246,7 +248,7 @@ describe('CommissionModel step component', () => {
             });
 
             it('should display a message when the field is visited and left in blank', async () => {
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
 
                 await act(() => {
                     fireEvent.blur(
@@ -270,7 +272,7 @@ describe('CommissionModel step component', () => {
                 deactivate: jest.fn(),
             });
 
-            render(<CommissionModel stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             expect(
                 screen.getByText('Your wallet is disconnected')
@@ -290,7 +292,7 @@ describe('CommissionModel step component', () => {
             returned.paused = true;
             mockUseStakingPoolFactory.mockReturnValue(returned);
 
-            render(<CommissionModel stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             expect(screen.getByText('We notice a problem')).toBeInTheDocument();
             expect(
@@ -307,7 +309,7 @@ describe('CommissionModel step component', () => {
             returned.ready = false;
             mockUseStakingPoolFactory.mockReturnValue(returned);
 
-            render(<CommissionModel stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             expect(screen.getByText('We notice a problem')).toBeInTheDocument();
             expect(
@@ -327,13 +329,13 @@ describe('CommissionModel step component', () => {
             poolFactory.transaction.submitting = true;
             mockUseStakingPoolFactory.mockReturnValue(poolFactory);
 
-            render(<CommissionModel inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             const alert = screen.getByRole('alert');
             expect(
                 await findByText(alert, 'Creating the pool...')
             ).toBeInTheDocument();
-            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+            expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
 
         it('should display an error notification when pool creation failed', () => {
@@ -343,7 +345,7 @@ describe('CommissionModel step component', () => {
                 'Tx metamask: user rejected the transaction';
             mockUseStakingPoolFactory.mockReturnValue(poolFactory);
 
-            render(<CommissionModel inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(
                 screen.getByText('The pool creation failed!')
@@ -367,7 +369,7 @@ describe('CommissionModel step component', () => {
                     return a;
                 },
             ]);
-            render(<CommissionModel inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(
                 screen.getByText('Creating the pool...')
@@ -385,11 +387,7 @@ describe('CommissionModel step component', () => {
             it('should call onPrevious callback when clicked', () => {
                 const onPrev = jest.fn();
                 render(
-                    <CommissionModel
-                        inFocus
-                        stepNumber={1}
-                        onPrevious={onPrev}
-                    />
+                    <Component inFocus stepNumber={1} onPrevious={onPrev} />
                 );
                 const button = screen.getByText('PREVIOUS');
                 fireEvent.click(button);
@@ -400,7 +398,7 @@ describe('CommissionModel step component', () => {
 
         describe('CREATE POOL button', () => {
             it('should be disabled when required field is filled but value did not pass the validation', async () => {
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
 
                 const flatRateInput = screen.getByLabelText(
                     'Flat-rate commission (%)'
@@ -430,7 +428,7 @@ describe('CommissionModel step component', () => {
             it('should call creation pool method based on selected model type (Flat Rate)', async () => {
                 const poolFactory = buildUseStakingPoolFactoryReturn();
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
-                render(<CommissionModel inFocus stepNumber={1} />);
+                render(<Component inFocus stepNumber={1} />);
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
@@ -453,7 +451,7 @@ describe('CommissionModel step component', () => {
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
                 // First render
                 const { rerender } = render(
-                    <CommissionModel inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />
                 );
 
                 await act(() => {
@@ -476,11 +474,9 @@ describe('CommissionModel step component', () => {
                 poolFactory.transaction.isOngoing = true;
                 poolFactory.transaction.acknowledged = false;
                 // Then we render the component again to get fresh values
-                rerender(<CommissionModel inFocus stepNumber={1} />);
+                rerender(<Component inFocus stepNumber={1} />);
 
-                expect(
-                    await findByText(button, 'Loading...')
-                ).toBeInTheDocument();
+                expect(await button.hasAttribute('disabled')).toBe(true);
 
                 // trying to click multiple times
                 fireEvent.click(button);
@@ -496,18 +492,14 @@ describe('CommissionModel step component', () => {
     describe('When pool is created', () => {
         it('should call onComplete callback, transition the step to a completed state and update the pool address in an atom', async () => {
             const onComplete = jest.fn();
-            const Component = () => (
-                <CommissionModel
-                    inFocus
-                    stepNumber={1}
-                    onComplete={onComplete}
-                />
+            const ComponentE = () => (
+                <Component inFocus stepNumber={1} onComplete={onComplete} />
             );
             const poolAddress = '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
             const poolFactory = buildUseStakingPoolFactoryReturn();
             poolFactory.transaction.acknowledged = false;
             mockUseStakingPoolFactory.mockReturnValue(poolFactory);
-            const { rerender } = render(<Component />);
+            const { rerender } = render(<ComponentE />);
 
             expect(
                 screen.getByText('CREATE POOL').hasAttribute('disabled')
@@ -532,7 +524,7 @@ describe('CommissionModel step component', () => {
             //Adding transaction confirmation and pool address
             poolFactory.transaction.state = 'confirmed';
             poolFactory.transaction.result = poolAddress;
-            rerender(<Component />);
+            rerender(<ComponentE />);
 
             expect(onComplete).toHaveBeenCalledTimes(1);
             expect(atomSetterStub).toHaveBeenCalledWith(poolAddress);

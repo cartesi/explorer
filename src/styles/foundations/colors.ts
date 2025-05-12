@@ -9,146 +9,342 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { theme } from '@chakra-ui/react';
-
 export const colors = {
-    alertFg: 'rgba(189, 224, 141, 1)',
-    header: '#1E1941',
-    footerBg: '#0C0C0C',
-    primary: '#1E1941',
-    secondary: '#3d3d3d',
-    info: '#007bff',
-    white: '#fff',
-    gray1: '#e9e9e9',
-    gray2: '#e0e0e0',
-    gray3: '#b9b9b9',
-    gray9: '#1E1941',
-    gray10: '#939393',
+    alertFg: {
+        value: 'rgba(189, 224, 141, 1)',
+    },
+    header: {
+        value: '#1E1941',
+    },
+    footerBg: {
+        value: '#0C0C0C',
+    },
+    primary: {
+        value: '#1E1941',
+    },
+    secondary: {
+        value: '#3d3d3d',
+    },
+    info: {
+        value: '#007bff',
+    },
+    white: {
+        value: '#fff',
+    },
+    gray1: {
+        value: '#e9e9e9',
+    },
+    gray2: {
+        value: '#e0e0e0',
+    },
+    gray3: {
+        value: '#b9b9b9',
+    },
+    gray9: {
+        value: '#1E1941',
+    },
+    gray10: {
+        value: '#939393',
+    },
     red: {
-        200: '#FF8D78',
+        200: {
+            value: '#FF8D78',
+        },
     },
     grey: {
-        support: '#5F6368',
-        tertiary: '#E3E3E5',
+        support: {
+            value: '#5F6368',
+        },
+        tertiary: {
+            value: '#E3E3E5',
+        },
     },
     light: {
-        primary: '#008DA5',
-        secondary: '#00F6FF',
+        primary: {
+            value: '#008DA5',
+        },
+        secondary: {
+            value: '#00F6FF',
+        },
         orange: {
-            primary: '#FFBE5D',
+            primary: {
+                value: '#FFBE5D',
+            },
         },
         gray: {
-            primary: '#232222',
-            secondary: '#F1F2F5',
-            tertiary: '#E3E3E5',
-            quaternary: '#C8C8C8',
+            primary: {
+                value: '#232222',
+            },
+            secondary: {
+                value: '#F1F2F5',
+            },
+            tertiary: {
+                value: '#E3E3E5',
+            },
+            quaternary: {
+                value: '#C8C8C8',
+            },
         },
         support: {
-            success: '#7CA154',
-            warning: '#FFA77A',
-            error: '#FD7267',
-            info: '#B5E8F4',
-            neutral: '#E1EBFF',
-            disabled: 'rgba(0, 0, 0, 0.40)',
+            success: {
+                value: '#7CA154',
+            },
+            warning: {
+                value: '#FFA77A',
+            },
+            error: {
+                value: '#FD7267',
+            },
+            info: {
+                value: '#B5E8F4',
+            },
+            neutral: {
+                value: '#E1EBFF',
+            },
+            disabled: {
+                value: 'rgba(0, 0, 0, 0.40)',
+            },
         },
         border: {
             button: {
-                secondary: 'rgba(0, 0, 0, 0.40)',
+                secondary: {
+                    value: 'rgba(0, 0, 0, 0.40)',
+                },
             },
-            tertiary: 'rgba(0, 141, 165, 0.10)',
+            tertiary: {
+                value: 'rgba(0, 141, 165, 0.10)',
+            },
+            quaternary: {
+                value: 'rgba(255, 255, 255, 0.10)',
+            },
         },
     },
     gray: {
-        50: '#FAFAFB',
-        80: '#F1F2F5',
-        90: '#FFFAE6',
-        100: '#E1E1E3',
-        200: '#CAC9CE',
-        300: '#B2B1B9',
-        400: '#3C4043',
-        450: '#939393',
-        500: '#82808F',
-        600: '#69677B',
-        700: '#504D68',
-        800: '#39383C',
-        900: '#1E1941',
+        50: {
+            value: '#FAFAFB',
+        },
+        80: {
+            value: '#F1F2F5',
+        },
+        90: {
+            value: '#FFFAE6',
+        },
+        100: {
+            value: '#E1E1E3',
+        },
+        200: {
+            value: '#CAC9CE',
+        },
+        300: {
+            value: '#B2B1B9',
+        },
+        400: {
+            value: '#3C4043',
+        },
+        450: {
+            value: '#939393',
+        },
+        500: {
+            value: '#82808F',
+        },
+        600: {
+            value: '#69677B',
+        },
+        700: {
+            value: '#504D68',
+        },
+        800: {
+            value: '#39383C',
+        },
+        900: {
+            value: '#1E1941',
+        },
     },
-    grayDark: theme.colors.gray,
     orange: {
-        50: '#FFFAE6',
-        100: '#FFF2D9',
-        200: '#FFE1A5',
-        300: '#FFC95C',
-        400: '#F9C300',
-        500: '#F6B10B',
-        600: '#FFA030',
-        700: '#F77900',
-        800: '#E85808',
-        900: '#CC6E00',
+        50: {
+            value: '#FFFAE6',
+        },
+        100: {
+            value: '#FFF2D9',
+        },
+        200: {
+            value: '#FFE1A5',
+        },
+        300: {
+            value: '#FFC95C',
+        },
+        400: {
+            value: '#F9C300',
+        },
+        500: {
+            value: '#F6B10B',
+        },
+        600: {
+            value: '#FFA030',
+        },
+        700: {
+            value: '#F77900',
+        },
+        800: {
+            value: '#E85808',
+        },
+        900: {
+            value: '#CC6E00',
+        },
     },
     teal: {
-        200: '#008DA5',
-        secondary: '#008DA5',
-        support: '#2D5ABE',
-        light: '#F0F7F9',
-    },
-    cyan: {
-        primary: '#00F6FF',
-        secondary: '#75FBFF',
-    },
-    blue: {
-        50: '#E1EBFF',
-        100: '#C1DAF9',
-        200: '#85B4FF',
-        300: '#74a6f5',
-        400: '#4D7BD2',
-        500: '#2D5ABE',
-        600: '#254DA9',
-        700: '#1E4092',
-        800: '#17347C',
-        900: '#112864',
-    },
-    purple: {
-        50: '#F5EBFA',
-        100: '#E3C6F1',
-        200: '#D1A1E8',
-        300: '#BF7CDF',
-        400: '#AD57D6',
-        500: '#9B33CC',
-        600: '#7C28A4',
-        700: '#5D1E7B',
-        800: '#3E1452',
-        900: '#1F0A29',
-    },
-    dark: {
-        primary: '#00F6FF',
-        secondary: '#008DA5',
-        gray: {
-            primary: '#161618',
-            secondary: '#1C1B1F',
-            tertiary: '#232226',
-            quaternary: '#39383C',
-            quinary: 'rgba(241, 242, 245, 0.5)',
-            senary: '#F0F7F9',
+        200: {
+            value: '#008DA5',
         },
-        orange: {
-            primary: '#FFA77A',
+        secondary: {
+            value: '#008DA5',
         },
         support: {
-            success: '#BDE08D',
-            warning: '#FEB274',
-            error: '#FF8D78',
-            info: '#ACFCFF',
-            neutral: '#E1EBFF',
-            disabled: 'rgba(255, 255, 255, 0.50)',
+            value: '#2D5ABE',
+        },
+        light: {
+            value: '#F0F7F9',
+        },
+    },
+    cyan: {
+        primary: {
+            value: '#00F6FF',
+        },
+        secondary: {
+            value: '#75FBFF',
+        },
+    },
+    blue: {
+        50: {
+            value: '#E1EBFF',
+        },
+        100: {
+            value: '#C1DAF9',
+        },
+        200: {
+            value: '#85B4FF',
+        },
+        300: {
+            value: '#74a6f5',
+        },
+        400: {
+            value: '#4D7BD2',
+        },
+        500: {
+            value: '#2D5ABE',
+        },
+        600: {
+            value: '#254DA9',
+        },
+        700: {
+            value: '#1E4092',
+        },
+        800: {
+            value: '#17347C',
+        },
+        900: {
+            value: '#112864',
+        },
+    },
+    purple: {
+        50: {
+            value: '#F5EBFA',
+        },
+        100: {
+            value: '#E3C6F1',
+        },
+        200: {
+            value: '#D1A1E8',
+        },
+        300: {
+            value: '#BF7CDF',
+        },
+        400: {
+            value: '#AD57D6',
+        },
+        500: {
+            value: '#9B33CC',
+        },
+        600: {
+            value: '#7C28A4',
+        },
+        700: {
+            value: '#5D1E7B',
+        },
+        800: {
+            value: '#3E1452',
+        },
+        900: {
+            value: '#1F0A29',
+        },
+    },
+    dark: {
+        primary: {
+            value: '#00F6FF',
+        },
+        secondary: {
+            value: '#008DA5',
+        },
+        gray: {
+            primary: {
+                value: '#161618',
+            },
+            secondary: {
+                value: '#1C1B1F',
+            },
+            tertiary: {
+                value: '#232226',
+            },
+            quaternary: {
+                value: '#39383C',
+            },
+            quinary: {
+                value: 'rgba(241, 242, 245, 0.5)',
+            },
+            senary: {
+                value: '#F0F7F9',
+            },
+        },
+        orange: {
+            primary: {
+                value: '#FFA77A',
+            },
+        },
+        support: {
+            success: {
+                value: '#BDE08D',
+            },
+            warning: {
+                value: '#FEB274',
+            },
+            error: {
+                value: '#FF8D78',
+            },
+            info: {
+                value: '#ACFCFF',
+            },
+            neutral: {
+                value: '#E1EBFF',
+            },
+            disabled: {
+                value: 'rgba(255, 255, 255, 0.50)',
+            },
         },
         border: {
-            secondary: 'rgba(240, 247, 249, 0.40)',
-            tertiary: 'rgba(57, 56, 60, 0.30)',
-            quaternary: 'rgba(255, 255, 255, 0.10)',
+            secondary: {
+                value: 'rgba(240, 247, 249, 0.40)',
+            },
+            tertiary: {
+                value: 'rgba(57, 56, 60, 0.30)',
+            },
+            quaternary: {
+                value: 'rgba(255, 255, 255, 0.10)',
+            },
         },
         background: {
-            secondary: 'rgba(255, 255, 255, 0.06)',
+            secondary: {
+                value: 'rgba(255, 255, 255, 0.06)',
+            },
         },
     },
 };

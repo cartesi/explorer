@@ -6,6 +6,7 @@ import Web3Container from '../src/components/Web3Container';
 import theme from '../src/styles/theme';
 import React, { FC } from 'react';
 import ColorMode from './ColorMode';
+import { ColorModeProvider } from '../src/components/ui/color-mode';
 import withFeatureFlags from './withFeatureFlags';
 import { StoryContext } from '@storybook/react';
 import { Fonts } from '../src/components/Fonts';
@@ -13,13 +14,15 @@ import { SelectedChain } from '../src/components/header';
 
 const withChakra = (Story: FC, context: StoryContext) => {
     return (
-        <ChakraProvider resetCSS theme={theme}>
-            <ColorMode globals={context.globals} />
+        <ChakraProvider value={theme}>
             <Fonts />
-            <Web3Container>
-                <SelectedChain />
-                <Story />
-            </Web3Container>
+            <ColorModeProvider>
+                <ColorMode globals={context.globals} />
+                <Web3Container>
+                    <SelectedChain />
+                    <Story />
+                </Web3Container>
+            </ColorModeProvider>
         </ChakraProvider>
     );
 };

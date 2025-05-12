@@ -1,13 +1,5 @@
 import React, { FC } from 'react';
-import {
-    HStack,
-    Spinner,
-    Text,
-    Flex,
-    useColorModeValue,
-    useToken,
-    useColorMode,
-} from '@chakra-ui/react';
+import { HStack, Spinner, Text, Flex, useToken } from '@chakra-ui/react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -22,6 +14,7 @@ import { Line } from 'react-chartjs-2';
 import { isObject, minBy, maxBy } from 'lodash';
 import { DateTime } from 'luxon';
 import { StakingPoolUserHistory } from '../../graphql/models';
+import { useColorModeValue, useColorMode } from '../ui/color-mode';
 
 ChartJS.register(
     CategoryScale,

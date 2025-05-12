@@ -9,14 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Button,
-    Flex,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Stack, Text } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { isEmpty, omit } from 'lodash/fp';
 import { FC, useState } from 'react';
@@ -26,6 +19,7 @@ import { MappedErrors, ValidationResult } from '../BaseInput';
 import { useWallet } from '../wallet';
 import { DepositField, InitialFundsInput } from './inputs/InitialFundsInput';
 import { NodeField, NodeInput, evaluateNode } from './inputs/NodeInput';
+import { useColorModeValue } from '../ui/color-mode';
 
 type Validation = ValidationResult<NodeField | DepositField>;
 type Errors = Partial<MappedErrors<Validation>>;
@@ -72,7 +66,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
             borderRadius="1rem"
         >
             <Stack
-                spacing={4}
+                gap={4}
                 px={{ base: 4, md: 'auto' }}
                 justifyContent="center"
                 alignItems="center"
@@ -112,12 +106,12 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
                     alignItems="flex-end"
                 >
                     <Button
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.813rem"
                         textTransform="uppercase"
                         disabled={!isEnabled}
-                        isLoading={isHiring}
+                        loading={isHiring}
                         onClick={() =>
                             onHire(nodeAddress, toBigNumber(initialFunds))
                         }

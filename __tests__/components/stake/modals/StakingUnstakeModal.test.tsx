@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import {
@@ -17,6 +17,7 @@ import {
     StakingUnstakeModal,
 } from '../../../../src/components/stake/modals/StakingUnstakeModal';
 import { withChakraTheme } from '../../../test-utilities';
+import userEvent from '@testing-library/user-event';
 
 const defaultValue = '100000000000000000000000';
 
@@ -91,18 +92,31 @@ describe('Staking Unstake Modal', () => {
 
         fireEvent.click(input);
 
+        await waitFor(() =>
+            expect(getByRole('spinbutton')).toBeInTheDocument()
+        );
+
         const numberInput = getByRole('spinbutton');
 
-        fireEvent.change(numberInput, { target: { value: '10000' } });
+        fireEvent.focus(numberInput);
+        await userEvent.type(numberInput, '10000');
+        await waitFor(() => expect(numberInput).toHaveValue('10000'), {
+            timeout: 100,
+        });
 
         const button = getByRole('unstake-button');
+
+        await waitFor(() => {
+            expect(button.hasAttribute('disabled')).toBe(false);
+        });
+
         fireEvent.click(button);
 
         expect(onSave).toHaveBeenCalled();
         expect(onSave).toHaveBeenCalledWith('partial', parseUnits('10000', 18));
     });
 
-    it('Should disable stake button when partial amount is selected', () => {
+    it('Should disable stake button when partial amount is selected', async () => {
         const { getByRole, getByText } = render(
             <EStakingUnstakeModal {...defaultProps} />
         );
@@ -112,6 +126,10 @@ describe('Staking Unstake Modal', () => {
             .querySelector('input');
 
         fireEvent.click(input);
+
+        await waitFor(() =>
+            expect(getByRole('unstake-button')).toBeInTheDocument()
+        );
 
         expect(getByRole('unstake-button')).toBeDisabled();
     });

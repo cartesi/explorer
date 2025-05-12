@@ -9,16 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    BoxProps,
-    Button,
-    HStack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Button, HStack, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { UnsupportedNetworkError, UseWallet } from '../wallet';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface ConnectWalletProps extends BoxProps {
     wallet: UseWallet;
@@ -28,7 +22,7 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const { wallet, ...boxProps } = props;
     const { activate, error, active } = wallet;
     const isUnsupportedNetworkError = error instanceof UnsupportedNetworkError;
-    const colorScheme = useColorModeValue('teal', 'cyan');
+    const colorPalette = useColorModeValue('teal', 'cyan');
     const hoverBg = useColorModeValue(
         'linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), #008DA5',
         'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF'
@@ -46,7 +40,7 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
                 !active && (
                     <Button
                         size="md"
-                        colorScheme={colorScheme}
+                        colorPalette={colorPalette}
                         onClick={activate}
                         _hover={{
                             bg: hoverBg,

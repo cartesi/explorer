@@ -21,6 +21,7 @@ export interface IStepMeta {
  */
 export interface IStep {
     stepNumber: number;
+    currentStep?: number;
     inFocus?: boolean;
     onComplete?: (...a: any) => void;
     onPrevious?: (...a: any) => void;
