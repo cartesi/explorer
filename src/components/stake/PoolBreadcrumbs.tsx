@@ -16,7 +16,7 @@ import {
     BreadcrumbLink,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { FC } from 'react';
 import NextLink from 'next/link';
 
@@ -25,8 +25,8 @@ export interface IPoolBreadcrumbsProps {
 }
 
 export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
-    const router = useRouter();
-    const address = router.query.pool as string;
+    const params = useParams();
+    const address = params.pool as string;
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const boxShadow = useColorModeValue('md', 'none');
 
@@ -46,9 +46,9 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
         >
             <Breadcrumb>
                 <BreadcrumbItem>
-                    <NextLink href={`/stake/${address}`}>
-                        <BreadcrumbLink>Pool</BreadcrumbLink>
-                    </NextLink>
+                    <BreadcrumbLink as={NextLink} href={`/stake/${address}`}>
+                        Pool
+                    </BreadcrumbLink>
                 </BreadcrumbItem>
 
                 <BreadcrumbItem isCurrentPage>

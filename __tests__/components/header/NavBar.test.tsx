@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { NextRouter, useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { act } from 'react';
 import { NavBar, NavLink } from '../../../src/components/header/NavBar';
 import { useWallet } from '../../../src/components/wallet/useWallet';
@@ -18,12 +18,12 @@ import { useWallet } from '../../../src/components/wallet/useWallet';
 const walletMod = '../../../src/components/wallet/useWallet';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,
-        useRouter: jest.fn(),
+        usePathname: jest.fn(),
     };
 });
 jest.mock('@unleash/proxy-client-react', () => ({
@@ -42,7 +42,7 @@ jest.mock(walletMod, () => {
 
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const mockUsePathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
 const defaultProps = {
     links: [
@@ -78,9 +78,7 @@ describe('Nav Bar', () => {
             deactivate: jest.fn(),
             chainId: 3,
         });
-        mockUseRouter.mockReturnValue({
-            asPath: 'stake',
-        } as unknown as NextRouter);
+        mockUsePathname.mockReturnValue('stake');
     });
 
     afterEach(() => {
@@ -99,9 +97,7 @@ describe('Nav Bar', () => {
     });
 
     it('Should display menu button', async () => {
-        mockUseRouter.mockReturnValue({
-            asPath: 'stake',
-        } as unknown as NextRouter);
+        mockUsePathname.mockReturnValue('stake');
         await act(async () => {
             render(<NavBar {...defaultProps} />);
         });

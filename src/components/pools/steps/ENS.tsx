@@ -28,7 +28,7 @@ import {
 import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 import { isFunction, trim } from 'lodash/fp';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useStakingPool } from '../../../services/pool';
 import { useMessages } from '../../../utils/messages';

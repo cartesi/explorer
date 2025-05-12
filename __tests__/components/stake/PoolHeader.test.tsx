@@ -11,21 +11,21 @@
 
 import { render, screen } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
-import { NextRouter, useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { PoolHeader } from '../../../src/components/stake/PoolHeader';
 import { WalletConnectionContextProps } from '../../../src/components/wallet/definitions';
 import { useWallet } from '../../../src/components/wallet/useWallet';
 import { withChakraTheme } from '../../test-utilities';
 
-jest.mock('next/router', () => {
-    const originalModule = jest.requireActual('next/router');
+jest.mock('next/navigation', () => {
+    const originalModule = jest.requireActual('next/navigation');
     return {
         __esModule: true,
         ...originalModule,
-        useRouter: jest.fn(),
+        useParams: jest.fn(),
     };
 });
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>;
 
 jest.mock('../../../src/components/wallet/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
@@ -48,9 +48,7 @@ describe('Pool Header', () => {
 
     beforeEach(() => {
         // default mock return
-        mockUseRouter.mockReturnValue({
-            query,
-        } as unknown as NextRouter);
+        useParamsMock.mockReturnValue(query);
 
         mockUseWallet.mockReturnValue({
             chainId: 129803901,
@@ -73,8 +71,7 @@ describe('Pool Header', () => {
             isManager: true,
         });
 
-        const link = screen.getByTestId('pool-management-link')
-            .parentNode as HTMLElement;
+        const link = screen.getByTestId('pool-management-link');
 
         expect(link).toBeInTheDocument();
         expect(link.getAttribute('href')).toBe(`/pools/${query.pool}/manage`);
@@ -87,8 +84,7 @@ describe('Pool Header', () => {
             isManager: true,
         });
 
-        const link = screen.getByTestId('pool-management-link')
-            .parentNode as HTMLElement;
+        const link = screen.getByTestId('pool-management-link');
 
         expect(link).toBeInTheDocument();
         expect(link.getAttribute('href')).toBe(

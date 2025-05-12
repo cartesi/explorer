@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, isNil, omit } from 'lodash/fp';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStaking } from '../../../services/staking';
@@ -38,7 +38,7 @@ import {
     OptionalMappedErrors,
     ValidationResult,
 } from '../../BaseInput';
-import { ConnectWallet } from '../../header/ConnectWallet';
+import { ConnectWallet } from '../../header';
 import { Notification } from '../../Notification';
 import { Step, StepActions, StepBody } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';

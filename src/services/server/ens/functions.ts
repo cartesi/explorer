@@ -40,7 +40,10 @@ const httpNodeRpc =
 
 const buildRpcClient = (nodeRpcEndpoint: string, network: number) => {
     const provider = new ethers.providers.JsonRpcProvider(
-        nodeRpcEndpoint,
+        {
+            url: nodeRpcEndpoint,
+            skipFetchSetup: true,
+        },
         network
     );
 

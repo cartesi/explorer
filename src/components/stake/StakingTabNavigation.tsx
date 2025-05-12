@@ -11,16 +11,17 @@
 
 import { Button, HStack, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
 import { SimpleChartIcon, StakeIcon } from '../Icons';
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('gray.900', 'white');
-    const router = useRouter();
-    const address = router.query.pool as string;
-    const isStakeTabActive = router.pathname === '/stake/[pool]/stake';
+    const params = useParams();
+    const address = params.pool as string;
+    const pathname = usePathname();
+    const isStakeTabActive = /stake\/.+\/stake/.test(pathname);
     const isPoolInfoTabActive = !isStakeTabActive;
     const tabs = [
         {
@@ -42,26 +43,27 @@ export const StakingTabNavigation: FC = () => {
     return (
         <HStack alignSelf={{ base: 'center', lg: 'flex-end' }}>
             {tabs.map((tab) => (
-                <NextLink key={tab.href} href={tab.href} passHref>
-                    <Button
-                        py={{ lg: 7 }}
-                        outline="none"
-                        textTransform="none"
-                        _hover={{
-                            bg: 'transparent',
-                        }}
-                        _active={{
-                            bg,
-                            color,
-                        }}
-                        borderRadius="0.6rem 0.6rem 0 0"
-                        leftIcon={<tab.Icon w="24px" h="24px" />}
-                        isActive={tab.isActive}
-                        variant={tab.variant}
-                    >
-                        {tab.text}
-                    </Button>
-                </NextLink>
+                <Button
+                    as={NextLink}
+                    key={tab.href}
+                    href={tab.href}
+                    py={{ lg: 7 }}
+                    outline="none"
+                    textTransform="none"
+                    _hover={{
+                        bg: 'transparent',
+                    }}
+                    _active={{
+                        bg,
+                        color,
+                    }}
+                    borderRadius="0.6rem 0.6rem 0 0"
+                    leftIcon={<tab.Icon w="24px" h="24px" />}
+                    isActive={tab.isActive}
+                    variant={tab.variant}
+                >
+                    {tab.text}
+                </Button>
             ))}
         </HStack>
     );
