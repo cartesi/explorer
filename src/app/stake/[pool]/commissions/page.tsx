@@ -16,7 +16,7 @@ export async function generateMetadata(props: StakePoolPageProps) {
         notFound();
     }
 
-    const formattedAddress = getFormattedEnsName(address);
+    const formattedAddress = await getFormattedEnsName(address);
 
     return {
         title: `Pool commissions - ${formattedAddress}`,
