@@ -17,8 +17,6 @@ import AddressENSService from '../../../src/services/server/ens/AddressENSServic
 
 jest.mock('../../../src/services/apollo');
 
-jest.mock('../../../src/services/server/ens/AddressENSService');
-
 const createApolloMock = jest.mocked(createApollo, { shallow: true });
 
 describe('Server utils', () => {
