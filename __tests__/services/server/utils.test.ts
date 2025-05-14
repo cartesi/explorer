@@ -9,9 +9,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { createApollo } from '../../../src/services/apollo';
-import { isCartesiUser } from '../../../src/services/server/utils';
+import {
+    isCartesiUser,
+    getFormattedEnsName,
+} from '../../../src/services/server/utils';
+import AddressENSService from '../../../src/services/server/ens/AddressENSService';
 
 jest.mock('../../../src/services/apollo');
+
+jest.mock('../../../src/services/server/ens/AddressENSService');
 
 const createApolloMock = jest.mocked(createApollo, { shallow: true });
 
@@ -76,5 +82,30 @@ describe('Server utils', () => {
 
         const result = await isCartesiUser(address, mainnet);
         expect(result).toEqual(true);
+    });
+
+    describe('getFormattedEnsName', () => {
+        it('should return the ENS name when it exists', async () => {
+            const address = '0x2942aa4356783892c624125acfbbb80d29629a9d';
+            const name = 'funky-name.eth';
+
+            jest.spyOn(AddressENSService, 'getEntry').mockImplementation(
+                () => Promise.resolve({ ok: true, data: { name } }) as any
+            );
+
+            const result = await getFormattedEnsName(address);
+            expect(result).toBe(name);
+        });
+
+        it('should return the formatted address when ENS name does not exist', async () => {
+            const address = '0x2942aa4356783892c624125acfbbb80d29629a9d';
+
+            jest.spyOn(AddressENSService, 'getEntry').mockImplementation(
+                () => Promise.resolve({ ok: false }) as any
+            );
+
+            const result = await getFormattedEnsName(address);
+            expect(result).toBe(address.slice(0, 12));
+        });
     });
 });
