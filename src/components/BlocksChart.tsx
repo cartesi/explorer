@@ -24,7 +24,7 @@ import {
 } from 'recharts';
 import { QueryResult } from '@apollo/client';
 import { BlocksData, BlocksVars } from '../graphql/models';
-import { useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { useColorMode, useColorModeValue } from './ui/color-mode';
 
 export interface BlocksChartProps {
     result: QueryResult<BlocksData, BlocksVars>;

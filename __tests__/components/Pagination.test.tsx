@@ -30,7 +30,7 @@ const defaultPaginationProps = {
 const isObject = (val: unknown) =>
     typeof val === 'object' && val !== null && !Array.isArray(val);
 
-describe('Footer component', () => {
+describe('Pagination component', () => {
     describe('PageLink component', () => {
         it('should display correct index', () => {
             render(<PageLinkComponent {...defaultPageLinkProps} />);

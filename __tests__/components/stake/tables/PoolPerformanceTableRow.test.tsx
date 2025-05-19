@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { useFlag } from '@unleash/proxy-client-react';
 import { FC } from 'react';
@@ -42,11 +42,11 @@ const defaultProps = {
 };
 
 const Component: FC<PoolPerformanceTableRowProps> = (props) => (
-    <Table>
-        <Tbody>
+    <Table.Root>
+        <Table.Body>
             <PoolPerformanceTableRow {...props} />
-        </Tbody>
-    </Table>
+        </Table.Body>
+    </Table.Root>
 );
 
 const ThemedComponent =

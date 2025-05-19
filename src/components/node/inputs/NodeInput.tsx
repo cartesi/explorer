@@ -9,18 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CheckIcon } from '@chakra-ui/icons';
+import { FaCheck } from 'react-icons/fa';
+
 import {
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
-    Spinner,
-    useColorModeValue,
-    VisuallyHidden,
+    Box,
+    Field,
+    Flex,
     Input,
     InputGroup,
-    InputRightElement,
+    Spinner,
+    VisuallyHidden,
+    VStack,
 } from '@chakra-ui/react';
 import {
     capitalize,
@@ -34,6 +33,7 @@ import { useEffect, useState } from 'react';
 import { Node, NodeStatus } from '../../../services/node';
 import { useMessages } from '../../../utils/messages';
 import { BaseInput, ValidationResult } from '../../BaseInput';
+import { useColorModeValue } from '../../ui/color-mode';
 
 type NodeField = 'nodeAddress';
 interface NodeInputProps extends BaseInput<NodeField> {
@@ -122,17 +122,36 @@ const NodeInput = ({
     }, [isInvalid]);
 
     return (
-        <FormControl
+        <Field.Root
             pr={{ base: 0, md: '20vw' }}
             mb={6}
             mt={4}
-            isInvalid={isInvalid}
+            invalid={isInvalid}
             {...styleProps}
         >
-            <FormLabel htmlFor="node_address" fontWeight="medium">
+            <Field.Label htmlFor="node_address" fontWeight="medium">
                 Node Address
-            </FormLabel>
-            <InputGroup>
+            </Field.Label>
+            <InputGroup
+                endElement={
+                    displayLoader ? (
+                        <Flex h="100%" alignItems="center">
+                            <VStack colorPalette="teal">
+                                <Spinner role="progressbar" />
+                            </VStack>
+                        </Flex>
+                    ) : isAvailable ? (
+                        <Flex h="100%" alignItems="center">
+                            <VisuallyHidden>
+                                This node is available
+                            </VisuallyHidden>
+                            <Box color="green.500">
+                                <FaCheck id="node-available-check" />
+                            </Box>
+                        </Flex>
+                    ) : null
+                }
+            >
                 <Input
                     id="node_address"
                     type="text"
@@ -143,35 +162,14 @@ const NodeInput = ({
                         onChange(value);
                     }}
                 />
-                {displayLoader && (
-                    <InputRightElement
-                        h="100%"
-                        children={
-                            <Spinner label="Checking node availability" />
-                        }
-                    />
-                )}
-                {isAvailable && (
-                    <InputRightElement h="100%">
-                        <>
-                            <VisuallyHidden>
-                                This node is available
-                            </VisuallyHidden>
-                            <CheckIcon
-                                id="node-available-check"
-                                color="green.500"
-                            />
-                        </>
-                    </InputRightElement>
-                )}
             </InputGroup>
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
+            <Field.ErrorText>{errorMessage}</Field.ErrorText>
             {helperText && (
-                <FormHelperText fontSize={14} color={helperTxtColor}>
+                <Field.HelperText fontSize={14} color={helperTxtColor}>
                     {helperText}
-                </FormHelperText>
+                </Field.HelperText>
             )}
-        </FormControl>
+        </Field.Root>
     );
 };
 

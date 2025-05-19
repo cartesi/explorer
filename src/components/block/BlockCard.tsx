@@ -10,16 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC } from 'react';
-import {
-    HStack,
-    StackProps,
-    Image,
-    Box,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, StackProps, Image, Box } from '@chakra-ui/react';
 import { Block } from '../../graphql/models';
 import BlockTable, { BlockHighlightProp } from './BlockTable';
 import { tinyGraphUrl } from '../../utils/tinygraph';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface BlockCardProps extends StackProps {
     chainId: number;

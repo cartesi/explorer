@@ -39,6 +39,7 @@ import {
     generateNodeData,
     generateStakingPoolsData,
 } from '../mocks';
+import userEvent from '@testing-library/user-event';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
 const useENSMod = '../../../src/services/ens';
@@ -187,7 +188,9 @@ describe('NodeRunners container (Landing Page)', () => {
                 'private-node-creation-card-tooltip-icon'
             );
 
-            fireEvent.click(tooltipIcon);
+            act(() => {
+                userEvent.hover(tooltipIcon);
+            });
 
             expect(
                 await screen.findByText('Main responsibilities:')
@@ -211,7 +214,9 @@ describe('NodeRunners container (Landing Page)', () => {
                 'pool-creation-card-tooltip-icon'
             );
 
-            fireEvent.click(tooltipIcon);
+            act(() => {
+                userEvent.hover(tooltipIcon);
+            });
 
             expect(
                 await screen.findByText('Main responsibilities:')

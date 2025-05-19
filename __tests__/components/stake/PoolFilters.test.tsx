@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { PoolFilters } from '../../../src/components/stake/PoolFilters';
 import { withChakraTheme } from '../../test-utilities';
 
@@ -60,15 +60,21 @@ const defaultProps = {
 const EPoolFilters = withChakraTheme(PoolFilters);
 
 describe('Pool Filters', () => {
-    const renderComponent = () => render(<EPoolFilters {...defaultProps} />);
-
     it('Should display add filter text', () => {
-        renderComponent();
+        render(<EPoolFilters {...defaultProps} />);
         expect(screen.getByText('Add Filter')).toBeInTheDocument();
     });
 
-    it('Should display filter titles', () => {
-        renderComponent();
+    it('Should display filter titles', async () => {
+        render(<EPoolFilters {...defaultProps} />, {
+            container: document.body,
+        });
+
+        fireEvent.click(screen.getByText('Add Filter'));
+
+        await waitFor(() =>
+            expect(screen.getByTestId('menu-content')).toBeInTheDocument()
+        );
 
         defaultFilters.forEach((filter) => {
             expect(screen.getByText(filter.title)).toBeInTheDocument();

@@ -9,21 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    HStack,
-    Icon,
-    StackProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { FaChevronRight, FaRegQuestionCircle } from 'react-icons/fa';
+import { Box, HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, ReactNode } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolUsersIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
 
 export interface UsersStatProps extends StackProps {
     totalUsers: number;
@@ -55,7 +49,7 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                 borderWidth="1px"
                 cursor={location ? 'pointer' : ''}
             >
-                <HStack spacing={4} align="center" p={4} w="full">
+                <HStack gap={4} align="center" p={4} w="full">
                     <Box
                         w={14}
                         h={14}
@@ -64,7 +58,12 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                         placeContent="center"
                         flexShrink={0}
                     >
-                        <PoolUsersIcon color={iconColor} w={7} h={7} />
+                        <Icon
+                            as={PoolUsersIcon}
+                            color={iconColor}
+                            w={7}
+                            h={7}
+                        />
                     </Box>
                     <BigNumberTextV2
                         value={totalUsers}
@@ -73,18 +72,32 @@ const UsersStat: FC<UsersStatProps> = (props) => {
                         <HStack>
                             <Text>Users</Text>
                             <Tooltip
-                                label="Number of users who staked in this pool"
-                                placement="top"
-                                fontSize="small"
-                                bg="black"
-                                color="white"
+                                showArrow
+                                content="Number of users who staked in this pool"
+                                positioning={{
+                                    placement: 'top',
+                                }}
+                                openDelay={0}
+                                contentProps={{
+                                    fontSize: 'small',
+                                }}
                             >
-                                <Icon role="users-icon" w={3.5} h={3.5} />
+                                <Icon
+                                    as={FaRegQuestionCircle}
+                                    data-testid="users-icon"
+                                    w={3.5}
+                                    h={3.5}
+                                />
                             </Tooltip>
                         </HStack>
                     </BigNumberTextV2>
                     {location && (
-                        <ChevronRightIcon w={5} h={5} role="location-icon" />
+                        <Icon
+                            as={FaChevronRight}
+                            w={5}
+                            h={5}
+                            data-testid="location-icon"
+                        />
                     )}
                 </HStack>
             </Box>

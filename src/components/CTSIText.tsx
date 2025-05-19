@@ -9,12 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React, { FC } from 'react';
-import { Flex, FlexProps, HStack, SystemProps, Text } from '@chakra-ui/react';
+import React, { FC, ReactNode } from 'react';
+import {
+    Flex,
+    FlexProps,
+    HStack,
+    SystemStyleObject,
+    Text,
+} from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { Icon } from '@chakra-ui/icons';
-import { IconType } from 'react-icons';
 import humanizeDuration from 'humanize-duration';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration' | 'number';
@@ -78,11 +82,11 @@ const format = (
 };
 
 export interface BigNumberTextProps extends FlexProps {
-    icon?: IconType;
+    icon?: ReactNode;
     value: BigNumberish;
     nullLabel?: string;
-    direction?: SystemProps['flexDirection'];
-    fontSize?: SystemProps['fontSize'];
+    direction?: SystemStyleObject['flexDirection'];
+    fontSize?: SystemStyleObject['fontSize'];
     unit?: Unit;
     options?: Intl.NumberFormatOptions;
     countdown?: Countdown;
@@ -100,7 +104,7 @@ export const BigNumberText: FC<BigNumberTextProps> = (props) => {
         nullLabel = '-',
         direction = 'column',
         fontSize = '3xl',
-        icon,
+        icon = null,
         unit = 'number',
         options = defaultOptions,
         countdown,
@@ -118,7 +122,7 @@ export const BigNumberText: FC<BigNumberTextProps> = (props) => {
             {...flexProps}
         >
             <HStack>
-                {icon && <Icon as={icon} color={props.color} />}
+                {icon}
                 {children}
             </HStack>
             <HStack align="baseline">

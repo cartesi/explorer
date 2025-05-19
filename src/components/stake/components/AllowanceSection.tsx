@@ -17,14 +17,15 @@ import {
     Heading,
     Icon,
     Text,
-    Tooltip,
     VStack,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;
@@ -41,7 +42,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
         <VStack alignItems="flex-start" flexBasis={{ base: '100%', lg: '25%' }}>
             <HStack
                 w="full"
-                spacing={4}
+                gap={4}
                 alignItems="center"
                 pt={{ base: 4, lg: 0 }}
             >
@@ -49,13 +50,22 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                     <HStack>
                         <Text color={color}>Pool allowance</Text>
                         <Tooltip
-                            placement="top"
-                            label="Here you can see your current pool allowance."
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content="Here you can see your current pool allowance."
+                            positioning={{
+                                placement: 'top',
+                            }}
+                            contentProps={{
+                                fontSize: 'small',
+                            }}
+                            openDelay={0}
                         >
-                            <Icon color={color} w={3.5} h={3.5} />
+                            <Icon
+                                as={FaRegQuestionCircle}
+                                color={color}
+                                w={3.5}
+                                h={3.5}
+                            />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm" pt={2.5}>
@@ -71,7 +81,8 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                                 role="button-icon"
                                 onClick={onAllowanceClick}
                             >
-                                <PencilIconWhite
+                                <Icon
+                                    as={PencilIconWhite}
                                     w={6}
                                     h={6}
                                     color={IconColor}

@@ -11,6 +11,9 @@
 import { render, screen } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import { NodeReleasingSection } from '../../../src/components/node/NodeReleasingSection';
+import { withChakraTheme } from '../../test-utilities';
+
+const Component = withChakraTheme(NodeReleasingSection);
 
 const TEST_RELEASING_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
 const TEST_RELEASING_BALANCE_CTSI = '87';
@@ -20,7 +23,7 @@ const TEST_WITHDRAW_BUTTON = `WITHDRAW (${TEST_RELEASING_TIME})`;
 describe('NodeReleasingSection component', () => {
     it(`Should be 'Releasing' with ${TEST_RELEASING_BALANCE} CTSI, ${TEST_RELEASING_TIME}`, () => {
         render(
-            <NodeReleasingSection
+            <Component
                 releasingBalance={TEST_RELEASING_BALANCE}
                 releasingLeftShort={TEST_RELEASING_TIME}
                 onWithdraw={null}
@@ -41,7 +44,7 @@ describe('NodeReleasingSection component', () => {
 
     it(`Should be 'Released' with ${TEST_RELEASING_BALANCE_CTSI} CTSI, no Withdraw time text`, () => {
         render(
-            <NodeReleasingSection
+            <Component
                 releasingBalance={TEST_RELEASING_BALANCE}
                 releasingLeftShort={null}
                 onWithdraw={null}
@@ -62,7 +65,7 @@ describe('NodeReleasingSection component', () => {
 
     it(`Should be 'Released' with 0 CTSI, no Withdraw button`, () => {
         render(
-            <NodeReleasingSection
+            <Component
                 releasingBalance={BigNumber.from('0')}
                 releasingLeftShort={null}
                 onWithdraw={null}

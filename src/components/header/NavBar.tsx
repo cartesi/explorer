@@ -9,17 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
+    BoxProps,
     Flex,
-    FlexProps,
     HStack,
+    Icon,
     IconButton,
     Link,
     Stack,
-    useColorMode,
-    useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -28,9 +26,15 @@ import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
+import { FaMoon } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { MdOutlineWbSunny } from 'react-icons/md';
+
 import { ConnectWallet } from './ConnectWallet';
 import { Logo } from './Logo';
 import { SelectedChain } from './SelectedChain';
+import { useColorModeValue, useColorMode } from '../ui/color-mode';
 
 export interface NavLinkProps {
     href: string;
@@ -54,21 +58,20 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
 
     return (
         <Link
-            as={NextLink}
-            href={href}
+            asChild
             position="relative"
             px={2}
             py={1}
             width="fit-content"
             aria-current={isActive ? 'page' : undefined}
+            color="white"
             _hover={{
+                textDecoration: 'none',
                 _after: pseudoProps,
             }}
-            _activeLink={{
-                _after: pseudoProps,
-            }}
+            _after={isActive ? pseudoProps : undefined}
         >
-            {children}
+            <NextLink href={href}>{children}</NextLink>
         </Link>
     );
 };
@@ -79,14 +82,14 @@ export interface HeaderLink {
     href: string;
 }
 
-export interface NavBarProps extends FlexProps {
+export interface NavBarProps extends BoxProps {
     links: HeaderLink[];
 }
 
 export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const wallet = useWallet();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open, onOpen, onClose } = useDisclosure();
 
     return (
         <Box
@@ -98,15 +101,15 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
         >
             <Flex h="100px" alignItems="center" justifyContent="space-between">
                 <HStack
-                    spacing={8}
+                    gap={8}
                     alignItems="center"
                     data-testid="links-container"
                 >
-                    <Logo mr={{ base: 0, sm: 2 }} />
+                    <Logo mr={{ base: 0, sm: 2 }} mt={2} />
                     <SelectedChain display={{ base: 'none', md: 'flex' }} />
                     <HStack
                         as="nav"
-                        spacing={{ base: '4', md: '6' }}
+                        gap={{ base: '4', md: '6' }}
                         display={{ base: 'none', md: 'flex' }}
                     >
                         {links.map(({ key, label, href }) => (
@@ -121,16 +124,21 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                     <IconButton
                         size="sm"
                         bg="transparent"
-                        borderRadius="full"
+                        rounded="full"
                         mx={2}
+                        h={10}
+                        w={10}
                         _hover={{ bg: 'gray.800' }}
                         aria-label="Toggle dark mode"
                         data-testid="theme-toggle-button"
-                        icon={
-                            colorMode === 'light' ? <MoonIcon /> : <SunIcon />
-                        }
                         onClick={toggleColorMode}
-                    />
+                    >
+                        {colorMode === 'light' ? (
+                            <Icon as={FaMoon} />
+                        ) : (
+                            <Icon as={MdOutlineWbSunny} color="white" />
+                        )}
+                    </IconButton>
 
                     <ConnectWallet
                         display={{ base: 'none', md: 'flex' }}
@@ -140,22 +148,27 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                     <IconButton
                         size="md"
                         bg="transparent"
-                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                         aria-label="Open Menu"
                         data-testid="menu-button"
                         display={{ md: 'none' }}
-                        onClick={isOpen ? onClose : onOpen}
+                        onClick={open ? onClose : onOpen}
                         _hover={{ bg: 'gray.800' }}
-                    />
+                    >
+                        {open ? (
+                            <IoClose color="white" />
+                        ) : (
+                            <RxHamburgerMenu color="white" />
+                        )}
+                    </IconButton>
                     <Box display={{ base: 'none', md: 'flex' }}>
                         <Account />
                     </Box>
                 </Flex>
             </Flex>
 
-            {isOpen && (
+            {open && (
                 <Box pb={5} display={{ md: 'none' }} data-testid="mobile-menu">
-                    <Stack as="nav" spacing={4}>
+                    <Stack as="nav" gap={4}>
                         {links.map(({ label, key, href }) => (
                             <NavLink key={key} href={href}>
                                 {label}
@@ -165,7 +178,7 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
 
                         <ConnectWallet
                             wallet={wallet}
-                            onClick={isOpen ? onClose : onOpen}
+                            onClick={open ? onClose : onOpen}
                         />
                     </Stack>
                 </Box>

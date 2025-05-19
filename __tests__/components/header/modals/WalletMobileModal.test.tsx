@@ -31,7 +31,7 @@ describe('Staking Pool Allowance Modal', () => {
     it('Should display account label', () => {
         renderComponent();
 
-        expect(screen.getByText('Your account')).toBeInTheDocument();
+        expect(screen.getByText('Your Account')).toBeInTheDocument();
     });
 
     it('Should not display modal when closed', () => {
