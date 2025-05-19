@@ -17,7 +17,7 @@ import {
     screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useFlag } from '@unleash/proxy-client-react';
+import useFlag from '../../../src/hooks/useFlag';
 import { BigNumber } from 'ethers';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
 import { useWallet } from '../../../src/components/wallet/useWallet';
@@ -38,7 +38,7 @@ const poolFactoryPath = '../../../src/services/poolFactory';
 const servicePoolPath = '../../../src/services/pool';
 const totalPoolBalance = '100000000000000000000000000000000';
 
-jest.mock('@unleash/proxy-client-react');
+jest.mock('../../../src/hooks/useFlag');
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>;
 
 jest.mock('../../../src/components/wallet/useWallet');

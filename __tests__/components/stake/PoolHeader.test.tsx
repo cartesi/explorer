@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useParams } from 'next/navigation';
 import { PoolHeader } from '../../../src/components/stake/PoolHeader';
 import { WalletConnectionContextProps } from '../../../src/components/wallet/definitions';
 import { useWallet } from '../../../src/components/wallet/useWallet';
+import useFlag from '../../../src/hooks/useFlag';
 import { withChakraTheme } from '../../test-utilities';
 
 jest.mock('next/navigation', () => {
@@ -30,10 +30,8 @@ const useParamsMock = useParams as jest.MockedFunction<typeof useParams>;
 jest.mock('../../../src/components/wallet/useWallet');
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
-jest.mock('@unleash/proxy-client-react', () => ({
-    useUnleashContext: () => jest.fn(),
-    useFlag: jest.fn(),
-}));
+jest.mock('../../../src/hooks/useFlag');
+
 const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
 
 const EPoolHeader = withChakraTheme(PoolHeader);

@@ -20,8 +20,8 @@ import {
     screen,
     waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import useFlag from '../../../src/hooks/useFlag';
 
 import { act } from 'react';
 import { UseWallet } from '../../../src/components/wallet/useWallet';
@@ -50,14 +50,7 @@ jest.mock('../../../src/services/token', () => {
     };
 });
 
-jest.mock('@unleash/proxy-client-react', () => {
-    const original = jest.requireActual('@unleash/proxy-client-react');
-    return {
-        __esModule: true,
-        ...original,
-        useFlag: jest.fn(),
-    };
-});
+jest.mock('../../../src/hooks/useFlag');
 
 jest.mock(useENSMod, () => {
     const original = jest.requireActual(useENSMod);

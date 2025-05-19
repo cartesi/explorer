@@ -30,7 +30,6 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
@@ -43,6 +42,7 @@ import { Notification } from '../../../components/Notification';
 import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useWallet } from '../../../components/wallet';
+import useFlag from '../../../hooks/useFlag';
 import theme from '../../../styles/theme';
 import { useMessages } from '../../../utils/messages';
 import { hasPrivateNodeAtom, nodeInfoDataAtom } from '../atoms';

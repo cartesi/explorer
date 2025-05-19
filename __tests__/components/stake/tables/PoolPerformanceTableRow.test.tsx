@@ -11,7 +11,7 @@
 
 import { Table, Tbody } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { useFlag } from '@unleash/proxy-client-react';
+import useFlag from '../../../../src/hooks/useFlag';
 import { FC } from 'react';
 import PoolPerformanceTableRow, {
     PoolPerformanceTableRowProps,
@@ -27,9 +27,7 @@ jest.mock('next/link', () => ({ children, ...props }) => {
     return <div {...restProps}>{children}</div>;
 });
 
-jest.mock('@unleash/proxy-client-react', () => ({
-    useFlag: jest.fn(),
-}));
+jest.mock('../../../../src/hooks/useFlag');
 
 const useFlagMock = useFlag as jest.MockedFunction<typeof useFlag>;
 

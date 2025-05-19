@@ -26,10 +26,6 @@ jest.mock('next/navigation', () => {
         usePathname: jest.fn(),
     };
 });
-jest.mock('@unleash/proxy-client-react', () => ({
-    useUnleashContext: () => jest.fn(),
-    useFlag: jest.fn(),
-}));
 
 jest.mock(walletMod, () => {
     const originalModule = jest.requireActual(walletMod);

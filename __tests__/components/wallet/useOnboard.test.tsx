@@ -31,11 +31,6 @@ import { Network, networks } from '../../../src/utils/networks';
 
 jest.mock('ethers');
 
-jest.mock('@unleash/proxy-client-react', () => ({
-    useUnleashContext: () => jest.fn(),
-    useFlag: jest.fn(),
-}));
-
 jest.mock('@web3-onboard/core', () => {
     const originalModule = jest.requireActual('@web3-onboard/core');
     return {
