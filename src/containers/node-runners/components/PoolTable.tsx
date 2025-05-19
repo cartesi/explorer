@@ -31,7 +31,6 @@ import {
     useDisclosure,
     VisuallyHidden,
 } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { useAtom } from 'jotai';
 import NextLink from 'next/link';
 import { useEffect } from 'react';
@@ -43,6 +42,7 @@ import { OrderedContent } from '../../../components/OrderedContent';
 import { TableResponsiveHolder } from '../../../components/TableResponsiveHolder';
 import { useWallet } from '../../../components/wallet';
 import { useUserNodes } from '../../../graphql/hooks/useNodes';
+import useFlag from '../../../hooks/useFlag';
 import { useCartesiToken } from '../../../services/token';
 import theme from '../../../styles/theme';
 import { useMessages } from '../../../utils/messages';

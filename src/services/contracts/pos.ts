@@ -23,8 +23,8 @@ import sepolia from '@cartesi/pos/export/abi/sepolia.json';
 
 import localhost from './localhost.json';
 
-import { useFlag } from '@unleash/proxy-client-react';
 import { ChainMap, useContract } from '.';
+import useFlag from '../../hooks/useFlag';
 
 const abis: ChainMap = {
     1: mainnet,

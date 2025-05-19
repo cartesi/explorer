@@ -1,2 +1,5 @@
 src/contracts
 src/generated
+.next
+coverage
+.vscode

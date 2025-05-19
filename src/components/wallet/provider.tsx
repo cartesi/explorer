@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useUnleashContext } from '@unleash/proxy-client-react';
-import { createContext, FC, useEffect, PropsWithChildren } from 'react';
+import { createContext, FC, PropsWithChildren } from 'react';
 import { WalletConnectionContextProps } from './definitions';
 import { useOnboard, UseOnboardProps } from './useOnboard';
 
@@ -46,8 +45,6 @@ export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
         selectAccount,
     } = useOnboard({ chainIds, appMetaData });
 
-    const updateUnleashCtx = useUnleashContext();
-
     const activate = async () => {
         await connectWallet();
     };
@@ -55,10 +52,6 @@ export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
     const deactivate = () => {
         disconnectWallet();
     };
-
-    useEffect(() => {
-        updateUnleashCtx({ userId: account || '' });
-    }, [active, account, updateUnleashCtx]);
 
     const defaults = { activate, active, deactivate, error };
     const value = active

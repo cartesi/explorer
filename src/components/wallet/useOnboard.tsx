@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Web3Provider } from '@ethersproject/providers';
-import { useFlag } from '@unleash/proxy-client-react';
 import coinbaseWalletModule from '@web3-onboard/coinbase';
 import { AppMetadata, Chain } from '@web3-onboard/common';
 import Onboard, {
@@ -27,6 +26,7 @@ import { WalletConnectOptions } from '@web3-onboard/walletconnect/dist/types';
 import { ethers } from 'ethers';
 import { contains, debounce, pick } from 'lodash/fp';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import useFlag from '../../hooks/useFlag';
 import { Network } from '../../utils/networks';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { WalletType } from './definitions';

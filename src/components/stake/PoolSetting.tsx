@@ -31,7 +31,6 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
@@ -39,6 +38,7 @@ import { useForm } from 'react-hook-form';
 import { FaBalanceScaleLeft } from 'react-icons/fa';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
+import useFlag from '../../hooks/useFlag';
 import { useStakingPool } from '../../services/pool';
 import { useStakingPoolFactory } from '../../services/poolFactory';
 import { getMessages } from '../../utils/messages';

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { useMediaQuery } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { useFlag } from '@unleash/proxy-client-react';
 import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
@@ -30,15 +29,6 @@ const defaultProps = {
 };
 jest.mock('../../../src/graphql/hooks/useNodes');
 
-jest.mock('@unleash/proxy-client-react', () => {
-    const original = jest.requireActual('@unleash/proxy-client-react');
-    return {
-        __esModule: true,
-        ...original,
-        useFlag: jest.fn(),
-    };
-});
-
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
     return {
@@ -55,13 +45,10 @@ const useUserNodeStub = useUserNodes as jest.MockedFunction<
     typeof useUserNodes
 >;
 
-const useFlagStub = useFlag as jest.MockedFunction<typeof useFlag>;
-
 describe('NodeInfoSection component', () => {
     beforeEach(() => {
         mockUseMediaQuery.mockReturnValue([true]);
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
-        useFlagStub.mockReturnValue(false);
     });
 
     afterEach(() => {

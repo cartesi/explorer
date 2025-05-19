@@ -6,7 +6,6 @@ import Web3Container from '../src/components/Web3Container';
 import theme from '../src/styles/theme';
 import React, { FC } from 'react';
 import ColorMode from './ColorMode';
-import withFeatureFlags from './withFeatureFlags';
 import { StoryContext } from '@storybook/react';
 import { Fonts } from '../src/components/Fonts';
 import { SelectedChain } from '../src/components/header';
@@ -25,7 +24,7 @@ const withChakra = (Story: FC, context: StoryContext) => {
 };
 
 const preview: Preview = {
-    decorators: [withChakra, withFeatureFlags],
+    decorators: [withChakra],
     globalTypes: {
         theme: {
             name: 'Theme',

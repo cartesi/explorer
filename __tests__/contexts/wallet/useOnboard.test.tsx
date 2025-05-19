@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { useUnleashContext } from '@unleash/proxy-client-react';
 import { WalletConnectionProvider } from '../../../src/components/wallet/provider';
 import { useOnboard } from '../../../src/components/wallet/useOnboard';
 import { useWallet } from '../../../src/components/wallet/useWallet';
@@ -29,24 +28,10 @@ jest.mock(walletMod, () => {
     };
 });
 
-jest.mock('@unleash/proxy-client-react', () => {
-    const originalMod = jest.requireActual('@unleash/proxy-client-react');
-
-    return {
-        __esModule: true,
-        ...originalMod,
-        useFlag: jest.fn(),
-        useUnleashContext: jest.fn(),
-    };
-});
-
 jest.mock('../../../src/components/wallet/useOnboard');
 jest.mock('@chakra-ui/react');
 
 const useOnboardStub = useOnboard as jest.MockedFunction<typeof useOnboard>;
-const useUnleashContextStub = useUnleashContext as jest.MockedFunction<
-    typeof useUnleashContext
->;
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -71,7 +56,6 @@ describe('Wallet Provider', () => {
 
     beforeEach(() => {
         useOnboardStub.mockReturnValue(buildMockUseOnboardV2Return());
-        useUnleashContextStub.mockReturnValue(jest.fn());
         mockUseWallet.mockReturnValue(walletMock);
     });
 

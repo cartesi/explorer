@@ -16,7 +16,7 @@ import {
     render,
     screen,
 } from '@testing-library/react';
-import { useFlag } from '@unleash/proxy-client-react';
+import useFlag from '../../../../src/hooks/useFlag';
 import PoolPerformanceTable, {
     PoolPerformanceTableProps,
 } from '../../../../src/components/stake/tables/PoolPerformanceTable';
@@ -33,9 +33,7 @@ jest.mock('@chakra-ui/react', () => {
     };
 });
 
-jest.mock('@unleash/proxy-client-react', () => ({
-    useFlag: jest.fn(),
-}));
+jest.mock('../../../../src/hooks/useFlag');
 
 const defaultProps = {
     account: '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6',
