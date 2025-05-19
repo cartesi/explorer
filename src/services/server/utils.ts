@@ -17,6 +17,8 @@ import {
 } from '../../graphql/queries';
 import { networks } from '../../utils/networks';
 import { createApollo } from '../apollo';
+import AddressENSService from './ens/AddressENSService';
+import { formatEnsName } from '../../utils/stringUtils';
 
 export const getChainId = (chainName: string) =>
     parseInt(
@@ -46,3 +48,10 @@ export async function isCartesiUser(address: string, chainId: number) {
     }
     return isUser;
 }
+
+export const getFormattedEnsName = async (address: string) => {
+    const chainId = getChainId('mainnet');
+    const result = await AddressENSService.getEntry(address, chainId);
+    const domain = result.ok ? result.data.name : undefined;
+    return formatEnsName(address, domain);
+};

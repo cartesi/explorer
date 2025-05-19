@@ -2,9 +2,11 @@
 //If you need to add more setup options before each test, it's common to add them here.
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-canvas-mock';
+import 'cross-fetch/polyfill';
 import { TextDecoder, TextEncoder } from 'util';
 
 process.env.ENS_ENTRIES_PER_REQ_LIMIT = 2;
+process.env.TURSO_DATABASE_URL = 'file:local-test.db';
 
 Object.assign(global, { TextEncoder, TextDecoder });
 
