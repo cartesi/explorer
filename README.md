@@ -69,7 +69,7 @@ $ yarn deploy:localhost
 
 ### Environment variables
 
-There are two files in the explorer project the`.env.development` and `.env.production`. They set default values e.g. config for [Unleash](https://www.getunleash.io/) that is our feature-flag provider. You can create a file called `.env.development.local` that is gitignored so you can add your secrets there.
+There are two files in the explorer project the`.env.development` and `.env.production` as reference. You can create a file called `.env.development.local` that is gitignored so you can add your secrets there.
 
 The next step is to create an account on [Infura](https://infura.io/) or any other node-rpc. Create a project so you can have access to a node-rpc endpoint.
 
