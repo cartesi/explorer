@@ -11,6 +11,10 @@ declare namespace NodeJS {
         NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: string;
         NEXT_PUBLIC_MAINNET_GRAPHQL_URL: string;
         NEXT_PUBLIC_SEPOLIA_GRAPHQL_URL: string;
+        
+        
+        NEXT_PUBLIC_FLAG_POS_V2_ENABLED: string;
+        NEXT_PUBLIC_FLAG_ANKR_ENABLED: string;
         /**
          * the node-rpc endpoint to access ethereum mainnet network.
          * Default to https://rpc.ankr.com/eth
