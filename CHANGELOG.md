@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.11.0] - 2025-05-20
+
+-   Phase out feature flag service. Instead the system leverage environment variables.
+-   Upgrade a few dependencies to its latest.
+-   Move routing system from pages to app-router architecture.
+-   Phase out the use of old ISR page generation. Instead we leverage the new ENS cache system to retrieve pool's metadata page information.
+
 ## [3.10.1] - 2025-04-15
 
 -   Added Vercel speed metrics library. The previous way of acquiring information about the speed of the web application was deprecated.
@@ -424,7 +431,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.10.1...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.11.0...HEAD
+[3.11.0]: https://github.com/cartesi/explorer/compare/v3.11.0...v3.10.1
 [3.10.1]: https://github.com/cartesi/explorer/compare/v3.10.1...v3.10.0
 [3.10.0]: https://github.com/cartesi/explorer/compare/v3.10.0...v3.9.4
 [3.9.4]: https://github.com/cartesi/explorer/compare/v3.9.4...v3.9.3
