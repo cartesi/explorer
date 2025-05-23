@@ -51,7 +51,7 @@
         "@web3-onboard/react": "^2.10.1",
         "@web3-onboard/walletconnect": "^2.6.2",
         "big-number-input": "1.0.3",
-        "chart.js": "4.4.8",
+        "chart.js": "4.4.9",
         "cors": "2.8.5",
         "countdown": "2.6.0",
         "date-fns": "2.28.0",
