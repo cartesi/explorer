@@ -10,13 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '@chakra-ui/react';
 import { ChartIcon } from '../../components/Icons';
 
 import PrimaryCard from '../../components/home/PrimaryCard';
 
 const defaultProps = {
     children: 'Primary Card',
-    icon: ChartIcon,
+    icon: <Icon as={ChartIcon} />,
 };
 
 export default {

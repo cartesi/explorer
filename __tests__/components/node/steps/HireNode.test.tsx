@@ -12,6 +12,7 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import {
     act,
+    findByRole,
     findByText,
     fireEvent,
     render,
@@ -24,6 +25,9 @@ import { useBalance } from '../../../../src/services/eth';
 import { useNode } from '../../../../src/services/node';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildNodeObj } from '../mocks';
+import { withChakraTheme } from '../../../test-utilities';
+
+const HireNodeE = withChakraTheme(HireNode);
 
 const walletMod = `../../../../src/components/wallet/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
@@ -114,14 +118,14 @@ describe('HireNode Step', () => {
     });
 
     it('Should render the step-number assigned to it', () => {
-        render(<HireNode stepNumber={1} />);
+        render(<HireNodeE stepNumber={1} />);
 
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     describe('When not in focus', () => {
         it('Should only display the number, the title and the subtitle when not in focus', () => {
-            render(<HireNode stepNumber={1} />);
+            render(<HireNodeE stepNumber={1} />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
@@ -139,7 +143,7 @@ describe('HireNode Step', () => {
 
     describe('When in focus', () => {
         it('Should display the header content, the body and action buttons', () => {
-            render(<HireNode stepNumber={1} inFocus />);
+            render(<HireNodeE stepNumber={1} inFocus />);
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
@@ -164,7 +168,7 @@ describe('HireNode Step', () => {
         });
 
         it('Should keep the NEXT button disable when the node address and initial funds are empty', () => {
-            render(<HireNode inFocus stepNumber={1} />);
+            render(<HireNodeE inFocus stepNumber={1} />);
             const button = screen.getByText('NEXT');
             expect(button.hasAttribute('disabled')).toBe(true);
         });
@@ -173,7 +177,7 @@ describe('HireNode Step', () => {
             const node = buildNodeObj('available', '0x00');
             mockUseNode.mockReturnValue(node);
             mockUseBalance.mockReturnValue(toBigNumber('6'));
-            const { rerender } = render(<HireNode inFocus stepNumber={1} />);
+            const { rerender } = render(<HireNodeE inFocus stepNumber={1} />);
             const addressInput = screen.getByLabelText('Node Address');
             const fundsInput = screen.getByLabelText('Initial Funds');
 
@@ -197,12 +201,12 @@ describe('HireNode Step', () => {
             );
 
             //removing the focus of it i.e. user clicked PREVIOUS
-            rerender(<HireNode stepNumber={1} />);
+            rerender(<HireNodeE stepNumber={1} />);
 
             expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
 
             // user goes back to the HireNode step
-            rerender(<HireNode inFocus stepNumber={1} />);
+            rerender(<HireNodeE inFocus stepNumber={1} />);
 
             expect(screen.queryByDisplayValue(account)).not.toBeInTheDocument();
             expect(screen.queryByDisplayValue(2)).not.toBeInTheDocument();
@@ -219,13 +223,13 @@ describe('HireNode Step', () => {
             node.transaction.acknowledged = false;
             node.transaction.submitting = true;
             mockUseNode.mockReturnValue(node);
-            render(<HireNode inFocus stepNumber={1} />);
+            render(<HireNodeE inFocus stepNumber={1} />);
 
             const alert = screen.getByRole('alert');
             expect(
                 await findByText(alert, 'Hiring the node...')
             ).toBeInTheDocument();
-            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+            expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
 
         it('should display an error notification when the transaction failed', () => {
@@ -234,7 +238,7 @@ describe('HireNode Step', () => {
             node.transaction.error =
                 'Tx metamask: user rejected the transaction';
             mockUseNode.mockReturnValue(node);
-            render(<HireNode inFocus stepNumber={1} />);
+            render(<HireNodeE inFocus stepNumber={1} />);
 
             expect(
                 screen.getByText('Hiring the node failed')
@@ -249,7 +253,9 @@ describe('HireNode Step', () => {
         describe('PREVIOUS button', () => {
             it('should call onPrevious callback when clicked', () => {
                 const onPrev = jest.fn();
-                render(<HireNode inFocus stepNumber={1} onPrevious={onPrev} />);
+                render(
+                    <HireNodeE inFocus stepNumber={1} onPrevious={onPrev} />
+                );
                 const button = screen.getByText('PREVIOUS');
                 fireEvent.click(button);
 
@@ -262,7 +268,7 @@ describe('HireNode Step', () => {
                 const node = buildNodeObj('available', '0x00');
                 mockUseNode.mockReturnValue(node);
                 mockUseBalance.mockReturnValue(toBigNumber('6'));
-                render(<HireNode inFocus stepNumber={1} />);
+                render(<HireNodeE inFocus stepNumber={1} />);
 
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -283,13 +289,13 @@ describe('HireNode Step', () => {
                 expect(node.hire).toHaveBeenCalledWith(toBigNumber('2'));
             });
 
-            it('Should display spinner when clicked and block any futher click to have effect while transaction in course', async () => {
+            it('Should display spinner when clicked and block any further click to have effect while transaction in course', async () => {
                 const node = buildNodeObj('available', '0x00');
                 mockUseNode.mockReturnValue(node);
                 mockUseBalance.mockReturnValue(toBigNumber('6'));
                 // First render
                 const { rerender } = render(
-                    <HireNode inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />
                 );
 
                 const addressInput = screen.getByLabelText('Node Address');
@@ -311,11 +317,9 @@ describe('HireNode Step', () => {
                 node.transaction.isOngoing = true;
                 node.transaction.acknowledged = false;
                 // Then we render the component again to get fresh values
-                rerender(<HireNode inFocus stepNumber={1} />);
+                rerender(<HireNodeE inFocus stepNumber={1} />);
 
-                expect(
-                    await findByText(button, 'Loading...')
-                ).toBeInTheDocument();
+                expect(button.hasAttribute('disabled')).toBe(true);
 
                 // trying to mess with hire() method call.
                 fireEvent.click(button);
@@ -329,7 +333,7 @@ describe('HireNode Step', () => {
     describe('When node is hired', () => {
         it('should call onComplete callback, transition the step to a completed state and update hired-node-address atom', async () => {
             const Component = () => (
-                <HireNode inFocus stepNumber={1} onComplete={onComplete} />
+                <HireNodeE inFocus stepNumber={1} onComplete={onComplete} />
             );
             const nodeAddress = '0xBB0d5E9bba2606D01683605cc09eB5561740f623';
             const node = buildNodeObj('available', '0x00');

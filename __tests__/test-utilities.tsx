@@ -22,7 +22,7 @@ const withChakraTheme =
     <T,>(Component: FunctionComponent<T>): FunctionComponent<T> =>
     (props: T) =>
         (
-            <ChakraProvider theme={theme}>
+            <ChakraProvider value={theme}>
                 <Component {...props} />
             </ChakraProvider>
         );

@@ -11,16 +11,8 @@
 
 'use client';
 
-import {
-    Box,
-    Heading,
-    HStack,
-    Link as ChakraLink,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import Link from 'next/link';
+import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { FC } from 'react';
 import { AiOutlineLeft } from 'react-icons/ai';
 import Layout from '../Layout';
@@ -29,6 +21,7 @@ import CustomizeEthereumNode from './steps/CustomizeEthereumNode';
 import HireNode from './steps/HireNode';
 import SetAllowance from './steps/SetAllowance';
 import SetUpNode from './steps/SetUpNode';
+import { useColorModeValue } from '../ui/color-mode';
 
 const NewNode: FC = () => {
     const bgSection = useColorModeValue('gray.80', 'dark.gray.primary');
@@ -41,14 +34,11 @@ const NewNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={Link}
-                    href="/node-runners"
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>Back</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <NextLink href="/node-runners">
+                        <Box as={AiOutlineLeft} mr={1} />
+                        <Text>Back</Text>
+                    </NextLink>
                 </Box>
             </HStack>
             <Box
@@ -75,7 +65,7 @@ const NewNode: FC = () => {
                     alignItems="stretch"
                     display={{ base: 'none', md: 'flex' }}
                 >
-                    <ChakraLink
+                    <Link
                         // TODO: Replace with new upcoming tutorial
                         href="https://medium.com/cartesi/running-a-node-and-staking-42523863970e"
                         target="_blank"
@@ -90,7 +80,7 @@ const NewNode: FC = () => {
                         alignSelf="flex-end"
                     >
                         Learn from tutorial
-                    </ChakraLink>
+                    </Link>
                 </Stack>
                 <StepGroup
                     mobileHeaderProps={{ top: '100px' }}

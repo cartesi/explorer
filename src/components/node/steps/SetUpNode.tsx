@@ -15,21 +15,20 @@ import {
     Flex,
     Heading,
     Link,
-    ListItem,
+    List,
     Stack,
     Text,
-    UnorderedList,
     useClipboard,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { MdContentCopy } from 'react-icons/md';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
+import { useColorModeValue } from '../../ui/color-mode';
 
 const { COMPLETED } = StepStatus;
 
 const CopyBoard = ({ command, children }) => {
-    const { hasCopied, onCopy } = useClipboard(command);
+    const { copied, copy } = useClipboard({ value: command });
     const bgColor = useColorModeValue('teal.light', 'dark.gray.tertiary');
     return (
         <Flex
@@ -42,18 +41,18 @@ const CopyBoard = ({ command, children }) => {
             wrap="nowrap"
         >
             <Box maxWidth={{ base: '75%', md: '90%' }}>{children}</Box>{' '}
-            {!hasCopied && (
+            {!copied && (
                 <Box minH={6} alignSelf="flex-start" ml={2}>
                     <Box
                         as={MdContentCopy}
                         cursor={'pointer'}
-                        onClick={onCopy}
+                        onClick={copy}
                         fontSize="xl"
                         minW={6}
                     />
                 </Box>
             )}
-            {hasCopied && (
+            {copied && (
                 <Text fontSize="sm" ml={2} alignSelf="flex-start">
                     Copied
                 </Text>
@@ -64,6 +63,7 @@ const CopyBoard = ({ command, children }) => {
 
 const SetUpNode = ({
     stepNumber,
+    currentStep,
     onComplete,
     onPrevious,
     onStepActive,
@@ -89,6 +89,9 @@ const SetUpNode = ({
         'dark.border.quaternary'
     );
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
+
     return (
         <Step
             title="Set up Node"
@@ -96,9 +99,9 @@ const SetUpNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
-            borderWidth={'1px'}
+            borderWidth={isHighlighted ? '1px' : 0}
             borderColor={borderColor}
             borderStyle={'solid'}
         >
@@ -106,8 +109,8 @@ const SetUpNode = ({
                 <Heading as="h3" size="sm" my={4}>
                     Start By installing Docker Enginer
                 </Heading>
-                <UnorderedList pl={2}>
-                    <ListItem>
+                <List.Root pl={2}>
+                    <List.Item _marker={{ color: 'inherit' }} ml={4}>
                         <Link
                             color={linkColor}
                             href="https://docs.docker.com/desktop/mac/install/"
@@ -118,8 +121,8 @@ const SetUpNode = ({
                         >
                             Download for Mac (macOS)
                         </Link>
-                    </ListItem>
-                    <ListItem>
+                    </List.Item>
+                    <List.Item _marker={{ color: 'inherit' }} ml={4}>
                         <Link
                             color={linkColor}
                             href="https://docs.docker.com/desktop/windows/install/"
@@ -130,18 +133,18 @@ const SetUpNode = ({
                         >
                             Download for Windows
                         </Link>
-                    </ListItem>
-                </UnorderedList>
+                    </List.Item>
+                </List.Root>
                 <Heading as="h3" size="sm" my={4}>
                     Run Cartesi's node
                 </Heading>
-                <UnorderedList pl={2}>
-                    <ListItem>
+                <List.Root pl={2}>
+                    <List.Item _marker={{ color: 'inherit' }} ml={4}>
                         <Text>
                             Open a terminal and run the following command lines.
                         </Text>
-                    </ListItem>
-                </UnorderedList>
+                    </List.Item>
+                </List.Root>
 
                 <CopyBoard command={dockerPullTxt}>{dockerPullTxt}</CopyBoard>
 
@@ -165,8 +168,8 @@ const SetUpNode = ({
                     {dockerRunTxt}
                 </CopyBoard>
 
-                <UnorderedList pl={2}>
-                    <ListItem>
+                <List.Root pl={2}>
+                    <List.Item _marker={{ color: 'inherit' }} ml={4}>
                         <Heading as="h3" size="sm" my={4} mb={2}>
                             Where &lt;URL&gt; must be replaced by your
                             third-party's URL.
@@ -175,8 +178,8 @@ const SetUpNode = ({
                             The worker node will create a new Ethereum wallet,
                             asking for an encryption password.
                         </Text>
-                    </ListItem>
-                </UnorderedList>
+                    </List.Item>
+                </List.Root>
             </StepBody>
             <StepActions>
                 <Stack
@@ -184,7 +187,7 @@ const SetUpNode = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
@@ -194,7 +197,7 @@ const SetUpNode = ({
                         PREVIOUS
                     </Button>
                     <Button
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(e) => {
                             setState(COMPLETED);

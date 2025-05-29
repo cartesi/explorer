@@ -11,24 +11,29 @@
 
 import React, { FC } from 'react';
 import {
-    Select,
-    SelectProps,
-    Text,
     HStack,
-    useColorModeValue,
+    Select,
+    Text,
+    Portal,
+    createListCollection,
 } from '@chakra-ui/react';
-import { TriangleDownIcon } from '@chakra-ui/icons';
+import { useColorModeValue } from './ui/color-mode';
 
-export interface PerPageSelectProps extends SelectProps {
+export interface PerPageSelectProps {
+    value: number;
     options: number[];
-    onChange: (event: React.ChangeEvent) => void;
+    onChange: (value: string) => void;
 }
 
-const SelectIcon = () => <TriangleDownIcon ml={5} width={4} height={4} />;
-
 const PerPageSelect: FC<PerPageSelectProps> = (props) => {
-    const { value, options, onChange, ...restProps } = props;
-    const borderWidth = useColorModeValue('0 0 1px 0', 0);
+    const { value, options, onChange } = props;
+    const borderWidth = useColorModeValue('0 0 1px 0', '0');
+    const selectOptions = createListCollection({
+        items: options.map((option) => ({
+            label: option.toString(),
+            value: option.toString(),
+        })),
+    });
 
     return (
         <HStack
@@ -40,23 +45,39 @@ const PerPageSelect: FC<PerPageSelectProps> = (props) => {
                 Rows per page
             </Text>
 
-            <Select
-                value={value}
+            <Select.Root
+                value={[value.toString()]}
                 width="4.625rem"
-                borderWidth={borderWidth}
-                borderColor="gray.900"
                 borderRadius={0}
                 fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}
-                icon={<SelectIcon />}
-                onChange={onChange}
-                {...restProps}
+                onValueChange={({ value }) => {
+                    onChange(value[0]);
+                }}
+                collection={selectOptions}
+                size="sm"
             >
-                {options.map((option) => (
-                    <option key={`rows-per-page-${option}`} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </Select>
+                <Select.HiddenSelect />
+                <Select.Control>
+                    <Select.Trigger>
+                        <Select.ValueText />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                        <Select.Indicator />
+                    </Select.IndicatorGroup>
+                </Select.Control>
+                <Portal>
+                    <Select.Positioner>
+                        <Select.Content>
+                            {selectOptions.items.map((option) => (
+                                <Select.Item key={option.value} item={option}>
+                                    {option.label}
+                                    <Select.ItemIndicator />
+                                </Select.Item>
+                            ))}
+                        </Select.Content>
+                    </Select.Positioner>
+                </Portal>
+            </Select.Root>
         </HStack>
     );
 };

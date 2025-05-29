@@ -9,20 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IconProps } from '@chakra-ui/icons';
-import {
-    Box,
-    Flex,
-    HStack,
-    Heading,
-    StackProps,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { Box, Flex, HStack, Heading, StackProps } from '@chakra-ui/react';
+import React, { FC, ReactNode } from 'react';
+import { useColorModeValue } from '../ui/color-mode';
 
 export interface PrimaryCardProps extends StackProps {
     children: React.ReactNode;
-    icon: FC<IconProps>;
+    icon: ReactNode;
 }
 
 const PrimaryCard: FC<PrimaryCardProps> = ({
@@ -30,8 +23,6 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
     icon,
     ...restProps
 }) => {
-    const CardIcon = icon;
-    const iconColor = useColorModeValue('light.primary', 'dark.primary');
     const bg = useColorModeValue('dark.gray.senary', 'transparent');
 
     return (
@@ -45,7 +36,7 @@ const PrimaryCard: FC<PrimaryCardProps> = ({
                 placeContent="center"
                 mr="0.25rem"
             >
-                <CardIcon color={iconColor} w={6} h={6} />
+                {icon}
             </Box>
 
             <Box>

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, Stack, VStack } from '@chakra-ui/react';
+import { Icon, List, Stack, VStack } from '@chakra-ui/react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Card } from '../components/Card';
 import { WalletIcon } from '../components/Icons';
@@ -27,7 +27,7 @@ const Template: Story = {
         return (
             <Stack
                 bg="gray.80"
-                spacing={8}
+                gap={8}
                 px={{ base: '3vw', lg: '12vw', xl: '18vw' }}
                 pt={{ base: 8, sm: '3vw' }}
                 pb={{ base: 8, sm: '5vw' }}
@@ -46,7 +46,7 @@ export const Default: Story = {
         title: 'Run a private node',
         subtitle: 'explanation UI copy',
         buttonText: 'CREATE A NODE',
-        icon: <WalletIcon color="yellow.500" w={6} h={6} />,
+        icon: <Icon as={WalletIcon} color="yellow.500" w={6} h={6} />,
         iconBg: 'yellow.100',
     },
     ...Template,
@@ -58,7 +58,7 @@ export const WithSimpleTooltipContent: Story = {
         tooltip: 'Simple tooltip string content.',
         subtitle: 'A simple subtitle',
         buttonText: 'create simple stuff',
-        icon: <WalletIcon color="blue.500" w={6} h={6} />,
+        icon: <Icon as={WalletIcon} color="blue.500" w={6} h={6} />,
         iconBg: 'blue.100',
     },
     ...Template,
@@ -78,18 +78,18 @@ export const WithOrderedTooltipContent: Story = {
                 px={{ base: 3, md: 7 }}
             >
                 <p>Main responsibilities:</p>
-                <Box as="ol" pl={{ base: 4, md: 8 }} type="1">
+                <List.Root as="ol" pl={{ base: 4, md: 8 }}>
                     {orderedText.map((content, i) => (
-                        <li id={`text-${i}}`} key={i}>
+                        <List.Item id={`text-${i}}`} key={i}>
                             {content}
-                        </li>
+                        </List.Item>
                     ))}
-                </Box>
+                </List.Root>
             </VStack>
         ),
         subtitle: 'Run your own node',
         buttonText: 'CREATE A NODE',
-        icon: <WalletIcon color="yellow.500" w={6} h={6} />,
+        icon: <Icon as={WalletIcon} color="yellow.500" w={6} h={6} />,
         iconBg: 'yellow.100',
     },
     ...Template,

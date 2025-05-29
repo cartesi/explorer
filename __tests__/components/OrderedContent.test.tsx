@@ -11,6 +11,9 @@
 
 import { render, screen } from '@testing-library/react';
 import { OrderedContent } from '../../src/components/OrderedContent';
+import { withChakraTheme } from '../test-utilities';
+
+const Component = withChakraTheme(OrderedContent);
 
 describe('OrderedContent component', () => {
     it('Should render the title and list of subjected enumerated', () => {
@@ -21,10 +24,10 @@ describe('OrderedContent component', () => {
         ];
 
         const { container } = render(
-            <OrderedContent title={title} orderedItems={activities} />
+            <Component title={title} orderedItems={activities} />
         );
 
-        expect(container.querySelector('ol').getAttribute('type')).toEqual('1');
+        expect(container.querySelector('ol')).toBeInTheDocument();
 
         expect(screen.getByText('Proposed activities')).toBeInTheDocument();
         expect(

@@ -40,7 +40,7 @@ const MarketInfoPanel: FunctionComponent<MarketInfoProps> = (props) => {
 
     return (
         <VStack align="flex-start">
-            <Box fontSize="md" {...textProps}>
+            <Box fontSize="md" mb={3} {...textProps}>
                 {label}
             </Box>
             {value && (

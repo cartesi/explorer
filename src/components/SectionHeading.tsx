@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Heading } from '@chakra-ui/layout';
+import { Heading } from '@chakra-ui/react';
 import React, { FC } from 'react';
+import { useColorModeValue } from './ui/color-mode';
 
 interface SectionHeadingProps {
     children: React.ReactNode;

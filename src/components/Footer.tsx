@@ -15,13 +15,12 @@ import {
     Flex,
     Grid,
     GridItem,
+    Icon,
     Link,
     SimpleGrid,
     Stack,
     Text,
     VisuallyHidden,
-    chakra,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
@@ -29,11 +28,12 @@ import theme from '../styles/theme';
 import Address from './Address';
 import { CartesiTranparent } from './Icons';
 import { useWallet } from './wallet/useWallet';
+import { useColorModeValue } from './ui/color-mode';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
         <Text
-            fontFamily={theme.fonts.heading}
+            fontFamily={theme.tokens.getVar('fonts.heading')}
             fontWeight="600"
             fontSize="lg"
             mb={2}
@@ -53,7 +53,7 @@ const SocialButton = ({
     href: string;
 }) => {
     return (
-        <chakra.button
+        <Link
             bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
             rounded="full"
             w={8}
@@ -61,6 +61,8 @@ const SocialButton = ({
             cursor="pointer"
             as="a"
             href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
@@ -71,7 +73,7 @@ const SocialButton = ({
         >
             <VisuallyHidden>{label}</VisuallyHidden>
             {children}
-        </chakra.button>
+        </Link>
     );
 };
 
@@ -108,7 +110,9 @@ const Footer: FC<FooterProps> = (props) => {
                                 <Link
                                     href={href}
                                     key={index}
-                                    isExternal
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    color="white"
                                     _hover={{ color: linkHoverColor }}
                                 >
                                     {label}
@@ -121,14 +125,16 @@ const Footer: FC<FooterProps> = (props) => {
                         <ListHeader>Support Center</ListHeader>
                         <SimpleGrid
                             columns={{ base: 1, md: 2 }}
-                            spacing={2}
                             marginTop={4}
+                            gap={2}
                         >
                             {support.map(({ label, href }, index) => (
                                 <Link
                                     href={href}
                                     key={index}
-                                    isExternal
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    color="white"
                                     _hover={{ color: linkHoverColor }}
                                 >
                                     {label}
@@ -148,6 +154,7 @@ const Footer: FC<FooterProps> = (props) => {
                                         key={index}
                                         chainId={chainId}
                                         truncated
+                                        iconColor="white"
                                     />
                                 </Box>
                             ))}
@@ -158,7 +165,9 @@ const Footer: FC<FooterProps> = (props) => {
                             <Link
                                 href={href}
                                 key={index}
-                                isExternal
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                color="white"
                                 _hover={{ color: linkHoverColor }}
                             >
                                 {label}
@@ -176,36 +185,41 @@ const Footer: FC<FooterProps> = (props) => {
                 gap={4}
             >
                 <GridItem colStart={10} colEnd={-1}>
-                    <Stack direction={'row'} spacing={6}>
+                    <Stack direction={'row'} gap={6}>
                         <SocialButton
                             label="Cartesi"
                             href="https://cartesi.io/"
                         >
-                            <CartesiTranparent />
+                            <Icon
+                                as={CartesiTranparent}
+                                color="white"
+                                w={6}
+                                h={6}
+                            />
                         </SocialButton>
                         <SocialButton
                             label="Github"
                             href="https://github.com/cartesi"
                         >
-                            <FaGithub size={24} />
+                            <Icon as={FaGithub} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Discord"
                             href="https://discord.gg/pfXMwXDDfW"
                         >
-                            <FaDiscord size={24} />
+                            <Icon as={FaDiscord} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Youtube"
                             href="https://www.youtube.com/@cartesiproject/featured"
                         >
-                            <FaYoutube size={24} />
+                            <Icon as={FaYoutube} color="white" w={6} h={6} />
                         </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <FaTwitter size={24} />
+                            <Icon as={FaTwitter} color="white" w={6} h={6} />
                         </SocialButton>
                     </Stack>
                 </GridItem>
@@ -215,7 +229,9 @@ const Footer: FC<FooterProps> = (props) => {
                     (c) Cartesi and individual authors (see{' '}
                     <Link
                         href="https://github.com/cartesi/explorer/blob/main/AUTHORS"
-                        isExternal
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        color="white"
                         _hover={{
                             color: linkHoverColor,
                         }}
@@ -227,7 +243,9 @@ const Footer: FC<FooterProps> = (props) => {
                     SPDX-License-Identifier: Apache-2.0 (see{' '}
                     <Link
                         href="https://github.com/cartesi/explorer/blob/main/LICENSE"
-                        isExternal
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        color="white"
                         _hover={{
                             color: linkHoverColor,
                         }}
