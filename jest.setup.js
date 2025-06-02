@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 //If you need to add more setup options before each test, it's common to add them here.
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import 'jest-canvas-mock';
 import 'cross-fetch/polyfill';
 import { TextDecoder, TextEncoder } from 'util';
