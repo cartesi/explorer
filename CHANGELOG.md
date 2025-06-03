@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.11.1] - 2025-06-03
+
+-   Upgrade core dependencies and removal of obsolete packages.
+-   Mitigate security alerts.
+
 ## [3.11.0] - 2025-05-20
 
 -   Phase out feature flag service. Instead the system leverage environment variables.
@@ -431,7 +436,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.11.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.11.1...HEAD
+[3.11.1]: https://github.com/cartesi/explorer/compare/v3.11.1...v3.11.0
 [3.11.0]: https://github.com/cartesi/explorer/compare/v3.11.0...v3.10.1
 [3.10.1]: https://github.com/cartesi/explorer/compare/v3.10.1...v3.10.0
 [3.10.0]: https://github.com/cartesi/explorer/compare/v3.10.0...v3.9.4
