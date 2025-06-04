@@ -9,49 +9,58 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { extendTheme } from '@chakra-ui/react';
-import { Button } from './components/button';
-import { Heading } from './components/heading';
-import { Input } from './components/input';
-import { Link } from './components/link';
-import { Modal } from './components/modal';
-import { Table } from './components/table';
-import { Text } from './components/text';
+import { createSystem, defaultConfig } from '@chakra-ui/react';
 import { formsTheme } from './formsTheme';
+import { onboardTheme } from './onboard';
+import { onboardTheme as onboardThemeV1 } from './onboardTheme';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { zIndices } from './foundations/zIndices';
-import { buildOnboardTheme } from './onboard';
-import { buildOnboardTheme as onboardThemeV1 } from './onboardTheme';
+import { tableRecipe } from './recipes/table';
+import { buttonRecipe } from './recipes/button';
+import { linkRecipe } from './recipes/link';
+import { textRecipe } from './recipes/text';
+import { headingRecipe } from './recipes/heading';
+import { fieldRecipe } from './recipes/field';
+import { inputRecipe } from './recipes/input';
+import { dialogRecipe } from './recipes/dialog';
+import { alertRecipe } from './recipes/alert';
+import { radioGroupRecipe } from './recipes/radioGroup';
 
-const theme = extendTheme({
-    styles: {
-        global: (props: any) => {
-            return {
-                'html, body': {
-                    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-                },
-                ...onboardThemeV1(props),
-                ...buildOnboardTheme(props),
-                ...formsTheme(),
-            };
+const theme = createSystem(defaultConfig, {
+    globalCss: {
+        'html, body': {
+            fontSize: 'md',
+            color: {
+                base: 'gray.800',
+                _dark: 'white',
+            },
+        },
+        ...onboardThemeV1,
+        ...onboardTheme,
+        ...formsTheme,
+    },
+    theme: {
+        tokens: {
+            fonts,
+            colors,
+            zIndex: zIndices,
+        },
+        recipes: {
+            button: buttonRecipe,
+            link: linkRecipe,
+            text: textRecipe,
+            heading: headingRecipe,
+            input: inputRecipe,
+        },
+        slotRecipes: {
+            table: tableRecipe,
+            field: fieldRecipe,
+            dialog: dialogRecipe,
+            alert: alertRecipe,
+            radioGroup: radioGroupRecipe,
         },
     },
-    config: {
-        initialColorMode: 'dark',
-    },
-    components: {
-        Heading,
-        Text,
-        Button,
-        Link,
-        Modal,
-        Table,
-        Input,
-    },
-    fonts,
-    colors,
-    zIndices,
 });
 
 export default theme;

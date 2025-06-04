@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     StakingWithdrawModal,
     IStakingWithdrawModalProps,
@@ -84,7 +84,7 @@ describe('Staking Withdraw Modal', () => {
         expect(isSavedTriggered).toBe(true);
     });
 
-    it('Should disable withdraw button when partial amount is selected', () => {
+    it('Should disable withdraw button when partial amount is selected', async () => {
         const { getByRole, getByText } = render(
             <EStakingWithdrawModal {...defaultProps} />
         );
@@ -94,6 +94,10 @@ describe('Staking Withdraw Modal', () => {
             .querySelector('input');
 
         fireEvent.click(input);
+
+        await waitFor(() =>
+            expect(getByRole('withdraw-button')).toBeInTheDocument()
+        );
 
         expect(getByRole('withdraw-button')).toBeDisabled();
     });

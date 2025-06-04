@@ -9,22 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CheckIcon } from '@chakra-ui/icons';
+import { FaCheck } from 'react-icons/fa';
+
 import {
     Box,
-    Divider,
     Flex,
     FlexProps,
     Heading,
     Text,
-    VStack,
     useBreakpointValue,
-    useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
 import React, { ReactElement, useEffect, useReducer } from 'react';
 import theme from '../../styles/theme';
 import { StepStatus } from './enums';
 import { StepProps } from './interfaces';
+import { useColorModeValue } from '../ui/color-mode';
 
 interface State {
     stepNumberBgColor: string;
@@ -48,7 +48,7 @@ const reducer = (state, { type, payload }): State => {
         case StepStatus.COMPLETED:
             return {
                 ...payload.activeProps,
-                StepChecked: <CheckIcon />,
+                StepChecked: <FaCheck />,
                 showBodyActions: false,
                 status,
             };
@@ -76,7 +76,7 @@ export const Step = ({
     );
     const stepNumberColor = useColorModeValue('white', 'black');
     const activeProps = {
-        stepBoxShadow: 'base',
+        stepBoxShadow: 'sm',
         showBodyActions: true,
         stepBoxBg,
         stepNumberBgColor,
@@ -86,7 +86,7 @@ export const Step = ({
     const inactiveProps = {
         stepNumberBgColor: 'gray',
         stepNumberColor: 'white',
-        stepBoxBg: 'trasparent',
+        stepBoxBg: 'transparent',
         stepBoxShadow: 'none',
         headerColor: '#939393',
         showBodyActions: false,
@@ -98,7 +98,7 @@ export const Step = ({
               bottom: 0,
               bgColor: stepBoxBg,
               boxShadow: '0px -4px 8px rgb(47 32 27 / 4%)',
-              zIndex: theme.zIndices.sm,
+              zIndex: theme.tokens.getVar('zIndex.sm'),
           }
         : {};
 
@@ -164,7 +164,7 @@ export const Step = ({
                         <Heading as="h2" fontSize={['2xl']}>
                             {title}
                         </Heading>
-                        <Text size="sm">{subtitle}</Text>
+                        <Text fontSize="md">{subtitle}</Text>
                     </Box>
                     {optionalText && (
                         <Text
@@ -179,7 +179,7 @@ export const Step = ({
             )}
             {state.showBodyActions && (
                 <Box>
-                    {!isSmallScreen && <Divider w="full" />}
+                    {!isSmallScreen && <hr />}
                     {res.StepBody &&
                         React.cloneElement(res.StepBody, {
                             className: 'step-body',

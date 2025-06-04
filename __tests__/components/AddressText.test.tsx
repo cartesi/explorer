@@ -58,7 +58,7 @@ describe('AddressText component', () => {
 
     beforeEach(() => {
         mockUseENS.mockReturnValue({} as ENSEntry);
-        mockUseClipboard.mockReturnValue(defaultUseClipboardProps);
+        mockUseClipboard.mockReturnValue(defaultUseClipboardProps as any);
     });
 
     afterEach(() => {

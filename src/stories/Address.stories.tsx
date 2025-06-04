@@ -12,6 +12,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import Address from '../components/Address';
 import { StakePlusIcon } from '../components/Icons';
+import { FC } from 'react';
+import { IconProps } from '@chakra-ui/react';
 
 export default {
     title: 'Address',
@@ -67,6 +69,9 @@ export const WithName: Story = {
 };
 
 export const WithCustomFallbackAvatar: Story = {
-    args: { shouldDisplayFallbackAvatar: true, fallbackAvatar: StakePlusIcon },
+    args: {
+        shouldDisplayFallbackAvatar: true,
+        fallbackAvatar: StakePlusIcon as FC<IconProps>,
+    },
     ...Template,
 };

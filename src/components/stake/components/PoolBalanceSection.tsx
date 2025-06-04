@@ -15,11 +15,12 @@ import {
     Flex,
     Heading,
     HStack,
+    Icon,
     Stack,
     Text,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -61,7 +62,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={4} alignItems="center">
+                <HStack gap={4} alignItems="center">
                     <Box
                         bg={iconBg}
                         w={14}
@@ -70,7 +71,12 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         display="grid"
                         placeContent="center"
                     >
-                        <PoolBalanceIcon color={iconColor} w={6} h={6} />
+                        <Icon
+                            as={PoolBalanceIcon}
+                            color={iconColor}
+                            w={6}
+                            h={6}
+                        />
                     </Box>
                     <Box>
                         {isPoolBalanceLocked ? (
@@ -90,16 +96,12 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         </Heading>
                     </Box>
                 </HStack>
-                <VStack
-                    spacing={4}
-                    alignItems="stretch"
-                    pt={{ base: 6, md: 0 }}
-                >
+                <VStack gap={4} alignItems="stretch" pt={{ base: 6, md: 0 }}>
                     <Button
                         width="173px"
                         ml="auto"
                         onClick={onStakeClick}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         disabled={
                             isPoolBalanceLocked || userPoolBalance.isZero()
                         }
@@ -108,7 +110,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                     </Button>
                     <Button
                         variant="ghost"
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         width="173px"
                         ml="auto"
                         onClick={onWithdrawClick}

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, BoxProps, ChakraProps, useConst } from '@chakra-ui/react';
+import { Box, BoxProps, useConst } from '@chakra-ui/react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 export interface TableResponsiveHolderProps extends BoxProps {
@@ -37,7 +37,7 @@ const Component = (props, ref) => {
         pointerEvents: 'none',
         zIndex: 2,
         transition: 'opacity 0.2s ease-in-out',
-    })) as ChakraProps;
+    }));
 
     const handleResize = () => {
         setState((prev) => {

@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Meta, StoryObj } from '@storybook/react';
+import { Icon } from '@chakra-ui/react';
 
 import {
     ActiveNodeIcon,
@@ -71,175 +72,176 @@ const Icons = () => (
         }}
     >
         <div title="DashboardIcon">
-            <DashboardIcon width={10} height={10} />
+            <Icon as={DashboardIcon} width={10} height={10} />
         </div>
 
         <div title="DelegateIcon">
-            <DelegateIcon width={10} height={10} />
+            <Icon as={DelegateIcon} width={10} height={10} />
         </div>
 
         <div title="PencilIcon">
-            <PencilIcon width={10} height={10} />
+            <Icon as={PencilIcon} width={10} height={10} />
         </div>
 
         <div title="PencilIconWhite">
-            <PencilIconWhite width={10} height={10} />
+            <Icon as={PencilIconWhite} width={10} height={10} />
         </div>
 
         <div title="CheckCircleIcon">
-            <CheckCircleIcon width={10} height={10} />
+            <Icon as={CheckCircleIcon} width={10} height={10} />
         </div>
 
         <div title="PoolBalanceIcon">
-            <PoolBalanceIcon width={10} height={10} />
+            <Icon as={PoolBalanceIcon} width={10} height={10} />
         </div>
 
         <div title="PoolAllowenceIcon">
-            <PoolAllowenceIcon width={10} height={10} />
+            <Icon as={PoolAllowenceIcon} width={10} height={10} />
         </div>
 
         <div title="AllowanceIcon">
-            <AllowanceIcon width={10} height={10} />
+            <Icon as={AllowanceIcon} width={10} height={10} />
         </div>
 
         <div title="WalletIcon">
-            <WalletIcon width={10} height={10} />
+            <Icon as={WalletIcon} width={10} height={10} />
         </div>
 
         <div title="TimerIcon">
-            <TimerIcon width={10} height={10} />
+            <Icon as={TimerIcon} width={10} height={10} />
         </div>
 
         <div title="TimeIcon">
-            <TimeIcon width={10} height={10} />
+            <Icon as={TimeIcon} width={10} height={10} />
         </div>
 
         <div title="StakeIcon">
-            <StakeIcon width={10} height={10} />
+            <Icon as={StakeIcon} width={10} height={10} />
         </div>
 
         <div title="StakedBalanceIcon">
-            <StakedBalanceIcon width={10} height={10} />
+            <Icon as={StakedBalanceIcon} width={10} height={10} />
         </div>
 
         <div title="EffectiveBalanceIcon">
-            <EffectiveBalanceIcon width={10} height={10} />
+            <Icon as={EffectiveBalanceIcon} width={10} height={10} />
         </div>
 
         <div title="PoolUsersIcon">
-            <PoolUsersIcon width={10} height={10} />
+            <Icon as={PoolUsersIcon} width={10} height={10} />
         </div>
 
         <div title="PoolProductionIntervalIcon">
-            <PoolProductionIntervalIcon width={10} height={10} />
+            <Icon as={PoolProductionIntervalIcon} width={10} height={10} />
         </div>
 
         <div title="DelegateIcon">
-            <DelegateIcon width={10} height={10} />
+            <Icon as={DelegateIcon} width={10} height={10} />
         </div>
 
         <div title="PoolCommisionIcon">
-            <PoolCommisionIcon width={10} height={10} />
+            <Icon as={PoolCommisionIcon} width={10} height={10} />
         </div>
 
         <div title="DisconnectIcon">
-            <DisconnectIcon width={10} height={10} />
+            <Icon as={DisconnectIcon} width={10} height={10} />
         </div>
 
         <div title="SwitchIcon">
-            <SwitchIcon width={10} height={10} />
+            <Icon as={SwitchIcon} width={10} height={10} />
         </div>
 
         <div title="PaginationIcon">
-            <PaginationIcon width={10} height={10} />
+            <Icon as={PaginationIcon} width={10} height={10} />
         </div>
 
         <div title="ArrowsUpDownIcon">
-            <ArrowsUpDownIcon width={10} height={10} />
+            <Icon as={ArrowsUpDownIcon} width={10} height={10} />
         </div>
 
         <div title="ArrowsUpDownIcon">
-            <CopyIcon width={10} height={10} />
+            <Icon as={CopyIcon} width={10} height={10} />
         </div>
 
         <div title="PoolPerformanceIcon">
-            <PoolPerformanceIcon width={10} height={10} />
+            <Icon as={PoolPerformanceIcon} width={10} height={10} />
         </div>
 
         <div title="EyeIcon">
-            <EyeIcon width={10} height={10} />
+            <Icon as={EyeIcon} width={10} height={10} />
         </div>
 
         <div title="FilterIcon">
-            <FilterIcon width={10} height={10} />
+            <Icon as={FilterIcon} width={10} height={10} />
         </div>
 
         <div title="CloseIcon">
-            <CloseIcon width={10} height={10} />
+            <Icon as={CloseIcon} width={10} height={10} />
         </div>
 
         <div title="ViewMoreIcon">
-            <ViewMoreIcon width={10} height={10} />
+            <Icon as={ViewMoreIcon} width={10} height={10} />
         </div>
 
         <div title="PoolsTimer">
-            <PoolsTimer width={10} height={10} />
+            <Icon as={PoolsTimer} width={10} height={10} />
         </div>
 
         <div title="StakePlusIcon">
-            <StakePlusIcon width={10} height={10} />
+            <Icon as={StakePlusIcon} width={10} height={10} />
         </div>
 
         <div title="StakeCircledIcon">
-            <StakeCircledIcon width={10} height={10} />
+            <Icon as={StakeCircledIcon} width={10} height={10} />
         </div>
 
         <div title="ChartIcon">
-            <ChartIcon width={10} height={10} />
+            <Icon as={ChartIcon} width={10} height={10} />
         </div>
 
         <div title="MarketCapICon">
-            <MarketCapICon width={10} height={10} />
+            <Icon as={MarketCapICon} width={10} height={10} />
         </div>
 
         <div title="CircleSupplyIcon">
-            <CircleSupplyIcon width={10} height={10} />
+            <Icon as={CircleSupplyIcon} width={10} height={10} />
         </div>
 
         <div title="ActiveNodeIcon">
-            <ActiveNodeIcon width={10} height={10} />
+            <Icon as={ActiveNodeIcon} width={10} height={10} />
         </div>
 
         <div title="PrizeIcon">
-            <PrizeIcon width={10} height={10} />
+            <Icon as={PrizeIcon} width={10} height={10} />
         </div>
 
         <div title="GridIcon">
-            <GridIcon width={10} height={10} />
+            <Icon as={GridIcon} width={10} height={10} />
         </div>
 
         <div title="TotalStakedIcon">
-            <TotalStakedIcon width={10} height={10} />
+            <Icon as={TotalStakedIcon} width={10} height={10} />
         </div>
 
         <div title="ChevronRightIcon">
-            <ChevronRightIcon width={10} height={10} />
+            <Icon as={ChevronRightIcon} width={10} height={10} />
         </div>
 
         <div title="ChevronLeftIcon">
-            <ChevronLeftIcon width={10} height={10} />
+            <Icon as={ChevronLeftIcon} width={10} height={10} />
         </div>
 
         <div title="StakeCircledOutlinedIcon">
-            <StakeCircledOutlinedIcon width={10} height={10} />
+            <Icon as={StakeCircledOutlinedIcon} width={10} height={10} />
         </div>
 
         <div title="PoolBalanceHexIcon">
-            <PoolBalanceHexIcon width={10} height={10} />
+            <Icon as={PoolBalanceHexIcon} width={10} height={10} />
         </div>
 
         <div title="EmptyTransactionIcon">
-            <EmptyTransactionIcon
+            <Icon
+                as={EmptyTransactionIcon}
                 width={10}
                 height={10}
                 fill="#F0F7F9"
@@ -248,27 +250,27 @@ const Icons = () => (
         </div>
 
         <div title="RebalanceIcon">
-            <RebalanceIcon width={10} height={10} />
+            <Icon as={RebalanceIcon} width={10} height={10} />
         </div>
 
         <div title="MyStakeIcon">
-            <MyStakeIcon width={10} height={10} />
+            <Icon as={MyStakeIcon} width={10} height={10} />
         </div>
 
         <div title="MyPoolsIcon">
-            <MyPoolsIcon width={10} height={10} />
+            <Icon as={MyPoolsIcon} width={10} height={10} />
         </div>
 
         <div title="PoolsIcon">
-            <PoolsIcon width={10} height={10} />
+            <Icon as={PoolsIcon} width={10} height={10} />
         </div>
 
         <div title="SimpleChartIcon">
-            <SimpleChartIcon width={10} height={10} />
+            <Icon as={SimpleChartIcon} width={10} height={10} />
         </div>
 
         <div title="SettingsIcon">
-            <SettingsIcon width={10} height={10} />
+            <Icon as={SettingsIcon} width={10} height={10} />
         </div>
     </div>
 );

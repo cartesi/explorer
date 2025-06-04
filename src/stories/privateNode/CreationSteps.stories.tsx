@@ -34,7 +34,7 @@ const Template: Story = {
         return (
             <Stack
                 bg="gray.80"
-                spacing={8}
+                gap={8}
                 px={{ base: 0, lg: '12vw', xl: '18vw' }}
                 py={{ base: 0, sm: '5vw' }}
                 direction="column"

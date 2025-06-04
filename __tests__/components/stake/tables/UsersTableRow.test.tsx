@@ -16,7 +16,7 @@ import UsersTableRow, {
 } from '../../../../src/components/stake/tables/UsersTableRow';
 import stakingUsersData from '../../../../src/stories/stake/tables/stakingUsersData';
 import { PoolBalanceWithAccumulatedShares } from '../../../../src/graphql/models';
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { withChakraTheme } from '../../../test-utilities';
 
 const [balance] =
@@ -28,11 +28,11 @@ const defaultProps = {
 };
 
 const Component: FC<UsersTableRowProps> = (props) => (
-    <Table>
-        <Tbody>
+    <Table.Root>
+        <Table.Body>
             <UsersTableRow {...props} />
-        </Tbody>
-    </Table>
+        </Table.Body>
+    </Table.Root>
 );
 
 const truncateNumber = (num) => Math.trunc(num * 100) / 100;
