@@ -159,7 +159,7 @@ describe('PoolSetting', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display required text for pool tooltip', async () => {
@@ -172,7 +172,7 @@ describe('PoolSetting', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display required text for staking tooltip', async () => {
@@ -185,7 +185,7 @@ describe('PoolSetting', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display quit tooltip', async () => {
@@ -199,7 +199,7 @@ describe('PoolSetting', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     describe('when posV2Enabled is enabled', () => {

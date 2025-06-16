@@ -60,6 +60,6 @@ describe('Card component', () => {
         });
 
         await screen.findByText(tooltip);
-        expect(screen.getByText(tooltip)).toBeInTheDocument();
+        expect(screen.getByText(tooltip)).toBeVisible();
     });
 });

@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { act } from 'react';
 import userEvent from '@testing-library/user-event';
 import UsersStat, {
     UsersStatProps,
@@ -54,6 +55,6 @@ describe('Users Stat', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 });

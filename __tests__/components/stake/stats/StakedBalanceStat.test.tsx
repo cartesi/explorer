@@ -50,6 +50,6 @@ describe('Staked Balance Stat', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 });

@@ -45,7 +45,7 @@ describe('PoolsOverview Section', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display balances tooltip', async () => {
@@ -58,7 +58,7 @@ describe('PoolsOverview Section', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display total tooltip', async () => {
@@ -71,6 +71,6 @@ describe('PoolsOverview Section', () => {
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 });
