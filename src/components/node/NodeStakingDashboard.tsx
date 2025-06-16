@@ -71,39 +71,57 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                         title="Read carefully before staking!"
                         content={
                             <>
-                                <List.Root as="ol" fontSize="sm" mt={2}>
-                                    <List.Item>
+                                <List.Root as="ol" fontSize="sm" mt={2} ml={4}>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         This is a PoS system and thus,
                                         probabilistic. It can take a much longer
                                         time for you to produce blocks than the
                                         estimated average.
                                     </List.Item>
-                                    <List.Item>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         Estimated rewards can be highly
                                         variable, depending on chance and on the
                                         total amount of CTSI staked by everyone
                                         in the network.
                                     </List.Item>
-                                    <List.Item>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         Whenever your node is unavailable, you
                                         miss the chance of producing blocks.
                                         Cartesi's node depends on the
                                         availability of the configured Ethereum
                                         node.
                                     </List.Item>
-                                    <List.Item>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         This is a PoS system and thus,
                                         probabilistic. It can take a much longer
                                         time for you to produce blocks than the
                                         estimated average.
                                     </List.Item>
-                                    <List.Item>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         Estimated rewards can be highly
                                         variable, depending on chance and on the
                                         total amount of CTSI staked by everyone
                                         in the network.
                                     </List.Item>
-                                    <List.Item>
+                                    <List.Item
+                                        _marker={{ color: 'inherit' }}
+                                        mb={1}
+                                    >
                                         Whenever your node is unavailable, you
                                         miss the chance of producing blocks.
                                         Cartesi's node depends on the
