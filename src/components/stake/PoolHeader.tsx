@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoArrowBack } from 'react-icons/io5';
-
+import { TbArrowLeft } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -55,7 +54,7 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                     <HStack alignItems="flex-start">
                         <Button asChild variant="text" size="sm" px="0">
                             <NextLink href="/stake">
-                                <Icon as={IoArrowBack} w={4} h={4} /> Staking
+                                <Icon as={TbArrowLeft} w={4} h={4} /> Staking
                                 pool
                             </NextLink>
                         </Button>

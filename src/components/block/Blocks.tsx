@@ -17,12 +17,12 @@ import {
     Button,
     Center,
     HStack,
-    Spinner,
     StackProps,
     Tag,
     VStack,
 } from '@chakra-ui/react';
-import { FaEllipsisH } from 'react-icons/fa';
+import { TbDots } from 'react-icons/tb';
+
 import { useColorModeValue } from '../ui/color-mode';
 
 import Layout from '../../components/Layout';
@@ -107,7 +107,7 @@ const BlockList = (props: BlockListProps) => {
             })}
             <Center>
                 <Button onClick={loadMore} disabled={loading} loading={loading}>
-                    <FaEllipsisH />
+                    <TbDots />
                 </Button>
             </Center>
         </VStack>

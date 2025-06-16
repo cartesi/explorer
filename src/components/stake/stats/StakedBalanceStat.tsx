@@ -15,7 +15,7 @@ import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { StakedBalanceIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { Tooltip } from '../../Tooltip';
 
 export interface StakedBalanceStatProps extends StackProps {
@@ -76,7 +76,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}

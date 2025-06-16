@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoMdWarning } from 'react-icons/io';
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import {
     Box,
     Flex,
@@ -27,7 +27,7 @@ import CTSI from '../../pools/staking/CTSI';
 import { useWallet } from '../../wallet';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface IWalletBalanceSectionProps {
     userCTSIBalance: BigNumber;
@@ -71,7 +71,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 w={3}
                                 h={3}
                                 color={balanceColor}
@@ -91,7 +91,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             {userETHBalance?.isZero() && !isGnosisSafe && (
                 <HStack gap={2} alignItems="flex-start">
                     <Box color={warningIconColor}>
-                        <IoMdWarning />
+                        <TbAlertTriangleFilled />
                     </Box>
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
@@ -103,7 +103,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
             {isGnosisSafe && (
                 <HStack gap={2} alignItems="flex-start">
                     <Box color="orange.500">
-                        <IoMdWarning />
+                        <TbAlertTriangleFilled />
                     </Box>
                     <Text fontSize="sm">{ethInfoMessage}</Text>
                 </HStack>

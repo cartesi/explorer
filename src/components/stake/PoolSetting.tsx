@@ -30,7 +30,8 @@ import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaBalanceScaleLeft, FaRegQuestionCircle } from 'react-icons/fa';
+import { TbScale } from 'react-icons/tb';
+import { BsQuestionCircle } from 'react-icons/bs';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import useFlag from '../../hooks/useFlag';
@@ -221,7 +222,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             loading={isRebalancing}
                             onClick={pool.rebalance}
                         >
-                            <Icon as={FaBalanceScaleLeft} /> Rebalance
+                            <Icon as={TbScale} /> Rebalance
                         </Button>
 
                         <Flex
@@ -252,7 +253,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={FaRegQuestionCircle}
+                                    as={BsQuestionCircle}
                                     width={3}
                                     height={3}
                                     color="gray.600"
@@ -328,7 +329,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={FaRegQuestionCircle}
+                                    as={BsQuestionCircle}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -415,7 +416,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={FaRegQuestionCircle}
+                                    as={BsQuestionCircle}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -474,7 +475,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={FaRegQuestionCircle}
+                                    as={BsQuestionCircle}
                                     width={4}
                                     height={4}
                                     color="gray.600"

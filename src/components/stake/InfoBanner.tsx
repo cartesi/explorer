@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-
+import { TbChevronDown, TbChevronUp } from 'react-icons/tb';
 import {
     Alert,
     AlertRootProps,
@@ -113,7 +112,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                         onClick={onToggleCollapse}
                     >
                         <Icon
-                            as={isOpenCollapse ? FaChevronDown : FaChevronUp}
+                            as={isOpenCollapse ? TbChevronDown : TbChevronUp}
                             w={6}
                             h={6}
                         />

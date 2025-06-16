@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { TbExternalLink } from 'react-icons/tb';
 import {
     Button,
     Link,
@@ -130,7 +130,7 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                                         }}
                                     >
                                         Learn detailed staking instructions{' '}
-                                        <FaExternalLinkAlt />
+                                        <TbExternalLink />
                                     </Link>
                                     <Button
                                         size="sm"

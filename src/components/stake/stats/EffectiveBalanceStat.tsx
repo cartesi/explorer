@@ -29,7 +29,7 @@ import BigNumberTextV2 from '../../BigNumberTextV2';
 import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -132,7 +132,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}
@@ -226,7 +226,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                     >
                                                         <Icon
                                                             as={
-                                                                FaRegQuestionCircle
+                                                                BsQuestionCircle
                                                             }
                                                             w={3.5}
                                                             h={3.5}
@@ -270,7 +270,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                     >
                                                         <Icon
                                                             as={
-                                                                FaRegQuestionCircle
+                                                                BsQuestionCircle
                                                             }
                                                             w={3.5}
                                                             h={3.5}
@@ -310,7 +310,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                     >
                                                         <Icon
                                                             as={
-                                                                FaRegQuestionCircle
+                                                                BsQuestionCircle
                                                             }
                                                             w={3.5}
                                                             h={3.5}

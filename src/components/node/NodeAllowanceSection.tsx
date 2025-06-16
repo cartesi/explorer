@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaEdit, FaRegQuestionCircle } from 'react-icons/fa';
+import { TbEdit } from 'react-icons/tb';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 import {
     Box,
@@ -65,7 +66,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 color={color}
                                 w={3}
                                 h={3}
@@ -86,7 +87,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                         variant="ghost"
                         onClick={onAllowanceClick}
                     >
-                        <FaEdit />
+                        <TbEdit />
                     </IconButton>
                 </Box>
             </HStack>

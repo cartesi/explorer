@@ -25,7 +25,7 @@ import { PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;
@@ -61,7 +61,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 color={color}
                                 w={3.5}
                                 h={3.5}

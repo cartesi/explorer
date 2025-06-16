@@ -13,7 +13,7 @@ import { Box, Breadcrumb } from '@chakra-ui/react';
 import { useParams } from 'next/navigation';
 import { FC } from 'react';
 import NextLink from 'next/link';
-import { LiaSlashSolid } from 'react-icons/lia';
+import { TbSlash } from 'react-icons/tb';
 import { useColorModeValue } from '../ui/color-mode';
 
 export interface IPoolBreadcrumbsProps {
@@ -54,7 +54,7 @@ export const PoolBreadcrumbs: FC<IPoolBreadcrumbsProps> = ({ currentPage }) => {
                         </Breadcrumb.Link>
                     </Breadcrumb.Item>
                     <Breadcrumb.Separator color={separatorColor}>
-                        <LiaSlashSolid />
+                        <TbSlash />
                     </Breadcrumb.Separator>
                     <Breadcrumb.Item>
                         <Breadcrumb.CurrentLink

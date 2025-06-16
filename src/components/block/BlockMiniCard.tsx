@@ -20,7 +20,7 @@ import {
     Spacer,
     Text,
 } from '@chakra-ui/react';
-import { IoMdTime } from 'react-icons/io';
+import { TbClock } from 'react-icons/tb';
 import humanizeDuration from 'humanize-duration';
 import { FunctionComponent } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
@@ -63,7 +63,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
         <Box {...boxProps}>
             <Center p={2}>
                 <HStack>
-                    <Icon as={IoMdTime} w={5} h={5} />
+                    <Icon as={TbClock} w={5} h={5} />
                     <Text>
                         {humanizeDuration(Date.now() - block.timestamp * 1000, {
                             units: ['m'],

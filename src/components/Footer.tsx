@@ -23,7 +23,12 @@ import {
     VisuallyHidden,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
-import { FaDiscord, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
+import {
+    TbBrandDiscord,
+    TbBrandGithub,
+    TbBrandTwitter,
+    TbBrandYoutube,
+} from 'react-icons/tb';
 import theme from '../styles/theme';
 import Address from './Address';
 import { CartesiTranparent } from './Icons';
@@ -201,25 +206,45 @@ const Footer: FC<FooterProps> = (props) => {
                             label="Github"
                             href="https://github.com/cartesi"
                         >
-                            <Icon as={FaGithub} color="white" w={6} h={6} />
+                            <Icon
+                                as={TbBrandGithub}
+                                color="white"
+                                w={6}
+                                h={6}
+                            />
                         </SocialButton>
                         <SocialButton
                             label="Discord"
                             href="https://discord.gg/pfXMwXDDfW"
                         >
-                            <Icon as={FaDiscord} color="white" w={6} h={6} />
+                            <Icon
+                                as={TbBrandDiscord}
+                                color="white"
+                                w={6}
+                                h={6}
+                            />
                         </SocialButton>
                         <SocialButton
                             label="Youtube"
                             href="https://www.youtube.com/@cartesiproject/featured"
                         >
-                            <Icon as={FaYoutube} color="white" w={6} h={6} />
+                            <Icon
+                                as={TbBrandYoutube}
+                                color="white"
+                                w={6}
+                                h={6}
+                            />
                         </SocialButton>
                         <SocialButton
                             label="Twitter"
                             href="https://twitter.com/cartesiproject"
                         >
-                            <Icon as={FaTwitter} color="white" w={6} h={6} />
+                            <Icon
+                                as={TbBrandTwitter}
+                                color="white"
+                                w={6}
+                                h={6}
+                            />
                         </SocialButton>
                     </Stack>
                 </GridItem>

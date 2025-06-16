@@ -14,7 +14,7 @@
 import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
 import Layout from '../Layout';
 import { StepGroup } from '../StepGroup';
 import CommissionModel from './steps/CommissionModel';
@@ -37,7 +37,7 @@ const NewPool: FC = () => {
             >
                 <Box asChild display="flex" alignItems="center">
                     <NextLink href="/node-runners">
-                        <Box as={AiOutlineLeft} mr={1} />
+                        <Box as={TbChevronLeft} mr={1} />
                         <Text>Back</Text>
                     </NextLink>
                 </Box>

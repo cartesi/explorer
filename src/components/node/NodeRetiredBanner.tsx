@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoMdWarning } from 'react-icons/io';
-
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { Box, chakra, CloseButton, HStack, Icon, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
@@ -34,7 +33,11 @@ export const NodeRetiredBanner: FC<NodeRetiredBannerProps> = ({ onClose }) => {
         >
             <HStack gap={2} justifyContent="space-between">
                 <HStack gap={2} mb={1}>
-                    <Icon as={IoMdWarning} color="orange.500" mr={2} />
+                    <Icon
+                        as={TbAlertTriangleFilled}
+                        color="orange.500"
+                        mr={2}
+                    />
                     <Text fontSize="sm">
                         <chakra.span fontWeight="bold" fontSize="sm">
                             Your node has been retired

@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaCheck } from 'react-icons/fa';
+import { TbCheck } from 'react-icons/tb';
 
 import {
     Box,
@@ -146,7 +146,7 @@ const NodeInput = ({
                                 This node is available
                             </VisuallyHidden>
                             <Box color="green.500">
-                                <FaCheck id="node-available-check" />
+                                <TbCheck id="node-available-check" />
                             </Box>
                         </Flex>
                     ) : null

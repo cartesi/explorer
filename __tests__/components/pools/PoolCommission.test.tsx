@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { FaNetworkWired } from 'react-icons/fa';
+import { TbNetwork } from 'react-icons/tb';
 import PoolCommission from '../../../src/components/pools/PoolCommission';
 import { StakingPool } from '../../../src/graphql/models';
 import stakingPoolsData from '../../../src/stories/stake/tables/stakingPoolsData';
@@ -51,7 +51,7 @@ describe('PoolCommission component', () => {
     });
 
     it('should display icon', () => {
-        render(<Component {...props} icon={FaNetworkWired} />);
+        render(<Component {...props} icon={TbNetwork} />);
         expect(screen.getByTestId('pool-commission-icon')).toBeInTheDocument();
     });
 

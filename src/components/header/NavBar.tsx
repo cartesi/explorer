@@ -26,11 +26,7 @@ import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
-import { FaMoon } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
-import { RxHamburgerMenu } from 'react-icons/rx';
-import { MdOutlineWbSunny } from 'react-icons/md';
-
+import { TbMoonFilled, TbSun, TbPlus, TbMenu2 } from 'react-icons/tb';
 import { ConnectWallet } from './ConnectWallet';
 import { Logo } from './Logo';
 import { SelectedChain } from './SelectedChain';
@@ -134,9 +130,9 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                         onClick={toggleColorMode}
                     >
                         {colorMode === 'light' ? (
-                            <Icon as={FaMoon} />
+                            <Icon as={TbMoonFilled} />
                         ) : (
-                            <Icon as={MdOutlineWbSunny} color="white" />
+                            <Icon as={TbSun} color="white" />
                         )}
                     </IconButton>
 
@@ -151,13 +147,20 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                         aria-label="Open Menu"
                         data-testid="menu-button"
                         display={{ md: 'none' }}
+                        h={10}
+                        w={10}
                         onClick={open ? onClose : onOpen}
                         _hover={{ bg: 'gray.800' }}
                     >
                         {open ? (
-                            <IoClose color="white" />
+                            <TbPlus
+                                color="white"
+                                style={{
+                                    transform: 'rotate(45deg)',
+                                }}
+                            />
                         ) : (
-                            <RxHamburgerMenu color="white" />
+                            <TbMenu2 color="white" />
                         )}
                     </IconButton>
                     <Box display={{ base: 'none', md: 'flex' }}>

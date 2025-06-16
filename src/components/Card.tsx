@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
+
 import {
     Box,
     Button,
@@ -109,7 +110,7 @@ export const Card = ({
                                     ml: 2,
                                 }}
                             >
-                                <FaRegQuestionCircle
+                                <BsQuestionCircle
                                     data-testid={`${id}-tooltip-icon`}
                                     role="tooltip-icon"
                                 />

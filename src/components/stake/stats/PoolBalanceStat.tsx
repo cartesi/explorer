@@ -16,7 +16,7 @@ import BigNumberTextV2 from '../../BigNumberTextV2';
 import { PoolBalanceHexIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface PoolBalanceStatProps extends StackProps {
     pool: BigNumber;
@@ -72,7 +72,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}

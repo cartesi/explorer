@@ -12,7 +12,7 @@
 import React, { ChangeEventHandler, FunctionComponent } from 'react';
 import { Icon, Input, InputGroup, InputGroupProps } from '@chakra-ui/react';
 import { useColorModeValue } from './ui/color-mode';
-import { FaSearch } from 'react-icons/fa';
+import { TbSearch } from 'react-icons/tb';
 
 export interface SearchInputProps extends Omit<InputGroupProps, 'children'> {
     placeholder?: string;
@@ -31,7 +31,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     return (
         <InputGroup
             {...rest}
-            startElement={<Icon as={FaSearch} color={textColor} />}
+            startElement={<Icon as={TbSearch} color={textColor} />}
         >
             <Input
                 _placeholder={{

@@ -23,7 +23,7 @@ import {
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
 import Address from '../Address';
 import { SimpleChartIcon } from '../Icons';
 import Layout from '../Layout';
@@ -70,7 +70,7 @@ const PoolNode: FC = () => {
             >
                 <Box asChild display="flex" alignItems="center">
                     <NextLink href={backLink}>
-                        <Box as={AiOutlineLeft} mr={1} />
+                        <Box as={TbChevronLeft} mr={1} />
                         <Text>{backText}</Text>
                     </NextLink>
                 </Box>

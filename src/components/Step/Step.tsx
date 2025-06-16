@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaCheck } from 'react-icons/fa';
-
+import { TbCheck } from 'react-icons/tb';
 import {
     Box,
     Flex,
@@ -48,7 +47,7 @@ const reducer = (state, { type, payload }): State => {
         case StepStatus.COMPLETED:
             return {
                 ...payload.activeProps,
-                StepChecked: <FaCheck />,
+                StepChecked: <TbCheck />,
                 showBodyActions: false,
                 status,
             };

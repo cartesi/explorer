@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaCheck } from 'react-icons/fa';
+import { TbCheck } from 'react-icons/tb';
 
 import {
     Box,
@@ -97,7 +97,7 @@ const Header = ({
                     const isAhead = number > currentStep;
                     const bgColor = isAhead ? 'gray' : stepNumberBg;
                     const color = isAhead ? 'white' : stepNumberColor;
-                    const StepChecked = isPast ? <FaCheck /> : null;
+                    const StepChecked = isPast ? <TbCheck /> : null;
 
                     return (
                         <Fragment key={number}>

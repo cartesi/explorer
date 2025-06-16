@@ -12,7 +12,7 @@
 import { FC } from 'react';
 import { BigNumber } from 'ethers';
 import { HStack, IconButton, StackProps, Text } from '@chakra-ui/react';
-import { FaBalanceScaleLeft } from 'react-icons/fa';
+import { TbScale } from 'react-icons/tb';
 import { formatCTSI } from '../../utils/token';
 
 export interface RebalanceProps extends StackProps {
@@ -33,7 +33,7 @@ const Rebalance: FC<RebalanceProps> = (props) => {
                 disabled={disabled}
                 onClick={onRebalance}
             >
-                <FaBalanceScaleLeft />
+                <TbScale />
             </IconButton>
 
             {stake?.gt(0) && <Text>{formatCTSI(stake)} CTSI to stake</Text>}

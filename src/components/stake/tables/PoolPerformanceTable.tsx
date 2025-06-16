@@ -28,7 +28,7 @@ import { TableResponsiveHolder } from '../../TableResponsiveHolder';
 import { SlideInOut } from '../../animation/SlideInOut';
 import PoolPerformanceTableRow from './PoolPerformanceTableRow';
 import { useColorModeValue } from '../../ui/color-mode';
-import { FaArrowDown } from 'react-icons/fa';
+import { TbArrowDown } from 'react-icons/tb';
 
 export interface PoolPerformanceTableProps {
     chainId: number;
@@ -103,7 +103,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Total Users
                                 </GhostButton>
                                 {sort === 'totalUsers' && (
-                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                                    <Icon as={TbArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -128,7 +128,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Total Staked
                                 </GhostButton>
                                 {sort === 'amount' && (
-                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                                    <Icon as={TbArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -179,7 +179,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     Accrued Commission
                                 </GhostButton>{' '}
                                 {sort == 'commissionPercentage' && (
-                                    <Icon as={FaArrowDown} w={5} h={5} ml={4} />
+                                    <Icon as={TbArrowDown} w={5} h={5} ml={4} />
                                 )}
                             </Flex>
                         </Table.Cell>

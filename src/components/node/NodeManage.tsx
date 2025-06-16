@@ -28,7 +28,7 @@ import { BigNumber } from 'ethers';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
 import { useColorModeValue } from '../ui/color-mode';
 
 import Layout from '../Layout';
@@ -185,7 +185,7 @@ const ManageNode: FC = () => {
             >
                 <Box asChild display="flex" alignItems="center">
                     <NextLink href="/node-runners">
-                        <Box as={AiOutlineLeft} mr={1} />
+                        <Box as={TbChevronLeft} mr={1} />
                         <Text>Back</Text>
                     </NextLink>
                 </Box>

@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoMdWarning } from 'react-icons/io';
-
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -27,7 +26,7 @@ import {
 import humanizeDuration from 'humanize-duration';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { Tooltip } from '../Tooltip';
 
 export interface CommissionFormProps {
@@ -127,7 +126,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={FaRegQuestionCircle}
+                                as={BsQuestionCircle}
                                 width={4}
                                 height={4}
                                 color="gray.600"
@@ -185,7 +184,10 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                 <Collapsible.Root open={value > currentValue}>
                     <Collapsible.Content>
                         <HStack gap={2} alignItems="flex-start">
-                            <Icon as={IoMdWarning} color="orange.500" />
+                            <Icon
+                                as={TbAlertTriangleFilled}
+                                color="orange.500"
+                            />
                             <Text fontSize="sm">
                                 After increasing the current value you can only
                                 increase it again after {wait}

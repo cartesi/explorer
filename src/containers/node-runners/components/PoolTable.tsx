@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaArrowDown } from 'react-icons/fa';
+import { TbArrowDown } from 'react-icons/tb';
 import {
     Box,
     BoxProps,
@@ -145,7 +145,7 @@ const PoolTable = ({ data }: Props) => {
                                     Total Staked
                                 </GhostButton>
                                 {sortBy == 'amount' && (
-                                    <Icon as={FaArrowDown} ml={1} />
+                                    <Icon as={TbArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -162,7 +162,7 @@ const PoolTable = ({ data }: Props) => {
                                     Total Users
                                 </GhostButton>
                                 {sortBy == 'totalUsers' && (
-                                    <Icon as={FaArrowDown} ml={1} />
+                                    <Icon as={TbArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>
@@ -188,7 +188,7 @@ const PoolTable = ({ data }: Props) => {
                                     Commission
                                 </GhostButton>
                                 {sortBy == 'commissionPercentage' && (
-                                    <Icon as={FaArrowDown} ml={1} />
+                                    <Icon as={TbArrowDown} ml={1} />
                                 )}
                             </Flex>
                         </Table.Cell>

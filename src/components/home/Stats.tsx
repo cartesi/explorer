@@ -30,7 +30,7 @@ import {
 import MarketInfoPanel from './MarketInfoPanel';
 import PrimaryCard from './PrimaryCard';
 import { useColorModeValue } from '../ui/color-mode';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { Tooltip } from '../Tooltip';
 
 const HomeStats = () => {
@@ -127,7 +127,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <FaRegQuestionCircle />
+                                    <BsQuestionCircle />
                                 </Tooltip>
                             </Flex>
                         }
@@ -158,7 +158,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <FaRegQuestionCircle />
+                                    <BsQuestionCircle />
                                 </Tooltip>
                             </Flex>
                         }
@@ -195,7 +195,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <FaRegQuestionCircle />
+                                <BsQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
@@ -229,7 +229,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <FaRegQuestionCircle />
+                                <BsQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
@@ -272,7 +272,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <FaRegQuestionCircle />
+                                <BsQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }
@@ -315,7 +315,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <FaRegQuestionCircle />
+                                <BsQuestionCircle />
                             </Tooltip>
                         </Flex>
                     }

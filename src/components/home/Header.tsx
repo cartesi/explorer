@@ -15,7 +15,8 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import CTSIText from '../CTSIText';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
+
 import { Tooltip } from '../Tooltip';
 
 import { useWallet } from '../wallet';
@@ -74,7 +75,7 @@ const HomeHeader = () => {
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <FaRegQuestionCircle />
+                            <BsQuestionCircle />
                         </Tooltip>
                     </HStack>
                 </CTSIText>

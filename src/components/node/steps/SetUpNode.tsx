@@ -20,7 +20,7 @@ import {
     Text,
     useClipboard,
 } from '@chakra-ui/react';
-import { MdContentCopy } from 'react-icons/md';
+import { TbCopy } from 'react-icons/tb';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import { useColorModeValue } from '../../ui/color-mode';
@@ -44,7 +44,7 @@ const CopyBoard = ({ command, children }) => {
             {!copied && (
                 <Box minH={6} alignSelf="flex-start" ml={2}>
                     <Box
-                        as={MdContentCopy}
+                        as={TbCopy}
                         cursor={'pointer'}
                         onClick={copy}
                         fontSize="xl"

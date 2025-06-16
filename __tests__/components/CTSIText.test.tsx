@@ -11,7 +11,7 @@
 
 import { Icon, Text } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { FaIcons } from 'react-icons/fa';
+import { TbIcons } from 'react-icons/tb';
 import CTSIText from '../../src/components/CTSIText';
 import { withChakraTheme } from '../test-utilities';
 
@@ -44,7 +44,7 @@ describe('CTSI Text component', () => {
             <Component
                 value="5000100000000000000000000"
                 options={{ maximumFractionDigits: 2 }}
-                icon={<Icon as={FaIcons} />}
+                icon={<Icon as={TbIcons} />}
             >
                 <Text>Staked Balance</Text>
             </Component>

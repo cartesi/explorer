@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaArrowDown } from 'react-icons/fa';
+import { TbArrowDown } from 'react-icons/tb';
 
 import {
     HStack,
@@ -95,7 +95,7 @@ const UserTable: FC<UserTableProps> = ({
                                 Block Produced
                             </GhostButton>
                             {sort === 'totalBlocks' && (
-                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
+                                <Icon as={TbArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 
@@ -112,7 +112,7 @@ const UserTable: FC<UserTableProps> = ({
                                 Total Staked
                             </GhostButton>
                             {sort === 'balance' && (
-                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
+                                <Icon as={TbArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 
@@ -129,7 +129,7 @@ const UserTable: FC<UserTableProps> = ({
                                 Total Rewards
                             </GhostButton>
                             {sort === 'totalReward' && (
-                                <Icon as={FaArrowDown} w={4} h={4} ml={4} />
+                                <Icon as={TbArrowDown} w={4} h={4} ml={4} />
                             )}
                         </Table.Cell>
 

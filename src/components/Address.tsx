@@ -22,9 +22,7 @@ import {
     useClipboard,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { MdOutlineContentCopy } from 'react-icons/md';
-import { LuExternalLink } from 'react-icons/lu';
-
+import { TbCopy, TbExternalLink } from 'react-icons/tb';
 import React, { FC, useState } from 'react';
 import { useENS } from '../services/ens';
 import { etherscanLinks, Network } from '../utils/networks';
@@ -171,7 +169,7 @@ const Address: FC<AddressProps> = (props) => {
                     onClick={copy}
                     data-testid="copy-icon"
                 >
-                    <Icon as={MdOutlineContentCopy} w={iconSize} h={iconSize} />
+                    <Icon as={TbCopy} w={iconSize} h={iconSize} />
                 </Button>
             )}
             {copied && <Text fontSize="sm">Copied</Text>}
@@ -189,7 +187,7 @@ const Address: FC<AddressProps> = (props) => {
                     mr={linkMargin}
                 >
                     <Icon
-                        as={LuExternalLink}
+                        as={TbExternalLink}
                         data-testid="external-link-icon"
                         w={iconSize}
                         h={iconSize}

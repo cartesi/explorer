@@ -23,7 +23,8 @@ import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { AiFillDollarCircle } from 'react-icons/ai';
+import { TbCurrencyDollar } from 'react-icons/tb';
+
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
@@ -78,7 +79,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                         <Icon
                             w={9}
                             h={9}
-                            as={AiFillDollarCircle}
+                            as={TbCurrencyDollar}
                             color={iconColor}
                         />
                     </Box>

@@ -35,7 +35,7 @@ import CTSI from '../../pools/staking/CTSI';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaRegQuestionCircle } from 'react-icons/fa';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;
@@ -327,7 +327,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                     openDelay={0}
                                                 >
                                                     <Icon
-                                                        as={FaRegQuestionCircle}
+                                                        as={BsQuestionCircle}
                                                         w={3.5}
                                                         h={3.5}
                                                     />

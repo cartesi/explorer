@@ -28,7 +28,9 @@ import Address from '../../Address';
 import { StakeIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { FaLock, FaRegQuestionCircle } from 'react-icons/fa';
+import { TbLockFilled } from 'react-icons/tb';
+
+import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;
@@ -149,7 +151,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={FaLock}
+                                as={TbLockFilled}
                                 width={2.5}
                                 height={2.5}
                                 data-testid="paused-tooltip-icon"
@@ -192,7 +194,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Icon as={FaRegQuestionCircle} ml={2} />
+                            <Icon as={BsQuestionCircle} ml={2} />
                         </Tooltip>
                     )}
                 </Flex>

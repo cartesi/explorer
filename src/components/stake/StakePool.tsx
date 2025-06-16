@@ -28,7 +28,7 @@ import {
 import { useColorModeValue } from '../ui/color-mode';
 
 import { QueryResult } from '@apollo/client';
-import { FaChevronDown } from 'react-icons/fa';
+import { TbChevronDown } from 'react-icons/tb';
 import { PoolActivity } from './PoolActivity';
 import PoolStatsPanel from './PoolStatsPanel';
 import { useWallet } from '../wallet';
@@ -123,7 +123,7 @@ const StakePool = () => {
                     </Heading>
 
                     <Box transform={open ? 'rotate(180deg)' : 'rotate(0deg)'}>
-                        <FaChevronDown width={6} height={6} />
+                        <TbChevronDown width={6} height={6} />
                     </Box>
                 </HStack>
 

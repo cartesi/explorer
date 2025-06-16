@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { IoMdWarning } from 'react-icons/io';
-
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -111,7 +110,7 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
                         >
                             <HStack gap={2} mb={1}>
                                 <Box color="light.support.alert">
-                                    <IoMdWarning />
+                                    <TbAlertTriangleFilled />
                                 </Box>
                                 <Text fontSize="sm">
                                     Once that node is retired, you cannot reuse

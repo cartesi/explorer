@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { RiErrorWarningFill } from 'react-icons/ri';
-
+import { TbAlertCircleFilled } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -75,7 +74,7 @@ export const DepositSection: FC<IDepositSection> = ({
                         {userWalletBalance.isZero() ? (
                             <>
                                 <Icon
-                                    as={RiErrorWarningFill}
+                                    as={TbAlertCircleFilled}
                                     color={warningIconColor}
                                     w={4}
                                     h={4}
@@ -85,7 +84,7 @@ export const DepositSection: FC<IDepositSection> = ({
                         ) : noEthAndIsNotASafe ? (
                             <>
                                 <Icon
-                                    as={RiErrorWarningFill}
+                                    as={TbAlertCircleFilled}
                                     color={warningIconColor}
                                     w={4}
                                     h={4}

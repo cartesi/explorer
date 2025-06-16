@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { FaChevronRight, FaRegQuestionCircle } from 'react-icons/fa';
+import { TbChevronRight } from 'react-icons/tb';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { Box, HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, ReactNode } from 'react';
@@ -89,7 +90,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                     }}
                                 >
                                     <Icon
-                                        as={FaRegQuestionCircle}
+                                        as={BsQuestionCircle}
                                         w={3.5}
                                         h={3.5}
                                     />
@@ -115,7 +116,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                     }}
                                 >
                                     <Icon
-                                        as={FaRegQuestionCircle}
+                                        as={BsQuestionCircle}
                                         w={3.5}
                                         h={3.5}
                                     />
@@ -126,7 +127,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
 
                     {location && (
                         <Icon
-                            as={FaChevronRight}
+                            as={TbChevronRight}
                             w={5}
                             h={5}
                             data-testid="location-icon"
