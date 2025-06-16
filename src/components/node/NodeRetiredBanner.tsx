@@ -10,9 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { TbAlertTriangleFilled } from 'react-icons/tb';
-import { Box, chakra, CloseButton, HStack, Icon, Text } from '@chakra-ui/react';
+import { Box, chakra, HStack, Icon, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
+import CloseButton from '../CloseButton';
 
 export interface NodeRetiredBannerProps {
     onClose?: () => void;

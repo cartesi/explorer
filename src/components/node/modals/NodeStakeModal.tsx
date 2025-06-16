@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Dialog,
     Field,
     HStack,
@@ -27,6 +26,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { FC, useEffect, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 interface INodeStakeModalProps {
     allowance: BigNumber;

@@ -122,8 +122,8 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                         bg="transparent"
                         rounded="full"
                         mx={2}
-                        h={10}
-                        w={10}
+                        h={8}
+                        w={8}
                         _hover={{ bg: 'gray.800' }}
                         aria-label="Toggle dark mode"
                         data-testid="theme-toggle-button"

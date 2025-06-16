@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Dialog,
     Field,
     Separator,
@@ -26,6 +25,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export interface IStakingPoolAllowanceModalProps {
     allowance: BigNumber;

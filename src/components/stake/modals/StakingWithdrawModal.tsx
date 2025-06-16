@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Collapsible,
     Dialog,
     Field,
@@ -28,6 +27,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export interface IStakingWithdrawModalProps {
     isOpen: boolean;

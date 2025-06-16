@@ -9,10 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Alert, AlertRootProps, CloseButton, VStack } from '@chakra-ui/react';
+import { Alert, AlertRootProps, VStack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { isFunction } from 'lodash/fp';
 import { useColorModeValue } from './ui/color-mode';
+import CloseButton from './CloseButton';
 
 export interface NotificationProps extends Omit<AlertRootProps, 'title'> {
     title: ReactNode;

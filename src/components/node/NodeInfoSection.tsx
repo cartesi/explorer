@@ -184,6 +184,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                     <IconButton
                                         aria-label="Edit"
                                         size="sm"
+                                        h={8}
+                                        w={8}
                                         variant="ghost"
                                         data-testid="edit-balance-button"
                                         disabled={isRetiring}

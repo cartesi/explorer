@@ -9,19 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-    Box,
-    CloseButton,
-    HStack,
-    Spinner,
-} from '@chakra-ui/react';
+import { Alert, Box, HStack, Spinner } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 import { Transaction } from '../services/transaction';
 import Address from './Address';
 import { useColorModeValue } from './ui/color-mode';
+import CloseButton from './CloseButton';
 
 export interface TransactionFeedbackProps<R> {
     transaction: Transaction<R>;

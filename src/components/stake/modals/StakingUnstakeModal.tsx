@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Collapsible,
     Dialog,
     Field,
@@ -29,6 +28,7 @@ import React, { FC, useRef, useState } from 'react';
 import { Operation } from '../../../types/stake';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export type RemovalAction = 'full' | 'partial';
 export interface IStakingUnstakeModalProps {

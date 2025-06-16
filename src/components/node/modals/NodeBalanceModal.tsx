@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Dialog,
     Field,
     HStack,
@@ -27,6 +26,7 @@ import { BigNumber, constants, ethers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FC, useEffect, useState } from 'react';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 interface INodeBalanceModalProps {
     userBalance: BigNumber;

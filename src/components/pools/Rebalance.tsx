@@ -30,6 +30,8 @@ const Rebalance: FC<RebalanceProps> = (props) => {
             <IconButton
                 aria-label="Rebalance"
                 data-testid="rebalance-button"
+                h={10}
+                w={10}
                 disabled={disabled}
                 onClick={onRebalance}
             >

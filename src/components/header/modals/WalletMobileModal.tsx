@@ -14,7 +14,6 @@ import {
     Flex,
     Heading,
     HStack,
-    CloseButton,
     Dialog,
     Text,
     useClipboard,
@@ -24,6 +23,7 @@ import { flow } from 'lodash/fp';
 import { useENS } from '../../../services/ens';
 import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
 import { useWallet } from '../../wallet/useWallet';
+import CloseButton from '../../CloseButton';
 
 export interface IWalletMobileModalProps {
     isOpen: boolean;

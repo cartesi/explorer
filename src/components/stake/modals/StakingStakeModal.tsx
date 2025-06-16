@@ -13,7 +13,6 @@ import React, { FC, useEffect, useState } from 'react';
 import {
     Box,
     Button,
-    CloseButton,
     Dialog,
     Field,
     Separator,
@@ -26,6 +25,7 @@ import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export interface IStakingStakeModalProps {
     balance: BigNumber;

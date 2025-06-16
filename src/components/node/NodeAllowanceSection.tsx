@@ -84,6 +84,8 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                     <IconButton
                         aria-label="Edit"
                         size="md"
+                        h={10}
+                        w={10}
                         variant="ghost"
                         onClick={onAllowanceClick}
                     >

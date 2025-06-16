@@ -12,7 +12,6 @@
 import {
     Box,
     Button,
-    CloseButton,
     Dialog,
     Field,
     Flex,
@@ -36,6 +35,7 @@ import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
 import { BsQuestionCircle } from 'react-icons/bs';
+import CloseButton from '../../CloseButton';
 
 export interface IStakingDepositModalProps {
     allowance: BigNumber;
@@ -347,6 +347,8 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             <IconButton
                                                 aria-label="Edit"
                                                 size="sm"
+                                                h={10}
+                                                w={10}
                                                 bg="transparent"
                                                 onClick={() => {
                                                     setAllowanceStep(true);

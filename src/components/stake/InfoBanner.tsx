@@ -14,7 +14,6 @@ import {
     Alert,
     AlertRootProps,
     Box,
-    CloseButton,
     Collapsible,
     Icon,
     IconButton,
@@ -23,6 +22,7 @@ import {
 import { isObject } from 'lodash';
 import React, { FC, JSX } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
+import CloseButton from '../CloseButton';
 
 export interface IInfoBannerProps extends Omit<AlertRootProps, 'content'> {
     isOpen?: boolean;
@@ -105,6 +105,8 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                         right="8px"
                         top="8px"
                         size="sm"
+                        h={10}
+                        w={10}
                         variant="ghost"
                         _hover={{ bg: 'transparent' }}
                         aria-label={'Open Panel'}
