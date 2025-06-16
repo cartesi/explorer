@@ -9,8 +9,6 @@ process.env.TURSO_DATABASE_URL = 'file:local-test.db';
 
 Object.assign(global, { TextEncoder, TextDecoder });
 
-global.structuredClone = structuredClone;
-
 jest.mock('./src/services/ens', () => {
     const original = jest.requireActual('./src/services/ens');
     return {
