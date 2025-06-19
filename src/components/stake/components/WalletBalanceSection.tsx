@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbAlertTriangleFilled } from 'react-icons/tb';
+import { TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Flex,
@@ -27,7 +27,6 @@ import CTSI from '../../pools/staking/CTSI';
 import { useWallet } from '../../wallet';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { BsQuestionCircle } from 'react-icons/bs';
 
 export interface IWalletBalanceSectionProps {
     userCTSIBalance: BigNumber;
@@ -71,7 +70,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 w={3}
                                 h={3}
                                 color={balanceColor}

@@ -15,7 +15,7 @@ import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import CTSIText from '../CTSIText';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 
 import { Tooltip } from '../Tooltip';
 
@@ -75,7 +75,7 @@ const HomeHeader = () => {
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <BsQuestionCircle />
+                            <TbHelp />
                         </Tooltip>
                     </HStack>
                 </CTSIText>

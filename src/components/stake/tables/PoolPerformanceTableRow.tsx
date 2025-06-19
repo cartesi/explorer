@@ -28,9 +28,7 @@ import Address from '../../Address';
 import { StakeIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { TbLockFilled } from 'react-icons/tb';
-
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbLockFilled, TbHelp } from 'react-icons/tb';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;
@@ -194,7 +192,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Icon as={BsQuestionCircle} ml={2} />
+                            <Icon as={TbHelp} ml={2} />
                         </Tooltip>
                     )}
                 </Flex>

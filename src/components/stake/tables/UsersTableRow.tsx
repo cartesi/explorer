@@ -16,7 +16,7 @@ import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
 import Address from '../../Address';
 import { useColorModeValue } from '../../ui/color-mode';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 import { Tooltip } from '../../Tooltip';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
@@ -103,7 +103,7 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                         positioning={{ placement: 'top' }}
                         openDelay={0}
                     >
-                        <Icon as={BsQuestionCircle} />
+                        <Icon as={TbHelp} />
                     </Tooltip>
                 </Flex>
             </Table.Cell>

@@ -7,7 +7,7 @@ import CTSIText, { BigNumberText } from '../../CTSIText';
 import { MyPoolsIcon, MyStakeIcon, PoolsIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 
 export interface PoolsOverviewProps {
     balance: BigNumber;
@@ -43,7 +43,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 data-testid="pools-overview-total-tooltip"
                                 w={4}
                                 h={4}
@@ -67,7 +67,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 data-testid="pools-overview-balances-tooltip"
                                 w={4}
                                 h={4}
@@ -91,7 +91,7 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             openDelay={0}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 data-testid="pools-overview-stake-tooltip"
                                 w={4}
                                 h={4}

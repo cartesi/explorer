@@ -9,9 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbEdit } from 'react-icons/tb';
-import { BsQuestionCircle } from 'react-icons/bs';
-
+import { TbEdit, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -163,7 +161,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             openDelay={0}
                                         >
                                             <Icon
-                                                as={BsQuestionCircle}
+                                                as={TbHelp}
                                                 color={tooltipColor}
                                                 w={3}
                                                 h={3}

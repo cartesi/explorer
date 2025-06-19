@@ -25,7 +25,7 @@ import { PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 
 export interface IAllowanceSectionProps {
     allowance: BigNumber;
@@ -60,12 +60,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             }}
                             openDelay={0}
                         >
-                            <Icon
-                                as={BsQuestionCircle}
-                                color={color}
-                                w={3.5}
-                                h={3.5}
-                            />
+                            <Icon as={TbHelp} color={color} w={3.5} h={3.5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm" pt={2.5}>

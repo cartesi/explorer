@@ -30,8 +30,7 @@ import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { TbScale } from 'react-icons/tb';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbScale, TbHelp } from 'react-icons/tb';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import useFlag from '../../hooks/useFlag';
@@ -253,7 +252,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={BsQuestionCircle}
+                                    as={TbHelp}
                                     width={3}
                                     height={3}
                                     color="gray.600"
@@ -329,7 +328,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={BsQuestionCircle}
+                                    as={TbHelp}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -416,7 +415,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={BsQuestionCircle}
+                                    as={TbHelp}
                                     width={4}
                                     height={4}
                                     color="gray.600"
@@ -475,7 +474,7 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                                 }}
                             >
                                 <Icon
-                                    as={BsQuestionCircle}
+                                    as={TbHelp}
                                     width={4}
                                     height={4}
                                     color="gray.600"

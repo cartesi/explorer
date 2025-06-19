@@ -26,7 +26,7 @@ import { FC, ReactNode } from 'react';
 import { useWallet } from '../wallet';
 import { Account } from './Account';
 import AccountMobile from './AccountMobile';
-import { TbMoonFilled, TbSun, TbPlus, TbMenu2 } from 'react-icons/tb';
+import { TbMoonFilled, TbSun, TbX, TbMenu2 } from 'react-icons/tb';
 import { ConnectWallet } from './ConnectWallet';
 import { Logo } from './Logo';
 import { SelectedChain } from './SelectedChain';
@@ -153,12 +153,7 @@ export const NavBar: FC<NavBarProps> = ({ links, ...props }) => {
                         _hover={{ bg: 'gray.800' }}
                     >
                         {open ? (
-                            <TbPlus
-                                color="white"
-                                style={{
-                                    transform: 'rotate(45deg)',
-                                }}
-                            />
+                            <TbX color="white" />
                         ) : (
                             <TbMenu2 color="white" />
                         )}

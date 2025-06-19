@@ -15,7 +15,7 @@ import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { StakedBalanceIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 import { Tooltip } from '../../Tooltip';
 
 export interface StakedBalanceStatProps extends StackProps {
@@ -76,7 +76,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}

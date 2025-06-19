@@ -34,7 +34,7 @@ import CTSI from '../../pools/staking/CTSI';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 import CloseButton from '../../CloseButton';
 
 export interface IStakingDepositModalProps {
@@ -327,7 +327,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                     openDelay={0}
                                                 >
                                                     <Icon
-                                                        as={BsQuestionCircle}
+                                                        as={TbHelp}
                                                         w={3.5}
                                                         h={3.5}
                                                     />

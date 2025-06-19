@@ -29,7 +29,7 @@ import BigNumberTextV2 from '../../BigNumberTextV2';
 import { EffectiveBalanceIcon, EyeIcon, RebalanceIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 
 export interface EffectiveBalanceStatProps extends StackProps {
     stake: BigNumber;
@@ -132,7 +132,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 data-testid="balance-icon"
                                 w={3.5}
                                 h={3.5}
@@ -225,9 +225,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                         }}
                                                     >
                                                         <Icon
-                                                            as={
-                                                                BsQuestionCircle
-                                                            }
+                                                            as={TbHelp}
                                                             w={3.5}
                                                             h={3.5}
                                                         />
@@ -269,9 +267,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                         }}
                                                     >
                                                         <Icon
-                                                            as={
-                                                                BsQuestionCircle
-                                                            }
+                                                            as={TbHelp}
                                                             w={3.5}
                                                             h={3.5}
                                                         />
@@ -309,9 +305,7 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
                                                         }}
                                                     >
                                                         <Icon
-                                                            as={
-                                                                BsQuestionCircle
-                                                            }
+                                                            as={TbHelp}
                                                             w={3.5}
                                                             h={3.5}
                                                         />

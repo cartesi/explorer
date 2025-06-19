@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbAlertTriangleFilled } from 'react-icons/tb';
+import { TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -26,7 +26,6 @@ import {
 import humanizeDuration from 'humanize-duration';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { BsQuestionCircle } from 'react-icons/bs';
 import { Tooltip } from '../Tooltip';
 
 export interface CommissionFormProps {
@@ -126,7 +125,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                             }}
                         >
                             <Icon
-                                as={BsQuestionCircle}
+                                as={TbHelp}
                                 width={4}
                                 height={4}
                                 color="gray.600"

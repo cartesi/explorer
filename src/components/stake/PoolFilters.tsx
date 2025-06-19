@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbPlus } from 'react-icons/tb';
+import { TbX } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -271,15 +271,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                     onSelectedTypesChange(type);
                                 }}
                             >
-                                <Icon
-                                    as={TbPlus}
-                                    color={badgeColor}
-                                    w={6}
-                                    h={6}
-                                    style={{
-                                        transform: 'rotate(45deg)',
-                                    }}
-                                />
+                                <Icon as={TbX} color={badgeColor} w={6} h={6} />
                             </Button>
                         </HStack>
                     </Box>

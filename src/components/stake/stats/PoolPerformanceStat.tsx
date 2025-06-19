@@ -9,8 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbChevronRight } from 'react-icons/tb';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbChevronRight, TbHelp } from 'react-icons/tb';
 import { Box, HStack, Icon, Text } from '@chakra-ui/react';
 import { pathOr } from 'lodash/fp';
 import NextLink from 'next/link';
@@ -97,11 +96,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                                         fontSize: 'small',
                                     }}
                                 >
-                                    <Icon
-                                        as={BsQuestionCircle}
-                                        w={3.5}
-                                        h={3.5}
-                                    />
+                                    <Icon as={TbHelp} w={3.5} h={3.5} />
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>

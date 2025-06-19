@@ -30,7 +30,7 @@ import {
 import MarketInfoPanel from './MarketInfoPanel';
 import PrimaryCard from './PrimaryCard';
 import { useColorModeValue } from '../ui/color-mode';
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 import { Tooltip } from '../Tooltip';
 
 const HomeStats = () => {
@@ -127,7 +127,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <BsQuestionCircle />
+                                    <TbHelp />
                                 </Tooltip>
                             </Flex>
                         }
@@ -158,7 +158,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <BsQuestionCircle />
+                                    <TbHelp />
                                 </Tooltip>
                             </Flex>
                         }
@@ -195,7 +195,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <BsQuestionCircle />
+                                <TbHelp />
                             </Tooltip>
                         </Flex>
                     }
@@ -229,7 +229,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <BsQuestionCircle />
+                                <TbHelp />
                             </Tooltip>
                         </Flex>
                     }
@@ -272,7 +272,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <BsQuestionCircle />
+                                <TbHelp />
                             </Tooltip>
                         </Flex>
                     }
@@ -315,7 +315,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <BsQuestionCircle />
+                                <TbHelp />
                             </Tooltip>
                         </Flex>
                     }

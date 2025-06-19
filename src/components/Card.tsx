@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BsQuestionCircle } from 'react-icons/bs';
+import { TbHelp } from 'react-icons/tb';
 
 import {
     Box,
@@ -110,7 +110,7 @@ export const Card = ({
                                     ml: 2,
                                 }}
                             >
-                                <BsQuestionCircle
+                                <TbHelp
                                     data-testid={`${id}-tooltip-icon`}
                                     role="tooltip-icon"
                                 />
