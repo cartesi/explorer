@@ -9,26 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Text } from '@chakra-ui/react';
+import { Icon, Text } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { FaIcons } from 'react-icons/fa';
+import { TbIcons } from 'react-icons/tb';
 import CTSIText from '../../src/components/CTSIText';
+import { withChakraTheme } from '../test-utilities';
+
+const Component = withChakraTheme(CTSIText);
 
 describe('CTSI Text component', () => {
     it('Should render the formatted amount of CTSI', () => {
-        render(<CTSIText value="5000100000000000000000000" />);
+        render(<Component value="5000100000000000000000000" />);
 
         expect(screen.getByText('5,000,100')).toBeInTheDocument();
     });
 
     it('Should render the text and the formatted CTSI amount', () => {
         render(
-            <CTSIText
+            <Component
                 value="5000100000000000000000000"
                 options={{ maximumFractionDigits: 2 }}
             >
                 <Text>Wallet Balance</Text>
-            </CTSIText>
+            </Component>
         );
 
         expect(screen.getByText('Wallet Balance')).toBeInTheDocument();
@@ -38,13 +41,13 @@ describe('CTSI Text component', () => {
 
     it('Should render an icon with the formatted CTSI amount', () => {
         const { container } = render(
-            <CTSIText
+            <Component
                 value="5000100000000000000000000"
                 options={{ maximumFractionDigits: 2 }}
-                icon={FaIcons}
+                icon={<Icon as={TbIcons} />}
             >
                 <Text>Staked Balance</Text>
-            </CTSIText>
+            </Component>
         );
         expect(container.querySelector('svg > path')).toBeInTheDocument();
         expect(screen.getByText('Staked Balance')).toBeInTheDocument();

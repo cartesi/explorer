@@ -39,6 +39,7 @@ import {
     generateNodeData,
     generateStakingPoolsData,
 } from '../mocks';
+import userEvent from '@testing-library/user-event';
 
 const useNodesMod = '../../../src/graphql/hooks/useNodes';
 const useENSMod = '../../../src/services/ens';
@@ -180,21 +181,23 @@ describe('NodeRunners container (Landing Page)', () => {
                 'private-node-creation-card-tooltip-icon'
             );
 
-            fireEvent.click(tooltipIcon);
+            act(() => {
+                userEvent.hover(tooltipIcon);
+            });
 
             expect(
                 await screen.findByText('Main responsibilities:')
-            ).toBeInTheDocument();
+            ).toBeVisible();
             expect(
                 await screen.findByText(
                     'Make sure the Noether node is online and works properly 24x7.'
                 )
-            ).toBeInTheDocument();
+            ).toBeVisible();
             expect(
                 await screen.findByText(
                     'Pay the Ethereum fees that are necessary for block production and also maintenance operations.'
                 )
-            ).toBeInTheDocument();
+            ).toBeVisible();
         });
 
         it('should display tooltip for public pool creation banner', async () => {
@@ -204,21 +207,23 @@ describe('NodeRunners container (Landing Page)', () => {
                 'pool-creation-card-tooltip-icon'
             );
 
-            fireEvent.click(tooltipIcon);
+            act(() => {
+                userEvent.hover(tooltipIcon);
+            });
 
             expect(
                 await screen.findByText('Main responsibilities:')
-            ).toBeInTheDocument();
+            ).toBeVisible();
             expect(
                 await screen.findByText(
                     'Make sure the Noether node is online and works properly 24x7.'
                 )
-            ).toBeInTheDocument();
+            ).toBeVisible();
             expect(
                 await screen.findByText(
                     'Have a relatively large amount of CTSI to stake.'
                 )
-            ).toBeInTheDocument();
+            ).toBeVisible();
         });
 
         describe('When user has pools', () => {

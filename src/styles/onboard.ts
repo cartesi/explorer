@@ -12,51 +12,37 @@
 import { colors } from './foundations/colors';
 import { zIndices } from './foundations/zIndices';
 
-const grayColour = colors.dark.gray.quaternary;
-const white = colors.white;
+const grayColour = colors.dark.gray.quaternary.value;
+const white = colors.white.value;
 
-export const buildOnboardTheme = (props: { colorMode: string }) => {
-    const LEDGER_MODAL = '.ledger-ck-modal > #ModalWrapper';
-    const isDarkMode = props.colorMode === 'dark';
-    const defaultVars = {
+const LEDGER_MODAL = '.ledger-ck-modal > #ModalWrapper';
+
+export const onboardTheme = {
+    [LEDGER_MODAL]: {
+        zIndex: zIndices.xxl.value,
+    },
+    ':root': {
         '--onboard-font-family-normal': 'var(--chakra-fonts-body)',
         '--onboard-font-family-semibold': 'var(--chakra-fonts-body)',
         '--onboard-font-family-light': 'var(--chakra-fonts-body)',
-        '--onboard-modal-z-index': zIndices.xxl,
-        '--onboard-account-select-modal-z-index': zIndices.xxl,
-        '--onboard-link-color': colors.light.primary,
-    };
-    const wcVars = {
+        '--onboard-modal-z-index': zIndices.xxl.value,
+        '--onboard-account-select-modal-z-index': zIndices.xxl.value,
+        '--onboard-link-color': colors.light.primary.value,
         '--wcm-z-index': `${1060} !important`,
         '--w3m-z-index': `${1060} !important`,
-    };
-    let darkVars = {};
-
-    if (isDarkMode) {
-        darkVars = {
-            '--onboard-connect-sidebar-background': grayColour,
-            '--onboard-connect-sidebar-color': white,
-            '--onboard-connect-sidebar-progress-background': white,
-            '--onboard-connect-sidebar-progress-color': grayColour,
-            '--onboard-connect-header-background': grayColour,
-            '--onboard-connect-header-color': white,
-            '--onboard-close-button-background': grayColour,
-            '--onboard-close-button-color': white,
-            '--onboard-wallet-button-background-hover': colors.gray1,
-            // Color pallet
-            '--onboard-black': white,
-            '--onboard-link-color': colors.dark.primary,
-        };
-    }
-
-    return {
-        [LEDGER_MODAL]: {
-            zIndex: zIndices.xxl,
-        },
-        ':root': {
-            ...defaultVars,
-            ...darkVars,
-            ...wcVars,
-        },
-    };
+    },
+    ':root.dark': {
+        '--onboard-connect-sidebar-background': grayColour,
+        '--onboard-connect-sidebar-color': white,
+        '--onboard-connect-sidebar-progress-background': white,
+        '--onboard-connect-sidebar-progress-color': grayColour,
+        '--onboard-connect-header-background': grayColour,
+        '--onboard-connect-header-color': white,
+        '--onboard-close-button-background': grayColour,
+        '--onboard-close-button-color': white,
+        '--onboard-wallet-button-background-hover': colors.gray1.value,
+        // Color pallet
+        '--onboard-black': white,
+        '--onboard-link-color': colors.dark.primary.value,
+    },
 };

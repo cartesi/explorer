@@ -15,19 +15,19 @@ import {
     Flex,
     Heading,
     Link,
-    ListItem,
     Stack,
     Text,
-    UnorderedList,
-    useColorModeValue,
+    List,
 } from '@chakra-ui/react';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
+import { useColorModeValue } from '../../ui/color-mode';
 
 const { COMPLETED } = StepStatus;
 
 const CustomizeEthereumNode = ({
     stepNumber,
+    currentStep,
     inFocus,
     onComplete,
     onStepActive,
@@ -36,6 +36,8 @@ const CustomizeEthereumNode = ({
     const thirdPartyColor = useColorModeValue('dark.secondary', 'dark.primary');
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
         'dark.border.quaternary'
@@ -47,14 +49,14 @@ const CustomizeEthereumNode = ({
             stepNumber={stepNumber}
             status={state.status}
             onActive={onStepActive}
-            bg={bg}
+            bg={isHighlighted ? bg : undefined}
             borderRadius={'md'}
             borderWidth={'1px'}
             borderColor={borderColor}
             borderStyle={'solid'}
         >
             <StepBody>
-                <Heading as="h3" size="sm" my={4}>
+                <Heading as="h3" size="md" my={4}>
                     Ethereum node
                 </Heading>
                 <Text>
@@ -62,14 +64,16 @@ const CustomizeEthereumNode = ({
                     It's important to use a stable and reliable provider.
                 </Text>
 
-                <Heading as="h3" size="sm" my={4}>
+                <Heading as="h3" size="md" my={4}>
                     Ethereum Gateway
                 </Heading>
                 <Flex
                     direction={{ base: 'column', md: 'row' }}
                     alignItems="baseline"
                     p={{ base: 4, md: 6 }}
-                    border="solid 1px var(--chakra-colors-gray-200)"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.200"
                 >
                     <Flex direction="column">
                         <Box>
@@ -107,15 +111,12 @@ const CustomizeEthereumNode = ({
                             (Recommended third party)
                         </Text>
                     </Flex>
-                    <UnorderedList
-                        ml={{ base: 6, md: 12 }}
-                        pt={{ base: 4, md: 0 }}
-                    >
-                        <ListItem>Relatively stable.</ListItem>
-                        <ListItem>
+                    <List.Root ml={{ base: 6, md: 12 }} pt={{ base: 4, md: 0 }}>
+                        <List.Item>Relatively stable.</List.Item>
+                        <List.Item>
                             Have to register and setup in advance
-                        </ListItem>
-                    </UnorderedList>
+                        </List.Item>
+                    </List.Root>
                 </Flex>
             </StepBody>
             <StepActions>
@@ -125,7 +126,7 @@ const CustomizeEthereumNode = ({
                 >
                     <Button
                         minWidth={{ base: '10rem' }}
-                        colorScheme={buttonColorScheme}
+                        colorPalette={buttonColorScheme}
                         onClick={(evt) => {
                             setState(COMPLETED);
                             onComplete(evt);

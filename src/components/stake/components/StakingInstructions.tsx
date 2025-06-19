@@ -9,14 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    OrderedList,
-    ListItem,
-    Stack,
-    Box,
-    Button,
-    useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Button, List, Stack, useDisclosure } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { InfoBanner } from '../InfoBanner';
 
@@ -26,8 +19,8 @@ export const StakingInstructions: FC = () => {
     const localFlagItem = localStorage.getItem(SHOW_STAKING_INSTRUCTIONS);
     const showInstructions = localFlagItem ? JSON.parse(localFlagItem) : true;
 
-    const { isOpen, onToggle } = useDisclosure({
-        defaultIsOpen: showInstructions,
+    const { open, onToggle } = useDisclosure({
+        defaultOpen: showInstructions,
     });
 
     const handleDontShowAgainClick = () => {
@@ -38,57 +31,57 @@ export const StakingInstructions: FC = () => {
     return (
         <>
             {showInstructions && (
-                <Box pb={isOpen ? { base: 6, sm: 10, lg: 10 } : '0'}>
+                <Box pb={open ? { base: 6, sm: 10, lg: 10 } : '0'}>
                     <InfoBanner
                         title="Earn rewards by staking CTSI"
                         content={
                             <>
-                                <OrderedList fontSize="sm" mt={2}>
-                                    <ListItem>
+                                <List.Root as="ol" fontSize="sm" mt={2}>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         Staking is a great way to maximize your
                                         holdings that would otherwise be sitting
                                         in your e-wallet.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         Rewards are a form of incentive that you
                                         can earn when you stake your CTSI coins
                                         for a period of your liking.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         You will receive rewards from your
                                         staked holdings, which will
                                         automatically be staked as well,
                                         allowing you to further increase your
                                         holdings through the compound interest
                                         effect.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         The frequency of the rewards payment
                                         depends on the size of the pool. It can
                                         range from several per day to just one
                                         in months.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         To get started, simply choose the amount
                                         you wish to stake. Once Cartesi has
                                         verified your deposit amount, it is
                                         ready to be staked and earn rewards
                                         through the Proof of Stake process.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         The verification time may take longer
                                         than expected if there is a high volume
                                         of requests.
-                                    </ListItem>
-                                    <ListItem>
+                                    </List.Item>
+                                    <List.Item _marker={{ color: 'inherit' }}>
                                         Estimated rewards may vary greatly
                                         depending on chance and the total amount
                                         of CTSI staked by all members of the
                                         network.
-                                    </ListItem>
-                                </OrderedList>
+                                    </List.Item>
+                                </List.Root>
                                 <Stack
-                                    spacing={4}
+                                    gap={4}
                                     direction={{ base: 'column', md: 'row' }}
                                     justifyContent="flex-end"
                                     mt={6}
@@ -116,7 +109,7 @@ export const StakingInstructions: FC = () => {
                                 </Stack>
                             </>
                         }
-                        isOpen={isOpen}
+                        isOpen={open}
                         isClosable
                         status="warning"
                         onToggle={onToggle}

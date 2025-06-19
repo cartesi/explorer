@@ -10,11 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { TableCellProps, Td, Tr, useColorModeValue } from '@chakra-ui/react';
+import { TableCellProps, Table } from '@chakra-ui/react';
 import {
     StakingPoolFeeHistory,
     StakingPoolFeeType,
 } from '../../../graphql/models';
+import { useColorModeValue } from '../../ui/color-mode';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     hourCycle: 'h23',
@@ -41,21 +42,33 @@ const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
     };
 
     return (
-        <Tr data-testid="pool-commissions-table-row">
-            <Td {...tdProps} textAlign="left" data-testid="timestamp-col">
+        <Table.Row data-testid="pool-commissions-table-row">
+            <Table.Cell
+                {...tdProps}
+                textAlign="left"
+                data-testid="timestamp-col"
+            >
                 {dateTimeFormat.format(data.timestamp * 1000)}
-            </Td>
+            </Table.Cell>
 
-            <Td {...tdProps} data-testid="new-value-col" isNumeric>
+            <Table.Cell
+                {...tdProps}
+                data-testid="new-value-col"
+                textAlign="right"
+            >
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.newValue / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
                           maximumFractionDigits: 2,
                       })
                     : formatNumber(data.newValue)}
-            </Td>
+            </Table.Cell>
 
-            <Td {...tdProps} data-testid="percentage-col" isNumeric>
+            <Table.Cell
+                {...tdProps}
+                data-testid="percentage-col"
+                textAlign="right"
+            >
                 {data.feeType === StakingPoolFeeType.FLAT_RATE
                     ? formatNumber(data.change / DIVISOR_FOR_PERCENT_STYLE, {
                           style: 'percent',
@@ -63,8 +76,8 @@ const PoolCommissionsTableRow: FC<PoolCommissionsTableRowProps> = ({
                           signDisplay: 'exceptZero',
                       })
                     : formatNumber(data.change, { signDisplay: 'exceptZero' })}
-            </Td>
-        </Tr>
+            </Table.Cell>
+        </Table.Row>
     );
 };
 

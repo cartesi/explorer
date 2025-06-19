@@ -9,11 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { TbArrowLeft } from 'react-icons/tb';
 import {
     Box,
     Button,
     HStack,
+    Icon,
     Stack,
     useBreakpointValue,
     VStack,
@@ -51,15 +52,11 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
             >
                 <VStack alignItems="flex-start" pb="5">
                     <HStack alignItems="flex-start">
-                        <Button
-                            as={NextLink}
-                            href="/stake"
-                            leftIcon={<ArrowBackIcon />}
-                            variant="text"
-                            size="sm"
-                            px="0"
-                        >
-                            Staking pool
+                        <Button asChild variant="text" size="sm" px="0">
+                            <NextLink href="/stake">
+                                <Icon as={TbArrowLeft} w={4} h={4} /> Staking
+                                pool
+                            </NextLink>
                         </Button>
                     </HStack>
 
@@ -72,17 +69,24 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
 
                         {isManager && (
                             <Button
-                                as={NextLink}
-                                href={`/pools/${address}/manage${
-                                    isString(from) ? `?from=${from}` : ''
-                                }`}
+                                asChild
                                 variant="text"
                                 size="sm"
                                 pl={0}
                                 data-testid="pool-management-link"
                                 title="Manage pool"
                             >
-                                <SettingsIcon w={iconSize} h={iconSize} />
+                                <NextLink
+                                    href={`/pools/${address}/manage${
+                                        isString(from) ? `?from=${from}` : ''
+                                    }`}
+                                >
+                                    <Icon
+                                        as={SettingsIcon}
+                                        width={iconSize}
+                                        height={iconSize}
+                                    />
+                                </NextLink>
                             </Button>
                         )}
                     </HStack>

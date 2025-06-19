@@ -12,9 +12,15 @@
 import { Text } from '@chakra-ui/react';
 import { Meta } from '@storybook/react';
 import { parseUnits } from 'ethers/lib/utils';
-import { BsClockHistory } from 'react-icons/bs';
-import { FaCoins, FaPercentage, FaUsers, FaWallet } from 'react-icons/fa';
-import { ImClock, ImPriceTag } from 'react-icons/im';
+import {
+    TbHistory,
+    TbCoins,
+    TbWallet,
+    TbPercentage,
+    TbUser,
+    TbTagFilled,
+    TbClock,
+} from 'react-icons/tb';
 import BigNumberText from '../components/BigNumberText';
 
 export default {
@@ -24,25 +30,25 @@ export default {
 } as Meta<typeof BigNumberText>;
 
 export const Number = () => (
-    <BigNumberText value={13} icon={FaUsers}>
+    <BigNumberText value={13} icon={TbUser}>
         <Text>Users</Text>
     </BigNumberText>
 );
 
 export const Zero = () => (
-    <BigNumberText value={0} icon={FaUsers}>
+    <BigNumberText value={0} icon={TbUser}>
         <Text>Users</Text>
     </BigNumberText>
 );
 
 export const Percentage = () => (
-    <BigNumberText value={0.34} icon={FaPercentage} unit="percent">
+    <BigNumberText value={0.34} icon={TbPercentage} unit="percent">
         <Text>Commission</Text>
     </BigNumberText>
 );
 
 export const CTSI = () => (
-    <BigNumberText value={parseUnits('10000', 18)} icon={FaCoins} unit="ctsi">
+    <BigNumberText value={parseUnits('10000', 18)} icon={TbCoins} unit="ctsi">
         <Text>Staked Balance</Text>
     </BigNumberText>
 );
@@ -50,7 +56,7 @@ export const CTSI = () => (
 export const Ether = () => (
     <BigNumberText
         value={parseUnits('43.96328', 18)}
-        icon={FaWallet}
+        icon={TbWallet}
         unit="eth"
     >
         <Text>Wallet Balance</Text>
@@ -60,7 +66,7 @@ export const Ether = () => (
 export const Price = () => (
     <BigNumberText
         value={0.4396328}
-        icon={ImPriceTag}
+        icon={TbTagFilled}
         unit="usd"
         options={{
             maximumFractionDigits: 2,
@@ -73,7 +79,7 @@ export const Price = () => (
 export const LongDuration = () => (
     <BigNumberText
         value={1000 * 60 * 60 * 24 * 3} // 3 days
-        icon={ImClock}
+        icon={TbClock}
         unit="duration"
     >
         <Text>Production Rate</Text>
@@ -83,7 +89,7 @@ export const LongDuration = () => (
 export const ShortDuration = () => (
     <BigNumberText
         value={1000 * 60 * 27 + 25000} // 27 minutes
-        icon={ImClock}
+        icon={TbClock}
         unit="duration"
     >
         <Text>Production Rate</Text>
@@ -92,7 +98,7 @@ export const ShortDuration = () => (
 export const WithCountdownMaturing = () => (
     <BigNumberText
         value={parseUnits('10000', 18)}
-        icon={BsClockHistory}
+        icon={TbHistory}
         unit="ctsi"
         countdown={{
             timeLeft: '36 minutes, 55 seconds',
@@ -105,7 +111,7 @@ export const WithCountdownMaturing = () => (
 export const WithCountdownReleasing = () => (
     <BigNumberText
         value={parseUnits('10000', 18)}
-        icon={BsClockHistory}
+        icon={TbHistory}
         unit="ctsi"
         countdown={{
             timeLeft: '16 hours, 55 minutes',

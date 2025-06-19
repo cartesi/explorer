@@ -9,16 +9,17 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WarningIcon } from '@chakra-ui/icons';
+import { TbAlertCircleFilled } from 'react-icons/tb';
 import {
     Box,
     Button,
     Flex,
     Heading,
+    Icon,
     Stack,
     Text,
-    useColorModeValue,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -45,7 +46,7 @@ export const DepositSection: FC<IDepositSection> = ({
 
     return (
         <Stack
-            spacing={4}
+            gap={4}
             justifyContent="space-between"
             alignContent="flex-start"
             direction={{ base: 'column', md: 'row' }}
@@ -57,7 +58,7 @@ export const DepositSection: FC<IDepositSection> = ({
             </Box>
             <Flex px={6} justifyContent="right" flexDirection="column">
                 <Button
-                    colorScheme={colorScheme}
+                    colorPalette={colorScheme}
                     onClick={onDepositClick}
                     width="173px"
                     ml="auto"
@@ -72,13 +73,23 @@ export const DepositSection: FC<IDepositSection> = ({
                     >
                         {userWalletBalance.isZero() ? (
                             <>
-                                <WarningIcon color={warningIconColor} /> You
-                                have 0 CTSI. Please, add CTSI to deposit.
+                                <Icon
+                                    as={TbAlertCircleFilled}
+                                    color={warningIconColor}
+                                    w={4}
+                                    h={4}
+                                />{' '}
+                                You have 0 CTSI. Please, add CTSI to deposit.
                             </>
                         ) : noEthAndIsNotASafe ? (
                             <>
-                                <WarningIcon color={warningIconColor} /> You
-                                have 0 ETH. You'll need ETH for transaction
+                                <Icon
+                                    as={TbAlertCircleFilled}
+                                    color={warningIconColor}
+                                    w={4}
+                                    h={4}
+                                />{' '}
+                                You have 0 ETH. You'll need ETH for transaction
                                 fees.
                             </>
                         ) : (

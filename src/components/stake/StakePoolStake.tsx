@@ -11,8 +11,7 @@
 
 'use client';
 
-import { Box } from '@chakra-ui/layout';
-import { useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import Layout from '../Layout';
 import { PoolBreadcrumbs } from './PoolBreadcrumbs';
@@ -28,6 +27,7 @@ import { useStakingPool } from '../../services/pool';
 import { useCartesiToken } from '../../services/token';
 import { Operation } from '../../types/stake';
 import { useParams } from 'next/navigation';
+import { useColorModeValue } from '../ui/color-mode';
 
 const PoolStake = () => {
     const { account, active: isConnected } = useWallet();

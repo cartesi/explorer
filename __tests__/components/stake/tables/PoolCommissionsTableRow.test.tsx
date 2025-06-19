@@ -19,7 +19,7 @@ import {
     StakingPoolFeeHistory,
     StakingPoolFeeType,
 } from '../../../../src/graphql/models';
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { withChakraTheme } from '../../../test-utilities';
 import { format } from '../../../../src/utils/numberFormatter';
 
@@ -30,11 +30,11 @@ const defaultProps = {
 };
 
 const Component: FC<PoolCommissionsTableRowProps> = (props) => (
-    <Table>
-        <Tbody>
+    <Table.Root>
+        <Table.Body>
             <PoolCommissionsTableRow {...props} />
-        </Tbody>
-    </Table>
+        </Table.Body>
+    </Table.Root>
 );
 
 const ThemedComponent =

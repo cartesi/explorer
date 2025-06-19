@@ -11,10 +11,10 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { FaCoins, FaWallet } from 'react-icons/fa';
+import { TbCoins, TbWallet } from 'react-icons/tb';
 
 import CTSIText from '../components/CTSIText';
-import { Text } from '@chakra-ui/react';
+import { Text, Icon } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 
 export default {
@@ -37,14 +37,14 @@ export const Vertical: Story = { ...Template };
 
 export const WithIcon: Story = {
     args: {
-        icon: FaCoins,
+        icon: <Icon as={TbCoins} />,
     },
     ...Template,
 };
 
 export const Horizontal: Story = {
     args: {
-        icon: FaWallet,
+        icon: <Icon as={TbWallet} />,
         direction: 'row',
     },
     ...Template,
@@ -71,7 +71,7 @@ export const HugeAmount: Story = {
 
 export const Red: Story = {
     args: {
-        icon: FaWallet,
+        icon: <Icon as={TbWallet} />,
         direction: 'row',
         color: 'red',
     },

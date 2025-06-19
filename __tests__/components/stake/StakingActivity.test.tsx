@@ -14,6 +14,9 @@ import { StakingActivity } from '../../../src/components/stake/StakingActivity';
 import usePoolActivities, {
     Activity,
 } from '../../../src/graphql/hooks/usePoolActivities';
+import { withChakraTheme } from '../../test-utilities';
+
+const Component = withChakraTheme(StakingActivity);
 
 jest.mock('../../../src/graphql/hooks/usePoolActivities');
 const mockUsePoolActivities = usePoolActivities as jest.MockedFunction<
@@ -33,10 +36,7 @@ describe('Staking Activity', () => {
     // a default configured component
     const renderActivities = () =>
         render(
-            <StakingActivity
-                userAccount={USER_ACCOUNT}
-                poolAddress={POOL_ADDRESS}
-            />
+            <Component userAccount={USER_ACCOUNT} poolAddress={POOL_ADDRESS} />
         );
 
     beforeEach(() => {
@@ -67,7 +67,7 @@ describe('Staking Activity', () => {
         renderActivities();
 
         expect(screen.getByText('My staking activities')).toBeInTheDocument();
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
         expect(
             screen.getByText('Loading staking activities with this pool')
         ).toBeInTheDocument();

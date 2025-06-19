@@ -8,7 +8,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react';
 import { atom, useAtom } from 'jotai';
 import { isEmpty, isFunction, omit, toNumber } from 'lodash/fp';
 import { useEffect, useState } from 'react';
@@ -22,6 +22,7 @@ import TransactionBanner from '../../../TransactionBanner';
 import { useWallet } from '../../../wallet';
 import { WalletDisconnectedNotification } from '../WalletDisconnectedNotification';
 import FlatRateCommission, { FlatRateModel } from './FlatRateCommission';
+import { useColorModeValue } from '../../../ui/color-mode';
 
 type Validation = ValidationResult<FlatRateModel>;
 type Errors = OptionalMappedErrors<Validation>;
@@ -81,6 +82,7 @@ const isPoolCreationCompleted = (transaction: Transaction<any>) =>
 
 const CommissionModel = ({
     stepNumber,
+    currentStep,
     inFocus,
     onComplete,
     onPrevious,
@@ -105,6 +107,9 @@ const CommissionModel = ({
     });
     const isStepCompleted = isPoolCreationCompleted(poolFactory.transaction);
     const colorScheme = useColorModeValue('teal', 'cyan');
+    const bg = useColorModeValue('white', 'dark.background.secondary');
+    const isHighlighted =
+        stepNumber - 1 === currentStep || stepNumber <= currentStep;
 
     const handleValidation = (validation: Validation) => {
         const { name, isValid } = validation;
@@ -136,9 +141,10 @@ const CommissionModel = ({
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}
+            bg={isHighlighted ? bg : undefined}
         >
             <StepBody>
-                <Stack direction="column" spacing={2}>
+                <Stack direction="column" gap={2}>
                     {notInitialised && <PoolFactoryNotInitialisedAlert />}
                     {poolCreationIsPaused && <PoolCreationIsPausedAlert />}
                 </Stack>
@@ -161,7 +167,7 @@ const CommissionModel = ({
                     justifyContent={{ base: 'space-between', md: 'flex-start' }}
                 >
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={(evt) => onPrevious && onPrevious(evt)}
@@ -173,8 +179,8 @@ const CommissionModel = ({
                             disablePoolCreationButton ||
                             poolFactory?.transaction?.isOngoing
                         }
-                        isLoading={poolFactory?.transaction?.isOngoing}
-                        colorScheme={colorScheme}
+                        loading={poolFactory?.transaction?.isOngoing}
+                        colorPalette={colorScheme}
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             poolFactory.createFlatRateCommission(

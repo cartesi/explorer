@@ -9,9 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
 import { Card } from '../../src/components/Card';
 import { withChakraTheme } from '../test-utilities';
+import { act } from 'react';
 
 const ECard = withChakraTheme(Card);
 
@@ -29,7 +32,6 @@ describe('Card component', () => {
             />
         );
 
-        expect(screen.getByRole('img')).toBeInTheDocument();
         expect(screen.getByText('Create a private node')).toBeInTheDocument();
         expect(screen.getByText('Run your own node')).toBeInTheDocument();
         expect(screen.getByText('CREATE NODE')).toBeInTheDocument();
@@ -46,19 +48,18 @@ describe('Card component', () => {
     });
 
     it('Should provide a tooltip when specified in the card properties', async () => {
-        render(
-            <ECard
-                title="Create a private node"
-                tooltip="Create your own node and earn rewards when a block is produced"
-            />
-        );
+        const tooltip =
+            'Create your own node and earn rewards when a block is produced';
 
-        fireEvent.click(screen.getByRole('tooltip-icon'));
+        render(<ECard title="Create a private node" tooltip={tooltip} />);
 
-        expect(
-            await screen.findByText(
-                'Create your own node and earn rewards when a block is produced'
-            )
-        ).toBeInTheDocument();
+        const icon = screen.getByRole('tooltip-icon');
+
+        act(() => {
+            userEvent.hover(icon);
+        });
+
+        await screen.findByText(tooltip);
+        expect(screen.getByText(tooltip)).toBeVisible();
     });
 });

@@ -10,30 +10,22 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import {
-    Button,
-    FormControl,
-    VStack,
-    Text,
-    FormHelperText,
-    FormLabel,
-    Modal,
-    ModalCloseButton,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    UseDisclosureProps,
     Box,
-    HStack,
-    Divider,
-    useColorModeValue,
+    Button,
+    Dialog,
+    Field,
+    Separator,
+    Text,
+    UseDisclosureProps,
     useToken,
+    VStack,
 } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
-import { FocusableElement } from '@chakra-ui/utils';
+import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export interface IStakingPoolAllowanceModalProps {
     allowance: BigNumber;
@@ -57,90 +49,90 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const helperTextColor = useColorModeValue(formControlColor, 'white');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const [outputAllowance, setOutputAllowance] =
         useState<BigNumber>(allowance);
 
-    const inputFocusRef = useRef<FocusableElement>(null);
-
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
-                initialFocusRef={inputFocusRef}
+            <Dialog.Root
+                open={isOpen}
+                placement="center"
+                onOpenChange={({ open }) => {
+                    if (!open) {
+                        onClose();
+                    }
+                }}
             >
-                <ModalOverlay />
-                <ModalContent>
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
-                                Edit pool allowance
-                            </Box>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                    <Dialog.Content>
+                        <Dialog.CloseTrigger asChild>
+                            <CloseButton size="sm" />
+                        </Dialog.CloseTrigger>
+                        <Dialog.Header>
+                            <Dialog.Title>
+                                <Box fontSize="xl" fontWeight="bold">
+                                    Edit pool allowance
+                                </Box>
+                            </Dialog.Title>
+                        </Dialog.Header>
+                        <Separator width="full" borderColor={separatorColor} />
 
-                            <ModalCloseButton mt="0.5rem !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-
-                    <ModalBody>
-                        <VStack spacing={5}>
-                            <Text>
-                                Additional layer of protection with a max amount
-                                of CTSI tokens that this pool can transfer from
-                                your wallet.
-                            </Text>
-                            <FormControl id="depositAmount">
-                                <FormLabel fontWeight="bold">
-                                    Pool allowance
-                                </FormLabel>
-                                <CTSINumberInput
-                                    value={allowanceFormatted}
-                                    min={0}
-                                    onChange={(bigNumberValue) => {
-                                        setOutputAllowance(bigNumberValue);
-                                    }}
-                                />
-                                <FormHelperText color={helperTextColor}>
-                                    The Pool Allowance can be edited at any
-                                    time. Each edit is charged in the form of a
-                                    gas fee like any Ethereum transaction.
-                                </FormHelperText>
-                            </FormControl>
-                        </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
-                                <Button
-                                    width="full"
-                                    colorScheme={buttonColorScheme}
-                                    onClick={() => {
-                                        onSave(outputAllowance);
-                                        disclosure.onClose();
-                                        onClose();
-                                    }}
-                                >
-                                    Save
-                                </Button>
-                                <Button
-                                    width="full"
-                                    colorScheme="darkGray"
-                                    variant="ghost"
-                                    onClick={onClose}
-                                >
-                                    Cancel
-                                </Button>
+                        <Dialog.Body mt={6}>
+                            <VStack gap={5}>
+                                <Text>
+                                    Additional layer of protection with a max
+                                    amount of CTSI tokens that this pool can
+                                    transfer from your wallet.
+                                </Text>
+                                <Field.Root id="depositAmount">
+                                    <Field.Label fontWeight="bold">
+                                        Pool allowance
+                                    </Field.Label>
+                                    <CTSINumberInput
+                                        value={allowanceFormatted}
+                                        min={0}
+                                        onChange={(bigNumberValue) => {
+                                            setOutputAllowance(bigNumberValue);
+                                        }}
+                                    />
+                                    <Field.HelperText color={helperTextColor}>
+                                        The Pool Allowance can be edited at any
+                                        time. Each edit is charged in the form
+                                        of a gas fee like any Ethereum
+                                        transaction.
+                                    </Field.HelperText>
+                                </Field.Root>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                            <Dialog.Footer px="0" pt={10}>
+                                <VStack w="full" gap={4}>
+                                    <Button
+                                        width="full"
+                                        colorPalette={buttonColorScheme}
+                                        onClick={() => {
+                                            onSave(outputAllowance);
+                                            disclosure.onClose();
+                                            onClose();
+                                        }}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button
+                                        width="full"
+                                        colorPalette="gray"
+                                        variant="ghost"
+                                        onClick={onClose}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </VStack>
+                            </Dialog.Footer>
+                        </Dialog.Body>
+                    </Dialog.Content>
+                </Dialog.Positioner>
+            </Dialog.Root>
         </>
     );
 };

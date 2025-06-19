@@ -11,7 +11,7 @@
 
 import { FC } from 'react';
 import { render, screen } from '@testing-library/react';
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import UserStakingPoolsTableRow, {
     UserStakingPoolsTableRowProps,
 } from '../../../../src/components/stake/tables/UserStakingPoolsTableRow';
@@ -33,11 +33,11 @@ const defaultProps = {
 };
 
 const Component: FC<UserStakingPoolsTableRowProps> = (props) => (
-    <Table>
-        <Tbody>
+    <Table.Root>
+        <Table.Body>
             <UserStakingPoolsTableRow {...props} />
-        </Tbody>
-    </Table>
+        </Table.Body>
+    </Table.Root>
 );
 
 const ThemedComponent =

@@ -29,7 +29,7 @@ const PageHeader: FunctionComponent<PageHeaderProps> = (props) => {
             justify="space-between"
             {...rest}
         >
-            <Heading fontWeight="normal">{title}</Heading>
+            <Heading>{title}</Heading>
             <HStack>{children}</HStack>
         </HStack>
     );

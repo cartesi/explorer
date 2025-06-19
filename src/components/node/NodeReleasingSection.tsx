@@ -18,12 +18,13 @@ import {
     Icon,
     Stack,
     Text,
-    useColorModeValue,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
-import { AiFillDollarCircle } from 'react-icons/ai';
+import { TbCurrencyDollar } from 'react-icons/tb';
+
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
@@ -66,7 +67,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={8} alignItems="center">
+                <HStack gap={8} alignItems="center">
                     <Box
                         w={14}
                         h={14}
@@ -78,7 +79,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                         <Icon
                             w={9}
                             h={9}
-                            as={AiFillDollarCircle}
+                            as={TbCurrencyDollar}
                             color={iconColor}
                         />
                     </Box>
@@ -99,12 +100,12 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                 </HStack>
                 <Stack
                     direction={['column', 'row']}
-                    spacing={4}
+                    gap={4}
                     alignItems="center"
                 >
                     {releasingBalance.gt(0) && releasingLeftShort && (
                         <Button
-                            colorScheme="darkGray"
+                            colorPalette="gray"
                             variant="ghost"
                             mt={[8, 0]}
                             disabled
@@ -114,7 +115,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     )}
                     {releasingBalance.gt(0) && !releasingLeftShort && (
                         <Button
-                            colorScheme={colorScheme}
+                            colorPalette={colorScheme}
                             mt={[8, 0]}
                             onClick={onWithdraw}
                         >

@@ -1,7 +1,7 @@
 'use client';
 
-import { Heading, HStack, Text } from '@chakra-ui/react';
 import Layout from '../components/Layout';
+import { Heading, HStack, Text } from '@chakra-ui/react';
 
 export default function NotFound() {
     return (
