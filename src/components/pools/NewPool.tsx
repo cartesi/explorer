@@ -11,18 +11,10 @@
 
 'use client';
 
-import {
-    Box,
-    Heading,
-    HStack,
-    Link as ChakraLink,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import Link from 'next/link';
+import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { FC } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
 import Layout from '../Layout';
 import { StepGroup } from '../StepGroup';
 import CommissionModel from './steps/CommissionModel';
@@ -30,6 +22,7 @@ import CustomizeEthereumNode from './steps/CustomizeEthereumNode';
 import EthereumNameServer from './steps/ENS';
 import HireNode from './steps/HireNode';
 import SetUpNode from './steps/SetUpNode';
+import { useColorModeValue } from '../ui/color-mode';
 
 const NewPool: FC = () => {
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
@@ -42,14 +35,11 @@ const NewPool: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={Link}
-                    href="/node-runners"
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>Back</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <NextLink href="/node-runners">
+                        <Box as={TbChevronLeft} mr={1} />
+                        <Text>Back</Text>
+                    </NextLink>
                 </Box>
             </HStack>
             <Box
@@ -76,7 +66,7 @@ const NewPool: FC = () => {
                     alignItems="stretch"
                     display={{ base: 'none', md: 'flex' }}
                 >
-                    <ChakraLink
+                    <Link
                         // TODO: Replace with new upcoming tutorial
                         href="https://medium.com/cartesi/staking-delegation-guide-pool-management-3cfe357a66c2"
                         target="_blank"
@@ -91,7 +81,7 @@ const NewPool: FC = () => {
                         alignSelf="flex-end"
                     >
                         Learn from tutorial
-                    </ChakraLink>
+                    </Link>
                 </Stack>
                 <StepGroup
                     mobileHeaderProps={{ top: '100px' }}

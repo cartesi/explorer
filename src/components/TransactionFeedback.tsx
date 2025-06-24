@@ -9,19 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
-    Box,
-    CloseButton,
-    HStack,
-    Spinner,
-} from '@chakra-ui/react';
+import { Alert, Box, HStack, Spinner } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 import { Transaction } from '../services/transaction';
 import Address from './Address';
+import { useColorModeValue } from './ui/color-mode';
+import CloseButton from './CloseButton';
 
 export interface TransactionFeedbackProps<R> {
     transaction: Transaction<R>;
@@ -42,36 +35,45 @@ const TransactionFeedback = <R extends unknown>(
         ? 'success'
         : 'info';
 
+    const addressColor = useColorModeValue('gray.900', 'white');
+    const alertIconColor = useColorModeValue(
+        `light.support.${status}`,
+        `dark.support.${status}`
+    );
+
     const hash = transaction?.transaction?.hash;
     const chainId = transaction?.transaction?.chainId;
     return !transaction?.acknowledged ? (
-        <Alert status={status} variant="left-accent">
+        <Alert.Root status={status} alignItems="center">
             {status === 'info' && <Spinner mx={2} />}
-            {status !== 'info' && <AlertIcon />}
-            <Box flex="1">
-                <HStack>
-                    <AlertTitle>{children}</AlertTitle>
-                    {hash && (
-                        <Address
-                            address={hash}
-                            type="tx"
-                            truncated
-                            chainId={chainId}
-                        />
-                    )}
-                </HStack>
-                <AlertDescription display="block">
-                    {transaction?.error}
-                </AlertDescription>
-            </Box>
+            {status !== 'info' && <Alert.Indicator />}
+            <Alert.Content>
+                <Box flex="1">
+                    <HStack>
+                        <Alert.Title alignSelf="flex-start">
+                            {children}
+                        </Alert.Title>
+                        {hash && (
+                            <Address
+                                address={hash}
+                                type="tx"
+                                truncated
+                                chainId={chainId}
+                                color={addressColor}
+                                iconColor={alertIconColor}
+                            />
+                        )}
+                    </HStack>
+                    <Alert.Description display="block">
+                        {transaction?.error}
+                    </Alert.Description>
+                </Box>
+            </Alert.Content>
             <CloseButton
-                position="absolute"
-                right="8px"
-                top="8px"
                 data-testid="transaction-feedback-close-button"
                 onClick={() => transaction?.ack()}
             />
-        </Alert>
+        </Alert.Root>
     ) : (
         <></>
     );

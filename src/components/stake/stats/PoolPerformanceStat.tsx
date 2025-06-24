@@ -9,15 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    HStack,
-    Icon,
-    Text,
-    Tooltip,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { TbChevronRight, TbHelp } from 'react-icons/tb';
+import { Box, HStack, Icon, Text } from '@chakra-ui/react';
 import { pathOr } from 'lodash/fp';
 import NextLink from 'next/link';
 import { FC, memo, ReactNode } from 'react';
@@ -25,6 +18,8 @@ import useStakingPoolPerformance from '../../../graphql/hooks/useStakingPoolPerf
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolPerformanceIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
 
 export interface PoolPerformanceStatProps {
     address: string;
@@ -65,7 +60,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                     borderColor={borderColor}
                     cursor={location ? 'pointer' : ''}
                 >
-                    <HStack spacing={4} align="center" p={4} w="full">
+                    <HStack gap={4} align="center" p={4} w="full">
                         <Box
                             w={14}
                             h={14}
@@ -74,7 +69,8 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                             placeContent="center"
                             flexShrink={0}
                         >
-                            <PoolPerformanceIcon
+                            <Icon
+                                as={PoolPerformanceIcon}
                                 color={iconColor}
                                 w={7}
                                 h={7}
@@ -90,22 +86,27 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                             <HStack>
                                 <Text>Pool Performance</Text>
                                 <Tooltip
-                                    label="7 days Performance."
-                                    placement="top"
-                                    fontSize="small"
-                                    bg="black"
-                                    color="white"
+                                    showArrow
+                                    content="7 days Performance."
+                                    positioning={{
+                                        placement: 'top',
+                                    }}
+                                    openDelay={0}
+                                    contentProps={{
+                                        fontSize: 'small',
+                                    }}
                                 >
-                                    <Icon w={3.5} h={3.5} />
+                                    <Icon as={TbHelp} w={3.5} h={3.5} />
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>
 
                         {location && (
-                            <ChevronRightIcon
+                            <Icon
+                                as={TbChevronRight}
                                 w={5}
                                 h={5}
-                                role="location-icon"
+                                data-testid="location-icon"
                             />
                         )}
                     </HStack>

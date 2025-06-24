@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Table, Tbody } from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import { Meta, StoryObj } from '@storybook/react';
 
 import UserRow, { UserRowProps } from '../../components/users/UserRow';
@@ -25,11 +25,11 @@ type Story = StoryObj<typeof UserRow>;
 
 const Template: Story = {
     render: (args) => (
-        <Table>
-            <Tbody>
+        <Table.Root>
+            <Table.Body>
                 <UserRow {...args} />
-            </Tbody>
-        </Table>
+            </Table.Body>
+        </Table.Root>
     ),
 };
 

@@ -16,8 +16,9 @@ import {
     Heading,
     Stack,
     Text,
-    useColorModeValue,
+    Icon,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -63,11 +64,12 @@ export const NodeStakedBalanceSection: FC<INodeStakedBalanceSection> = ({
                         placeContent="center"
                         mr={5}
                     >
-                        <StakedBalanceIcon
-                            color={iconColor}
+                        <Icon
+                            as={StakedBalanceIcon}
                             w={8}
                             h={8}
-                            ml={0.5}
+                            ml={1}
+                            color={iconColor}
                         />
                     </Box>
                     <Box>

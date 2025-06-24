@@ -18,6 +18,9 @@ import {
 } from '../../../src/components/Step';
 import { StepGroup, IStep } from '../../../src/components/StepGroup';
 import { Button, useBreakpointValue } from '@chakra-ui/react';
+import { withChakraTheme } from '../../test-utilities';
+
+const StepGroupE = withChakraTheme(StepGroup);
 
 jest.mock('@chakra-ui/react', () => {
     const originalModule = jest.requireActual('@chakra-ui/react');
@@ -78,13 +81,13 @@ describe('StepGroup component', () => {
     });
 
     it('Should display the steps correctly and only the first step is active', () => {
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
 
         initialStateAssertion(screen);
     });
 
     it('Should navigate to the next step when first is completed', () => {
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
         initialStateAssertion(screen);
         fireEvent.click(screen.getByText('NEXT 1'));
 
@@ -97,7 +100,7 @@ describe('StepGroup component', () => {
     });
 
     it('Should navigate to the previous step when click on previous button', () => {
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
         initialStateAssertion(screen);
         fireEvent.click(screen.getByText('NEXT 1'));
         expect(
@@ -114,7 +117,7 @@ describe('StepGroup component', () => {
     });
 
     it('Should not allow to go back to Step 0 when clicking previous', () => {
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
         initialStateAssertion(screen);
 
         fireEvent.click(screen.getByText('PREVIOUS 1'));
@@ -124,7 +127,7 @@ describe('StepGroup component', () => {
 
     it('Should display only the active step on small screens', () => {
         mockUseBreakpointValue.mockReturnValue(true);
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
 
         expect(screen.getByText('Title 1')).toBeInTheDocument();
         expect(screen.getByText('Subtitle 1')).toBeInTheDocument();
@@ -137,7 +140,7 @@ describe('StepGroup component', () => {
 
     it('Should display in the header all the step number on small screens', () => {
         mockUseBreakpointValue.mockReturnValue(true);
-        render(<StepGroup steps={[DummyStep, DummyStep, DummyStep]} />);
+        render(<StepGroupE steps={[DummyStep, DummyStep, DummyStep]} />);
 
         expect(screen.getByText('1')).toBeInTheDocument();
         expect(screen.getByText('2')).toBeInTheDocument();

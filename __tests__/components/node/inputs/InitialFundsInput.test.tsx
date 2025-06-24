@@ -14,6 +14,9 @@ import { InitialFundsInput } from '../../../../src/components/node/inputs/Initia
 import { useWallet } from '../../../../src/components/wallet/useWallet';
 import { useBalance } from '../../../../src/services/eth';
 import { toBigNumber } from '../../../../src/utils/numberParser';
+import { withChakraTheme } from '../../../test-utilities';
+
+const InitialFundsInputE = withChakraTheme(InitialFundsInput);
 
 const walletMod = `../../../../src/components/wallet/useWallet`;
 const servicesEthMod = `../../../../src/services/eth`;
@@ -52,7 +55,7 @@ describe('InitialFundsInput component', () => {
     const onChangeStub = jest.fn();
 
     const Component = ({ max, min }: { max?: number; min?: number }) => (
-        <InitialFundsInput
+        <InitialFundsInputE
             max={max || 3}
             min={min || 0}
             onChange={onChangeStub}

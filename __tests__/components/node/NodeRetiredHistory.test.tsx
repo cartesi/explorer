@@ -16,6 +16,10 @@ import {
     nodeRetiredHistoryData,
 } from '../../containers/mocks';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
+import { withChakraTheme } from '../../test-utilities';
+
+const Component = withChakraTheme(NodeRetiredHistory);
+
 jest.mock('../../../src/graphql/hooks/useNodes');
 const useUserNodeStub = useUserNodes as jest.MockedFunction<
     typeof useUserNodes
@@ -24,7 +28,7 @@ const ADDRESS = '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4';
 const defaultProps = {
     address: ADDRESS,
 };
-const renderComponent = () => render(<NodeRetiredHistory {...defaultProps} />);
+const renderComponent = () => render(<Component {...defaultProps} />);
 describe('Node Retired History', () => {
     beforeEach(() => {
         useUserNodeStub.mockReturnValue(buildUseUserNodesReturn());
@@ -78,8 +82,8 @@ describe('When user has retired node', () => {
     it('Should display the node address', () => {
         renderComponent();
         fireEvent.click(screen.getByText('Node History'));
-        const { container } = render(<NodeRetiredHistory {...defaultProps} />);
-        const tbody = container.querySelectorAll('.chakra-table tbody');
+        const { container } = render(<Component {...defaultProps} />);
+        const tbody = container.querySelectorAll('table');
         expect(tbody.length).toBe(1);
     });
     afterEach(() => {

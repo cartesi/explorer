@@ -9,21 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Icon } from '@chakra-ui/icons';
-import {
-    Box,
-    Heading,
-    HStack,
-    Stack,
-    Text,
-    Tooltip,
-    Wrap,
-} from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text, Wrap } from '@chakra-ui/react';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import CTSIText from '../CTSIText';
+import { TbHelp } from 'react-icons/tb';
+
+import { Tooltip } from '../Tooltip';
+
 import { useWallet } from '../wallet';
 
 const HomeHeader = () => {
@@ -57,7 +52,6 @@ const HomeHeader = () => {
                 }}
                 align="flex-end"
                 pl={{ base: 0, md: '6vw' }}
-                shouldWrapChildren
             >
                 <CTSIText
                     value={balance}
@@ -76,10 +70,12 @@ const HomeHeader = () => {
                     <HStack mb={2} fontWeight={500}>
                         <Text color="white">Staked Balance</Text>
                         <Tooltip
-                            label="This includes direct staking and pool staking."
-                            placement="top"
+                            showArrow
+                            content="This includes direct staking and pool staking."
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
-                            <Icon />
+                            <TbHelp />
                         </Tooltip>
                     </HStack>
                 </CTSIText>

@@ -11,11 +11,19 @@
 
 'use client';
 
-import { Box, Button, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Heading,
+    HStack,
+    Icon,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 import { isObject, isString } from 'lodash';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
 import Address from '../Address';
 import { SimpleChartIcon } from '../Icons';
 import Layout from '../Layout';
@@ -60,14 +68,11 @@ const PoolNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={NextLink}
-                    href={backLink}
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>{backText}</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <NextLink href={backLink}>
+                        <Box as={TbChevronLeft} mr={1} />
+                        <Text>{backText}</Text>
+                    </NextLink>
                 </Box>
             </HStack>
             <Box
@@ -90,14 +95,19 @@ const PoolNode: FC = () => {
                                 />
 
                                 <Button
-                                    as={NextLink}
-                                    href={`/stake/${address}`}
+                                    asChild
                                     variant="text"
                                     size="sm"
                                     pl={0}
                                     title="Pool info"
                                 >
-                                    <SimpleChartIcon w={6} h={6} />
+                                    <NextLink href={`/stake/${address}`}>
+                                        <Icon
+                                            as={SimpleChartIcon}
+                                            w={6}
+                                            h={6}
+                                        />
+                                    </NextLink>
                                 </Button>
                             </HStack>
                         )}

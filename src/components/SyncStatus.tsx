@@ -9,16 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
-} from '@chakra-ui/alert';
-import { Box } from '@chakra-ui/layout';
-import { useColorModeValue } from '@chakra-ui/react';
+import { Box, Alert } from '@chakra-ui/react';
 import useMeta from '../graphql/hooks/useMeta';
 import { useBlockNumber } from '../services/eth';
+import { useColorModeValue } from './ui/color-mode';
 
 const threshold = 25;
 
@@ -43,14 +37,14 @@ const SyncStatus = () => {
 
     return issues ? (
         <Box px="6vw" bg={bg}>
-            <Alert status="error">
-                <AlertIcon />
-                <AlertTitle mr={2}>{title}</AlertTitle>
-                <AlertDescription>
+            <Alert.Root status="error">
+                <Alert.Indicator />
+                <Alert.Title mr={2}>{title}</Alert.Title>
+                <Alert.Description>
                     Synchronization issue between backend data and blockchain
                     data. Backend data delayed by {delay} blocks.
-                </AlertDescription>
-            </Alert>
+                </Alert.Description>
+            </Alert.Root>
         </Box>
     ) : (
         <div />

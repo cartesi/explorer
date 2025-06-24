@@ -10,6 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export const fonts = {
-    body: '"Inter", sans-serif',
-    heading: '"Plus Jakarta Sans", sans-serif',
+    body: {
+        value: '"Inter", sans-serif',
+    },
+    heading: {
+        value: '"Plus Jakarta Sans", sans-serif',
+    },
 };

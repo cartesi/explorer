@@ -153,39 +153,39 @@ describe('PoolSetting', () => {
         renderComponent();
         const text = 'Total amount of tokens staked in this pool';
 
-        const icon = screen.getByRole('balance-icon');
+        const icon = screen.getByTestId('balance-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display required text for pool tooltip', async () => {
         renderComponent();
         const text = 'Enter a registered ENS domain name';
 
-        const icon = screen.getByRole('pool-icon');
+        const icon = screen.getByTestId('pool-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display required text for staking tooltip', async () => {
         renderComponent();
         const text = 'Open or close the pool for new stakes';
 
-        const icon = screen.getByRole('staking-icon');
+        const icon = screen.getByTestId('staking-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     it('Should display quit tooltip', async () => {
@@ -193,13 +193,13 @@ describe('PoolSetting', () => {
         const text =
             "If you don't want to keep the pool active, it can be disabled with our help";
 
-        const icon = screen.getByRole('quit-icon');
+        const icon = screen.getByTestId('quit-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 
     describe('when posV2Enabled is enabled', () => {

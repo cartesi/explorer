@@ -13,12 +13,12 @@ import {
     Button,
     HStack,
     Menu,
-    MenuButton,
     Tag,
     TagLabel,
-    useColorModeValue,
+    Portal,
+    Icon,
 } from '@chakra-ui/react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import theme from '../../styles/theme';
@@ -26,6 +26,7 @@ import { truncateString } from '../../utils/stringUtils';
 import { PaginationIcon } from '../Icons';
 import { useWallet } from '../wallet';
 import WalletMenu from './menu/WalletMenu';
+import { useColorModeValue } from '../ui/color-mode';
 
 export const Account: FC = () => {
     const { account = '' } = useWallet();
@@ -37,59 +38,72 @@ export const Account: FC = () => {
     const hoverStyle = useColorModeValue({ bg: 'white' }, { bg: 'white' });
     const colorScheme = useColorModeValue('gray', undefined);
     const address = ens.name || truncateString(ens.address || account);
+    const [opened, setOpened] = useState(false);
 
     return (
         <>
             {hasAccount && (
-                <Tag p={0} borderRadius="0">
-                    <Menu closeOnSelect={false}>
-                        {({ isOpen }) => (
-                            <>
-                                <MenuButton
-                                    borderRadius={0}
-                                    bg={bgColor}
-                                    h={10}
-                                    pl={4}
-                                    pr={1}
-                                    as={Button}
-                                    rightIcon={
-                                        <PaginationIcon
-                                            height="32px"
-                                            width="32px"
-                                            color={color}
-                                            style={{
-                                                transition: 'ease-in-out 0.1s',
-                                                transform: isOpen
-                                                    ? 'rotate(180deg)'
-                                                    : 'rotate(0deg)',
-                                            }}
-                                        />
-                                    }
-                                    _expanded={expandedStyle}
-                                    _hover={hoverStyle}
-                                    colorScheme={colorScheme}
-                                >
-                                    <HStack h={10}>
-                                        <JazzIcon
-                                            diameter={15}
-                                            seed={jsNumberForAddress(account)}
-                                        />
+                <Tag.Root p={0} borderRadius="0">
+                    <Menu.Root
+                        onOpenChange={({ open }) => {
+                            setOpened(open);
+                        }}
+                    >
+                        <Menu.Trigger asChild>
+                            <Button
+                                borderRadius={0}
+                                bg={bgColor}
+                                h={10}
+                                pl={4}
+                                pr={1}
+                                _expanded={expandedStyle}
+                                _hover={hoverStyle}
+                                colorPalette={colorScheme}
+                            >
+                                <HStack h={10}>
+                                    <JazzIcon
+                                        diameter={15}
+                                        seed={jsNumberForAddress(account)}
+                                    />
 
-                                        <TagLabel
-                                            color={color}
-                                            fontSize="sm"
-                                            fontFamily={theme.fonts.body}
-                                        >
-                                            {address}
-                                        </TagLabel>
-                                    </HStack>
-                                </MenuButton>
+                                    <TagLabel
+                                        color={color}
+                                        fontSize="sm"
+                                        fontFamily={theme.tokens.getVar(
+                                            'fonts.body'
+                                        )}
+                                    >
+                                        {address}
+                                    </TagLabel>
+                                </HStack>
 
-                                <WalletMenu />
-                            </>
-                        )}
-                    </Menu>
-                </Tag>
+                                <Icon
+                                    as={PaginationIcon}
+                                    color={color}
+                                    w={8}
+                                    h={8}
+                                    style={{
+                                        transition: 'ease-in-out 0.1s',
+                                        transform: opened
+                                            ? 'rotate(180deg)'
+                                            : 'rotate(0deg)',
+                                    }}
+                                />
+                            </Button>
+                        </Menu.Trigger>
+                        <Portal>
+                            <Menu.Positioner
+                                zIndex={`${theme.tokens.getVar(
+                                    'zIndex.xxl'
+                                )} !important`}
+                            >
+                                <Menu.Content>
+                                    <WalletMenu />
+                                </Menu.Content>
+                            </Menu.Positioner>
+                        </Portal>
+                    </Menu.Root>
+                </Tag.Root>
             )}
         </>
     );

@@ -9,17 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { LockIcon } from '@chakra-ui/icons';
 import {
     Box,
+    Flex,
     HStack,
     Icon,
     Link,
+    Table,
     TableCellProps,
-    Td,
-    Tooltip,
-    Tr,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { first, last } from 'lodash/fp';
 import NextLink from 'next/link';
@@ -29,6 +26,9 @@ import labels from '../../../utils/labels';
 import { formatCTSI } from '../../../utils/token';
 import Address from '../../Address';
 import { StakeIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { TbLockFilled, TbHelp } from 'react-icons/tb';
 
 export interface PoolPerformanceTableRowProps {
     chainId: number;
@@ -58,8 +58,8 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
 
     return (
         <>
-            <Td
-                isNumeric
+            <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
@@ -67,9 +67,9 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
             >
                 {numberFormat.format(parsedWeekly)} (
                 {numberFormat.format(apr(parsedWeekly, 7))})
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 paddingTop={4}
                 paddingBottom={4}
@@ -77,7 +77,7 @@ const Performance = ({ weekly, monthly }: PerformanceProps) => {
             >
                 {numberFormat.format(parsedMonthly)} (
                 {numberFormat.format(apr(parsedMonthly, 30))})
-            </Td>
+            </Table.Cell>
         </>
     );
 };
@@ -117,7 +117,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
     };
 
     return (
-        <Tr
+        <Table.Row
             key={pool.id}
             id={pool.id}
             data-testid="pool-performance-table-row"
@@ -126,14 +126,13 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            <Td data-testid="address-col" {...tdProps}>
+            <Table.Cell data-testid="address-col" {...tdProps}>
                 <HStack>
                     <Address
                         ens
                         address={pool.id}
                         chainId={chainId}
                         truncated
-                        size="md"
                         minWidth="120px"
                         textDecoration="underline"
                         px="0.5rem"
@@ -144,30 +143,38 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
 
                     {pool.paused && (
                         <Tooltip
-                            placement="top"
-                            label="This pool is not accepting stake at the moment"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content="This pool is not accepting stake at the moment"
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
                         >
-                            <LockIcon
-                                w={2.5}
-                                h={2.5}
+                            <Icon
+                                as={TbLockFilled}
+                                width={2.5}
+                                height={2.5}
                                 data-testid="paused-tooltip-icon"
                             />
                         </Tooltip>
                     )}
                 </HStack>
-            </Td>
-            <Td isNumeric data-testid="total-users-col" {...tdProps}>
+            </Table.Cell>
+            <Table.Cell
+                data-testid="total-users-col"
+                textAlign="right"
+                {...tdProps}
+            >
                 {pool.totalUsers}
-            </Td>
-            <Td isNumeric data-testid="amount-col" {...tdProps}>
+            </Table.Cell>
+            <Table.Cell data-testid="amount-col" textAlign="right" {...tdProps}>
                 {formatCTSI(pool.amount, 2)} CTSI
-            </Td>
-            <Td isNumeric data-testid="total-reward-col" {...tdProps}>
+            </Table.Cell>
+            <Table.Cell
+                data-testid="total-reward-col"
+                textAlign="right"
+                {...tdProps}
+            >
                 {formatCTSI(pool.user.totalReward, 2)} CTSI
-            </Td>
+            </Table.Cell>
 
             <Performance
                 key={`perf-${pool.id}`}
@@ -175,33 +182,32 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                 monthly={last(pool.monthlyPerformance)?.performance}
             />
 
-            <Td data-testid="commission-col" {...tdProps}>
-                {commissionLabel}{' '}
-                {commissionTooltip && (
-                    <Tooltip
-                        placement="top"
-                        label={commissionTooltip}
-                        fontSize="small"
-                        bg="black"
-                        color="white"
-                        size="md"
-                    >
-                        <Icon w={2.5} h={2.5} />
-                    </Tooltip>
-                )}
-            </Td>
-            <Td data-testid="accrued-commission-col" {...tdProps}>
+            <Table.Cell data-testid="commission-col" {...tdProps}>
+                <Flex height="auto" direction="row" alignItems="center">
+                    {commissionLabel}
+                    {commissionTooltip && (
+                        <Tooltip
+                            showArrow
+                            content={commissionTooltip}
+                            positioning={{ placement: 'top' }}
+                            openDelay={0}
+                        >
+                            <Icon as={TbHelp} ml={2} />
+                        </Tooltip>
+                    )}
+                </Flex>
+            </Table.Cell>
+            <Table.Cell data-testid="accrued-commission-col" {...tdProps}>
                 {accruedCommissionLabel}
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
-                padding={0}
                 data-testid="stake-info-col"
                 backgroundColor={isHovered ? backgroundHoverColor : stakeInfoBg}
                 {...tdProps}
+                padding={0}
             >
                 <Box
                     transition="all 0.2s ease-in"
@@ -216,19 +222,20 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                     ml="auto"
                 >
                     <Link
-                        as={NextLink}
-                        href={`/stake/${pool.id}`}
+                        asChild
                         data-testid="stake-info-link"
                         color={linkColor}
                         _hover={{
                             color: linkHoverColor,
                         }}
                     >
-                        <StakeIcon w={8} h={8} />
+                        <NextLink href={`/stake/${pool.id}`}>
+                            <Icon as={StakeIcon} w={8} h={8} />
+                        </NextLink>
                     </Link>
                 </Box>
-            </Td>
-        </Tr>
+            </Table.Cell>
+        </Table.Row>
     );
 };
 

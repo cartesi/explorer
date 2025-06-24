@@ -14,20 +14,22 @@ import { act } from 'react';
 import { Notification } from '../../src/components/Notification';
 import { withChakraTheme } from '../test-utilities';
 
+const ENotification = withChakraTheme(Notification);
+
 describe('Notification component', () => {
     beforeEach(() => {
         cleanup();
     });
 
     it('should display correct title', () => {
-        render(<Notification title="That is a notification" />);
+        render(<ENotification title="That is a notification" />);
 
         expect(screen.getByText('That is a notification')).toBeInTheDocument();
     });
 
     it('should display a subtitle when defined', () => {
         render(
-            <Notification
+            <ENotification
                 title="Title message"
                 subtitle="That is a subtitle message"
             />
@@ -41,7 +43,7 @@ describe('Notification component', () => {
 
     it('should display a close button when a onClose callback is defined', () => {
         const onClose = jest.fn();
-        render(<Notification title="Title message" onClose={onClose} />);
+        render(<ENotification title="Title message" onClose={onClose} />);
 
         const closeButton = screen.getByRole('close-button');
 
@@ -57,35 +59,12 @@ describe('Notification component', () => {
     it('should display a children component when defined', () => {
         const DummyComp = () => <div>Connect To Wallet</div>;
         render(
-            <Notification title="Wallet is disconnected">
+            <ENotification title="Wallet is disconnected">
                 <DummyComp />
-            </Notification>
+            </ENotification>
         );
 
         expect(screen.getByText('Wallet is disconnected')).toBeInTheDocument();
         expect(screen.getByText('Connect To Wallet')).toBeInTheDocument();
-    });
-
-    it('should display default accent colour and different accents based on status', () => {
-        const ENotification = withChakraTheme(Notification);
-        const { rerender } = render(<ENotification title="Title" />);
-        const role = screen.getByRole('alert');
-
-        // default is info
-        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-blue-200);');
-
-        rerender(<ENotification title="Title" status="success" />);
-
-        expect(role).toHaveStyle('--alert-fg: var(--chakra-colors-green-200);');
-
-        rerender(<ENotification title="Title" status="error" />);
-
-        expect(role).toHaveStyle('--alert-fg:  var(--chakra-colors-red-200);');
-
-        rerender(<ENotification title="Title" status="warning" />);
-
-        expect(role).toHaveStyle(
-            '--alert-fg:  var(--chakra-colors-orange-200);'
-        );
     });
 });

@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
+import { TbHelp } from 'react-icons/tb';
+
 import {
-    Avatar,
     Box,
     Button,
     Heading,
@@ -19,11 +19,10 @@ import {
     Stack,
     StackProps,
     Text,
-    Tooltip,
-    useColorModeValue,
-    useDisclosure,
 } from '@chakra-ui/react';
 import { MouseEventHandler, ReactElement, ReactNode } from 'react';
+import { useColorModeValue } from './ui/color-mode';
+import { Tooltip } from './Tooltip';
 
 export interface CardProps extends Omit<StackProps, 'title'> {
     id?: string;
@@ -53,14 +52,11 @@ export const Card = ({
 }: CardProps) => {
     const bg = useColorModeValue('white', 'gray.800');
     const colorScheme = useColorModeValue('teal', 'cyan');
-    const tooltipBg = useColorModeValue('white', 'dark.gray.secondary');
-    const tooltipColor = useColorModeValue('black', 'white');
-    const { isOpen, onToggle } = useDisclosure();
     return (
         <Stack
             id={id}
             bg={bg}
-            spacing={10}
+            gap={10}
             py={8}
             px={8}
             w={{ base: '100%' }}
@@ -75,7 +71,20 @@ export const Card = ({
                 px={4}
                 {...contentStackProps}
             >
-                <Avatar w={14} h={14} bg={iconBg} icon={icon} mr={2.5} />
+                <Box
+                    w={14}
+                    h={14}
+                    bg={iconBg}
+                    mr={2.5}
+                    borderRadius="50%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    flexShrink={0}
+                >
+                    {icon}
+                </Box>
+
                 <Box textAlign={{ base: 'center', lg: 'left' }}>
                     <Heading
                         as="h3"
@@ -90,20 +99,20 @@ export const Card = ({
                         {title}{' '}
                         {tooltip && (
                             <Tooltip
-                                borderRadius="md"
-                                label={tooltip}
-                                placement="auto"
-                                fontSize="md"
-                                bg={tooltipBg}
-                                color={tooltipColor}
-                                maxW={{ base: '95vw', md: '37rem' }}
-                                isOpen={isOpen}
+                                showArrow
+                                content={tooltip}
+                                positioning={{ placement: 'top' }}
+                                openDelay={0}
+                                contentProps={{
+                                    maxW: { base: '95vw', md: '37rem' },
+                                }}
+                                triggerProps={{
+                                    ml: 2,
+                                }}
                             >
-                                <QuestionOutlineIcon
+                                <TbHelp
                                     data-testid={`${id}-tooltip-icon`}
-                                    ml={2}
                                     role="tooltip-icon"
-                                    onClick={() => onToggle()}
                                 />
                             </Tooltip>
                         )}
@@ -118,7 +127,7 @@ export const Card = ({
                     <Button
                         data-testid="card-action-button"
                         ml={{ base: 0, lg: 2 }}
-                        colorScheme={colorScheme}
+                        colorPalette={colorScheme}
                         onClick={onButtonClick}
                         fontWeight={500}
                         width="full"

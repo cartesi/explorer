@@ -14,9 +14,13 @@ import { usePathname } from 'next/navigation';
 import { act } from 'react';
 import { NavBar, NavLink } from '../../../src/components/header/NavBar';
 import { useWallet } from '../../../src/components/wallet/useWallet';
+import { withChakraTheme } from '../../test-utilities';
 
 const walletMod = '../../../src/components/wallet/useWallet';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+
+const ComponentNavBar = withChakraTheme(NavBar);
+const ComponentNavLink = withChakraTheme(NavLink);
 
 jest.mock('next/navigation', () => {
     const originalModule = jest.requireActual('next/navigation');
@@ -84,7 +88,7 @@ describe('Nav Bar', () => {
     it('Should display children', async () => {
         const label = 'Children';
         await act(async () => {
-            render(<NavLink href="/">{label}</NavLink>);
+            render(<ComponentNavLink href="/">{label}</ComponentNavLink>);
         });
 
         await waitFor(() => {
@@ -95,7 +99,7 @@ describe('Nav Bar', () => {
     it('Should display menu button', async () => {
         mockUsePathname.mockReturnValue('stake');
         await act(async () => {
-            render(<NavBar {...defaultProps} />);
+            render(<ComponentNavBar {...defaultProps} />);
         });
 
         await waitFor(() => {
@@ -106,7 +110,7 @@ describe('Nav Bar', () => {
 
     it('Should display links container', async () => {
         await act(async () => {
-            render(<NavBar {...defaultProps} />);
+            render(<ComponentNavBar {...defaultProps} />);
         });
 
         await waitFor(() => {
@@ -117,7 +121,7 @@ describe('Nav Bar', () => {
 
     it('Should display theme toggle button', async () => {
         await act(async () => {
-            render(<NavBar {...defaultProps} />);
+            render(<ComponentNavBar {...defaultProps} />);
         });
 
         await waitFor(() => {
@@ -128,7 +132,7 @@ describe('Nav Bar', () => {
 
     it('Should toggle mobile menu', async () => {
         await act(async () => {
-            render(<NavBar {...defaultProps} />);
+            render(<ComponentNavBar {...defaultProps} />);
         });
 
         await waitFor(() => {

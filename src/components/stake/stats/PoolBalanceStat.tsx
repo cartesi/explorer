@@ -9,20 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    HStack,
-    Icon,
-    StackProps,
-    Text,
-    Tooltip,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Icon, StackProps, Text, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { PoolBalanceHexIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
+import { Tooltip } from '../../Tooltip';
+import { TbHelp } from 'react-icons/tb';
 
 export interface PoolBalanceStatProps extends StackProps {
     pool: BigNumber;
@@ -38,7 +32,7 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
 
     return (
         <VStack align="flex-start" flexBasis={{ base: '100%', lg: '33.33%' }}>
-            <HStack spacing={4} align="center" p={4}>
+            <HStack gap={4} align="center" p={4}>
                 <Box
                     bg={iconBackgroundColor}
                     w={14}
@@ -48,7 +42,12 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                     placeContent="center"
                     flexShrink={0}
                 >
-                    <PoolBalanceHexIcon color={iconColor} w={7} h={7} />
+                    <Icon
+                        as={PoolBalanceHexIcon}
+                        color={iconColor}
+                        w={7}
+                        h={7}
+                    />
                 </Box>
                 <BigNumberTextV2
                     unit="ctsi"
@@ -62,13 +61,22 @@ const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {
                     <HStack>
                         <Text>Pool Balance</Text>
                         <Tooltip
-                            label="Amount of tokens available at the pool contract either for stake or withdraw"
-                            placement="top"
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content="Amount of tokens available at the pool contract either for stake or withdraw"
+                            positioning={{
+                                placement: 'top',
+                            }}
+                            openDelay={0}
+                            contentProps={{
+                                fontSize: 'small',
+                            }}
                         >
-                            <Icon role="balance-icon" w={3.5} h={3.5} />
+                            <Icon
+                                as={TbHelp}
+                                data-testid="balance-icon"
+                                w={3.5}
+                                h={3.5}
+                            />
                         </Tooltip>
                     </HStack>
                 </BigNumberTextV2>

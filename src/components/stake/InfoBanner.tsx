@@ -9,32 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { AlertStatus } from '@chakra-ui/alert';
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { TbChevronDown, TbChevronUp } from 'react-icons/tb';
 import {
     Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertProps,
-    AlertTitle,
+    AlertRootProps,
     Box,
-    CloseButton,
-    Collapse,
+    Collapsible,
+    Icon,
     IconButton,
-    useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import { isObject } from 'lodash';
 import React, { FC, JSX } from 'react';
+import { useColorModeValue } from '../ui/color-mode';
+import CloseButton from '../CloseButton';
 
-export interface IInfoBannerProps extends Omit<AlertProps, 'content'> {
+export interface IInfoBannerProps extends Omit<AlertRootProps, 'content'> {
     isOpen?: boolean;
     isClosable?: boolean;
     isExpandable?: boolean;
     isExpanded?: boolean;
     icon?: JSX.Element;
     title?: string;
-    status?: AlertStatus;
+    status?: AlertRootProps['status'];
     content?: React.ReactNode;
     onToggle?: () => void;
 }
@@ -51,13 +48,11 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
     status = 'info',
     ...props
 }) => {
-    const { isOpen: isOpenCollapse, onToggle: onToggleCollapse } =
-        useDisclosure({
-            defaultIsOpen: isExpanded,
-        });
+    const { open: isOpenCollapse, onToggle: onToggleCollapse } = useDisclosure({
+        defaultOpen: isExpanded,
+    });
 
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
-    const variant = useColorModeValue('left-accent', undefined);
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
         `dark.support.${status}`
@@ -67,9 +62,8 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
 
     return (
         isOpen && (
-            <Alert
+            <Alert.Root
                 position="relative"
-                variant={variant}
                 alignItems="flex-start"
                 boxShadow={boxShadow}
                 bg={bg}
@@ -81,41 +75,50 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                 pl={8}
                 {...props}
             >
-                {isObject(icon) ? icon : <AlertIcon color={alertIconColor} />}
+                {isObject(icon) ? (
+                    icon
+                ) : (
+                    <Alert.Indicator color={alertIconColor} />
+                )}
 
-                <Box w="full">
-                    <AlertTitle mr={5}>{title}</AlertTitle>
-                    {content && (
-                        <AlertDescription display="block" mr={5}>
-                            {isExpandable ? (
-                                <Collapse in={isOpenCollapse} animateOpacity>
-                                    {content}
-                                </Collapse>
-                            ) : (
-                                content
-                            )}
-                        </AlertDescription>
-                    )}
-                </Box>
+                <Alert.Content>
+                    <Box w="full">
+                        <Alert.Title mr={5}>{title}</Alert.Title>
+                        {content && (
+                            <Alert.Description display="block" mr={5}>
+                                {isExpandable ? (
+                                    <Collapsible.Root open={isOpenCollapse}>
+                                        <Collapsible.Content>
+                                            {content}
+                                        </Collapsible.Content>
+                                    </Collapsible.Root>
+                                ) : (
+                                    content
+                                )}
+                            </Alert.Description>
+                        )}
+                    </Box>
+                </Alert.Content>
                 {isExpandable && (
                     <IconButton
                         position="absolute"
                         right="8px"
                         top="8px"
                         size="sm"
+                        h={10}
+                        w={10}
                         variant="ghost"
                         _hover={{ bg: 'transparent' }}
-                        icon={
-                            isOpenCollapse ? (
-                                <ChevronDownIcon boxSize={6} />
-                            ) : (
-                                <ChevronUpIcon boxSize={6} />
-                            )
-                        }
                         aria-label={'Open Panel'}
                         role="icon-button"
                         onClick={onToggleCollapse}
-                    />
+                    >
+                        <Icon
+                            as={isOpenCollapse ? TbChevronDown : TbChevronUp}
+                            w={6}
+                            h={6}
+                        />
+                    </IconButton>
                 )}
 
                 {isClosable && (
@@ -127,7 +130,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
                         role="close-button"
                     />
                 )}
-            </Alert>
+            </Alert.Root>
         )
     );
 };

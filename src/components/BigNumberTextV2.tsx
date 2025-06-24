@@ -10,10 +10,9 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Heading, Box, FlexProps, HStack, Text } from '@chakra-ui/react';
+import { Flex, FlexProps, Heading, HStack, Text, Icon } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { Icon } from '@chakra-ui/icons';
 import { IconType } from 'react-icons';
 import humanizeDuration from 'humanize-duration';
 
@@ -137,10 +136,11 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
     };
 
     return (
-        <Box
+        <Flex
             px={styles[componentStyle].px}
             py={styles[componentStyle].py}
             flexGrow={styles[componentStyle].flexGrow}
+            flexDirection="column"
             {...flexProps}
         >
             {icon && <Icon as={icon} color={props.color} />}
@@ -154,11 +154,11 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
                 >
                     {valueLabel}
                 </Heading>
-                {unit && value && (
+                {unitLabel !== '' && unit && value && (
                     <>
-                        <Text size={'base'}>{unitLabel}</Text>
+                        <Text fontSize={'base'}>{unitLabel}</Text>
                         {note && (
-                            <Text size={'base'} paddingLeft={4}>
+                            <Text fontSize={'base'} paddingLeft={4}>
                                 {note}
                             </Text>
                         )}
@@ -170,7 +170,7 @@ const BigNumberTextV2: FC<BigNumberTextV2Props> = (props) => {
                     {countdown.timeLabel} {countdown.timeLeft}
                 </Text>
             )}
-        </Box>
+        </Flex>
     );
 };
 

@@ -44,6 +44,7 @@ const AddressText: FC<AddressTextProps> = (props) => {
                         ens
                         truncated
                         fontSize={props.fontSize || '3xl'}
+                        iconColor="white"
                     />
                 </HStack>
             )}

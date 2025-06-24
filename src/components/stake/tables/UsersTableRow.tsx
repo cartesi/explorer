@@ -9,21 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Flex,
-    Icon,
-    TableCellProps,
-    Td,
-    Text,
-    Tooltip,
-    Tr,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Flex, Icon, Table, TableCellProps, Text } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { FC } from 'react';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
 import Address from '../../Address';
+import { useColorModeValue } from '../../ui/color-mode';
+import { TbHelp } from 'react-icons/tb';
+import { Tooltip } from '../../Tooltip';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     hourCycle: 'h23',
@@ -68,20 +62,19 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     };
 
     return (
-        <Tr
+        <Table.Row
             key={balance.pool.id}
             backgroundColor={backgroundColor}
             _hover={{ backgroundColor: backgroundHoverColor }}
             data-testid="users-table-row"
         >
-            <Td data-testid="user-col" {...tdProps}>
+            <Table.Cell data-testid="user-col" {...tdProps}>
                 <Address
                     ens
                     address={balance.user.id}
                     chainId={chainId}
                     responsive
                     truncated
-                    size="md"
                     textDecoration="underline"
                     px="0.5rem"
                     py="0.25rem"
@@ -89,31 +82,40 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                     minWidth="120px"
                     shouldDisplayFallbackAvatar
                 />
-            </Td>
+            </Table.Cell>
 
-            <Td data-testid="stake-since-col" {...tdProps}>
+            <Table.Cell data-testid="stake-since-col" {...tdProps}>
                 {formattedStakeTime}
-            </Td>
+            </Table.Cell>
 
-            <Td data-testid="total-staked-col" {...tdProps}>
+            <Table.Cell data-testid="total-staked-col" {...tdProps}>
                 {formatCTSI(stakedBalance, 2)} CTSI
-            </Td>
+            </Table.Cell>
 
-            <Td data-testid="shares-col" isNumeric {...tdProps}>
-                <Flex alignItems="center">
+            <Table.Cell data-testid="shares-col" {...tdProps} textAlign="right">
+                <Flex alignItems="center" justifyContent="flex-end">
                     <Text as="span" mr={1}>
                         {truncateNumber(balance.sharesPercent * 100)}%
                     </Text>
-                    <Tooltip label={`Unformatted: ${balance.sharesPercent} %`}>
-                        <Icon />
+                    <Tooltip
+                        showArrow
+                        content={`Unformatted: ${balance.sharesPercent} %`}
+                        positioning={{ placement: 'top' }}
+                        openDelay={0}
+                    >
+                        <Icon as={TbHelp} />
                     </Tooltip>
                 </Flex>
-            </Td>
+            </Table.Cell>
 
-            <Td data-testid="accumulated-shared-col" isNumeric {...tdProps}>
+            <Table.Cell
+                data-testid="accumulated-shared-col"
+                {...tdProps}
+                textAlign="right"
+            >
                 {truncateNumber(balance.accumulatedSharesPercent * 100)}%
-            </Td>
-        </Tr>
+            </Table.Cell>
+        </Table.Row>
     );
 };
 

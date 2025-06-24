@@ -62,19 +62,19 @@ describe('Effective Balance Stat', () => {
 
     it('Should not display location icon', () => {
         renderComponent();
-        expect(screen.getByRole('rebalance-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('rebalance-icon')).toBeInTheDocument();
     });
 
     it('Should display required text for balance tooltip', async () => {
         renderComponent();
         const text = 'Amount of mature pool tokens at the Staking contract';
 
-        const icon = screen.getByRole('balance-icon');
+        const icon = screen.getByTestId('balance-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 });

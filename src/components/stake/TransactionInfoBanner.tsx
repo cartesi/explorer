@@ -9,22 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertProps,
-    AlertTitle,
-    Box,
-    CloseButton,
-    HStack,
-    Spinner,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Alert, AlertRootProps, HStack, Spinner } from '@chakra-ui/react';
 import { isFunction } from 'lodash/fp';
 import React, { FC, useEffect, useState } from 'react';
 import { Transaction } from '../../services/transaction';
 import Address from '../Address';
+import { useColorModeValue } from '../ui/color-mode';
+import CloseButton from '../CloseButton';
 
 export interface AlertMessage {
     title?: string;
@@ -32,7 +23,9 @@ export interface AlertMessage {
     successDescription?: React.ReactNode;
 }
 
-export interface ITransactionInfoBannerProps extends AlertProps, AlertMessage {
+export interface ITransactionInfoBannerProps
+    extends AlertRootProps,
+        AlertMessage {
     transaction: Transaction<any>;
     onBeginTransaction?: () => void;
     onEndTransaction?: () => void;
@@ -105,31 +98,31 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const hash = innerTransaction?.transaction?.hash;
     const chainId = innerTransaction?.transaction?.chainId;
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
-    const variant = useColorModeValue('left-accent', undefined);
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
         `dark.support.${status}`
     );
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
+    const addressColor = useColorModeValue('gray.900', 'white');
 
     return !innerTransaction?.acknowledged ? (
-        <Alert
-            variant={variant}
-            alignItems="flex-start"
+        <Alert.Root
+            alignItems="center"
             bg={bg}
             status={status}
             borderRadius="1rem"
             borderWidth="1px"
             borderColor={borderColor}
+            role="alert"
             {...props}
         >
-            {status === 'info' && <Spinner mx={2} />}
-            {status !== 'info' && <AlertIcon color={alertIconColor} />}
-            <Box flex="1">
+            {status === 'info' && <Spinner mx={2} role="progressbar" />}
+            {status !== 'info' && <Alert.Indicator color={alertIconColor} />}
+            <Alert.Content overflow="hidden">
                 <HStack>
-                    <AlertTitle alignSelf="flex-start">
+                    <Alert.Title alignSelf="flex-start">
                         {isError && failTitle ? failTitle : title}
-                    </AlertTitle>
+                    </Alert.Title>
                     {hash && (
                         <Address
                             address={hash}
@@ -137,21 +130,23 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                             truncated
                             chainId={chainId}
                             alignItems="flex-start"
+                            color={addressColor}
+                            iconColor={addressColor}
                         />
                     )}
                 </HStack>
 
-                <AlertDescription display="block" fontSize={'1rem'}>
+                <Alert.Description fontSize={'1rem'}>
                     {isError && error ? error : ''}
                     {isSuccess && !isError ? successDescription : ''}
-                </AlertDescription>
-            </Box>
+                </Alert.Description>
+            </Alert.Content>
             {transactionEnded && (
                 <CloseButton
+                    role="close-button"
                     position="absolute"
                     right="8px"
                     top="8px"
-                    role="close-button"
                     onClick={() => {
                         if (innerTransaction) {
                             innerTransaction.ack();
@@ -162,8 +157,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
                     }}
                 />
             )}
-        </Alert>
-    ) : (
-        <></>
-    );
+        </Alert.Root>
+    ) : null;
 };

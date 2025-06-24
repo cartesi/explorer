@@ -9,14 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Box,
-    Link,
-    TableCellProps,
-    Td,
-    Tr,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Icon, Link, Table, TableCellProps } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, useState } from 'react';
 import { userShare } from '../../../graphql/hooks/usePoolBalances';
@@ -25,6 +18,7 @@ import { useStakingPool } from '../../../services/pool';
 import { formatCTSI } from '../../../utils/token';
 import Address from '../../Address';
 import { StakeIcon } from '../../Icons';
+import { useColorModeValue } from '../../ui/color-mode';
 
 export interface UserStakingPoolsTableRowProps {
     chainId: number;
@@ -69,7 +63,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     };
 
     return (
-        <Tr
+        <Table.Row
             key={balance.pool.id}
             data-testid="user-staking-pools-table-row"
             bg={backgroundColor}
@@ -77,7 +71,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            <Td
+            <Table.Cell
                 borderColor={borderColor}
                 data-testid="address-col"
                 {...tdProps}
@@ -87,7 +81,6 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     address={balance.pool.id}
                     chainId={chainId}
                     truncated
-                    size="md"
                     px="0.5rem"
                     py="0.25rem"
                     minWidth="120px"
@@ -95,33 +88,33 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     color={addressColor}
                     shouldDisplayFallbackAvatar
                 />
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="unstaked-col"
                 {...tdProps}
             >
                 {formatCTSI(unstakedBalance, 2)} CTSI
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="staked-col"
                 {...tdProps}
             >
                 {formatCTSI(stakedBalance, 2)} CTSI
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
+                textAlign="right"
                 borderColor={borderColor}
                 data-testid="percentage-col"
                 {...tdProps}
             >
                 {percentFormatter.format(userShare(balance))}
-            </Td>
-            <Td
-                isNumeric
+            </Table.Cell>
+            <Table.Cell
+                textAlign="right"
                 position={keepActionColVisible ? 'sticky' : 'initial'}
                 top={0}
                 right={0}
@@ -144,19 +137,20 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
                     ml="auto"
                 >
                     <Link
-                        as={NextLink}
-                        href={`/stake/${balance.pool.id}`}
+                        asChild
                         data-testid="stake-info-link"
                         color={linkColor}
                         _hover={{
                             color: linkHoverColor,
                         }}
                     >
-                        <StakeIcon w={8} h={8} />
+                        <NextLink href={`/stake/${balance.pool.id}`}>
+                            <Icon as={StakeIcon} w={8} h={8} />
+                        </NextLink>
                     </Link>
                 </Box>
-            </Td>
-        </Tr>
+            </Table.Cell>
+        </Table.Row>
     );
 };
 

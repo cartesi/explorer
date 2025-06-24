@@ -13,13 +13,14 @@ import {
     Box,
     Heading,
     HStack,
+    Icon,
     Stack,
     Text,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { AllowanceIcon, StakedBalanceIcon, WalletIcon } from '../Icons';
+import { useColorModeValue } from '../ui/color-mode';
 
 export const steps = [
     {
@@ -27,7 +28,7 @@ export const steps = [
         description:
             'Connect to your wallet and make sure you have enough CTSI to stake as well as ETH for the accruing gas fee (transaction fee).',
         icon: (color = 'orange.500') => (
-            <WalletIcon color={color} w={6} h={6} />
+            <Icon as={WalletIcon} color={color} w={6} h={6} />
         ),
     },
     {
@@ -35,7 +36,7 @@ export const steps = [
         description:
             'Set up the maximum amount of tokens for the pool to transfer out of your wallet and deposit.',
         icon: (color = 'orange.500') => (
-            <AllowanceIcon color={color} w={6} h={6} />
+            <Icon as={AllowanceIcon} color={color} w={6} h={6} />
         ),
     },
     {
@@ -43,7 +44,7 @@ export const steps = [
         description:
             'After staking, your deposit will starts contributing to the staking power of the pool.',
         icon: (color = 'orange.500') => (
-            <StakedBalanceIcon color={color} w={6} h={6} />
+            <Icon as={StakedBalanceIcon} color={color} w={6} h={6} />
         ),
     },
 ];
@@ -55,7 +56,7 @@ export const StakingGuide: FC = () => {
     return (
         <>
             <Stack
-                spacing={4}
+                gap={4}
                 mb={10}
                 direction={{ base: 'column', md: 'row' }}
                 alignItems="center"
@@ -66,14 +67,14 @@ export const StakingGuide: FC = () => {
             </Stack>
             <Stack
                 direction={{ base: 'column', lg: 'row' }}
-                spacing={12}
+                gap={12}
                 justifyContent="space-between"
             >
                 {steps.map((step, index) => (
                     <HStack
                         key={index}
                         alignItems="flex-start"
-                        spacing={4}
+                        gap={4}
                         flexBasis={{ base: '100%', lg: '33.33%' }}
                     >
                         <Box

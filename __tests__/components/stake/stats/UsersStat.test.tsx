@@ -9,7 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { act } from 'react';
 import userEvent from '@testing-library/user-event';
 import UsersStat, {
     UsersStatProps,
@@ -33,14 +34,14 @@ describe('Users Stat', () => {
     it('Should display location icon', () => {
         renderComponent();
 
-        expect(screen.getByRole('location-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('location-icon')).toBeInTheDocument();
     });
 
     it('Should not display location icon', () => {
         render(<EUsersStat totalUsers={100} />);
 
-        expect(() => screen.getByRole('location-icon')).toThrow(
-            'Unable to find an accessible element with the role "location-icon"'
+        expect(() => screen.getByTestId('location-icon')).toThrow(
+            'Unable to find an element'
         );
     });
 
@@ -48,12 +49,12 @@ describe('Users Stat', () => {
         renderComponent();
         const text = 'Number of users who staked in this pool';
 
-        const icon = screen.getByRole('users-icon');
+        const icon = screen.getByTestId('users-icon');
         await act(() => {
             userEvent.hover(icon);
         });
 
         await screen.findByText(text);
-        expect(screen.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeVisible();
     });
 });

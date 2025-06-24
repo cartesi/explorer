@@ -41,8 +41,8 @@ const defaultProps = {
 };
 const defaultUseClipboardProps = {
     value: '',
-    hasCopied: false,
-    onCopy: () => undefined,
+    copied: false,
+    copy: jest.fn(),
     setValue: jest.fn(),
 };
 const Component = withChakraTheme<AddressProps>(Address);
@@ -57,7 +57,7 @@ describe('Address component', () => {
 
     beforeEach(() => {
         mockUseENS.mockReturnValue({} as ENSEntry);
-        mockUseClipboard.mockReturnValue(defaultUseClipboardProps);
+        mockUseClipboard.mockReturnValue(defaultUseClipboardProps as any);
     });
 
     afterEach(() => {
@@ -81,8 +81,8 @@ describe('Address component', () => {
     it('should display copied label', async () => {
         mockUseClipboard.mockReturnValue({
             ...defaultUseClipboardProps,
-            hasCopied: true,
-        });
+            copied: true,
+        } as any);
         renderComponent({
             hideActions: false,
         });

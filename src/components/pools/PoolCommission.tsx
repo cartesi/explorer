@@ -9,17 +9,23 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Icon } from '@chakra-ui/icons';
-import { Flex, HStack, SystemProps, Text, TextProps } from '@chakra-ui/react';
+import {
+    Flex,
+    FlexProps,
+    HStack,
+    Icon,
+    SystemStyleObject,
+    Text,
+} from '@chakra-ui/react';
 import { FC } from 'react';
 import { IconType } from 'react-icons';
 import { StakingPool } from '../../graphql/models';
 
-export interface PoolCommissionProps extends TextProps {
+export interface PoolCommissionProps extends FlexProps {
     pool: StakingPool;
     label: string;
     icon?: IconType;
-    direction?: SystemProps['flexDirection'];
+    direction?: SystemStyleObject['flexDirection'];
 }
 
 const numberFormat = new Intl.NumberFormat('en-US', {

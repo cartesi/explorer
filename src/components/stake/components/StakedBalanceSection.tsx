@@ -18,8 +18,9 @@ import {
     Stack,
     Text,
     VStack,
-    useColorModeValue,
+    Icon,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '../../ui/color-mode';
 
 import { BigNumber } from 'ethers';
 import { FC } from 'react';
@@ -57,7 +58,7 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                 flexDirection={{ base: 'column', md: 'row' }}
                 justifyContent="space-between"
             >
-                <HStack spacing={4} alignItems="center">
+                <HStack gap={4} alignItems="center">
                     <Box
                         bg={iconBg}
                         w={14}
@@ -66,7 +67,12 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                         display="grid"
                         placeContent="center"
                     >
-                        <StakedBalanceIcon color={iconColor} w={7} h={7} />
+                        <Icon
+                            as={StakedBalanceIcon}
+                            color={iconColor}
+                            w={7}
+                            h={7}
+                        />
                     </Box>
                     <Box>
                         <Text color={stakedBalanceColor}>
@@ -83,17 +89,13 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                     </Box>
                 </HStack>
 
-                <VStack
-                    spacing={4}
-                    alignItems="stretch"
-                    pt={{ base: 6, md: 0 }}
-                >
+                <VStack gap={4} alignItems="stretch" pt={{ base: 6, md: 0 }}>
                     <Button
                         variant="ghost"
                         width="173px"
                         ml="auto"
                         onClick={onUnstakeClick}
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         disabled={stakedBalance.isZero()}
                     >
                         Unstake

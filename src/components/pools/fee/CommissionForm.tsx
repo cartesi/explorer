@@ -11,16 +11,13 @@
 
 import {
     Alert,
+    Box,
     Button,
-    Collapse,
-    FormControl,
-    FormHelperText,
-    FormLabel,
+    Collapsible,
+    Field,
     HStack,
     Input,
     InputGroup,
-    InputRightAddon,
-    Text,
     VStack,
 } from '@chakra-ui/react';
 import humanizeDuration from 'humanize-duration';
@@ -107,31 +104,42 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
     };
 
     return (
-        <FormControl id="commission" isInvalid={!!errors.value}>
+        <Field.Root id="commission" invalid={!!errors.value}>
             <VStack align="stretch">
-                <FormLabel>Commission</FormLabel>
-                <Collapse in={value > currentValue}>
-                    <Alert status="warning" variant="left-accent">
-                        <Text>
-                            After increasing the current value you can only
-                            increase it again after {wait}
-                        </Text>
-                    </Alert>
-                </Collapse>
-                <Collapse in={!!errors.value}>
-                    <Alert status="error" variant="left-accent">
-                        <Text>{errors.value?.message}</Text>
-                    </Alert>
-                </Collapse>
+                <Field.Label>Commission</Field.Label>
+                <Collapsible.Root open={value > currentValue}>
+                    <Collapsible.Content>
+                        <Alert.Root status="warning">
+                            <Alert.Indicator />
+                            <Alert.Description>
+                                After increasing the current value you can only
+                                increase it again after {wait}
+                            </Alert.Description>
+                        </Alert.Root>
+                    </Collapsible.Content>
+                </Collapsible.Root>
+                <Collapsible.Root open={!!errors.value}>
+                    <Collapsible.Content>
+                        <Alert.Root status="error">
+                            <Alert.Indicator />
+                            <Alert.Description>
+                                {errors.value?.message}
+                            </Alert.Description>
+                        </Alert.Root>
+                    </Collapsible.Content>
+                </Collapsible.Root>
+
                 <HStack>
-                    <InputGroup w={200}>
+                    <InputGroup
+                        w={200}
+                        endElement={<Box fontSize="md">{unit}</Box>}
+                    >
                         <Input
                             {...register('value', {
                                 valueAsNumber: true,
                                 validate,
                             })}
                         />
-                        <InputRightAddon>{unit}</InputRightAddon>
                     </InputGroup>
                     <Button
                         onClick={handleSubmit((data) => onSubmit(data.value))}
@@ -140,9 +148,9 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         Save
                     </Button>
                 </HStack>
-                <FormHelperText>{helperText}</FormHelperText>
+                <Field.HelperText>{helperText}</Field.HelperText>
             </VStack>
-        </FormControl>
+        </Field.Root>
     );
 };
 

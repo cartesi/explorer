@@ -12,29 +12,23 @@
 import {
     Box,
     Button,
-    Collapse,
-    Divider,
-    FormControl,
-    HStack,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    Radio,
+    Collapsible,
+    Dialog,
+    Field,
     RadioGroup,
+    Separator,
     Stack,
     Text,
-    useColorModeValue,
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
 import { BigNumber, constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { Operation } from '../../../types/stake';
 import { CTSINumberInput } from '../CTSINumberInput';
+import { useColorModeValue } from '../../ui/color-mode';
+import CloseButton from '../../CloseButton';
 
 export type RemovalAction = 'full' | 'partial';
 export interface IStakingUnstakeModalProps {
@@ -62,30 +56,35 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
+    const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     return (
-        <>
-            <Modal isOpen={isOpen} onClose={onClose} isCentered>
-                <ModalOverlay />
-                <ModalContent>
-                    <Box pb={6}>
-                        <HStack justify="space-between">
-                            <Box
-                                fontSize="xl"
-                                fontWeight="bold"
-                                p={4}
-                                pl={8}
-                                pb={4}
-                            >
+        <Dialog.Root
+            open={isOpen}
+            placement="center"
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content>
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <Box fontSize="xl" fontWeight="bold">
                                 Unstake to withdraw
                             </Box>
+                        </Dialog.Title>
+                    </Dialog.Header>
+                    <Separator width="full" borderColor={separatorColor} />
 
-                            <ModalCloseButton mt="8px !important" />
-                        </HStack>
-                        <Divider />
-                    </Box>
-                    <ModalBody>
-                        <VStack spacing={5}>
+                    <Dialog.Body mt={6}>
+                        <VStack gap={5}>
                             <Text>
                                 Unstaked tokens will be transferred to the pool
                                 balance for your withdrawal. Depending on the
@@ -97,67 +96,88 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 end of the specified waiting period to avoid
                                 further delays.
                             </Text>
-                            <FormControl id="amount">
-                                <RadioGroup
+                            <Field.Root id="amount">
+                                <RadioGroup.Root
                                     defaultValue={unstakeFullAmount}
                                     name="unstakeAmount"
+                                    width="full"
+                                    onValueChange={({ value }) => {
+                                        setUnstakeFullAmount(
+                                            value as Operation
+                                        );
+
+                                        if (value === 'full') {
+                                            setOutputUnstake(constants.Zero);
+                                        } else {
+                                            inputRef.current?.focus();
+                                        }
+                                    }}
                                 >
                                     <Stack>
-                                        <Radio
-                                            size="lg"
+                                        <RadioGroup.Item
                                             value="full"
-                                            colorScheme={radioColorScheme}
-                                            onChange={() => {
-                                                setUnstakeFullAmount('full');
-                                                setOutputUnstake(
-                                                    constants.Zero
-                                                );
+                                            colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
                                             }}
                                         >
-                                            Full amount
-                                        </Radio>
-                                        <Radio
-                                            size="lg"
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Full amount
+                                            </RadioGroup.ItemText>
+                                        </RadioGroup.Item>
+
+                                        <RadioGroup.Item
                                             value="partial"
-                                            colorScheme={radioColorScheme}
-                                            onChange={() => {
-                                                setUnstakeFullAmount('partial');
-                                                inputRef.current?.focus();
+                                            colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
                                             }}
                                         >
-                                            Partial amount
-                                        </Radio>
-                                        <Collapse
-                                            in={unstakeFullAmount === 'partial'}
-                                            animateOpacity
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Partial amount
+                                            </RadioGroup.ItemText>
+                                        </RadioGroup.Item>
+
+                                        <Collapsible.Root
+                                            open={
+                                                unstakeFullAmount === 'partial'
+                                            }
                                             unmountOnExit
                                         >
-                                            <FormControl
-                                                id="unstakeAmount"
-                                                pl={7}
-                                            >
-                                                <CTSINumberInput
-                                                    min={0}
-                                                    max={stakeBalanceFormatted}
-                                                    onChange={(
-                                                        bigNumberValue
-                                                    ) => {
-                                                        setOutputUnstake(
+                                            <Collapsible.Content>
+                                                <Field.Root
+                                                    id="unstakeAmount"
+                                                    pl={7}
+                                                >
+                                                    <CTSINumberInput
+                                                        min={0}
+                                                        max={
+                                                            stakeBalanceFormatted
+                                                        }
+                                                        onChange={(
                                                             bigNumberValue
-                                                        );
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </Collapse>
+                                                        ) => {
+                                                            setOutputUnstake(
+                                                                bigNumberValue
+                                                            );
+                                                        }}
+                                                    />
+                                                </Field.Root>
+                                            </Collapsible.Content>
+                                        </Collapsible.Root>
                                     </Stack>
-                                </RadioGroup>
-                            </FormControl>
+                                </RadioGroup.Root>
+                            </Field.Root>
                         </VStack>
-                        <ModalFooter px="0" pt={10}>
-                            <VStack w="full" spacing={4}>
+                        <Dialog.Footer px="0" pt={10}>
+                            <VStack w="full" gap={4}>
                                 <Button
                                     width="full"
-                                    colorScheme={colorScheme}
+                                    colorPalette={colorScheme}
                                     role="unstake-button"
                                     disabled={
                                         outputUnstake.isZero() &&
@@ -176,17 +196,17 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                 </Button>
                                 <Button
                                     width="full"
-                                    colorScheme="darkGray"
+                                    colorPalette="gray"
                                     variant="ghost"
                                     onClick={onClose}
                                 >
                                     Cancel
                                 </Button>
                             </VStack>
-                        </ModalFooter>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </>
+                        </Dialog.Footer>
+                    </Dialog.Body>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };

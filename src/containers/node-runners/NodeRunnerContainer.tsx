@@ -8,7 +8,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { UseWallet } from '../../components/wallet';
@@ -31,6 +31,7 @@ import NodeTable from './components/NodeTable';
 import PoolTable from './components/PoolTable';
 import { NodeInfo, PoolInfo } from './interfaces';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useColorModeValue } from '../../components/ui/color-mode';
 
 export interface NodeRunnersContainerProps {
     wallet: UseWallet;

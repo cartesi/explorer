@@ -2,6 +2,7 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import {
     act,
+    findByRole,
     findByText,
     fireEvent,
     render,
@@ -16,6 +17,9 @@ import { useStaking } from '../../../../src/services/staking';
 import { useCartesiToken } from '../../../../src/services/token';
 import { toBigNumber } from '../../../../src/utils/numberParser';
 import { buildUseCartesiTokenReturn, buildUseStakingReturn } from '../mocks';
+import { withChakraTheme } from '../../../test-utilities';
+
+const Component = withChakraTheme(SetAllowance);
 
 const walletMod = '../../../../src/components/wallet/useWallet';
 const servicesStakingMod = '../../../../src/services/staking';
@@ -118,7 +122,7 @@ describe('SetAllowance Step', () => {
 
     describe('when in focus', () => {
         it('should display the header content, body content and action buttons', () => {
-            render(<SetAllowance inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(screen.getByText('Set Allowance')).toBeInTheDocument();
             expect(
@@ -134,7 +138,7 @@ describe('SetAllowance Step', () => {
         });
 
         it('should keep the run-your-node button disabled until the allowance amount is set', () => {
-            render(<SetAllowance inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
             const button = screen.getByText('RUN YOUR NODE');
             expect(button.hasAttribute('disabled')).toBe(true);
         });
@@ -142,7 +146,7 @@ describe('SetAllowance Step', () => {
 
     describe('when not in focus', () => {
         it('Should display only the header content, body and actions are not visible', () => {
-            render(<SetAllowance stepNumber={1} />);
+            render(<Component stepNumber={1} />);
 
             expect(screen.getByText('Set Allowance')).toBeInTheDocument();
             expect(
@@ -164,7 +168,7 @@ describe('SetAllowance Step', () => {
     describe('Set Allowance input', () => {
         describe('Validations', () => {
             it('should display message when allowance set bellow or equal to zero', async () => {
-                render(<SetAllowance stepNumber={1} inFocus />);
+                render(<Component stepNumber={1} inFocus />);
 
                 const input = screen.getByLabelText('Enter the allowance');
 
@@ -180,7 +184,7 @@ describe('SetAllowance Step', () => {
             });
 
             it('Should display message the field is required when the field lost its focus', async () => {
-                render(<SetAllowance stepNumber={1} inFocus />);
+                render(<Component stepNumber={1} inFocus />);
 
                 const input = screen.getByLabelText('Enter the allowance');
 
@@ -205,7 +209,7 @@ describe('SetAllowance Step', () => {
                 deactivate: jest.fn(),
             });
 
-            render(<SetAllowance stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             const alert = screen.getByRole('alert');
             expect(
@@ -228,13 +232,13 @@ describe('SetAllowance Step', () => {
             tokenMock.transaction.acknowledged = false;
             tokenMock.transaction.submitting = true;
             mockUseCartesiToken.mockReturnValue(tokenMock);
-            render(<SetAllowance stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             const alert = screen.getByRole('alert');
             expect(
                 await findByText(alert, 'Setting the allowance...')
             ).toBeInTheDocument();
-            expect(await findByText(alert, 'Loading...')).toBeInTheDocument();
+            expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
 
         it('should display an error notification when the transaction failed', async () => {
@@ -242,7 +246,7 @@ describe('SetAllowance Step', () => {
             tokenMock.transaction.acknowledged = false;
             tokenMock.transaction.error = 'Allowance transaction error message';
             mockUseCartesiToken.mockReturnValue(tokenMock);
-            render(<SetAllowance stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             const alert = screen.getByRole('alert');
 
@@ -271,7 +275,7 @@ describe('SetAllowance Step', () => {
                 deactivate: jest.fn(),
             });
 
-            render(<SetAllowance stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
@@ -295,7 +299,7 @@ describe('SetAllowance Step', () => {
             mockUseStaking.mockReturnValue(stakingMock);
             mockUseCartesiToken.mockReturnValue(tokenMock);
 
-            render(<SetAllowance stepNumber={1} inFocus />);
+            render(<Component stepNumber={1} inFocus />);
 
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
@@ -322,9 +326,7 @@ describe('SetAllowance Step', () => {
             mockUseStaking.mockReturnValue(stakingMock);
             mockUseCartesiToken.mockReturnValue(tokenMock);
             // First render
-            const { rerender } = render(
-                <SetAllowance stepNumber={1} inFocus />
-            );
+            const { rerender } = render(<Component stepNumber={1} inFocus />);
 
             const input = screen.getByLabelText('Enter the allowance');
             const button = screen.getByText('RUN YOUR NODE');
@@ -345,9 +347,9 @@ describe('SetAllowance Step', () => {
             tokenMock.transaction.isOngoing = true;
             tokenMock.transaction.acknowledged = false;
             // Then we render the component again to get fresh values
-            rerender(<SetAllowance stepNumber={1} inFocus />);
+            rerender(<Component stepNumber={1} inFocus />);
 
-            expect(await findByText(button, 'Loading...')).toBeInTheDocument();
+            expect(await button.hasAttribute('disabled')).toBe(true);
 
             // trying to mess with approve() method call.
             fireEvent.click(button);
@@ -367,7 +369,7 @@ describe('SetAllowance Step', () => {
             tokenMock.transaction.state = 'confirmed';
             mockUseStaking.mockReturnValue(stakingMock);
             mockUseCartesiToken.mockReturnValue(tokenMock);
-            render(<SetAllowance inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(routerPushStub).toHaveBeenCalledWith(
                 `/node/${hiredNodeAddress}/manage`
@@ -385,7 +387,7 @@ describe('SetAllowance Step', () => {
             mockUseCartesiToken.mockReturnValue(tokenMock);
             // @ts-ignore
             mockUseAtom.mockImplementation(() => ['', jest.fn()]);
-            render(<SetAllowance inFocus stepNumber={1} />);
+            render(<Component inFocus stepNumber={1} />);
 
             expect(routerPushStub).toHaveBeenCalledWith('/node-runners');
         });

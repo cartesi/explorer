@@ -21,7 +21,6 @@ import {
     Stack,
     Text,
     useBreakpointValue,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
@@ -29,7 +28,8 @@ import { BigNumber } from 'ethers';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
-import { AiOutlineLeft } from 'react-icons/ai';
+import { TbChevronLeft } from 'react-icons/tb';
+import { useColorModeValue } from '../ui/color-mode';
 
 import Layout from '../Layout';
 import { NodeStakeModal } from './modals/NodeStakeModal';
@@ -183,14 +183,11 @@ const ManageNode: FC = () => {
                 px={{ base: '6vw', xl: '10vw' }}
                 pt={5}
             >
-                <Box
-                    as={NextLink}
-                    href="/node-runners"
-                    display="flex"
-                    alignItems="center"
-                >
-                    <Box as={AiOutlineLeft} mr={1} />
-                    <Text>Back</Text>
+                <Box asChild display="flex" alignItems="center">
+                    <NextLink href="/node-runners">
+                        <Box as={TbChevronLeft} mr={1} />
+                        <Text>Back</Text>
+                    </NextLink>
                 </Box>
             </HStack>
 
@@ -232,7 +229,7 @@ const ManageNode: FC = () => {
                 pt={{ base: 8 }}
                 pb={4}
             >
-                <VStack spacing={4} alignItems="stretch">
+                <VStack gap={4} alignItems="stretch">
                     {currentTransaction === 'authorize' && (
                         <TransactionBanner
                             title={useMessages('node.authorize.authorizing')}
@@ -289,7 +286,7 @@ const ManageNode: FC = () => {
                             onClose={() => setHireAlertActive(false)}
                         />
                     )}
-                    {retiredDisclosure.isOpen && (
+                    {retiredDisclosure.open && (
                         <NodeRetiredBanner
                             onClose={retiredDisclosure.onClose}
                         />
@@ -303,7 +300,7 @@ const ManageNode: FC = () => {
                 fontSize={'xl'}
             >
                 <Stack
-                    spacing={4}
+                    gap={4}
                     justifyContent="space-between"
                     alignContent="flex-start"
                     mb={4}
@@ -373,7 +370,7 @@ const ManageNode: FC = () => {
                     justifyContent="space-between"
                     alignItems={{ base: 'flex-start', md: 'center' }}
                     alignContent="flex-start"
-                    spacing={4}
+                    gap={4}
                     mt={10}
                     mb={{ base: 0, md: 4 }}
                 >
@@ -386,7 +383,7 @@ const ManageNode: FC = () => {
                     {!isSmallScreen && (
                         <Box>
                             <Button
-                                colorScheme="darkGray"
+                                colorPalette="gray"
                                 variant="ghost"
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
@@ -397,7 +394,7 @@ const ManageNode: FC = () => {
                                 Unstake
                             </Button>
                             <Button
-                                colorScheme={colorScheme}
+                                colorPalette={colorScheme}
                                 w={{ base: '100%', md: 'auto' }}
                                 minW="173px"
                                 disabled={isStakeUnstakeDisabled}
@@ -410,7 +407,7 @@ const ManageNode: FC = () => {
                 </Stack>
 
                 <Box>
-                    <VStack spacing={4} alignItems="stretch">
+                    <VStack gap={4} alignItems="stretch">
                         <TransactionBanner
                             title="Setting allowance..."
                             failTitle="Error setting allowance"
@@ -475,7 +472,7 @@ const ManageNode: FC = () => {
                 </Flex>
 
                 <NodeStakeModal
-                    isOpen={stakeDisclosure.isOpen}
+                    isOpen={stakeDisclosure.open}
                     onClose={stakeDisclosure.onClose}
                     allowance={allowance}
                     disclosure={stakeDisclosure}
@@ -488,7 +485,7 @@ const ManageNode: FC = () => {
 
                 {stakedBalance && (
                     <NodeUnstakeModal
-                        isOpen={unstakeDisclosure.isOpen}
+                        isOpen={unstakeDisclosure.open}
                         onClose={unstakeDisclosure.onClose}
                         stakedBalance={stakedBalance}
                         disclosure={unstakeDisclosure}
@@ -507,12 +504,12 @@ const ManageNode: FC = () => {
                     bottom={0}
                     boxShadow="0px -4px 8px rgb(47 32 27 / 4%)"
                     bgColor={stepBoxBg}
-                    zIndex={theme.zIndices.sm}
+                    zIndex={theme.tokens.getVar('zIndex.sm')}
                 >
                     <Stack
                         py={4}
                         px={4}
-                        spacing={4}
+                        gap={4}
                         justifyContent="space-between"
                         direction="row"
                     >
@@ -526,7 +523,7 @@ const ManageNode: FC = () => {
                             UNSTAKE
                         </Button>
                         <Button
-                            colorScheme="cyan"
+                            colorPalette="cyan"
                             w={{ base: '100%', md: 'auto' }}
                             disabled={isStakeUnstakeDisabled}
                             onClick={stakeDisclosure.onOpen}

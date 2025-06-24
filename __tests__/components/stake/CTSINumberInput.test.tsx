@@ -9,12 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     ICTSINumberInputProps,
     CTSINumberInput,
 } from '../../../src/components/stake/CTSINumberInput';
 import { withChakraTheme } from '../../test-utilities';
+import userEvent from '@testing-library/user-event';
 
 const defaultProps = {
     value: undefined,
@@ -38,7 +39,7 @@ describe('CTSI Number Input', () => {
         expect(container.querySelector('input')).toBeInTheDocument();
     });
 
-    it('Should have correct initial value', () => {
+    it('Should have correct initial value', async () => {
         const initialValue = 150;
         const { container } = render(
             <ECTSINumberInput {...defaultProps} value={initialValue} />
@@ -46,45 +47,32 @@ describe('CTSI Number Input', () => {
 
         const input = container.querySelector('input');
 
-        expect(input).toHaveValue(initialValue.toString());
+        await waitFor(() => expect(input).toHaveValue(initialValue.toString()));
     });
 
-    it('Should disallow forbidden symbols', () => {
-        const { container } = renderComponent();
+    it('Should disallow forbidden symbols', async () => {
+        renderComponent();
 
-        const input = container.querySelector('input');
+        const input = screen.getByRole('spinbutton');
 
-        fireEvent.change(input, {
-            target: {
-                value: '-',
-            },
-        });
+        await userEvent.type(input, '-');
+        fireEvent.blur(input);
+        await waitFor(() => expect(input).toHaveValue('0'));
 
-        expect(input).toHaveValue('0');
+        fireEvent.focus(input);
+        await userEvent.type(input, '+');
+        fireEvent.blur(input);
+        await waitFor(() => expect(input).toHaveValue('0'));
 
-        fireEvent.change(input, {
-            target: {
-                value: '+',
-            },
-        });
+        fireEvent.focus(input);
+        await userEvent.type(input, 'e');
+        fireEvent.blur(input);
+        await waitFor(() => expect(input).toHaveValue('0'));
 
-        expect(input).toHaveValue('0');
-
-        fireEvent.change(input, {
-            target: {
-                value: 'e',
-            },
-        });
-
-        expect(input).toHaveValue('0');
-
-        fireEvent.change(input, {
-            target: {
-                value: '..',
-            },
-        });
-
-        expect(input).toHaveValue('0');
+        fireEvent.focus(input);
+        await userEvent.type(input, '..');
+        fireEvent.blur(input);
+        await waitFor(() => expect(input).toHaveValue('0'));
     });
 
     it('Should set new value', () => {

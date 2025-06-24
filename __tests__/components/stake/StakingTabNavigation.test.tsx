@@ -79,9 +79,11 @@ describe('Staking Tab Navigation', () => {
 
         renderComponent();
 
-        expect(screen.getByText('Stake').getAttribute('data-active')).toBe('');
+        expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
+            'true'
+        );
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            null
+            'false'
         );
     });
 
@@ -94,10 +96,10 @@ describe('Staking Tab Navigation', () => {
         const { rerender } = renderComponent();
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            ''
+            'true'
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            null
+            'false'
         );
 
         useParamsMock.mockReturnValue({
@@ -108,10 +110,10 @@ describe('Staking Tab Navigation', () => {
         rerender(<EStakingTabNavigation />);
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            ''
+            'true'
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            null
+            'false'
         );
 
         useParamsMock.mockReturnValue({
@@ -123,10 +125,10 @@ describe('Staking Tab Navigation', () => {
         rerender(<EStakingTabNavigation />);
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            ''
+            'true'
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            null
+            'false'
         );
     });
 });

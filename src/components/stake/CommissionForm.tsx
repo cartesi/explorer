@@ -9,27 +9,24 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { WarningIcon } from '@chakra-ui/icons';
+import { TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Button,
-    Collapse,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
+    Collapsible,
+    Field,
     HStack,
     Icon,
     Input,
     InputGroup,
-    InputRightElement,
     Stack,
     Text,
-    Tooltip,
     VStack,
 } from '@chakra-ui/react';
 import humanizeDuration from 'humanize-duration';
-import { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { Tooltip } from '../Tooltip';
 
 export interface CommissionFormProps {
     currentValue: number;
@@ -111,31 +108,46 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
     }, [currentValue]);
 
     return (
-        <FormControl id="commission" isInvalid={!!errors.value}>
-            <VStack align="stretch">
+        <Field.Root id="commission" invalid={!!errors.value}>
+            <VStack align="stretch" width="full">
                 <HStack justify="space-between">
-                    <FormLabel>
+                    <Field.Label>
                         Pool commission{' '}
                         <Tooltip
-                            placement="bottom"
-                            label={helperText}
-                            fontSize="small"
-                            bg="black"
-                            color="white"
+                            showArrow
+                            content={helperText}
+                            positioning={{
+                                placement: 'bottom',
+                            }}
+                            openDelay={0}
+                            contentProps={{
+                                fontSize: 'small',
+                            }}
                         >
                             <Icon
-                                pb={1}
+                                as={TbHelp}
                                 width={4}
                                 height={4}
                                 color="gray.600"
                                 role="commission-icon"
                             />
                         </Tooltip>
-                    </FormLabel>
+                    </Field.Label>
                 </HStack>
 
                 <Stack direction={['column', 'row']} mt="0 !important">
-                    <InputGroup me={6}>
+                    <InputGroup
+                        me={6}
+                        endElement={
+                            <Box
+                                color="gray.300"
+                                pointerEvents="none"
+                                fontSize="md"
+                            >
+                                {unit.toUpperCase()}
+                            </Box>
+                        }
+                    >
                         <Input
                             size="lg"
                             {...register('value', {
@@ -143,24 +155,16 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                                 validate,
                             })}
                         />
-                        <InputRightElement
-                            color="gray.300"
-                            pointerEvents="none"
-                            w={14}
-                            h="100%"
-                        >
-                            <Box>{unit.toUpperCase()}</Box>
-                        </InputRightElement>
                     </InputGroup>
 
                     <Button
-                        colorScheme="darkGray"
+                        colorPalette="gray"
                         variant="ghost"
                         w={{ base: '100%', md: 'auto' }}
                         minW="10.8125rem"
                         height="2.875rem"
                         textTransform="uppercase"
-                        isDisabled={
+                        disabled={
                             Number.isNaN(getValues('value')) ||
                             getValues('value') === currentValue ||
                             !!errors.value ||
@@ -173,20 +177,25 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                 </Stack>
 
                 {!!errors.value && (
-                    <FormErrorMessage>{errors.value?.message}</FormErrorMessage>
+                    <Field.ErrorText>{errors.value?.message}</Field.ErrorText>
                 )}
 
-                <Collapse in={value > currentValue}>
-                    <HStack spacing={2} alignItems="flex-start">
-                        <WarningIcon color="orange.500" />
-                        <Text fontSize="sm">
-                            After increasing the current value you can only
-                            increase it again after {wait}
-                        </Text>
-                    </HStack>
-                </Collapse>
+                <Collapsible.Root open={value > currentValue}>
+                    <Collapsible.Content>
+                        <HStack gap={2} alignItems="flex-start">
+                            <Icon
+                                as={TbAlertTriangleFilled}
+                                color="orange.500"
+                            />
+                            <Text fontSize="sm">
+                                After increasing the current value you can only
+                                increase it again after {wait}
+                            </Text>
+                        </HStack>
+                    </Collapsible.Content>
+                </Collapsible.Root>
             </VStack>
-        </FormControl>
+        </Field.Root>
     );
 };
 

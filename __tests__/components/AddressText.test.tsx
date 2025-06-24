@@ -11,7 +11,8 @@
 
 import { useClipboard } from '@chakra-ui/react';
 import { cleanup, render, screen } from '@testing-library/react';
-import { FaCoins } from 'react-icons/fa';
+import { TbCoins } from 'react-icons/tb';
+
 import AddressText from '../../src/components/AddressText';
 import { ENSEntry, useENS } from '../../src/services/ens';
 import { withChakraTheme } from '../test-utilities';
@@ -58,7 +59,7 @@ describe('AddressText component', () => {
 
     beforeEach(() => {
         mockUseENS.mockReturnValue({} as ENSEntry);
-        mockUseClipboard.mockReturnValue(defaultUseClipboardProps);
+        mockUseClipboard.mockReturnValue(defaultUseClipboardProps as any);
     });
 
     afterEach(() => {
@@ -83,7 +84,7 @@ describe('AddressText component', () => {
 
     it('should display icon', () => {
         renderComponent({
-            icon: FaCoins,
+            icon: TbCoins,
         });
 
         expect(screen.getByTestId('address-text-icon')).toBeInTheDocument();

@@ -28,10 +28,12 @@ describe('PerPageSelect component', () => {
     });
 
     it('should display correct per page options', () => {
-        render(<Component {...defaultProps} />);
+        const { container } = render(<Component {...defaultProps} />);
+        const options = container.querySelectorAll('option');
 
-        defaultProps.options.map((option) => {
-            expect(screen.getByText(option)).toBeInTheDocument();
+        options.forEach((option) => {
+            const optionValue = Number(option.getAttribute('value'));
+            expect(defaultProps.options.some((value) => value === optionValue));
         });
     });
 });

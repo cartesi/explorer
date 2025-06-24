@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TagProps } from '@chakra-ui/react';
+import { TagRootProps } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useWallet } from '../wallet/useWallet';
 import Chain from './Chain';
 
-export interface SelectedChainProps extends TagProps {
+export interface SelectedChainProps extends TagRootProps {
     showMainnet?: boolean;
 }
 
