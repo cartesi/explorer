@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Alert, AlertRootProps, Box, HStack, Spinner } from '@chakra-ui/react';
+import { Alert, AlertRootProps, HStack, Spinner } from '@chakra-ui/react';
 import { isFunction } from 'lodash/fp';
 import React, { FC, useEffect, useState } from 'react';
 import { Transaction } from '../../services/transaction';
@@ -118,34 +118,35 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
         >
             {status === 'info' && <Spinner mx={2} role="progressbar" />}
             {status !== 'info' && <Alert.Indicator color={alertIconColor} />}
-            <Alert.Content>
-                <Box flex="1">
-                    <HStack>
-                        <Alert.Title alignSelf="flex-start">
-                            {isError && failTitle ? failTitle : title}
-                        </Alert.Title>
-                        {hash && (
-                            <Address
-                                address={hash}
-                                type="tx"
-                                truncated
-                                chainId={chainId}
-                                alignItems="flex-start"
-                                color={addressColor}
-                                iconColor={addressColor}
-                            />
-                        )}
-                    </HStack>
+            <Alert.Content overflow="hidden">
+                <HStack>
+                    <Alert.Title alignSelf="flex-start">
+                        {isError && failTitle ? failTitle : title}
+                    </Alert.Title>
+                    {hash && (
+                        <Address
+                            address={hash}
+                            type="tx"
+                            truncated
+                            chainId={chainId}
+                            alignItems="flex-start"
+                            color={addressColor}
+                            iconColor={addressColor}
+                        />
+                    )}
+                </HStack>
 
-                    <Alert.Description display="block" fontSize={'1rem'}>
-                        {isError && error ? error : ''}
-                        {isSuccess && !isError ? successDescription : ''}
-                    </Alert.Description>
-                </Box>
+                <Alert.Description fontSize={'1rem'}>
+                    {isError && error ? error : ''}
+                    {isSuccess && !isError ? successDescription : ''}
+                </Alert.Description>
             </Alert.Content>
             {transactionEnded && (
                 <CloseButton
                     role="close-button"
+                    position="absolute"
+                    right="8px"
+                    top="8px"
                     onClick={() => {
                         if (innerTransaction) {
                             innerTransaction.ack();
