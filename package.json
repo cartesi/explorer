@@ -54,7 +54,7 @@
         "drizzle-orm": "^0.38.1",
         "eth-chains": "2.0.0",
         "eth-rpc-errors": "4.0.3",
-        "ethers": "5.7.2",
+        "ethers": "5.8.0",
         "framer-motion": "10.13.0",
         "graphql": "15.6.0",
         "humanize-duration": "3.29.0",
