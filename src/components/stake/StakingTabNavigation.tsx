@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, ButtonProps, HStack } from '@chakra-ui/react';
+import { Button, ButtonProps, HStack, Icon } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
@@ -71,7 +71,7 @@ export const StakingTabNavigation: FC = () => {
                     variant={tab.variant as ButtonProps['variant']}
                 >
                     <NextLink href={tab.href}>
-                        <tab.Icon width="24px" height="24px" /> {tab.text}
+                        <Icon as={tab.Icon} w={6} h={6} /> {tab.text}
                     </NextLink>
                 </Button>
             ))}
