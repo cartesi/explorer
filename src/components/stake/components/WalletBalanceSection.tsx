@@ -71,8 +71,8 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                         >
                             <Icon
                                 as={TbHelp}
-                                w={3}
-                                h={3}
+                                w={5}
+                                h={5}
                                 color={balanceColor}
                             />
                         </Tooltip>

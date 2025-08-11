@@ -163,8 +163,8 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
                                             <Icon
                                                 as={TbHelp}
                                                 color={tooltipColor}
-                                                w={3}
-                                                h={3}
+                                                w={5}
+                                                h={5}
                                             />
                                         </Tooltip>
                                     </Box>

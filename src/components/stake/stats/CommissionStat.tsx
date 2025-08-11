@@ -88,7 +88,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                         fontSize: 'small',
                                     }}
                                 >
-                                    <Icon as={TbHelp} w={3.5} h={3.5} />
+                                    <Icon as={TbHelp} w={5} h={5} />
                                 </Tooltip>
                             </HStack>
                         </BigNumberTextV2>
@@ -110,7 +110,7 @@ const CommissionStat: FC<CommissionStatProps> = (props) => {
                                         fontSize: 'small',
                                     }}
                                 >
-                                    <Icon as={TbHelp} w={3.5} h={3.5} />
+                                    <Icon as={TbHelp} w={5} h={5} />
                                 </Tooltip>
                             </HStack>
                         </CommissionTextV2>

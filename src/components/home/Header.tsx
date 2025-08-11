@@ -9,7 +9,15 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Box, Heading, HStack, Stack, Text, Wrap } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    HStack,
+    Icon,
+    Stack,
+    Text,
+    Wrap,
+} from '@chakra-ui/react';
 import useTotalPoolBalance from '../../graphql/hooks/useTotalPoolBalance';
 import { useBlockNumber } from '../../services/eth';
 import { useStaking } from '../../services/staking';
@@ -75,7 +83,7 @@ const HomeHeader = () => {
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <TbHelp />
+                            <Icon as={TbHelp} w={5} h={5} />
                         </Tooltip>
                     </HStack>
                 </CTSIText>

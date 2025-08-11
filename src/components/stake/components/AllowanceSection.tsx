@@ -60,7 +60,7 @@ export const AllowanceSection: FC<IAllowanceSectionProps> = ({
                             }}
                             openDelay={0}
                         >
-                            <Icon as={TbHelp} color={color} w={3.5} h={3.5} />
+                            <Icon as={TbHelp} color={color} w={5} h={5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm" pt={2.5}>

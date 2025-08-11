@@ -103,7 +103,7 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
                         positioning={{ placement: 'top' }}
                         openDelay={0}
                     >
-                        <Icon as={TbHelp} />
+                        <Icon as={TbHelp} w={5} h={5} />
                     </Tooltip>
                 </Flex>
             </Table.Cell>

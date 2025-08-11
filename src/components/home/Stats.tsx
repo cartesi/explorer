@@ -127,7 +127,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <TbHelp />
+                                    <Icon as={TbHelp} w={5} h={5} />
                                 </Tooltip>
                             </Flex>
                         }
@@ -158,7 +158,7 @@ const HomeStats = () => {
                                     positioning={{ placement: 'top' }}
                                     openDelay={0}
                                 >
-                                    <TbHelp />
+                                    <Icon as={TbHelp} w={5} h={5} />
                                 </Tooltip>
                             </Flex>
                         }
@@ -195,7 +195,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <TbHelp />
+                                <Icon as={TbHelp} w={5} h={5} />
                             </Tooltip>
                         </Flex>
                     }
@@ -229,7 +229,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <TbHelp />
+                                <Icon as={TbHelp} w={5} h={5} />
                             </Tooltip>
                         </Flex>
                     }
@@ -272,7 +272,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <TbHelp />
+                                <Icon as={TbHelp} w={5} h={5} />
                             </Tooltip>
                         </Flex>
                     }
@@ -315,7 +315,7 @@ const HomeStats = () => {
                                 positioning={{ placement: 'top' }}
                                 openDelay={0}
                             >
-                                <TbHelp />
+                                <Icon as={TbHelp} w={5} h={5} />
                             </Tooltip>
                         </Flex>
                     }

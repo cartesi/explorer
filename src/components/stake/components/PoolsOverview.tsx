@@ -45,8 +45,8 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             <Icon
                                 as={TbHelp}
                                 data-testid="pools-overview-total-tooltip"
-                                w={4}
-                                h={4}
+                                w={5}
+                                h={5}
                             />
                         </Tooltip>
                     </HStack>
@@ -69,8 +69,8 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             <Icon
                                 as={TbHelp}
                                 data-testid="pools-overview-balances-tooltip"
-                                w={4}
-                                h={4}
+                                w={5}
+                                h={5}
                             />
                         </Tooltip>
                     </HStack>
@@ -93,8 +93,8 @@ const PoolsOverview: FC<PoolsOverviewProps> = ({
                             <Icon
                                 as={TbHelp}
                                 data-testid="pools-overview-stake-tooltip"
-                                w={4}
-                                h={4}
+                                w={5}
+                                h={5}
                             />
                         </Tooltip>
                     </HStack>

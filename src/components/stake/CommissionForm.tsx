@@ -126,8 +126,8 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                         >
                             <Icon
                                 as={TbHelp}
-                                width={4}
-                                height={4}
+                                width={5}
+                                height={5}
                                 color="gray.600"
                                 role="commission-icon"
                             />

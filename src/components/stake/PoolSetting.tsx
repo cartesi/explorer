@@ -253,8 +253,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={TbHelp}
-                                    width={3}
-                                    height={3}
+                                    width={5}
+                                    height={5}
                                     color="gray.600"
                                     data-testid="balance-icon"
                                 />
@@ -329,8 +329,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={TbHelp}
-                                    width={4}
-                                    height={4}
+                                    width={5}
+                                    height={5}
                                     color="gray.600"
                                     data-testid="pool-icon"
                                 />
@@ -416,8 +416,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={TbHelp}
-                                    width={4}
-                                    height={4}
+                                    width={5}
+                                    height={5}
                                     color="gray.600"
                                     data-testid="staking-icon"
                                 />
@@ -475,8 +475,8 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
                             >
                                 <Icon
                                     as={TbHelp}
-                                    width={4}
-                                    height={4}
+                                    width={5}
+                                    height={5}
                                     color="gray.600"
                                     data-testid="quit-icon"
                                 />
