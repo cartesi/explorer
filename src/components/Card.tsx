@@ -111,13 +111,12 @@ export const Card = ({
                                     ml: 2,
                                 }}
                             >
-                                <Icon
-                                    as={TbHelp}
-                                    w={5}
-                                    h={5}
+                                <Box
                                     data-testid={`${id}-tooltip-icon`}
                                     role="tooltip-icon"
-                                />
+                                >
+                                    <Icon as={TbHelp} w={5} h={5} />
+                                </Box>
                             </Tooltip>
                         )}
                     </Heading>
