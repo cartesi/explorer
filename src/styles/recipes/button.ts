@@ -186,7 +186,7 @@ export const buttonRecipe = defineRecipe({
                         _dark: 'dark.gray.quaternary',
                     },
                     borderColor: {
-                        base: 'light.border.quaternary',
+                        base: 'dark.gray.secondary',
                         _dark: 'dark.border.quaternary',
                     },
                 },
