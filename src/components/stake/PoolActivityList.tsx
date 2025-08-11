@@ -101,7 +101,7 @@ export interface IPoolActivityListProps {
 export const PoolActivityList: FC<IPoolActivityListProps> = memo(
     ({ poolAddress, userSearch, selectedTypes, selectedTimePeriod }) => {
         const [timestamp, setTimestamp] = useState<number | null>();
-        const [list, updateList] = useState(null);
+        const [list, updateList] = useState<ActivityType[] | null>(null);
         const { chainId } = useWallet();
         userSearch = userSearch === '' ? undefined : userSearch;
 
@@ -226,7 +226,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                         setTimestamp(oldestActivityTime)
                                     }
                                 >
-                                    <Text>Load more...</Text>
+                                    <Text>Load more</Text>
                                 </Button>
                             )}
                             {isAllActivitiesLoaded && (
