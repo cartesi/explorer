@@ -92,6 +92,7 @@ const PoolNode: FC = () => {
                                     ens
                                     truncated
                                     fontSize={'3xl'}
+                                    iconColor="white"
                                 />
 
                                 <Button
