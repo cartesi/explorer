@@ -107,7 +107,6 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
 
     return !innerTransaction?.acknowledged ? (
         <Alert.Root
-            alignItems="center"
             bg={bg}
             status={status}
             borderRadius="1rem"
