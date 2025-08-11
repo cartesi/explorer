@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
+import { TbAlertCircle, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Button,
@@ -183,10 +183,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                 <Collapsible.Root open={value > currentValue}>
                     <Collapsible.Content>
                         <HStack gap={2} alignItems="flex-start">
-                            <Icon
-                                as={TbAlertTriangleFilled}
-                                color="orange.500"
-                            />
+                            <Icon as={TbAlertCircle} color="orange.500" />
                             <Text fontSize="sm">
                                 After increasing the current value you can only
                                 increase it again after {wait}
