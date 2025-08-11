@@ -99,7 +99,7 @@ const Footer: FC<FooterProps> = (props) => {
 
     return (
         <Box bg="footerBg" color="white" w="100%" p="0 6vw" mt="auto">
-            <Container as={Stack} maxW={'100%'} py={10}>
+            <Container as={Stack} maxW={'100%'} py={10} px={4}>
                 <Grid
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
