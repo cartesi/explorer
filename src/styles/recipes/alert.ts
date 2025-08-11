@@ -13,6 +13,7 @@ export const alertRecipe = defineSlotRecipe({
             },
         },
         description: {
+            fontSize: 'md',
             color: {
                 base: 'gray.900',
                 _dark: 'white',
