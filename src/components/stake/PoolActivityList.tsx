@@ -226,7 +226,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                         setTimestamp(oldestActivityTime)
                                     }
                                 >
-                                    <Text>Load more</Text>
+                                    <Text>Load more...</Text>
                                 </Button>
                             )}
                             {isAllActivitiesLoaded && (
