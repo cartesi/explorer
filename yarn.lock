@@ -818,10 +818,10 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@cartesi/staking-pool@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-2.1.0.tgz#81572b9778606de5aaf2b410aa22b8e10ce92541"
-  integrity sha512-Hjeyl3cwZ6XW3ilhlMdOqix5H1Ob8tMImP6RatZd4XILUzJCGqCSgNQW12S7OU5C/DKIOKJHzV+yABpgt5tUGA==
+"@cartesi/staking-pool@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@cartesi/staking-pool/-/staking-pool-2.1.1.tgz#3c5f75f3c7be40e245f2431920712fd7ed61ec2c"
+  integrity sha512-DzxaAjYEO1YTXSzvX9/s3J10Qw/tpqWGfnfrQQNKqryDKcN7lPmjncnr1y3z87Y/qFkmCr5t46vDEMJ5Vq9JZA==
   dependencies:
     "@cartesi/pos" "^2.1.0"
     "@chainlink/contracts" "0.2.2"
@@ -3280,13 +3280,6 @@
     ethjs-util "^0.1.6"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
-
-"@metamask/onboarding@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@metamask/onboarding/-/onboarding-1.0.1.tgz#14a36e1e175e2f69f09598e2008ab6dc1b3297e6"
-  integrity sha512-FqHhAsCI+Vacx2qa5mAFcWNSrTcVGMNjzxVgaX8ECSny/BJ9/vgXP9V7WF/8vb9DltPeQkxr+Fnfmm6GHfmdTQ==
-  dependencies:
-    bowser "^2.9.0"
 
 "@motionone/animation@^10.15.1":
   version "10.15.1"
@@ -8084,7 +8077,7 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bowser@^2.11.0, bowser@^2.9.0:
+bowser@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.11.0.tgz#5ca3c35757a7aa5771500c70a73a9f91ef420a8f"
   integrity sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==
