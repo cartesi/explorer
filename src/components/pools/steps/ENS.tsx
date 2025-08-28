@@ -173,6 +173,10 @@ const EthereumNameServer = ({
     const bg = useColorModeValue('white', 'dark.background.secondary');
     const isHighlighted =
         stepNumber - 1 === currentStep || stepNumber <= currentStep;
+    const warningIconColor = useColorModeValue(
+        'light.support.warning',
+        'dark.support.warning'
+    );
 
     useEffect(() => {
         if (isCompleted) {
@@ -204,7 +208,7 @@ const EthereumNameServer = ({
                 />
                 {isSmallScreen && (
                     <Text
-                        color="light.support.warning"
+                        color={warningIconColor}
                         fontWeight="medium"
                         fontSize={18}
                     >

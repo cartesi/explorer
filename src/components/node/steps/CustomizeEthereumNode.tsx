@@ -56,7 +56,7 @@ const CustomizeEthereumNode = ({
             borderStyle={'solid'}
         >
             <StepBody>
-                <Heading as="h3" size="md" my={4}>
+                <Heading as="h3" size="sm" my={4}>
                     Ethereum node
                 </Heading>
                 <Text>
@@ -64,7 +64,7 @@ const CustomizeEthereumNode = ({
                     It's important to use a stable and reliable provider.
                 </Text>
 
-                <Heading as="h3" size="md" my={4}>
+                <Heading as="h3" size="sm" my={4}>
                     Ethereum Gateway
                 </Heading>
                 <Flex

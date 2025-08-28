@@ -137,7 +137,7 @@ const PoolTable = ({ data }: Props) => {
                             textAlign="right"
                             {...thProps}
                         >
-                            <Flex alignItems="center">
+                            <Flex justify="flex-end">
                                 <GhostButton
                                     {...buttonProps}
                                     onClick={() => setSortBy('amount')}
@@ -154,7 +154,7 @@ const PoolTable = ({ data }: Props) => {
                             textAlign="right"
                             {...thProps}
                         >
-                            <Flex alignItems="center">
+                            <Flex justify="flex-end">
                                 <GhostButton
                                     {...buttonProps}
                                     onClick={() => setSortBy('totalUsers')}
@@ -178,7 +178,7 @@ const PoolTable = ({ data }: Props) => {
                             textAlign="right"
                             {...thProps}
                         >
-                            <Flex alignItems="center">
+                            <Flex justify="flex-end" align="center">
                                 <GhostButton
                                     {...buttonProps}
                                     onClick={() =>

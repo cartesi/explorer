@@ -78,8 +78,8 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
                             <Icon
                                 as={TbHelp}
                                 data-testid="balance-icon"
-                                w={3.5}
-                                h={3.5}
+                                w={5}
+                                h={5}
                             />
                         </Tooltip>
                     </HStack>

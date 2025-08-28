@@ -192,7 +192,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Icon as={TbHelp} ml={2} />
+                            <Icon as={TbHelp} ml={2} w={5} h={5} />
                         </Tooltip>
                     )}
                 </Flex>

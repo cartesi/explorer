@@ -31,7 +31,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     return (
         <InputGroup
             {...rest}
-            startElement={<Icon as={TbSearch} color={textColor} />}
+            startElement={<Icon as={TbSearch} color={textColor} w={5} h={5} />}
         >
             <Input
                 _placeholder={{

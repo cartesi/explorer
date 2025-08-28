@@ -154,6 +154,7 @@ const CommissionModel = ({
                     failTitle="The pool creation failed!"
                     successDescription={`Pool ${poolFactory.transaction?.result} created! moving to the next step...`}
                     transaction={poolFactory.transaction}
+                    mb={2}
                 />
 
                 <FlatRateCommission

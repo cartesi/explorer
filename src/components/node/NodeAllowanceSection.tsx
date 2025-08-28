@@ -64,7 +64,7 @@ export const NodeAllowanceSection: FC<INodeAllowanceSectionProps> = ({
                             positioning={{ placement: 'top' }}
                             openDelay={0}
                         >
-                            <Icon as={TbHelp} color={color} w={3} h={3} />
+                            <Icon as={TbHelp} color={color} w={5} h={5} />
                         </Tooltip>
                     </HStack>
                     <Heading m={0} size="sm">

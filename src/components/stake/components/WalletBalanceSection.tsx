@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
+import { TbAlertCircle, TbAlertTriangleFilled, TbHelp } from 'react-icons/tb';
 import {
     Box,
     Flex,
@@ -44,7 +44,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     const iconColor = useColorModeValue('light.primary', 'dark.primary');
     const warningIconColor = useColorModeValue(
         'light.support.warning',
-        'white'
+        'dark.support.warning'
     );
 
     return (
@@ -71,8 +71,8 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                         >
                             <Icon
                                 as={TbHelp}
-                                w={3}
-                                h={3}
+                                w={5}
+                                h={5}
                                 color={balanceColor}
                             />
                         </Tooltip>
@@ -88,10 +88,13 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                 </Box>
             </HStack>
             {userETHBalance?.isZero() && !isGnosisSafe && (
-                <HStack gap={2} alignItems="flex-start">
-                    <Box color={warningIconColor}>
-                        <TbAlertTriangleFilled />
-                    </Box>
+                <HStack gap={2} alignItems="center">
+                    <Icon
+                        as={TbAlertCircle}
+                        color={warningIconColor}
+                        w={5}
+                        h={5}
+                    />
                     <Text fontSize="sm">
                         You don't have enough ETH in your wallet for the
                         transaction fee.
