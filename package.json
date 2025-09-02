@@ -131,7 +131,8 @@
         "storybook-addon-apollo-client": "^8.1.2",
         "tsconfig": "*",
         "typechain": "5.2.0",
-        "typescript": "5.7.3"
+        "typescript": "5.7.3",
+        "vite": "^7.1.4"
     },
     "engines": {
         "node": "22.x"
