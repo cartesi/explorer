@@ -11,8 +11,6 @@
 
 'use client';
 
-import React, { FC, FunctionComponent, useState } from 'react';
-import { useParams } from 'next/navigation';
 import {
     Button,
     Center,
@@ -21,18 +19,19 @@ import {
     Tag,
     VStack,
 } from '@chakra-ui/react';
+import { FC, FunctionComponent, useState } from 'react';
 import { TbDots } from 'react-icons/tb';
 
 import { useColorModeValue } from '../ui/color-mode';
 
+import { QueryResult } from '@apollo/client';
+import BlockCard from '../../components/block/BlockCard';
+import BlocksChart from '../../components/BlocksChart';
 import Layout from '../../components/Layout';
+import PageHeader from '../../components/PageHeader';
+import SearchInput from '../../components/SearchInput';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import { BlocksData, BlocksVars } from '../../graphql/models';
-import { QueryResult } from '@apollo/client';
-import BlocksChart from '../../components/BlocksChart';
-import BlockCard from '../../components/block/BlockCard';
-import SearchInput from '../../components/SearchInput';
-import PageHeader from '../../components/PageHeader';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWallet } from '../wallet';
 
@@ -116,13 +115,8 @@ const BlockList = (props: BlockListProps) => {
 
 const Blocks: FC = () => {
     const { chainId } = useWallet();
-    const params = useParams();
 
-    let { block: blockId } = params;
-    // TODO: use blockId
-    blockId = blockId && blockId.length > 0 ? (blockId[0] as string) : '';
-
-    const [debouncedSearchKey, setDebouncedSearchKey] = useState(blockId);
+    const [debouncedSearchKey, setDebouncedSearchKey] = useState('');
     const handleDebouncedSearch = useDebounce(setDebouncedSearchKey);
 
     // list of all blocks, unfiltered
