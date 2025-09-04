@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { DateTime } from 'luxon';
 import { Meta, StoryObj } from '@storybook/react';
 import UsersChart from '../../components/stake/UsersChart';
 import stakingPoolUserHistories from './stakingPoolUserHistories';
@@ -30,7 +29,7 @@ const Template: Story = {
 
 const defaultProps = {
     data: stakingPoolUserHistories as unknown as StakingPoolUserHistory[],
-    month: DateTime.fromJSDate(new Date()),
+    month: new Date(),
     totalUsers: 100,
     loading: false,
 };

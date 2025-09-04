@@ -1,20 +1,20 @@
 import React, { FC } from 'react';
-import { HStack, Spinner, Text, Flex, useToken } from '@chakra-ui/react';
+import { Flex, HStack, Spinner, Text, useToken } from '@chakra-ui/react';
 import {
-    Chart as ChartJS,
     CategoryScale,
+    Chart as ChartJS,
+    Legend,
     LinearScale,
-    PointElement,
     LineElement,
+    PointElement,
     Title,
     Tooltip,
-    Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { isObject, minBy, maxBy } from 'lodash';
-import { DateTime } from 'luxon';
+import { isObject, maxBy, minBy } from 'lodash';
 import { StakingPoolUserHistory } from '../../graphql/models';
-import { useColorModeValue, useColorMode } from '../ui/color-mode';
+import { useColorMode, useColorModeValue } from '../ui/color-mode';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 ChartJS.register(
     CategoryScale,
@@ -39,13 +39,14 @@ const tooltipTimeFormat = new Intl.DateTimeFormat('en-US', {
 
 export interface UsersChartProps {
     data: StakingPoolUserHistory[];
-    month: DateTime;
+    month: Date;
     totalUsers: number;
     loading: boolean;
 }
 
 const UsersChart: FC<UsersChartProps> = (props) => {
     const { data: initialData, month, totalUsers, loading } = props;
+
     const data =
         initialData.length > 1
             ? initialData
@@ -54,28 +55,18 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                   ...initialData,
                   {
                       ...initialData[0],
-                      timestamp: Math.floor(
-                          DateTime.fromMillis(month.toMillis())
-                              .endOf('month')
-                              .toMillis() / 1000
-                      ),
+                      timestamp: Math.floor(endOfMonth(month).getTime() / 1000),
                   },
               ]
             : [
                   {
                       timestamp: Math.floor(
-                          DateTime.fromMillis(month.toMillis())
-                              .startOf('month')
-                              .toMillis() / 1000
+                          startOfMonth(month).getTime() / 1000
                       ),
                       totalUsers,
                   },
                   {
-                      timestamp: Math.floor(
-                          DateTime.fromMillis(month.toMillis())
-                              .endOf('month')
-                              .toMillis() / 1000
-                      ),
+                      timestamp: Math.floor(endOfMonth(month).getTime() / 1000),
                       totalUsers,
                   },
               ];
