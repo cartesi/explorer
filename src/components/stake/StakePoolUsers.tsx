@@ -21,7 +21,6 @@ import {
     Select,
 } from '@chakra-ui/react';
 import { isArray, isObject, uniqueId } from 'lodash';
-import { DateTime } from 'luxon';
 import { useParams } from 'next/navigation';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import Layout from '../Layout';
@@ -45,6 +44,13 @@ import {
 } from '../../graphql/models';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useColorModeValue } from '../ui/color-mode';
+import {
+    differenceInMonths as differenceInMonthsDateFns,
+    endOfMonth,
+    format,
+    parseISO,
+    startOfMonth,
+} from 'date-fns';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -66,39 +72,40 @@ const PoolUsers: FC = () => {
     );
     const handleDebouncedSearch = useDebounce(setDebouncedSearch);
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
-    const poolCreationDate = DateTime.fromJSDate(
+    const poolCreationDate = startOfMonth(
         new Date((stakingPool?.timestamp || 0) * 1000)
     );
-    const today = DateTime.fromJSDate(new Date());
-    const differenceInMonths = Math.ceil(
-        today.diff(poolCreationDate, ['months']).get('months')
+    const today = new Date();
+
+    const differenceInMonthsCount = Math.ceil(
+        differenceInMonthsDateFns(today, poolCreationDate)
     );
-    const monthsCount = Math.min(differenceInMonths, 4);
+
+    const monthsCount = Math.min(differenceInMonthsCount, 4);
     const monthsLength = monthsCount > 0 ? monthsCount : 1;
+
     const monthOptions = useMemo(
         () =>
             Array.from({ length: monthsLength }).map((_, index) => {
-                const date = DateTime.fromJSDate(new Date());
-                const month = date.get('month');
+                const date = new Date();
+                const month = date.getMonth();
 
                 return {
                     id: uniqueId(),
-                    date: date.set({ month: month - index }),
+                    date: new Date(date.setMonth(month - index)),
                 };
             }),
         [monthsLength]
     );
+
     const [selectedMonth, setSelectedMonth] = useState(monthOptions[0]);
     const [startTimestamp, setStartTimestamp] = useState<number>(
-        DateTime.fromMillis(selectedMonth?.date.toMillis())
-            .startOf('month')
-            .toMillis()
+        startOfMonth(selectedMonth?.date).getTime()
     );
     const [endTimestamp, setEndTimestamp] = useState<number>(
-        DateTime.fromMillis(selectedMonth?.date.toMillis())
-            .endOf('month')
-            .toMillis()
+        endOfMonth(selectedMonth?.date).getTime()
     );
+
     const [list, setList] = useState<PoolBalance[]>([]);
     const [userHistoriesList, setUserHistoriesList] = useState<
         StakingPoolUserHistory[]
@@ -193,13 +200,21 @@ const PoolUsers: FC = () => {
         const nextValue = (
             stakingPoolUserHistories.data?.stakingPoolUserHistories ?? []
         ).reduce((accumulator, item) => {
-            const itemDate = DateTime.fromMillis(item.timestamp * 1000);
+            const itemDate = new Date(item.timestamp * 1000);
             const existingItemWithMatchingDay: StakingPoolUserHistory =
                 accumulator.find((existingItem) => {
-                    const date = DateTime.fromMillis(
-                        existingItem.timestamp * 1000
+                    const date = new Date(existingItem.timestamp * 1000);
+
+                    return (
+                        format(
+                            parseISO(date.toISOString().slice(0, -1)),
+                            'M/d/yyyy'
+                        ) ===
+                        format(
+                            parseISO(itemDate.toISOString().slice(0, -1)),
+                            'M/d/yyyy'
+                        )
                     );
-                    return date.toISODate() === itemDate.toISODate();
                 });
 
             return isObject(existingItemWithMatchingDay)
@@ -218,7 +233,7 @@ const PoolUsers: FC = () => {
 
     const selectOptions = createListCollection({
         items: monthOptions.map((option) => ({
-            label: dateTimeFormat.format(option.date.toMillis()),
+            label: dateTimeFormat.format(option.date),
             value: option.id,
         })),
     });
@@ -261,19 +276,13 @@ const PoolUsers: FC = () => {
                                                 (month) => month.id === value[0]
                                             );
 
-                                        const nextStartTimestamp =
-                                            DateTime.fromMillis(
-                                                nextSelectedMonth?.date.toMillis()
-                                            )
-                                                .startOf('month')
-                                                .toMillis();
+                                        const nextStartTimestamp = startOfMonth(
+                                            nextSelectedMonth?.date
+                                        ).getTime();
 
-                                        const nextEndTimestamp =
-                                            DateTime.fromMillis(
-                                                nextSelectedMonth?.date.toMillis()
-                                            )
-                                                .endOf('month')
-                                                .toMillis();
+                                        const nextEndTimestamp = endOfMonth(
+                                            nextSelectedMonth?.date
+                                        ).getTime();
 
                                         setSelectedMonth(nextSelectedMonth);
                                         setStartTimestamp(nextStartTimestamp);
