@@ -10,11 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React, { FC } from 'react';
-import { Flex, FlexProps, Heading, HStack, Text, Icon } from '@chakra-ui/react';
+import { Flex, FlexProps, Heading, HStack, Icon, Text } from '@chakra-ui/react';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { IconType } from 'react-icons';
-import humanizeDuration from 'humanize-duration';
+import { formatDistanceStrict } from 'date-fns';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
 type Countdown = {
@@ -23,10 +23,9 @@ type Countdown = {
 };
 
 const formatDuration = (ms: number): string[] => {
-    return humanizeDuration(ms, {
-        round: true,
-        largest: 1,
-    }).split(' ');
+    return formatDistanceStrict(new Date().getTime() - ms, new Date()).split(
+        ' '
+    );
 };
 
 const formatPercentNumber = (

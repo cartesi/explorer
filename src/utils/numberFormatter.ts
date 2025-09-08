@@ -1,14 +1,13 @@
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import humanizeDuration from 'humanize-duration';
+import { formatDistanceStrict } from 'date-fns';
 
 export type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
 
 export const formatDuration = (ms: number): string[] => {
-    return humanizeDuration(ms, {
-        round: true,
-        largest: 1,
-    }).split(' ');
+    return formatDistanceStrict(new Date().getTime() - ms, new Date()).split(
+        ' '
+    );
 };
 
 export const formatPercentNumber = (

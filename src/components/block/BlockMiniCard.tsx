@@ -21,7 +21,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { TbClock } from 'react-icons/tb';
-import humanizeDuration from 'humanize-duration';
+import { formatDistanceStrict } from 'date-fns';
 import { FunctionComponent } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
 
@@ -65,10 +65,14 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
                 <HStack>
                     <Icon as={TbClock} w={5} h={5} />
                     <Text>
-                        {humanizeDuration(Date.now() - block.timestamp * 1000, {
-                            units: ['m'],
-                            round: true,
-                        })}{' '}
+                        {formatDistanceStrict(
+                            new Date(block.timestamp * 1000),
+                            new Date(),
+                            {
+                                unit: 'minute',
+                                roundingMethod: 'round',
+                            }
+                        )}{' '}
                         ago
                     </Text>
                 </HStack>
