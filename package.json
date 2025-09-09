@@ -132,7 +132,7 @@
         "tsconfig": "*",
         "typechain": "5.2.0",
         "typescript": "5.7.3",
-        "vite": "^7.1.4"
+        "vite": "^7.1.5"
     },
     "engines": {
         "node": "22.x"
