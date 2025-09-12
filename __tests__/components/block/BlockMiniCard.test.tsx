@@ -14,7 +14,7 @@ import BlockMiniCard from '../../../src/components/block/BlockMiniCard';
 import { withChakraTheme } from '../../test-utilities';
 import { Block } from '../../../src/graphql/models';
 import { tinyGraphUrl } from '../../../src/utils/tinygraph';
-import humanizeDuration from 'humanize-duration';
+import { formatDistanceStrict } from 'date-fns';
 
 const Component = withChakraTheme(BlockMiniCard);
 const props = {
@@ -47,11 +47,12 @@ describe('BlockMiniCard component', () => {
     it('should display correct time ago', () => {
         render(<Component {...props} />);
 
-        const time = humanizeDuration(
-            Date.now() - props.block.timestamp * 1000,
+        const time = formatDistanceStrict(
+            new Date(props.block.timestamp * 1000),
+            new Date(),
             {
-                units: ['m'],
-                round: true,
+                unit: 'minute',
+                roundingMethod: 'round',
             }
         );
         expect(screen.getByText(`${time} ago`)).toBeInTheDocument();
