@@ -137,9 +137,6 @@ const enableBtnWhen = (
     errors: Errors
 ) => !isEmpty(allowance) && !transactionInProgress && isEmpty(errors);
 
-const buildURL = (nodeAddress: string) =>
-    !isEmpty(nodeAddress) ? `/node/${nodeAddress}/manage` : '/node-runners';
-
 const SetAllowance = ({
     stepNumber,
     currentStep,
@@ -180,9 +177,13 @@ const SetAllowance = ({
 
     useEffect(() => {
         if (isStepCompleted) {
-            router.push(buildURL(hiredNodeAddress));
+            router.push(
+                isEmpty(hiredNodeAddress)
+                    ? '/node-runners'
+                    : `/node/${hiredNodeAddress}/manage`
+            );
         }
-    }, [isStepCompleted]);
+    }, [hiredNodeAddress, isStepCompleted, router]);
 
     return (
         <Step

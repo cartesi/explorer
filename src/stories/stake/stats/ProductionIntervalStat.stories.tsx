@@ -29,7 +29,7 @@ export const Default: Story = {
     args: {
         totalBlocks: 100,
         productionInterval: 10000,
-        location: 'Stara Zagora, Bulgaria',
+        location: '/',
     },
     ...Template,
 };

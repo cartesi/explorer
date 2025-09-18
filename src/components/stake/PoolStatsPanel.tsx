@@ -20,6 +20,7 @@ import PoolPerformanceStat from './stats/PoolPerformanceStat';
 import ProductionIntervalStat from './stats/ProductionIntervalStat';
 import StakedBalanceStat from './stats/StakedBalanceStat';
 import UsersStat from './stats/UsersStat';
+import type { Route } from 'next';
 
 export interface PoolStatsPanelProps extends StackProps {
     address: string;
@@ -102,7 +103,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                 role="commission-stat"
             >
                 <UsersStat
-                    location={`/stake/${address}/users`}
+                    location={`/stake/${address}/users` as Route}
                     totalUsers={totalUsers}
                 />
                 <ProductionIntervalStat
@@ -110,7 +111,7 @@ const PoolStatsPanel: FC<PoolStatsPanelProps> = (props) => {
                     totalBlocks={totalBlocks}
                 />
                 <CommissionStat
-                    location={`/stake/${address}/commissions`}
+                    location={`/stake/${address}/commissions` as Route}
                     commissionPercentage={commissionPercentage}
                     fee={fee}
                 />

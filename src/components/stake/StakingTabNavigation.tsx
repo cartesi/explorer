@@ -9,12 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, ButtonProps, HStack, Icon } from '@chakra-ui/react';
+import { Button, ButtonProps, HStack, Icon, IconProps } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { FC } from 'react';
 import { SimpleChartIcon, StakeIcon } from '../Icons';
 import { useColorModeValue } from '../ui/color-mode';
+import type { Route } from 'next';
+
+interface TabModel {
+    href: Route;
+    Icon: FC<IconProps>;
+    text: string;
+    isActive: boolean;
+    variant: string;
+}
 
 export const StakingTabNavigation: FC = () => {
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
@@ -24,17 +33,17 @@ export const StakingTabNavigation: FC = () => {
     const pathname = usePathname();
     const isStakeTabActive = /stake\/.+\/stake/.test(pathname);
     const isPoolInfoTabActive = !isStakeTabActive;
-    const tabs = [
+    const tabs: TabModel[] = [
         {
-            href: `/stake/${address}`,
-            Icon: SimpleChartIcon,
+            href: `/stake/${address}` as Route,
+            Icon: SimpleChartIcon as FC<IconProps>,
             text: 'Pool Info',
             isActive: isPoolInfoTabActive,
             variant: isPoolInfoTabActive ? 'solid' : 'ghost',
         },
         {
-            href: `/stake/${address}/stake`,
-            Icon: StakeIcon,
+            href: `/stake/${address}/stake` as Route,
+            Icon: StakeIcon as FC<IconProps>,
             text: 'Stake',
             isActive: isStakeTabActive,
             variant: isStakeTabActive ? 'solid' : 'ghost',

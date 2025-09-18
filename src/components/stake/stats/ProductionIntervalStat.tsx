@@ -18,11 +18,12 @@ import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolProductionIntervalIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
+import type { Route } from 'next';
 
 export interface ProductionIntervalStatProps extends StackProps {
     totalBlocks: number;
     productionInterval: number; // average number of milliseconds between blocks considering the last 10 produced blocks
-    location?: string;
+    location?: Route;
 }
 
 const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {

@@ -18,10 +18,11 @@ import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolUsersIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
+import type { Route } from 'next';
 
 export interface UsersStatProps extends StackProps {
     totalUsers: number;
-    location?: string;
+    location?: Route;
 }
 
 const UsersStat: FC<UsersStatProps> = (props) => {

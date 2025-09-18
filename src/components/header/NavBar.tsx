@@ -20,6 +20,7 @@ import {
     Stack,
     useDisclosure,
 } from '@chakra-ui/react';
+import type { Route } from 'next';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, ReactNode } from 'react';
@@ -33,7 +34,7 @@ import { SelectedChain } from './SelectedChain';
 import { useColorModeValue, useColorMode } from '../ui/color-mode';
 
 export interface NavLinkProps {
-    href: string;
+    href: Route;
     children: ReactNode;
 }
 
@@ -75,7 +76,7 @@ export const NavLink: FC<NavLinkProps> = ({ href, children }) => {
 export interface HeaderLink {
     key: string;
     label: string;
-    href: string;
+    href: Route;
 }
 
 export interface NavBarProps extends BoxProps {

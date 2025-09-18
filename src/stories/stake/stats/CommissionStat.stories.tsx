@@ -21,7 +21,7 @@ const defaultFee = {
     created: 1657193076608,
     lastUpdated: 1657193076608,
 };
-const defaultLocation = 'us';
+const defaultLocation = '/';
 
 export default {
     title: 'Stake/Stats/CommissionStat',

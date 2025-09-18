@@ -77,9 +77,11 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
                                 title="Manage pool"
                             >
                                 <NextLink
-                                    href={`/pools/${address}/manage${
-                                        isString(from) ? `?from=${from}` : ''
-                                    }`}
+                                    href={
+                                        isString(from)
+                                            ? `/pools/${address}/manage?from=${from}`
+                                            : `/pools/${address}/manage`
+                                    }
                                 >
                                     <Icon
                                         as={SettingsIcon}

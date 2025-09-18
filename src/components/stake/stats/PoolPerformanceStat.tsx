@@ -20,10 +20,11 @@ import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolPerformanceIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
+import type { Route } from 'next';
 
 export interface PoolPerformanceStatProps {
     address: string;
-    location?: string;
+    location?: Route;
 }
 
 const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
