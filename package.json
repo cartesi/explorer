@@ -79,7 +79,6 @@
         "@storybook/addon-links": "^9.1.6",
         "@storybook/addon-onboarding": "^9.1.6",
         "@storybook/blocks": "^8.6.3",
-        "@storybook/experimental-addon-test": "^8.6.14",
         "@storybook/experimental-nextjs-vite": "8.6.3",
         "@storybook/nextjs-vite": "^9.1.6",
         "@storybook/react": "^9.1.6",
