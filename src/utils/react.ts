@@ -11,18 +11,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import humanizeDuration from 'humanize-duration';
-import { isString } from 'lodash';
-import { Duration } from 'luxon';
-
-export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
-    const [state, setState] = useState<D>(dependency);
-
-    useEffect(() => {
-        setState(dependency);
-    }, [dependency]);
-
-    return [state, setState];
-}
 
 /**
  * @desc Returns a label representing the time left until the given date, or undefined if the given date is in the past.
@@ -30,27 +18,17 @@ export function useDependentState<D>(dependency: D): [D, (data: D) => void] {
  * @param timestamp
  * @param fields
  * @param isHumanizedOutput
- * @param format
  */
 export const useTimeLeft = (
     timestamp: number,
     fields = 2,
-    isHumanizedOutput = true,
-    format?: string
+    isHumanizedOutput = true
 ): string | undefined => {
-    const applyFormat = useCallback((duration: number, format: string) => {
-        if (duration <= 0) {
-            return undefined;
-        }
-
-        return Duration.fromMillis(duration).toFormat(format);
-    }, []);
-
     const durationToShortDate = useCallback((duration: number) => {
         return new Date(duration).toISOString().substring(11, 16);
     }, []);
 
-    const formatDuration = useCallback((duration, fields) => {
+    const formatDuration = useCallback((duration: number, fields: number) => {
         return humanizeDuration(duration, {
             largest: fields,
             round: true,
@@ -60,19 +38,10 @@ export const useTimeLeft = (
     const formatRemainingTime = useCallback(
         (duration: number) => {
             return isHumanizedOutput
-                ? isString(format)
-                    ? applyFormat(duration, format)
-                    : formatDuration(duration, fields)
+                ? formatDuration(duration, fields)
                 : durationToShortDate(duration);
         },
-        [
-            fields,
-            format,
-            formatDuration,
-            isHumanizedOutput,
-            applyFormat,
-            durationToShortDate,
-        ]
+        [fields, formatDuration, isHumanizedOutput, durationToShortDate]
     );
 
     const [timeLeft, setTimeLeft] = useState<string>(
@@ -94,7 +63,7 @@ export const useTimeLeft = (
         }, delay);
 
         return () => clearInterval(intervalId);
-    }, [timestamp, fields, isHumanizedOutput, format, formatRemainingTime]);
+    }, [timestamp, fields, isHumanizedOutput, formatRemainingTime]);
 
     return timeLeft;
 };

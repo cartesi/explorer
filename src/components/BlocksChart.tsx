@@ -11,14 +11,14 @@
 
 import React from 'react';
 import _ from 'lodash';
-import { DateTime } from 'luxon';
+import { format, parseISO } from 'date-fns';
 import {
     CartesianGrid,
     Legend,
     ResponsiveContainer,
-    Tooltip,
     Scatter,
     ScatterChart,
+    Tooltip,
     XAxis,
     YAxis,
 } from 'recharts';
@@ -109,17 +109,20 @@ const BlocksChart = (props: BlocksChartProps) => {
     });
 
     const timestampFormat = (timestamp: number): string => {
-        const date = DateTime.fromMillis(timestamp * 1000);
-        return date.toUTC().toLocaleString(DateTime.DATETIME_SHORT);
+        return format(
+            parseISO(new Date(timestamp * 1000).toISOString().slice(0, -1)),
+            'M/d/yyyy, hh:mm aa'
+        );
     };
 
     const tooltipFormatter = (value, name) => {
         if (name === 'Difficulty') {
             return value;
         } else if (name === 'Time') {
-            return DateTime.fromMillis(value * 1000)
-                .toUTC()
-                .toLocaleString(DateTime.DATETIME_FULL);
+            return format(
+                parseISO(new Date(value * 1000).toISOString().slice(0, -1)),
+                "MMMM d, yyyy 'at' hh:mm aa 'UTC'"
+            );
         }
         return value;
     };

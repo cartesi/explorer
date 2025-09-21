@@ -14,11 +14,10 @@ import UsersChart from '../../../src/components/stake/UsersChart';
 import { withChakraTheme } from '../../test-utilities';
 import stakingPoolUserHistories from '../../../src/stories/stake/stakingPoolUserHistories';
 import { StakingPoolUserHistory } from '../../../src/graphql/models';
-import { DateTime } from 'luxon';
 
 const defaultProps = {
     data: stakingPoolUserHistories as unknown as StakingPoolUserHistory[],
-    month: DateTime.fromJSDate(new Date()),
+    month: new Date(),
     totalUsers: 100,
     loading: false,
 };
