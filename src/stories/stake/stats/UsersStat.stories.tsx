@@ -28,7 +28,7 @@ const Template: Story = {
 export const Default: Story = {
     args: {
         totalUsers: 100,
-        location: 'General Gurko Str. 75',
+        location: '/',
     },
     ...Template,
 };

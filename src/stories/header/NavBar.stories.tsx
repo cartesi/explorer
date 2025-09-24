@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Meta, StoryObj } from '@storybook/react';
-import { NavBar } from '../../components/header';
+import { NavBar, NavBarProps } from '../../components/header';
 
 export default {
     title: 'Header/NavBar',
@@ -46,7 +46,7 @@ const defaultProps = {
             label: 'Blocks',
             href: '/blocks',
         },
-    ],
+    ] as NavBarProps['links'],
 };
 
 export const Standard: Story = {

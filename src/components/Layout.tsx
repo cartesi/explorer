@@ -32,6 +32,7 @@ import Footer from './Footer';
 import { Header } from './header';
 import SyncStatus from './SyncStatus';
 import { useColorModeValue } from './ui/color-mode';
+import type { Route } from 'next';
 
 interface ComponentProps {
     children: React.ReactNode;
@@ -89,7 +90,13 @@ interface PageLayoutProps extends FlexProps {
     children: React.ReactNode;
 }
 
-export const headerLinks = [
+interface HeaderLink {
+    key: string;
+    label: string;
+    href: Route;
+}
+
+export const headerLinks: HeaderLink[] = [
     {
         key: 'home',
         label: 'Home',

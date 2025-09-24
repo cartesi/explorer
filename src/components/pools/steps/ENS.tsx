@@ -146,11 +146,6 @@ const Content = () => {
 
 const { COMPLETED } = StepStatus;
 
-const buildURL = (address: string) =>
-    !isEmpty(address)
-        ? `/pools/${address}/manage?from=node-runners`
-        : '/node-runners';
-
 const EthereumNameServer = ({
     stepNumber,
     currentStep,
@@ -182,7 +177,11 @@ const EthereumNameServer = ({
         if (isCompleted) {
             setStepState(COMPLETED);
             isFunction(onComplete) && onComplete();
-            router.push(buildURL(poolAddress));
+            router.push(
+                isEmpty(poolAddress)
+                    ? '/node-runners'
+                    : `/pools/${poolAddress}/manage?from=node-runners`
+            );
         }
     }, [isCompleted]);
 

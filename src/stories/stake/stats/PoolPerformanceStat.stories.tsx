@@ -29,7 +29,7 @@ const Template: Story = {
 export const Default: Story = {
     args: {
         address: defaultAddress,
-        location: 'Sofia, Bulgaria',
+        location: '/',
     },
     ...Template,
 };

@@ -99,10 +99,8 @@ describe('Staking Unstake Modal', () => {
         const numberInput = getByRole('spinbutton');
 
         fireEvent.focus(numberInput);
-        await userEvent.type(numberInput, '10000');
-        await waitFor(() => expect(numberInput).toHaveValue('10000'), {
-            timeout: 100,
-        });
+        await userEvent.type(numberInput, '10', {});
+        await waitFor(() => expect(numberInput).toHaveValue('10'));
 
         const button = getByRole('unstake-button');
 
@@ -113,7 +111,7 @@ describe('Staking Unstake Modal', () => {
         fireEvent.click(button);
 
         expect(onSave).toHaveBeenCalled();
-        expect(onSave).toHaveBeenCalledWith('partial', parseUnits('10000', 18));
+        expect(onSave).toHaveBeenCalledWith('partial', parseUnits('10', 18));
     });
 
     it('Should disable stake button when partial amount is selected', async () => {

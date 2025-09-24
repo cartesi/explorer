@@ -20,11 +20,12 @@ import ConditionalWrapper from '../../ConditionalWrapper';
 import { PoolCommisionIcon } from '../../Icons';
 import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
+import type { Route } from 'next';
 
 export interface CommissionStatProps extends StackProps {
     commissionPercentage: number;
     fee: StakingPoolFee;
-    location?: string;
+    location?: Route;
 }
 
 const CommissionStat: FC<CommissionStatProps> = (props) => {
