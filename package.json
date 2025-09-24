@@ -89,7 +89,6 @@
         "@types/humanize-duration": "3.25.1",
         "@types/jest": "^29.5.14",
         "@types/lodash": "^4.14.174",
-        "@types/luxon": "2.4.0",
         "@types/node": "16.18.38",
         "@types/react": "^19.1.13",
         "@types/react-dom": "^19.1.9",
