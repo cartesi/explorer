@@ -3,6 +3,7 @@
 import { GA4TrackerProvider } from '../contexts/ga4Tracker';
 import TagManager from 'react-gtm-module';
 import { FC, ReactNode, useEffect } from 'react';
+import { isProduction } from '../utils/env';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -10,7 +11,7 @@ interface ProvidersProps {
 
 const TrackerProvider: FC<ProvidersProps> = ({ children }) => {
     useEffect(() => {
-        if (process.env.NODE_ENV === 'production') {
+        if (isProduction()) {
             TagManager.initialize({
                 gtmId: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
             });
