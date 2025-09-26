@@ -57,160 +57,154 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     return (
-        <>
-            <Dialog.Root
-                open={isOpen}
-                placement="center"
-                onOpenChange={({ open }) => {
-                    if (!open) {
-                        onClose();
-                    }
-                }}
-            >
-                <Dialog.Backdrop />
-                <Dialog.Positioner>
-                    <Dialog.Content>
-                        <Dialog.CloseTrigger asChild>
-                            <CloseButton size="sm" />
-                        </Dialog.CloseTrigger>
-                        <Dialog.Header>
-                            <Dialog.Title>
-                                <Box fontSize="xl" fontWeight="bold">
-                                    Withdraw from the pool balance to your
-                                    wallet
-                                </Box>
-                            </Dialog.Title>
-                        </Dialog.Header>
-                        <Separator width="full" borderColor={separatorColor} />
+        <Dialog.Root
+            open={isOpen}
+            placement="center"
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content>
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <Box fontSize="xl" fontWeight="bold">
+                                Withdraw from the pool balance to your wallet
+                            </Box>
+                        </Dialog.Title>
+                    </Dialog.Header>
+                    <Separator width="full" borderColor={separatorColor} />
 
-                        <Dialog.Body mt={6}>
-                            <VStack gap={5}>
-                                <Text>
-                                    Last step to receive tokens in your wallet!
-                                    Depending on the volume of requests, this
-                                    process can take up to 96 hours.
-                                </Text>
+                    <Dialog.Body mt={6}>
+                        <VStack gap={5}>
+                            <Text>
+                                Last step to receive tokens in your wallet!
+                                Depending on the volume of requests, this
+                                process can take up to 96 hours.
+                            </Text>
 
-                                <Text>
-                                    Please return to complete your withdrawal at
-                                    the end of the specified waiting period to
-                                    avoid further delays.
-                                </Text>
-                                <Field.Root id="amount">
-                                    <RadioGroup.Root
-                                        defaultValue={withdrawFullAmount}
-                                        name="unstakeAmount"
-                                        colorPalette={radioColorScheme}
-                                        width="100%"
-                                        onValueChange={({ value }) => {
-                                            setWithdrawFullAmount(value);
+                            <Text>
+                                Please return to complete your withdrawal at the
+                                end of the specified waiting period to avoid
+                                further delays.
+                            </Text>
+                            <Field.Root id="amount">
+                                <RadioGroup.Root
+                                    defaultValue={withdrawFullAmount}
+                                    name="unstakeAmount"
+                                    colorPalette={radioColorScheme}
+                                    width="100%"
+                                    onValueChange={({ value }) => {
+                                        setWithdrawFullAmount(value);
 
-                                            if (value === 'partial') {
-                                                setOutputWithdraw(
-                                                    constants.Zero
-                                                );
-                                                inputRef.current?.focus();
-                                            }
-                                        }}
-                                    >
-                                        <Stack>
-                                            <RadioGroup.Item
-                                                value="full"
-                                                colorPalette={radioColorScheme}
-                                                _hover={{
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                <RadioGroup.ItemHiddenInput />
-                                                <RadioGroup.ItemIndicator />
-                                                <RadioGroup.ItemText>
-                                                    Full amount
-                                                </RadioGroup.ItemText>
-                                            </RadioGroup.Item>
-
-                                            <RadioGroup.Item
-                                                value="partial"
-                                                colorPalette={radioColorScheme}
-                                                _hover={{
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                <RadioGroup.ItemHiddenInput />
-                                                <RadioGroup.ItemIndicator />
-                                                <RadioGroup.ItemText>
-                                                    Partial amount
-                                                </RadioGroup.ItemText>
-                                            </RadioGroup.Item>
-
-                                            <Collapsible.Root
-                                                open={
-                                                    withdrawFullAmount ===
-                                                    'partial'
-                                                }
-                                                unmountOnExit
-                                            >
-                                                <Collapsible.Content>
-                                                    <Field.Root
-                                                        id="withdrawAmount"
-                                                        pl={7}
-                                                    >
-                                                        <CTSINumberInput
-                                                            min={0}
-                                                            max={
-                                                                userBalanceFormatted
-                                                            }
-                                                            onChange={(
-                                                                bigNumberValue
-                                                            ) => {
-                                                                setOutputWithdraw(
-                                                                    bigNumberValue
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Field.Root>
-                                                </Collapsible.Content>
-                                            </Collapsible.Root>
-                                        </Stack>
-                                    </RadioGroup.Root>
-                                </Field.Root>
-                            </VStack>
-                            <Dialog.Footer px="0" pt={10}>
-                                <VStack w="full" gap={4}>
-                                    <Button
-                                        width="full"
-                                        colorPalette={colorScheme}
-                                        role="withdraw-button"
-                                        disabled={
-                                            outputWithdraw.isZero() &&
-                                            withdrawFullAmount !== 'full'
+                                        if (value === 'partial') {
+                                            setOutputWithdraw(constants.Zero);
+                                            inputRef.current?.focus();
                                         }
-                                        onClick={() => {
-                                            if (withdrawFullAmount === 'full') {
-                                                onSave(userBalance);
-                                            } else {
-                                                onSave(outputWithdraw);
-                                            }
+                                    }}
+                                >
+                                    <Stack>
+                                        <RadioGroup.Item
+                                            value="full"
+                                            colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Full amount
+                                            </RadioGroup.ItemText>
+                                        </RadioGroup.Item>
 
-                                            disclosure.onClose();
-                                            onClose();
-                                        }}
-                                    >
-                                        Withdraw
-                                    </Button>
-                                    <Button
-                                        width="full"
-                                        colorPalette="gray"
-                                        variant="ghost"
-                                        onClick={onClose}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </VStack>
-                            </Dialog.Footer>
-                        </Dialog.Body>
-                    </Dialog.Content>
-                </Dialog.Positioner>
-            </Dialog.Root>
-        </>
+                                        <RadioGroup.Item
+                                            value="partial"
+                                            colorPalette={radioColorScheme}
+                                            _hover={{
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <RadioGroup.ItemHiddenInput />
+                                            <RadioGroup.ItemIndicator />
+                                            <RadioGroup.ItemText>
+                                                Partial amount
+                                            </RadioGroup.ItemText>
+                                        </RadioGroup.Item>
+
+                                        <Collapsible.Root
+                                            open={
+                                                withdrawFullAmount === 'partial'
+                                            }
+                                            unmountOnExit
+                                        >
+                                            <Collapsible.Content>
+                                                <Field.Root
+                                                    id="withdrawAmount"
+                                                    pl={7}
+                                                >
+                                                    <CTSINumberInput
+                                                        min={0}
+                                                        max={
+                                                            userBalanceFormatted
+                                                        }
+                                                        onChange={(
+                                                            bigNumberValue
+                                                        ) => {
+                                                            setOutputWithdraw(
+                                                                bigNumberValue
+                                                            );
+                                                        }}
+                                                    />
+                                                </Field.Root>
+                                            </Collapsible.Content>
+                                        </Collapsible.Root>
+                                    </Stack>
+                                </RadioGroup.Root>
+                            </Field.Root>
+                        </VStack>
+                        <Dialog.Footer px="0" pt={10}>
+                            <VStack w="full" gap={4}>
+                                <Button
+                                    width="full"
+                                    colorPalette={colorScheme}
+                                    role="withdraw-button"
+                                    disabled={
+                                        outputWithdraw.isZero() &&
+                                        withdrawFullAmount !== 'full'
+                                    }
+                                    onClick={() => {
+                                        if (withdrawFullAmount === 'full') {
+                                            onSave(userBalance);
+                                        } else {
+                                            onSave(outputWithdraw);
+                                        }
+
+                                        disclosure.onClose();
+                                        onClose();
+                                    }}
+                                >
+                                    Withdraw
+                                </Button>
+                                <Button
+                                    width="full"
+                                    colorPalette="gray"
+                                    variant="ghost"
+                                    onClick={onClose}
+                                >
+                                    Cancel
+                                </Button>
+                            </VStack>
+                        </Dialog.Footer>
+                    </Dialog.Body>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
     );
 };
