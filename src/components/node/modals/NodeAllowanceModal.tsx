@@ -28,7 +28,6 @@ import CloseButton from '../../CloseButton';
 
 interface INodeAllowanceModalProps {
     allowance: BigNumber;
-    balance: BigNumber;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
@@ -37,17 +36,14 @@ interface INodeAllowanceModalProps {
 
 export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     allowance,
-    balance,
     disclosure,
     isOpen: isOpen,
     onClose: onClose,
     onSave: onSave,
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
-    const balanceFormatted = parseFloat(formatUnits(balance, 18));
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.primary.gray', 'white');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
     const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');

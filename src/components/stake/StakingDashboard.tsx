@@ -62,7 +62,6 @@ export const StakingDashboard: FC<StakingDashboardProps> = ({
                 isOpen={isOpenStakingPoolAllowanceModal}
                 disclosure={disclosure}
                 allowance={allowance}
-                balance={balance}
                 onClose={onCloseStakingPoolAllowanceModal}
                 onSave={(amount) => {
                     onApprove(amount);

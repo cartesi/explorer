@@ -30,9 +30,8 @@ import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { TbScale, TbHelp } from 'react-icons/tb';
+import { TbHelp, TbScale } from 'react-icons/tb';
 import FlatRateContainer from '../../containers/stake/FlatRateContainer';
-import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import useFlag from '../../hooks/useFlag';
 import { useStakingPool } from '../../services/pool';
 import { useStakingPoolFactory } from '../../services/poolFactory';
@@ -95,7 +94,6 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     const { account } = useWallet();
     const pool = useStakingPool(address, account);
     const posV2Enabled = useFlag('posV2Enabled');
-    const stakingPool = useStakingPoolQuery(address);
     const poolFactory = useStakingPoolFactory();
     const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
     const rebalanceBg = useColorModeValue(

@@ -29,7 +29,6 @@ import CloseButton from '../../CloseButton';
 
 export interface IStakingPoolAllowanceModalProps {
     allowance: BigNumber;
-    balance: BigNumber;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
@@ -38,14 +37,12 @@ export interface IStakingPoolAllowanceModalProps {
 
 export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
     allowance,
-    balance,
     disclosure,
     isOpen,
     onClose,
     onSave,
 }) => {
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
-    const balanceFormatted = parseFloat(formatUnits(balance, 18));
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const [formControlColor] = useToken('colors', ['form-control-color']);
     const helperTextColor = useColorModeValue(formControlColor, 'white');

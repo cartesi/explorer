@@ -80,7 +80,6 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
     const releasingLeft = useTimeLeft(stakingReleasingTimestamp?.getTime());
 
     const bgDivider = useColorModeValue('gray.100', 'gray.600');
-    const popoverBodyColor = useColorModeValue('white', 'dark.gray.primary');
     const iconColor = useColorModeValue('light.primary', 'dark.primary');
     const iconBackgroundColor = useColorModeValue(
         'dark.gray.senary',
