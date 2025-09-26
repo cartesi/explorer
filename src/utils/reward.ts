@@ -15,6 +15,13 @@ import { Block } from '../graphql/models';
 
 const BLOCK_INTERVAL = 13;
 
+const getDifficulty = (blocks: Block[]) => {
+    return blocks
+        .map((t) => BigNumber.from(t.difficulty))
+        .reduce((sum, d) => sum.add(d), constants.Zero)
+        .div(blocks.length);
+};
+
 export const getRewardRate = (
     blocks: Block[],
     rawCirculatingSupply: number
@@ -39,10 +46,7 @@ export const getRewardRate = (
             const targetInterval = blocks[0].chain.targetInterval || 1;
 
             // take average difficulty of all blocks in array
-            const difficulty = blocks
-                .map((t) => BigNumber.from(t.difficulty))
-                .reduce((sum, d) => sum.add(d), constants.Zero)
-                .div(blocks.length);
+            const difficulty = getDifficulty(blocks);
 
             // protocol 1 interval is in seconds, 2 is in blocks
             const targetIntervalSeconds =
@@ -139,10 +143,7 @@ export const getEstimatedRewardRate = (
                 .div(BigNumber.from(blocks.length));
 
             // take average difficulty of all blocks in array
-            const difficulty = blocks
-                .map((t) => BigNumber.from(t.difficulty))
-                .reduce((sum, d) => sum.add(d), constants.Zero)
-                .div(blocks.length);
+            const difficulty = getDifficulty(blocks);
 
             // protocol 1 interval is in seconds, 2 is in blocks
             const targetIntervalSeconds =
