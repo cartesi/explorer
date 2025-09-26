@@ -21,9 +21,10 @@ import {
 import React, { FC, useMemo } from 'react';
 import { useENS } from '../../../services/ens';
 import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
-import { useWallet } from '../../wallet/useWallet';
+import { useWallet } from '../../wallet';
 import { useColorModeValue } from '../../ui/color-mode';
 import theme from '../../../styles/theme';
+import { isString } from 'lodash';
 
 interface WalletMenuItemProps extends MenuItemProps {
     children: React.ReactNode;
@@ -125,7 +126,7 @@ const WalletMenu: FC = () => {
 
     return (
         <>
-            {typeof account === 'string' && (
+            {isString(account) && (
                 <Menu.Content
                     borderRadius="0"
                     p={0}

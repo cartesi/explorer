@@ -11,7 +11,7 @@
 
 import { TagRootProps } from '@chakra-ui/react';
 import { FC } from 'react';
-import { useWallet } from '../wallet/useWallet';
+import { useWallet } from '../wallet';
 import Chain from './Chain';
 
 export interface SelectedChainProps extends TagRootProps {

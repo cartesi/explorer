@@ -10,16 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { PoolFilters } from '../../../src/components/stake/PoolFilters';
+import {
+    FilterModel,
+    PoolFilters,
+} from '../../../src/components/stake/PoolFilters';
 import { withChakraTheme } from '../../test-utilities';
 
-const defaultFilters = [
+const defaultFilters: FilterModel[] = [
     {
         title: 'Default filter',
         type: 'checkbox',
         key: 'type',
         options: [
             {
+                label: 'Value A',
                 value: 'checkbox',
                 default: true,
             },
@@ -31,6 +35,7 @@ const defaultFilters = [
         key: '',
         options: [
             {
+                label: 'Value B',
                 value: 'Some value',
                 default: true,
             },
@@ -42,6 +47,7 @@ const defaultFilters = [
         key: '',
         options: [
             {
+                label: 'Value C',
                 value: 'Some value',
                 default: true,
             },

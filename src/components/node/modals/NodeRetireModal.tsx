@@ -39,7 +39,6 @@ export const NodeRetireModal: FC<INodeRetireModalProps> = ({
 }) => {
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
     const color = useColorModeValue('dark.gray.primary', 'white');
-    const borderColor = useColorModeValue('dark.gray.gray.primary', 'white');
     const colorScheme = useColorModeValue('teal', 'cyan');
     const inputBorderColor = useColorModeValue(undefined, 'gray.300');
     const [addressValue, setAddressValue] = useState('');

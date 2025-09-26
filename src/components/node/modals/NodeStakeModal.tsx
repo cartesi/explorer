@@ -36,15 +36,14 @@ interface INodeStakeModalProps {
     onSave: (newStake: BigNumber) => void;
 }
 
-export const NodeStakeModal: FC<INodeStakeModalProps> = ({
-    allowance,
-    disclosure,
-    isOpen: isOpen,
-    onClose: onClose,
-    onSave: onSave,
-}) => {
-    if (!allowance) return null;
-
+const NodeStakeModalContent: FC<INodeStakeModalProps> = (props) => {
+    const {
+        allowance,
+        disclosure,
+        isOpen: isOpen,
+        onClose: onClose,
+        onSave: onSave,
+    } = props;
     const maxAllowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const [outputStake, setOutputStake] = useState<BigNumber>(allowance);
     const [stakedValue, setStakedValue] = useState<any>(0);
@@ -78,107 +77,121 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
     };
 
     return (
-        <>
-            <Dialog.Root
-                open={isOpen}
-                placement="center"
-                onOpenChange={({ open }) => {
-                    if (!open) {
-                        onClose();
-                    }
-                }}
-            >
-                <Dialog.Backdrop />
-                <Dialog.Positioner>
-                    <Dialog.Content
-                        bg={bgModal}
-                        border="1px solid"
-                        borderColor={'dark.border.secondary'}
-                        borderRadius={'2xl'}
-                        color={color}
-                    >
-                        <Dialog.CloseTrigger asChild>
-                            <CloseButton size="sm" />
-                        </Dialog.CloseTrigger>
-                        <Dialog.Header>
-                            <Dialog.Title>
-                                <Box fontSize="xl" fontWeight="bold">
-                                    Stake
-                                </Box>
-                            </Dialog.Title>
-                        </Dialog.Header>
-                        <Separator borderColor={separatorColor} />
+        <Dialog.Root
+            open={isOpen}
+            placement="center"
+            onOpenChange={({ open }) => {
+                if (!open) {
+                    onClose();
+                }
+            }}
+        >
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+                <Dialog.Content
+                    bg={bgModal}
+                    border="1px solid"
+                    borderColor={'dark.border.secondary'}
+                    borderRadius={'2xl'}
+                    color={color}
+                >
+                    <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <Box fontSize="xl" fontWeight="bold">
+                                Stake
+                            </Box>
+                        </Dialog.Title>
+                    </Dialog.Header>
+                    <Separator borderColor={separatorColor} />
 
-                        <Dialog.Body mt={6}>
-                            <VStack gap={5}>
-                                <Text>
-                                    The funds you stake will go to a maturing
-                                    state. It takes hours for your staking to
-                                    achieve maturity. You will see them in the
-                                    “Maturing” bar with a countdown timer. Learn
-                                    more
-                                </Text>
-                                <Field.Root id="stakeAmount">
-                                    <HStack
-                                        justify="space-between"
-                                        width="full"
-                                    >
-                                        <Field.Label fontWeight="bold">
-                                            Stake Amount
-                                        </Field.Label>
-                                        <Link
-                                            color={colorScheme}
-                                            _hover={{
-                                                color: colorScheme,
-                                            }}
-                                            onClick={handleMaxStake}
-                                        >
-                                            MAX STAKE
-                                        </Link>
-                                    </HStack>
-                                    <CTSINumberInput
-                                        value={stakedValue}
-                                        min={0}
-                                        max={maxAllowanceFormatted}
-                                        onChange={(bigNumberValue) => {
-                                            setOutputStake(bigNumberValue);
+                    <Dialog.Body mt={6}>
+                        <VStack gap={5}>
+                            <Text>
+                                The funds you stake will go to a maturing state.
+                                It takes hours for your staking to achieve
+                                maturity. You will see them in the “Maturing”
+                                bar with a countdown timer. Learn more
+                            </Text>
+                            <Field.Root id="stakeAmount">
+                                <HStack justify="space-between" width="full">
+                                    <Field.Label fontWeight="bold">
+                                        Stake Amount
+                                    </Field.Label>
+                                    <Link
+                                        color={colorScheme}
+                                        _hover={{
+                                            color: colorScheme,
                                         }}
-                                    />
-                                    <Field.HelperText
-                                        color={inputHelperTextColor}
+                                        onClick={handleMaxStake}
                                     >
-                                        Allowance: {toCTSI(allowance)} CTSI
-                                    </Field.HelperText>
-                                </Field.Root>
+                                        MAX STAKE
+                                    </Link>
+                                </HStack>
+                                <CTSINumberInput
+                                    value={stakedValue}
+                                    min={0}
+                                    max={maxAllowanceFormatted}
+                                    onChange={(bigNumberValue) => {
+                                        setOutputStake(bigNumberValue);
+                                    }}
+                                />
+                                <Field.HelperText color={inputHelperTextColor}>
+                                    Allowance: {toCTSI(allowance)} CTSI
+                                </Field.HelperText>
+                            </Field.Root>
+                        </VStack>
+                        <Dialog.Footer px="0" pt={10}>
+                            <VStack w="full" gap={4}>
+                                <Button
+                                    width="full"
+                                    colorPalette={colorScheme}
+                                    disabled={outputStake.isZero()}
+                                    onClick={() => {
+                                        onSave(outputStake);
+                                        disclosure.onClose();
+                                        onClose();
+                                    }}
+                                >
+                                    STAKE
+                                </Button>
+                                <Button
+                                    width="full"
+                                    colorPalette="gray"
+                                    variant="ghost"
+                                    onClick={onClose}
+                                >
+                                    CANCEL
+                                </Button>
                             </VStack>
-                            <Dialog.Footer px="0" pt={10}>
-                                <VStack w="full" gap={4}>
-                                    <Button
-                                        width="full"
-                                        colorPalette={colorScheme}
-                                        disabled={outputStake.isZero()}
-                                        onClick={() => {
-                                            onSave(outputStake);
-                                            disclosure.onClose();
-                                            onClose();
-                                        }}
-                                    >
-                                        STAKE
-                                    </Button>
-                                    <Button
-                                        width="full"
-                                        colorPalette="gray"
-                                        variant="ghost"
-                                        onClick={onClose}
-                                    >
-                                        CANCEL
-                                    </Button>
-                                </VStack>
-                            </Dialog.Footer>
-                        </Dialog.Body>
-                    </Dialog.Content>
-                </Dialog.Positioner>
-            </Dialog.Root>
-        </>
+                        </Dialog.Footer>
+                    </Dialog.Body>
+                </Dialog.Content>
+            </Dialog.Positioner>
+        </Dialog.Root>
+    );
+};
+
+export const NodeStakeModal: FC<INodeStakeModalProps> = ({
+    allowance,
+    disclosure,
+    isOpen: isOpen,
+    onClose: onClose,
+    onSave: onSave,
+}) => {
+    if (!allowance) {
+        return null;
+    }
+
+    return (
+        <NodeStakeModalContent
+            allowance={allowance}
+            disclosure={disclosure}
+            isOpen={isOpen}
+            onClose={onClose}
+            onSave={onSave}
+        />
     );
 };

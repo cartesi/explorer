@@ -15,7 +15,7 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import { useENS } from '../../services/ens';
 import { truncateStringMobile } from '../../utils/stringUtils';
 import { ArrowsUpDownIcon } from '../Icons';
-import { useWallet } from '../wallet/useWallet';
+import { useWallet } from '../wallet';
 import { WalletMobileModal } from './modals/WalletMobileModal';
 import { useColorModeValue } from '../ui/color-mode';
 

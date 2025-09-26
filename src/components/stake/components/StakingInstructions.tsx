@@ -69,18 +69,6 @@ export const StakingInstructions: FC = () => {
                                     mt={6}
                                     w="full"
                                 >
-                                    {/* <Link
-                                        href="#"
-                                        isExternal
-                                        fontSize="sm"
-                                        color="orange.500"
-                                        _hover={{
-                                            color: 'orange.600',
-                                        }}
-                                    >
-                                        Learn detailed staking instructions{' '}
-                                        <ExternalLinkIcon />
-                                    </Link> */}
                                     <Button
                                         size="sm"
                                         onClick={handleDontShowAgainClick}

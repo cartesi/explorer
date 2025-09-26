@@ -26,7 +26,3 @@ export const SUMMARY = gql`
         }
     }
 `;
-
-export const summaryQueryVars = {
-    id: 1,
-};

@@ -75,7 +75,7 @@ const BlockList = (props: BlockListProps) => {
         if (blocks.length > 0 && fetchMore) {
             const variables = { ...result.variables };
 
-            fetchMore({
+            void fetchMore({
                 variables: {
                     ...variables,
                     skip: blocks.length,

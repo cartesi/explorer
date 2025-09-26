@@ -87,7 +87,9 @@ const InitialFundsInput = ({
     const { deposit: depositErrors } = errors;
 
     useEffect(() => {
-        if (isDirty) trigger('deposit');
+        if (isDirty) {
+            void trigger('deposit');
+        }
     }, [active]);
 
     useEffect(() => {
@@ -129,10 +131,10 @@ const InitialFundsInput = ({
                     type="number"
                     onBlur={() => trigger('deposit')}
                     onChange={(evt) => {
-                        onChangeValidate(evt);
+                        void onChangeValidate(evt);
                         onChange(evt?.target?.value);
                         //trigger validations for registered field called deposit
-                        trigger('deposit');
+                        void trigger('deposit');
                     }}
                 />
             </InputGroup>

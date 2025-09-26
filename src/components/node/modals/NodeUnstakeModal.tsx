@@ -36,14 +36,14 @@ interface INodeUnstakeModalProps {
     onSave: (newStake: BigNumber) => void;
 }
 
-export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
-    stakedBalance,
-    disclosure,
-    isOpen: isOpen,
-    onClose: onClose,
-    onSave: onSave,
-}) => {
-    if (!stakedBalance) return null;
+const NodeUnstakeModalContent: FC<INodeUnstakeModalProps> = (props) => {
+    const {
+        stakedBalance,
+        disclosure,
+        isOpen: isOpen,
+        onClose: onClose,
+        onSave: onSave,
+    } = props;
 
     const maxUnstakeFormatted = parseFloat(formatUnits(stakedBalance, 18));
     const [outputStake, setOutputStake] = useState<BigNumber>(stakedBalance);
@@ -174,5 +174,27 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                 </Dialog.Content>
             </Dialog.Positioner>
         </Dialog.Root>
+    );
+};
+
+export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
+    stakedBalance,
+    disclosure,
+    isOpen: isOpen,
+    onClose: onClose,
+    onSave: onSave,
+}) => {
+    if (!stakedBalance) {
+        return null;
+    }
+
+    return (
+        <NodeUnstakeModalContent
+            stakedBalance={stakedBalance}
+            disclosure={disclosure}
+            isOpen={isOpen}
+            onClose={onClose}
+            onSave={onSave}
+        />
     );
 };

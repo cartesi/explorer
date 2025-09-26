@@ -19,7 +19,7 @@ import {
     StakingPoolsData,
     StakingPoolsVars,
 } from '../models';
-import { STAKING_POOLS } from '../queries/stakingPools';
+import { STAKING_POOLS } from '../queries';
 
 export const POOLS_PER_PAGE = 50;
 

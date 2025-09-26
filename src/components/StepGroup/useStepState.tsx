@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Cartesi Pte. Ltd.
 
 import { useEffect, useState } from 'react';
-import { StepStatus } from '../Step/enums';
+import { StepStatus } from '../Step';
 
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software

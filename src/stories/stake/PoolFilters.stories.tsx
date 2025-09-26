@@ -11,15 +11,16 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { PoolFilters } from '../../components/stake/PoolFilters';
+import { FilterModel, PoolFilters } from '../../components/stake/PoolFilters';
 
-const defaultFilters = [
+const defaultFilters: FilterModel[] = [
     {
         title: 'Default filter',
         type: 'checkbox',
         key: '',
         options: [
             {
+                label: 'Value A',
                 value: 'Some value',
                 default: true,
             },
@@ -31,6 +32,7 @@ const defaultFilters = [
         key: '',
         options: [
             {
+                label: 'Value B',
                 value: 'Some value',
                 default: true,
             },
@@ -42,6 +44,7 @@ const defaultFilters = [
         key: '',
         options: [
             {
+                label: 'Value C',
                 value: 'Some value',
                 default: true,
             },

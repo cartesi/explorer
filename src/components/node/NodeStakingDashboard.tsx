@@ -190,7 +190,6 @@ export const NodeStakingDashboard: FC<NodeStakingDashboardProps> = ({
                 isOpen={isOpenAllowanceModal}
                 disclosure={disclosure}
                 allowance={allowance}
-                balance={balance}
                 onClose={onCloseStakingPoolAllowanceModal}
                 onSave={onApprove}
             />

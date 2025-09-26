@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { useMessages } from '../../../utils/messages';
-import { ConnectWallet } from '../../header/ConnectWallet';
+import { ConnectWallet } from '../../header';
 import { Notification } from '../../Notification';
 import { useWallet } from '../../wallet';
 

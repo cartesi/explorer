@@ -10,6 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useEffect, useState } from 'react';
+import { getCartesiMarketInformationEndpoint } from './coingecko';
 
 export type MarketInformation = {
     price?: number;
@@ -17,7 +18,7 @@ export type MarketInformation = {
     circulatingSupply?: number;
 };
 
-export const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+export const endpoint = getCartesiMarketInformationEndpoint();
 
 export const useMarketInformation = () => {
     const [marketInformation, setMarketInformation] =

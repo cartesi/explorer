@@ -27,7 +27,7 @@ import { isFunction, trim } from 'lodash/fp';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useStakingPool } from '../../../services/pool';
-import { useMessages } from '../../../utils/messages';
+import { getMessages, useMessages } from '../../../utils/messages';
 import { OrderedContent } from '../../OrderedContent';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
@@ -211,7 +211,7 @@ const EthereumNameServer = ({
                         fontWeight="medium"
                         fontSize={18}
                     >
-                        {useMessages('step.skippable')}
+                        {getMessages('step.skippable')}
                     </Text>
                 )}
                 <SimpleInput

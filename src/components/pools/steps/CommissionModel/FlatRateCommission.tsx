@@ -11,14 +11,14 @@
 import { VStack } from '@chakra-ui/react';
 import { SimpleInput } from './SimpleInput';
 import { useEffect } from 'react';
-import { useMessages } from '../../../../utils/messages';
+import { getMessages, useMessages } from '../../../../utils/messages';
 import { BaseInput } from '../../../BaseInput';
 import useFieldValidator from './useFieldValidator';
 import { isNil, last } from 'lodash/fp';
 import { Message } from './MessageBlock';
 
 type FlatRateModel = 'flatRateCommission';
-type FlatRateCommisionProps = BaseInput<FlatRateModel>;
+type FlatRateCommissionProps = BaseInput<FlatRateModel>;
 
 const maxDecimalPlaces = (maxDecimalPlaces: number) => (value: number) => {
     if (Math.floor(value?.valueOf()) === value?.valueOf()) return true;
@@ -33,11 +33,11 @@ const maxDecimalPlaces = (maxDecimalPlaces: number) => (value: number) => {
 const options = {
     max: {
         value: 100,
-        message: useMessages('field.value.max.allowed', 100),
+        message: getMessages('field.value.max.allowed', 100),
     },
     min: {
         value: 0,
-        message: useMessages('field.value.min.allowed', 0),
+        message: getMessages('field.value.min.allowed', 0),
     },
     validate: maxDecimalPlaces(2),
 };
@@ -46,7 +46,7 @@ const FlatRateCommission = ({
     onChange,
     onValidationChange,
     isDisabled,
-}: FlatRateCommisionProps) => {
+}: FlatRateCommissionProps) => {
     type FormField = { [k in FlatRateModel]: number };
     const howItWorks = useMessages('commission.model.flatRate.howItWorks');
     const validator = useFieldValidator<FormField, FlatRateModel>({
@@ -63,7 +63,9 @@ const FlatRateCommission = ({
             return;
         }
 
-        if (isDirty) trigger('flatRateCommission');
+        if (isDirty) {
+            void trigger('flatRateCommission');
+        }
     }, [isDisabled]);
 
     return (
@@ -74,8 +76,8 @@ const FlatRateCommission = ({
                 reference={ref}
                 onChange={(e) => {
                     onChange(e.currentTarget?.value);
-                    onChangeValidate(e);
-                    trigger('flatRateCommission');
+                    void onChangeValidate(e);
+                    void trigger('flatRateCommission');
                 }}
                 onBlur={() => {
                     if (!isDisabled) {
@@ -93,5 +95,5 @@ const FlatRateCommission = ({
     );
 };
 
-export type { FlatRateCommisionProps, FlatRateModel };
+export type { FlatRateCommissionProps, FlatRateModel };
 export default FlatRateCommission;

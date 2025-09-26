@@ -30,7 +30,7 @@ const Users: FC<UsersProps> = (props) => {
     const [pageNumber, setPageNumber] = useState<number>(0);
     const { data, loading } = useUsers(pageNumber, search, sort, rowsPerPage);
     const options = Array.from({ length: 3 }).map(
-        (item, index) => (index + 1) * 10
+        (_, index) => (index + 1) * 10
     );
     const pages = Math.ceil(totalItems / rowsPerPage);
 

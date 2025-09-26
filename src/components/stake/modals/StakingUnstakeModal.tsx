@@ -30,7 +30,6 @@ import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
-export type RemovalAction = 'full' | 'partial';
 export interface IStakingUnstakeModalProps {
     isOpen: boolean;
     stakedBalance: BigNumber;

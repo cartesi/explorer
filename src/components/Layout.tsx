@@ -15,8 +15,6 @@ import {
     Flex,
     FlexProps,
     StackProps,
-    Text,
-    useBreakpointValue,
     VStack,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
@@ -72,19 +70,6 @@ export const PageBody: FC<StackProps> = ({ children, ...restProps }) => (
         {children}
     </VStack>
 );
-
-export const ResponsiveDebug: FC = () => {
-    const color = useBreakpointValue(['yellow', 'red', 'green', 'blue']);
-    const size = useBreakpointValue(['sm', 'md', 'lg', 'xl']);
-    const index = useBreakpointValue([0, 1, 2, 3]);
-    return (
-        <Center w="100%" minH={50} bg={color}>
-            <Text>
-                {size} [{index}]
-            </Text>
-        </Center>
-    );
-};
 
 interface PageLayoutProps extends FlexProps {
     children: React.ReactNode;

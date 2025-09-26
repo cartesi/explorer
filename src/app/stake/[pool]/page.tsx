@@ -3,12 +3,15 @@ import StakePool from '../../../components/stake/StakePool';
 import { notFound } from 'next/navigation';
 import { ethers } from 'ethers';
 import { getFormattedEnsName } from '../../../services/server/utils';
+import { Metadata } from 'next';
 
 interface StakePoolPageProps {
     params: Promise<{ pool: string }>;
 }
 
-export async function generateMetadata(props: StakePoolPageProps) {
+export async function generateMetadata(
+    props: StakePoolPageProps
+): Promise<Metadata> {
     const params = await props.params;
     const address = params.pool;
 

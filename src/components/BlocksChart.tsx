@@ -115,7 +115,7 @@ const BlocksChart = (props: BlocksChartProps) => {
         );
     };
 
-    const tooltipFormatter = (value, name) => {
+    const tooltipFormatter = (value: number, name: string) => {
         if (name === 'Difficulty') {
             return value;
         } else if (name === 'Time') {

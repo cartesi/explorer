@@ -31,6 +31,7 @@ import { Network } from '../../utils/networks';
 import { CartesiIcon, CartesiLogo } from './cartesi-images-as-string';
 import { WalletType } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
+import { isDevelopment } from '../../utils/env';
 
 type NetworkName = keyof typeof Network;
 
@@ -250,10 +251,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             );
 
             // Check if MainNet is supported and this is prod/staging, then prompt the user to switch to MainNet
-            if (
-                chainIds.includes(mainNetId) &&
-                process.env.NODE_ENV !== 'development'
-            ) {
+            if (chainIds.includes(mainNetId) && !isDevelopment()) {
                 onboard?.setChain({ chainId: mainNetId });
             }
         }
@@ -305,8 +303,9 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             const previousWalletSelected =
                 window.localStorage.getItem(SELECTED_WALLETS);
 
-            if (previousWalletSelected)
-                connectWallet({ autoSelect: previousWalletSelected });
+            if (previousWalletSelected) {
+                void connectWallet({ autoSelect: previousWalletSelected });
+            }
 
             return () => {
                 console.info(`Unsubscribing update events (onboard V2)`);

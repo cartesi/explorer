@@ -12,6 +12,7 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
 import { useWallet } from '../components/wallet';
+import { isProduction } from '../utils/env';
 
 export const measurementID = 'G-0J9KC579GV';
 
@@ -40,7 +41,7 @@ const GA4TrackerProvider = (props: TrackingProviderProps) => {
     useEffect(() => {
         const { isInitialised, hasUser } = analytics;
 
-        if (!isInitialised && process.env.NODE_ENV === 'production') {
+        if (!isInitialised && isProduction()) {
             ReactGA.initialize(measurementID, {
                 gaOptions: {
                     name: 'explorer',

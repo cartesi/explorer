@@ -44,10 +44,3 @@ export const NODES = gql`
         }
     }
 `;
-
-export const nodesQueryVars = {
-    first: 10,
-    where: {},
-    orderBy: 'timestamp',
-    orderDirection: 'desc',
-};
