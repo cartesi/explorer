@@ -11,7 +11,7 @@
 
 import { Stack } from '@chakra-ui/react';
 import { FC, useState } from 'react';
-import { PoolFilters } from './PoolFilters';
+import { PoolFilters, FilterModel } from './PoolFilters';
 import SearchInput from '../SearchInput';
 import { PoolActivityList } from './PoolActivityList';
 import { ActivityType } from '../../graphql/models';
@@ -34,7 +34,7 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
         1
     );
 
-    const poolFilters = [
+    const poolFilters: FilterModel[] = [
         {
             key: 'type',
             title: 'Types:',

@@ -70,7 +70,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                       totalUsers,
                   },
               ];
-    const labels = data.map((item) =>
+    const labels = data.map((item: StakingPoolUserHistory) =>
         dateTimeFormat.format(item.timestamp * 1000)
     );
     const hasData = initialData.length > 0;
@@ -84,7 +84,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
         : totalUsers;
     const visibleUsers = maxUsers - minUsers;
 
-    const round = (number, increment) =>
+    const round = (number: number, increment: number) =>
         Math.ceil(number / increment) * increment;
 
     const stepSize =
@@ -138,7 +138,10 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                         labels,
                         datasets: [
                             {
-                                data: data.map((item) => item.totalUsers),
+                                data: data.map(
+                                    (item: StakingPoolUserHistory) =>
+                                        item.totalUsers
+                                ),
                                 borderColor: lineColorFromCssVar,
                                 backgroundColor: lineColorFromCssVar,
                             },

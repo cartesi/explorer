@@ -30,8 +30,19 @@ import { FC, Fragment } from 'react';
 import { FilterIcon } from '../Icons';
 import { useColorModeValue } from '../ui/color-mode';
 
+export interface FilterModel {
+    key: string;
+    title: string;
+    type: string;
+    options: {
+        label: string;
+        value: string;
+        default?: boolean;
+    }[];
+}
+
 export interface IPoolFiltersProps {
-    filters: any;
+    filters: FilterModel[];
     selectedPeriod: string;
     onSelectedPeriodChange: (value: string) => void;
     selectedTypes: any;

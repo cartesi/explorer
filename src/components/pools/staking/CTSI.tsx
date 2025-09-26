@@ -23,7 +23,7 @@ export const numberFormat = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
 });
 
-export const parseCtsiValue = (value) =>
+export const parseCtsiValue = (value: BigNumberish) =>
     numberFormat.format(parseFloat(formatUnits(value, 18)));
 
 const CTSI: FC<CTSIProps> = ({ value, ...textProps }) => {

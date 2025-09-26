@@ -303,8 +303,9 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             const previousWalletSelected =
                 window.localStorage.getItem(SELECTED_WALLETS);
 
-            if (previousWalletSelected)
-                connectWallet({ autoSelect: previousWalletSelected });
+            if (previousWalletSelected) {
+                void connectWallet({ autoSelect: previousWalletSelected });
+            }
 
             return () => {
                 console.info(`Unsubscribing update events (onboard V2)`);
