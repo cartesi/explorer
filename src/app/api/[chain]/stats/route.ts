@@ -24,6 +24,7 @@ import { BLOCKS, SUMMARY } from '../../../../graphql/queries';
 import { BlocksData, SummaryData } from '../../../../graphql/models';
 import { networks } from '../../../../utils/networks';
 import { NextRequest, NextResponse } from 'next/server';
+import { getCartesiMarketInformationEndpoint } from '../../../../services/coingecko';
 
 interface Response {
     params: Promise<{ chain: string; address: string }>;
@@ -56,7 +57,7 @@ const handler = async ({ params }: Response) => {
         query: BLOCKS,
     });
 
-    const endpoint = `https://api.coingecko.com/api/v3/coins/cartesi?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    const endpoint = getCartesiMarketInformationEndpoint();
     const response = await fetch(endpoint);
     const marketData = await response.json();
     const circulatingSupply = Math.round(
