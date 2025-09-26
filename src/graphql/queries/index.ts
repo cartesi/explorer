@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export * from './block';
 export * from './blocks';
 export * from './meta';
 export * from './nodes';

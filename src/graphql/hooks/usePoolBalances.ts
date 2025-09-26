@@ -12,13 +12,12 @@
 import { useQuery } from '@apollo/client';
 import { POOL_BALANCES } from '../queries';
 import {
-    PoolBalancesData,
-    PoolBalancesVars,
-    PoolBalanceSort,
     PoolBalance,
+    PoolBalancesData,
+    PoolBalanceSort,
+    PoolBalancesVars,
 } from '../models';
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber';
-import { constants } from 'ethers';
+import { FixedNumber } from '@ethersproject/bignumber';
 
 export const POOLS_PER_PAGE = 50;
 
@@ -31,22 +30,6 @@ export const userShare = (b: PoolBalance): number => {
     }
     const share = userShares.divUnsafe(poolShares);
     return share.toUnsafeFloat();
-};
-
-// convert user shares to CTSI amount based on pool share value
-export const poolAmount = (b: PoolBalance): BigNumber => {
-    const userShares = FixedNumber.from(b.shares);
-    const poolShares = FixedNumber.from(b.pool.shares);
-    const poolAmount = FixedNumber.from(b.pool.amount);
-
-    if (poolShares.isZero) {
-        return constants.Zero;
-    }
-
-    // calculate user amount based on share value
-    const userAmount = userShares.divUnsafe(poolShares).mulUnsafe(poolAmount);
-
-    return BigNumber.from(userAmount).div(constants.WeiPerEther);
 };
 
 const usePoolBalances = (

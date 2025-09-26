@@ -40,7 +40,7 @@ interface UsePoolActivitiesProps {
      */
     from?: Date | number;
     /**
-     * Inclusive before fiven date in milliseconds or Date (.ie. lte)
+     * Inclusive before given date in milliseconds or Date (.ie. lte)
      */
     to?: Date | number;
     types?: Types[];

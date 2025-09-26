@@ -41,10 +41,3 @@ export const USERS = gql`
         }
     }
 `;
-
-export const usersQueryVars = {
-    first: 10,
-    where: {},
-    orderBy: 'balance',
-    orderDirection: 'desc',
-};
