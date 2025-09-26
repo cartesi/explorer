@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Button, Table, Text } from '@chakra-ui/react';
+import { Table, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useColorModeValue } from '../ui/color-mode';
 

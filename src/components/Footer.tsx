@@ -32,7 +32,7 @@ import {
 import theme from '../styles/theme';
 import Address from './Address';
 import { CartesiTranparent } from './Icons';
-import { useWallet } from './wallet/useWallet';
+import { useWallet } from './wallet';
 import { useColorModeValue } from './ui/color-mode';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {

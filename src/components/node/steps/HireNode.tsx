@@ -19,7 +19,7 @@ import { NodeStatus, useNode } from '../../../services/node';
 import { getMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { MappedErrors, ValidationResult } from '../../BaseInput';
-import { ConnectWallet } from '../../header/ConnectWallet';
+import { ConnectWallet } from '../../header';
 import { Notification } from '../../Notification';
 import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
