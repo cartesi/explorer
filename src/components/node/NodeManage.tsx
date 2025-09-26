@@ -30,7 +30,6 @@ import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
 import { TbChevronLeft } from 'react-icons/tb';
 import { useColorModeValue } from '../ui/color-mode';
-
 import Layout from '../Layout';
 import { NodeStakeModal } from './modals/NodeStakeModal';
 import { NodeUnstakeModal } from './modals/NodeUnstakeModal';
@@ -49,7 +48,7 @@ import { useNode } from '../../services/node';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
 import theme from '../../styles/theme';
-import { useMessages } from '../../utils/messages';
+import { getMessages } from '../../utils/messages';
 import { useTimeLeft } from '../../utils/react';
 
 const ManageNode: FC = () => {
@@ -232,9 +231,9 @@ const ManageNode: FC = () => {
                 <VStack gap={4} alignItems="stretch">
                     {currentTransaction === 'authorize' && (
                         <TransactionBanner
-                            title={useMessages('node.authorize.authorizing')}
-                            failTitle={useMessages('node.authorize.fail')}
-                            successDescription={useMessages(
+                            title={getMessages('node.authorize.authorizing')}
+                            failTitle={getMessages('node.authorize.fail')}
+                            successDescription={getMessages(
                                 'node.authorize.success'
                             )}
                             transaction={node.transaction}

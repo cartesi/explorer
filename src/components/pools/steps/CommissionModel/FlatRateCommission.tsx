@@ -11,7 +11,7 @@
 import { VStack } from '@chakra-ui/react';
 import { SimpleInput } from './SimpleInput';
 import { useEffect } from 'react';
-import { useMessages } from '../../../../utils/messages';
+import { getMessages, useMessages } from '../../../../utils/messages';
 import { BaseInput } from '../../../BaseInput';
 import useFieldValidator from './useFieldValidator';
 import { isNil, last } from 'lodash/fp';
@@ -33,11 +33,11 @@ const maxDecimalPlaces = (maxDecimalPlaces: number) => (value: number) => {
 const options = {
     max: {
         value: 100,
-        message: useMessages('field.value.max.allowed', 100),
+        message: getMessages('field.value.max.allowed', 100),
     },
     min: {
         value: 0,
-        message: useMessages('field.value.min.allowed', 0),
+        message: getMessages('field.value.min.allowed', 0),
     },
     validate: maxDecimalPlaces(2),
 };

@@ -31,7 +31,7 @@ import {
 } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 import { Node, NodeStatus } from '../../../services/node';
-import { useMessages } from '../../../utils/messages';
+import { getMessages } from '../../../utils/messages';
 import { BaseInput, ValidationResult } from '../../BaseInput';
 import { useColorModeValue } from '../../ui/color-mode';
 
@@ -67,22 +67,22 @@ const evaluateNode = (account: string, node: Node) => {
                 ...state,
                 isInvalid: true,
                 errorMessage: mine
-                    ? useMessages('node.owned.mine')
-                    : useMessages('node.owned.notMine'),
+                    ? getMessages('node.owned.mine')
+                    : getMessages('node.owned.notMine'),
             };
         case 'pending':
             return {
                 ...state,
                 isInvalid: true,
                 errorMessage: mine
-                    ? useMessages('node.pending.mine')
-                    : useMessages('node.pending.notMine'),
+                    ? getMessages('node.pending.mine')
+                    : getMessages('node.pending.notMine'),
             };
         case 'retired':
             return {
                 ...state,
                 isInvalid: true,
-                errorMessage: useMessages('node.retired'),
+                errorMessage: getMessages('node.retired'),
             };
         default:
             return state;

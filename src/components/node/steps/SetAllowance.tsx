@@ -17,12 +17,11 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStaking } from '../../../services/staking';
 import { useCartesiToken } from '../../../services/token';
-import { useMessages } from '../../../utils/messages';
+import { getMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { useWallet } from '../../wallet';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 import { useColorModeValue } from '../../ui/color-mode';
-
 import {
     BaseInput,
     OptionalMappedErrors,
@@ -46,7 +45,7 @@ type AllowanceField = { allowance?: number };
 
 const validate = (allowance: number) => {
     if (allowance <= 0)
-        return useMessages('field.value.should.beGreaterThan', 0, 'Allowance');
+        return getMessages('field.value.should.beGreaterThan', 0, 'Allowance');
     return true;
 };
 
@@ -69,7 +68,7 @@ const SetAllowanceInput = ({
         valueAsNumber: true,
         required: {
             value: true,
-            message: useMessages('field.isRequired'),
+            message: getMessages('field.isRequired'),
         },
         validate,
     });
@@ -201,7 +200,7 @@ const SetAllowance = ({
             <StepBody>
                 {!active && (
                     <Notification
-                        title={useMessages('wallet.is.disconnected')}
+                        title={getMessages('wallet.is.disconnected')}
                         status="warning"
                     >
                         <ConnectWallet wallet={wallet} />

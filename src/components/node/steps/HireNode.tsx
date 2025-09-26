@@ -13,12 +13,10 @@ import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { isEmpty, isFunction, omit } from 'lodash/fp';
 import { useEffect, useState } from 'react';
-import { useColorModeValue, useColorMode } from '../../ui/color-mode';
-
+import { useColorMode, useColorModeValue } from '../../ui/color-mode';
 import { useWallet } from '../../wallet';
-
 import { NodeStatus, useNode } from '../../../services/node';
-import { useMessages } from '../../../utils/messages';
+import { getMessages } from '../../../utils/messages';
 import { toBigNumber } from '../../../utils/numberParser';
 import { MappedErrors, ValidationResult } from '../../BaseInput';
 import { ConnectWallet } from '../../header/ConnectWallet';
@@ -27,7 +25,7 @@ import { Step, StepActions, StepBody, StepStatus } from '../../Step';
 import { IStep, useStepState } from '../../StepGroup';
 import TransactionBanner from '../../TransactionBanner';
 import { DepositField, InitialFundsInput } from '../inputs/InitialFundsInput';
-import { NodeField, NodeInput, evaluateNode } from '../inputs/NodeInput';
+import { evaluateNode, NodeField, NodeInput } from '../inputs/NodeInput';
 import { hiredNodeAddressAtom } from './HireNode.atoms';
 
 type Validation = ValidationResult<NodeField | DepositField>;
@@ -113,8 +111,7 @@ const HireNode = ({
             <StepBody>
                 {!active && (
                     <Notification
-                        // eslint-disable-next-line react-hooks/rules-of-hooks
-                        title={useMessages('wallet.is.disconnected')}
+                        title={getMessages('wallet.is.disconnected')}
                         status="warning"
                     >
                         <ConnectWallet wallet={wallet} />
