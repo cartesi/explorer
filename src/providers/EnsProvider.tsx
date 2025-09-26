@@ -11,7 +11,7 @@
 
 'use client';
 
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { ENSDataProvider } from '../services/ens';
 import { AddressEns } from '../services/server/ens/types';
 
@@ -38,12 +38,14 @@ interface EnsProviderProps {
 const EnsProvider: FC<EnsProviderProps> = ({ children }) => {
     const [ensData, setEnsData] = useState<AddressEns[]>([]);
 
-    useEffect(() => {
-        (async () => {
-            const { data }: { data: AddressEns[] } = await getENSCachedData();
-            setEnsData(data);
-        })();
+    const synEnsData = useCallback(async () => {
+        const { data }: { data: AddressEns[] } = await getENSCachedData();
+        setEnsData(data);
     }, []);
+
+    useEffect(() => {
+        void synEnsData();
+    }, [synEnsData]);
 
     return <ENSDataProvider value={ensData}>{children}</ENSDataProvider>;
 };
