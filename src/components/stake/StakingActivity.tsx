@@ -88,7 +88,7 @@ const Activity: FC<ActivityProps> = memo(({ amount, type, timestamp }) => {
 export const StakingActivity: FC<Props> = memo(
     ({ userAccount, poolAddress }) => {
         const [timestamp, setTimestamp] = useState<number | null>();
-        const [list, updateList] = useState(null);
+        const [list, updateList] = useState<ActivityType[] | null>(null);
         const { activities, loading } = usePoolActivities({
             pool: poolAddress,
             user: userAccount,
