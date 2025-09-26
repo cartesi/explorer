@@ -11,7 +11,7 @@
 
 import React from 'react';
 import _ from 'lodash';
-import { format, parseISO } from 'date-fns';
+import { intlFormat } from 'date-fns';
 import {
     CartesianGrid,
     Legend,
@@ -109,20 +109,29 @@ const BlocksChart = (props: BlocksChartProps) => {
     });
 
     const timestampFormat = (timestamp: number): string => {
-        return format(
-            parseISO(new Date(timestamp * 1000).toISOString().slice(0, -1)),
-            'M/d/yyyy, hh:mm aa'
-        );
+        return intlFormat(new Date(timestamp * 1000), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            timeZone: 'UTC',
+        });
     };
 
     const tooltipFormatter = (value, name) => {
         if (name === 'Difficulty') {
             return value;
         } else if (name === 'Time') {
-            return format(
-                parseISO(new Date(value * 1000).toISOString().slice(0, -1)),
-                "MMMM d, yyyy 'at' hh:mm aa 'UTC'"
-            );
+            return intlFormat(new Date(value * 1000), {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                timeZone: 'UTC',
+                timeZoneName: 'short',
+            });
         }
         return value;
     };
