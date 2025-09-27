@@ -31,7 +31,6 @@ const Template: Story = {
 export const DefaultL: Story = {
     args: {
         allowance: BigNumber.from(defaultValue),
-        balance: BigNumber.from(defaultValue),
         disclosure: {
             onClose: () => undefined,
         },
