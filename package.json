@@ -45,7 +45,6 @@
         "@web3-onboard/react": "^2.10.1",
         "@web3-onboard/walletconnect": "^2.6.2",
         "chart.js": "^4.4.9",
-        "cors": "^2.8.5",
         "date-fns": "^4.1.0",
         "drizzle-orm": "^0.44.6",
         "eth-chains": "^2.0.0",
@@ -85,7 +84,6 @@
         "@testing-library/jest-dom": "^6.8.0",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "^14.6.1",
-        "@typechain/ethers-v5": "7.1.2",
         "@types/humanize-duration": "3.25.1",
         "@types/jest": "^30.0.0",
         "@types/lodash": "^4.14.174",
@@ -119,7 +117,6 @@
         "storybook": "^9.1.10",
         "storybook-addon-apollo-client": "^9.0.0",
         "tsconfig": "*",
-        "typechain": "5.2.0",
         "typescript": "^5.9.2",
         "vite": "^7.1.9"
     },
