@@ -1,22 +1,26 @@
-import type { Preview } from '@storybook/react';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import Web3Container from '../src/components/Web3Container';
-import theme from '../src/styles/theme';
-import React, { FC } from 'react';
-import ColorMode from './ColorMode';
-import { ColorModeProvider } from '../src/components/ui/color-mode';
+import type { Preview, StoryFn } from '@storybook/react';
 import { StoryContext } from '@storybook/react';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import { FC } from 'react';
 import { Fonts } from '../src/components/Fonts';
 import { SelectedChain } from '../src/components/header';
+import { ColorModeProvider } from '../src/components/ui/color-mode';
+import Web3Container from '../src/components/Web3Container';
+import theme from '../src/styles/theme';
+import ColorMode from './ColorMode';
 
 const withChakra = (Story: FC, context: StoryContext) => {
+    console.info(`withChakra`);
+    const colorModeValue = context.globals.backgrounds?.value ?? 'dark';
+    console.info(`Color Mode: ${colorModeValue}`);
+
     return (
         <ChakraProvider value={theme}>
             <Fonts />
             <ColorModeProvider>
-                <ColorMode globals={context.globals} />
+                <ColorMode value={colorModeValue} />
                 <Web3Container>
                     <SelectedChain />
                     <Story />
@@ -26,8 +30,24 @@ const withChakra = (Story: FC, context: StoryContext) => {
     );
 };
 
+const withApolloProvider = (Story: StoryFn, context: StoryContext) => {
+    const PARAM_KEY = 'apolloClient';
+    const props = context.parameters[PARAM_KEY];
+
+    console.info(`withApolloProvider`);
+
+    return (
+        <MockedProvider {...props}>
+            {Story(context.args, context)}
+        </MockedProvider>
+    );
+};
+
 const preview: Preview = {
-    decorators: [withChakra],
+    decorators: [withApolloProvider, withChakra],
+    initialGlobals: {
+        backgrounds: { value: 'light' },
+    },
     globalTypes: {
         theme: {
             name: 'Theme',
@@ -49,9 +69,6 @@ const preview: Preview = {
         },
         nextRouter: {
             Provider: RouterContext.Provider,
-        },
-        apolloClient: {
-            MockedProvider,
         },
     },
 };
