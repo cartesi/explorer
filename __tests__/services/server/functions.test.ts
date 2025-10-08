@@ -7,7 +7,7 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { ApolloQueryResult } from '@apollo/client';
+import { ObservableQuery } from '@apollo/client';
 import { ethers } from 'ethers';
 import { GetEnsDomainsQuery } from '../../../src/graphql/queries/ensDomains';
 import client from '../../../src/services/apolloENSClient';
@@ -41,11 +41,16 @@ const createAvatarUrlResolver = (url: string) => {
         address,
         provider,
         _fetchBytes: async () => address,
-        _getAddress(coinType, hexBytes) {
+        _getAddress() {
             return '';
         },
         getAddress: async () => address,
         getContentHash: async () => '',
+        getAvatar: async () => null,
+        supportsWildcard: async () => false,
+        _resolvedAddress: '',
+        _supportsEip2544: Promise.resolve(false),
+        _fetch: async () => '',
     } as ethers.providers.Resolver;
 };
 
@@ -63,7 +68,7 @@ const buildENSResponse = () => [
 const setENSQueryReturn = (list: QueriedDomain[]) => {
     clientMock.query.mockResolvedValue({
         data: { domains: list },
-    } as ApolloQueryResult<GetEnsDomainsQuery>);
+    } as ObservableQuery.Result<GetEnsDomainsQuery>);
 };
 
 const validAddress = '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6';

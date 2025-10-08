@@ -9,8 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { QueryResult } from '@apollo/client';
+import type { useQuery } from '@apollo/client/react';
 import { render, screen } from '@testing-library/react';
+import { Route } from 'next';
 import PoolPerformanceStat, {
     PoolPerformanceStatProps,
 } from '../../../../src/components/stake/stats/PoolPerformanceStat';
@@ -29,7 +30,7 @@ const mockUseStakingPoolPerformance =
     >;
 
 const defaultAddress = 'Angel Karaliichev 1 str.';
-const defaultLocation = 'Bulgaria, Sofia';
+const defaultLocation: Route = '/';
 
 const EPoolPerformanceStat =
     withChakraTheme<PoolPerformanceStatProps>(PoolPerformanceStat);
@@ -42,7 +43,11 @@ const mockedHook = {
             weekly: [{ id: '1', performance: '0.00', timestamp: 1686744000 }],
         },
     },
-} as QueryResult<StakingPoolPerformanceData, StakingPoolPerformanceVars>;
+} as useQuery.Result<
+    StakingPoolPerformanceData,
+    StakingPoolPerformanceVars,
+    'complete' | 'empty'
+>;
 
 describe('Pool Performance Stat', () => {
     // a default configured component

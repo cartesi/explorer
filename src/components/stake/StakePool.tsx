@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 'use client';
-
 import { constants } from 'ethers';
 import { useParams } from 'next/navigation';
 import Layout from '../../components/Layout';
@@ -27,11 +26,8 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
 
-import { QueryResult } from '@apollo/client';
+import type { useQuery } from '@apollo/client/react';
 import { TbChevronDown } from 'react-icons/tb';
-import { PoolActivity } from './PoolActivity';
-import PoolStatsPanel from './PoolStatsPanel';
-import { useWallet } from '../wallet';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useStakingPoolQuery from '../../graphql/hooks/useStakingPool';
 import { BlocksData, BlocksVars } from '../../graphql/models';
@@ -39,9 +35,12 @@ import { useBlockNumber } from '../../services/eth';
 import { useStakingPool } from '../../services/pool';
 import { useStaking } from '../../services/staking';
 import { useCartesiToken } from '../../services/token';
+import { useWallet } from '../wallet';
+import { PoolActivity } from './PoolActivity';
+import PoolStatsPanel from './PoolStatsPanel';
 
 const blockAverageInterval = (
-    result: QueryResult<BlocksData, BlocksVars>
+    result: useQuery.Result<BlocksData, BlocksVars>
 ): number => {
     const count = result.data?.blocks?.length;
     if (count > 0) {

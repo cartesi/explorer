@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { useMemo } from 'react';
 import { Network } from '../utils/networks';
 
@@ -48,7 +48,7 @@ const mergeUniqueSort = (fieldName: string) => {
     };
 };
 
-export const createApollo = (chainId: number): ApolloClient<any> => {
+export const createApollo = (chainId: number): ApolloClient => {
     let uri = chainstackURI[chainId];
 
     // default to mainnet
@@ -58,7 +58,7 @@ export const createApollo = (chainId: number): ApolloClient<any> => {
 
     return new ApolloClient({
         ssrMode,
-        uri,
+
         cache: new InMemoryCache({
             typePolicies: {
                 Query: {
@@ -71,9 +71,13 @@ export const createApollo = (chainId: number): ApolloClient<any> => {
                 },
             },
         }),
+
+        link: new HttpLink({
+            uri,
+        }),
     });
 };
 
-export const useApollo = (chainId: number): ApolloClient<any> => {
+export const useApollo = (chainId: number): ApolloClient => {
     return useMemo(() => createApollo(chainId), [chainId]);
 };

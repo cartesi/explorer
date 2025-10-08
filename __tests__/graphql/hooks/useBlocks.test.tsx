@@ -9,13 +9,13 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { useQuery } from '@apollo/client/react';
 import { cleanup, renderHook } from '@testing-library/react';
-import { useQuery } from '@apollo/client';
 import useBlocks from '../../../src/graphql/hooks/useBlocks';
 import { BLOCKS } from '../../../src/graphql/queries';
 
-jest.mock('@apollo/client', () => {
-    const original = jest.requireActual('@apollo/client');
+jest.mock('@apollo/client/react', () => {
+    const original = jest.requireActual('@apollo/client/react');
     return {
         __esModule: true,
         ...original,

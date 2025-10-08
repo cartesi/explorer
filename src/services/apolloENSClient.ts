@@ -18,7 +18,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 const rateLimitedURL =
     'https://api.thegraph.com/subgraphs/name/ensdomains/ens' as const;
 
-const createENSApollo = (): ApolloClient<any> => {
+const createENSApollo = (): ApolloClient => {
     const ssrMode = typeof window === 'undefined';
     const uri = process.env.ENS_GRAPHQL_URL || rateLimitedURL;
 

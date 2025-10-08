@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { STAKING_POOL_FEE_HISTORIES } from '../queries';
 import { UsersVars, StakingPoolFeeHistory } from '../models';
 

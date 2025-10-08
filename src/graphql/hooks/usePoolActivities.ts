@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { capitalize, getOr, isEmpty, map, pipe } from 'lodash/fp';
 import { useEffect, useState } from 'react';
 import { toUnixTimestamp } from '../../utils/dateParser';

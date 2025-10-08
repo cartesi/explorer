@@ -17,8 +17,8 @@ import { withChakraTheme } from '../test-utilities';
 
 const useWalletMod = '../../src/components/wallet/useWallet';
 
-jest.mock('@apollo/client', () => {
-    const originalModule = jest.requireActual('@apollo/client');
+jest.mock('@apollo/client/react', () => {
+    const originalModule = jest.requireActual('@apollo/client/react');
     return {
         __esModule: true,
         ...originalModule,
