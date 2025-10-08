@@ -93,7 +93,6 @@
         "@types/react": "^19.2.2",
         "@types/react-dom": "^19.2.1",
         "@types/react-gtm-module": "^2.0.4",
-        "@types/recharts": "2.0.0",
         "@typescript-eslint/eslint-plugin": "^8.33.0",
         "@typescript-eslint/parser": "^8.33.0",
         "babel-jest": "^30.1.2",
