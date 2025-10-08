@@ -102,7 +102,6 @@
         "dotenv-cli": "7.2.1",
         "drizzle-kit": "^0.31.5",
         "eslint": "^9.28.0",
-        "eslint-config-custom": "*",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-prettier": "^5.4.1",
@@ -118,7 +117,6 @@
         "prettier": "2.8.8",
         "storybook": "^9.1.10",
         "storybook-addon-apollo-client": "^9.0.0",
-        "tsconfig": "*",
         "typescript": "^5.9.2",
         "vite": "^7.1.9"
     },
