@@ -761,17 +761,15 @@
     picocolors "^1.0.0"
     sisteransi "^1.0.5"
 
-"@coinbase/wallet-sdk@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-4.0.3.tgz#fd52dd4c168c35979c7b3294018a6f78d163a593"
-  integrity sha512-y/OGEjlvosikjfB+wk+4CVb9OxD1ob9cidEBLI5h8Hxaf/Qoob2XoVT1uvhtAzBx34KpGYSd+alKvh/GCRre4Q==
+"@coinbase/wallet-sdk@4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-4.3.0.tgz#03b8fce92ac2b3b7cf132f64d6008ac081569b4e"
+  integrity sha512-T3+SNmiCw4HzDm4we9wCHCxlP0pqCiwKe4sOwPH3YAK2KSKjxPRydKu6UQJrdONFVLG7ujXvbd/6ZqmvJb8rkw==
   dependencies:
-    buffer "^6.0.3"
+    "@noble/hashes" "^1.4.0"
     clsx "^1.2.1"
     eventemitter3 "^5.0.1"
-    keccak "^3.0.3"
-    preact "^10.16.0"
-    sha.js "^2.4.11"
+    preact "^10.24.2"
 
 "@csstools/color-helpers@^5.1.0":
   version "5.1.0"
@@ -3735,10 +3733,10 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@safe-global/safe-apps-provider@^0.18.5":
-  version "0.18.5"
-  resolved "https://registry.yarnpkg.com/@safe-global/safe-apps-provider/-/safe-apps-provider-0.18.5.tgz#745a932bda3739a8a298ae44ec6c465f6c4773b7"
-  integrity sha512-9v9wjBi3TwLsEJ3C2ujYoexp3pFJ0omDLH/GX91e2QB+uwCKTBYyhxFSrTQ9qzoyQd+bfsk4gjOGW87QcJhf7g==
+"@safe-global/safe-apps-provider@^0.18.6":
+  version "0.18.6"
+  resolved "https://registry.yarnpkg.com/@safe-global/safe-apps-provider/-/safe-apps-provider-0.18.6.tgz#b5756176549e35350b7e090824b71507a0d1f749"
+  integrity sha512-4LhMmjPWlIO8TTDC2AwLk44XKXaK6hfBTWyljDm0HQ6TWlOEijVWNrt2s3OCVMSxlXAcEzYfqyu1daHZooTC2Q==
   dependencies:
     "@safe-global/safe-apps-sdk" "^9.1.0"
     events "^3.3.0"
@@ -5363,12 +5361,12 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3-onboard/coinbase@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/coinbase/-/coinbase-2.4.1.tgz#164d839ba5d08cc9dcc0147de6586a40e3125205"
-  integrity sha512-o5KdsN2hmD1GHAkT5qJORZo0I5AOl0lHMXzyrb7AHsFQpMeeYmGcpAkzOJXUWpuZUf3UPNfo7RHmKzxOlj2t5g==
+"@web3-onboard/coinbase@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/coinbase/-/coinbase-2.4.2.tgz#8a2ee1b9f7123b2137181e6d8d3fed29e25467c5"
+  integrity sha512-XmxfM55dB/XFI173KPcvHBhXvOY5ygXxwDzdjFvIp/MhwoG6U/8xn4KVg0wavtpX9y9H7jz8jf/ur6AIAi1nmA==
   dependencies:
-    "@coinbase/wallet-sdk" "4.0.3"
+    "@coinbase/wallet-sdk" "4.3.0"
     "@web3-onboard/common" "^2.4.1"
 
 "@web3-onboard/common@^2.4.1":
@@ -5379,10 +5377,28 @@
     joi "17.9.1"
     viem "2.12.0"
 
-"@web3-onboard/core@2.23.1", "@web3-onboard/core@^2.23.1":
-  version "2.23.1"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/core/-/core-2.23.1.tgz#47d4f086af0e743d9227b42cf70c23c0ad32d2c4"
-  integrity sha512-a3dseMpoe7jBfWzyvTNsIhpOh5MncaOLps/83zsUi32oXhYOPz5vUlJuUOAUx8O6LHGZh3RkRQWAwBTf96qsFA==
+"@web3-onboard/core@2.24.0":
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/core/-/core-2.24.0.tgz#e31f202b557c51c05f9a8a298552e3143d152017"
+  integrity sha512-aFfao9ln5DMW9QSTzXHP4ymuFoJslBs3TrYR+z+5B6/lPMK1CUSe5wmPeFVaqTXs4gIGkyWByuznb9LUq/Vong==
+  dependencies:
+    "@web3-onboard/common" "^2.4.1"
+    bnc-sdk "^4.6.7"
+    bowser "^2.11.0"
+    eventemitter3 "^4.0.7"
+    joi "17.9.1"
+    lodash.merge "^4.6.2"
+    lodash.partition "^4.6.0"
+    nanoid "^4.0.0"
+    rxjs "^7.5.5"
+    svelte "^3.49.0"
+    svelte-i18n "^4.0.1"
+    viem "2.12.0"
+
+"@web3-onboard/core@^2.24.1":
+  version "2.24.1"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/core/-/core-2.24.1.tgz#4c1bcc686dd43ba77a8aaaf43aa639a630c4b6d4"
+  integrity sha512-IhiWF0M4BfnayLdmPoNpckjStlZ4G2N8JylJ92pf6+uWbnvhje8Svka9Oq6nfmfuU7Nbbqx3BVyivEN0kL6dyA==
   dependencies:
     "@web3-onboard/common" "^2.4.1"
     bnc-sdk "^4.6.7"
@@ -5413,13 +5429,13 @@
     joi "17.9.1"
     lodash.uniqby "^4.7.0"
 
-"@web3-onboard/react@^2.10.1":
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/react/-/react-2.10.1.tgz#45c4ebf8a6b4a065d2750ff35dd2e21b1ea1661b"
-  integrity sha512-AXyRcmOGRjvCE2hz4/ZR6uWRFhqqK9dpTfaNxCv1D7o+HjbPSJ31h2oxAwlamgTruSmYSOuR5dFpJZK3uoApFQ==
+"@web3-onboard/react@^2.11.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/react/-/react-2.11.0.tgz#1805df2087f7fac81a5575fa97793d32204f86fd"
+  integrity sha512-aKwkVX3Xt0FshAerq1j15FYZnanEfrcNRl7SjziH8Zh/v82chixBqdPOKG7uh4lYKutIY7OAuyubPPRr/J7mzw==
   dependencies:
     "@web3-onboard/common" "^2.4.1"
-    "@web3-onboard/core" "2.23.1"
+    "@web3-onboard/core" "2.24.0"
     use-sync-external-store "1.0.0"
 
 "@web3-onboard/walletconnect@^2.6.2":
@@ -7695,7 +7711,7 @@ buffer-xor@^2.0.1:
   dependencies:
     safe-buffer "^5.1.1"
 
-buffer@6.0.3, buffer@^6.0.3:
+buffer@6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
   integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
@@ -13502,7 +13518,7 @@ keccak@3.0.1:
     node-addon-api "^2.0.0"
     node-gyp-build "^4.2.0"
 
-keccak@^3.0.0, keccak@^3.0.2, keccak@^3.0.3:
+keccak@^3.0.0, keccak@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/keccak/-/keccak-3.0.4.tgz#edc09b89e633c0549da444432ecf062ffadee86d"
   integrity sha512-3vKuW0jV8J3XNTzvfyicFR5qvxrSAGl7KIhvgOu5cmWwM7tZRj3fMbj/pfIf4be7aznbc+prBWGjywox/g2Y6Q==
@@ -15677,10 +15693,10 @@ postinstall-postinstall@^2.1.0:
   resolved "https://registry.yarnpkg.com/postinstall-postinstall/-/postinstall-postinstall-2.1.0.tgz#4f7f77441ef539d1512c40bd04c71b06a4704ca3"
   integrity sha512-7hQX6ZlZXIoRiWNrbMQaLzUUfH+sSx39u8EJ9HYuDc1kLo9IXKWjM5RSquZN1ad5GnH8CGFM78fsAAQi3OKEEQ==
 
-preact@^10.16.0:
-  version "10.25.4"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.25.4.tgz#c1d00bee9d7b9dcd06a2311d9951973b506ae8ac"
-  integrity sha512-jLdZDb+Q+odkHJ+MpW/9U5cODzqnB+fy2EiHSZES7ldV5LK7yjlVzTp7R8Xy6W6y75kfK8iWYtFVH7lvjwrCMA==
+preact@^10.24.2:
+  version "10.27.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.27.2.tgz#19b9009c1be801a76a0aaf0fe5ba665985a09312"
+  integrity sha512-5SYSgFKSyhCbk6SrXyMpqjb5+MQBgfvEKE/OC+PujcY34sOpqtr+0AZQtPYx5IA6VxynQ7rUPCtKzyovpj9Bpg==
 
 precond@0.2:
   version "0.2.3"
@@ -16947,7 +16963,7 @@ setprototypeof@1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-sha.js@^2.4.0, sha.js@^2.4.11, sha.js@^2.4.12, sha.js@^2.4.8:
+sha.js@^2.4.0, sha.js@^2.4.12, sha.js@^2.4.8:
   version "2.4.12"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.12.tgz#eb8b568bf383dfd1867a32c3f2b74eb52bdbf23f"
   integrity sha512-8LzC5+bvI45BjpfXU8V5fdU2mfeKiQe1D1gIMn7XUlF3OTUrpdJpPPH4EMAnF0DsHHdSZqCdSss5qCmJKuiO3w==
