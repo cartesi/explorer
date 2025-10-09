@@ -1,27 +1,28 @@
-name: 'Chromatic'
+name: "Chromatic"
 on: push
 jobs:
-    chromatic-deployment:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0 #required to retrieve git history
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 #required to retrieve git history
 
-            - name: Setup Node.js environment
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: 'yarn'
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "yarn"
 
-            - name: Install Dependencies
-              run: yarn install --frozen-lockfile
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
-            - name: Build Storybook
-              run: yarn build-storybook
+      - name: Build Storybook
+        run: yarn build-storybook
 
-            - name: Publish to Chromatic
-              uses: chromaui/action@v1
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - name: Publish to Chromatic
+        uses: chromaui/action@v13.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          storybookBuildDir: storybook-static
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

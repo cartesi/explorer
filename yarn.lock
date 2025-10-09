@@ -8148,15 +8148,15 @@ chownr@^1.1.4:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
   integrity sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==
 
-chromatic@^11.26.1:
-  version "11.26.1"
-  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-11.26.1.tgz#48425e3843d92d12aadc82d04bdfcf15080e31c9"
-  integrity sha512-kVMTigrKI7TOOV04i1lTTIVJsmQ+fj6ZFXyZ3LcdCioOrxO/zCVB1y74iX0iKS++cpi3bJcG+UszkmvptGDEuA==
-
 chromatic@^12.0.0:
   version "12.2.0"
   resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-12.2.0.tgz#2f22865d66fa82d7c5565170f70eabb613223671"
   integrity sha512-GswmBW9ZptAoTns1BMyjbm55Z7EsIJnUvYKdQqXIBZIKbGErmpA+p4c0BYA+nzw5B0M+rb3Iqp1IaH8TFwIQew==
+
+chromatic@^13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-13.3.0.tgz#b3e3beed5a2e01117e31461b5cabc8c9d0c445b4"
+  integrity sha512-OtXVKSFqGS1x6E6xYzmYX2iImSknbvo5CfTxP3ztFvXQhIAwhJzJuA3XpnIewER9gtWUNnV2DDi8/f9JyZJSfg==
 
 ci-info@^2.0.0:
   version "2.0.0"
