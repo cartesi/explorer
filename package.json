@@ -99,7 +99,7 @@
         "babel-jest": "^30.2.0",
         "babel-loader": "10.0.0",
         "chromatic": "^11.26.1",
-        "dotenv-cli": "7.2.1",
+        "dotenv-cli": "10.0.0",
         "drizzle-kit": "^0.31.5",
         "eslint": "^9.37.0",
         "eslint-config-prettier": "^9.1.0",
