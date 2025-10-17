@@ -5,8 +5,16 @@ const ContentSecurityPolicy = `
   frame-ancestors 'self' https://app.safe.global;
 `;
 
+/** @type {import('next').NextConfig} */
 module.exports = {
     typedRoutes: true,
+    webpack: (config, { isServer }) => {
+        // On "next build" command, pino-pretty should be set as external deps to avoid module-not-found problem.
+        if (isServer) {
+            config.externals.push('pino-pretty');
+        }
+        return config;
+    },
     reactStrictMode: true,
     async headers() {
         return [

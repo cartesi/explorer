@@ -7,13 +7,13 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { createApollo } from '../../../src/services/apollo';
-import {
-    isCartesiUser,
-    getFormattedEnsName,
-} from '../../../src/services/server/utils';
 import AddressENSService from '../../../src/services/server/ens/AddressENSService';
+import {
+    getFormattedEnsName,
+    isCartesiUser,
+} from '../../../src/services/server/utils';
 
 jest.mock('../../../src/services/apollo');
 
@@ -36,7 +36,7 @@ describe('Server utils', () => {
         // bare bones mock with only what is required
         createApolloMock.mockReturnValue({
             query: queryMock,
-        } as unknown as ApolloClient<NormalizedCacheObject>);
+        } as unknown as ApolloClient);
     });
 
     afterEach(() => {

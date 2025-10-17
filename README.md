@@ -100,9 +100,7 @@ Open MetaMask and switch to a network configured to the url http://localhost:854
 
 ### Test coverage reporting
 
-We are using [Coveralls](https://coveralls.io/) as a reporting tool for our tests' coverage. Each workspace that has tests, generates coverage report for them as well using the `test:ci` npm script. At each build we merge coverage reports for all workspaces, and then send the merged report to Coveralls.
-
-To include a new workspace that has tests in the merged coverage report, all you need to do is provide in its dedicated `package.json` file the `test:ci` script (found in existing workspaces).
+We are using [Coveralls](https://coveralls.io/) as a reporting tool for our tests' coverage. We generate coverage report by running the tests using the `test:ci` npm script. At each build we send the report to Coveralls.
 
 ### Release
 

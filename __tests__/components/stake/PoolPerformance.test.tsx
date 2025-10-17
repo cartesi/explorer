@@ -9,16 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import type { useQuery } from '@apollo/client/react';
 import { render, screen } from '@testing-library/react';
 import PoolPerformance from '../../../src/components/stake/PoolPerformance';
 import useStakingPools from '../../../src/graphql/hooks/useStakingPools';
-import { useVisibilityThreshold } from '../../../src/utils/hooks/useVisibilityThreshold';
-import { withChakraTheme } from '../../test-utilities';
-import { QueryResult } from '@apollo/client';
 import {
     StakingPoolsData,
     StakingPoolsVars,
 } from '../../../src/graphql/models';
+import { useVisibilityThreshold } from '../../../src/utils/hooks/useVisibilityThreshold';
+import { withChakraTheme } from '../../test-utilities';
 
 jest.mock('../../../src/graphql/hooks/useStakingPools');
 jest.mock('../../../src/utils/hooks/useVisibilityThreshold', () => ({
@@ -28,6 +28,7 @@ jest.mock('../../../src/utils/hooks/useVisibilityThreshold', () => ({
 const mockedUseStakingPools = useStakingPools as jest.MockedFunction<
     typeof useStakingPools
 >;
+
 const mockedUseVisibilityThreshold =
     useVisibilityThreshold as jest.MockedFunction<
         typeof useVisibilityThreshold
@@ -45,7 +46,7 @@ describe('PoolPerformance component', () => {
         mockedUseStakingPools.mockReturnValue({
             data: undefined,
             loading: false,
-        } as unknown as QueryResult<StakingPoolsData, StakingPoolsVars>);
+        } as useQuery.Result<StakingPoolsData, StakingPoolsVars, 'complete' | 'empty'>);
 
         mockedUseVisibilityThreshold.mockReturnValue({
             isBelow: false,

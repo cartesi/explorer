@@ -9,9 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import React from 'react';
-import _ from 'lodash';
+import type { useQuery } from '@apollo/client/react';
 import { intlFormat } from 'date-fns';
+import _ from 'lodash';
 import {
     CartesianGrid,
     Legend,
@@ -22,12 +22,11 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
-import { QueryResult } from '@apollo/client';
 import { BlocksData, BlocksVars } from '../graphql/models';
 import { useColorMode, useColorModeValue } from './ui/color-mode';
 
 export interface BlocksChartProps {
-    result: QueryResult<BlocksData, BlocksVars>;
+    result: useQuery.Result<BlocksData, BlocksVars>;
 }
 
 const colors = [

@@ -1,15 +1,10 @@
 import { useEffect } from 'react';
 import { ColorMode, useColorMode } from '../src/components/ui/color-mode';
-import { Globals } from 'storybook/internal/csf';
 
-export default ({
-    globals: {
-        backgrounds: { value = 'dark' },
-    },
-}: Globals) => {
+export default ({ value }: { value: ColorMode }) => {
     const { colorMode, setColorMode } = useColorMode();
     useEffect(() => {
-        if (colorMode !== value) setColorMode(value as ColorMode);
+        if (colorMode !== value) setColorMode(value);
     }, [value, colorMode, setColorMode]);
     return null;
 };

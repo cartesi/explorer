@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 'use client';
-
 import {
     Button,
     Center,
@@ -24,7 +23,7 @@ import { TbDots } from 'react-icons/tb';
 
 import { useColorModeValue } from '../ui/color-mode';
 
-import { QueryResult } from '@apollo/client';
+import type { useQuery } from '@apollo/client/react';
 import BlockCard from '../../components/block/BlockCard';
 import BlocksChart from '../../components/BlocksChart';
 import Layout from '../../components/Layout';
@@ -56,7 +55,7 @@ const Filter: FunctionComponent<FilterProps> = ({ label, value, onDelete }) => (
 
 interface BlockListProps extends StackProps {
     chainId: number;
-    result: QueryResult<BlocksData, BlocksVars>;
+    result: useQuery.Result<BlocksData, BlocksVars>;
     filterField?: 'node' | 'producer' | 'id';
     filterValue?: string;
 }
@@ -64,7 +63,7 @@ interface BlockListProps extends StackProps {
 const BlockList = (props: BlockListProps) => {
     const { chainId, result, filterField, filterValue, ...stackProps } = props;
     const { data, loading, fetchMore } = result;
-    const blocks = data?.blocks || [];
+    const blocks = (data?.blocks || []) as BlocksData['blocks'];
     const highlightColor = useColorModeValue(
         'dark.gray.senary',
         'dark.gray.quaternary'

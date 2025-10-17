@@ -9,12 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { renderHook } from '@testing-library/react';
 import useStakingPools from '../../src/graphql/hooks/useStakingPools';
 import { useQueryReturnFactory } from './mocks';
 
-jest.mock('@apollo/client', () => ({ useQuery: jest.fn() }));
+jest.mock('@apollo/client/react', () => ({ useQuery: jest.fn() }));
 
 const useQueryMock = useQuery as jest.MockedFunction<typeof useQuery>;
 
