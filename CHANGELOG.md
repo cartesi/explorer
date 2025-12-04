@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.2] - 2025-12-04
+
+-   Removed unused and obsolete dependencies.
+-   Upgrade dependencies to keep maintenance with latest releases.
+-   Apply security patches to mitigate published CVEs.
+
 ## [3.12.1] - 2025-09-04
 
 -   Maintenance changes. Fixing the route path for blocks page instead of making it a slug declaration.
@@ -445,7 +451,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.1...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.2...HEAD
+[3.12.2]: https://github.com/cartesi/explorer/compare/v3.12.2...v3.12.1
 [3.12.1]: https://github.com/cartesi/explorer/compare/v3.12.1...v3.12.0
 [3.12.0]: https://github.com/cartesi/explorer/compare/v3.12.0...v3.11.1
 [3.11.1]: https://github.com/cartesi/explorer/compare/v3.11.1...v3.11.0
