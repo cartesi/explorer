@@ -43,6 +43,9 @@ importers:
       '@ethersproject/bignumber':
         specifier: 5.8.0
         version: 5.8.0
+      '@ethersproject/providers':
+        specifier: 5.8.0
+        version: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@ethersproject/units':
         specifier: ^5.8.0
         version: 5.8.0
@@ -59,6 +62,9 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(next@15.5.7(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)(svelte@3.55.0)
       '@web3-onboard/coinbase':
+        specifier: ^2.4.2
+        version: 2.4.2(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@web3-onboard/common':
         specifier: ^2.4.2
         version: 2.4.2(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
       '@web3-onboard/core':
