@@ -1,35 +1,40 @@
 name: Docker
 on: [push, 'pull_request']
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Check out code
-              uses: actions/checkout@v4
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
-            - name: Setup Node.js environment
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: 'yarn'
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: 'package.json'
 
-            - name: Install Dependencies
-              run: yarn install --frozen-lockfile
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
 
-            - name: Install chakra-ui types
-              run: yarn run chakra-types
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Code format check
-              run: yarn format:check
+      - name: Install chakra-ui types
+        run: pnpm run chakra-types
 
-            - name: Linting
-              run: yarn lint
+      - name: Code format check
+        run: pnpm format:check
 
-            - name: Run Tests
-              run: yarn test:ci
+      - name: Linting
+        run: pnpm lint
 
-            - name: Publish coveralls report
-              uses: coverallsapp/github-action@master
-              with:
-                  path-to-lcov: 'coverage/lcov.info'
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Tests
+        run: pnpm test:ci
+
+      - name: Publish coveralls report
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: 'coverage/lcov.info'
+          github-token: ${{ secrets.GITHUB_TOKEN }}

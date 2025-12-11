@@ -1,4 +1,4 @@
-name: "Chromatic"
+name: 'Chromatic'
 on: push
 jobs:
   chromatic-deployment:
@@ -8,17 +8,20 @@ jobs:
         with:
           fetch-depth: 0 #required to retrieve git history
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "yarn"
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: yarn build-storybook
+        run: pnpm build-storybook
 
       - name: Publish to Chromatic
         uses: chromaui/action@v13.2.0
