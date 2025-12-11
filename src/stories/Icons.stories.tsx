@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Meta, StoryObj } from '@storybook/react';
 import { Icon } from '@chakra-ui/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import {
     ActiveNodeIcon,
@@ -287,6 +287,6 @@ const Template: Story = {
     render: () => <Icons />,
 };
 
-export const Default = {
+export const Default: Story = {
     ...Template,
 };
