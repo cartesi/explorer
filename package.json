@@ -3,6 +3,7 @@
     "version": "1.2.0",
     "private": true,
     "scripts": {
+        "clean": "rm -rf node_modules && rm -rf .next",
         "dev": "run-s db:dev:migrate next:dev",
         "build": "run-s db:prod:migrate next:build",
         "start": "next start",
@@ -13,12 +14,12 @@
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio",
-        "db:dev:migrate": "dotenv -c development -- yarn db:migrate",
-        "db:prod:migrate": "dotenv -c production -- yarn db:migrate",
+        "db:dev:migrate": "dotenv -c development -- pnpm db:migrate",
+        "db:prod:migrate": "dotenv -c production -- pnpm db:migrate",
         "format:check": "prettier --check \"**/*.{ts,tsx}\"",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "lint": "eslint --color --ext .ts --ext .tsx src/",
-        "lint:fix": "yarn lint --fix",
+        "lint:fix": "pnpm lint --fix",
         "chromatic": "chromatic --exit-zero-on-changes",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
@@ -122,10 +123,5 @@
     "engines": {
         "node": "22.x"
     },
-    "resolutions": {
-        "**/elliptic": "^6.6.1",
-        "**/pbkdf2": "^3.1.5",
-        "**/form-data": "^4.0.4"
-    },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "pnpm@10.25.0"
 }
