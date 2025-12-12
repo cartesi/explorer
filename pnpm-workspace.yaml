@@ -1,0 +1,22 @@
+onlyBuiltDependencies:
+  - '@vercel/speed-insights'
+  - bufferutil
+  - core-js
+  - core-js-pure
+  - es5-ext
+  - esbuild
+  - fsevents
+  - keccak
+  - postinstall-postinstall
+  - secp256k1
+  - sharp
+  - unrs-resolver
+  - utf-8-validate
+  - web3
+  - web3-bzz
+  - web3-shh
+
+overrides:
+  'elliptic': '^6.6.1'
+  'pbkdf2': '^3.1.5'
+  'form-data': '^4.0.4'

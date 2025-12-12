@@ -79,7 +79,7 @@ export const Standard: Story = {
     ...Template,
 };
 
-export const NotConnected = {
+export const NotConnected: Story = {
     args: {
         links,
         contracts: [],

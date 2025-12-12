@@ -3,6 +3,7 @@
     "version": "1.2.0",
     "private": true,
     "scripts": {
+        "clean": "rm -rf node_modules && rm -rf .next",
         "dev": "run-s db:dev:migrate next:dev",
         "build": "run-s db:prod:migrate next:build",
         "start": "next start",
@@ -13,12 +14,12 @@
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio",
-        "db:dev:migrate": "dotenv -c development -- yarn db:migrate",
-        "db:prod:migrate": "dotenv -c production -- yarn db:migrate",
+        "db:dev:migrate": "dotenv -c development -- pnpm db:migrate",
+        "db:prod:migrate": "dotenv -c production -- pnpm db:migrate",
         "format:check": "prettier --check \"**/*.{ts,tsx}\"",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "lint": "eslint --color --ext .ts --ext .tsx src/",
-        "lint:fix": "yarn lint --fix",
+        "lint:fix": "pnpm lint --fix",
         "chromatic": "chromatic --exit-zero-on-changes",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
@@ -33,12 +34,16 @@
         "@cartesi/util": "5.0.2",
         "@chakra-ui/react": "^3.27.1",
         "@emotion/react": "^11.14.0",
+        "@ethersproject/address": "^5.8.0",
         "@ethersproject/bignumber": "5.8.0",
+        "@ethersproject/providers": "5.8.0",
+        "@ethersproject/units": "^5.8.0",
         "@libsql/client": "^0.15.15",
         "@safe-global/safe-apps-provider": "^0.18.6",
         "@safe-global/safe-apps-sdk": "^9.1.0",
         "@vercel/speed-insights": "^1.2.0",
         "@web3-onboard/coinbase": "^2.4.2",
+        "@web3-onboard/common": "^2.4.2",
         "@web3-onboard/core": "^2.24.1",
         "@web3-onboard/gnosis": "^2.3.2",
         "@web3-onboard/injected-wallets": "^2.11.3",
@@ -52,6 +57,7 @@
         "ethers": "^5.8.0",
         "framer-motion": "^12.23.22",
         "graphql": "^16.11.0",
+        "graphql-tag": "^2.12.6",
         "humanize-duration": "^3.29.0",
         "jotai": "^2.12.4",
         "lodash": "^4.17.21",
@@ -122,10 +128,5 @@
     "engines": {
         "node": "22.x"
     },
-    "resolutions": {
-        "**/elliptic": "^6.6.1",
-        "**/pbkdf2": "^3.1.5",
-        "**/form-data": "^4.0.4"
-    },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "pnpm@10.25.0"
 }
