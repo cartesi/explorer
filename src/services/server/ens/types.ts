@@ -9,7 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { GetEnsDomainsQuery } from '../../../graphql/queries/ensDomains';
+import {
+    DomainAlias,
+    GetAliasedEnsDomainsQuery,
+} from '../../../graphql/queries/ensDomains';
 import AddressENSRepository from './AddressENSRepository';
 
 export type AddressEns = {
@@ -25,7 +28,8 @@ export type Entry = {
     address: string;
 };
 
-export type QueriedDomain = GetEnsDomainsQuery['domains'][number];
+export type QueriedDomain = GetAliasedEnsDomainsQuery[DomainAlias][number];
+
 export type ENSAddressData = {
     id?: number;
     hasEns: boolean;

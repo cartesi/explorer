@@ -9,15 +9,16 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import { PromisePool } from '@supercharge/promise-pool';
 import { ethers } from 'ethers';
+import defaultTo from 'lodash/fp/defaultTo';
 import {
-    DOMAINS,
-    GetEnsDomainsQuery,
+    buildAliasedEnsDomainsQuery,
+    GetAliasedEnsDomainsQuery,
 } from '../../../graphql/queries/ensDomains';
 import { Network } from '../../../utils/networks';
 import ensClient from '../../apolloENSClient';
 import { ENSAddressData, Entry, QueriedDomain, StaleEntry } from './types';
-import defaultTo from 'lodash/fp/defaultTo';
 
 type GetDomainsResult = Record<string, QueriedDomain>;
 type PayloadState = 'ok' | 'ens_query_failed';
@@ -26,14 +27,46 @@ type ENSPayload = {
     data: ENSAddressData[];
 };
 
+const defaultMaxAvatarRpcConcurrentCalls = 8 as const;
 const defaultMaxEntriesPerReqLimit = 900 as const;
-const MAX_ENTRIES_PER_REQ = Math.min(
-    defaultMaxEntriesPerReqLimit,
-    defaultTo(
-        defaultMaxEntriesPerReqLimit,
-        parseInt(process.env.ENS_ENTRIES_PER_REQ_LIMIT ?? '')
-    )
+
+/**
+ * @summary Maximum number of concurrent promises to be processed in the pool.
+ * @description This is to avoid overwhelming the RPC node with too many requests at once,
+ *  which can lead to rate limiting or timeouts.
+ * The value can be adjusted through the
+ * environment variable `ENS_RESOLVER_RPC_CONCURRENT_CALLS`.
+ * @default 8
+ */
+const RESOLVER_POOL_SIZE = defaultTo(
+    defaultMaxAvatarRpcConcurrentCalls,
+    process.env.ENS_RESOLVER_RPC_CONCURRENT_CALLS
+        ? parseInt(process.env.ENS_RESOLVER_RPC_CONCURRENT_CALLS, 10)
+        : undefined
 );
+
+/**
+ * @summary Maximum number of entries to be included in a single request to fetch ENS data.
+ *
+ * @default 900
+ */
+const MAX_ENTRIES_PER_REQ = defaultTo(
+    defaultMaxEntriesPerReqLimit,
+    process.env.ENS_ENTRIES_PER_REQ_LIMIT
+        ? parseInt(process.env.ENS_ENTRIES_PER_REQ_LIMIT, 10)
+        : undefined
+);
+
+const createCounter = (initial = 0) => {
+    let value = initial;
+    return {
+        next: () => ++value,
+    };
+};
+
+const addAvatarUrlCounter = createCounter();
+const addEnsNameCounter = createCounter();
+const getDomainsCounter = createCounter();
 
 const httpNodeRpc =
     process.env.HTTP_MAINNET_NODE_RPC ?? 'https://cloudflare-eth.com';
@@ -78,58 +111,63 @@ const addAvatarUrl = async (ensPayload: ENSPayload): Promise<ENSPayload> => {
     // skip any L1 resolver checks, as the primary query failed.
     if (ensPayload.state === 'ens_query_failed') return ensPayload;
 
-    const timeLabel = `${ACTION_NAME.addAvatarUrl}(${ensPayload.data.length})`;
+    const timeLabel = `${
+        ACTION_NAME.addAvatarUrl
+    }(${addAvatarUrlCounter.next()})`;
+
     console.time(timeLabel);
-    const listP = ensPayload.data.map((ensAddressData) => {
-        if (
-            !ensAddressData.hasEns ||
-            (ensAddressData.hasEns && !ensAddressData.name)
-        ) {
-            return Promise.resolve(ensAddressData);
-        }
 
-        return getAvatarUrl(ensAddressData.name)
-            .then((ensAvatar) => {
-                console.info(
-                    `${ACTION_NAME.addAvatarUrl}: (${ensAddressData.name}) => avatar(${ensAvatar})`
-                );
-                ensAddressData.avatarUrl = ensAvatar;
-                return ensAddressData;
-            })
-            .catch((reason: any) => {
-                console.error(
-                    `${ACTION_NAME.addAvatarUrl}: (Errored) ${ensAddressData.address} - reason (${reason.message})`
-                );
-                return ensAddressData;
-            });
-    });
+    const { results } = await PromisePool.withConcurrency(RESOLVER_POOL_SIZE)
+        .for(ensPayload.data)
+        .process((ensAddressData) => {
+            if (
+                !ensAddressData.hasEns ||
+                (ensAddressData.hasEns && !ensAddressData.name)
+            ) {
+                return Promise.resolve(ensAddressData);
+            }
 
-    const data = await Promise.all(listP);
+            return getAvatarUrl(ensAddressData.name)
+                .then((ensAvatar) => {
+                    console.info(
+                        `${ACTION_NAME.addAvatarUrl}: (${ensAddressData.name}) => avatar(${ensAvatar})`
+                    );
+                    ensAddressData.avatarUrl = ensAvatar;
+                    return ensAddressData;
+                })
+                .catch((reason: any) => {
+                    console.error(
+                        `${ACTION_NAME.addAvatarUrl}: (Errored) ${ensAddressData.address} - reason (${reason.message})`
+                    );
+                    return ensAddressData;
+                });
+        });
+
     console.timeEnd(timeLabel);
 
-    return { state: 'ok', data };
+    return { state: 'ok', data: results };
 };
 
 const getDomains = async (addresses: string[]): Promise<GetDomainsResult> => {
-    const timeLabel = `${ACTION_NAME.getDomains}(${addresses.length})`;
+    const timeLabel = `${ACTION_NAME.getDomains}(${getDomainsCounter.next()})`;
     console.time(timeLabel);
-    const result = await ensClient.query<GetEnsDomainsQuery>({
-        query: DOMAINS,
-        variables: {
-            first: addresses.length,
-            where: { resolvedAddress_in: addresses },
-            orderBy: 'createdAt',
-            orderDirection: 'asc',
-        },
+
+    const normalizedAddresses = addresses.map((address) =>
+        address.toLowerCase()
+    );
+
+    const result = await ensClient.query<GetAliasedEnsDomainsQuery>({
+        query: buildAliasedEnsDomainsQuery(normalizedAddresses),
     });
 
-    const domains = result.data.domains ?? [];
-    const domainsByAddress = domains.reduce((prev, curr) => {
-        const address = curr.resolvedAddress?.id ?? '';
-        return {
-            ...prev,
-            [address]: curr,
-        };
+    const domains = Object.values(result.data ?? {}).flat();
+
+    const domainsByAddress = domains.reduce((acc, curr) => {
+        const address = curr.resolvedAddress?.id.toLowerCase() ?? '';
+
+        if (address) acc[address] = curr;
+
+        return acc;
     }, {} as GetDomainsResult);
 
     console.info(
@@ -147,7 +185,7 @@ const getDomains = async (addresses: string[]): Promise<GetDomainsResult> => {
 const addENSName = async (entries: Entry[]): Promise<ENSPayload> => {
     if (!entries || (entries && entries.length === 0))
         return { state: 'ok', data: [] };
-    const timeLabel = `${ACTION_NAME.addENSName}(${entries.length})`;
+    const timeLabel = `${ACTION_NAME.addENSName}(${addEnsNameCounter.next()})`;
     console.time(timeLabel);
 
     let state: PayloadState = 'ok';
