@@ -9,7 +9,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { ObservableQuery } from '@apollo/client';
 import { ethers } from 'ethers';
-import { GetEnsDomainsQuery } from '../../../src/graphql/queries/ensDomains';
+import {
+    GetAliasedEnsDomainsQuery,
+    getDomainAlias,
+} from '../../../src/graphql/queries/ensDomains';
 import client from '../../../src/services/apolloENSClient';
 import {
     getENSData,
@@ -56,9 +59,8 @@ const createAvatarUrlResolver = (url: string) => {
 
 const buildENSResponse = () => [
     {
-        createdAt: 1740987259,
-        id: '1',
-        name: 'my-pool',
+        name: 'my-pool.eth',
+        labelName: 'my-pool',
         resolvedAddress: {
             id: validAddress,
         },
@@ -66,9 +68,15 @@ const buildENSResponse = () => [
 ];
 
 const setENSQueryReturn = (list: QueriedDomain[]) => {
+    const response = list.reduce((acc, curr) => {
+        const alias = getDomainAlias(curr.resolvedAddress?.id ?? '');
+        acc[alias] = [curr];
+        return acc;
+    }, {} as GetAliasedEnsDomainsQuery);
+
     clientMock.query.mockResolvedValue({
-        data: { domains: list },
-    } as ObservableQuery.Result<GetEnsDomainsQuery>);
+        data: response,
+    } as ObservableQuery.Result<GetAliasedEnsDomainsQuery>);
 };
 
 const validAddress = '0x07b41c2b437e69dd1523bf1cff5de63ad9bb3dc6';
@@ -108,21 +116,12 @@ describe('ENS Functions', () => {
         });
 
         it('should set the name when returned from ENS service', async () => {
-            setENSQueryReturn([
-                {
-                    createdAt: 1740987259,
-                    id: '1',
-                    name: 'my-pool',
-                    resolvedAddress: {
-                        id: validAddress,
-                    },
-                },
-            ]);
+            setENSQueryReturn(buildENSResponse());
             const {
                 data: [expectedData],
             } = await getENSData([entry]);
 
-            expect(expectedData).toHaveProperty('name', 'my-pool');
+            expect(expectedData).toHaveProperty('name', 'my-pool.eth');
             expect(expectedData).toHaveProperty('hasEns', true);
             expect(expectedData).toHaveProperty('avatarUrl', '');
         });
@@ -138,7 +137,7 @@ describe('ENS Functions', () => {
                 data: [expectedData],
             } = await getENSData([entry]);
 
-            expect(expectedData).toHaveProperty('name', 'my-pool');
+            expect(expectedData).toHaveProperty('name', 'my-pool.eth');
             expect(expectedData).toHaveProperty('hasEns', true);
             expect(expectedData).toHaveProperty(
                 'avatarUrl',
@@ -202,12 +201,12 @@ describe('ENS Functions', () => {
                 address: validAddress,
                 avatarUrl: null,
                 hasEns: true,
-                name: 'my-pool',
+                name: 'my-pool.eth',
             });
 
             expect(errorLog).toHaveBeenCalledTimes(1);
             expect(errorLog.mock.calls[0][0]).toEqual(
-                'GET_AVATAR_URL: (my-pool) => Fail to get avatar.\nReason: no name found!'
+                'GET_AVATAR_URL: (my-pool.eth) => Fail to get avatar.\nReason: no name found!'
             );
         });
     });
@@ -216,9 +215,7 @@ describe('ENS Functions', () => {
         it('should partition request when entries are above the limit', async () => {
             setENSQueryReturn([
                 {
-                    createdAt: 1740987259,
-                    id: '1',
-                    name: 'my-pool',
+                    name: 'my-pool.eth',
                     resolvedAddress: {
                         id: validAddress,
                     },
@@ -241,7 +238,7 @@ describe('ENS Functions', () => {
                 ...entry,
                 avatarUrl: 'http://host.com/avatar.png',
                 hasEns: true,
-                name: 'my-pool',
+                name: 'my-pool.eth',
             };
 
             expect(expectedPayloads.length).toEqual(2);
