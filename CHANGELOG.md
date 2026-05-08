@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.4] - 2026-05-08
+
+-   Improve efficiency when fetching ENS data.
+-   Upgrade dependencies to keep maintenance with latest releases.
+
 ## [3.12.3] - 2025-12-12
 
 -   Apply security patches to mitigate published CVE-2025-55183 and CVE-2025-55184
@@ -455,7 +460,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.3...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.4...HEAD
+[3.12.4]: https://github.com/cartesi/explorer/compare/v3.12.4...v3.12.3
 [3.12.3]: https://github.com/cartesi/explorer/compare/v3.12.3...v3.12.2
 [3.12.2]: https://github.com/cartesi/explorer/compare/v3.12.2...v3.12.1
 [3.12.1]: https://github.com/cartesi/explorer/compare/v3.12.1...v3.12.0
