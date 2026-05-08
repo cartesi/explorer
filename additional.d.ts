@@ -56,6 +56,14 @@ declare namespace NodeJS {
         HTTP_MAINNET_NODE_RPC: string;
 
         /**
+         * @summary Maximum number of concurrent calls when fetching ENS record data using the RPC node.
+         * @description This is to avoid overwhelming the RPC node with too many requests at once,
+         *  which can lead to rate limiting or timeouts.
+         * @default 8
+         */
+        ENS_RESOLVER_RPC_CONCURRENT_CALLS: string;
+
+        /**
          * Maximum number of entries per request when fetching ENS information. It is configurable but default and maximum is 900 entries.
          * Therefore, the number here dictates the relation between entries-limit and concurrent calls to be created when this limit is exceeded.
          * @default 900
