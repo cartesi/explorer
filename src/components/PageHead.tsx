@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
-import Head from 'next/head';
 import { isString } from 'lodash';
+import Head from 'next/head';
+import { FC } from 'react';
+import { getTinyGraphsServiceUrl } from '../utils/tinygraph';
 
 export interface PageHead {
     name?: string;
@@ -25,7 +26,7 @@ const PageHead: FC<PageHead> = ({
                 <meta name="description" content={description} />
             )}
             <link rel="icon" href="/favicon.ico" />
-            <link rel="preconnect" href="https://tinygraphs.cartesi.io" />.
+            <link rel="preconnect" href={getTinyGraphsServiceUrl()} />.
         </Head>
     );
 };
