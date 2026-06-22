@@ -1,7 +1,8 @@
-import { FC, ReactNode } from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Providers from '../providers/Providers';
 import { Metadata } from 'next';
+import { FC, ReactNode } from 'react';
+import Providers from '../providers/Providers';
+import { getTinyGraphsServiceUrl } from '../utils/tinygraph';
 
 export const metadata: Metadata = {
     title: {
@@ -22,7 +23,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
     return (
         <html lang="en">
             <head>
-                <link rel="preconnect" href="https://tinygraphs.cartesi.io" />
+                <link rel="preconnect" href={getTinyGraphsServiceUrl()} />
             </head>
             <body>
                 <Providers>{children}</Providers>

@@ -81,5 +81,11 @@ declare namespace NodeJS {
          * functions under /api/cron/*. It can be any agreed value.
          */
         CRON_SECRET: string;
+
+        /**
+         * The URL of the tinygraphs service, which provides user avatars based on their Ethereum address.
+         * It can be a custom deployment or a public instance.
+         */
+        NEXT_PUBLIC_TINYGRAPHS_URL: string;
     }
 }

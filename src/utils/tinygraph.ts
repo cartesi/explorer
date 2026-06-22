@@ -31,9 +31,29 @@ export const shapes = [
     'labs/isogrids/hexa16', // Hexa rotation 1/6
 ];
 
+/**
+ * Returns the base URL for the tinygraphs service,
+ * which can be configured through the environment variable NEXT_PUBLIC_TINYGRAPHS_URL.
+ * If the environment variable is not set, it defaults to the Cartesi provided service.
+ * @returns The base URL for the tinygraphs service.
+ */
+export const getTinyGraphsServiceUrl = () => {
+    return (
+        process.env.NEXT_PUBLIC_TINYGRAPHS_URL || 'https://tinygraph.cartesi.io'
+    );
+};
+
+/**
+ * Generates a URL for a tiny graph image based on ethereum address and optional shape index.
+ * The URL is constructed using the block's producer ID, chain number, and protocol version to determine the theme and shape of the graph.
+ * @param block The block object containing information about the producer, chain, and protocol version.
+ * @param shapeIndex Optional index to override the default shape selection.
+ * @returns The URL of the generated tiny graph image.
+ */
 export const tinyGraphUrl = (block: Block, shapeIndex?: number): string => {
     const themeId = block.chain.number % themes.length;
+    const tinyGraphsBaseUrl = getTinyGraphsServiceUrl();
     const shapeId =
         shapeIndex ?? (block.chain.protocol.version - 1) % shapes.length;
-    return `https://tinygraphs.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
+    return `${tinyGraphsBaseUrl}/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`;
 };

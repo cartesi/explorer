@@ -9,8 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { tinyGraphUrl, themes, shapes } from '../../src/utils/tinygraph';
 import { Block } from '../../src/graphql/models';
+import { shapes, themes, tinyGraphUrl } from '../../src/utils/tinygraph';
 
 const block = {
     chain: {
@@ -41,7 +41,22 @@ describe('tinygraph util', () => {
         const shapeId = (block.chain.protocol.version - 1) % shapes.length;
 
         expect(tinyGraphUrl(block)).toBe(
-            `https://tinygraphs.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`
+            `https://tinygraph.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`
         );
+    });
+
+    it('should override the tiny-graph url with env variable set', () => {
+        const customEndpoint = 'https://custom-tinygraphs.fly.dev';
+        const originalValue = process.env.NEXT_PUBLIC_TINYGRAPHS_URL;
+        process.env.NEXT_PUBLIC_TINYGRAPHS_URL = customEndpoint;
+
+        const themeId = block.chain.number % themes.length;
+        const shapeId = (block.chain.protocol.version - 1) % shapes.length;
+
+        expect(tinyGraphUrl(block)).toBe(
+            `${customEndpoint}/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`
+        );
+
+        process.env.NEXT_PUBLIC_TINYGRAPHS_URL = originalValue;
     });
 });
