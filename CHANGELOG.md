@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.5] - 2026-06-29
+
+-   Update the tinygraphs service endpoint to be configurable (i.e. through environment variable).
+
 ## [3.12.4] - 2026-05-08
 
 -   Improve efficiency when fetching ENS data.
@@ -460,7 +464,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.4...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.5...HEAD
+[3.12.5]: https://github.com/cartesi/explorer/compare/v3.12.5...v3.12.4
 [3.12.4]: https://github.com/cartesi/explorer/compare/v3.12.4...v3.12.3
 [3.12.3]: https://github.com/cartesi/explorer/compare/v3.12.3...v3.12.2
 [3.12.2]: https://github.com/cartesi/explorer/compare/v3.12.2...v3.12.1
