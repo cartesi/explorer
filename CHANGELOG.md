@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.6] - 2026-09-21
+
+-   Upgrade to Next.js 16 ahead of the 15.x maintenance window closing on 21 Oct 2026.
+-   Upgrade React, Storybook and Vite dependencies to keep maintenance with latest releases.
+-   Add a build step to the CI workflow.
+
 ## [3.12.5] - 2026-06-29
 
 -   Update the tinygraphs service endpoint to be configurable (i.e. through environment variable).
@@ -464,7 +470,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.5...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.6...HEAD
+[3.12.6]: https://github.com/cartesi/explorer/compare/v3.12.6...v3.12.5
 [3.12.5]: https://github.com/cartesi/explorer/compare/v3.12.5...v3.12.4
 [3.12.4]: https://github.com/cartesi/explorer/compare/v3.12.4...v3.12.3
 [3.12.3]: https://github.com/cartesi/explorer/compare/v3.12.3...v3.12.2
