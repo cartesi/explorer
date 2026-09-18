@@ -9,6 +9,8 @@ const ContentSecurityPolicy = `
 module.exports = {
     typedRoutes: true,
     reactStrictMode: true,
+    // Do not generate the AGENTS.md / CLAUDE.md files next writes on "next dev".
+    agentRules: false,
     async headers() {
         return [
             {

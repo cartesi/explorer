@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import type { Route } from 'next';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react';
 import userEvent from '@testing-library/user-event';
@@ -17,7 +18,7 @@ import UsersStat, {
 } from '../../../../src/components/stake/stats/UsersStat';
 import { withChakraTheme } from '../../../test-utilities';
 
-const defaultLocation = 'Bulgaria, Sofia';
+const defaultLocation: Route = '/stake';
 
 const EUsersStat = withChakraTheme<UsersStatProps>(UsersStat);
 

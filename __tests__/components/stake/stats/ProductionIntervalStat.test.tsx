@@ -9,13 +9,14 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import type { Route } from 'next';
 import { render, screen } from '@testing-library/react';
 import ProductionIntervalStat, {
     ProductionIntervalStatProps,
 } from '../../../../src/components/stake/stats/ProductionIntervalStat';
 import { withChakraTheme } from '../../../test-utilities';
 
-const defaultLocation = 'Bulgaria, Sofia';
+const defaultLocation: Route = '/stake';
 
 const EProductionIntervalStat = withChakraTheme<ProductionIntervalStatProps>(
     ProductionIntervalStat

@@ -9,6 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+import type { Route } from 'next';
 import { render, screen } from '@testing-library/react';
 import CommissionStat, {
     CommissionStatProps,
@@ -23,7 +24,7 @@ const defaultFee = {
     created: 1657193076608,
     lastUpdated: 1657193076608,
 };
-const defaultLocation = 'us';
+const defaultLocation: Route = '/stake';
 
 const ECommissionStat = withChakraTheme<CommissionStatProps>(CommissionStat);
 
