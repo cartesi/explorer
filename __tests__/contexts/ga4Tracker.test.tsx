@@ -61,7 +61,7 @@ describe('ga4Tracker context', () => {
         mockUseWallet.mockReturnValue(walletMock);
         process.env = {
             NODE_ENV: 'production',
-        };
+        } as NodeJS.ProcessEnv;
     });
 
     afterAll(() => {
@@ -90,7 +90,7 @@ describe('ga4Tracker context', () => {
     it('should not initialize ReactGA in non-production mode', async () => {
         process.env = {
             NODE_ENV: 'development',
-        };
+        } as NodeJS.ProcessEnv;
         const mockedImplementation = jest.fn();
         mockedInitialize.mockImplementation(mockedImplementation);
         render(<GA4TrackerProvider>Content</GA4TrackerProvider>);
@@ -103,7 +103,7 @@ describe('ga4Tracker context', () => {
     it('should invoke GA event for wallet selection', async () => {
         process.env = {
             NODE_ENV: 'production',
-        };
+        } as NodeJS.ProcessEnv;
         const mockedImplementation = jest.fn();
         mockedEvent.mockImplementation(mockedImplementation);
 
@@ -132,7 +132,7 @@ describe('ga4Tracker context', () => {
     it('should invoke GA set function with user data', async () => {
         process.env = {
             NODE_ENV: 'production',
-        };
+        } as NodeJS.ProcessEnv;
         const mockedImplementation = jest.fn();
         mockedSet.mockImplementation(mockedImplementation);
         //Wallet is not connected

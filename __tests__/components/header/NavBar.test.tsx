@@ -12,7 +12,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
 import { act } from 'react';
-import { NavBar, NavLink } from '../../../src/components/header/NavBar';
+import {
+    HeaderLink,
+    NavBar,
+    NavLink,
+} from '../../../src/components/header/NavBar';
 import { useWallet } from '../../../src/components/wallet/useWallet';
 import { withChakraTheme } from '../../test-utilities';
 
@@ -44,7 +48,7 @@ const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const mockUsePathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
-const defaultProps = {
+const defaultProps: { links: HeaderLink[] } = {
     links: [
         {
             key: 'home',
