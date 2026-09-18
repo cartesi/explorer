@@ -33,6 +33,9 @@ jobs:
       - name: Run Tests
         run: pnpm test:ci
 
+      - name: Build
+        run: pnpm exec dotenv -c development -- next build
+
       - name: Publish coveralls report
         uses: coverallsapp/github-action@master
         with:
