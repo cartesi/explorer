@@ -5,6 +5,9 @@ trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200 # minutes = 30 days
 
 allowBuilds:
+  # Reached via jest-haste-map (watch mode only). Its install script is a
+  # node-gyp fallback; the prebuilt platform package is used instead.
+  '@parcel/watcher': false
   bufferutil: true
   core-js: true
   core-js-pure: true
