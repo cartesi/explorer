@@ -60,7 +60,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
 
         const numberFormat = new Intl.NumberFormat('en-US', options);
         const valueFormatted = numberFormat.format(
-            value ? parseFloat(formatUnits(value, 18)) : 0
+            value ? parseFloat(formatUnits(value, 18)) : 0,
         );
 
         return valueFormatted;

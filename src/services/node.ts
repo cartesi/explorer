@@ -88,7 +88,7 @@ export const useNode = (address: string): Node => {
             const retired = await workerManager.isRetired(address);
             const authorized = await workerManager.isAuthorized(
                 address,
-                pos.address
+                pos.address,
             );
             const authorized1 = pos1
                 ? await workerManager.isAuthorized(address, pos1.address)
@@ -132,7 +132,7 @@ export const useNode = (address: string): Node => {
             transaction.set(
                 workerManager.hireAndAuthorize(address, pos.address, {
                     value,
-                })
+                }),
             );
         }
     };

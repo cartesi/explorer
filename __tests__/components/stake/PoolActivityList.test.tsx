@@ -84,7 +84,7 @@ describe('Pool Activity List', () => {
         fireEvent.click(screen.getByText('Load more...').closest('button'));
 
         expect(
-            screen.getByText('All pool activities loaded')
+            screen.getByText('All pool activities loaded'),
         ).toBeInTheDocument();
     });
 });

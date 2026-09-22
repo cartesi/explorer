@@ -24,8 +24,7 @@ export interface AlertMessage {
 }
 
 export interface ITransactionInfoBannerProps
-    extends AlertRootProps,
-        AlertMessage {
+    extends AlertRootProps, AlertMessage {
     transaction: Transaction<any>;
     onBeginTransaction?: () => void;
     onEndTransaction?: () => void;
@@ -59,8 +58,8 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const status = innerTransaction?.error
         ? 'error'
         : progress >= 1
-        ? 'success'
-        : 'info';
+          ? 'success'
+          : 'info';
 
     const isSuccess = status === 'success';
     const isError = status === 'error';
@@ -100,7 +99,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
-        `dark.support.${status}`
+        `dark.support.${status}`,
     );
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');
     const addressColor = useColorModeValue('gray.900', 'white');

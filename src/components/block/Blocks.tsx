@@ -66,7 +66,7 @@ const BlockList = (props: BlockListProps) => {
     const blocks = (data?.blocks || []) as BlocksData['blocks'];
     const highlightColor = useColorModeValue(
         'dark.gray.senary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
 
     // handler for the "load more" button

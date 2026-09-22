@@ -41,7 +41,7 @@ jest.mock('@web3-onboard/core', () => {
 });
 
 const defaultChainIds = Object.keys(networks).map(
-    (key) => `0x${Number(key).toString(16)}`
+    (key) => `0x${Number(key).toString(16)}`,
 );
 const defaultAppMetadata: Record<string, string> = {
     name: 'Cartesi Explorer App',
@@ -94,7 +94,7 @@ describe('useOnBoard', () => {
             expect(
                 (config.appMetadata as unknown as Record<string, string>)?.[
                     appMetadataKey
-                ]
+                ],
             ).toBe(defaultAppMetadata[appMetadataKey]);
         });
     });
@@ -153,7 +153,7 @@ describe('useOnBoard', () => {
         expect(
             checkNetwork(10, chainIdsAsNumbers)
                 ?.toString()
-                .includes('UnsupportedNetworkError')
+                .includes('UnsupportedNetworkError'),
         ).toBe(true);
     });
 
@@ -221,7 +221,7 @@ describe('useOnBoard', () => {
             useOnboard({
                 chainIds: defaultChainIds,
                 appMetaData: defaultAppMetadata,
-            })
+            }),
         );
 
         await waitFor(() => {
@@ -260,7 +260,7 @@ describe('useOnBoard', () => {
             useOnboard({
                 chainIds: defaultChainIds,
                 appMetaData: defaultAppMetadata,
-            })
+            }),
         );
 
         await act(async () => {
@@ -303,7 +303,7 @@ describe('useOnBoard', () => {
             useOnboard({
                 chainIds: defaultChainIds,
                 appMetaData: defaultAppMetadata,
-            })
+            }),
         );
 
         await act(async () => {
@@ -349,7 +349,7 @@ describe('useOnBoard', () => {
             useOnboard({
                 chainIds: defaultChainIds,
                 appMetaData: defaultAppMetadata,
-            })
+            }),
         );
 
         await act(async () => {

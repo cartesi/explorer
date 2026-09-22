@@ -28,8 +28,8 @@ describe('Staking Wallet Connect', () => {
         renderComponent();
         expect(
             screen.getByText(
-                'You will be leaded to the connecting process of selected wallet.'
-            )
+                'You will be leaded to the connecting process of selected wallet.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -46,7 +46,7 @@ describe('Staking Wallet Connect', () => {
                 onConnect={() => {
                     isTriggered = true;
                 }}
-            />
+            />,
         );
 
         fireEvent.click(screen.getByText('Connect Your Wallet'));

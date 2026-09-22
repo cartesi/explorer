@@ -32,7 +32,7 @@ describe('Staking Guide', () => {
 
         steps.forEach((step, index) => {
             expect(
-                screen.getByText(`${index + 1}. ${step.title}`)
+                screen.getByText(`${index + 1}. ${step.title}`),
             ).toBeInTheDocument();
         });
     });

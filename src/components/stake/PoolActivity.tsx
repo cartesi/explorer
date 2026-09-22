@@ -26,12 +26,12 @@ export const PoolActivity: FC<IPoolActivityProps> = ({ poolAddress }) => {
     const previousWeekDay = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate() - 7
+        today.getDate() - 7,
     );
     const previousMonthDay = new Date(
         today.getFullYear(),
         today.getMonth() - 1,
-        1
+        1,
     );
 
     const poolFilters = [

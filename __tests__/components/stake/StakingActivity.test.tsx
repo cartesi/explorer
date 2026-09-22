@@ -36,7 +36,7 @@ describe('Staking Activity', () => {
     // a default configured component
     const renderActivities = () =>
         render(
-            <Component userAccount={USER_ACCOUNT} poolAddress={POOL_ADDRESS} />
+            <Component userAccount={USER_ACCOUNT} poolAddress={POOL_ADDRESS} />,
         );
 
     beforeEach(() => {
@@ -69,7 +69,7 @@ describe('Staking Activity', () => {
         expect(screen.getByText('My staking activities')).toBeInTheDocument();
         expect(screen.getByRole('progressbar')).toBeInTheDocument();
         expect(
-            screen.getByText('Loading staking activities with this pool')
+            screen.getByText('Loading staking activities with this pool'),
         ).toBeInTheDocument();
     });
 
@@ -85,8 +85,8 @@ describe('Staking Activity', () => {
 
         expect(
             screen.getByText(
-                'You haven’t had any transaction yet. Start delegation by depositing.'
-            )
+                'You haven’t had any transaction yet. Start delegation by depositing.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -118,7 +118,7 @@ describe('Staking Activity', () => {
         fireEvent.click(loadMoreEl);
 
         expect(
-            await screen.findByText('All activities loaded')
+            await screen.findByText('All activities loaded'),
         ).toBeInTheDocument();
 
         expect(screen.queryByText('Load more...')).not.toBeInTheDocument();

@@ -19,7 +19,7 @@ describe('SlideDown component', () => {
         render(
             <SlideDown display>
                 <DummyComponent text="Create your own pool" />
-            </SlideDown>
+            </SlideDown>,
         );
 
         expect(screen.queryByText('Create your own pool')).toBeInTheDocument();
@@ -29,11 +29,11 @@ describe('SlideDown component', () => {
         render(
             <SlideDown display={false}>
                 <DummyComponent text="This text should not be displayed" />
-            </SlideDown>
+            </SlideDown>,
         );
 
         expect(
-            screen.queryByText('This text should not be displayed')
+            screen.queryByText('This text should not be displayed'),
         ).not.toBeInTheDocument();
     });
 });

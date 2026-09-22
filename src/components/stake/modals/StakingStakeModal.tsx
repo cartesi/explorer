@@ -48,7 +48,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
 }) => {
     const userBalanceFormatted = formatBigNumber(userBalance);
     const [stakedValue, setStakedValue] = useState<BigNumber>(
-        BigNumber.from(0)
+        BigNumber.from(0),
     );
     const formattedStakedValue = formatBigNumber(stakedValue);
     const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
@@ -124,7 +124,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                             p={0}
                                             data-testid="max-stake-button"
                                             disabled={stakedValue.eq(
-                                                userBalance
+                                                userBalance,
                                             )}
                                             onClick={() => {
                                                 setStakedValue(userBalance);

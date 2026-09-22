@@ -24,7 +24,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = (props) => {
     const placeholderColor = useColorModeValue('gray.500', 'white');
     const searchBackgroundColor = useColorModeValue(
         'white',
-        'dark.gray.tertiary'
+        'dark.gray.tertiary',
     );
     const textColor = useColorModeValue('gray.900', 'white');
 

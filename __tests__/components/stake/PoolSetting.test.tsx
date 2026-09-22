@@ -102,11 +102,11 @@ describe('PoolSetting', () => {
         mockUseStakingPool.mockReturnValue(stakingPool);
 
         mockUseStakingPoolFactory.mockReturnValue(
-            buildUseStakingPoolFactoryReturn()
+            buildUseStakingPoolFactoryReturn(),
         );
 
         mockUseTotalPoolBalance.mockReturnValue(
-            BigNumber.from(totalPoolBalance)
+            BigNumber.from(totalPoolBalance),
         );
 
         mockUseStakingPoolQuery.mockReturnValue({
@@ -221,7 +221,7 @@ describe('PoolSetting', () => {
 
             renderComponent();
             expect(
-                screen.queryByText('Pool manager action')
+                screen.queryByText('Pool manager action'),
             ).not.toBeInTheDocument();
         });
 
@@ -238,12 +238,12 @@ describe('PoolSetting', () => {
 
             expect(
                 screen.getByText(
-                    'upgrade your staking pool to use the new PoS version 2'
-                )
+                    'upgrade your staking pool to use the new PoS version 2',
+                ),
             ).toBeInTheDocument();
 
             const updateButton = screen.getByText(
-                'upgrade your staking pool to use the new PoS version 2'
+                'upgrade your staking pool to use the new PoS version 2',
             ).nextElementSibling;
 
             expect(updateButton).toBeDefined();

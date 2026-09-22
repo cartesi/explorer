@@ -129,7 +129,7 @@ describe('ENS Functions', () => {
         it('should search and update the avatar-url when the name is set', async () => {
             setENSQueryReturn(buildENSResponse());
             const resolver = createAvatarUrlResolver(
-                'https://host.com/avatar.png'
+                'https://host.com/avatar.png',
             );
             providerMock.prototype.getResolver.mockResolvedValue(resolver);
 
@@ -141,7 +141,7 @@ describe('ENS Functions', () => {
             expect(expectedData).toHaveProperty('hasEns', true);
             expect(expectedData).toHaveProperty(
                 'avatarUrl',
-                'https://host.com/avatar.png'
+                'https://host.com/avatar.png',
             );
         });
 
@@ -178,7 +178,7 @@ describe('ENS Functions', () => {
             expect(errorLog).toHaveBeenCalledTimes(1);
             expect(errorLog.mock.calls[0][0]).toHaveProperty(
                 'message',
-                'graphql-mock-error'
+                'graphql-mock-error',
             );
         });
 
@@ -206,7 +206,7 @@ describe('ENS Functions', () => {
 
             expect(errorLog).toHaveBeenCalledTimes(1);
             expect(errorLog.mock.calls[0][0]).toEqual(
-                'GET_AVATAR_URL: (my-pool.eth) => Fail to get avatar.\nReason: no name found!'
+                'GET_AVATAR_URL: (my-pool.eth) => Fail to get avatar.\nReason: no name found!',
             );
         });
     });
@@ -222,7 +222,7 @@ describe('ENS Functions', () => {
                 },
             ]);
             const resolver = createAvatarUrlResolver(
-                'http://host.com/avatar.png'
+                'http://host.com/avatar.png',
             );
             providerMock.prototype.getResolver.mockResolvedValue(resolver);
 
@@ -256,13 +256,13 @@ describe('ENS Functions', () => {
 
             expect(infoLog).toHaveBeenCalledTimes(10);
             expect(infoLog.mock.calls[0][0]).toEqual(
-                '(GET_FRESH_ENS_DATA): Maximum items per request 2'
+                '(GET_FRESH_ENS_DATA): Maximum items per request 2',
             );
             expect(infoLog.mock.calls[1][0]).toEqual(
-                '(GET_FRESH_ENS_DATA): Total stale entries to check 3'
+                '(GET_FRESH_ENS_DATA): Total stale entries to check 3',
             );
             expect(infoLog.mock.calls[2][0]).toEqual(
-                '(GET_FRESH_ENS_DATA): Breaking into 2 concurrent calls'
+                '(GET_FRESH_ENS_DATA): Breaking into 2 concurrent calls',
             );
         });
     });

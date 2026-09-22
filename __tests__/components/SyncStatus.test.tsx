@@ -55,7 +55,7 @@ describe('SyncStatus component', () => {
     it('should not display anything if no issues occurred', () => {
         render(<Component />);
         expect(() => screen.getByText('Synchronization delay')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
@@ -90,8 +90,8 @@ describe('SyncStatus component', () => {
             screen.getByText(
                 `Synchronization issue between backend data and blockchain data. Backend data delayed by ${
                     mockedBlockNumber - metaData.block.number
-                } blocks.`
-            )
+                } blocks.`,
+            ),
         ).toBeInTheDocument();
     });
 });

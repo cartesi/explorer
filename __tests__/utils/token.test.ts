@@ -22,14 +22,14 @@ describe('token util', () => {
         });
 
         expect(formatCTSI(amount, decimals)).toBe(
-            numberFormat.format(parseFloat(formatUnits(amount, 18)))
+            numberFormat.format(parseFloat(formatUnits(amount, 18))),
         );
     });
 
     it('should correctly convert to CTSI', () => {
         const amount = BigNumber.from('100000000000000000');
         expect(toCTSI(amount)).toStrictEqual(
-            FixedNumber.from(formatUnits(amount, 18))
+            FixedNumber.from(formatUnits(amount, 18)),
         );
     });
 
@@ -38,7 +38,7 @@ describe('token util', () => {
         const decimals = 10;
 
         expect(toBigNumber(amount, decimals)).toStrictEqual(
-            parseUnits(amount.toString(), decimals)
+            parseUnits(amount.toString(), decimals),
         );
     });
 });

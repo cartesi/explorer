@@ -59,19 +59,19 @@ const ConfirmationIndicator = (props: ConfirmationIndicatorProps) => {
                     showMe === ShowStoppers.SHOW
                         ? { opacity: 1 }
                         : showMe === ShowStoppers.FADING_OUT
-                        ? {
-                              opacity: 0,
-                              transition: `opacity 2s ease-in`,
-                          }
-                        : { display: 'none' }
+                          ? {
+                                opacity: 0,
+                                transition: `opacity 2s ease-in`,
+                            }
+                          : { display: 'none' }
                 }
             >
                 <span className="confirmation-indicator-text">
                     {showMe === ShowStoppers.SHOW
                         ? 'Pending'
                         : showMe === ShowStoppers.FADING_OUT && error
-                        ? 'Failure'
-                        : 'Success'}
+                          ? 'Failure'
+                          : 'Success'}
                 </span>
 
                 {showMe === ShowStoppers.SHOW ? (

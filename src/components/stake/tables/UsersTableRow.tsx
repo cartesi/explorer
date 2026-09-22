@@ -31,7 +31,7 @@ export interface UsersTableRowProps {
 }
 
 const calculateStakedCTSI = (
-    balance: PoolBalanceWithAccumulatedShares
+    balance: PoolBalanceWithAccumulatedShares,
 ): BigNumber => {
     const uShares = BigNumber.from(balance.shares ?? 0);
     const pAmount = BigNumber.from(balance.pool.amount ?? 0);
@@ -42,7 +42,7 @@ const calculateStakedCTSI = (
 
 const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     const formattedStakeTime = dateTimeFormat.format(
-        balance.stakeTimestamp * 1000
+        balance.stakeTimestamp * 1000,
     );
 
     const stakedBalance = calculateStakedCTSI(balance);
@@ -51,7 +51,7 @@ const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
         'WhiteSmoke',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const addressColor = useColorModeValue('gray.900', 'white');

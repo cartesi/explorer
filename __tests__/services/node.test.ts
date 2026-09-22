@@ -125,10 +125,10 @@ describe('node service', () => {
     beforeEach(() => {
         mockedIsAddress.mockReturnValue(true);
         mockUseWallet.mockReturnValue(
-            walletData as unknown as WalletConnectionContextProps
+            walletData as unknown as WalletConnectionContextProps,
         );
         mockedUseWorkerManagerContract.mockReturnValue(
-            workerManager as unknown as WorkerManagerAuthManagerImpl
+            workerManager as unknown as WorkerManagerAuthManagerImpl,
         );
         mockedUseTransaction.mockReturnValue({
             set: jest.fn(),

@@ -23,7 +23,7 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
 );
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
@@ -51,27 +51,31 @@ const UsersChart: FC<UsersChartProps> = (props) => {
         initialData.length > 1
             ? initialData
             : initialData.length === 1
-            ? [
-                  ...initialData,
-                  {
-                      ...initialData[0],
-                      timestamp: Math.floor(endOfMonth(month).getTime() / 1000),
-                  },
-              ]
-            : [
-                  {
-                      timestamp: Math.floor(
-                          startOfMonth(month).getTime() / 1000
-                      ),
-                      totalUsers,
-                  },
-                  {
-                      timestamp: Math.floor(endOfMonth(month).getTime() / 1000),
-                      totalUsers,
-                  },
-              ];
+              ? [
+                    ...initialData,
+                    {
+                        ...initialData[0],
+                        timestamp: Math.floor(
+                            endOfMonth(month).getTime() / 1000,
+                        ),
+                    },
+                ]
+              : [
+                    {
+                        timestamp: Math.floor(
+                            startOfMonth(month).getTime() / 1000,
+                        ),
+                        totalUsers,
+                    },
+                    {
+                        timestamp: Math.floor(
+                            endOfMonth(month).getTime() / 1000,
+                        ),
+                        totalUsers,
+                    },
+                ];
     const labels = data.map((item) =>
-        dateTimeFormat.format(item.timestamp * 1000)
+        dateTimeFormat.format(item.timestamp * 1000),
     );
     const hasData = initialData.length > 0;
     const hasUsers = totalUsers > 0;
@@ -91,10 +95,10 @@ const UsersChart: FC<UsersChartProps> = (props) => {
         visibleUsers >= 100
             ? 50
             : visibleUsers >= 50
-            ? 20
-            : visibleUsers >= 20
-            ? 2
-            : 1;
+              ? 20
+              : visibleUsers >= 20
+                ? 2
+                : 1;
 
     const maxY =
         stepSize > 1 && maxUsers < round(maxUsers, stepSize)
@@ -105,8 +109,8 @@ const UsersChart: FC<UsersChartProps> = (props) => {
         stepSize > 1 && minUsers > round(minUsers, stepSize)
             ? round(minUsers, stepSize)
             : stepSize === 2 && minUsers % 2 !== 0
-            ? minUsers - 1
-            : minUsers;
+              ? minUsers - 1
+              : minUsers;
 
     const { colorMode } = useColorMode();
     const [lineColorFromCssVar, tickLightColor, tickDarkColor] = useToken(
@@ -115,7 +119,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
             colorMode === 'light' ? 'dark.secondary' : 'dark.primary',
             'gray.700',
             'whiteAlpha.800',
-        ]
+        ],
     );
     const tickColor = useColorModeValue(tickLightColor, tickDarkColor);
     const containerMinHeight = hasUsers ? '22rem' : '6rem';
@@ -163,7 +167,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
                                         const item = data[model.dataIndex];
 
                                         return tooltipTimeFormat.format(
-                                            item.timestamp * 1000
+                                            item.timestamp * 1000,
                                         );
                                     },
                                     label: (model: { dataIndex: number }) => {
@@ -188,7 +192,7 @@ const UsersChart: FC<UsersChartProps> = (props) => {
 
                                         return isObject(item)
                                             ? dateTimeFormat.format(
-                                                  item.timestamp * 1000
+                                                  item.timestamp * 1000,
                                               )
                                             : '';
                                     },

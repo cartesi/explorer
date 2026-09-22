@@ -50,7 +50,7 @@ const walletData = {
 describe('eth service', () => {
     beforeEach(() => {
         mockUseWallet.mockReturnValue(
-            walletData as unknown as WalletConnectionContextProps
+            walletData as unknown as WalletConnectionContextProps,
         );
     });
 
@@ -73,7 +73,7 @@ describe('eth service', () => {
 
         it('should return undefined balance if address is not valid', async () => {
             mockUseWallet.mockReturnValue(
-                walletData as unknown as WalletConnectionContextProps
+                walletData as unknown as WalletConnectionContextProps,
             );
             mockedIsAddress.mockReturnValue(false);
             const { result } = renderHook(() => useBalance(address));

@@ -41,7 +41,7 @@ describe('Staking Withdraw Modal', () => {
         renderComponent();
 
         expect(
-            screen.getByText('Withdraw from the pool balance to your wallet')
+            screen.getByText('Withdraw from the pool balance to your wallet'),
         ).toBeInTheDocument();
     });
 
@@ -49,14 +49,14 @@ describe('Staking Withdraw Modal', () => {
         render(<EStakingWithdrawModal {...defaultProps} isOpen={false} />);
 
         expect(() =>
-            screen.getByText('Withdraw from the pool balance to your wallet')
+            screen.getByText('Withdraw from the pool balance to your wallet'),
         ).toThrow('Unable to find an element');
     });
 
     it('Should invoke onClose callback', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
-            <EStakingWithdrawModal {...defaultProps} onClose={mockOnClick()} />
+            <EStakingWithdrawModal {...defaultProps} onClose={mockOnClick()} />,
         );
 
         const button = getByText('Cancel').closest('button');
@@ -74,7 +74,7 @@ describe('Staking Withdraw Modal', () => {
                 onSave={() => {
                     isSavedTriggered = true;
                 }}
-            />
+            />,
         );
 
         const button = getByRole('withdraw-button');
@@ -86,7 +86,7 @@ describe('Staking Withdraw Modal', () => {
 
     it('Should disable withdraw button when partial amount is selected', async () => {
         const { getByRole, getByText } = render(
-            <EStakingWithdrawModal {...defaultProps} />
+            <EStakingWithdrawModal {...defaultProps} />,
         );
 
         const input = getByText('Partial amount')
@@ -96,7 +96,7 @@ describe('Staking Withdraw Modal', () => {
         fireEvent.click(input);
 
         await waitFor(() =>
-            expect(getByRole('withdraw-button')).toBeInTheDocument()
+            expect(getByRole('withdraw-button')).toBeInTheDocument(),
         );
 
         expect(getByRole('withdraw-button')).toBeDisabled();

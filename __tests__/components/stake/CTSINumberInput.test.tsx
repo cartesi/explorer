@@ -42,7 +42,7 @@ describe('CTSI Number Input', () => {
     it('Should have correct initial value', async () => {
         const initialValue = 150;
         const { container } = render(
-            <ECTSINumberInput {...defaultProps} value={initialValue} />
+            <ECTSINumberInput {...defaultProps} value={initialValue} />,
         );
 
         const input = container.querySelector('input');

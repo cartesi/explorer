@@ -35,7 +35,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { data: { message: 'hello' } },
-            { status: 200 }
+            { status: 200 },
         );
     });
 
@@ -47,7 +47,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { data: { message: 'Entry created!' } },
-            { status: 201 }
+            { status: 201 },
         );
     });
 
@@ -59,7 +59,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { message: 'Unauthorized' },
-            { status: 401 }
+            { status: 401 },
         );
     });
 
@@ -71,7 +71,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { message: 'Method not allowed' },
-            { status: 405 }
+            { status: 405 },
         );
     });
 
@@ -83,7 +83,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { message: 'Not found' },
-            { status: 404 }
+            { status: 404 },
         );
     });
 
@@ -97,7 +97,7 @@ describe('Response Handler', () => {
 
         expect(jsonSpy).toHaveBeenCalledWith(
             { message: 'Something went wrong.' },
-            { status: 500 }
+            { status: 500 },
         );
     });
 });

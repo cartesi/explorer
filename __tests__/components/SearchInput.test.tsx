@@ -30,7 +30,7 @@ describe('SearchInput component', () => {
         const mockedOnSearchChange = jest.fn();
         const search = 'Some search';
         const { container } = render(
-            <Component {...props} onSearchChange={mockedOnSearchChange} />
+            <Component {...props} onSearchChange={mockedOnSearchChange} />,
         );
         const input = container.querySelector('input');
 

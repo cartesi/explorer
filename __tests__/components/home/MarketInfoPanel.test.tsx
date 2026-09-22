@@ -35,7 +35,7 @@ describe('MarketInfoPanel component', () => {
     it('should not display unit when value is zero', () => {
         render(<Component {...props} value={0} />);
         expect(() => screen.getByText(props.unit)).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

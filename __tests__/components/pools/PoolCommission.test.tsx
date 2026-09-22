@@ -58,7 +58,7 @@ describe('PoolCommission component', () => {
     it('should not display icon', () => {
         render(<Component {...props} />);
         expect(() => screen.getByTestId('pool-commission-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

@@ -56,7 +56,7 @@ describe('BlockTable component', () => {
     it('should display correct block chain protocol version', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(props.block.chain.protocol.version)
+            screen.getByText(props.block.chain.protocol.version),
         ).toBeInTheDocument();
     });
 
@@ -64,8 +64,8 @@ describe('BlockTable component', () => {
         render(<Component {...props} />);
         expect(
             screen.getByText(
-                new Date(props.block.timestamp * 1000).toUTCString()
-            )
+                new Date(props.block.timestamp * 1000).toUTCString(),
+            ),
         ).toBeInTheDocument();
     });
 });

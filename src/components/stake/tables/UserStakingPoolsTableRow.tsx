@@ -49,7 +49,7 @@ const UserStakingPoolsTableRow: FC<UserStakingPoolsTableRowProps> = ({
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
         'WhiteSmoke',
-        'dark.gray.tertiary'
+        'dark.gray.tertiary',
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');

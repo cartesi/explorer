@@ -72,7 +72,7 @@ describe('Transaction Info Banner', () => {
                     ...defaultTransaction,
                     error: 'Some error',
                 }}
-            />
+            />,
         );
         expect(screen.getByText(errorTransaction.error)).toBeInTheDocument();
     });
@@ -82,10 +82,10 @@ describe('Transaction Info Banner', () => {
             <ETransactionInfoBanner
                 {...defaultProps}
                 transaction={successTransaction}
-            />
+            />,
         );
         expect(
-            screen.getByText(defaultProps.successDescription)
+            screen.getByText(defaultProps.successDescription),
         ).toBeInTheDocument();
     });
 
@@ -98,7 +98,7 @@ describe('Transaction Info Banner', () => {
                 onSuccess={() => {
                     isTriggered = true;
                 }}
-            />
+            />,
         );
 
         expect(isTriggered).toBe(true);
@@ -113,7 +113,7 @@ describe('Transaction Info Banner', () => {
                 onError={() => {
                     isTriggered = true;
                 }}
-            />
+            />,
         );
 
         expect(isTriggered).toBe(true);

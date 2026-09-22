@@ -31,7 +31,7 @@ const formatDuration = (ms: number): string[] => {
 
 const formatPercentNumber = (
     value: number,
-    options?: Intl.NumberFormatOptions
+    options?: Intl.NumberFormatOptions,
 ) => {
     const formatter = new Intl.NumberFormat('en-US', options);
     return formatter.format(value * 100);
@@ -39,7 +39,7 @@ const formatPercentNumber = (
 
 const formatPercent = (
     value: BigNumberish,
-    options?: Intl.NumberFormatOptions
+    options?: Intl.NumberFormatOptions,
 ) => {
     if (typeof value === 'number') {
         return formatPercentNumber(value, options);
@@ -51,7 +51,7 @@ const formatPercent = (
 const format = (
     value: BigNumberish,
     unit: Unit,
-    options: Intl.NumberFormatOptions
+    options: Intl.NumberFormatOptions,
 ): string[] => {
     const numberFormat = new Intl.NumberFormat('en-US', options);
     switch (unit) {

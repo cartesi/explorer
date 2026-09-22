@@ -19,19 +19,19 @@ export const poolSortByAtom = atom<StakingPoolSort>('commissionPercentage');
 export const poolDataFetchingAtom = atom<boolean>(false);
 export const poolInfoListAtom = atom<PoolInfo[]>([]);
 export const hasPoolsAtom = atom<boolean>(
-    (get) => !isEmpty(get(poolInfoListAtom))
+    (get) => !isEmpty(get(poolInfoListAtom)),
 );
 
 // Node related atoms data and derivations
 export const nodeInfoListAtom = atom<NodeInfo[]>([]);
 export const nodeInfoFetchingAtom = atom<boolean>(false);
 export const hasPrivateNodeAtom = atom<boolean>(
-    (get) => !isEmpty(get(nodeInfoListAtom))
+    (get) => !isEmpty(get(nodeInfoListAtom)),
 );
 // Read-only derived state for node-info
 export const nodeInfoDataAtom = atom<{ list: NodeInfo[]; loading: boolean }>(
     (get) => ({
         list: get(nodeInfoListAtom),
         loading: get(nodeInfoFetchingAtom),
-    })
+    }),
 );

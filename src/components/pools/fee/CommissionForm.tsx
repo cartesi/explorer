@@ -93,7 +93,7 @@ const CommissionForm: FC<CommissionFormProps> = (props) => {
                 if (timeout > 0) {
                     return `Value can only be increased in ${humanizeDuration(
                         timeout,
-                        { round: true, largest: 2 }
+                        { round: true, largest: 2 },
                     )}`;
                 }
             }

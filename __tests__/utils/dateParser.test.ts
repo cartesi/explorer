@@ -22,7 +22,7 @@ describe('dateParser util', () => {
     it('should parse Date object', () => {
         const time = new Date();
         expect(toUnixTimestamp(time)).toEqual(
-            Math.floor(time.getTime() / 1000)
+            Math.floor(time.getTime() / 1000),
         );
     });
 
@@ -41,7 +41,7 @@ describe('dateParser util', () => {
             const resultInSeconds = getPastDaysInSeconds(7);
 
             expect(
-                differenceInDays(today, new Date(resultInSeconds * 1000))
+                differenceInDays(today, new Date(resultInSeconds * 1000)),
             ).toEqual(7);
         });
 
@@ -49,7 +49,7 @@ describe('dateParser util', () => {
             const resultInSeconds = getPastDaysInSeconds(30);
 
             expect(
-                differenceInDays(today, new Date(resultInSeconds * 1000))
+                differenceInDays(today, new Date(resultInSeconds * 1000)),
             ).toEqual(30);
         });
     });

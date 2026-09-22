@@ -23,7 +23,7 @@ describe('Banner component', () => {
         render(
             <Component {...defaultProps} {...props}>
                 Content
-            </Component>
+            </Component>,
         );
 
     it('should display icon', () => {
@@ -38,7 +38,7 @@ describe('Banner component', () => {
         renderComponent();
 
         expect(() => screen.getByTestId('banner-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

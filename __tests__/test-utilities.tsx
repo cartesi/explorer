@@ -20,12 +20,11 @@ import theme from '../src/styles/theme';
  */
 const withChakraTheme =
     <T,>(Component: FunctionComponent<T>): FunctionComponent<T> =>
-    (props: T) =>
-        (
-            <ChakraProvider value={theme}>
-                <Component {...props} />
-            </ChakraProvider>
-        );
+    (props: T) => (
+        <ChakraProvider value={theme}>
+            <Component {...props} />
+        </ChakraProvider>
+    );
 /**
  * Type definition so return mocks can be manipulated at ease e.g. useStaking or useCartesiToken
  */

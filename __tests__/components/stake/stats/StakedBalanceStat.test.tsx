@@ -26,7 +26,7 @@ describe('Staked Balance Stat', () => {
     // a default configured component
     const renderComponent = () =>
         render(
-            <EStakedBalanceStat stakedBalance={BigNumber.from(defaultValue)} />
+            <EStakedBalanceStat stakedBalance={BigNumber.from(defaultValue)} />,
         );
 
     it('Should display staked balance label', () => {

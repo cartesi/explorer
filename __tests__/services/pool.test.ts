@@ -115,7 +115,7 @@ describe('pool service', () => {
 
         it('should set a transaction when changing gas', async () => {
             mockedUseFlatRateCommissionContract.mockReturnValue(
-                flatRateCommissionContract as unknown as FlatRateCommission
+                flatRateCommissionContract as unknown as FlatRateCommission,
             );
             const mockedSet = jest.fn();
             mockedUseTransaction.mockReturnValue({
@@ -148,7 +148,7 @@ describe('pool service', () => {
                 expect(result.current.raiseTimeout).toStrictEqual(raiseTimeout);
                 expect(result.current.maxRaise).toStrictEqual(maxRaise);
                 expect(result.current.timeoutTimestamp).toStrictEqual(
-                    new Date(timeoutTimestamp.toNumber() * 1000)
+                    new Date(timeoutTimestamp.toNumber() * 1000),
                 );
             });
         });
@@ -160,7 +160,7 @@ describe('pool service', () => {
 
             const reward = BigNumber.from('1000000');
             const { result } = renderHook(() =>
-                useStakingPoolCommission(address, reward)
+                useStakingPoolCommission(address, reward),
             );
 
             expect(result.current.value).toBe(undefined);
@@ -175,14 +175,14 @@ describe('pool service', () => {
 
             const reward = BigNumber.from('1000000');
             const { result } = renderHook(() =>
-                useStakingPoolCommission(address, reward)
+                useStakingPoolCommission(address, reward),
             );
 
             await waitFor(() => {
                 expect(result.current.value).toStrictEqual(
                     FixedNumber.from(commission)
                         .divUnsafe(FixedNumber.from(reward))
-                        .toUnsafeFloat()
+                        .toUnsafeFloat(),
                 );
                 expect(result.current.loading).toBe(false);
             });
@@ -203,7 +203,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -227,7 +227,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -251,7 +251,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -275,7 +275,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -299,7 +299,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -323,7 +323,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -347,7 +347,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -371,7 +371,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -395,7 +395,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -419,7 +419,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -443,7 +443,7 @@ describe('pool service', () => {
             } as unknown as Transaction<any>);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await act(async () => {
@@ -479,7 +479,7 @@ describe('pool service', () => {
             } as unknown as StakingPoolImpl);
 
             const { result } = renderHook(() =>
-                useStakingPool(address, account)
+                useStakingPool(address, account),
             );
 
             await waitFor(() => {
@@ -487,16 +487,17 @@ describe('pool service', () => {
                 expect(result.current.amount).toStrictEqual(amount);
                 expect(result.current.pos).toStrictEqual(pos);
                 expect(result.current.depositTimestamp).toStrictEqual(
-                    new Date(balance.depositTimestamp.toNumber() * 1000)
+                    new Date(balance.depositTimestamp.toNumber() * 1000),
                 );
                 expect(result.current.withdrawBalance).toStrictEqual(
-                    withdrawBalance
+                    withdrawBalance,
                 );
                 expect(result.current.lockTime).toStrictEqual(lockTime);
                 expect(result.current.stakeTimestamp).toStrictEqual(
                     new Date(
-                        balance.depositTimestamp.add(lockTime).toNumber() * 1000
-                    )
+                        balance.depositTimestamp.add(lockTime).toNumber() *
+                            1000,
+                    ),
                 );
                 expect(result.current.balance).toStrictEqual(balance.balance);
                 expect(result.current.paused).toBe(paused);

@@ -10,10 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 export type ServiceError =
-    | 'not_an_user'
-    | 'method_not_allowed'
-    | 'unauthorized'
-    | 'unexpected';
+    'not_an_user' | 'method_not_allowed' | 'unauthorized' | 'unexpected';
 
 export type ServiceResult<TData> =
     | {

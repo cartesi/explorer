@@ -38,7 +38,7 @@ describe('Staking Pool Allowance Modal', () => {
         render(<EWalletMobileModal {...defaultProps} isOpen={false} />);
 
         expect(() => screen.getByText('Your account')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

@@ -15,7 +15,7 @@ const Banner: FC<BannerProps> = (props) => {
     const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'light.border.tertiary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
 
     return (

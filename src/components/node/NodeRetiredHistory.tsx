@@ -34,7 +34,7 @@ const History: FC<HistoryProps> = memo(
     ({ address, retirementTimestamp, ...restProps }) => {
         const [isLargerThan554] = useMediaQuery(['(min-width: 555px)']);
         const formattedTime = new Date(
-            retirementTimestamp * 1000
+            retirementTimestamp * 1000,
         ).toUTCString();
         const formattedAddress = isLargerThan554
             ? address
@@ -50,7 +50,7 @@ const History: FC<HistoryProps> = memo(
                 <Table.Cell>{formattedTime}</Table.Cell>
             </Table.Row>
         );
-    }
+    },
 );
 export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
     address,
@@ -59,7 +59,7 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
     const borderColor = useColorModeValue('black', 'white');
     const accordionHoverBg = useColorModeValue(
         'blackAlpha.50',
-        'whiteAlpha.50'
+        'whiteAlpha.50',
     );
     const { data } = useUserNodes(
         address,
@@ -67,7 +67,7 @@ export const NodeRetiredHistory: FC<NodeRetiredHistoryProps> = ({
         {
             where: { status: 'Retired' },
         },
-        'retirementTimestamp'
+        'retirementTimestamp',
     );
     return (
         <Box mt={8} mb={10}>

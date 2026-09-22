@@ -34,7 +34,7 @@ const defaultProps = {
 };
 
 const Component = withChakraTheme<UserStakingPoolsTableProps>(
-    UserStakingPoolsTable
+    UserStakingPoolsTable,
 );
 
 describe('Pool Performance Table', () => {

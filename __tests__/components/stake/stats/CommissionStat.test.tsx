@@ -36,7 +36,7 @@ describe('Commission Stat', () => {
                 commissionPercentage={defaultCommissionPercentage}
                 fee={defaultFee}
                 location={defaultLocation}
-            />
+            />,
         );
 
     it('Should display commission label', () => {
@@ -50,7 +50,7 @@ describe('Commission Stat', () => {
                 commissionPercentage={defaultCommissionPercentage}
                 fee={defaultFee}
                 location={defaultLocation}
-            />
+            />,
         );
 
         expect(screen.getByRole('big-number-text')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('Commission Stat', () => {
                 commissionPercentage={0}
                 fee={defaultFee}
                 location={defaultLocation}
-            />
+            />,
         );
 
         expect(screen.getByRole('commission-text')).toBeInTheDocument();
@@ -74,7 +74,7 @@ describe('Commission Stat', () => {
                 commissionPercentage={0}
                 fee={defaultFee}
                 location={defaultLocation}
-            />
+            />,
         );
 
         expect(screen.getByTestId('location-icon')).toBeInTheDocument();
@@ -84,7 +84,7 @@ describe('Commission Stat', () => {
         render(<ECommissionStat commissionPercentage={0} fee={defaultFee} />);
 
         expect(() => screen.getByRole('location-icon')).toThrow(
-            'Unable to find an accessible element with the role "location-icon"'
+            'Unable to find an accessible element with the role "location-icon"',
         );
     });
 });

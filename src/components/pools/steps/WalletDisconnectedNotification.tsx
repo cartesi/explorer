@@ -22,5 +22,5 @@ export const WalletDisconnectedNotification = forwardRef<HTMLDivElement>(
                 </Notification>
             </div>
         );
-    }
+    },
 );

@@ -19,7 +19,7 @@ describe('StringUtils functions', () => {
         ensName = undefined;
         const maxChars = 12;
         expect(formatEnsName(address, ensName, maxChars)).toBe(
-            address.slice(0, maxChars)
+            address.slice(0, maxChars),
         );
     });
 
@@ -30,7 +30,7 @@ describe('StringUtils functions', () => {
 
         const validStr = 'abcdefghigklonp';
         expect(truncateString(validStr)).toBe(
-            `${validStr.slice(0, 5)}...${validStr.slice(-4)}`
+            `${validStr.slice(0, 5)}...${validStr.slice(-4)}`,
         );
     });
 });

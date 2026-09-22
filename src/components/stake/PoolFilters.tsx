@@ -125,11 +125,11 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                         option.value
                                                                     }
                                                                     checked={selectedTypes.includes(
-                                                                        option.value
+                                                                        option.value,
                                                                     )}
                                                                     onCheckedChange={() =>
                                                                         onSelectedTypesChange(
-                                                                            option.value
+                                                                            option.value,
                                                                         )
                                                                     }
                                                                 >
@@ -142,7 +142,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                     </Checkbox.Label>
                                                                 </Checkbox.Root>
                                                             </Box>
-                                                        )
+                                                        ),
                                                     )}
                                                 </VStack>
                                             )}
@@ -152,14 +152,14 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                         filter.options.find(
                                                             (el) =>
                                                                 el.default ===
-                                                                true
+                                                                true,
                                                         ).value
                                                     }
                                                     onValueChange={({
                                                         value,
                                                     }) =>
                                                         onSelectedPeriodChange(
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                 >
@@ -199,7 +199,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                                                         </RadioGroup.ItemText>
                                                                     </RadioGroup.Item>
                                                                 </Box>
-                                                            )
+                                                            ),
                                                         )}
                                                     </VStack>
                                                 </RadioGroup.Root>
@@ -233,7 +233,7 @@ export const PoolFilters: FC<IPoolFiltersProps> = ({
                                     filters
                                         .find((el) => el.key === 'time')
                                         .options.find(
-                                            (el) => el.value === selectedPeriod
+                                            (el) => el.value === selectedPeriod,
                                         ).label
                                 }
                             </Text>

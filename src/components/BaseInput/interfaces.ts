@@ -21,7 +21,7 @@ export interface BaseInput<TValidation = string> {
     onFocus?: (value: string) => void;
     helperText?: string;
     onValidationChange?: (
-        validationResult: ValidationResult<TValidation>
+        validationResult: ValidationResult<TValidation>,
     ) => void;
     isDisabled?: boolean;
 }
@@ -32,11 +32,10 @@ export interface BaseInput<TValidation = string> {
  * Possible keys of the generated type are the union deposit|nodeAddress. When type is not defined
  * the key are any string.
  */
-export type MappedErrors<T = ValidationResult> = T extends ValidationResult<
-    infer R
->
-    ? { [K in Extract<R, string>]: T }
-    : { [key: string | undefined]: T };
+export type MappedErrors<T = ValidationResult> =
+    T extends ValidationResult<infer R>
+        ? { [K in Extract<R, string>]: T }
+        : { [key: string | undefined]: T };
 
 /**
  * Alias for MappedErrors but the keys of said typed object are optional.

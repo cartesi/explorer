@@ -1,6 +1,2 @@
 export type TransactionType =
-    | 'pause'
-    | 'unpause'
-    | 'hire'
-    | 'rebalance'
-    | 'changeEns';
+    'pause' | 'unpause' | 'hire' | 'rebalance' | 'changeEns';

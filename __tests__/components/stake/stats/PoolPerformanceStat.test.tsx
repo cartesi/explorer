@@ -56,7 +56,7 @@ describe('Pool Performance Stat', () => {
             <EPoolPerformanceStat
                 address={defaultAddress}
                 location={defaultLocation}
-            />
+            />,
         );
 
     beforeEach(() => {
@@ -83,7 +83,7 @@ describe('Pool Performance Stat', () => {
         render(<EPoolPerformanceStat address={defaultAddress} />);
 
         expect(() => screen.getByTestId('location-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

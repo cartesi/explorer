@@ -45,7 +45,7 @@ const { COMPLETED } = StepStatus;
 const enableNextWhen = (
     funds: string,
     nodeStatus: NodeStatus,
-    errors: Errors
+    errors: Errors,
 ): boolean => {
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };

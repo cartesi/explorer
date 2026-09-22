@@ -47,7 +47,7 @@ describe('Node Retired History', () => {
         fireEvent.click(screen.getByText('Node History'));
         expect(screen.getByText('Node Address')).toBeInTheDocument();
         expect(
-            screen.getByText('Retire Date', { exact: false })
+            screen.getByText('Retire Date', { exact: false }),
         ).toBeInTheDocument();
     });
 });
@@ -63,7 +63,7 @@ describe('When user has no retired node', () => {
         renderComponent();
         fireEvent.click(screen.getByText('Node History'));
         const nodeAddress = screen.queryByText(
-            '0x43551627aafca2f871d4b23d438257b8fcf741d6'
+            '0x43551627aafca2f871d4b23d438257b8fcf741d6',
         );
         expect(nodeAddress).not.toBeInTheDocument();
     });

@@ -49,7 +49,7 @@ class AddressENSRepository {
             })
             .from(addressEnsTable)
             .where(
-                sql`${addressEnsTable.updatedAt} < (unixepoch() - ${ttlInSeconds})`
+                sql`${addressEnsTable.updatedAt} < (unixepoch() - ${ttlInSeconds})`,
             );
 
         console.timeEnd('AddressENSRepository.getAllStaleEntries');

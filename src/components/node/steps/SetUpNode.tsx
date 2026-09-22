@@ -86,7 +86,7 @@ const SetUpNode = ({
     const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const isHighlighted =

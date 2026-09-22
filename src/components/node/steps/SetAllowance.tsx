@@ -134,7 +134,7 @@ const SetAllowanceInput = ({
 const enableBtnWhen = (
     allowance: string,
     transactionInProgress: boolean,
-    errors: Errors
+    errors: Errors,
 ) => !isEmpty(allowance) && !transactionInProgress && isEmpty(errors);
 
 const SetAllowance = ({
@@ -156,7 +156,7 @@ const SetAllowance = ({
     const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     const buttonColorScheme = useColorModeValue('teal', 'cyan');
     const isHighlighted =
@@ -180,7 +180,7 @@ const SetAllowance = ({
             router.push(
                 isEmpty(hiredNodeAddress)
                     ? '/node-runners'
-                    : `/node/${hiredNodeAddress}/manage`
+                    : `/node/${hiredNodeAddress}/manage`,
             );
         }
     }, [hiredNodeAddress, isStepCompleted, router]);
@@ -232,7 +232,7 @@ const SetAllowance = ({
                         onClick={() =>
                             approve(
                                 staking.address,
-                                toBigNumber(allowanceAmount)
+                                toBigNumber(allowanceAmount),
                             )
                         }
                     >

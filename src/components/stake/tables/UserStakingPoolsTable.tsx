@@ -47,11 +47,11 @@ const UserStakingPoolsTable: FC<UserStakingPoolsTableProps> = ({
     const threshold = useVisibilityThreshold(tableRef.current, thRef.current);
     const borderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const topBorderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quinary'
+        'dark.gray.quinary',
     );
     const thProps: TableColumnHeaderProps = {
         borderColor: topBorderColor,

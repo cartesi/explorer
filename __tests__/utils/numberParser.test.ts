@@ -14,14 +14,14 @@ describe('NumberParser functions', () => {
     it('should parse a number as string to ethers BigNumber', () => {
         const numberAsString = '3999999';
         expect(toBigNumber(numberAsString)).toEqual(
-            ethers.utils.parseUnits(numberAsString, 18)
+            ethers.utils.parseUnits(numberAsString, 18),
         );
     });
 
     it('should parse a number to ethers BigNumber equivalent', () => {
         const number = 1000.5;
         expect(toBigNumber(number)).toEqual(
-            ethers.utils.parseUnits(number.toString(), 18)
+            ethers.utils.parseUnits(number.toString(), 18),
         );
     });
 
@@ -32,7 +32,7 @@ describe('NumberParser functions', () => {
             toBigNumber(new Date());
         } catch (e) {
             expect(e.message).toEqual(
-                'Supported value types are [ string, number ]'
+                'Supported value types are [ string, number ]',
             );
         }
     });

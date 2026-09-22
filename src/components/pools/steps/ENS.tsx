@@ -170,7 +170,7 @@ const EthereumNameServer = ({
         stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const warningIconColor = useColorModeValue(
         'light.support.warning',
-        'dark.support.warning'
+        'dark.support.warning',
     );
 
     useEffect(() => {
@@ -180,7 +180,7 @@ const EthereumNameServer = ({
             router.push(
                 isEmpty(poolAddress)
                     ? '/node-runners'
-                    : `/pools/${poolAddress}/manage?from=node-runners`
+                    : `/pools/${poolAddress}/manage?from=node-runners`,
             );
         }
     }, [isCompleted]);

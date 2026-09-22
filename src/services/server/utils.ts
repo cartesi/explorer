@@ -23,8 +23,8 @@ import { formatEnsName } from '../../utils/stringUtils';
 export const getChainId = (chainName: string) =>
     parseInt(
         Object.keys(networks).find(
-            (key) => networks[key] == chainName.toLowerCase()
-        )
+            (key) => networks[key] == chainName.toLowerCase(),
+        ),
     ) || 1;
 
 export async function isCartesiUser(address: string, chainId: number) {
@@ -43,7 +43,7 @@ export async function isCartesiUser(address: string, chainId: number) {
 
     if (!isUser) {
         console.info(
-            `IS_CARTESI_USER: ${address} is not an user on ${chainId}`
+            `IS_CARTESI_USER: ${address} is not an user on ${chainId}`,
         );
     }
     return isUser;

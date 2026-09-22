@@ -42,7 +42,7 @@ const RESOLVER_POOL_SIZE = defaultTo(
     defaultMaxAvatarRpcConcurrentCalls,
     process.env.ENS_RESOLVER_RPC_CONCURRENT_CALLS
         ? parseInt(process.env.ENS_RESOLVER_RPC_CONCURRENT_CALLS, 10)
-        : undefined
+        : undefined,
 );
 
 /**
@@ -54,7 +54,7 @@ const MAX_ENTRIES_PER_REQ = defaultTo(
     defaultMaxEntriesPerReqLimit,
     process.env.ENS_ENTRIES_PER_REQ_LIMIT
         ? parseInt(process.env.ENS_ENTRIES_PER_REQ_LIMIT, 10)
-        : undefined
+        : undefined,
 );
 
 const createCounter = (initial = 0) => {
@@ -77,7 +77,7 @@ const buildRpcClient = (nodeRpcEndpoint: string, network: number) => {
             url: nodeRpcEndpoint,
             skipFetchSetup: true,
         },
-        network
+        network,
     );
 
     return provider;
@@ -101,7 +101,7 @@ const getAvatarUrl = (name: string): Promise<string | null> => {
         })
         .catch((error) => {
             console.error(
-                `${ACTION_NAME.getAvatarUrl}: (${name}) => Fail to get avatar.\nReason: ${error.message}`
+                `${ACTION_NAME.getAvatarUrl}: (${name}) => Fail to get avatar.\nReason: ${error.message}`,
             );
             return null;
         });
@@ -130,14 +130,14 @@ const addAvatarUrl = async (ensPayload: ENSPayload): Promise<ENSPayload> => {
             return getAvatarUrl(ensAddressData.name)
                 .then((ensAvatar) => {
                     console.info(
-                        `${ACTION_NAME.addAvatarUrl}: (${ensAddressData.name}) => avatar(${ensAvatar})`
+                        `${ACTION_NAME.addAvatarUrl}: (${ensAddressData.name}) => avatar(${ensAvatar})`,
                     );
                     ensAddressData.avatarUrl = ensAvatar;
                     return ensAddressData;
                 })
                 .catch((reason: any) => {
                     console.error(
-                        `${ACTION_NAME.addAvatarUrl}: (Errored) ${ensAddressData.address} - reason (${reason.message})`
+                        `${ACTION_NAME.addAvatarUrl}: (Errored) ${ensAddressData.address} - reason (${reason.message})`,
                     );
                     return ensAddressData;
                 });
@@ -153,7 +153,7 @@ const getDomains = async (addresses: string[]): Promise<GetDomainsResult> => {
     console.time(timeLabel);
 
     const normalizedAddresses = addresses.map((address) =>
-        address.toLowerCase()
+        address.toLowerCase(),
     );
 
     const result = await ensClient.query<GetAliasedEnsDomainsQuery>({
@@ -171,10 +171,10 @@ const getDomains = async (addresses: string[]): Promise<GetDomainsResult> => {
     }, {} as GetDomainsResult);
 
     console.info(
-        `${ACTION_NAME.getDomains}: (Number of addresses): ${addresses.length}`
+        `${ACTION_NAME.getDomains}: (Number of addresses): ${addresses.length}`,
     );
     console.info(
-        `${ACTION_NAME.getDomains}: (Domains found): ${domains.length}`
+        `${ACTION_NAME.getDomains}: (Domains found): ${domains.length}`,
     );
 
     console.timeEnd(timeLabel);

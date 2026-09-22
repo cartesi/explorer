@@ -35,7 +35,7 @@ describe('Wallet Balance Section', () => {
             <EWalletBalanceSection
                 userCTSIBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(defaultValue)}
-            />
+            />,
         );
 
     const dummyWallet = {
@@ -62,13 +62,13 @@ describe('Wallet Balance Section', () => {
             <EWalletBalanceSection
                 userCTSIBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(
             getByText(
-                "You don't have enough ETH in your wallet for the transaction fee."
-            )
+                "You don't have enough ETH in your wallet for the transaction fee.",
+            ),
         ).toBeInTheDocument();
     });
 
@@ -82,13 +82,13 @@ describe('Wallet Balance Section', () => {
             <EWalletBalanceSection
                 userCTSIBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(
             screen.getByText(
-                'Please make sure you have sufficient ETH to proceed with the staking fee.'
-            )
+                'Please make sure you have sufficient ETH to proceed with the staking fee.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -97,13 +97,13 @@ describe('Wallet Balance Section', () => {
             <EWalletBalanceSection
                 userCTSIBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(defaultValue)}
-            />
+            />,
         );
 
         expect(() =>
             getByText(
-                "You don't have enough ETH in your wallet for the transaction fee."
-            )
+                "You don't have enough ETH in your wallet for the transaction fee.",
+            ),
         ).toThrow('Unable to find an element');
     });
 
@@ -111,7 +111,7 @@ describe('Wallet Balance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue))
+            parseCtsiValue(BigNumber.from(defaultValue)),
         );
     });
 });

@@ -25,7 +25,7 @@ export const ConnectWallet: FC<ConnectWalletProps> = (props) => {
     const colorPalette = useColorModeValue('teal', 'cyan');
     const hoverBg = useColorModeValue(
         'linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), #008DA5',
-        'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF'
+        'linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #00F6FF',
     );
 
     return (

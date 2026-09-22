@@ -50,7 +50,7 @@ const BlocksChart = (props: BlocksChartProps) => {
     // group blocks per chain
     const blocksPerChain = _.groupBy(
         blocks,
-        (block) => `${block.chain.protocol.version}-${block.chain.number}`
+        (block) => `${block.chain.protocol.version}-${block.chain.number}`,
     );
 
     // unique list of protocols

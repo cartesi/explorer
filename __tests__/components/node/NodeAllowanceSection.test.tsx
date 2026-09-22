@@ -23,7 +23,7 @@ describe('NodeAllowanceSection component', () => {
             <Component
                 allowance={BigNumber.from('10000')}
                 onAllowanceClick={mockedOnAllowanceClick}
-            />
+            />,
         );
 
         const button = container.querySelector('button');

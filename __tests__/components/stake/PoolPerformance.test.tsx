@@ -46,7 +46,11 @@ describe('PoolPerformance component', () => {
         mockedUseStakingPools.mockReturnValue({
             data: undefined,
             loading: false,
-        } as useQuery.Result<StakingPoolsData, StakingPoolsVars, 'complete' | 'empty'>);
+        } as useQuery.Result<
+            StakingPoolsData,
+            StakingPoolsVars,
+            'complete' | 'empty'
+        >);
 
         mockedUseVisibilityThreshold.mockReturnValue({
             isBelow: false,
@@ -60,14 +64,14 @@ describe('PoolPerformance component', () => {
     it('Should display pagination when there is no search query', () => {
         render(<Component {...props} search={undefined} />);
         expect(
-            screen.getByTestId('pool-performance-pagination')
+            screen.getByTestId('pool-performance-pagination'),
         ).toBeInTheDocument();
     });
 
     it('Should not display pagination when there is search query', () => {
         render(<Component {...props} search="Some search" />);
         expect(() => screen.getByTestId('pool-performance-pagination')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

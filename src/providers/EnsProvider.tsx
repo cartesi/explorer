@@ -25,7 +25,7 @@ const getENSCachedData = async () => {
         return await response.json();
     } catch (reason) {
         console.error(
-            `Fetching ENS cached data failed.\nReason: ${reason.message}`
+            `Fetching ENS cached data failed.\nReason: ${reason.message}`,
         );
         return { data: [] };
     }

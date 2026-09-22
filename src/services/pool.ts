@@ -74,7 +74,7 @@ export interface StakingPool {
 
 export const useStakingPool = (
     address: string,
-    account: string
+    account: string,
 ): StakingPool => {
     // connect to pool
     const pool = useStakingPoolContract(address);
@@ -144,7 +144,7 @@ export const useStakingPool = (
 
     // amount of token user can withdraw
     const [withdrawBalance, setWithdrawBalance] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
 
     // The PoS setup in the staking pool;
@@ -178,12 +178,12 @@ export const useStakingPool = (
             pool.userBalance(account).then((b) => {
                 setStakedShares(b.shares);
                 setDepositTimestamp(
-                    new Date(b.depositTimestamp.toNumber() * 1000)
+                    new Date(b.depositTimestamp.toNumber() * 1000),
                 );
                 pool.lockTime().then((t) => {
                     setLockTime(t);
                     setStakeTimestamp(
-                        new Date(b.depositTimestamp.add(t).toNumber() * 1000)
+                        new Date(b.depositTimestamp.add(t).toNumber() * 1000),
                     );
                 });
                 setBalance(b.balance);
@@ -346,7 +346,7 @@ export const useStakingPool = (
 
 export const useStakingPoolCommission = (
     address: string,
-    reward: BigNumberish
+    reward: BigNumberish,
 ) => {
     const fee = useFeeContract(address);
     const [commission, setCommission] = useState<StakingPoolCommission>({
@@ -389,7 +389,7 @@ export const useFlatRateCommission = (address: string) => {
             fee.feeRaiseTimeout().then(setRaiseTimeout);
             fee.maxRaise().then(setMaxRaise);
             fee.timeoutTimestamp().then((ts) =>
-                setTimeoutTimestamp(new Date(ts.toNumber() * 1000))
+                setTimeoutTimestamp(new Date(ts.toNumber() * 1000)),
             );
         }
     }, [fee]);

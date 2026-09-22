@@ -145,7 +145,7 @@ const Address: FC<AddressProps> = (props) => {
                     {...restProps}
                 >
                     {label}
-                </Text>
+                </Text>,
             )}
 
             {showActions && !copied && (

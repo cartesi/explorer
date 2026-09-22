@@ -110,7 +110,7 @@ describe('ga4Tracker context', () => {
         //Wallet is not connected
         mockUseWallet.mockReturnValue({ active: false, activate, deactivate });
         const { rerender } = render(
-            <GA4TrackerProvider>Content</GA4TrackerProvider>
+            <GA4TrackerProvider>Content</GA4TrackerProvider>,
         );
 
         await act(() => {
@@ -124,7 +124,7 @@ describe('ga4Tracker context', () => {
                 'Wallet Selection',
                 {
                     [CustomDimensions.WalletName]: walletMock.walletName,
-                }
+                },
             );
         });
     });
@@ -138,7 +138,7 @@ describe('ga4Tracker context', () => {
         //Wallet is not connected
         mockUseWallet.mockReturnValue({ active: false, activate, deactivate });
         const { rerender } = render(
-            <GA4TrackerProvider>Content</GA4TrackerProvider>
+            <GA4TrackerProvider>Content</GA4TrackerProvider>,
         );
 
         await act(() => {

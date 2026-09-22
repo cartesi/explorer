@@ -63,7 +63,7 @@ describe('UserTable component', () => {
         render(<Component {...props} />);
 
         expect(screen.getAllByTestId('user-row').length).toBe(
-            props.data.length
+            props.data.length,
         );
     });
 });

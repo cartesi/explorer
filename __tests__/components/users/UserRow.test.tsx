@@ -44,14 +44,14 @@ describe('UserRow component', () => {
     it('should display user balance', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(`${formatCTSI(props.user.balance, 0)} CTSI`)
+            screen.getByText(`${formatCTSI(props.user.balance, 0)} CTSI`),
         ).toBeInTheDocument();
     });
 
     it('should display user total reward', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(`${formatCTSI(props.user.totalReward, 0)} CTSI`)
+            screen.getByText(`${formatCTSI(props.user.totalReward, 0)} CTSI`),
         ).toBeInTheDocument();
     });
 

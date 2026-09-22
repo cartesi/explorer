@@ -33,7 +33,7 @@ export const Notification = ({
     const bg = useColorModeValue('white', 'dark.gray.quaternary');
     const borderColor = useColorModeValue(
         'light.gray.tertiary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
 
     return (

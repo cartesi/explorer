@@ -88,7 +88,7 @@ describe('Server utils', () => {
             const name = 'funky-name.eth';
 
             jest.spyOn(AddressENSService, 'getEntry').mockImplementation(
-                () => Promise.resolve({ ok: true, data: { name } }) as any
+                () => Promise.resolve({ ok: true, data: { name } }) as any,
             );
 
             const result = await getFormattedEnsName(address);
@@ -99,7 +99,7 @@ describe('Server utils', () => {
             const address = '0x2942aa4356783892c624125acfbbb80d29629a9d';
 
             jest.spyOn(AddressENSService, 'getEntry').mockImplementation(
-                () => Promise.resolve({ ok: false }) as any
+                () => Promise.resolve({ ok: false }) as any,
             );
 
             const result = await getFormattedEnsName(address);

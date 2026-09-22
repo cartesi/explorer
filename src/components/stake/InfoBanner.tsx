@@ -55,7 +55,7 @@ export const InfoBanner: FC<IInfoBannerProps> = ({
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
-        `dark.support.${status}`
+        `dark.support.${status}`,
     );
     const boxShadow = useColorModeValue('sm', 'none');
     const borderColor = useColorModeValue('gray.100', 'dark.border.quaternary');

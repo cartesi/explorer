@@ -38,7 +38,7 @@ const { COMPLETED } = StepStatus;
 const enableNextWhen = (
     funds: string,
     nodeStatus: NodeStatus,
-    errors: Errors
+    errors: Errors,
 ): boolean => {
     return nodeStatus === 'available' && isEmpty(errors) && !isEmpty(funds);
 };
@@ -76,7 +76,7 @@ const HireNode = ({
     const bg = useColorModeValue('white', 'dark.background.secondary');
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     const isHighlighted =
         stepNumber - 1 === currentStep || stepNumber <= currentStep;

@@ -92,7 +92,7 @@ describe('StepGroup component', () => {
         fireEvent.click(screen.getByText('NEXT 1'));
 
         expect(
-            screen.queryByText('Step body number 1')
+            screen.queryByText('Step body number 1'),
         ).not.toBeInTheDocument();
         expect(screen.getByText('Step body number 2')).toBeInTheDocument();
         expect(screen.getByText('PREVIOUS 2')).toBeInTheDocument();
@@ -104,14 +104,14 @@ describe('StepGroup component', () => {
         initialStateAssertion(screen);
         fireEvent.click(screen.getByText('NEXT 1'));
         expect(
-            screen.queryByText('Step body number 1')
+            screen.queryByText('Step body number 1'),
         ).not.toBeInTheDocument();
         expect(screen.getByText('Step body number 2')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('PREVIOUS 2'));
 
         expect(
-            screen.queryByText('Step body number 2')
+            screen.queryByText('Step body number 2'),
         ).not.toBeInTheDocument();
         expect(screen.getByText('Step body number 1')).toBeInTheDocument();
     });

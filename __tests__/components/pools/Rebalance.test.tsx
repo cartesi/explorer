@@ -37,21 +37,21 @@ describe('Rebalance component', () => {
     it('should display CTSI to stake label when stake is greater than zero', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(`${formatCTSI(props.stake)} CTSI to stake`)
+            screen.getByText(`${formatCTSI(props.stake)} CTSI to stake`),
         ).toBeInTheDocument();
     });
 
     it('should display CTSI to unstake label when unstake is greater than zero', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(`${formatCTSI(props.unstake)} CTSI to unstake`)
+            screen.getByText(`${formatCTSI(props.unstake)} CTSI to unstake`),
         ).toBeInTheDocument();
     });
 
     it('should display CTSI to withdraw label when unstake is greater than zero', () => {
         render(<Component {...props} />);
         expect(
-            screen.getByText(`${formatCTSI(props.withdraw)} CTSI to withdraw`)
+            screen.getByText(`${formatCTSI(props.withdraw)} CTSI to withdraw`),
         ).toBeInTheDocument();
     });
 
@@ -62,7 +62,7 @@ describe('Rebalance component', () => {
                 stake={BigNumber.from(0)}
                 unstake={BigNumber.from(0)}
                 withdraw={BigNumber.from(0)}
-            />
+            />,
         );
         expect(screen.getByText('No need to rebalance')).toBeInTheDocument();
     });

@@ -103,7 +103,7 @@ describe('CommissionModel step component', () => {
         mockUseBreakpointValue.mockReturnValue(false);
         // default happy setup.
         mockUseStakingPoolFactory.mockReturnValue(
-            buildUseStakingPoolFactoryReturn()
+            buildUseStakingPoolFactoryReturn(),
         );
 
         mockUseWallet.mockReturnValue({
@@ -131,7 +131,7 @@ describe('CommissionModel step component', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Commission')).toBeInTheDocument();
             expect(
-                screen.queryByLabelText('Flat-rate commission (%)')
+                screen.queryByLabelText('Flat-rate commission (%)'),
             ).not.toBeInTheDocument();
             expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
             expect(screen.queryByText('CREATE POOL')).not.toBeInTheDocument();
@@ -145,15 +145,15 @@ describe('CommissionModel step component', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Commission')).toBeInTheDocument();
             expect(
-                screen.getByText('Set the commission fee for your pool')
+                screen.getByText('Set the commission fee for your pool'),
             ).toBeInTheDocument();
             expect(
-                screen.getByLabelText('Flat-rate commission (%)')
+                screen.getByLabelText('Flat-rate commission (%)'),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'This model calculates the commission as a fixed percentage of the block CTSI reward before distributing the remaining amount to the pool users.'
-                )
+                    'This model calculates the commission as a fixed percentage of the block CTSI reward before distributing the remaining amount to the pool users.',
+                ),
             ).toBeInTheDocument();
             expect(screen.getByText('PREVIOUS')).toBeInTheDocument();
             expect(screen.getByText('CREATE POOL')).toBeInTheDocument();
@@ -170,15 +170,15 @@ describe('CommissionModel step component', () => {
 
             await act(() => {
                 const flatRateInput = screen.getByLabelText(
-                    'Flat-rate commission (%)'
+                    'Flat-rate commission (%)',
                 );
                 fireEvent.change(flatRateInput, { target: { value: 10 } });
             });
 
             await waitFor(() =>
                 expect(
-                    screen.getByText('CREATE POOL').hasAttribute('disabled')
-                ).toBe(false)
+                    screen.getByText('CREATE POOL').hasAttribute('disabled'),
+                ).toBe(false),
             );
 
             mockUseWallet.mockReturnValue({
@@ -192,8 +192,8 @@ describe('CommissionModel step component', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.getByText('CREATE POOL').hasAttribute('disabled')
-                ).toBe(true)
+                    screen.getByText('CREATE POOL').hasAttribute('disabled'),
+                ).toBe(true),
             );
         });
     });
@@ -206,12 +206,12 @@ describe('CommissionModel step component', () => {
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
-                        { target: { value: -1 } }
+                        { target: { value: -1 } },
                     );
                 });
 
                 expect(
-                    await screen.findByText('Minimum value allowed is 0')
+                    await screen.findByText('Minimum value allowed is 0'),
                 ).toBeInTheDocument();
             });
 
@@ -221,12 +221,12 @@ describe('CommissionModel step component', () => {
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
-                        { target: { value: 101 } }
+                        { target: { value: 101 } },
                     );
                 });
 
                 expect(
-                    await screen.findByText('Maximum value allowed is 100')
+                    await screen.findByText('Maximum value allowed is 100'),
                 ).toBeInTheDocument();
             });
 
@@ -236,14 +236,14 @@ describe('CommissionModel step component', () => {
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
-                        { target: { value: 0.001 } }
+                        { target: { value: 0.001 } },
                     );
                 });
 
                 expect(
                     await screen.findByText(
-                        'Maximum decimal places allowed is 2'
-                    )
+                        'Maximum decimal places allowed is 2',
+                    ),
                 ).toBeInTheDocument();
             });
 
@@ -252,12 +252,12 @@ describe('CommissionModel step component', () => {
 
                 await act(() => {
                     fireEvent.blur(
-                        screen.getByLabelText('Flat-rate commission (%)')
+                        screen.getByLabelText('Flat-rate commission (%)'),
                     );
                 });
 
                 expect(
-                    await screen.findByText('This field is required.')
+                    await screen.findByText('This field is required.'),
                 ).toBeInTheDocument();
             });
         });
@@ -275,7 +275,7 @@ describe('CommissionModel step component', () => {
             render(<Component stepNumber={1} inFocus />);
 
             expect(
-                screen.getByText('Your wallet is disconnected')
+                screen.getByText('Your wallet is disconnected'),
             ).toBeInTheDocument();
             expect(screen.getByText('Connect To Wallet')).toBeInTheDocument();
 
@@ -296,11 +296,11 @@ describe('CommissionModel step component', () => {
 
             expect(screen.getByText('We notice a problem')).toBeInTheDocument();
             expect(
-                screen.getByText('Creation of new pools is currently paused.')
+                screen.getByText('Creation of new pools is currently paused.'),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('CREATE POOL').hasAttribute('disabled')
+                screen.getByText('CREATE POOL').hasAttribute('disabled'),
             ).toBe(true);
         });
 
@@ -314,12 +314,12 @@ describe('CommissionModel step component', () => {
             expect(screen.getByText('We notice a problem')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'The pool factory is not initialised properly.'
-                )
+                    'The pool factory is not initialised properly.',
+                ),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('CREATE POOL').hasAttribute('disabled')
+                screen.getByText('CREATE POOL').hasAttribute('disabled'),
             ).toBe(true);
         });
 
@@ -333,7 +333,7 @@ describe('CommissionModel step component', () => {
 
             const alert = screen.getByRole('alert');
             expect(
-                await findByText(alert, 'Creating the pool...')
+                await findByText(alert, 'Creating the pool...'),
             ).toBeInTheDocument();
             expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
@@ -348,10 +348,10 @@ describe('CommissionModel step component', () => {
             render(<Component inFocus stepNumber={1} />);
 
             expect(
-                screen.getByText('The pool creation failed!')
+                screen.getByText('The pool creation failed!'),
             ).toBeInTheDocument();
             expect(
-                screen.getByText('Tx metamask: user rejected the transaction')
+                screen.getByText('Tx metamask: user rejected the transaction'),
             ).toBeInTheDocument();
         });
 
@@ -372,12 +372,12 @@ describe('CommissionModel step component', () => {
             render(<Component inFocus stepNumber={1} />);
 
             expect(
-                screen.getByText('Creating the pool...')
+                screen.getByText('Creating the pool...'),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'Pool 0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA created! moving to the next step...'
-                )
+                    'Pool 0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA created! moving to the next step...',
+                ),
             ).toBeInTheDocument();
         });
     });
@@ -387,7 +387,7 @@ describe('CommissionModel step component', () => {
             it('should call onPrevious callback when clicked', () => {
                 const onPrev = jest.fn();
                 render(
-                    <Component inFocus stepNumber={1} onPrevious={onPrev} />
+                    <Component inFocus stepNumber={1} onPrevious={onPrev} />,
                 );
                 const button = screen.getByText('PREVIOUS');
                 fireEvent.click(button);
@@ -401,7 +401,7 @@ describe('CommissionModel step component', () => {
                 render(<Component inFocus stepNumber={1} />);
 
                 const flatRateInput = screen.getByLabelText(
-                    'Flat-rate commission (%)'
+                    'Flat-rate commission (%)',
                 );
 
                 await act(() => {
@@ -410,8 +410,10 @@ describe('CommissionModel step component', () => {
 
                 await waitFor(() =>
                     expect(
-                        screen.getByText('CREATE POOL').hasAttribute('disabled')
-                    ).toBe(false)
+                        screen
+                            .getByText('CREATE POOL')
+                            .hasAttribute('disabled'),
+                    ).toBe(false),
                 );
 
                 await act(() => {
@@ -420,8 +422,10 @@ describe('CommissionModel step component', () => {
 
                 await waitFor(() =>
                     expect(
-                        screen.getByText('CREATE POOL').hasAttribute('disabled')
-                    ).toBe(true)
+                        screen
+                            .getByText('CREATE POOL')
+                            .hasAttribute('disabled'),
+                    ).toBe(true),
                 );
             });
 
@@ -432,7 +436,7 @@ describe('CommissionModel step component', () => {
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
-                        { target: { value: 5.25 } }
+                        { target: { value: 5.25 } },
                     );
                 });
 
@@ -441,8 +445,8 @@ describe('CommissionModel step component', () => {
 
                 await waitFor(() =>
                     expect(
-                        poolFactory.createFlatRateCommission
-                    ).toHaveBeenCalledWith(525)
+                        poolFactory.createFlatRateCommission,
+                    ).toHaveBeenCalledWith(525),
                 );
             });
 
@@ -451,13 +455,13 @@ describe('CommissionModel step component', () => {
                 mockUseStakingPoolFactory.mockReturnValue(poolFactory);
                 // First render
                 const { rerender } = render(
-                    <Component inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />,
                 );
 
                 await act(() => {
                     fireEvent.change(
                         screen.getByLabelText('Flat-rate commission (%)'),
-                        { target: { value: 5.25 } }
+                        { target: { value: 5.25 } },
                     );
                 });
 
@@ -466,8 +470,8 @@ describe('CommissionModel step component', () => {
 
                 await waitFor(() =>
                     expect(
-                        poolFactory.createFlatRateCommission
-                    ).toHaveBeenCalledWith(525)
+                        poolFactory.createFlatRateCommission,
+                    ).toHaveBeenCalledWith(525),
                 );
 
                 // Emulating hooks changing pool-factory transaction state.
@@ -483,7 +487,7 @@ describe('CommissionModel step component', () => {
                 fireEvent.click(button);
 
                 expect(
-                    poolFactory.createFlatRateCommission
+                    poolFactory.createFlatRateCommission,
                 ).toHaveBeenCalledTimes(1);
             });
         });
@@ -502,20 +506,20 @@ describe('CommissionModel step component', () => {
             const { rerender } = render(<ComponentE />);
 
             expect(
-                screen.getByText('CREATE POOL').hasAttribute('disabled')
+                screen.getByText('CREATE POOL').hasAttribute('disabled'),
             ).toBe(true);
 
             await act(() => {
                 fireEvent.change(
                     screen.getByLabelText('Flat-rate commission (%)'),
-                    { target: { value: 5.25 } }
+                    { target: { value: 5.25 } },
                 );
             });
 
             await waitFor(() =>
                 expect(
-                    screen.getByText('CREATE POOL').hasAttribute('disabled')
-                ).toBe(false)
+                    screen.getByText('CREATE POOL').hasAttribute('disabled'),
+                ).toBe(false),
             );
 
             const button = screen.getByText('CREATE POOL');
@@ -529,7 +533,7 @@ describe('CommissionModel step component', () => {
             expect(onComplete).toHaveBeenCalledTimes(1);
             expect(atomSetterStub).toHaveBeenCalledWith(poolAddress);
             expect(
-                screen.queryByLabelText('Flat-rate commission (%)')
+                screen.queryByLabelText('Flat-rate commission (%)'),
             ).not.toBeInTheDocument();
             expect(screen.queryByText('PREVIOUS')).not.toBeInTheDocument();
             expect(screen.queryByText('NEXT')).not.toBeInTheDocument();

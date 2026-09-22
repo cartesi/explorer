@@ -3,7 +3,7 @@ import { SQLiteTable, SQLiteUpdateSetSource } from 'drizzle-orm/sqlite-core';
 import { snakeCase } from 'lodash/fp';
 
 export function conflictUpdateSetAllColumns<TTable extends SQLiteTable>(
-    table: TTable
+    table: TTable,
 ): SQLiteUpdateSetSource<TTable> {
     const columns = getTableColumns(table);
     const conflictUpdateSet = Object.entries(columns).reduce(
@@ -14,7 +14,7 @@ export function conflictUpdateSetAllColumns<TTable extends SQLiteTable>(
             }
             return acc;
         },
-        {}
+        {},
     ) as SQLiteUpdateSetSource<TTable>;
 
     return conflictUpdateSet;

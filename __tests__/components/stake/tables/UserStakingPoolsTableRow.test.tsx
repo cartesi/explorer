@@ -61,7 +61,7 @@ describe('User Staking Pools Table Row', () => {
 
         const stakeInfoLink = screen.getByTestId('stake-info-link');
         expect(stakeInfoLink.getAttribute('href')).toBe(
-            `/stake/${balance.pool.id}`
+            `/stake/${balance.pool.id}`,
         );
     });
 });

@@ -67,7 +67,7 @@ export async function getChainByChainId(chainId: number): Promise<IChainData> {
 
 export async function getChainByKeyValue(
     key: string,
-    value: any
+    value: any,
 ): Promise<IChainData> {
     const allChains = await getAllChains();
 
@@ -87,21 +87,21 @@ export async function getChainByKeyValue(
 }
 
 export async function getChainByNetworkId(
-    networkId: number
+    networkId: number,
 ): Promise<IChainData> {
     const chainData = await getChainByKeyValue('networkId', networkId);
     return chainData;
 }
 
 export async function convertNetworkIdToChainId(
-    networkId: number
+    networkId: number,
 ): Promise<number> {
     const chainData = await getChainByNetworkId(networkId);
     return chainData.chainId;
 }
 
 export async function convertChainIdToNetworkId(
-    chainId: number
+    chainId: number,
 ): Promise<number> {
     const chainData = await getChain(chainId);
     return chainData.networkId;

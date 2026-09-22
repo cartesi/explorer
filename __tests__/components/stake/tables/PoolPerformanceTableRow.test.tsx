@@ -65,7 +65,7 @@ describe('Pool Performance Table Row', () => {
         expect(screen.getByTestId('total-reward-col')).toBeInTheDocument();
         expect(screen.getByTestId('commission-col')).toBeInTheDocument();
         expect(
-            screen.getByTestId('accrued-commission-col')
+            screen.getByTestId('accrued-commission-col'),
         ).toBeInTheDocument();
         expect(screen.getByTestId('stake-info-col')).toBeInTheDocument();
     });
@@ -83,7 +83,7 @@ describe('Pool Performance Table Row', () => {
             account: '19283091820',
         });
         expect(() => screen.getByText('Manage')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
@@ -109,7 +109,7 @@ describe('Pool Performance Table Row', () => {
         });
 
         expect(() => screen.getByTestId('paused-tooltip-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
@@ -125,10 +125,10 @@ describe('Pool Performance Table Row', () => {
             });
 
             expect(
-                screen.getByTestId('week-performance-col')
+                screen.getByTestId('week-performance-col'),
             ).toBeInTheDocument();
             expect(
-                screen.getByTestId('month-performance-col')
+                screen.getByTestId('month-performance-col'),
             ).toBeInTheDocument();
         });
     });

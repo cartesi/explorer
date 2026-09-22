@@ -35,8 +35,8 @@ const handler = async ({ params }: Response) => {
     const chainId =
         parseInt(
             Object.keys(networks).find(
-                (key) => networks[key] == (chain as string).toLowerCase()
-            )
+                (key) => networks[key] == (chain as string).toLowerCase(),
+            ),
         ) || 1;
 
     const client = createApollo(chainId);
@@ -60,7 +60,7 @@ const handler = async ({ params }: Response) => {
     const response = await fetch(endpoint);
     const marketData = await response.json();
     const circulatingSupply = Math.round(
-        marketData.market_data.circulating_supply
+        marketData.market_data.circulating_supply,
     );
 
     let projectedAnnualEarnings = 0,

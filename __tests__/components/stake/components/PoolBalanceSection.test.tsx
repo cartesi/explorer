@@ -34,7 +34,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
     it('Should display pool balance label', () => {
@@ -49,11 +49,11 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(
-            screen.getByText('Your pool balance (currently locked)')
+            screen.getByText('Your pool balance (currently locked)'),
         ).toBeInTheDocument();
     });
 
@@ -61,7 +61,7 @@ describe('Deposit Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue))
+            parseCtsiValue(BigNumber.from(defaultValue)),
         );
     });
 
@@ -72,7 +72,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(getByText('Stake').closest('button')).toBeDisabled();
@@ -85,7 +85,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(getByText('Stake').closest('button')).toBeDisabled();
@@ -98,7 +98,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(getByText('Withdraw').closest('button')).toBeDisabled();
@@ -111,7 +111,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(getByText('Stake').closest('button')).toBeEnabled();
@@ -124,7 +124,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         expect(getByText('Withdraw').closest('button')).toBeEnabled();
@@ -138,7 +138,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={mockOnClick()}
                 onWithdrawClick={defaultOnWithdrawClick}
-            />
+            />,
         );
 
         const button = getByText('Stake').closest('button');
@@ -156,7 +156,7 @@ describe('Deposit Section', () => {
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={mockOnClick()}
-            />
+            />,
         );
 
         const button = getByText('Withdraw').closest('button');

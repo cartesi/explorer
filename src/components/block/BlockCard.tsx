@@ -28,7 +28,7 @@ const BlockCard: FC<BlockCardProps> = (props) => {
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'dark.gray.secondary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const boxShadow = useColorModeValue('md', 'none');
 

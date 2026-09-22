@@ -128,11 +128,11 @@ describe('Pool ENS step', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Pool ENS')).toBeInTheDocument();
             expect(
-                screen.getByText('Registering a ENS domain and setting it up.')
+                screen.getByText('Registering a ENS domain and setting it up.'),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('This step could be skipped.')
+                screen.getByText('This step could be skipped.'),
             ).toBeInTheDocument();
 
             expect(screen.queryByText('Pool ENS name')).not.toBeInTheDocument();
@@ -147,36 +147,36 @@ describe('Pool ENS step', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Pool ENS')).toBeInTheDocument();
             expect(
-                screen.getByText('Registering a ENS domain and setting it up.')
+                screen.getByText('Registering a ENS domain and setting it up.'),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('This step could be skipped.')
+                screen.getByText('This step could be skipped.'),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Pool ENS name')).toBeInTheDocument();
 
             expect(
-                screen.queryByPlaceholderText(/name.eth/i)
+                screen.queryByPlaceholderText(/name.eth/i),
             ).toBeInTheDocument();
 
             expect(
                 screen.getByText(
-                    'Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:'
-                )
+                    'Pool owners can name the pool addresses to provide additional trust or just make it easier to identify the pool. The system relies on authority information provided by ENS domains:',
+                ),
             ).toBeInTheDocument();
 
             expect(
                 screen.getByText(
-                    'Open Ethereum-enabled browser and navigate to the'
-                )
+                    'Open Ethereum-enabled browser and navigate to the',
+                ),
             ).toBeInTheDocument();
             expect(screen.getByText('ENS Manager')).toBeInTheDocument();
             expect(
-                screen.getByText('Search for your desired .ETH name')
+                screen.getByText('Search for your desired .ETH name'),
             ).toBeInTheDocument();
             expect(
-                screen.getByText('Finish registration of ENS domain')
+                screen.getByText('Finish registration of ENS domain'),
             ).toBeInTheDocument();
             expect(screen.getByText('COMPLETE')).toBeInTheDocument();
         });
@@ -194,7 +194,7 @@ describe('Pool ENS step', () => {
 
             // check if the warning message is rendered when input is clean
             expect(
-                screen.queryByText('Your wallet is disconnected')
+                screen.queryByText('Your wallet is disconnected'),
             ).not.toBeInTheDocument();
 
             act(() => {
@@ -204,10 +204,10 @@ describe('Pool ENS step', () => {
             });
 
             expect(
-                await screen.findByText('Your wallet is disconnected')
+                await screen.findByText('Your wallet is disconnected'),
             ).toBeInTheDocument();
             expect(
-                await screen.findByText('Connect To Wallet')
+                await screen.findByText('Connect To Wallet'),
             ).toBeInTheDocument();
         });
     });
@@ -217,14 +217,18 @@ describe('Pool ENS step', () => {
             it('should redirect the use to the pool manage screen when pool-address available', () => {
                 const onComplete = jest.fn();
                 render(
-                    <Component inFocus stepNumber={1} onComplete={onComplete} />
+                    <Component
+                        inFocus
+                        stepNumber={1}
+                        onComplete={onComplete}
+                    />,
                 );
 
                 fireEvent.click(screen.getByText('COMPLETE'));
 
                 expect(onComplete).toHaveBeenCalled();
                 expect(routerPushStub).toHaveBeenCalledWith(
-                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners'
+                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners',
                 );
             });
 
@@ -232,7 +236,11 @@ describe('Pool ENS step', () => {
                 const onComplete = jest.fn();
                 mockUseAtom.mockReturnValue(['', jest.fn() as never]);
                 render(
-                    <Component inFocus stepNumber={1} onComplete={onComplete} />
+                    <Component
+                        inFocus
+                        stepNumber={1}
+                        onComplete={onComplete}
+                    />,
                 );
 
                 fireEvent.click(screen.getByText('COMPLETE'));
@@ -262,7 +270,7 @@ describe('Pool ENS step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <Component inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />,
                 );
 
                 act(() => {
@@ -279,11 +287,11 @@ describe('Pool ENS step', () => {
                 rerender(<Component inFocus stepNumber={1} />);
 
                 expect(
-                    await screen.findByText('Updating pool ENS...')
+                    await screen.findByText('Updating pool ENS...'),
                 ).toBeInTheDocument();
 
                 expect(
-                    await screen.findByRole('progressbar')
+                    await screen.findByRole('progressbar'),
                 ).toBeInTheDocument();
             });
 
@@ -291,7 +299,7 @@ describe('Pool ENS step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <Component inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />,
                 );
 
                 act(() => {
@@ -309,13 +317,13 @@ describe('Pool ENS step', () => {
                 rerender(<Component inFocus stepNumber={1} />);
 
                 expect(
-                    await screen.findByText('Pool ENS update failed!')
+                    await screen.findByText('Pool ENS update failed!'),
                 ).toBeInTheDocument();
 
                 expect(
                     await screen.findByText(
-                        'Tx Metamask: user cancelled transaction'
-                    )
+                        'Tx Metamask: user cancelled transaction',
+                    ),
                 ).toBeInTheDocument();
             });
 
@@ -329,7 +337,7 @@ describe('Pool ENS step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <Component inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />,
                 );
 
                 act(() => {
@@ -347,16 +355,16 @@ describe('Pool ENS step', () => {
                 rerender(<Component inFocus stepNumber={1} />);
 
                 expect(
-                    await screen.findByText('Updating pool ENS...')
+                    await screen.findByText('Updating pool ENS...'),
                 ).toBeInTheDocument();
 
                 expect(
-                    await screen.findByText('Pool ENS updated with success!')
+                    await screen.findByText('Pool ENS updated with success!'),
                 ).toBeInTheDocument();
 
                 // Checking even though the step-state router is controlled the router is still called
                 expect(routerPushStub).toHaveBeenCalledWith(
-                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners'
+                    '/pools/0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA/manage?from=node-runners',
                 );
             });
 
@@ -364,7 +372,7 @@ describe('Pool ENS step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <Component inFocus stepNumber={1} />
+                    <Component inFocus stepNumber={1} />,
                 );
 
                 act(() => {

@@ -69,10 +69,10 @@ const stakingPoolFactoryContract = {
 describe('poolFactory service', () => {
     beforeEach(() => {
         mockUseWallet.mockReturnValue(
-            walletData as unknown as WalletConnectionContextProps
+            walletData as unknown as WalletConnectionContextProps,
         );
         mockedUseStakingPoolFactoryContract.mockReturnValue(
-            stakingPoolFactoryContract as unknown as StakingPoolFactoryImpl
+            stakingPoolFactoryContract as unknown as StakingPoolFactoryImpl,
         );
     });
 

@@ -2,18 +2,18 @@
 
 This web application shows several informations about Cartesi Proof of Stake:
 
--   node public address
--   node balance
--   current node owner
--   action to claim a node through metamask
--   action to release a node from the current owner
+- node public address
+- node balance
+- current node owner
+- action to claim a node through metamask
+- action to release a node from the current owner
 
 ## Toolchain
 
 This project pins its toolchain, and CI uses the same versions:
 
--   **Node.js 24.21.0** (Active LTS)
--   **pnpm 11.27.1**, declared in `packageManager`
+- **Node.js 24.21.0** (Active LTS)
+- **pnpm 11.27.1**, declared in `packageManager`
 
 pnpm is activated through Corepack, which ships with Node.js 24:
 
@@ -36,17 +36,17 @@ $ pnpm install --frozen-lockfile
 
 The following supply-chain protections are enabled:
 
--   `allowBuilds` — dependency install scripts are **denied unless explicitly
-    listed**. When a new dependency needs to run a build script, pnpm reports it
-    and the package has to be added here deliberately.
--   `strictDepBuilds: true` — the install fails rather than silently skipping a
-    dependency whose build script has not been reviewed.
--   `blockExoticSubdeps: true` — transitive dependencies may not be pulled from
-    git repositories or tarball URLs, only from the registry.
--   `minimumReleaseAge: 10080` — a newly published version must be at least
-    7 days old before it can be resolved, which blunts hijacked-release attacks.
--   `trustPolicy: no-downgrade` — a package whose trust level drops relative to
-    its previous releases fails the install.
+- `allowBuilds` — dependency install scripts are **denied unless explicitly
+  listed**. When a new dependency needs to run a build script, pnpm reports it
+  and the package has to be added here deliberately.
+- `strictDepBuilds: true` — the install fails rather than silently skipping a
+  dependency whose build script has not been reviewed.
+- `blockExoticSubdeps: true` — transitive dependencies may not be pulled from
+  git repositories or tarball URLs, only from the registry.
+- `minimumReleaseAge: 10080` — a newly published version must be at least
+  7 days old before it can be resolved, which blunts hijacked-release attacks.
+- `trustPolicy: no-downgrade` — a package whose trust level drops relative to
+  its previous releases fails the install.
 
 `overrides` is used to pin transitive dependencies away from vulnerable or
 non-registry sources.
@@ -73,21 +73,21 @@ $ yarn start --export ../explorer/src/services/contracts/localhost.json
 This will run a local hardhat node running at http://127.0.0.1:8545/ and deploy all smart contracts.
 Among the contracts are:
 
--   CartesiToken: the CTSI token contract. Minter is the first account, and holds 1B tokens initially.
--   StakingImpl: the staking contract.
--   WorkerManagerAuthManagerImpl: used to hire worker nodes.
--   PoS: proof of stake smart contract, holds the chains. Starts with no chain created.
--   StakingPoolFactoryImpl: factory of new staking pools.
+- CartesiToken: the CTSI token contract. Minter is the first account, and holds 1B tokens initially.
+- StakingImpl: the staking contract.
+- WorkerManagerAuthManagerImpl: used to hire worker nodes.
+- PoS: proof of stake smart contract, holds the chains. Starts with no chain created.
+- StakingPoolFactoryImpl: factory of new staking pools.
 
 ### Running a local graph node
 
 The application uses a subgraph powered by thegraph to consolidate blockchain information and serve using a GraphQL endpoint.
 
--   Clone the graph node from [GitHub](git@github.com:graphprotocol/graph-node.git).
--   Copy the file `docker/docker-compose.yml` to `docker/docker-compose-localhost.yml`
--   Modify line [20](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L20) to `ethereum: 'localhost:http://host.docker.internal:8545/'`
--   Modify line [27](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L27) to `./data_localhost/ipfs:/data/ipfs`
--   Modify line [38](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L38) to `./data_localhost/postgres:/var/lib/postgresql/data`
+- Clone the graph node from [GitHub](git@github.com:graphprotocol/graph-node.git).
+- Copy the file `docker/docker-compose.yml` to `docker/docker-compose-localhost.yml`
+- Modify line [20](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L20) to `ethereum: 'localhost:http://host.docker.internal:8545/'`
+- Modify line [27](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L27) to `./data_localhost/ipfs:/data/ipfs`
+- Modify line [38](https://github.com/graphprotocol/graph-node/blob/9e2e5e6a15406c312b686cb1d00b198ac7e45445/docker/docker-compose.yml#L38) to `./data_localhost/postgres:/var/lib/postgresql/data`
 
 Then run:
 
@@ -118,7 +118,7 @@ The next step is to create an account on [Infura](https://infura.io/) or any oth
 
 On your `.env.development.local` set the following var:
 
--   NEXT_PUBLIC_RPC_URL_1=your_mainnet_node_rpc_endpoint_goes_here
+- NEXT_PUBLIC_RPC_URL_1=your_mainnet_node_rpc_endpoint_goes_here
 
 > We support ethereum Mainnet(1), Sepolia(11155111) and Devnet (31337),
 
@@ -151,4 +151,4 @@ The project use **tags** that represent releases, including a branch to signal c
 
 That is as follows:
 
--   Combined tag name `v` + SemVer format **tag** (e.g. v3.4.0) to pinpoint repository state on a given production release.
+- Combined tag name `v` + SemVer format **tag** (e.g. v3.4.0) to pinpoint repository state on a given production release.

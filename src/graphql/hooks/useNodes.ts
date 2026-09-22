@@ -20,7 +20,7 @@ export const DEFAULT_SORT = 'timestamp';
 const useNodes = (
     pageNumber: number,
     id: string = undefined,
-    sort = 'timestamp'
+    sort = 'timestamp',
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
     return useQuery<NodesData, NodesVars>(NODES, {
@@ -48,7 +48,7 @@ export const useUserNodes = (
     owner: string,
     count = NODES_PER_PAGE,
     opts?: Options,
-    sort = DEFAULT_SORT
+    sort = DEFAULT_SORT,
 ) => {
     // if no owner, use address zero, so no nodes are returned
     owner = owner || constants.AddressZero;

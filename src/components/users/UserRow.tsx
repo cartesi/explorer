@@ -40,7 +40,7 @@ const UserRow: FC<UserRowProps> = ({ chainId, user, ...restProps }) => {
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
         'WhiteSmoke',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const borderColor = useColorModeValue('gray.80', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('light.primary', 'dark.primary');

@@ -88,7 +88,7 @@ export const LightMode = React.forwardRef<HTMLSpanElement, SpanProps>(
                 {...props}
             />
         );
-    }
+    },
 );
 
 export const DarkMode = React.forwardRef<HTMLSpanElement, SpanProps>(
@@ -104,5 +104,5 @@ export const DarkMode = React.forwardRef<HTMLSpanElement, SpanProps>(
                 {...props}
             />
         );
-    }
+    },
 );

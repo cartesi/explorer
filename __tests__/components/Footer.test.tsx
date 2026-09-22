@@ -74,7 +74,7 @@ describe('Footer component', () => {
     it('should display Cartesi twitter link', () => {
         const { container } = render(<Component {...defaultProps} />);
         const twitterLink = container.querySelector(
-            `a[href="https://twitter.com/cartesiproject"]`
+            `a[href="https://twitter.com/cartesiproject"]`,
         );
         const isLinkInDom =
             typeof twitterLink === 'object' && twitterLink !== null;

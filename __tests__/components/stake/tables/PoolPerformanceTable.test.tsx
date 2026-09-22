@@ -197,10 +197,10 @@ describe('Pool Performance Table', () => {
             const monthlyVal = await findByTestId(row, 'month-performance-col');
 
             expect(
-                await getByText(weeklyVal, '0.08% (4.36%)')
+                await getByText(weeklyVal, '0.08% (4.36%)'),
             ).toBeInTheDocument();
             expect(
-                await getByText(monthlyVal, '1.14% (14.79%)')
+                await getByText(monthlyVal, '1.14% (14.79%)'),
             ).toBeInTheDocument();
         });
 
@@ -211,11 +211,11 @@ describe('Pool Performance Table', () => {
 
             const weekOne = await findByTestId(
                 firstRow,
-                'week-performance-col'
+                'week-performance-col',
             );
             const monthOne = await findByTestId(
                 firstRow,
-                'month-performance-col'
+                'month-performance-col',
             );
 
             expect(await getByText(weekOne, '0% (0%)')).toBeInTheDocument();

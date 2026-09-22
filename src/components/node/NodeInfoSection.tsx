@@ -89,7 +89,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
 
         const numberFormat = new Intl.NumberFormat('en-US', options);
         return numberFormat.format(
-            value ? parseFloat(formatUnits(value, 18)) : 0
+            value ? parseFloat(formatUnits(value, 18)) : 0,
         );
     };
 

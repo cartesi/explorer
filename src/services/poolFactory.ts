@@ -26,7 +26,7 @@ export const useStakingPoolFactory = () => {
         // result is pool address taken from transaction event
         if (receipt.events) {
             const event = receipt.events.find(
-                (e) => e.event == 'NewFlatRateCommissionStakingPool'
+                (e) => e.event == 'NewFlatRateCommissionStakingPool',
             );
             if (event && event.args && event.args.length > 0) {
                 return event.args[0];
@@ -43,7 +43,7 @@ export const useStakingPoolFactory = () => {
             transaction.set(
                 poolFactory.createFlatRateCommission(commission, {
                     value: ethers.utils.parseEther('0.001'),
-                })
+                }),
             );
         }
     };

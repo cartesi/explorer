@@ -103,7 +103,7 @@ const PoolPerformanceTableRow: FC<PoolPerformanceTableRowProps> = ({
     const backgroundColor = useColorModeValue('white', 'dark.gray.primary');
     const backgroundHoverColor = useColorModeValue(
         'WhiteSmoke',
-        'dark.gray.tertiary'
+        'dark.gray.tertiary',
     );
     const borderColor = useColorModeValue('gray.100', 'dark.gray.quinary');
     const linkHoverColor = useColorModeValue('dark.secondary', 'dark.primary');

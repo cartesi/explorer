@@ -19,7 +19,7 @@ import { withChakraTheme } from '../../../test-utilities';
 const defaultLocation: Route = '/stake';
 
 const EProductionIntervalStat = withChakraTheme<ProductionIntervalStatProps>(
-    ProductionIntervalStat
+    ProductionIntervalStat,
 );
 
 describe('Production Interval Stat', () => {
@@ -30,7 +30,7 @@ describe('Production Interval Stat', () => {
                 totalBlocks={10}
                 productionInterval={10000}
                 location={defaultLocation}
-            />
+            />,
         );
 
     it('Should display production interval label', () => {
@@ -49,11 +49,11 @@ describe('Production Interval Stat', () => {
             <EProductionIntervalStat
                 totalBlocks={10}
                 productionInterval={10000}
-            />
+            />,
         );
 
         expect(() => screen.getByTestId('location-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

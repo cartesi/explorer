@@ -25,7 +25,7 @@ export interface ICTSINumberInputProps {
     onChange?: (
         bigNumberValue: BigNumber,
         numberValue: number,
-        value: string
+        value: string,
     ) => void;
 }
 
@@ -54,7 +54,7 @@ export const CTSINumberInput: FC<ICTSINumberInputProps> = ({
                 onChange(
                     parseUnits(min.toString(), maxPrecision),
                     min,
-                    min.toString()
+                    min.toString(),
                 );
             }
 

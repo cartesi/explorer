@@ -52,7 +52,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
 
     const stakeBalanceFormatted = parseFloat(formatUnits(stakedBalance, 18));
     const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
@@ -103,7 +103,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     width="full"
                                     onValueChange={({ value }) => {
                                         setUnstakeFullAmount(
-                                            value as Operation
+                                            value as Operation,
                                         );
 
                                         if (value === 'full') {
@@ -159,10 +159,10 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                                             stakeBalanceFormatted
                                                         }
                                                         onChange={(
-                                                            bigNumberValue
+                                                            bigNumberValue,
                                                         ) => {
                                                             setOutputUnstake(
-                                                                bigNumberValue
+                                                                bigNumberValue,
                                                             );
                                                         }}
                                                     />

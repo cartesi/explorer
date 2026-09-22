@@ -131,8 +131,8 @@ describe('HireNode Step', () => {
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'At this point, stake your funds using Cartesi Explorer.'
-                )
+                    'At this point, stake your funds using Cartesi Explorer.',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
@@ -149,19 +149,19 @@ describe('HireNode Step', () => {
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'At this point, stake your funds using Cartesi Explorer.'
-                )
+                    'At this point, stake your funds using Cartesi Explorer.',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Node Address')).toBeInTheDocument();
             expect(
-                screen.getByText('You may find from the docker configuration')
+                screen.getByText('You may find from the docker configuration'),
             ).toBeInTheDocument();
             expect(screen.getByText('Initial Funds')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'You need to specify the amount of ETH you want to give to your node. The node holds a separate Ethereum account and key pair, and only spends your ETH to accept being hired during setup (only once) and then to produce blocks. That means you only incur transaction fee expenses when you are rewarded with CTSI.'
-                )
+                    'You need to specify the amount of ETH you want to give to your node. The node holds a separate Ethereum account and key pair, and only spends your ETH to accept being hired during setup (only once) and then to produce blocks. That means you only incur transaction fee expenses when you are rewarded with CTSI.',
+                ),
             ).toBeInTheDocument();
             expect(screen.getByText('PREVIOUS')).toBeInTheDocument();
             expect(screen.getByText('NEXT')).toBeInTheDocument();
@@ -182,7 +182,7 @@ describe('HireNode Step', () => {
             const fundsInput = screen.getByLabelText('Initial Funds');
 
             expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
-                true
+                true,
             );
 
             // Fill the required fields
@@ -197,7 +197,7 @@ describe('HireNode Step', () => {
             expect(screen.queryByDisplayValue(account)).toBeInTheDocument();
             expect(screen.queryByDisplayValue(2)).toBeInTheDocument();
             expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
-                false
+                false,
             );
 
             //removing the focus of it i.e. user clicked PREVIOUS
@@ -212,7 +212,7 @@ describe('HireNode Step', () => {
             expect(screen.queryByDisplayValue(2)).not.toBeInTheDocument();
 
             expect(screen.getByText('NEXT').hasAttribute('disabled')).toBe(
-                true
+                true,
             );
         });
     });
@@ -227,7 +227,7 @@ describe('HireNode Step', () => {
 
             const alert = screen.getByRole('alert');
             expect(
-                await findByText(alert, 'Hiring the node...')
+                await findByText(alert, 'Hiring the node...'),
             ).toBeInTheDocument();
             expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
@@ -241,10 +241,10 @@ describe('HireNode Step', () => {
             render(<HireNodeE inFocus stepNumber={1} />);
 
             expect(
-                screen.getByText('Hiring the node failed')
+                screen.getByText('Hiring the node failed'),
             ).toBeInTheDocument();
             expect(
-                screen.getByText('Tx metamask: user rejected the transaction')
+                screen.getByText('Tx metamask: user rejected the transaction'),
             ).toBeInTheDocument();
         });
     });
@@ -254,7 +254,7 @@ describe('HireNode Step', () => {
             it('should call onPrevious callback when clicked', () => {
                 const onPrev = jest.fn();
                 render(
-                    <HireNodeE inFocus stepNumber={1} onPrevious={onPrev} />
+                    <HireNodeE inFocus stepNumber={1} onPrevious={onPrev} />,
                 );
                 const button = screen.getByText('PREVIOUS');
                 fireEvent.click(button);
@@ -295,7 +295,7 @@ describe('HireNode Step', () => {
                 mockUseBalance.mockReturnValue(toBigNumber('6'));
                 // First render
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 const addressInput = screen.getByLabelText('Node Address');

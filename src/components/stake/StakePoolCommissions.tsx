@@ -48,7 +48,7 @@ const PoolCommissions: FC = () => {
     const paginatedList = list.slice(startIndex, endIndex);
     const pages = Math.ceil(list.length / rowsPerPage);
     const perPageOptions = Array.from({ length: 3 }).map(
-        (_, index) => (index + 1) * 10
+        (_, index) => (index + 1) * 10,
     );
 
     useEffect(() => {
@@ -56,20 +56,20 @@ const PoolCommissions: FC = () => {
             setDataPageNumber((lastValue) =>
                 data.stakingPoolFeeHistories.length === maxPerPage
                     ? lastValue + 1
-                    : lastValue
+                    : lastValue,
             );
 
             setList((lastValue) =>
                 [...lastValue, ...data.stakingPoolFeeHistories].reduce(
                     (accumulator, feeHistory) => {
                         return accumulator.some(
-                            ({ id }) => id === feeHistory.id
+                            ({ id }) => id === feeHistory.id,
                         )
                             ? accumulator
                             : [...accumulator, feeHistory];
                     },
-                    []
-                )
+                    [],
+                ),
             );
         }
     }, [data?.stakingPoolFeeHistories, maxPerPage]);

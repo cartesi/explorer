@@ -16,7 +16,7 @@ export type Threshold =
 export const useVisibilityThreshold = (
     viewport: HTMLElement,
     target: HTMLElement,
-    options = { threshold: 0.5 }
+    options = { threshold: 0.5 },
 ) => {
     const [threshold, updateThreshold] = useState<Threshold>({});
     const optThreshold = options?.threshold ?? 0.0;

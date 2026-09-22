@@ -26,7 +26,7 @@ const handler = async ({ params }: Response) => {
     if (!ethers.utils.isAddress(address)) {
         return NextResponse.json(
             { message: `${address} is not a valid address format.` },
-            { status: 422 }
+            { status: 422 },
         );
     }
 

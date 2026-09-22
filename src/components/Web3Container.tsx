@@ -19,7 +19,7 @@ interface Web3ContainerProps {
 
 const Web3Container: FC<Web3ContainerProps> = ({ children }) => {
     const chainIds = Object.keys(networks).map(
-        (key) => `0x${Number(key).toString(16)}`
+        (key) => `0x${Number(key).toString(16)}`,
     );
     const appMetaData = {
         name: 'Cartesi Blockchain Explorer',

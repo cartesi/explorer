@@ -64,7 +64,7 @@ describe('useStakingPools', () => {
                 pageNumber: 1,
                 sort: 'totalUsers',
                 where: { id: '0x0', manager: '0x001' },
-            })
+            }),
         );
 
         expect(result.current.data).toBeDefined();

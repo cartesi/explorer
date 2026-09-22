@@ -100,24 +100,24 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     const bg = useColorModeValue('light.gray.secondary', 'dark.gray.primary');
     const rebalanceBg = useColorModeValue(
         'light.support.warning',
-        'dark.support.warning'
+        'dark.support.warning',
     );
     const rebalanceColor = useColorModeValue('white', 'dark.gray.primary');
     const rebalanceHoverBg = useColorModeValue(
         'light.orange.primary',
-        'dark.orange.primary'
+        'dark.orange.primary',
     );
     const rebalanceDisabledBg = useColorModeValue(
         'light.gray.quaternary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const rebalanceDisabledColor = useColorModeValue(
         'light.support.disabled',
-        'dark.support.disabled'
+        'dark.support.disabled',
     );
     const borderColor = useColorModeValue(
         'dark.gray.quaternary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     const linkColor = useColorModeValue('teal', 'cyan');
     const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');

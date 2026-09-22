@@ -41,7 +41,7 @@ export const usePoSContract = (): PoSV2FactoryImpl | PoS => {
     const posV2FactoryImpl = useContract(
         PoSV2FactoryImpl__factory.connect,
         abis,
-        'PoSV2FactoryImpl'
+        'PoSV2FactoryImpl',
     );
 
     const pos = useContract(PoS__factory.connect, abis, 'PoS');

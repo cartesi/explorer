@@ -70,7 +70,7 @@ export const Account: FC = () => {
                                         color={color}
                                         fontSize="sm"
                                         fontFamily={theme.tokens.getVar(
-                                            'fonts.body'
+                                            'fonts.body',
                                         )}
                                     >
                                         {address}
@@ -94,7 +94,7 @@ export const Account: FC = () => {
                         <Portal>
                             <Menu.Positioner
                                 zIndex={`${theme.tokens.getVar(
-                                    'zIndex.xxl'
+                                    'zIndex.xxl',
                                 )} !important`}
                             >
                                 <Menu.Content>

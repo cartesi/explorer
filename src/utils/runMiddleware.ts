@@ -4,7 +4,7 @@ const runMiddleware = (
     req: NextApiRequest,
     res: NextApiResponse,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- Consider using NextApiHandler instead
-    fn: Function
+    fn: Function,
 ) => {
     return new Promise((resolve, reject) => {
         fn(req, res, (result) => {

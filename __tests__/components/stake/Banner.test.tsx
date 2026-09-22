@@ -44,7 +44,7 @@ describe('Banner', () => {
 
         const componentNode = screen.getByText('Icon').closest(`.${className}`);
         expect(componentNode.getAttribute('style')).toBe(
-            `font-weight: ${props.style.fontWeight};`
+            `font-weight: ${props.style.fontWeight};`,
         );
     });
 });

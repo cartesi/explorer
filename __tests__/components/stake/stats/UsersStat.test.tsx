@@ -42,7 +42,7 @@ describe('Users Stat', () => {
         render(<EUsersStat totalUsers={100} />);
 
         expect(() => screen.getByTestId('location-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 

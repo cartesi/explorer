@@ -40,7 +40,7 @@ export const DepositSection: FC<IDepositSection> = ({
     const noEthAndIsNotASafe = userETHBalance?.isZero() && !isGnosisSafe;
     const warningIconColor = useColorModeValue(
         'light.support.warning',
-        'dark.support.warning'
+        'dark.support.warning',
     );
     const colorScheme = useColorModeValue('teal', 'blue');
 

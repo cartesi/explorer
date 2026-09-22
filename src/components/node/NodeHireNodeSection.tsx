@@ -35,7 +35,7 @@ export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'dark.border.tertiary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const colorScheme = useColorModeValue('teal', 'cyan');
     const [initialFunds, setInitialFunds] = useState('');

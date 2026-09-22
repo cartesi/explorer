@@ -52,26 +52,26 @@ describe('BlockMiniCard component', () => {
             {
                 units: ['m'],
                 round: true,
-            }
+            },
         );
         expect(screen.getByText(`${time} ago`)).toBeInTheDocument();
     });
 
     it('should display correct block id', () => {
         const { rerender } = render(
-            <Component {...props} showChain showProtocol={false} />
+            <Component {...props} showChain showProtocol={false} />,
         );
         expect(
             screen.getByText(
-                `Block ${props.block.chain.number}-${props.block.number}`
-            )
+                `Block ${props.block.chain.number}-${props.block.number}`,
+            ),
         ).toBeInTheDocument();
 
         rerender(<Component {...props} showChain={false} showProtocol />);
         expect(
             screen.getByText(
-                `Block ${props.block.chain.protocol.version}-${props.block.number}`
-            )
+                `Block ${props.block.chain.protocol.version}-${props.block.number}`,
+            ),
         ).toBeInTheDocument();
     });
 

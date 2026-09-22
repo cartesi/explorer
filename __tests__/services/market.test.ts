@@ -56,13 +56,13 @@ describe('market service', () => {
 
         await waitFor(() => {
             expect(result.current.marketInformation.price).toBe(
-                data.market_data.current_price.usd.toFixed(4)
+                data.market_data.current_price.usd.toFixed(4),
             );
             expect(result.current.marketInformation.marketCap).toBe(
-                data.market_data.market_cap.usd
+                data.market_data.market_cap.usd,
             );
             expect(result.current.marketInformation.circulatingSupply).toBe(
-                data.market_data.circulating_supply
+                data.market_data.circulating_supply,
             );
         });
     });

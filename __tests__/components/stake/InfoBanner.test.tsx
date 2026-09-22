@@ -40,7 +40,7 @@ describe('Info Banner', () => {
     it('Should not display banner', () => {
         //Start as open banner
         const { rerender } = render(
-            <EInfoBanner {...defaultProps} isOpen={true} />
+            <EInfoBanner {...defaultProps} isOpen={true} />,
         );
         expect(screen.queryByText('Info Banner')).toBeInTheDocument();
 
@@ -73,7 +73,7 @@ describe('Info Banner', () => {
                 {...defaultProps}
                 isClosable
                 onToggle={mockOnClick()}
-            />
+            />,
         );
 
         fireEvent.click(screen.getByRole('close-button'));
