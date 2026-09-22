@@ -4,17 +4,17 @@ jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 #required to retrieve git history
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install Dependencies
@@ -24,7 +24,7 @@ jobs:
         run: pnpm build-storybook
 
       - name: Publish to Chromatic
-        uses: chromaui/action@v13.2.0
+        uses: chromaui/action@v18.9.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           storybookBuildDir: storybook-static

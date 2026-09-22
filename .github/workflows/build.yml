@@ -1,21 +1,21 @@
-name: Docker
+name: CI
 on: [push, 'pull_request']
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6.1.0
         with:
           package_json_file: 'package.json'
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install Dependencies
@@ -37,7 +37,7 @@ jobs:
         run: pnpm exec dotenv -c development -- next build
 
       - name: Publish coveralls report
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2.3.8
         with:
           path-to-lcov: 'coverage/lcov.info'
           github-token: ${{ secrets.GITHUB_TOKEN }}
