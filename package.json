@@ -83,7 +83,6 @@
         "@chakra-ui/cli": "^3.37.0",
         "@chromatic-com/storybook": "^4.1.1",
         "@eslint/compat": "^2.1.1",
-        "@eslint/eslintrc": "^3.3.7",
         "@eslint/js": "^10.0.1",
         "@storybook/addon-links": "^9.1.20",
         "@storybook/addon-onboarding": "^9.1.20",
