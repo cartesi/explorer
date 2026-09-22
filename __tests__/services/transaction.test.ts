@@ -78,7 +78,7 @@ describe('Transaction service', () => {
             act(() => {
                 result.current.set(
                     //to be resolved promise.
-                    new Promise<ContractTransaction>(() => null)
+                    new Promise<ContractTransaction>(() => null),
                 );
             });
 
@@ -97,7 +97,7 @@ describe('Transaction service', () => {
             expect(result.current).toHaveProperty('isOngoing', false);
 
             const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction))
+                act(() => resolve(contractTransaction)),
             );
 
             act(() => {
@@ -108,12 +108,12 @@ describe('Transaction service', () => {
             expect(result.current).toHaveProperty('isOngoing', true);
 
             await waitFor(() =>
-                expect(result.current.state).toBe('waiting_confirmation')
+                expect(result.current.state).toBe('waiting_confirmation'),
             );
 
             expect(result.current).toHaveProperty(
                 'state',
-                'waiting_confirmation'
+                'waiting_confirmation',
             );
             expect(result.current.isOngoing).toBe(true);
             expect(result.current.submitting).toBe(false);
@@ -128,7 +128,7 @@ describe('Transaction service', () => {
             const { result } = renderHook(() => useTransaction<string>());
 
             const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction))
+                act(() => resolve(contractTransaction)),
             );
 
             act(() => {
@@ -151,7 +151,7 @@ describe('Transaction service', () => {
             expect(result.current.state).toEqual('acknowledged');
 
             const promise = Promise.reject(
-                new Error('Metamask error goes here')
+                new Error('Metamask error goes here'),
             );
 
             act(() => result.current.set(promise));
@@ -181,12 +181,12 @@ describe('Transaction service', () => {
         it('should handle transaction failures when trying to wait for confirmations', async () => {
             const contractTransaction = buildContractTransaction();
             contractTransaction.wait.mockRejectedValue(
-                new Error('Network failure')
+                new Error('Network failure'),
             );
             const { result } = renderHook(() => useTransaction<string>());
 
             const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction))
+                act(() => resolve(contractTransaction)),
             );
 
             act(() => {
@@ -212,15 +212,15 @@ describe('Transaction service', () => {
                 useTransaction<string>((receipt) => {
                     // naive resolver
                     const event = receipt.events.find(
-                        ({ event }) => event == 'DummyEvent'
+                        ({ event }) => event == 'DummyEvent',
                     );
 
                     return event.args[0];
-                })
+                }),
             );
 
             const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction))
+                act(() => resolve(contractTransaction)),
             );
 
             act(() => {
@@ -231,7 +231,7 @@ describe('Transaction service', () => {
 
             expect(result.current.state).toEqual('errored');
             expect(result.current.error).toEqual(
-                `Cannot read properties of undefined (reading 'args')`
+                `Cannot read properties of undefined (reading 'args')`,
             );
             expect(result.current.result).not.toBeDefined();
         });
@@ -252,16 +252,16 @@ describe('Transaction service', () => {
                 useTransaction<string>((receipt) => {
                     if (receipt.events) {
                         const event = receipt.events.find(
-                            ({ event }) => event == 'DummyEvent'
+                            ({ event }) => event == 'DummyEvent',
                         );
 
                         return event.args[0];
                     }
-                })
+                }),
             );
 
             const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction))
+                act(() => resolve(contractTransaction)),
             );
 
             act(() => {

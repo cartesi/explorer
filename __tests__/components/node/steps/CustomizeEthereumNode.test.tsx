@@ -34,12 +34,12 @@ describe('Customize Ethereum Node Step component', () => {
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(
-                screen.getByText('Set up Ethereum Node')
+                screen.getByText('Set up Ethereum Node'),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'Cartesi node connects to the Ethereum network through a standard gateway'
-                )
+                    'Cartesi node connects to the Ethereum network through a standard gateway',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.queryByText('NEXT')).not.toBeInTheDocument();
@@ -52,19 +52,19 @@ describe('Customize Ethereum Node Step component', () => {
 
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(
-                screen.getByText('Set up Ethereum Node')
+                screen.getByText('Set up Ethereum Node'),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'Cartesi node connects to the Ethereum network through a standard gateway'
-                )
+                    'Cartesi node connects to the Ethereum network through a standard gateway',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Ethereum node')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    `The node works with any standard JSON-RPC Ethereum provider. It's important to use a stable and reliable provider.`
-                )
+                    `The node works with any standard JSON-RPC Ethereum provider. It's important to use a stable and reliable provider.`,
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Ethereum Gateway')).toBeInTheDocument();
@@ -72,11 +72,11 @@ describe('Customize Ethereum Node Step component', () => {
             expect(screen.getByText('1. Infura')).toBeInTheDocument();
             expect(screen.getByText('2. Alchemy')).toBeInTheDocument();
             expect(
-                screen.getByText('(Recommended third party)')
+                screen.getByText('(Recommended third party)'),
             ).toBeInTheDocument();
             expect(screen.getByText('Relatively stable.')).toBeInTheDocument();
             expect(
-                screen.getByText('Have to register and setup in advance')
+                screen.getByText('Have to register and setup in advance'),
             ).toBeInTheDocument();
             expect(screen.getByText('NEXT')).toBeInTheDocument();
         });
@@ -86,7 +86,7 @@ describe('Customize Ethereum Node Step component', () => {
         it('should call the onComplete callback when clicking the NEXT button', () => {
             const onComplete = jest.fn();
             render(
-                <Component inFocus stepNumber={1} onComplete={onComplete} />
+                <Component inFocus stepNumber={1} onComplete={onComplete} />,
             );
 
             fireEvent.click(screen.getByText('NEXT'));

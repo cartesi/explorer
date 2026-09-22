@@ -99,7 +99,7 @@ describe('token service', () => {
 
         const amount = 100000;
         expect(result.current.parseCTSI(amount)).toStrictEqual(
-            parseUnits((amount * 1000).toString(), 15)
+            parseUnits((amount * 1000).toString(), 15),
         );
     });
 
@@ -108,7 +108,7 @@ describe('token service', () => {
 
         const amount = BigNumber.from('10000');
         expect(result.current.toCTSI(amount)).toStrictEqual(
-            parseInt(formatUnits(amount, 18))
+            parseInt(formatUnits(amount, 18)),
         );
     });
 
@@ -117,7 +117,7 @@ describe('token service', () => {
 
         const amount = BigNumber.from('10000');
         expect(result.current.toBigCTSI(amount)).toStrictEqual(
-            BigNumber.from(result.current.toCTSI(amount))
+            BigNumber.from(result.current.toCTSI(amount)),
         );
     });
 });

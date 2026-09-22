@@ -29,7 +29,7 @@ export interface UseStakingPoolFeeHistoriesFilter {
 }
 
 const useStakingPoolUserHistories = (
-    options: UseStakingPoolFeeHistoriesOptions
+    options: UseStakingPoolFeeHistoriesOptions,
 ) => {
     const {
         pool,

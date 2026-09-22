@@ -126,13 +126,13 @@ describe('SetAllowance Step', () => {
 
             expect(screen.getByText('Set Allowance')).toBeInTheDocument();
             expect(
-                screen.getByText('Final steps to run your node.')
+                screen.getByText('Final steps to run your node.'),
             ).toBeInTheDocument();
             expect(screen.getByText('Enter the allowance')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'This is going to be the maximum amount of CTSI that Cartesi’s staking contract will be able to receive from your personal account.'
-                )
+                    'This is going to be the maximum amount of CTSI that Cartesi’s staking contract will be able to receive from your personal account.',
+                ),
             ).toBeInTheDocument();
             expect(screen.getByText('RUN YOUR NODE')).toBeInTheDocument();
         });
@@ -150,16 +150,16 @@ describe('SetAllowance Step', () => {
 
             expect(screen.getByText('Set Allowance')).toBeInTheDocument();
             expect(
-                screen.getByText('Final steps to run your node.')
+                screen.getByText('Final steps to run your node.'),
             ).toBeInTheDocument();
 
             expect(
-                screen.queryByText('Enter the allowance')
+                screen.queryByText('Enter the allowance'),
             ).not.toBeInTheDocument();
             expect(
                 screen.queryByText(
-                    'This is going to be the maximum amount of CTSI that Cartesi’s staking contract will be able to receive from your personal account.'
-                )
+                    'This is going to be the maximum amount of CTSI that Cartesi’s staking contract will be able to receive from your personal account.',
+                ),
             ).not.toBeInTheDocument();
             expect(screen.queryByText('RUN YOUR NODE')).not.toBeInTheDocument();
         });
@@ -178,8 +178,8 @@ describe('SetAllowance Step', () => {
 
                 expect(
                     await screen.findByText(
-                        'Allowance should be greater than 0'
-                    )
+                        'Allowance should be greater than 0',
+                    ),
                 ).toBeInTheDocument();
             });
 
@@ -194,7 +194,7 @@ describe('SetAllowance Step', () => {
                 });
 
                 expect(
-                    await screen.findByText('This field is required.')
+                    await screen.findByText('This field is required.'),
                 ).toBeInTheDocument();
             });
         });
@@ -213,10 +213,10 @@ describe('SetAllowance Step', () => {
 
             const alert = screen.getByRole('alert');
             expect(
-                await findByText(alert, 'Your wallet is disconnected')
+                await findByText(alert, 'Your wallet is disconnected'),
             ).toBeInTheDocument();
             expect(
-                await findByText(alert, 'Connect To Wallet')
+                await findByText(alert, 'Connect To Wallet'),
             ).toBeInTheDocument();
 
             // should call activate method from useWallet hook
@@ -236,7 +236,7 @@ describe('SetAllowance Step', () => {
 
             const alert = screen.getByRole('alert');
             expect(
-                await findByText(alert, 'Setting the allowance...')
+                await findByText(alert, 'Setting the allowance...'),
             ).toBeInTheDocument();
             expect(await findByRole(alert, 'progressbar')).toBeInTheDocument();
         });
@@ -251,10 +251,10 @@ describe('SetAllowance Step', () => {
             const alert = screen.getByRole('alert');
 
             expect(
-                await findByText(alert, 'Setting the allowance failed')
+                await findByText(alert, 'Setting the allowance failed'),
             ).toBeInTheDocument();
             expect(
-                await findByText(alert, 'Allowance transaction error message')
+                await findByText(alert, 'Allowance transaction error message'),
             ).toBeInTheDocument();
         });
     });
@@ -309,14 +309,14 @@ describe('SetAllowance Step', () => {
             });
 
             await waitFor(() =>
-                expect(button.hasAttribute('disabled')).toBe(false)
+                expect(button.hasAttribute('disabled')).toBe(false),
             );
 
             fireEvent.click(button);
 
             expect(tokenMock.approve).toHaveBeenCalledWith(
                 stakingAddress,
-                toBigNumber(10000)
+                toBigNumber(10000),
             );
         });
 
@@ -336,7 +336,7 @@ describe('SetAllowance Step', () => {
             });
 
             await waitFor(() =>
-                expect(button.hasAttribute('disabled')).toBe(false)
+                expect(button.hasAttribute('disabled')).toBe(false),
             );
 
             await act(() => {
@@ -372,7 +372,7 @@ describe('SetAllowance Step', () => {
             render(<Component inFocus stepNumber={1} />);
 
             expect(routerPushStub).toHaveBeenCalledWith(
-                `/node/${hiredNodeAddress}/manage`
+                `/node/${hiredNodeAddress}/manage`,
             );
         });
 

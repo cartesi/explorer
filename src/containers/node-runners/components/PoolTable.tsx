@@ -93,11 +93,11 @@ const PoolTable = ({ data }: Props) => {
     };
     const borderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const topBorderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quinary'
+        'dark.gray.quinary',
     );
 
     const thProps: TableColumnHeaderProps = {
@@ -114,7 +114,7 @@ const PoolTable = ({ data }: Props) => {
     const addressColor = useColorModeValue('gray.900', 'white');
     const backgroundHoverColor = useColorModeValue(
         'WhiteSmoke',
-        'dark.gray.tertiary'
+        'dark.gray.tertiary',
     );
     const linkHoverColor = useColorModeValue('blue.400', 'dark.primary');
     const linkColor = useColorModeValue('gray.900', 'gray.90');

@@ -97,7 +97,7 @@ describe('chain service', () => {
                     new Promise((resolve) =>
                         resolve({
                             networkId,
-                        })
+                        }),
                     ),
             } as Response);
         });
@@ -116,7 +116,7 @@ describe('chain service', () => {
                     new Promise((resolve) =>
                         resolve({
                             networkId,
-                        })
+                        }),
                     ),
             } as Response);
         });
@@ -172,7 +172,7 @@ describe('chain service', () => {
         const result = await getChainByNetworkId(networkId);
 
         expect(result).toStrictEqual(
-            chains.find((c) => c.networkId === networkId)
+            chains.find((c) => c.networkId === networkId),
         );
     });
 
@@ -192,7 +192,7 @@ describe('chain service', () => {
         const result = await convertNetworkIdToChainId(networkId);
 
         expect(result).toStrictEqual(
-            chains.find((c) => c.networkId === networkId).chainId
+            chains.find((c) => c.networkId === networkId).chainId,
         );
     });
 });

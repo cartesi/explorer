@@ -107,7 +107,7 @@ const Nodes = (props: NodesProps) => {
                                     (now.getTime() / 1000 - node.timestamp) /
                                         60 /
                                         60 /
-                                        24
+                                        24,
                                 );
                                 return (
                                     <tr key={node.id} className="body-text-2">
@@ -118,7 +118,7 @@ const Nodes = (props: NodesProps) => {
                                         <td>
                                             {formatCTSI(
                                                 node.owner.stakedBalance,
-                                                2
+                                                2,
                                             )}{' '}
                                             CTSI
                                         </td>

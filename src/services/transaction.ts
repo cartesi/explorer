@@ -87,7 +87,7 @@ function extractError(error: SerializedEthereumRpcError): string {
         const data: any = error.data as any;
         if (data?.originalError?.error) {
             return extractError(
-                data.originalError.error as SerializedEthereumRpcError
+                data.originalError.error as SerializedEthereumRpcError,
             );
         }
     }
@@ -95,7 +95,7 @@ function extractError(error: SerializedEthereumRpcError): string {
 }
 
 export function useTransaction<R>(
-    resultResolver?: (receipt: ContractReceipt) => R
+    resultResolver?: (receipt: ContractReceipt) => R,
 ): Transaction<R> {
     const { chainId } = useWallet();
     const [acknowledged, setAcknowledged] = useState(true);

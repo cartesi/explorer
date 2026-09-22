@@ -101,21 +101,21 @@ export const StakingActivity: FC<Props> = memo(
             timestamp === oldestActivityTime && !loading;
         const emptyIconBg = useColorModeValue(
             'dark.gray.senary',
-            'dark.gray.primary'
+            'dark.gray.primary',
         );
         const emptyIconColor = useColorModeValue(
             'dark.secondary',
-            'dark.primary'
+            'dark.primary',
         );
         const checkIconColor = useColorModeValue(
             'dark.secondary',
-            'dark.primary'
+            'dark.primary',
         );
 
         useEffect(() => {
             if (null !== activities) {
                 updateList((list) =>
-                    null !== list ? [...list, ...activities] : activities
+                    null !== list ? [...list, ...activities] : activities,
                 );
             }
         }, [activities]);
@@ -213,5 +213,5 @@ export const StakingActivity: FC<Props> = memo(
                 </VStack>
             </>
         );
-    }
+    },
 );

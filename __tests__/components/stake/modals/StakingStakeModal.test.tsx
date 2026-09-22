@@ -43,8 +43,8 @@ describe('Staking Stake Modal', () => {
 
         expect(
             screen.getByText(
-                "By moving your tokens from the pool balance to your staked balance. Your staked tokens contribute to the pool's staking power, which in turn will automatically generate rewards. Learn more"
-            )
+                "By moving your tokens from the pool balance to your staked balance. Your staked tokens contribute to the pool's staking power, which in turn will automatically generate rewards. Learn more",
+            ),
         ).toBeInTheDocument();
     });
 
@@ -53,15 +53,15 @@ describe('Staking Stake Modal', () => {
 
         expect(() =>
             screen.getByText(
-                "By moving your tokens from the pool balance to your staked balance. Your staked tokens contribute to the pool's staking power, which in turn will automatically generate rewards. Learn more"
-            )
+                "By moving your tokens from the pool balance to your staked balance. Your staked tokens contribute to the pool's staking power, which in turn will automatically generate rewards. Learn more",
+            ),
         ).toThrow('Unable to find an element');
     });
 
     it('Should invoke onClose callback', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
-            <EStakingStakeModal {...defaultProps} onClose={mockOnClick()} />
+            <EStakingStakeModal {...defaultProps} onClose={mockOnClick()} />,
         );
 
         const button = getByText('Cancel').closest('button');
@@ -79,7 +79,7 @@ describe('Staking Stake Modal', () => {
                 onSave={() => {
                     isSavedTriggered = true;
                 }}
-            />
+            />,
         );
 
         fireEvent.click(getByTestId('max-stake-button'));
@@ -93,7 +93,7 @@ describe('Staking Stake Modal', () => {
             <EStakingStakeModal
                 {...defaultProps}
                 userBalance={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(getByTestId('stake-button')).toBeDisabled();

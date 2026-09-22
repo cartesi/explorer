@@ -40,7 +40,7 @@ const CustomizeEthereumNode = ({
         stepNumber - 1 === currentStep || stepNumber <= currentStep;
     const borderColor = useColorModeValue(
         'light.grey.tertiary',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     return (
         <Step

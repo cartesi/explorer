@@ -68,17 +68,17 @@ const PoolUsers: FC = () => {
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>(
-        undefined
+        undefined,
     );
     const handleDebouncedSearch = useDebounce(setDebouncedSearch);
     const isManager = account && account.toLowerCase() === stakingPool?.manager;
     const poolCreationDate = startOfMonth(
-        new Date((stakingPool?.timestamp || 0) * 1000)
+        new Date((stakingPool?.timestamp || 0) * 1000),
     );
     const today = new Date();
 
     const differenceInMonthsCount = Math.ceil(
-        differenceInMonthsDateFns(today, poolCreationDate)
+        differenceInMonthsDateFns(today, poolCreationDate),
     );
 
     const monthsCount = Math.min(differenceInMonthsCount, 4);
@@ -95,15 +95,15 @@ const PoolUsers: FC = () => {
                     date: new Date(date.setMonth(month - index)),
                 };
             }),
-        [monthsLength]
+        [monthsLength],
     );
 
     const [selectedMonth, setSelectedMonth] = useState(monthOptions[0]);
     const [startTimestamp, setStartTimestamp] = useState<number>(
-        startOfMonth(selectedMonth?.date).getTime()
+        startOfMonth(selectedMonth?.date).getTime(),
     );
     const [endTimestamp, setEndTimestamp] = useState<number>(
-        endOfMonth(selectedMonth?.date).getTime()
+        endOfMonth(selectedMonth?.date).getTime(),
     );
 
     const [list, setList] = useState<PoolBalance[]>([]);
@@ -125,17 +125,17 @@ const PoolUsers: FC = () => {
         totalUsersPageNumber,
         'shares',
         maxPerPage,
-        address
+        address,
     );
     const balances = usePoolBalances(
         debouncedSearch,
         debouncedSearch ? 0 : pageNumber,
         'shares',
         rowsPerPage,
-        address
+        address,
     );
     const options = Array.from({ length: 3 }).map(
-        (_, index) => (index + 1) * 10
+        (_, index) => (index + 1) * 10,
     );
     const { poolBalances = [] } = balances.data ?? {};
     const totalPages = Math.ceil(totalUsers / rowsPerPage);
@@ -160,9 +160,9 @@ const PoolUsers: FC = () => {
                                     : balance.sharesPercent,
                         },
                     ],
-                    []
+                    [],
                 ),
-        [list]
+        [list],
     );
 
     const balancesData: PoolBalanceWithAccumulatedShares[] = useMemo(
@@ -170,7 +170,7 @@ const PoolUsers: FC = () => {
             poolBalances.map((balance) => {
                 const item =
                     allBalancesData.find(
-                        (d) => d.user.id === balance.user.id
+                        (d) => d.user.id === balance.user.id,
                     ) ?? {};
 
                 return {
@@ -178,7 +178,7 @@ const PoolUsers: FC = () => {
                     ...item,
                 };
             }),
-        [poolBalances, allBalancesData]
+        [poolBalances, allBalancesData],
     );
 
     useEffect(() => {
@@ -186,7 +186,7 @@ const PoolUsers: FC = () => {
             setTotalUsersPageNumber((lastValue) =>
                 allBalances.data.poolBalances.length === maxPerPage
                     ? lastValue + 1
-                    : lastValue
+                    : lastValue,
             );
 
             setList((lastValue) => [
@@ -208,11 +208,11 @@ const PoolUsers: FC = () => {
                     return (
                         format(
                             parseISO(date.toISOString().slice(0, -1)),
-                            'M/d/yyyy'
+                            'M/d/yyyy',
                         ) ===
                         format(
                             parseISO(itemDate.toISOString().slice(0, -1)),
-                            'M/d/yyyy'
+                            'M/d/yyyy',
                         )
                     );
                 });
@@ -273,15 +273,16 @@ const PoolUsers: FC = () => {
                                     onValueChange={({ value }) => {
                                         const nextSelectedMonth =
                                             monthOptions.find(
-                                                (month) => month.id === value[0]
+                                                (month) =>
+                                                    month.id === value[0],
                                             );
 
                                         const nextStartTimestamp = startOfMonth(
-                                            nextSelectedMonth?.date
+                                            nextSelectedMonth?.date,
                                         ).getTime();
 
                                         const nextEndTimestamp = endOfMonth(
-                                            nextSelectedMonth?.date
+                                            nextSelectedMonth?.date,
                                         ).getTime();
 
                                         setSelectedMonth(nextSelectedMonth);
@@ -312,7 +313,7 @@ const PoolUsers: FC = () => {
                                                             {option.label}
                                                             <Select.ItemIndicator />
                                                         </Select.Item>
-                                                    )
+                                                    ),
                                                 )}
                                             </Select.Content>
                                         </Select.Positioner>

@@ -66,7 +66,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     const [allowanceStep, setAllowanceStep] = useState<boolean>(false);
 
     const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
     const formattedDepositValue = formatBigNumber(outputDeposit);
 
@@ -196,7 +196,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             min={0}
                                             onChange={(bigNumberValue) => {
                                                 setOutputAllowance(
-                                                    bigNumberValue
+                                                    bigNumberValue,
                                                 );
                                             }}
                                         />
@@ -217,7 +217,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             onClick={() => {
                                                 onSave(
                                                     outputAllowance,
-                                                    'allowance'
+                                                    'allowance',
                                                 );
                                                 setAllowanceStep(false);
                                             }}
@@ -397,14 +397,14 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                     p={0}
                                                     role="max-deposit-button"
                                                     disabled={outputDeposit.eq(
-                                                        balance && allowance
+                                                        balance && allowance,
                                                     )}
                                                     onClick={() => {
                                                         setOutputDeposit(
                                                             balanceFormatted <
                                                                 allowanceFormatted
                                                                 ? balance
-                                                                : allowance
+                                                                : allowance,
                                                         );
                                                     }}
                                                 >
@@ -418,7 +418,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             max={allowanceFormatted}
                                             onChange={(bigNumberValue) => {
                                                 setOutputDeposit(
-                                                    bigNumberValue
+                                                    bigNumberValue,
                                                 );
                                             }}
                                         />
@@ -450,7 +450,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                             onClick={() => {
                                                 onSave(
                                                     outputDeposit,
-                                                    'deposit'
+                                                    'deposit',
                                                 );
                                                 disclosure.onClose();
                                                 onClose();

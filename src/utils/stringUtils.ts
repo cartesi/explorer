@@ -28,10 +28,10 @@ export const truncateStringMobile = (str: string): string => {
 export const formatEnsName = (
     address: string,
     ensName?: string,
-    maxChars = 12
+    maxChars = 12,
 ): string =>
     isString(ensName)
         ? ensName
         : address.length > maxChars
-        ? address.slice(0, maxChars)
-        : address;
+          ? address.slice(0, maxChars)
+          : address;

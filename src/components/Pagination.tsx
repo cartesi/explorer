@@ -44,15 +44,15 @@ const Pagination: FC<PaginationProps> = (props) => {
             currentPage < maxPageNumbers
                 ? 0
                 : currentPage > pages - maxPageNumbers
-                ? pages - maxPageNumbers
-                : currentPage - maxPageNumbers / 2;
+                  ? pages - maxPageNumbers
+                  : currentPage - maxPageNumbers / 2;
 
         const end =
             currentPage < maxPageNumbers
                 ? maxPageNumbers
                 : currentPage > pages - maxPageNumbers
-                ? pages
-                : currentPage + maxPageNumbers / 2;
+                  ? pages
+                  : currentPage + maxPageNumbers / 2;
 
         return pageNumbers.slice(start, end);
     }, [pageNumbers, currentPage, pages, maxPageNumbers]);

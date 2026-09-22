@@ -23,11 +23,10 @@ export const WalletConnectionContext =
     createContext<WalletConnectionContextProps>(initialContextState);
 
 export interface WalletConnectionProviderProps
-    extends PropsWithChildren,
-        UseOnboardProps {}
+    extends PropsWithChildren, UseOnboardProps {}
 
 export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
-    props
+    props,
 ) => {
     const { children, chainIds, appMetaData } = props;
     const {

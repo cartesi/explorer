@@ -72,7 +72,7 @@ const PoolStake = () => {
     const layoutBg = useColorModeValue('white', 'dark.gray.quaternary');
     const borderColor = useColorModeValue(
         'transparent',
-        'dark.border.quaternary'
+        'dark.border.quaternary',
     );
     const bg = useColorModeValue('gray.80', 'dark.gray.primary');
     const sectionBg = useColorModeValue('white', 'dark.gray.quaternary');

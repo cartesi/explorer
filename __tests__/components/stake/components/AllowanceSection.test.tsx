@@ -32,7 +32,7 @@ describe('Allowance Section', () => {
                 onAllowanceClick={() => {
                     console.log('onAllowanceClick::');
                 }}
-            />
+            />,
         );
 
     it('Should display pool allowance label', () => {
@@ -44,7 +44,7 @@ describe('Allowance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue))
+            parseCtsiValue(BigNumber.from(defaultValue)),
         );
     });
 
@@ -54,7 +54,7 @@ describe('Allowance Section', () => {
             <EAllowanceSection
                 allowance={BigNumber.from(defaultValue)}
                 onAllowanceClick={mockOnClick()}
-            />
+            />,
         );
 
         const buttonIcon = getByRole('button-icon');

@@ -71,7 +71,7 @@ export const Step = ({
     const stepBoxBg = useColorModeValue('white', 'dark.gray.primary');
     const stepNumberBgColor = useColorModeValue(
         'light.primary',
-        'cyan.primary'
+        'cyan.primary',
     );
     const stepNumberColor = useColorModeValue('white', 'black');
     const activeProps = {
@@ -106,7 +106,7 @@ export const Step = ({
             prev[cur.type.displayName] = cur;
             return prev;
         },
-        {}
+        {},
     );
 
     const [state, dispatch] = useReducer(reducer, {

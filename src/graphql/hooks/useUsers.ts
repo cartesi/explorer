@@ -17,7 +17,7 @@ const useUsers = (
     pageNumber: number,
     id: string = undefined,
     sort = 'timestamp',
-    perPage = 10
+    perPage = 10,
 ) => {
     const filter = id ? { id: id.toLowerCase() } : {};
 

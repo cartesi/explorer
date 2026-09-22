@@ -21,7 +21,7 @@ export interface TransactionFeedbackProps<R> {
 }
 
 const TransactionFeedback = <R extends unknown>(
-    props: PropsWithChildren<TransactionFeedbackProps<R>>
+    props: PropsWithChildren<TransactionFeedbackProps<R>>,
 ) => {
     const { transaction, children } = props;
 
@@ -32,13 +32,13 @@ const TransactionFeedback = <R extends unknown>(
     const status = transaction?.error
         ? 'error'
         : progress >= 1
-        ? 'success'
-        : 'info';
+          ? 'success'
+          : 'info';
 
     const addressColor = useColorModeValue('gray.900', 'white');
     const alertIconColor = useColorModeValue(
         `light.support.${status}`,
-        `dark.support.${status}`
+        `dark.support.${status}`,
     );
 
     const hash = transaction?.transaction?.hash;

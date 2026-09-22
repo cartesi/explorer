@@ -52,11 +52,11 @@ describe('Effective Balance Stat', () => {
                 stake={BigNumber.from(0)}
                 unstake={BigNumber.from(0)}
                 withdraw={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(() => screen.getByRole('rebalance-icon')).toThrow(
-            'Unable to find an accessible element with the role "rebalance-icon"'
+            'Unable to find an accessible element with the role "rebalance-icon"',
         );
     });
 

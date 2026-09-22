@@ -56,14 +56,14 @@ describe('useStepState hook', () => {
 
         expect(result.current[0]).toHaveProperty(
             'status',
-            StepStatus.COMPLETED
+            StepStatus.COMPLETED,
         );
     });
 
     it('should keep status as completed even when not in-focus anymore', () => {
         const { result, rerender } = renderHook(
             ({ inFocus }) => useStepState({ inFocus }),
-            { initialProps: { inFocus: true } }
+            { initialProps: { inFocus: true } },
         );
         const [, setStepState] = result.current;
 
@@ -71,21 +71,21 @@ describe('useStepState hook', () => {
 
         expect(result.current[0]).toHaveProperty(
             'status',
-            StepStatus.COMPLETED
+            StepStatus.COMPLETED,
         );
 
         rerender({ inFocus: false });
 
         expect(result.current[0]).toHaveProperty(
             'status',
-            StepStatus.COMPLETED
+            StepStatus.COMPLETED,
         );
     });
 
     it('should switch in between active and not-active when in-focus changes and did not reach completed state', () => {
         const { result, rerender } = renderHook(
             ({ inFocus }) => useStepState({ inFocus }),
-            { initialProps: { inFocus: true } }
+            { initialProps: { inFocus: true } },
         );
 
         expect(result.current[0]).toHaveProperty('status', StepStatus.ACTIVE);
@@ -94,7 +94,7 @@ describe('useStepState hook', () => {
 
         expect(result.current[0]).toHaveProperty(
             'status',
-            StepStatus.NOT_ACTIVE
+            StepStatus.NOT_ACTIVE,
         );
     });
 });

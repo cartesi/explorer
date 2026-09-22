@@ -77,7 +77,7 @@ describe('NodeInfoSection component', () => {
         mockUseMediaQuery.mockReturnValue([false]);
         render(<Component {...defaultProps} />);
         expect(
-            screen.getByText(truncateString(defaultProps.address))
+            screen.getByText(truncateString(defaultProps.address)),
         ).toBeInTheDocument();
     });
 
@@ -125,7 +125,7 @@ describe('NodeInfoSection component', () => {
                 {...defaultProps}
                 isAuthorized={false}
                 onAuthorize={jest.fn()}
-            />
+            />,
         );
 
         expect(screen.getByText('Authorize')).toBeInTheDocument();
@@ -133,7 +133,7 @@ describe('NodeInfoSection component', () => {
 
     it('should while authorizing disable the button and display a loading text', () => {
         render(
-            <Component {...defaultProps} isAuthorizing isAuthorized={false} />
+            <Component {...defaultProps} isAuthorizing isAuthorized={false} />,
         );
 
         const btn = screen.getByText('authorizing').closest('button');

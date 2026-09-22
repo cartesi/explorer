@@ -94,7 +94,7 @@ const ManageNode: FC = () => {
     // use a state variable for the typed node address
     const [worker, setWorker] = useState<string>();
     const [hiringFunds, setHiringFunds] = useState<BigNumber>(
-        BigNumber.from(0)
+        BigNumber.from(0),
     );
 
     // priority is the typed address (at state variable)
@@ -141,7 +141,7 @@ const ManageNode: FC = () => {
             window.history.pushState(
                 null,
                 '',
-                `${window.origin}/node/${activeWorker}/manage`
+                `${window.origin}/node/${activeWorker}/manage`,
             );
         }
     }, [hiredNewNode, activeWorker]);
@@ -235,7 +235,7 @@ const ManageNode: FC = () => {
                             title={useMessages('node.authorize.authorizing')}
                             failTitle={useMessages('node.authorize.fail')}
                             successDescription={useMessages(
-                                'node.authorize.success'
+                                'node.authorize.success',
                             )}
                             transaction={node.transaction}
                         />

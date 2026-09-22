@@ -54,11 +54,11 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
     const buttonHoverColor = useColorModeValue('gray.90', 'dark.gray.quinary');
     const borderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const topBorderColor = useColorModeValue(
         'transparent',
-        'dark.gray.quinary'
+        'dark.gray.quinary',
     );
 
     const thProps: TableColumnHeaderProps = {
@@ -96,7 +96,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
                                     fontFamily={theme.tokens.getVar(
-                                        'fonts.body'
+                                        'fonts.body',
                                     )}
                                     onClick={() => onSort('totalUsers')}
                                 >
@@ -121,7 +121,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
                                     fontFamily={theme.tokens.getVar(
-                                        'fonts.body'
+                                        'fonts.body',
                                     )}
                                     onClick={() => onSort('amount')}
                                 >
@@ -170,7 +170,7 @@ const PoolPerformanceTable: FC<PoolPerformanceTableProps> = ({
                                     textTransform="none"
                                     _hover={{ color: buttonHoverColor }}
                                     fontFamily={theme.tokens.getVar(
-                                        'fonts.body'
+                                        'fonts.body',
                                     )}
                                     onClick={() =>
                                         onSort('commissionPercentage')

@@ -31,7 +31,7 @@ describe('CTSI Text component', () => {
                 options={{ maximumFractionDigits: 2 }}
             >
                 <Text>Wallet Balance</Text>
-            </Component>
+            </Component>,
         );
 
         expect(screen.getByText('Wallet Balance')).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('CTSI Text component', () => {
                 icon={<Icon as={TbIcons} />}
             >
                 <Text>Staked Balance</Text>
-            </Component>
+            </Component>,
         );
         expect(container.querySelector('svg > path')).toBeInTheDocument();
         expect(screen.getByText('Staked Balance')).toBeInTheDocument();

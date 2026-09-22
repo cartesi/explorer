@@ -27,7 +27,7 @@ const StakedBalanceStat: FC<StakedBalanceStatProps> = (props) => {
     const iconColor = useColorModeValue('light.primary', 'dark.primary');
     const iconBackgroundColor = useColorModeValue(
         'dark.gray.senary',
-        'transparent'
+        'transparent',
     );
 
     return (

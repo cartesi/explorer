@@ -31,7 +31,7 @@ describe('Staked Balance Section', () => {
             <EPoolBalanceSection
                 stakedBalance={BigNumber.from(defaultValue)}
                 onUnstakeClick={defaultOnUnstakeClick}
-            />
+            />,
         );
 
     it('Should display staked balance label', () => {
@@ -43,7 +43,7 @@ describe('Staked Balance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue))
+            parseCtsiValue(BigNumber.from(defaultValue)),
         );
     });
 
@@ -52,7 +52,7 @@ describe('Staked Balance Section', () => {
             <EPoolBalanceSection
                 stakedBalance={BigNumber.from(0)}
                 onUnstakeClick={defaultOnUnstakeClick}
-            />
+            />,
         );
 
         expect(getByText('Unstake').closest('button')).toBeDisabled();
@@ -63,7 +63,7 @@ describe('Staked Balance Section', () => {
             <EPoolBalanceSection
                 stakedBalance={BigNumber.from(defaultValue)}
                 onUnstakeClick={defaultOnUnstakeClick}
-            />
+            />,
         );
 
         expect(getByText('Unstake').closest('button')).toBeEnabled();
@@ -75,7 +75,7 @@ describe('Staked Balance Section', () => {
             <EPoolBalanceSection
                 stakedBalance={BigNumber.from(defaultValue)}
                 onUnstakeClick={mockOnClick()}
-            />
+            />,
         );
 
         const button = getByText('Unstake').closest('button');

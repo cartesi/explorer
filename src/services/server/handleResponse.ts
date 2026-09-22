@@ -25,19 +25,19 @@ const handleError = (error: ServiceError) => {
         case 'unauthorized':
             return NextResponse.json(
                 { message: 'Unauthorized' },
-                { status: 401 }
+                { status: 401 },
             );
         case 'method_not_allowed':
             return NextResponse.json(
                 { message: 'Method not allowed' },
-                { status: 405 }
+                { status: 405 },
             );
         case 'not_an_user':
             return NextResponse.json({ message: 'Not found' }, { status: 404 });
         default:
             return NextResponse.json(
                 { message: 'Something went wrong.' },
-                { status: 500 }
+                { status: 500 },
             );
     }
 };

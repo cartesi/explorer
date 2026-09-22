@@ -54,7 +54,7 @@ describe('Staking Tab Navigation', () => {
     it('Should lead to pool info page', () => {
         renderComponent();
         expect(
-            screen.getByText('Pool Info').closest('a').getAttribute('href')
+            screen.getByText('Pool Info').closest('a').getAttribute('href'),
         ).toBe(`/stake/${address}`);
     });
 
@@ -66,7 +66,7 @@ describe('Staking Tab Navigation', () => {
     it('Should lead to pool stake page', () => {
         renderComponent();
         expect(
-            screen.getByText('Stake').closest('a').getAttribute('href')
+            screen.getByText('Stake').closest('a').getAttribute('href'),
         ).toBe(`/stake/${address}/stake`);
     });
 
@@ -80,10 +80,10 @@ describe('Staking Tab Navigation', () => {
         renderComponent();
 
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            'true'
+            'true',
         );
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            'false'
+            'false',
         );
     });
 
@@ -96,10 +96,10 @@ describe('Staking Tab Navigation', () => {
         const { rerender } = renderComponent();
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            'true'
+            'true',
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            'false'
+            'false',
         );
 
         useParamsMock.mockReturnValue({
@@ -110,10 +110,10 @@ describe('Staking Tab Navigation', () => {
         rerender(<EStakingTabNavigation />);
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            'true'
+            'true',
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            'false'
+            'false',
         );
 
         useParamsMock.mockReturnValue({
@@ -125,10 +125,10 @@ describe('Staking Tab Navigation', () => {
         rerender(<EStakingTabNavigation />);
 
         expect(screen.getByText('Pool Info').getAttribute('data-active')).toBe(
-            'true'
+            'true',
         );
         expect(screen.getByText('Stake').getAttribute('data-active')).toBe(
-            'false'
+            'false',
         );
     });
 });

@@ -44,7 +44,7 @@ const walletMock = {
 };
 
 const chainIds = Object.keys(networks).map(
-    (key) => `0x${Number(key).toString(16)}`
+    (key) => `0x${Number(key).toString(16)}`,
 );
 
 describe('Wallet Provider', () => {
@@ -122,10 +122,10 @@ describe('Wallet Provider', () => {
         render(<Component />);
 
         expect(
-            await screen.findByText('Wallet is Gnosis Safe')
+            await screen.findByText('Wallet is Gnosis Safe'),
         ).toBeInTheDocument();
         expect(
-            await screen.findByText(`wallet type is: ${walletType}`)
+            await screen.findByText(`wallet type is: ${walletType}`),
         ).toBeInTheDocument();
     });
 });

@@ -40,7 +40,7 @@ import { PoolActivity } from './PoolActivity';
 import PoolStatsPanel from './PoolStatsPanel';
 
 const blockAverageInterval = (
-    result: useQuery.Result<BlocksData, BlocksVars>
+    result: useQuery.Result<BlocksData, BlocksVars>,
 ): number => {
     const count = result.data?.blocks?.length;
     if (count > 0) {
@@ -68,7 +68,7 @@ const StakePool = () => {
     const { balance: poolBalance } = useCartesiToken(
         address,
         null,
-        blockNumber
+        blockNumber,
     );
 
     // query staking contract with pool address
@@ -79,7 +79,7 @@ const StakePool = () => {
 
     // query 10 latest blocks for average interval
     const productionInterval = blockAverageInterval(
-        useBlocks({ producer: address }, 10)
+        useBlocks({ producer: address }, 10),
     );
 
     const titleLeftBorder = useColorModeValue('gray.900', 'white');

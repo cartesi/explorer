@@ -101,8 +101,8 @@ describe('InitialFundsInput component', () => {
 
             expect(
                 await screen.findByText(
-                    'Min amount of ETH allowed to deposit is 0.001'
-                )
+                    'Min amount of ETH allowed to deposit is 0.001',
+                ),
             ).toBeInTheDocument();
         });
 
@@ -120,7 +120,7 @@ describe('InitialFundsInput component', () => {
             });
 
             expect(
-                await screen.findByText('Insufficient ETH balance')
+                await screen.findByText('Insufficient ETH balance'),
             ).toBeInTheDocument();
         });
 
@@ -132,7 +132,7 @@ describe('InitialFundsInput component', () => {
             });
 
             expect(
-                await screen.findByText('Insufficient ETH balance')
+                await screen.findByText('Insufficient ETH balance'),
             ).toBeInTheDocument();
         });
 
@@ -146,8 +146,8 @@ describe('InitialFundsInput component', () => {
 
             expect(
                 await screen.findByText(
-                    'Max amount of ETH allowed to deposit is 3'
-                )
+                    'Max amount of ETH allowed to deposit is 3',
+                ),
             ).toBeInTheDocument();
         });
 
@@ -159,7 +159,7 @@ describe('InitialFundsInput component', () => {
             });
 
             expect(
-                await screen.findByText('This field is required.')
+                await screen.findByText('This field is required.'),
             ).toBeInTheDocument();
         });
     });

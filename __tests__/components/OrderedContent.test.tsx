@@ -24,17 +24,17 @@ describe('OrderedContent component', () => {
         ];
 
         const { container } = render(
-            <Component title={title} orderedItems={activities} />
+            <Component title={title} orderedItems={activities} />,
         );
 
         expect(container.querySelector('ol')).toBeInTheDocument();
 
         expect(screen.getByText('Proposed activities')).toBeInTheDocument();
         expect(
-            screen.getByText('Research about the technology X')
+            screen.getByText('Research about the technology X'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Apply hotfix for feature B')
+            screen.getByText('Apply hotfix for feature B'),
         ).toBeInTheDocument();
     });
 });

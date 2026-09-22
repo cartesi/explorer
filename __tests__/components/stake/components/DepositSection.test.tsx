@@ -35,7 +35,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
     const dummyWallet = {
@@ -65,7 +65,7 @@ describe('Deposit Section', () => {
     it('Should display deposit your tokens label', () => {
         renderComponent();
         expect(
-            screen.getByText("Let's deposit your tokens to the pool!")
+            screen.getByText("Let's deposit your tokens to the pool!"),
         ).toBeInTheDocument();
     });
 
@@ -75,11 +75,11 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(0)}
                 userETHBalance={BigNumber.from(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(
-            screen.getByText('You have 0 CTSI. Please, add CTSI to deposit.')
+            screen.getByText('You have 0 CTSI. Please, add CTSI to deposit.'),
         ).toBeInTheDocument();
     });
 
@@ -89,13 +89,13 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(0)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(
             screen.getByText(
-                "You have 0 ETH. You'll need ETH for transaction fees."
-            )
+                "You have 0 ETH. You'll need ETH for transaction fees.",
+            ),
         ).toBeInTheDocument();
     });
 
@@ -105,7 +105,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(0)}
                 userETHBalance={BigNumber.from(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(getByText('Deposit').closest('button')).toBeDisabled();
@@ -117,7 +117,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(0)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(getByText('Deposit').closest('button')).toBeDisabled();
@@ -130,7 +130,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(0)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(screen.getByText('Deposit').closest('button')).toBeEnabled();
@@ -142,7 +142,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
-            />
+            />,
         );
 
         expect(getByText('Deposit').closest('button')).toBeEnabled();
@@ -155,7 +155,7 @@ describe('Deposit Section', () => {
                 userWalletBalance={BigNumber.from(defaultValue)}
                 userETHBalance={BigNumber.from(defaultValue)}
                 onDepositClick={mockOnClick()}
-            />
+            />,
         );
 
         const button = getByText('Deposit').closest('button');

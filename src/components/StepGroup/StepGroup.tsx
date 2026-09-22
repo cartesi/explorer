@@ -49,7 +49,7 @@ const Header = ({
 }: HeaderType) => {
     const bgColor = useColorModeValue(
         'light.gray.secondary',
-        'dark.gray.primary'
+        'dark.gray.primary',
     );
     const linkColor = useColorModeValue('light.primary', 'teal.secondary');
     const stepNumberBg = useColorModeValue('light.primary', 'cyan.primary');

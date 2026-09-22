@@ -43,10 +43,10 @@ const HomeStats = () => {
     // APR calculation
     const { yearReturn } = getRewardRate(
         blocks,
-        marketInformation.circulatingSupply
+        marketInformation.circulatingSupply,
     );
     const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
-        FixedNumber.from(marketInformation?.circulatingSupply || 1)
+        FixedNumber.from(marketInformation?.circulatingSupply || 1),
     );
 
     const bannerIconColor = useColorModeValue('light.primary', 'dark.primary');
@@ -253,8 +253,8 @@ const HomeStats = () => {
                         <span>
                             {formatNumberValue(
                                 toCTSI(
-                                    summary?.totalStaked || 0
-                                ).toUnsafeFloat()
+                                    summary?.totalStaked || 0,
+                                ).toUnsafeFloat(),
                             )}
                         </span>
                         <Text fontSize={14} ml={3} mb={0.5}>
@@ -297,7 +297,7 @@ const HomeStats = () => {
                             {formatNumberValue(
                                 yearReturn.toUnsafeFloat(),
                                 1,
-                                'percent'
+                                'percent',
                             ).replace('%', '')}
                         </span>
                         <Text fontSize={14} ml={3} mb={0.5}>
@@ -340,7 +340,7 @@ const HomeStats = () => {
                             {formatNumberValue(
                                 participationRate.toUnsafeFloat(),
                                 1,
-                                'percent'
+                                'percent',
                             ).replace('%', '')}
                         </span>
                         <Text fontSize={14} ml={3} mb={0.5}>

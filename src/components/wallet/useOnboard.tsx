@@ -71,7 +71,7 @@ export const convertToHex = (num: number): string => num.toString(16);
 export const buildConfig = (
     ankrEnabled: boolean,
     chainIds: string[],
-    appMetaData: Partial<AppMetadata> = {}
+    appMetaData: Partial<AppMetadata> = {},
 ): InitOptions => {
     const chains: Chain[] = [
         {
@@ -127,13 +127,13 @@ export const getWalletType = (label = ''): WalletType | null => {
     return injectedWallets.has(name)
         ? WalletType.INJECTED
         : sdkWallets.has(name)
-        ? WalletType.SDK
-        : null;
+          ? WalletType.SDK
+          : null;
 };
 
 export const checkNetwork = (
     chainId: number,
-    supportedNetworks: number[]
+    supportedNetworks: number[],
 ): Error | null | undefined => {
     let error;
 
@@ -167,7 +167,7 @@ export const handlerBuilder =
             const error = checkNetwork(chainId, chainIdsAsNumbers);
 
             console.info(
-                `Account: ${account}\nChain id: ${chainId}\nWallet Label: ${label}`
+                `Account: ${account}\nChain id: ${chainId}\nWallet Label: ${label}`,
             );
 
             stateUpdateCb(
@@ -181,13 +181,13 @@ export const handlerBuilder =
                         isGnosisSafe,
                         walletType,
                         walletLabel: label,
-                    } as PropState)
+                    }) as PropState,
             );
         } else {
             console.info(
                 `No provider for wallet label ${
                     connectedWallet?.label || 'no_label_defined'
-                }.`
+                }.`,
             );
             stateUpdateCb((state) => ({
                 ...pick(['onboard'], state),
@@ -237,7 +237,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
         !error;
 
     const connectWallet = async (
-        options?: ConnectOptions | ConnectOptionsString
+        options?: ConnectOptions | ConnectOptionsString,
     ) => {
         const wallets = await onboard?.connectWallet(options);
         const [connectedWallet] = wallets ?? [];
@@ -246,7 +246,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
         if (connectedWallet) {
             window.localStorage.setItem(
                 SELECTED_WALLETS,
-                connectedWallet.label
+                connectedWallet.label,
             );
 
             // Check if MainNet is supported and this is prod/staging, then prompt the user to switch to MainNet
@@ -263,9 +263,9 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             // with "any" the provider will handle the network change.
             const library = new ethers.providers.Web3Provider(
                 connectedWallet.provider,
-                'any'
+                'any',
             );
-            setState((state) => ({ ...state, library } as PropState));
+            setState((state) => ({ ...state, library }) as PropState);
         }
 
         return wallets;
@@ -289,7 +289,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
 
     useEffect(() => {
         const onboard = Onboard(
-            buildConfig(ankrEnabled, chainIds, appMetaData)
+            buildConfig(ankrEnabled, chainIds, appMetaData),
         );
         setState((state) => ({ ...state, onboard }));
     }, []);
@@ -299,7 +299,7 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
             const wallets$ = onboard.state.select('wallets');
             const debouncedHandler = debounce(
                 500,
-                handlerBuilder(setState, chainIds)
+                handlerBuilder(setState, chainIds),
             );
             const subscription = wallets$.subscribe(debouncedHandler);
             const previousWalletSelected =
@@ -327,13 +327,13 @@ export const useOnboard = ({ chainIds, appMetaData }: UseOnboardProps) => {
                     window.location.reload();
                 } else {
                     console.info(
-                        'Skipping reload because it was the first network change'
+                        'Skipping reload because it was the first network change',
                     );
                     setFirstNetworkChange(false);
                 }
             } else {
                 console.log(
-                    `Skipping the page reload since is not WalletConnect. The selected one is ${selectedWallet}`
+                    `Skipping the page reload since is not WalletConnect. The selected one is ${selectedWallet}`,
                 );
             }
         }

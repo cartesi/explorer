@@ -31,8 +31,8 @@ describe('CommissionForm component', () => {
         const wait = humanizeDuration(props.increaseWaitPeriod * 1000);
         expect(
             screen.getByText(
-                `After increasing the current value you can only increase it again after ${wait}`
-            )
+                `After increasing the current value you can only increase it again after ${wait}`,
+            ),
         ).toBeInTheDocument();
     });
 

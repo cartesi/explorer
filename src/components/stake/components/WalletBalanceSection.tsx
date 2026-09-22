@@ -44,7 +44,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
     const iconColor = useColorModeValue('light.primary', 'dark.primary');
     const warningIconColor = useColorModeValue(
         'light.support.warning',
-        'dark.support.warning'
+        'dark.support.warning',
     );
 
     return (

@@ -25,7 +25,7 @@ const useStakingPoolPerformance = (address: string) => {
                     timestamp_gte: getPastDaysInSeconds(7),
                 },
             },
-        }
+        },
     );
 };
 

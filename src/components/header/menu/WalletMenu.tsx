@@ -37,7 +37,7 @@ const WalletMenuItem: FC<WalletMenuItemProps> = ({
     const borderColor = useColorModeValue('grey.tertiary', undefined);
     const hoverStyle = useColorModeValue(
         { bg: 'light.support.teal' },
-        undefined
+        undefined,
     );
     return (
         <Menu.Item

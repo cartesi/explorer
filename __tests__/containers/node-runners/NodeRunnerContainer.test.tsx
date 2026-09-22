@@ -130,19 +130,19 @@ describe('NodeRunners container (Landing Page)', () => {
             expect(screen.getByText('Node Runners')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'This area is for the node runner users including public pool manager or private node runner.'
-                )
+                    'This area is for the node runner users including public pool manager or private node runner.',
+                ),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('Create a node or pool in steps')
+                screen.getByText('Create a node or pool in steps'),
             ).toBeInTheDocument();
             expect(
-                screen.getByText('Create a public pool')
+                screen.getByText('Create a public pool'),
             ).toBeInTheDocument();
 
             expect(
-                screen.getByText('Earn commissions out of the blocks rewards.')
+                screen.getByText('Earn commissions out of the blocks rewards.'),
             ).toBeInTheDocument();
 
             expect(screen.getByText('CREATE PUBLIC POOL')).toBeInTheDocument();
@@ -151,8 +151,8 @@ describe('NodeRunners container (Landing Page)', () => {
 
             expect(
                 screen.getByText(
-                    'You are able to stake directly by running your own node to represent your stake.'
-                )
+                    'You are able to stake directly by running your own node to represent your stake.',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('CREATE MY NODE')).toBeInTheDocument();
@@ -178,7 +178,7 @@ describe('NodeRunners container (Landing Page)', () => {
             render(<ENodeRunnerContainer wallet={wallet} router={router} />);
 
             const tooltipIcon = screen.getByTestId(
-                'private-node-creation-card-tooltip-icon'
+                'private-node-creation-card-tooltip-icon',
             );
 
             act(() => {
@@ -186,17 +186,17 @@ describe('NodeRunners container (Landing Page)', () => {
             });
 
             expect(
-                await screen.findByText('Main responsibilities:')
+                await screen.findByText('Main responsibilities:'),
             ).toBeVisible();
             expect(
                 await screen.findByText(
-                    'Make sure the Noether node is online and works properly 24x7.'
-                )
+                    'Make sure the Noether node is online and works properly 24x7.',
+                ),
             ).toBeVisible();
             expect(
                 await screen.findByText(
-                    'Pay the Ethereum fees that are necessary for block production and also maintenance operations.'
-                )
+                    'Pay the Ethereum fees that are necessary for block production and also maintenance operations.',
+                ),
             ).toBeVisible();
         });
 
@@ -204,7 +204,7 @@ describe('NodeRunners container (Landing Page)', () => {
             render(<ENodeRunnerContainer wallet={wallet} router={router} />);
 
             const tooltipIcon = screen.getByTestId(
-                'pool-creation-card-tooltip-icon'
+                'pool-creation-card-tooltip-icon',
             );
 
             act(() => {
@@ -212,17 +212,17 @@ describe('NodeRunners container (Landing Page)', () => {
             });
 
             expect(
-                await screen.findByText('Main responsibilities:')
+                await screen.findByText('Main responsibilities:'),
             ).toBeVisible();
             expect(
                 await screen.findByText(
-                    'Make sure the Noether node is online and works properly 24x7.'
-                )
+                    'Make sure the Noether node is online and works properly 24x7.',
+                ),
             ).toBeVisible();
             expect(
                 await screen.findByText(
-                    'Have a relatively large amount of CTSI to stake.'
-                )
+                    'Have a relatively large amount of CTSI to stake.',
+                ),
             ).toBeVisible();
         });
 
@@ -233,7 +233,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 useStakingPoolsStub.mockReturnValue(mock);
 
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 const firstRow = await screen
@@ -241,60 +241,60 @@ describe('NodeRunners container (Landing Page)', () => {
                     .closest('tr');
 
                 expect(
-                    await screen.findByText('Pool Management')
+                    await screen.findByText('Pool Management'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('CREATE A POOL')
+                    await screen.findByText('CREATE A POOL'),
                 ).toBeInTheDocument();
                 expect(await screen.findByText('Address')).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Total Staked')
+                    await screen.findByText('Total Staked'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Total Users')
+                    await screen.findByText('Total Users'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Total Rewards')
+                    await screen.findByText('Total Rewards'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Commission')
+                    await screen.findByText('Commission'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Pool Balance')
+                    await screen.findByText('Pool Balance'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Node Status')
+                    await screen.findByText('Node Status'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Block Produced')
+                    await screen.findByText('Block Produced'),
                 ).toBeInTheDocument();
                 expect(await screen.findByText('Manage')).toBeInTheDocument();
 
                 // checking some row values
                 expect(
-                    await findByText(firstRow, '50,000')
+                    await findByText(firstRow, '50,000'),
                 ).toBeInTheDocument();
 
                 expect(
-                    await findByText(firstRow, 'Not Hired')
+                    await findByText(firstRow, 'Not Hired'),
                 ).toBeInTheDocument();
             });
 
             it('should remove the usual card for public pool creation', async () => {
                 const { rerender, queryByText } = render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(
-                    screen.getByText('Create a public pool')
+                    screen.getByText('Create a public pool'),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByText(
-                        'Earn commissions out of the blocks rewards.'
-                    )
+                        'Earn commissions out of the blocks rewards.',
+                    ),
                 ).toBeInTheDocument();
                 expect(
-                    screen.getByText('CREATE PUBLIC POOL')
+                    screen.getByText('CREATE PUBLIC POOL'),
                 ).toBeInTheDocument();
 
                 //then load the data
@@ -303,24 +303,24 @@ describe('NodeRunners container (Landing Page)', () => {
                 useStakingPoolsStub.mockReturnValue(mock);
 
                 rerender(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 await waitForElementToBeRemoved(() =>
-                    queryByText('Create a public pool')
+                    queryByText('Create a public pool'),
                 );
 
                 expect(
-                    screen.queryByText('Create a public pool')
+                    screen.queryByText('Create a public pool'),
                 ).not.toBeInTheDocument();
                 expect(
                     screen.queryByText(
-                        'Earn commissions out of the blocks rewards.'
-                    )
+                        'Earn commissions out of the blocks rewards.',
+                    ),
                 ).not.toBeInTheDocument();
 
                 expect(
-                    screen.queryByText('CREATE PUBLIC POOL')
+                    screen.queryByText('CREATE PUBLIC POOL'),
                 ).not.toBeInTheDocument();
             });
 
@@ -332,7 +332,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 stakingPools.data = generateStakingPoolsData().data;
                 useStakingPoolsStub.mockReturnValue(stakingPools);
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 const firstRow = screen.getByText('0xe58...731b').closest('tr');
@@ -345,7 +345,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 stakingPools.data = generateStakingPoolsData().data;
                 useStakingPoolsStub.mockReturnValue(stakingPools);
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 fireEvent.click(screen.getByText('Total Staked'));
@@ -360,17 +360,17 @@ describe('NodeRunners container (Landing Page)', () => {
 
                 expect(useStakingPoolsStub.mock.calls[2][0]).toHaveProperty(
                     'sort',
-                    'amount'
+                    'amount',
                 );
 
                 expect(useStakingPoolsStub.mock.calls[3][0]).toHaveProperty(
                     'sort',
-                    'totalUsers'
+                    'totalUsers',
                 );
 
                 expect(useStakingPoolsStub.mock.calls[4][0]).toHaveProperty(
                     'sort',
-                    'commissionPercentage'
+                    'commissionPercentage',
                 );
             });
 
@@ -379,7 +379,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 stakingPools.data = generateStakingPoolsData().data;
                 useStakingPoolsStub.mockReturnValue(stakingPools);
                 const { rerender } = render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(screen.getByText('0xe58...731b')).toBeInTheDocument();
@@ -389,11 +389,11 @@ describe('NodeRunners container (Landing Page)', () => {
                 useStakingPoolsStub.mockReturnValue(updatedData);
 
                 rerender(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(
-                    screen.queryByText('0xe58...731b')
+                    screen.queryByText('0xe58...731b'),
                 ).not.toBeInTheDocument();
 
                 expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -407,40 +407,43 @@ describe('NodeRunners container (Landing Page)', () => {
                     useFlagStub.mockReturnValue(true);
 
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     expect(
-                        screen.getByText(useMessages('pos.v2'))
+                        screen.getByText(useMessages('pos.v2')),
                     ).toBeInTheDocument();
                     expect(
                         screen.getByText(
-                            useMessages('pool.update.pos.steps.title')
-                        )
-                    ).toBeInTheDocument();
-
-                    expect(
-                        screen.getByText(
-                            useMessages('pool.update.pos.steps.one')
-                        )
+                            useMessages('pool.update.pos.steps.title'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('pool.update.pos.steps.two')
-                        )
+                            useMessages('pool.update.pos.steps.one'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('pool.update.pos.steps.three')
-                        )
+                            useMessages('pool.update.pos.steps.two'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('pool.update.pos.steps.four')
-                        )
+                            useMessages('pool.update.pos.steps.three'),
+                        ),
+                    ).toBeInTheDocument();
+
+                    expect(
+                        screen.getByText(
+                            useMessages('pool.update.pos.steps.four'),
+                        ),
                     ).toBeInTheDocument();
                 });
 
@@ -451,12 +454,15 @@ describe('NodeRunners container (Landing Page)', () => {
                     useFlagStub.mockReturnValue(true);
 
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     // Checking the banner is rendered
                     expect(
-                        screen.getByText(useMessages('pos.v2'))
+                        screen.getByText(useMessages('pos.v2')),
                     ).toBeInTheDocument();
 
                     const alert = screen.getByTestId('bannerPoolPoSV2');
@@ -466,7 +472,7 @@ describe('NodeRunners container (Landing Page)', () => {
                     });
 
                     expect(
-                        screen.queryByText(useMessages('pos.v2'))
+                        screen.queryByText(useMessages('pos.v2')),
                     ).not.toBeInTheDocument();
                 });
 
@@ -477,12 +483,15 @@ describe('NodeRunners container (Landing Page)', () => {
                     useFlagStub.mockReturnValue(true);
 
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     // Checking the banner is rendered
                     expect(
-                        screen.getByText(useMessages('pos.v2'))
+                        screen.getByText(useMessages('pos.v2')),
                     ).toBeInTheDocument();
 
                     act(() => {
@@ -490,7 +499,7 @@ describe('NodeRunners container (Landing Page)', () => {
                     });
 
                     expect(
-                        screen.queryByText(useMessages('pos.v2'))
+                        screen.queryByText(useMessages('pos.v2')),
                     ).not.toBeInTheDocument();
                 });
             });
@@ -502,13 +511,16 @@ describe('NodeRunners container (Landing Page)', () => {
                     useStakingPoolsStub.mockReturnValue(mock);
 
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     expect(
                         screen.queryByText(
-                            useMessages('pool.update.pos.steps.title')
-                        )
+                            useMessages('pool.update.pos.steps.title'),
+                        ),
                     ).not.toBeInTheDocument();
                 });
             });
@@ -520,7 +532,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 mock.data = generateNodeData().data;
                 useUserNodeStub.mockReturnValue(mock);
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 const row = await screen
@@ -528,22 +540,22 @@ describe('NodeRunners container (Landing Page)', () => {
                     .closest('tr');
 
                 expect(
-                    await screen.findByText('Private Node Management')
+                    await screen.findByText('Private Node Management'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Node Address')
+                    await screen.findByText('Node Address'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Total Staked')
+                    await screen.findByText('Total Staked'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Total Rewards')
+                    await screen.findByText('Total Rewards'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Block Produced')
+                    await screen.findByText('Block Produced'),
                 ).toBeInTheDocument();
                 expect(
-                    await screen.findByText('Node Status')
+                    await screen.findByText('Node Status'),
                 ).toBeInTheDocument();
                 expect(await screen.findByText('Manage')).toBeInTheDocument();
 
@@ -552,8 +564,8 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(
                     await findByText(
                         row,
-                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c'
-                    )
+                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c',
+                    ),
                 ).toBeInTheDocument();
             });
 
@@ -562,7 +574,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 mock.data = generateNodeData().data;
                 useUserNodeStub.mockReturnValue(mock);
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 const row = await screen
@@ -579,17 +591,17 @@ describe('NodeRunners container (Landing Page)', () => {
 
             it('should remove the card for private node creation', async () => {
                 const { rerender } = render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(
-                    screen.getByText('Run a private node')
+                    screen.getByText('Run a private node'),
                 ).toBeInTheDocument();
 
                 expect(
                     screen.getByText(
-                        'You are able to stake directly by running your own node to represent your stake.'
-                    )
+                        'You are able to stake directly by running your own node to represent your stake.',
+                    ),
                 ).toBeInTheDocument();
 
                 expect(screen.getByText('CREATE MY NODE')).toBeInTheDocument();
@@ -599,15 +611,15 @@ describe('NodeRunners container (Landing Page)', () => {
                 useUserNodeStub.mockReturnValue(mock);
 
                 rerender(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 await waitForElementToBeRemoved(() =>
-                    screen.queryByText('Run a private node')
+                    screen.queryByText('Run a private node'),
                 );
 
                 expect(
-                    screen.queryByText('Run a private node')
+                    screen.queryByText('Run a private node'),
                 ).not.toBeInTheDocument();
             });
 
@@ -618,49 +630,52 @@ describe('NodeRunners container (Landing Page)', () => {
                     useUserNodeStub.mockReturnValue(mock);
                     useFlagStub.mockReturnValue(true);
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     expect(
-                        screen.getByText(useMessages('pos.v2'))
+                        screen.getByText(useMessages('pos.v2')),
                     ).toBeInTheDocument();
                     expect(
                         screen.getByText(
-                            useMessages('node.authorize.pos.steps.title')
-                        )
+                            useMessages('node.authorize.pos.steps.title'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('node.authorize.pos.steps.one')
-                        )
+                            useMessages('node.authorize.pos.steps.one'),
+                        ),
                     ).toBeInTheDocument();
                     expect(
                         screen.getByText(
-                            useMessages('node.authorize.pos.steps.two')
-                        )
+                            useMessages('node.authorize.pos.steps.two'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('node.authorize.pos.steps.three')
-                        )
+                            useMessages('node.authorize.pos.steps.three'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
                         screen.getByText(
-                            useMessages('node.authorize.pos.steps.four')
-                        )
+                            useMessages('node.authorize.pos.steps.four'),
+                        ),
                     ).toBeInTheDocument();
 
                     expect(
-                        screen.getByText(`Don't show again`)
+                        screen.getByText(`Don't show again`),
                     ).toBeInTheDocument();
 
                     expect(
                         screen
                             .getByRole('alert')
-                            .querySelector('button[role="close-button"]')
+                            .querySelector('button[role="close-button"]'),
                     ).toBeInTheDocument();
                 });
             });
@@ -672,11 +687,14 @@ describe('NodeRunners container (Landing Page)', () => {
                     useUserNodeStub.mockReturnValue(mock);
                     // default is returning false.
                     render(
-                        <ENodeRunnerContainer wallet={wallet} router={router} />
+                        <ENodeRunnerContainer
+                            wallet={wallet}
+                            router={router}
+                        />,
                     );
 
                     expect(
-                        screen.queryByText(useMessages('pos.v2'))
+                        screen.queryByText(useMessages('pos.v2')),
                     ).not.toBeInTheDocument();
                 });
             });
@@ -685,25 +703,25 @@ describe('NodeRunners container (Landing Page)', () => {
         describe('When user has both pools and a private node', () => {
             it('should not display any of the cards', async () => {
                 const { rerender } = render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(
-                    screen.getByText('Run a private node')
+                    screen.getByText('Run a private node'),
                 ).toBeInTheDocument();
                 expect(screen.getByText('CREATE MY NODE')).toBeInTheDocument();
                 expect(
-                    screen.getByText('Create a public pool')
+                    screen.getByText('Create a public pool'),
                 ).toBeInTheDocument();
                 expect(
-                    screen.getByText('CREATE PUBLIC POOL')
+                    screen.getByText('CREATE PUBLIC POOL'),
                 ).toBeInTheDocument();
 
                 expect(
-                    screen.queryByText('Pool Management')
+                    screen.queryByText('Pool Management'),
                 ).not.toBeInTheDocument();
                 expect(
-                    screen.queryByText('Private Node Management')
+                    screen.queryByText('Private Node Management'),
                 ).not.toBeInTheDocument();
 
                 const userNodes = buildUseUserNodesReturn();
@@ -714,14 +732,14 @@ describe('NodeRunners container (Landing Page)', () => {
                 useStakingPoolsStub.mockReturnValue(stakingPools);
 
                 rerender(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 expect(
-                    await screen.queryByText('Run a private node')
+                    await screen.queryByText('Run a private node'),
                 ).not.toBeInTheDocument();
                 expect(
-                    await screen.queryByText('Create a public pool')
+                    await screen.queryByText('Create a public pool'),
                 ).not.toBeInTheDocument();
             });
 
@@ -734,7 +752,7 @@ describe('NodeRunners container (Landing Page)', () => {
                 useStakingPoolsStub.mockReturnValue(stakingPools);
 
                 render(
-                    <ENodeRunnerContainer wallet={wallet} router={router} />
+                    <ENodeRunnerContainer wallet={wallet} router={router} />,
                 );
 
                 const poolTableEl = screen
@@ -754,15 +772,15 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(
                     getByText(
                         poolFirstRowEl,
-                        'Manage pool 0xe584cd6dd071f532e9598e96589663e69330731b'
-                    )
+                        'Manage pool 0xe584cd6dd071f532e9598e96589663e69330731b',
+                    ),
                 ).toBeInTheDocument();
 
                 expect(
                     getByTestId(
                         poolFirstRowEl,
-                        'pencil-svg-0xe584cd6dd071f532e9598e96589663e69330731b'
-                    )
+                        'pencil-svg-0xe584cd6dd071f532e9598e96589663e69330731b',
+                    ),
                 ).toBeInTheDocument();
 
                 expect(getByText(poolFirstRowEl, '50,000')).toBeInTheDocument();
@@ -776,15 +794,15 @@ describe('NodeRunners container (Landing Page)', () => {
                 expect(
                     getByText(
                         nodeRowEl,
-                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c'
-                    )
+                        'Manage node 0x68a42decd906f86a893ec91d04468bc2a869e56c',
+                    ),
                 ).toBeInTheDocument();
 
                 expect(
                     getByTestId(
                         nodeRowEl,
-                        'pencil-svg-0x68a42decd906f86a893ec91d04468bc2a869e56c'
-                    )
+                        'pencil-svg-0x68a42decd906f86a893ec91d04468bc2a869e56c',
+                    ),
                 ).toBeInTheDocument();
             });
         });
@@ -796,8 +814,8 @@ describe('NodeRunners container (Landing Page)', () => {
 
             expect(
                 screen.getByText(
-                    'Please connect your wallet if you have created your own node and pool already'
-                )
+                    'Please connect your wallet if you have created your own node and pool already',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('CONNECT WALLET')).toBeInTheDocument();

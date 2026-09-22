@@ -32,7 +32,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
     const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'light.border.tertiary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
 
     return (
@@ -78,7 +78,7 @@ const ProductionIntervalStat: FC<ProductionIntervalStatProps> = (props) => {
                                 showArrow
                                 content={`Average interval between the last ${Math.min(
                                     10,
-                                    totalBlocks
+                                    totalBlocks,
                                 )} blocks produced by the pool`}
                                 positioning={{
                                     placement: 'top',

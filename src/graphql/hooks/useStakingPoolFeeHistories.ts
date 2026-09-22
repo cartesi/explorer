@@ -24,7 +24,7 @@ export interface UseStakingPoolFeeHistoriesFilter {
 }
 
 const useStakingPoolFeeHistories = (
-    options: UseStakingPoolFeeHistoriesOptions
+    options: UseStakingPoolFeeHistoriesOptions,
 ) => {
     const { pool = undefined, pageNumber = 0, perPage = 20 } = options;
     const filter: UseStakingPoolFeeHistoriesFilter = {};

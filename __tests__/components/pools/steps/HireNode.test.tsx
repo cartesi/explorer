@@ -167,8 +167,8 @@ describe('HireNode Step', () => {
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'At this point, stake your funds using Cartesi Explorer.'
-                )
+                    'At this point, stake your funds using Cartesi Explorer.',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.queryByText('Node Address')).not.toBeInTheDocument();
@@ -184,22 +184,22 @@ describe('HireNode Step', () => {
             expect(screen.getByText('Hire Node')).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'At this point, stake your funds using Cartesi Explorer.'
-                )
+                    'At this point, stake your funds using Cartesi Explorer.',
+                ),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Node Address')).toBeInTheDocument();
             expect(
-                screen.getByText('You may find from the docker configuration')
+                screen.getByText('You may find from the docker configuration'),
             ).toBeInTheDocument();
             expect(screen.getByText('Initial Funds')).toBeInTheDocument();
             expect(
-                screen.getByText('Allowing your pool to accept new stakes')
+                screen.getByText('Allowing your pool to accept new stakes'),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'You need to specify the amount of ETH you want to give to your node. The node holds a separate Ethereum account and key pair, and only spends your ETH to accept being hired during setup (only once) and then to produce blocks. That means you only incur transaction fee expenses when you are rewarded with CTSI.'
-                )
+                    'You need to specify the amount of ETH you want to give to your node. The node holds a separate Ethereum account and key pair, and only spends your ETH to accept being hired during setup (only once) and then to produce blocks. That means you only incur transaction fee expenses when you are rewarded with CTSI.',
+                ),
             ).toBeInTheDocument();
             expect(screen.getByText('NEXT')).toBeInTheDocument();
         });
@@ -222,7 +222,7 @@ describe('HireNode Step', () => {
             render(<HireNodeE stepNumber={1} inFocus />);
 
             expect(
-                screen.getByText('Your wallet is disconnected')
+                screen.getByText('Your wallet is disconnected'),
             ).toBeInTheDocument();
             expect(screen.getByText('Connect To Wallet')).toBeInTheDocument();
         });
@@ -232,20 +232,20 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 expect(
                     screen
                         .getByText('Allowing your pool to accept new stakes')
-                        .getAttribute('data-state')
+                        .getAttribute('data-state'),
                 ).toBe('checked');
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -256,10 +256,10 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Pausing new stakes')
+                    await findByText(alert, 'Pausing new stakes'),
                 ).toBeInTheDocument();
                 expect(
-                    await findByRole(alert, 'progressbar')
+                    await findByRole(alert, 'progressbar'),
                 ).toBeInTheDocument();
                 expect(pool.pause).toHaveBeenCalled();
             });
@@ -268,14 +268,14 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -286,10 +286,10 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Pausing new stakes setup failed!')
+                    await findByText(alert, 'Pausing new stakes setup failed!'),
                 ).toBeInTheDocument();
                 expect(
-                    await findByText(alert, 'tx metamask: not enough funds')
+                    await findByText(alert, 'tx metamask: not enough funds'),
                 ).toBeInTheDocument();
                 expect(pool.pause).toHaveBeenCalled();
             });
@@ -298,14 +298,14 @@ describe('HireNode Step', () => {
                 const pool = buildUseStakingPoolReturn();
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -317,13 +317,13 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Pausing new stakes')
+                    await findByText(alert, 'Pausing new stakes'),
                 ).toBeInTheDocument();
                 expect(
                     await findByText(
                         alert,
-                        'The pool will no longer accept new stakes.'
-                    )
+                        'The pool will no longer accept new stakes.',
+                    ),
                 ).toBeInTheDocument();
                 expect(pool.pause).toHaveBeenCalled();
             });
@@ -333,20 +333,20 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 expect(
                     screen
                         .getByText('Allowing your pool to accept new stakes')
-                        .hasAttribute('data-checked')
+                        .hasAttribute('data-checked'),
                 ).toBe(false);
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -359,10 +359,10 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Accepting new stakes')
+                    await findByText(alert, 'Accepting new stakes'),
                 ).toBeInTheDocument();
                 expect(
-                    await findByRole(alert, 'progressbar')
+                    await findByRole(alert, 'progressbar'),
                 ).toBeInTheDocument();
             });
 
@@ -371,14 +371,14 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -391,11 +391,11 @@ describe('HireNode Step', () => {
                 expect(
                     await findByText(
                         alert,
-                        'Accepting new stakes setup failed!'
-                    )
+                        'Accepting new stakes setup failed!',
+                    ),
                 ).toBeInTheDocument();
                 expect(
-                    await findByText(alert, 'tx metamask: error communicating')
+                    await findByText(alert, 'tx metamask: error communicating'),
                 ).toBeInTheDocument();
                 expect(pool.unpause).toHaveBeenCalled();
             });
@@ -405,14 +405,14 @@ describe('HireNode Step', () => {
                 pool.paused = true;
                 mockUseStakingPool.mockReturnValue(pool);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 await act(() => {
                     fireEvent.click(
                         screen.getByText(
-                            'Allowing your pool to accept new stakes'
-                        )
+                            'Allowing your pool to accept new stakes',
+                        ),
                     );
                 });
 
@@ -424,13 +424,13 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Accepting new stakes')
+                    await findByText(alert, 'Accepting new stakes'),
                 ).toBeInTheDocument();
                 expect(
                     await findByText(
                         alert,
-                        'The pool is now accepting new stakes.'
-                    )
+                        'The pool is now accepting new stakes.',
+                    ),
                 ).toBeInTheDocument();
                 expect(pool.unpause).toHaveBeenCalled();
             });
@@ -450,7 +450,7 @@ describe('HireNode Step', () => {
 
             it('should display informative notification when hiring node is in due course', async () => {
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -474,16 +474,16 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Hiring node...')
+                    await findByText(alert, 'Hiring node...'),
                 ).toBeInTheDocument();
                 expect(
-                    await findByRole(alert, 'progressbar')
+                    await findByRole(alert, 'progressbar'),
                 ).toBeInTheDocument();
             });
 
             it('should display an error notification when hiring a node failed', async () => {
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -508,13 +508,13 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Hiring the node failed')
+                    await findByText(alert, 'Hiring the node failed'),
                 ).toBeInTheDocument();
                 expect(
                     await findByText(
                         alert,
-                        'tx metamask: something went terribly wrong'
-                    )
+                        'tx metamask: something went terribly wrong',
+                    ),
                 ).toBeInTheDocument();
             });
 
@@ -527,7 +527,7 @@ describe('HireNode Step', () => {
                     },
                 ]);
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
                 const addressInput = screen.getByLabelText('Node Address');
                 const fundsInput = screen.getByLabelText('Initial Funds');
@@ -551,13 +551,13 @@ describe('HireNode Step', () => {
 
                 const alert = screen.getByRole('alert');
                 expect(
-                    await findByText(alert, 'Hiring node...')
+                    await findByText(alert, 'Hiring node...'),
                 ).toBeInTheDocument();
                 expect(
                     await findByText(
                         alert,
-                        'Node hired! moving to the next step...'
-                    )
+                        'Node hired! moving to the next step...',
+                    ),
                 ).toBeInTheDocument();
             });
         });
@@ -585,7 +585,7 @@ describe('HireNode Step', () => {
                 });
 
                 await screen.findByText(
-                    'Looks like that node is already owned.'
+                    'Looks like that node is already owned.',
                 );
 
                 const button = screen.getByText('NEXT');
@@ -617,7 +617,7 @@ describe('HireNode Step', () => {
                 await screen.findByText('This node is available');
 
                 await screen.findByText(
-                    'Max amount of ETH allowed to deposit is 3'
+                    'Max amount of ETH allowed to deposit is 3',
                 );
 
                 const button = screen.getByText('NEXT');
@@ -663,7 +663,7 @@ describe('HireNode Step', () => {
                 mockUseBalance.mockReturnValue(toBigNumber('5'));
 
                 const { rerender } = render(
-                    <HireNodeE inFocus stepNumber={1} />
+                    <HireNodeE inFocus stepNumber={1} />,
                 );
 
                 const addressInput = screen.getByLabelText('Node Address');

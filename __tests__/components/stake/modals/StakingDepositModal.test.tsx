@@ -43,13 +43,13 @@ describe('Staking Deposit Modal', () => {
             <EStakingDepositModal
                 {...defaultProps}
                 allowance={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(
             screen.getByText(
-                'Set the desired allowance. It is the total accrued amount of CTSI the pool is allowed to stake for you. This number should be equal or larger that the CTSI you plan to stake.'
-            )
+                'Set the desired allowance. It is the total accrued amount of CTSI the pool is allowed to stake for you. This number should be equal or larger that the CTSI you plan to stake.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -57,8 +57,8 @@ describe('Staking Deposit Modal', () => {
         renderComponent();
         expect(
             screen.getByText(
-                'You can deposit any amount of token to the pool as far as you have the tokens amount is lower than the set allowance. As a safety precaution, the average waiting time is 6 hours.'
-            )
+                'You can deposit any amount of token to the pool as far as you have the tokens amount is lower than the set allowance. As a safety precaution, the average waiting time is 6 hours.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -66,14 +66,14 @@ describe('Staking Deposit Modal', () => {
         render(<EStakingDepositModal {...defaultProps} isOpen={false} />);
 
         expect(() => screen.getByText('Deposit')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
     it('Should invoke onClose callback', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
-            <EStakingDepositModal {...defaultProps} onClose={mockOnClick()} />
+            <EStakingDepositModal {...defaultProps} onClose={mockOnClick()} />,
         );
 
         const button = getByText('Cancel').closest('button');
@@ -86,7 +86,7 @@ describe('Staking Deposit Modal', () => {
     it('Should invoke onSave callback', () => {
         const mockOnClick = jest.fn();
         const { getByRole } = render(
-            <EStakingDepositModal {...defaultProps} onSave={mockOnClick()} />
+            <EStakingDepositModal {...defaultProps} onSave={mockOnClick()} />,
         );
 
         const button = getByRole('deposit-button');
@@ -103,7 +103,7 @@ describe('Staking Deposit Modal', () => {
             <EStakingDepositModal
                 {...defaultProps}
                 balance={BigNumber.from(0)}
-            />
+            />,
         );
 
         expect(getByRole('deposit-button')).toBeDisabled();

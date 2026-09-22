@@ -33,7 +33,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
         const bg = useColorModeValue('dark.gray.senary', 'dark.gray.tertiary');
         const borderColor = useColorModeValue(
             'light.border.tertiary',
-            'dark.gray.quaternary'
+            'dark.gray.quaternary',
         );
         const { loading, data } = useStakingPoolPerformance(address);
 
@@ -42,7 +42,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
         const weekPerformance = pathOr(
             0,
             'performance.weekly[0].performance',
-            data
+            data,
         );
 
         return (
@@ -114,7 +114,7 @@ const PoolPerformanceStat: FC<PoolPerformanceStatProps> = memo(
                 </Box>
             </ConditionalWrapper>
         );
-    }
+    },
 );
 
 export default PoolPerformanceStat;

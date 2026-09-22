@@ -19,7 +19,7 @@ describe('SlideInOut component', () => {
         render(
             <SlideInOut display>
                 <DummyComponent text="Hello there" />
-            </SlideInOut>
+            </SlideInOut>,
         );
 
         expect(screen.queryByText('Hello there')).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('SlideInOut component', () => {
         render(
             <SlideInOut display={false}>
                 <DummyComponent text="Howdy" />
-            </SlideInOut>
+            </SlideInOut>,
         );
 
         expect(screen.queryByText('Howdy')).not.toBeInTheDocument();

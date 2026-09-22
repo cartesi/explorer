@@ -13,7 +13,7 @@ export const addressEnsTable = table(
         avatarUrl: text(),
         name: text(),
     },
-    () => []
+    () => [],
 );
 
 export type SelectAddressENS = typeof addressEnsTable.$inferSelect;

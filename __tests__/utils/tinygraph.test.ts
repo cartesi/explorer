@@ -41,7 +41,7 @@ describe('tinygraph util', () => {
         const shapeId = (block.chain.protocol.version - 1) % shapes.length;
 
         expect(tinyGraphUrl(block)).toBe(
-            `https://tinygraph.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`
+            `https://tinygraph.cartesi.io/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`,
         );
     });
 
@@ -54,7 +54,7 @@ describe('tinygraph util', () => {
         const shapeId = (block.chain.protocol.version - 1) % shapes.length;
 
         expect(tinyGraphUrl(block)).toBe(
-            `${customEndpoint}/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`
+            `${customEndpoint}/${shapes[shapeId]}/${block.producer.id}?theme=${themes[themeId]}&numcolors=4&size=220&fmt=svg`,
         );
 
         process.env.NEXT_PUBLIC_TINYGRAPHS_URL = originalValue;

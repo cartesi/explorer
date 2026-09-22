@@ -50,7 +50,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
     const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
@@ -107,7 +107,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
 
                                             if (value === 'partial') {
                                                 setOutputWithdraw(
-                                                    constants.Zero
+                                                    constants.Zero,
                                                 );
                                                 inputRef.current?.focus();
                                             }
@@ -160,10 +160,10 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                                                 userBalanceFormatted
                                                             }
                                                             onChange={(
-                                                                bigNumberValue
+                                                                bigNumberValue,
                                                             ) => {
                                                                 setOutputWithdraw(
-                                                                    bigNumberValue
+                                                                    bigNumberValue,
                                                                 );
                                                             }}
                                                         />

@@ -39,7 +39,7 @@ export const useStakingPoolFactoryContract = (): StakingPoolFactoryImpl => {
     return useContract(
         StakingPoolFactoryImpl__factory.connect,
         abis,
-        'StakingPoolFactoryImpl'
+        'StakingPoolFactoryImpl',
     );
 };
 
@@ -62,7 +62,7 @@ export const useFeeContract = (address: string): Fee => {
 };
 
 export const useFlatRateCommissionContract = (
-    address: string
+    address: string,
 ): FlatRateCommission => {
     const [feeAddress, setFeeAddress] = useState<string>();
     const pool = useStakingPoolContract(address);
@@ -75,6 +75,6 @@ export const useFlatRateCommissionContract = (
 
     return useContractFromAddress(
         FlatRateCommission__factory.connect,
-        feeAddress
+        feeAddress,
     );
 };

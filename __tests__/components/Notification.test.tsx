@@ -32,12 +32,12 @@ describe('Notification component', () => {
             <ENotification
                 title="Title message"
                 subtitle="That is a subtitle message"
-            />
+            />,
         );
 
         expect(screen.getByText('Title message')).toBeInTheDocument();
         expect(
-            screen.getByText('That is a subtitle message')
+            screen.getByText('That is a subtitle message'),
         ).toBeInTheDocument();
     });
 
@@ -61,7 +61,7 @@ describe('Notification component', () => {
         render(
             <ENotification title="Wallet is disconnected">
                 <DummyComp />
-            </ENotification>
+            </ENotification>,
         );
 
         expect(screen.getByText('Wallet is disconnected')).toBeInTheDocument();

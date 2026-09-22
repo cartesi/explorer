@@ -21,8 +21,8 @@ If there are multiple, what are the benefits and drawbacks of each one?
 
 ## 📈 Subtasks
 
--   [ ] What are the subtasks for completing this issue?
+- [ ] What are the subtasks for completing this issue?
 
 ## 🎯 Definition of Done
 
--   [ ] What are the final deliverables?
+- [ ] What are the final deliverables?

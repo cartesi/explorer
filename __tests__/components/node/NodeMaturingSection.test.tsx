@@ -25,8 +25,8 @@ describe('NodeMaturingSection component', () => {
 
         expect(
             screen.getByText(
-                'The staking will take 6 hours to be ready. Each new stake will restart the waiting time.'
-            )
+                'The staking will take 6 hours to be ready. Each new stake will restart the waiting time.',
+            ),
         ).toBeInTheDocument();
 
         expect(screen.getByText('0')).toBeInTheDocument();
@@ -37,19 +37,19 @@ describe('NodeMaturingSection component', () => {
             <Component
                 maturingBalance={TEST_MATURING_BALANCE}
                 maturingLeft={TEST_MATURING_TIME}
-            />
+            />,
         );
 
         expect(
             screen.getByText(
-                'The staking will take 6 hours to be ready. Each new stake will restart the waiting time.'
-            )
+                'The staking will take 6 hours to be ready. Each new stake will restart the waiting time.',
+            ),
         ).toBeInTheDocument();
 
         const stakeButton = container.querySelector('button');
 
         expect(
-            stakeButton.textContent.includes(`STAKE (${TEST_MATURING_TIME})`)
+            stakeButton.textContent.includes(`STAKE (${TEST_MATURING_TIME})`),
         ).toBe(true);
     });
 });

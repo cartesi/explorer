@@ -30,7 +30,7 @@ describe('BigNumberText component', () => {
         });
 
         expect(
-            screen.getByTestId('big-number-text-unit-label')
+            screen.getByTestId('big-number-text-unit-label'),
         ).toBeInTheDocument();
     });
 
@@ -41,7 +41,7 @@ describe('BigNumberText component', () => {
         });
 
         expect(() => screen.getByTestId('big-number-text-unit-label')).toThrow(
-            'Unable to find an element by: [data-testid="big-number-text-unit-label"]'
+            'Unable to find an element by: [data-testid="big-number-text-unit-label"]',
         );
     });
 
@@ -56,7 +56,7 @@ describe('BigNumberText component', () => {
         });
 
         expect(
-            screen.getByText(`${timeLabel} ${timeLeft}`)
+            screen.getByText(`${timeLabel} ${timeLeft}`),
         ).toBeInTheDocument();
     });
 
@@ -66,7 +66,7 @@ describe('BigNumberText component', () => {
         renderComponent();
 
         expect(() => screen.getByText(`${timeLabel} ${timeLeft}`)).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

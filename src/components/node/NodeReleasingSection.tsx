@@ -41,12 +41,12 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'dark.border.tertiary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
     const colorScheme = useColorModeValue('teal', 'cyan');
     const iconColorModeColor = useColorModeValue(
         'dark.secondary',
-        'dark.primary'
+        'dark.primary',
     );
     const iconColor = releasingBalance.isZero()
         ? 'gray.450'

@@ -33,7 +33,7 @@ export function toUnixTimestamp(v: unknown): number {
     else if (v instanceof Date) return parseToUnixTime(v.getTime());
     else
         throw new Error(
-            `Supported types are [Date, number]. number needs to be a valid timestamp in milliseconds.`
+            `Supported types are [Date, number]. number needs to be a valid timestamp in milliseconds.`,
         );
 }
 

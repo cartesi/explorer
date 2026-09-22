@@ -57,7 +57,7 @@ const stakingContractData = {
 describe('staking service', () => {
     beforeEach(() => {
         mockedUseStakingContract.mockReturnValue(
-            stakingContractData as unknown as StakingImpl
+            stakingContractData as unknown as StakingImpl,
         );
     });
 
@@ -117,10 +117,10 @@ describe('staking service', () => {
         await waitFor(() => {
             expect(result.current.stakedBalance).toStrictEqual(constants.Zero);
             expect(result.current.releasingBalance).toStrictEqual(
-                constants.Zero
+                constants.Zero,
             );
             expect(result.current.maturingBalance).toStrictEqual(
-                constants.Zero
+                constants.Zero,
             );
         });
     });
@@ -144,16 +144,16 @@ describe('staking service', () => {
         await waitFor(() => {
             expect(result.current.stakedBalance).toStrictEqual(stakedBalance);
             expect(result.current.maturingBalance).toStrictEqual(
-                maturingBalance
+                maturingBalance,
             );
             expect(result.current.releasingBalance).toStrictEqual(
-                releasingBalance
+                releasingBalance,
             );
             expect(result.current.maturingTimestamp).toStrictEqual(
-                new Date(maturingValue.toNumber() * 1000)
+                new Date(maturingValue.toNumber() * 1000),
             );
             expect(result.current.releasingTimestamp).toStrictEqual(
-                new Date(releasingValue.toNumber() * 1000)
+                new Date(releasingValue.toNumber() * 1000),
             );
         });
     });

@@ -27,8 +27,8 @@ describe('CTSI component', () => {
 
         expect(
             screen.getByText(
-                numberFormat.format(parseFloat(formatUnits(props.value, 18)))
-            )
+                numberFormat.format(parseFloat(formatUnits(props.value, 18))),
+            ),
         ).toBeInTheDocument();
     });
 });

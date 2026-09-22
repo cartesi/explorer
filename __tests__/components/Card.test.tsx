@@ -29,7 +29,7 @@ describe('Card component', () => {
                 title="Create a private node"
                 subtitle="Run your own node"
                 buttonText="CREATE NODE"
-            />
+            />,
         );
 
         expect(screen.getByText('Create a private node')).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('Card component', () => {
         expect(screen.getByText('Hello')).toBeInTheDocument();
         expect(screen.queryByTestId('card-subtitle')).not.toBeInTheDocument();
         expect(
-            screen.queryByTestId('card-action-button')
+            screen.queryByTestId('card-action-button'),
         ).not.toBeInTheDocument();
     });
 

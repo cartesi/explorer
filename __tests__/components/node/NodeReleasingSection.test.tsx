@@ -27,16 +27,16 @@ describe('NodeReleasingSection component', () => {
                 releasingBalance={TEST_RELEASING_BALANCE}
                 releasingLeftShort={TEST_RELEASING_TIME}
                 onWithdraw={null}
-            />
+            />,
         );
 
         expect(
-            screen.getByText('Your funds take 48 hours to become unblocked.')
+            screen.getByText('Your funds take 48 hours to become unblocked.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Releasing')).toBeInTheDocument();
         expect(
-            screen.getByText(TEST_RELEASING_BALANCE_CTSI)
+            screen.getByText(TEST_RELEASING_BALANCE_CTSI),
         ).toBeInTheDocument();
 
         expect(screen.getByText(TEST_WITHDRAW_BUTTON)).toBeInTheDocument();
@@ -48,16 +48,16 @@ describe('NodeReleasingSection component', () => {
                 releasingBalance={TEST_RELEASING_BALANCE}
                 releasingLeftShort={null}
                 onWithdraw={null}
-            />
+            />,
         );
 
         expect(
-            screen.getByText('Your funds take 48 hours to become unblocked.')
+            screen.getByText('Your funds take 48 hours to become unblocked.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Released')).toBeInTheDocument();
         expect(
-            screen.getByText(TEST_RELEASING_BALANCE_CTSI)
+            screen.getByText(TEST_RELEASING_BALANCE_CTSI),
         ).toBeInTheDocument();
 
         expect(screen.getByText('WITHDRAW')).toBeInTheDocument();
@@ -69,11 +69,11 @@ describe('NodeReleasingSection component', () => {
                 releasingBalance={BigNumber.from('0')}
                 releasingLeftShort={null}
                 onWithdraw={null}
-            />
+            />,
         );
 
         expect(
-            screen.getByText('Your funds take 48 hours to become unblocked.')
+            screen.getByText('Your funds take 48 hours to become unblocked.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Released')).toBeInTheDocument();

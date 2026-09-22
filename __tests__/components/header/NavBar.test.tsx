@@ -146,7 +146,7 @@ describe('Nav Bar', () => {
             expect(element).toBeInTheDocument();
             fireEvent.click(button);
             expect(() => screen.getByTestId('mobile-menu')).toThrow(
-                'Unable to find an element'
+                'Unable to find an element',
             );
         });
     });

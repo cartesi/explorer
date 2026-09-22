@@ -22,15 +22,15 @@ export const useStaking = (user: string) => {
     const unstakeTransaction = useTransaction();
     const withdrawTransaction = useTransaction();
     const [stakedBalance, setStakedBalance] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
     const [maturingBalance, setMaturingBalance] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
     const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
-        constants.Zero
+        constants.Zero,
     );
 
     useEffect(() => {
@@ -39,12 +39,12 @@ export const useStaking = (user: string) => {
             staking
                 .getMaturingTimestamp(user)
                 .then((value) =>
-                    setMaturingTimestamp(new Date(value.toNumber() * 1000))
+                    setMaturingTimestamp(new Date(value.toNumber() * 1000)),
                 );
             staking
                 .getReleasingTimestamp(user)
                 .then((value) =>
-                    setReleasingTimestamp(new Date(value.toNumber() * 1000))
+                    setReleasingTimestamp(new Date(value.toNumber() * 1000)),
                 );
             staking.getMaturingBalance(user).then(setMaturingBalance);
             staking.getReleasingBalance(user).then(setReleasingBalance);

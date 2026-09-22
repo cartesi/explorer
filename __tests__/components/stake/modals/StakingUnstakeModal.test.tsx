@@ -49,14 +49,14 @@ describe('Staking Unstake Modal', () => {
         render(<EStakingUnstakeModal {...defaultProps} isOpen={false} />);
 
         expect(() => screen.getByText('Unstake to withdraw')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
     it('Should invoke onClose callback', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
-            <EStakingUnstakeModal {...defaultProps} onClose={mockOnClick()} />
+            <EStakingUnstakeModal {...defaultProps} onClose={mockOnClick()} />,
         );
 
         const button = getByText('Cancel').closest('button');
@@ -69,7 +69,7 @@ describe('Staking Unstake Modal', () => {
     it('Should invoke onSave callback for full amount', () => {
         const onSave = jest.fn();
         const { getByRole } = render(
-            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />
+            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />,
         );
 
         const button = getByRole('unstake-button');
@@ -83,7 +83,7 @@ describe('Staking Unstake Modal', () => {
     it('Should invoke onSave callback after partial amount is set', async () => {
         const onSave = jest.fn();
         const { getByRole, getByText } = render(
-            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />
+            <EStakingUnstakeModal {...defaultProps} onSave={onSave} />,
         );
 
         const input = getByText('Partial amount')
@@ -93,7 +93,7 @@ describe('Staking Unstake Modal', () => {
         fireEvent.click(input);
 
         await waitFor(() =>
-            expect(getByRole('spinbutton')).toBeInTheDocument()
+            expect(getByRole('spinbutton')).toBeInTheDocument(),
         );
 
         const numberInput = getByRole('spinbutton');
@@ -116,7 +116,7 @@ describe('Staking Unstake Modal', () => {
 
     it('Should disable stake button when partial amount is selected', async () => {
         const { getByRole, getByText } = render(
-            <EStakingUnstakeModal {...defaultProps} />
+            <EStakingUnstakeModal {...defaultProps} />,
         );
 
         const input = getByText('Partial amount')
@@ -126,7 +126,7 @@ describe('Staking Unstake Modal', () => {
         fireEvent.click(input);
 
         await waitFor(() =>
-            expect(getByRole('unstake-button')).toBeInTheDocument()
+            expect(getByRole('unstake-button')).toBeInTheDocument(),
         );
 
         expect(getByRole('unstake-button')).toBeDisabled();

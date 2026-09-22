@@ -13,7 +13,7 @@ export const formatDuration = (ms: number): string[] => {
 
 export const formatPercentNumber = (
     value: number,
-    options?: Intl.NumberFormatOptions
+    options?: Intl.NumberFormatOptions,
 ) => {
     const formatter = new Intl.NumberFormat('en-US', options);
     return formatter.format(value * 100);
@@ -21,7 +21,7 @@ export const formatPercentNumber = (
 
 export const formatPercent = (
     value: BigNumberish,
-    options?: Intl.NumberFormatOptions
+    options?: Intl.NumberFormatOptions,
 ) => {
     if (typeof value === 'number') {
         return formatPercentNumber(value, options);
@@ -40,7 +40,7 @@ export const formatPercent = (
 export const format = (
     value: BigNumberish,
     unit: Unit,
-    options: Intl.NumberFormatOptions
+    options: Intl.NumberFormatOptions,
 ): string[] => {
     const numberFormat = new Intl.NumberFormat('en-US', options);
     switch (unit) {
@@ -75,7 +75,7 @@ export const format = (
 export const formatValue = (
     value: BigNumberish,
     unit: Unit,
-    options: Intl.NumberFormatOptions
+    options: Intl.NumberFormatOptions,
 ): string => {
     const [stringValue] = format(value, unit, options);
     return stringValue;
@@ -86,13 +86,13 @@ type IntlUnit = keyof Intl.NumberFormatOptionsStyleRegistry;
 type FormatNumberValueFn = (
     value: number,
     fractionDigits?: number,
-    unit?: IntlUnit
+    unit?: IntlUnit,
 ) => string;
 
 export const formatNumberValue: FormatNumberValueFn = (
     value: number,
     fractionDigits = 2,
-    unit = 'decimal'
+    unit = 'decimal',
 ) => {
     const numberFormat = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,

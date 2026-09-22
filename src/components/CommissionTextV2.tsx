@@ -56,8 +56,8 @@ const CommissionText: FC<CommissionTextProps> = (props) => {
     const valueLabel = value?.commission
         ? formatPercent(value.commission / 10000)
         : value?.gas
-        ? numberFormat.format(value.gas)
-        : '-';
+          ? numberFormat.format(value.gas)
+          : '-';
 
     const styles = {
         default: {

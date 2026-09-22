@@ -56,7 +56,7 @@ const BlockMiniCard: FunctionComponent<BlockMiniCardProps> = (props) => {
     const bg = useColorModeValue('white', 'dark.gray.tertiary');
     const borderColor = useColorModeValue(
         'dark.border.tertiary',
-        'dark.gray.quaternary'
+        'dark.gray.quaternary',
     );
 
     return (

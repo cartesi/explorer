@@ -93,7 +93,7 @@ export const NodeRunnersContainer = ({
 }: NodeRunnersContainerProps) => {
     const bgBlock = useColorModeValue(
         'light.gray.secondary',
-        'dark.gray.tertiary'
+        'dark.gray.tertiary',
     );
     const [poolSortBy] = useAtom(poolSortByAtom);
     const [, setPoolDataLoading] = useAtom(poolDataFetchingAtom);
@@ -112,7 +112,7 @@ export const NodeRunnersContainer = ({
     useEffect(() => setIsLoadingNodes(userNodes.loading), [userNodes.loading]);
     useEffect(
         () => setPoolDataLoading(stakingPools.loading),
-        [stakingPools.loading]
+        [stakingPools.loading],
     );
 
     useEffect(() => {

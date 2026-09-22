@@ -23,7 +23,7 @@ type AlertStatus = AlertRootProps['status'];
  */
 const withErrorStatusAs = (
     alertStatus: AlertStatus,
-    Component: FunctionComponent<ITransactionInfoBannerProps>
+    Component: FunctionComponent<ITransactionInfoBannerProps>,
 ) => {
     return (props: ITransactionInfoBannerProps) => {
         const { transaction } = props;

@@ -22,7 +22,7 @@ describe('Staking Instructions', () => {
     it('Should display earn rewards label', () => {
         renderComponent();
         expect(
-            screen.getByText('Earn rewards by staking CTSI')
+            screen.getByText('Earn rewards by staking CTSI'),
         ).toBeInTheDocument();
     });
 
@@ -30,7 +30,7 @@ describe('Staking Instructions', () => {
     it.skip('Should display learn detailed staking instructions label', () => {
         renderComponent();
         expect(
-            screen.getByText('Learn detailed staking instructions')
+            screen.getByText('Learn detailed staking instructions'),
         ).toBeInTheDocument();
     });
 

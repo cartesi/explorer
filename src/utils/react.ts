@@ -22,7 +22,7 @@ import humanizeDuration from 'humanize-duration';
 export const useTimeLeft = (
     timestamp: number,
     fields = 2,
-    isHumanizedOutput = true
+    isHumanizedOutput = true,
 ): string | undefined => {
     const durationToShortDate = useCallback((duration: number) => {
         return new Date(duration).toISOString().substring(11, 16);
@@ -41,11 +41,11 @@ export const useTimeLeft = (
                 ? formatDuration(duration, fields)
                 : durationToShortDate(duration);
         },
-        [fields, formatDuration, isHumanizedOutput, durationToShortDate]
+        [fields, formatDuration, isHumanizedOutput, durationToShortDate],
     );
 
     const [timeLeft, setTimeLeft] = useState<string>(
-        formatRemainingTime(timestamp - Date.now())
+        formatRemainingTime(timestamp - Date.now()),
     );
 
     useEffect(() => {

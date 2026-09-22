@@ -82,7 +82,7 @@ const tokenAbis: ChainMap = {
 export const getAddress = (
     chainId: number,
     map: ChainMap,
-    name: string
+    name: string,
 ): string => {
     const chain = map[chainId];
     if (!chain) {
@@ -93,14 +93,14 @@ export const getAddress = (
     const contract = chain.contracts[name];
     if (!contract) {
         console.log(
-            `No ${name} deployed at network ${chain.name} (${chainId})`
+            `No ${name} deployed at network ${chain.name} (${chainId})`,
         );
         return;
     }
 
     const address = contract.address;
     console.log(
-        `${name} resolved to address ${address} at network ${chain.name} (${chainId})`
+        `${name} resolved to address ${address} at network ${chain.name} (${chainId})`,
     );
     return address;
 };
@@ -108,7 +108,7 @@ export const getAddress = (
 export function useContract<C>(
     connector: (address: string, signerOrProvider: Signer | Provider) => C,
     abis: ChainMap,
-    name: string
+    name: string,
 ): C {
     const { library, chainId } = useWallet();
 
@@ -142,7 +142,7 @@ export function useContract<C>(
 
 export function useContractFromAddress<C>(
     connector: (address: string, signerOrProvider: Signer | Provider) => C,
-    address: string
+    address: string,
 ): C {
     const { library, chainId } = useWallet();
 
@@ -171,7 +171,7 @@ export const useWorkerManagerContract = (): WorkerManagerAuthManagerImpl => {
     return useContract(
         WorkerManagerAuthManagerImpl__factory.connect,
         utilAbis,
-        'WorkerManagerAuthManagerImpl'
+        'WorkerManagerAuthManagerImpl',
     );
 };
 
@@ -179,7 +179,7 @@ export const useCartesiTokenContract = (): CartesiToken => {
     return useContract(
         CartesiToken__factory.connect,
         tokenAbis,
-        'CartesiToken'
+        'CartesiToken',
     );
 };
 
@@ -187,7 +187,7 @@ export const useSimpleFaucetContract = (): SimpleFaucet => {
     return useContract(
         SimpleFaucet__factory.connect,
         tokenAbis,
-        'SimpleFaucet'
+        'SimpleFaucet',
     );
 };
 

@@ -44,7 +44,7 @@ const directions: Record<string, OrderDirection> = {
 
 const reducer = (
     prev: WhereClause,
-    [k, v]: TupleOf<WhereClause>
+    [k, v]: TupleOf<WhereClause>,
 ): WhereClause => {
     return {
         ...prev,
@@ -57,7 +57,7 @@ const notEmptyValues = ([, v]) => !isEmpty(v);
 const valuesToLowerCase: (a: WhereClause) => WhereClause = pipe(
     toPairs,
     filter(notEmptyValues),
-    reduce(reducer, {} as WhereClause)
+    reduce(reducer, {} as WhereClause),
 );
 
 const useStakingPools = ({

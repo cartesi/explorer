@@ -50,7 +50,7 @@ describe('Users Table Row', () => {
         expect(screen.getByTestId('total-staked-col')).toBeInTheDocument();
         expect(screen.getByTestId('shares-col')).toBeInTheDocument();
         expect(
-            screen.getByTestId('accumulated-shared-col')
+            screen.getByTestId('accumulated-shared-col'),
         ).toBeInTheDocument();
     });
 
@@ -65,8 +65,8 @@ describe('Users Table Row', () => {
 
         expect(
             screen.getByText(
-                dateTimeFormat.format(balance.stakeTimestamp * 1000)
-            )
+                dateTimeFormat.format(balance.stakeTimestamp * 1000),
+            ),
         ).toBeInTheDocument();
     });
 
@@ -74,7 +74,7 @@ describe('Users Table Row', () => {
         renderComponent(defaultProps);
 
         expect(
-            screen.getAllByText(`${balance.sharesPercent * 100}%`).length > 0
+            screen.getAllByText(`${balance.sharesPercent * 100}%`).length > 0,
         ).toBe(true);
     });
 
@@ -83,8 +83,8 @@ describe('Users Table Row', () => {
 
         expect(
             screen.getAllByText(
-                `${truncateNumber(balance.accumulatedSharesPercent * 100)}%`
-            ).length > 0
+                `${truncateNumber(balance.accumulatedSharesPercent * 100)}%`,
+            ).length > 0,
         ).toBe(true);
     });
 });

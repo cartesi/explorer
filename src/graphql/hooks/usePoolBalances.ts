@@ -54,7 +54,7 @@ const usePoolBalances = (
     pageNumber = 0,
     sort: PoolBalanceSort = 'shares',
     perPage = POOLS_PER_PAGE,
-    pool?: string
+    pool?: string,
 ) => {
     const filter = {
         user: user?.toLowerCase() || undefined,

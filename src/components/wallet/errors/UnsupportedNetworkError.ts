@@ -1,7 +1,7 @@
 export class UnsupportedNetworkError extends Error {
     constructor(
         unsupportedNetworkId: number,
-        supportedNetworkIds?: readonly number[]
+        supportedNetworkIds?: readonly number[],
     ) {
         super();
         this.name = this.constructor.name;

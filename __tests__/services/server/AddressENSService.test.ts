@@ -151,13 +151,13 @@ describe('Address ENS Service', () => {
 
         it('should handle runtime errors and return the result to the callee', async () => {
             isCartesiUserMock.mockRejectedValue(
-                new Error('GraphQL out of service')
+                new Error('GraphQL out of service'),
             );
 
             const result = await AddressENSService.getEntry(address, 1);
             expect(result).toEqual({ ok: false, error: 'unexpected' });
             expect(errorLogSpy).toHaveBeenCalledWith(
-                new Error('GraphQL out of service')
+                new Error('GraphQL out of service'),
             );
         });
     });
@@ -182,14 +182,14 @@ describe('Address ENS Service', () => {
 
         it('should handle any internal error gracefully', async () => {
             repositoryMock.getAll.mockRejectedValue(
-                new Error('Connection pipe is broken')
+                new Error('Connection pipe is broken'),
             );
 
             const result = await AddressENSService.listAll();
 
             expect(result).toEqual({ ok: false, error: 'unexpected' });
             expect(errorLogSpy).toHaveBeenCalledWith(
-                new Error('Connection pipe is broken')
+                new Error('Connection pipe is broken'),
             );
         });
     });
@@ -247,19 +247,19 @@ describe('Address ENS Service', () => {
 
             expect(infoLogSpy).toHaveBeenCalledTimes(5);
             expect(infoLogSpy.mock.calls[0][0]).toEqual(
-                '(Total stale entries): 3'
+                '(Total stale entries): 3',
             );
             expect(infoLogSpy.mock.calls[1][0]).toEqual(
-                '(ENS Payloads returned): 1'
+                '(ENS Payloads returned): 1',
             );
             expect(infoLogSpy.mock.calls[2][0]).toEqual(
-                '(ENS Payloads in good state): 1'
+                '(ENS Payloads in good state): 1',
             );
             expect(infoLogSpy.mock.calls[3][0]).toEqual(
-                '(Total entries to refresh): 3'
+                '(Total entries to refresh): 3',
             );
             expect(infoLogSpy.mock.calls[4][0]).toEqual(
-                '(Total entries updated): 3'
+                '(Total entries updated): 3',
             );
         });
 
@@ -313,19 +313,19 @@ describe('Address ENS Service', () => {
 
             expect(infoLogSpy).toHaveBeenCalledTimes(5);
             expect(infoLogSpy.mock.calls[0][0]).toEqual(
-                '(Total stale entries): 3'
+                '(Total stale entries): 3',
             );
             expect(infoLogSpy.mock.calls[1][0]).toEqual(
-                '(ENS Payloads returned): 3'
+                '(ENS Payloads returned): 3',
             );
             expect(infoLogSpy.mock.calls[2][0]).toEqual(
-                '(ENS Payloads in good state): 2'
+                '(ENS Payloads in good state): 2',
             );
             expect(infoLogSpy.mock.calls[3][0]).toEqual(
-                '(Total entries to refresh): 6'
+                '(Total entries to refresh): 6',
             );
             expect(infoLogSpy.mock.calls[4][0]).toEqual(
-                '(Total entries updated): 6'
+                '(Total entries updated): 6',
             );
         });
 
@@ -385,29 +385,29 @@ describe('Address ENS Service', () => {
 
             expect(infoLogSpy).toHaveBeenCalledTimes(4);
             expect(infoLogSpy.mock.calls[0][0]).toEqual(
-                '(Total stale entries): 9'
+                '(Total stale entries): 9',
             );
             expect(infoLogSpy.mock.calls[1][0]).toEqual(
-                '(ENS Payloads returned): 3'
+                '(ENS Payloads returned): 3',
             );
             expect(infoLogSpy.mock.calls[2][0]).toEqual(
-                '(ENS Payloads in good state): 0'
+                '(ENS Payloads in good state): 0',
             );
             expect(infoLogSpy.mock.calls[3][0]).toEqual(
-                '(Total entries to refresh): 0'
+                '(Total entries to refresh): 0',
             );
         });
 
         it('should handle db runtime internal errors gracefully', async () => {
             repositoryMock.getAllStaleEntries.mockRejectedValue(
-                new Error('Connection closed')
+                new Error('Connection closed'),
             );
 
             const result = await AddressENSService.refreshEntries();
 
             expect(result).toEqual({ ok: false, error: 'unexpected' });
             expect(errorLogSpy).toHaveBeenCalledWith(
-                new Error('Connection closed')
+                new Error('Connection closed'),
             );
         });
     });

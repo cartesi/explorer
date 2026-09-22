@@ -185,7 +185,7 @@ const CommissionModel = ({
                         minWidth={{ base: '50%', md: '10rem' }}
                         onClick={() => {
                             poolFactory.createFlatRateCommission(
-                                toNumber(flatRateVal) * 100
+                                toNumber(flatRateVal) * 100,
                             );
                         }}
                     >

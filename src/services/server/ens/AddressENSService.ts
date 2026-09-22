@@ -32,13 +32,13 @@ const prepareReturn = (data: SelectAddressENS) => {
 const defaultTTL = 7 * 24 * 60 * 60;
 const ENS_ENTRY_TTL = defaultTo(
     defaultTTL,
-    parseInt(process.env.ENS_ENTRY_TTL ?? '')
+    parseInt(process.env.ENS_ENTRY_TTL ?? ''),
 );
 
 export default class AddressENSService {
     static async getEntry(
         address: string,
-        chainId: number
+        chainId: number,
     ): Promise<ServiceResult<AddressEns>> {
         try {
             const entry = await Repository.get(address);
@@ -95,9 +95,8 @@ export default class AddressENSService {
         ServiceResult<{ success: boolean; count: number }>
     > {
         try {
-            const staleList = await Repository.getAllStaleEntries(
-                ENS_ENTRY_TTL
-            );
+            const staleList =
+                await Repository.getAllStaleEntries(ENS_ENTRY_TTL);
             if (staleList.length === 0)
                 return { ok: true, data: { success: true, count: 0 } };
             console.info(`(Total stale entries): ${staleList.length}`);
@@ -112,7 +111,7 @@ export default class AddressENSService {
                     continue;
                 }
                 refreshedList = refreshedList.concat(
-                    ensPayloads[i].data as AddressEns[]
+                    ensPayloads[i].data as AddressEns[],
                 );
             }
 
@@ -120,7 +119,7 @@ export default class AddressENSService {
                 ensPayloads.length - payloadFailedStateCount;
             console.info(`(ENS Payloads returned): ${ensPayloads.length}`);
             console.info(
-                `(ENS Payloads in good state): ${payloadInGoodStateCount}`
+                `(ENS Payloads in good state): ${payloadInGoodStateCount}`,
             );
 
             console.info(`(Total entries to refresh): ${refreshedList.length}`);

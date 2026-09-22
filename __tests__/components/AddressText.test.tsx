@@ -78,7 +78,7 @@ describe('AddressText component', () => {
         });
 
         expect(() => screen.getByTestId('address')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
@@ -94,7 +94,7 @@ describe('AddressText component', () => {
         renderComponent();
 
         expect(() => screen.getByTestId('address-text-icon')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 });

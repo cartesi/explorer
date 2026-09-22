@@ -36,7 +36,7 @@ describe('Pagination component', () => {
             render(<PageLinkComponent {...defaultPageLinkProps} />);
 
             expect(
-                screen.getByText(defaultPageLinkProps.index + 1)
+                screen.getByText(defaultPageLinkProps.index + 1),
             ).toBeInTheDocument();
         });
 
@@ -46,7 +46,7 @@ describe('Pagination component', () => {
                 <PageLinkComponent
                     {...defaultPageLinkProps}
                     onPageClick={onPageClick}
-                />
+                />,
             );
             const button = container.querySelector('button');
 
@@ -59,10 +59,10 @@ describe('Pagination component', () => {
 
         it('should display previous and next buttons when multiple pages exist', () => {
             const { container } = render(
-                <PaginationComponent {...defaultPaginationProps} pages={2} />
+                <PaginationComponent {...defaultPaginationProps} pages={2} />,
             );
             const prevButton = container.querySelector(
-                '[title="Previous page"]'
+                '[title="Previous page"]',
             );
             const nextButton = container.querySelector('[title="Next page"]');
 
@@ -72,10 +72,10 @@ describe('Pagination component', () => {
 
         it('should not display previous and next buttons when one page exists', () => {
             const { container } = render(
-                <PaginationComponent {...defaultPaginationProps} pages={1} />
+                <PaginationComponent {...defaultPaginationProps} pages={1} />,
             );
             const prevButton = container.querySelector(
-                '[title="Previous page"]'
+                '[title="Previous page"]',
             );
             const nextButton = container.querySelector('[title="Next page"]');
 
@@ -91,11 +91,11 @@ describe('Pagination component', () => {
                     {...defaultPaginationProps}
                     currentPage={currentPage}
                     pages={pages}
-                />
+                />,
             );
 
             expect(
-                screen.getByText(`Page ${currentPage + 1} of ${pages}`)
+                screen.getByText(`Page ${currentPage + 1} of ${pages}`),
             ).toBeInTheDocument();
         });
     });

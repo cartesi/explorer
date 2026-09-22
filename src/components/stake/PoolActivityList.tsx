@@ -88,7 +88,7 @@ const Activity: FC<ActivityProps> = memo(
                 </Table.Cell>
             </Table.Row>
         );
-    }
+    },
 );
 
 export interface IPoolActivityListProps {
@@ -116,15 +116,15 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
         const headerColor = 'dark.gray.primary';
         const borderColor = useColorModeValue(
             'transparent',
-            'dark.gray.quaternary'
+            'dark.gray.quaternary',
         );
         const topBorderColor = useColorModeValue(
             'transparent',
-            'dark.gray.quinary'
+            'dark.gray.quinary',
         );
         const loadMoreColor = useColorModeValue(
             'dark.secondary',
-            'dark.primary'
+            'dark.primary',
         );
 
         useEffect(() => {
@@ -141,7 +141,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
         useEffect(() => {
             if (null !== activities) {
                 updateList((list) =>
-                    null !== list ? [...list, ...activities] : activities
+                    null !== list ? [...list, ...activities] : activities,
                 );
             }
         }, [activities]);
@@ -159,7 +159,7 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                                 <Table.Row
                                     key="0"
                                     fontFamily={theme.tokens.getVar(
-                                        'fonts.body'
+                                        'fonts.body',
                                     )}
                                 >
                                     <Table.Cell
@@ -255,5 +255,5 @@ export const PoolActivityList: FC<IPoolActivityListProps> = memo(
                 {!list && <Loader isLoading={loading} />}
             </>
         );
-    }
+    },
 );

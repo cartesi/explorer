@@ -29,7 +29,9 @@ describe('TransactionFeedback component', () => {
     it('should trigger ack callback when close button is clicked', () => {
         const mockedAck = jest.fn();
         render(
-            <Component transaction={{ ...props.transaction, ack: mockedAck }} />
+            <Component
+                transaction={{ ...props.transaction, ack: mockedAck }}
+            />,
         );
         const button = screen.getByTestId('transaction-feedback-close-button');
 
@@ -50,11 +52,11 @@ describe('TransactionFeedback component', () => {
         render(
             <Component
                 transaction={{ ...props.transaction, acknowledged: true }}
-            />
+            />,
         );
 
         expect(() => screen.getByText(content)).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 

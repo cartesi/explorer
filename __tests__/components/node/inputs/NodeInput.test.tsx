@@ -60,7 +60,7 @@ describe('NodeInput component', () => {
             const addressInput = screen.getByLabelText('Node Address');
             fireEvent.change(addressInput, { target: { value: account } });
             expect(
-                screen.getByText('This node is available')
+                screen.getByText('This node is available'),
             ).toBeInTheDocument();
         });
     });
@@ -70,7 +70,7 @@ describe('NodeInput component', () => {
             const node = buildNodeObj('owned', '0x00');
             render(<Component account={account} node={node} />);
             expect(
-                screen.getByText('Looks like that node is already owned.')
+                screen.getByText('Looks like that node is already owned.'),
             ).toBeInTheDocument();
         });
 
@@ -78,7 +78,7 @@ describe('NodeInput component', () => {
             const node = buildNodeObj('owned', account);
             render(<Component account={account} node={node} />);
             expect(
-                screen.getByText('Looks like you already own that node.')
+                screen.getByText('Looks like you already own that node.'),
             ).toBeInTheDocument();
         });
 
@@ -87,8 +87,8 @@ describe('NodeInput component', () => {
             render(<Component account={account} node={node} />);
             expect(
                 screen.getByText(
-                    'Looks like the node is yours but it is in a pending state'
-                )
+                    'Looks like the node is yours but it is in a pending state',
+                ),
             ).toBeInTheDocument();
         });
 
@@ -96,7 +96,7 @@ describe('NodeInput component', () => {
             const node = buildNodeObj('pending', '0x00');
             render(<Component account={account} node={node} />);
             expect(
-                screen.getByText('Looks like that node is already owned.')
+                screen.getByText('Looks like that node is already owned.'),
             ).toBeInTheDocument();
         });
 
@@ -104,7 +104,7 @@ describe('NodeInput component', () => {
             const node = buildNodeObj('retired', account);
             render(<Component account={account} node={node} />);
             expect(
-                screen.getByText('This node is already retired.')
+                screen.getByText('This node is already retired.'),
             ).toBeInTheDocument();
         });
     });

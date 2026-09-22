@@ -86,7 +86,7 @@ describe('Pool Header', () => {
 
         expect(link).toBeInTheDocument();
         expect(link.getAttribute('href')).toBe(
-            `/pools/${query.pool}/manage?from=${from}`
+            `/pools/${query.pool}/manage?from=${from}`,
         );
     });
 });

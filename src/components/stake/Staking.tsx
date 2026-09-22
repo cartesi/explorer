@@ -125,7 +125,7 @@ export const Staking: FC<StakingProps> = ({
                 {isMaturingDeposit && (
                     <InfoBanner
                         title={`${toCTSI(
-                            userPoolBalance
+                            userPoolBalance,
                         )} CTSI will be ready for staking soon`}
                         content={`It will take ${
                             unlockHumanized || 'unknown'

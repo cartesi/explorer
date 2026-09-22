@@ -48,7 +48,7 @@ describe('Staking Pool Allowance Modal', () => {
         render(<EStakingPoolAllowanceModal {...defaultProps} isOpen={false} />);
 
         expect(() => screen.getByText('Edit pool allowance')).toThrow(
-            'Unable to find an element'
+            'Unable to find an element',
         );
     });
 
@@ -58,7 +58,7 @@ describe('Staking Pool Allowance Modal', () => {
             <EStakingPoolAllowanceModal
                 {...defaultProps}
                 onClose={mockOnClick()}
-            />
+            />,
         );
 
         const button = getByText('Cancel').closest('button');
@@ -76,7 +76,7 @@ describe('Staking Pool Allowance Modal', () => {
                 onSave={() => {
                     isSavedTriggered = true;
                 }}
-            />
+            />,
         );
 
         const button = getByText('Save').closest('button');

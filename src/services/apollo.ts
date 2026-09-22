@@ -34,7 +34,7 @@ const mergeUniqueSort = (fieldName: string) => {
         // remove duplicates
         const unique = array.reduce<any[]>((unique: any[], item: any) => {
             const exists = unique.findIndex(
-                (block) => block.__ref == item.__ref
+                (block) => block.__ref == item.__ref,
             );
             return exists >= 0 ? unique : [...unique, item];
         }, []);

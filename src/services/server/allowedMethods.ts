@@ -18,7 +18,7 @@ type AllowedMethodsParams = {
 };
 
 type Builder = (
-    param: AllowedMethodsParams
+    param: AllowedMethodsParams,
 ) => (req: NextApiRequest) => boolean;
 
 export const allowedMethodBuilder: Builder = ({ methods }) => {

@@ -38,7 +38,7 @@ const useTotalPoolBalance = (user: string) => {
                 orderDirection: 'desc',
             },
             notifyOnNetworkStatusChange: true,
-        }
+        },
     );
 
     // aggregation of balances
@@ -65,7 +65,7 @@ const useTotalPoolBalance = (user: string) => {
             // sum up all amounts in all pools
             const total = amounts.reduce(
                 (t, a) => t.addUnsafe(a),
-                FixedNumber.from(0)
+                FixedNumber.from(0),
             );
             setTotal(BigNumber.from(total).div(constants.WeiPerEther));
         }

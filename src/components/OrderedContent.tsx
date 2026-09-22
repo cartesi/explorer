@@ -39,5 +39,5 @@ export const OrderedContent = memo(
                 ))}
             </List.Root>
         </VStack>
-    )
+    ),
 );

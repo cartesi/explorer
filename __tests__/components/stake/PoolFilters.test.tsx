@@ -73,7 +73,7 @@ describe('Pool Filters', () => {
         fireEvent.click(screen.getByText('Add Filter'));
 
         await waitFor(() =>
-            expect(screen.getByTestId('menu-content')).toBeInTheDocument()
+            expect(screen.getByTestId('menu-content')).toBeInTheDocument(),
         );
 
         defaultFilters.forEach((filter) => {
