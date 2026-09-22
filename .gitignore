@@ -43,3 +43,6 @@ yarn-error.log*
 *.db-wal
 
 *storybook.log
+
+# pnpm
+.pnpm-store/

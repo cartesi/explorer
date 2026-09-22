@@ -1,3 +1,9 @@
+strictDepBuilds: true
+blockExoticSubdeps: true
+minimumReleaseAge: 10080 # minutes = 7 days
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200 # minutes = 30 days
+
 allowBuilds:
   '@vercel/speed-insights': true
   bufferutil: true
@@ -20,3 +26,6 @@ overrides:
   'elliptic': '^6.6.1'
   'pbkdf2': '^3.1.5'
   'form-data': '^4.0.4'
+  # eth-sig-util@1.4.2 declares ethereumjs-abi as an unpinned git URL, which
+  # blockExoticSubdeps rejects. Pin the equivalent registry release instead.
+  'ethereumjs-abi': '^0.6.8'
