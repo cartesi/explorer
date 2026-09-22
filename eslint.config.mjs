@@ -1,43 +1,28 @@
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
-import _import from 'eslint-plugin-import';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import prettier from 'eslint-plugin-prettier';
+import { fixupConfigRules } from '@eslint/compat';
+import js from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
 import { globalIgnores } from 'eslint/config';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
-
 export default [
-    ...fixupConfigRules(
-        compat.extends(
-            'eslint:recommended',
-            'plugin:@typescript-eslint/eslint-recommended',
-            'plugin:@typescript-eslint/recommended',
-            'plugin:prettier/recommended',
-            'plugin:react/recommended',
-            'plugin:react-hooks/recommended',
-            'prettier',
-        ),
-    ),
+    js.configs.recommended,
+    tseslint.configs['flat/eslint-recommended'],
+    ...tseslint.configs['flat/recommended'],
+    // eslint-plugin-react 7.37.5 still calls context.getFilename(), removed in
+    // ESLint 10, and declares no v10 peer support. The compat fixup shims it;
+    // it can go once the plugin ships an ESLint 10 release.
+    ...fixupConfigRules(react.configs.flat.recommended),
+    reactHooks.configs.flat.recommended,
+    prettierRecommended,
     {
+        files: ['**/*.ts', '**/*.tsx'],
+
         plugins: {
-            import: fixupPluginRules(_import),
-            '@typescript-eslint': fixupPluginRules(typescriptEslint),
-            prettier: fixupPluginRules(prettier),
-            react: fixupPluginRules(react),
-            'react-hooks': fixupPluginRules(reactHooks),
+            import: importPlugin,
         },
 
         languageOptions: {
@@ -52,21 +37,19 @@ export default [
 
         rules: {
             'prettier/prettier': 'error',
-            '@typescript-eslint/ban-types': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
             '@typescript-eslint/no-unnecessary-type-constraint': 'off',
             '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-unused-expressions': 'off',
             'react/react-in-jsx-scope': 'off',
             'react/no-children-prop': 'warn',
-            'react-hooks/rules-of-hooks': 'warn',
             'react/prop-types': 'off',
             'react/display-name': 'off',
             'react/no-unescaped-entities': 'off',
-            '@next/next/no-html-link-for-pages': 'off',
             'react/jsx-key': 'off',
+            'react-hooks/rules-of-hooks': 'warn',
             'no-undef': 'off',
-            '@typescript-eslint/no-unused-expressions': 'off',
 
             // TODO(deps-sweep): eslint-plugin-react-hooks v7 enables the React
             // Compiler rules in its recommended preset. They report 55 errors
