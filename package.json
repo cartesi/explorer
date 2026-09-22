@@ -56,7 +56,7 @@
         "eth-chains": "^2.0.0",
         "eth-rpc-errors": "^4.0.3",
         "ethers": "^5.8.0",
-        "framer-motion": "^12.23.22",
+        "framer-motion": "^13.3.0",
         "graphql": "^16.11.0",
         "graphql-tag": "^2.12.7",
         "humanize-duration": "^3.35.0",
