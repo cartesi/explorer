@@ -8,6 +8,49 @@ This web application shows several informations about Cartesi Proof of Stake:
 -   action to claim a node through metamask
 -   action to release a node from the current owner
 
+## Toolchain
+
+This project pins its toolchain, and CI uses the same versions:
+
+-   **Node.js 24.21.0** (Active LTS)
+-   **pnpm 11.27.1**, declared in `packageManager`
+
+pnpm is activated through Corepack, which ships with Node.js 24:
+
+```
+$ corepack enable
+$ pnpm --version   # 11.27.1
+```
+
+> Corepack is still flagged Experimental in Node.js 24 and is **not** distributed
+> with Node.js 25 or newer. When this project moves past Node.js 24, install pnpm
+> directly instead (e.g. `npm install -g pnpm@11.27.1`).
+
+## Package management
+
+Dependency installs are governed by `pnpm-workspace.yaml`. Install with:
+
+```
+$ pnpm install --frozen-lockfile
+```
+
+The following supply-chain protections are enabled:
+
+-   `allowBuilds` — dependency install scripts are **denied unless explicitly
+    listed**. When a new dependency needs to run a build script, pnpm reports it
+    and the package has to be added here deliberately.
+-   `strictDepBuilds: true` — the install fails rather than silently skipping a
+    dependency whose build script has not been reviewed.
+-   `blockExoticSubdeps: true` — transitive dependencies may not be pulled from
+    git repositories or tarball URLs, only from the registry.
+-   `minimumReleaseAge: 10080` — a newly published version must be at least
+    7 days old before it can be resolved, which blunts hijacked-release attacks.
+-   `trustPolicy: no-downgrade` — a package whose trust level drops relative to
+    its previous releases fails the install.
+
+`overrides` is used to pin transitive dependencies away from vulnerable or
+non-registry sources.
+
 ## Running locally
 
 This is a [Next.js](https://nextjs.org) application which uses smart contracts deployed by the [pos-dlib](https://github.com/cartesi/pos-dlib) and [staking-pool](https://github.com/cartesi/staking-pool) projects.
@@ -90,7 +133,7 @@ Check the `.env` to see the available variables. [additional.d.ts](./additional.
 Simply run:
 
 ```
-$ yarn dev
+$ pnpm dev
 ```
 
 ### Open application and setup MetaMask
