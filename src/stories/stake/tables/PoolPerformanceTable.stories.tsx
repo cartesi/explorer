@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import PoolPerformanceTable from '../../../components/stake/tables/PoolPerformanceTable';
 import stakingPoolsData from './stakingPoolsData';
 import { StakingPool, StakingPoolSort } from '../../../graphql/models';

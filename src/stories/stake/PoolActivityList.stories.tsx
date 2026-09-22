@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import React from 'react';
 import { PoolActivityList } from '../../components/stake/PoolActivityList';
 import { GET_POOL_ACTIVITIES } from '../../graphql/queries/poolActivities';

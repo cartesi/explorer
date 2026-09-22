@@ -6,6 +6,7 @@ import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import storybook from 'eslint-plugin-storybook';
 import { globalIgnores } from 'eslint/config';
 
 export default [
@@ -18,6 +19,7 @@ export default [
     ...fixupConfigRules(react.configs.flat.recommended),
     reactHooks.configs.flat.recommended,
     prettierRecommended,
+    ...storybook.configs['flat/recommended'],
     {
         files: ['**/*.ts', '**/*.tsx'],
 

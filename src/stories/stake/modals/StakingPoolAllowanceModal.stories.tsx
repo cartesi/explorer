@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StakingPoolAllowanceModal } from '../../../components/stake/modals/StakingPoolAllowanceModal';
 import { BigNumber } from 'ethers';
 

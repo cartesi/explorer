@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TransactionInfoBanner } from '../../components/stake/TransactionInfoBanner';
 import { Transaction } from '../../services/transaction';
 

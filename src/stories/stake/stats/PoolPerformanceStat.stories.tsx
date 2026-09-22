@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import PoolPerformanceStat from '../../../components/stake/stats/PoolPerformanceStat';
 
 const defaultAddress = '0x2942aa4356783892c624125acfbbb80d29629a9d';

@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import EffectiveBalanceStat from '../../../components/stake/stats/EffectiveBalanceStat';
 import { BigNumber } from 'ethers';
 
