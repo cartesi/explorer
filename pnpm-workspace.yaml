@@ -5,7 +5,6 @@ trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200 # minutes = 30 days
 
 allowBuilds:
-  '@vercel/speed-insights': true
   bufferutil: true
   core-js: true
   core-js-pure: true
@@ -15,7 +14,6 @@ allowBuilds:
   keccak: true
   postinstall-postinstall: true
   secp256k1: true
-  sharp: true
   unrs-resolver: true
   utf-8-validate: true
   web3: true
