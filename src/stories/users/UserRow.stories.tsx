@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Table } from '@chakra-ui/react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import UserRow, { UserRowProps } from '../../components/users/UserRow';
 import { StakingPool } from '../../graphql/models';

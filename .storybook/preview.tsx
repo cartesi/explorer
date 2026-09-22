@@ -1,7 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import type { Preview, StoryFn } from '@storybook/react';
-import { StoryContext } from '@storybook/react';
+import type { Preview, StoryFn } from '@storybook/nextjs-vite';
+import { StoryContext } from '@storybook/nextjs-vite';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { FC } from 'react';
 import { Fonts } from '../src/components/Fonts';

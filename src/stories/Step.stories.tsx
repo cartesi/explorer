@@ -19,7 +19,7 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Step, StepActions, StepBody, StepStatus } from '../components/Step';
 
 export default {

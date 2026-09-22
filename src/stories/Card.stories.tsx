@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Icon, List, Stack, VStack } from '@chakra-ui/react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Card } from '../components/Card';
 import { WalletIcon } from '../components/Icons';
 

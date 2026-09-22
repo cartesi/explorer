@@ -11,7 +11,7 @@
 
 import { TbCopy } from 'react-icons/tb';
 import { Icon } from '@chakra-ui/react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Banner from '../components/Banner';
 
 export default {

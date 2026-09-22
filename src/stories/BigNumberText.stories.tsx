@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Text } from '@chakra-ui/react';
-import { Meta } from '@storybook/react';
+import { Meta } from '@storybook/nextjs-vite';
 import { parseUnits } from 'ethers/lib/utils';
 import {
     TbHistory,
