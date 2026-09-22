@@ -1,20 +1,20 @@
-onlyBuiltDependencies:
-  - '@vercel/speed-insights'
-  - bufferutil
-  - core-js
-  - core-js-pure
-  - es5-ext
-  - esbuild
-  - fsevents
-  - keccak
-  - postinstall-postinstall
-  - secp256k1
-  - sharp
-  - unrs-resolver
-  - utf-8-validate
-  - web3
-  - web3-bzz
-  - web3-shh
+allowBuilds:
+  '@vercel/speed-insights': true
+  bufferutil: true
+  core-js: true
+  core-js-pure: true
+  es5-ext: true
+  esbuild: true
+  fsevents: true
+  keccak: true
+  postinstall-postinstall: true
+  secp256k1: true
+  sharp: true
+  unrs-resolver: true
+  utf-8-validate: true
+  web3: true
+  web3-bzz: true
+  web3-shh: true
 
 overrides:
   'elliptic': '^6.6.1'
