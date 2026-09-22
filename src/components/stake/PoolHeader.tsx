@@ -36,7 +36,10 @@ export const PoolHeader = ({ from, isManager = false }: PoolHeaderProps) => {
     const params = useParams();
     const address = params.pool as string;
     const { chainId } = useWallet();
-    const iconSize = useBreakpointValue({ base: '1.688rem', sm: 5 });
+    const iconSize = useBreakpointValue<string | number>({
+        base: '1.688rem',
+        sm: 5,
+    });
 
     return (
         <Box
