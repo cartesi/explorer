@@ -120,7 +120,7 @@
         "npm-run-all2": "^9.0.3",
         "prettier": "3.9.6",
         "storybook": "^9.1.20",
-        "typescript": "^5.9.3",
+        "typescript": "^6.0.3",
         "vite": "^7.3.6"
     },
     "engines": {
