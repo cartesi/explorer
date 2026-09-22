@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.7] - 2026-09-22
+
+-   Upgrade Node.js to 24.21.0 (LTS) and pnpm to 11.27.1.
+-   Migrate pnpm build-script approvals from `onlyBuiltDependencies` to `allowBuilds`.
+-   Add pnpm supply-chain protections: strict dependency builds, a 7-day release-age gate, trust-downgrade checks and blocked transitive exotic sources.
+-   Replace the git-sourced `ethereumjs-abi` transitive dependency with the equivalent registry release.
+-   Update GitHub Actions to node24-runtime versions ahead of the node20 runtime removal.
+-   Remove the obsolete Dockerfile.
+
 ## [3.12.6] - 2026-09-21
 
 -   Upgrade to Next.js 16 ahead of the 15.x maintenance window closing on 21 Oct 2026.
@@ -470,7 +479,8 @@ Staking Pools
 
 -   First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.6...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.7...HEAD
+[3.12.7]: https://github.com/cartesi/explorer/compare/v3.12.7...v3.12.6
 [3.12.6]: https://github.com/cartesi/explorer/compare/v3.12.6...v3.12.5
 [3.12.5]: https://github.com/cartesi/explorer/compare/v3.12.5...v3.12.4
 [3.12.4]: https://github.com/cartesi/explorer/compare/v3.12.4...v3.12.3
