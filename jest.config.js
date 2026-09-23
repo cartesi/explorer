@@ -46,16 +46,7 @@ module.exports = {
         '^.+\\.(js|jsx|ts|tsx)$': [
             'babel-jest',
             {
-                presets: [
-                    'next/babel',
-                    /**
-                     * Mitigate warning about upgrade to a modern JSX transform for faster performance.
-                     *
-                     * ref(https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup)
-                     */
-                    ['@babel/preset-react', { runtime: 'automatic' }],
-                ],
-                plugins: ['@babel/plugin-transform-private-methods'],
+                presets: ['next/babel'],
             },
         ],
     },
