@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.8] - 2026-09-23
+
+- Upgrade dependencies to keep maintenance with latest releases.
+- Apply security patches to mitigate published CVEs.
+- Remove unused and obsolete dependencies.
+
 ## [3.12.7] - 2026-09-22
 
 - Upgrade Node.js to 24.21.0 (LTS) and pnpm to 11.27.1.
@@ -479,7 +485,8 @@ Staking Pools
 
 - First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.7...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.12.8...HEAD
+[3.12.8]: https://github.com/cartesi/explorer/compare/v3.12.8...v3.12.7
 [3.12.7]: https://github.com/cartesi/explorer/compare/v3.12.7...v3.12.6
 [3.12.6]: https://github.com/cartesi/explorer/compare/v3.12.6...v3.12.5
 [3.12.5]: https://github.com/cartesi/explorer/compare/v3.12.5...v3.12.4
