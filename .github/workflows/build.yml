@@ -21,8 +21,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install chakra-ui types
-        run: pnpm run chakra-types
+      - name: Generate chakra-ui types and contract ABIs
+        run: pnpm codegen
 
       - name: Code format check
         run: pnpm format:check

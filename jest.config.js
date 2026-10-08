@@ -8,6 +8,7 @@ module.exports = {
         '!<rootDir>/src/app/**',
         '!<rootDir>/src/types/**',
         '!<rootDir>/src/graphql/queries/**',
+        '!<rootDir>/src/services/contracts/generated.ts',
         '!**/*.d.ts',
         '!**/node_modules/**',
     ],

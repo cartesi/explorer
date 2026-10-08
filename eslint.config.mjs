@@ -10,6 +10,8 @@ import storybook from 'eslint-plugin-storybook';
 import { globalIgnores } from 'eslint/config';
 
 export default [
+    // build artifact written by `pnpm gen:abi` (wagmi cli), see wagmi.config.ts
+    globalIgnores(['src/services/contracts/generated.ts']),
     js.configs.recommended,
     tseslint.configs['flat/eslint-recommended'],
     ...tseslint.configs['flat/recommended'],
