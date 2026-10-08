@@ -9,10 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { Web3Provider } from '@ethersproject/providers';
+import type { Web3Provider } from '@ethersproject/providers';
+import type { PublicClient, WalletClient } from 'viem';
 
 export enum WalletType {
-    HARDWARE = 'hardware',
     SDK = 'sdk',
     INJECTED = 'injected',
 }
@@ -20,14 +20,14 @@ export type { Web3Provider };
 export interface WalletConnectionContextProps {
     account?: string;
     chainId?: number;
+    /** @deprecated transitional ethers v5 provider; use publicClient/walletClient. */
     library?: Web3Provider;
+    publicClient?: PublicClient;
+    walletClient?: WalletClient;
     error?: Error;
     active: boolean;
     activate: (...a: any) => Promise<void>;
     deactivate: () => void;
-    selectAccount?: () => void;
-    tried?: boolean;
-    isHardwareWallet?: boolean;
     isGnosisSafe?: boolean;
     walletName?: string;
     walletType?: `${WalletType}`;

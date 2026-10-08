@@ -11,8 +11,6 @@
 
 import { createSystem, defaultConfig } from '@chakra-ui/react';
 import { formsTheme } from './formsTheme';
-import { onboardTheme } from './onboard';
-import { onboardTheme as onboardThemeV1 } from './onboardTheme';
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 import { zIndices } from './foundations/zIndices';
@@ -36,8 +34,6 @@ const theme = createSystem(defaultConfig, {
                 _dark: 'white',
             },
         },
-        ...onboardThemeV1,
-        ...onboardTheme,
         ...formsTheme,
     },
     theme: {

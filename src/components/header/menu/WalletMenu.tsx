@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import React, { FC, useMemo } from 'react';
 import { useENS } from '../../../services/ens';
-import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
+import { CopyIcon, DisconnectIcon } from '../../Icons';
 import { useWallet } from '../../wallet/useWallet';
 import { useColorModeValue } from '../../ui/color-mode';
 import theme from '../../../styles/theme';
@@ -93,8 +93,7 @@ const WalletMenuActionItem: FC<WalletMenuActionItemProps> = ({
 );
 
 const WalletMenu: FC = () => {
-    const { account, library, isHardwareWallet, selectAccount, deactivate } =
-        useWallet();
+    const { account, library, deactivate } = useWallet();
     const ens = useENS(account ?? '');
     const clipboard = useClipboard({ value: account ?? '' });
     const color = useColorModeValue('light.gray.primary', 'white');
@@ -112,16 +111,8 @@ const WalletMenu: FC = () => {
             });
         }
 
-        if (account && library && selectAccount && isHardwareWallet) {
-            items.push({
-                title: 'Switch account',
-                Icon: SwitchIcon,
-                onClick: selectAccount,
-            });
-        }
-
         return items;
-    }, [account, library, isHardwareWallet, deactivate, selectAccount]);
+    }, [account, library, deactivate]);
 
     return (
         <>
