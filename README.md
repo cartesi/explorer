@@ -51,6 +51,42 @@ The following supply-chain protections are enabled:
 `overrides` is used to pin transitive dependencies away from vulnerable or
 non-registry sources.
 
+## Wallet connection and contracts
+
+The wallet layer lives in `src/components/wallet/` and is the only place that
+imports [RainbowKit](https://rainbowkit.com) and [wagmi](https://wagmi.sh); the
+rest of the application consumes the connection through `useWallet()`, which
+exposes the account, the chain id and the viem `publicClient`/`walletClient`.
+Swapping the wallet library again means changing that folder only.
+
+- `config.ts` holds the supported chains, the RPC transports and the wallet list
+  shown by the RainbowKit modal: MetaMask, WalletConnect (also the way to reach
+  Ledger Live), Safe and Base (Coinbase Wallet), plus any browser wallet it
+  detects through EIP-6963. RainbowKit
+  renders its own wallet list on mobile, so breadth comes from that list.
+- Safe only appears when the explorer is loaded as a Safe App (see
+  `public/manifest.json`) and connects automatically on load.
+- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` (WalletConnect Cloud / Reown dashboard)
+  and `NEXT_PUBLIC_DAPP_URL` are required; the RPC endpoints come from
+  `NEXT_PUBLIC_RPC_URL_<chainId>`.
+- RainbowKit 2 pins wagmi to the 2.x line, which froze when wagmi 3 shipped. The
+  bundled WalletConnect and MetaMask SDK versions move only when RainbowKit adds
+  wagmi 3 support; this is a known, accepted trade-off.
+
+Contracts are called through [viem](https://viem.sh) using ABIs and deployment
+addresses generated into `src/services/contracts/generated.ts` (gitignored) by
+`pnpm gen:abi`, part of `pnpm codegen` together with the Chakra UI type
+generation. `pnpm dev`, `pnpm build` and CI run `codegen` first; run it once
+after `pnpm install` before `pnpm test` or `pnpm storybook`. `wagmi.config.ts`
+lists every contract and the `@cartesi` package it comes from. Those packages
+and `ethers` are devDependencies used only by the generator: an ESLint rule
+rejects importing them from `src/`.
+
+Addresses coming from the subgraph are lowercase, while contract reads return
+checksummed addresses. Keep comparing `account` (already lowercase) with
+subgraph values as the code does today, and compare contract results with
+viem's `isAddressEqual` rather than `===`.
+
 ## Running locally
 
 This is a [Next.js](https://nextjs.org) application which uses smart contracts deployed by the [pos-dlib](https://github.com/cartesi/pos-dlib) and [staking-pool](https://github.com/cartesi/staking-pool) projects.
@@ -135,6 +171,9 @@ Simply run:
 ```
 $ pnpm dev
 ```
+
+This runs the database migration and `pnpm codegen` (Chakra UI types and the
+contract ABIs) before starting Next.js.
 
 ### Open application and setup MetaMask
 
