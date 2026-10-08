@@ -10,7 +10,6 @@ export const TestComponent = () => {
         active,
         activate,
         deactivate,
-        isHardwareWallet,
         isGnosisSafe,
         walletType,
         account,
@@ -34,7 +33,6 @@ export const TestComponent = () => {
                     Connect Wallet
                 </button>
             )}
-            {isHardwareWallet && <span>Wallet is hardware type</span>}
             {isGnosisSafe && <span>Wallet is Gnosis Safe</span>}
             {account && <span>account is: {account}</span>}
             {chainId && <span>chainId is: {chainId}</span>}

@@ -21,6 +21,17 @@ jest.mock('./src/services/ens', () => {
     };
 });
 
+// The wallet hook is the only module importing wagmi and RainbowKit (ESM-only,
+// heavy). Stub it everywhere; tests that exercise it unmock the module.
+jest.mock('./src/components/wallet/useWagmiWallet', () => ({
+    __esModule: true,
+    useWagmiWallet: jest.fn(() => ({
+        active: false,
+        connectWallet: jest.fn(),
+        disconnectWallet: jest.fn(),
+    })),
+}));
+
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation((query) => ({

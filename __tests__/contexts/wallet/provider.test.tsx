@@ -11,11 +11,11 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import { WalletConnectionProvider } from '../../../src/components/wallet/provider';
-import { useOnboard } from '../../../src/components/wallet/useOnboard';
+import { useWagmiWallet } from '../../../src/components/wallet/useWagmiWallet';
 import { useWallet } from '../../../src/components/wallet/useWallet';
-import { Network, networks } from '../../../src/utils/networks';
+import { Network } from '../../../src/utils/networks';
 import { TestComponent } from './helpers';
-import { buildMockUseOnboardV2Return } from './mocks';
+import { buildMockUseWagmiWalletReturn } from './mocks';
 
 const walletMod = '../../../src/components/wallet/useWallet';
 
@@ -28,10 +28,12 @@ jest.mock(walletMod, () => {
     };
 });
 
-jest.mock('../../../src/components/wallet/useOnboard');
+jest.mock('../../../src/components/wallet/useWagmiWallet');
 jest.mock('@chakra-ui/react');
 
-const useOnboardStub = useOnboard as jest.MockedFunction<typeof useOnboard>;
+const useWagmiWalletStub = useWagmiWallet as jest.MockedFunction<
+    typeof useWagmiWallet
+>;
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
@@ -43,19 +45,15 @@ const walletMock = {
     chainId: Network.MAINNET,
 };
 
-const chainIds = Object.keys(networks).map(
-    (key) => `0x${Number(key).toString(16)}`,
-);
-
 describe('Wallet Provider', () => {
     const Component = () => (
-        <WalletConnectionProvider chainIds={chainIds}>
+        <WalletConnectionProvider>
             <TestComponent />
         </WalletConnectionProvider>
     );
 
     beforeEach(() => {
-        useOnboardStub.mockReturnValue(buildMockUseOnboardV2Return());
+        useWagmiWalletStub.mockReturnValue(buildMockUseWagmiWalletReturn());
         mockUseWallet.mockReturnValue(walletMock);
     });
 

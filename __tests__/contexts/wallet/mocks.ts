@@ -1,15 +1,15 @@
 import { mock } from 'jest-mock-extended';
-import { useOnboard } from '../../../src/components/wallet/useOnboard';
+import { useWagmiWallet } from '../../../src/components/wallet/useWagmiWallet';
 import { ReturnOf } from '../../test-utilities';
 
-type UseOnboardV2Return = ReturnOf<typeof useOnboard>;
+type UseWagmiWalletReturn = ReturnOf<typeof useWagmiWallet>;
 
-const buildUseOnboardV2Ret = () => mock<UseOnboardV2Return>();
+const buildUseWagmiWalletRet = () => mock<UseWagmiWalletReturn>();
 
-function buildMockUseOnboardV2Return() {
-    const mock = buildUseOnboardV2Ret();
+function buildMockUseWagmiWalletReturn() {
+    const mock = buildUseWagmiWalletRet();
     mock.active = false;
     return mock;
 }
 
-export { buildMockUseOnboardV2Return };
+export { buildMockUseWagmiWalletReturn };

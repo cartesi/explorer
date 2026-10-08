@@ -11,6 +11,9 @@ module.exports = {
     reactStrictMode: true,
     // Do not generate the AGENTS.md / CLAUDE.md files next writes on "next dev".
     agentRules: false,
+    // cdp-sdk (via wagmi's Base connector) imports optional @x402/* peers that
+    // are not installed; keep it out of the server bundle.
+    serverExternalPackages: ['@coinbase/cdp-sdk'],
     async headers() {
         return [
             {
@@ -20,7 +23,7 @@ module.exports = {
                         key: 'Content-Security-Policy',
                         value: ContentSecurityPolicy.replace(
                             /\s{2,}/g,
-                            ' '
+                            ' ',
                         ).trim(),
                     },
                 ],

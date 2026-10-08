@@ -7,9 +7,19 @@ import { FC } from 'react';
 import { Fonts } from '../src/components/Fonts';
 import { SelectedChain } from '../src/components/header';
 import { ColorModeProvider } from '../src/components/ui/color-mode';
+import { mock } from 'wagmi/connectors';
 import Web3Container from '../src/components/Web3Container';
+import { createWagmiConfig } from '../src/components/wallet/config';
 import theme from '../src/styles/theme';
 import ColorMode from './ColorMode';
+
+// A mock connector keeps Storybook and Chromatic from instantiating WalletConnect.
+const storybookWagmiConfig = createWagmiConfig([
+    mock({
+        accounts: ['0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D'],
+        features: { reconnect: false },
+    }),
+]);
 
 const withChakra = (Story: FC, context: StoryContext) => {
     console.info(`withChakra`);
@@ -21,7 +31,7 @@ const withChakra = (Story: FC, context: StoryContext) => {
             <Fonts />
             <ColorModeProvider>
                 <ColorMode value={colorModeValue} />
-                <Web3Container>
+                <Web3Container config={storybookWagmiConfig}>
                     <SelectedChain />
                     <Story />
                 </Web3Container>

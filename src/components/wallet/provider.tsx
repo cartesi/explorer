@@ -11,7 +11,7 @@
 
 import { createContext, FC, PropsWithChildren } from 'react';
 import { WalletConnectionContextProps } from './definitions';
-import { useOnboard, UseOnboardProps } from './useOnboard';
+import { useWagmiWallet } from './useWagmiWallet';
 
 const initialContextState = {
     active: false,
@@ -22,27 +22,23 @@ const initialContextState = {
 export const WalletConnectionContext =
     createContext<WalletConnectionContextProps>(initialContextState);
 
-export interface WalletConnectionProviderProps
-    extends PropsWithChildren, UseOnboardProps {}
-
-export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
-    props,
-) => {
-    const { children, chainIds, appMetaData } = props;
+export const WalletConnectionProvider: FC<PropsWithChildren> = ({
+    children,
+}) => {
     const {
         library,
+        publicClient,
+        walletClient,
         account,
         chainId,
         error,
         active,
-        isHardwareWallet,
         isGnosisSafe,
         walletName,
         walletType,
         connectWallet,
         disconnectWallet,
-        selectAccount,
-    } = useOnboard({ chainIds, appMetaData });
+    } = useWagmiWallet();
 
     const activate = async () => {
         await connectWallet();
@@ -56,10 +52,10 @@ export const WalletConnectionProvider: FC<WalletConnectionProviderProps> = (
     const value = active
         ? {
               library,
+              publicClient,
+              walletClient,
               account,
               chainId,
-              selectAccount,
-              isHardwareWallet,
               isGnosisSafe,
               walletName,
               walletType,

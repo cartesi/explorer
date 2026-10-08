@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { flow } from 'lodash/fp';
 import { useENS } from '../../../services/ens';
-import { CopyIcon, DisconnectIcon, SwitchIcon } from '../../Icons';
+import { CopyIcon, DisconnectIcon } from '../../Icons';
 import { useWallet } from '../../wallet/useWallet';
 import CloseButton from '../../CloseButton';
 
@@ -34,12 +34,9 @@ export const WalletMobileModal = ({
     isOpen,
     onClose,
 }: IWalletMobileModalProps) => {
-    const { account, library, isHardwareWallet, selectAccount, deactivate } =
-        useWallet();
+    const { account, library, deactivate } = useWallet();
     const ens = useENS(account ?? '');
     const clipboard = useClipboard({ value: account ?? '' });
-    const showModalBody =
-        account && library && selectAccount && isHardwareWallet;
     const disconnect = flow([deactivate, onClose]);
 
     return (
@@ -135,43 +132,6 @@ export const WalletMobileModal = ({
                                             cursor="pointer"
                                             height="18px"
                                             width="18px"
-                                        />
-                                    </Box>
-                                </HStack>
-                            </Dialog.Body>
-                        )}
-
-                        {showModalBody && (
-                            <Dialog.Body
-                                borderBottom="1px"
-                                borderColor="gray.100"
-                                borderStyle="solid"
-                                backgroundColor="grey.80"
-                                py={4}
-                                paddingBottom={4}
-                            >
-                                <HStack w="full" gap={4} alignItems="center">
-                                    <Box flexGrow="1">
-                                        <Heading m={0} size="sm">
-                                            <Flex align="baseline">
-                                                <Box
-                                                    onClick={selectAccount}
-                                                    aria-label="Switch accounts"
-                                                    title="Switch accounts"
-                                                    fontSize={16}
-                                                    fontWeight={400}
-                                                >
-                                                    Switch account
-                                                </Box>
-                                            </Flex>
-                                        </Heading>
-                                    </Box>
-                                    <Box alignSelf="flex-end">
-                                        <SwitchIcon
-                                            onClick={selectAccount}
-                                            aria-label="Switch accounts"
-                                            width="18px"
-                                            height="18px"
                                         />
                                     </Box>
                                 </HStack>

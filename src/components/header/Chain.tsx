@@ -10,8 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Tag, TagRootProps } from '@chakra-ui/react';
-import { chains } from 'eth-chains';
 import { FC } from 'react';
+import { chainNames } from '../wallet/chains';
 
 const colorSchemes: { [k: number]: string } = {
     1: 'teal', // mainnet
@@ -19,21 +19,9 @@ const colorSchemes: { [k: number]: string } = {
     31337: 'gray', //localhost
 };
 
-type CustomChains = {
-    [k: number]: { name: string };
-};
-
-// eth-chains don't have the info on this chain-ids yet, so we curate the output.
-const customChains: CustomChains = {
-    31337: { name: 'Local' },
-};
-
-const getChainInfo = (chainId: number) => {
-    const chain = customChains[chainId] || chains.get(chainId);
-    return {
-        name: chain?.name,
-    };
-};
+const getChainInfo = (chainId: number) => ({
+    name: chainNames[chainId] ?? `Chain ${chainId}`,
+});
 
 export interface ChainProps extends TagRootProps {
     chainId?: number;
