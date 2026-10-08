@@ -9,43 +9,43 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { isAddress } from '@ethersproject/address';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useEffect, useState } from 'react';
+import { isAddress } from 'viem';
 import { useWallet } from '../components/wallet';
 
-export const useBalance = (address: string, deps: any[] = []): BigNumber => {
-    const { library } = useWallet();
-    const [balance, setBalance] = useState<BigNumber>(undefined);
+export const useBalance = (
+    address: string,
+    deps: any[] = [],
+): bigint | undefined => {
+    const { publicClient } = useWallet();
+    const [balance, setBalance] = useState<bigint>(undefined);
     useEffect(() => {
-        if (library) {
-            if (isAddress(address)) {
-                library.getBalance(address).then(setBalance);
+        if (publicClient) {
+            if (isAddress(address, { strict: false })) {
+                publicClient.getBalance({ address }).then(setBalance);
             } else {
                 setBalance(undefined);
             }
         }
-    }, [library, address, ...deps]);
+    }, [publicClient, address, ...deps]);
     return balance;
 };
 
 export const useBlockNumber = (): number => {
-    const { chainId, library } = useWallet();
+    const { chainId, publicClient } = useWallet();
     const [blockNumber, setBlockNumber] = useState<number>(0);
     useEffect(() => {
-        if (library) {
-            let stale = false;
-            library.getBlockNumber().then(setBlockNumber);
-            const updateBlockNumber = (blockNumber: number) => {
-                setBlockNumber(blockNumber);
-            };
-            library.on('block', updateBlockNumber);
+        if (publicClient) {
+            const unwatch = publicClient.watchBlockNumber({
+                emitOnBegin: true,
+                onBlockNumber: (value) => setBlockNumber(Number(value)),
+                onError: () => undefined,
+            });
             return () => {
-                stale = true;
-                library.removeListener('block', updateBlockNumber);
+                unwatch();
                 setBlockNumber(undefined);
             };
         }
-    }, [library, chainId]);
+    }, [publicClient, chainId]);
     return blockNumber;
 };

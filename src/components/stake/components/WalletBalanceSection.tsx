@@ -19,7 +19,6 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useMessages } from '../../../utils/messages';
 import { WalletIcon } from '../../Icons';
@@ -29,8 +28,8 @@ import { useColorModeValue } from '../../ui/color-mode';
 import { Tooltip } from '../../Tooltip';
 
 export interface IWalletBalanceSectionProps {
-    userCTSIBalance: BigNumber;
-    userETHBalance: BigNumber;
+    userCTSIBalance: bigint;
+    userETHBalance: bigint;
 }
 
 export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
@@ -87,7 +86,7 @@ export const WalletBalanceSection: FC<IWalletBalanceSectionProps> = ({
                     </Heading>
                 </Box>
             </HStack>
-            {userETHBalance?.isZero() && !isGnosisSafe && (
+            {userETHBalance === 0n && !isGnosisSafe && (
                 <HStack gap={2} alignItems="center">
                     <Icon
                         as={TbAlertCircle}

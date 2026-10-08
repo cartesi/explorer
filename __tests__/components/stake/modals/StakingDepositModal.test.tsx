@@ -15,13 +15,12 @@ import {
     IStakingDepositModalProps,
 } from '../../../../src/components/stake/modals/StakingDepositModal';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '100000000000000000000000';
 
 const defaultProps = {
-    allowance: BigNumber.from(defaultValue),
-    balance: BigNumber.from(defaultValue),
+    allowance: BigInt(defaultValue),
+    balance: BigInt(defaultValue),
     disclosure: {
         onClose: () => undefined,
     },
@@ -39,12 +38,7 @@ describe('Staking Deposit Modal', () => {
         render(<EStakingDepositModal {...defaultProps} />);
 
     it('Should display allowance label when allowance is zero', () => {
-        render(
-            <EStakingDepositModal
-                {...defaultProps}
-                allowance={BigNumber.from(0)}
-            />,
-        );
+        render(<EStakingDepositModal {...defaultProps} allowance={0n} />);
 
         expect(
             screen.getByText(
@@ -100,10 +94,7 @@ describe('Staking Deposit Modal', () => {
 
     it('Should disable deposit button when deposit is zero', () => {
         const { getByRole } = render(
-            <EStakingDepositModal
-                {...defaultProps}
-                balance={BigNumber.from(0)}
-            />,
+            <EStakingDepositModal {...defaultProps} balance={0n} />,
         );
 
         expect(getByRole('deposit-button')).toBeDisabled();

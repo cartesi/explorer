@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { PoolBalanceSection } from '../../../components/stake/components/PoolBalanceSection';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/PoolBalanceSection',
@@ -30,7 +29,7 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        userPoolBalance: BigNumber.from(defaultValue),
+        userPoolBalance: defaultValue,
         isPoolBalanceLocked: false,
         onStakeClick: () => undefined,
         onWithdrawClick: () => undefined,
@@ -49,7 +48,7 @@ export const PoolBalanceLocked: Story = {
 export const ZeroUserPoolBalance: Story = {
     args: {
         ...Default.args,
-        userPoolBalance: BigNumber.from(0),
+        userPoolBalance: 0n,
     },
     ...Template,
 };

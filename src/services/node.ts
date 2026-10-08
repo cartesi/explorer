@@ -9,11 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { isAddress } from '@ethersproject/address';
-import { BigNumber, BigNumberish } from 'ethers';
 import { useEffect, useState } from 'react';
+import { isAddress } from 'viem';
 import { useWallet } from '../components/wallet';
 import {
+    asAddress,
     usePoS1Contract,
     usePoSContract,
     useWorkerManagerContract,
@@ -24,7 +24,7 @@ import { Transaction, useTransaction } from './transaction';
 export type NodeStatus = 'available' | 'owned' | 'retired' | 'pending' | 'none';
 export interface Node {
     address: string;
-    balance: BigNumber;
+    balance: bigint;
     user: string;
     available: boolean;
     pending: boolean;
@@ -36,15 +36,15 @@ export interface Node {
     loading: boolean;
     transaction: Transaction<any>;
     error: string | null;
-    hire: (amount: BigNumberish) => void;
+    hire: (amount: bigint) => void;
     authorize: () => void;
     cancelHire: () => void;
     retire: () => void;
-    transfer: (amount: BigNumberish) => void;
+    transfer: (amount: bigint) => void;
 }
 
 export const useNode = (address: string): Node => {
-    const { library, chainId } = useWallet();
+    const { walletClient, chainId } = useWallet();
     const workerManager = useWorkerManagerContract();
     const pos = usePoSContract();
     const pos1 = usePoS1Contract();
@@ -81,17 +81,18 @@ export const useNode = (address: string): Node => {
 
     const updateState = async (address: string) => {
         try {
-            const user = await workerManager.getUser(address);
-            const available = await workerManager.isAvailable(address);
-            const pending = await workerManager.isPending(address);
-            const owned = await workerManager.isOwned(address);
-            const retired = await workerManager.isRetired(address);
-            const authorized = await workerManager.isAuthorized(
-                address,
+            const worker = asAddress(address);
+            const user = await workerManager.read.getUser([worker]);
+            const available = await workerManager.read.isAvailable([worker]);
+            const pending = await workerManager.read.isPending([worker]);
+            const owned = await workerManager.read.isOwned([worker]);
+            const retired = await workerManager.read.isRetired([worker]);
+            const authorized = await workerManager.read.isAuthorized([
+                worker,
                 pos.address,
-            );
+            ]);
             const authorized1 = pos1
-                ? await workerManager.isAuthorized(address, pos1.address)
+                ? await workerManager.read.isAuthorized([worker, pos1.address])
                 : false;
 
             setUser(user);
@@ -123,41 +124,56 @@ export const useNode = (address: string): Node => {
 
     const authorize = () => {
         if (workerManager) {
-            transaction.set(workerManager.authorize(address, pos.address));
+            transaction.set(
+                workerManager.write.authorize([
+                    asAddress(address),
+                    pos.address,
+                ]),
+            );
         }
     };
 
-    const hire = (value: BigNumberish) => {
+    const hire = (value: bigint) => {
         if (workerManager) {
             transaction.set(
-                workerManager.hireAndAuthorize(address, pos.address, {
-                    value,
-                }),
+                workerManager.write.hireAndAuthorize(
+                    [asAddress(address), pos.address],
+                    { value },
+                ),
             );
         }
     };
 
     const cancelHire = () => {
         if (workerManager) {
-            transaction.set(workerManager.cancelHire(address));
+            transaction.set(
+                workerManager.write.cancelHire([asAddress(address)]),
+            );
         }
     };
 
     const retire = () => {
         if (workerManager) {
-            transaction.set(workerManager.retire(address));
+            transaction.set(workerManager.write.retire([asAddress(address)]));
         }
     };
 
-    const transfer = (value: BigNumberish) => {
-        if (library && chainId && address) {
-            const signer = library.getSigner();
-            transaction.set(signer.sendTransaction({ to: address, value }));
+    const transfer = (value: bigint) => {
+        if (walletClient && chainId && address) {
+            transaction.set(
+                walletClient.sendTransaction({
+                    to: asAddress(address),
+                    value,
+                    // viem's request typing needs strictNullChecks to resolve
+                } as unknown as Parameters<
+                    typeof walletClient.sendTransaction
+                >[0]),
+            );
         }
     };
 
     return {
-        address: isAddress(address) ? address : undefined,
+        address: isAddress(address, { strict: false }) ? address : undefined,
         balance,
         user,
         available,

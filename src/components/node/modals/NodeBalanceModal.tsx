@@ -22,16 +22,15 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants, ethers } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'viem';
 import { FC, useEffect, useState } from 'react';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 interface INodeBalanceModalProps {
-    userBalance: BigNumber;
+    userBalance: bigint;
     disclosure: UseDisclosureProps;
-    onDepositFunds: (funds: BigNumber) => void;
+    onDepositFunds: (funds: bigint) => void;
 }
 
 export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
@@ -40,7 +39,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     onDepositFunds,
 }) => {
     const { open, onClose } = disclosure;
-    const [output, setOutput] = useState<BigNumber>(constants.Zero);
+    const [output, setOutput] = useState<bigint>(0n);
     const [fundsValue, setFundsValue] = useState<any>(0);
 
     const bgModal = useColorModeValue('white', 'dark.gray.quaternary');
@@ -50,9 +49,9 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
     const toBigNumber = (value: number, decimals = 18) =>
-        ethers.utils.parseUnits(value.toString(), decimals);
+        parseUnits(value.toString(), decimals);
 
-    const toETH = (value: BigNumber) => {
+    const toETH = (value: bigint) => {
         const options: Intl.NumberFormatOptions = {
             minimumFractionDigits: 0,
             maximumFractionDigits: 4,
@@ -66,12 +65,12 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
         return valueFormatted;
     };
 
-    const userETHBalance = toETH(userBalance ?? constants.Zero);
+    const userETHBalance = toETH(userBalance ?? 0n);
 
     useEffect(() => {
         if (!open) {
             setFundsValue(0);
-            setOutput(constants.Zero);
+            setOutput(0n);
         }
     }, [open]);
 
@@ -80,7 +79,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
             const funds = parseFloat(fundsValue);
             setOutput(toBigNumber(funds)); // ETH float to BigNumber
         } catch {
-            setOutput(constants.Zero);
+            setOutput(0n);
         }
     }, [fundsValue]);
 
@@ -150,8 +149,7 @@ export const NodeBalanceModal: FC<INodeBalanceModalProps> = ({
                                     width="full"
                                     colorPalette={colorScheme}
                                     disabled={
-                                        output.isZero() ||
-                                        output.gt(userBalance)
+                                        output === 0n || output > userBalance
                                     }
                                     onClick={() => {
                                         onDepositFunds(output);

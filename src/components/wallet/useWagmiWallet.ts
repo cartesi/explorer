@@ -12,7 +12,13 @@
 import type { Web3Provider } from '@ethersproject/providers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useCallback, useEffect, useMemo } from 'react';
-import type { PublicClient, WalletClient } from 'viem';
+import type {
+    Account,
+    Chain,
+    PublicClient,
+    Transport,
+    WalletClient,
+} from 'viem';
 import {
     useAccount,
     useAccountEffect,
@@ -65,8 +71,8 @@ export interface WagmiWallet {
     account?: string;
     /** @deprecated transitional ethers v5 provider; use publicClient/walletClient. */
     library?: Web3Provider;
-    publicClient?: PublicClient;
-    walletClient?: WalletClient;
+    publicClient?: PublicClient<Transport, Chain>;
+    walletClient?: WalletClient<Transport, Chain, Account>;
     active: boolean;
     isGnosisSafe: boolean;
     walletName?: string;

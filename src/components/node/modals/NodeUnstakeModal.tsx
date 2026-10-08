@@ -21,19 +21,18 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { FC, useEffect, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 interface INodeUnstakeModalProps {
-    stakedBalance: BigNumber;
+    stakedBalance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newStake: BigNumber) => void;
+    onSave: (newStake: bigint) => void;
 }
 
 export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
@@ -46,13 +45,13 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
     if (!stakedBalance) return null;
 
     const maxUnstakeFormatted = parseFloat(formatUnits(stakedBalance, 18));
-    const [outputStake, setOutputStake] = useState<BigNumber>(stakedBalance);
+    const [outputStake, setOutputStake] = useState<bigint>(stakedBalance);
     const [stakedValue, setStakedValue] = useState<any>(0);
     const colorScheme = useColorModeValue('teal', 'cyan');
     const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
-    const toCTSI = (value: BigNumber) => {
+    const toCTSI = (value: bigint) => {
         // formatter for CTSI values
         const numberFormat = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
@@ -68,7 +67,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
     useEffect(() => {
         if (!isOpen) {
             setStakedValue(0);
-            setOutputStake(constants.Zero);
+            setOutputStake(0n);
         }
     }, [isOpen]);
 
@@ -151,7 +150,7 @@ export const NodeUnstakeModal: FC<INodeUnstakeModalProps> = ({
                                 <Button
                                     width="full"
                                     colorPalette={colorScheme}
-                                    disabled={outputStake.isZero()}
+                                    disabled={outputStake === 0n}
                                     onClick={() => {
                                         onSave(outputStake);
                                         disclosure.onClose();

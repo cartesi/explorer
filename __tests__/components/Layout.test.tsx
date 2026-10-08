@@ -9,10 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { PoS, StakingImpl } from '@cartesi/pos';
-import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
-import { CartesiToken, SimpleFaucet } from '@cartesi/token';
-import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
 import { render, screen } from '@testing-library/react';
 import Layout, { footerLinks, headerLinks } from '../../src/components/Layout';
 import useMeta from '../../src/graphql/hooks/useMeta';
@@ -80,22 +76,22 @@ describe('Layout component', () => {
     beforeEach(() => {
         mockedUsePoSContract.mockReturnValue({
             address,
-        } as unknown as PoS);
+        } as unknown as ReturnType<typeof usePoSContract>);
         mockedUseCartesiTokenContract.mockReturnValue({
             address,
-        } as unknown as CartesiToken);
+        } as unknown as ReturnType<typeof useCartesiTokenContract>);
         mockedUseSimpleFaucetContract.mockReturnValue({
             address,
-        } as unknown as SimpleFaucet);
+        } as unknown as ReturnType<typeof useSimpleFaucetContract>);
         mockedUseStakingContract.mockReturnValue({
             address,
-        } as unknown as StakingImpl);
+        } as unknown as ReturnType<typeof useStakingContract>);
         mockedUseStakingPoolFactoryContract.mockReturnValue({
             address,
-        } as unknown as StakingPoolFactoryImpl);
+        } as unknown as ReturnType<typeof useStakingPoolFactoryContract>);
         mockedUseWorkerManagerContract.mockReturnValue({
             address,
-        } as unknown as WorkerManagerAuthManagerImpl);
+        } as unknown as ReturnType<typeof useWorkerManagerContract>);
         mockedUseMeta.mockReturnValue(undefined);
     });
 

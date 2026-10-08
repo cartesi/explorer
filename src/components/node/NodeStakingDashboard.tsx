@@ -20,7 +20,6 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
-import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
 import { InfoBanner } from '../stake/InfoBanner';
 import { WalletBalanceSection } from '../stake/components/WalletBalanceSection';
@@ -28,10 +27,10 @@ import { NodeAllowanceSection } from './NodeAllowanceSection';
 import { NodeAllowanceModal } from './modals/NodeAllowanceModal';
 
 export interface NodeStakingDashboardProps extends StackProps {
-    balance: BigNumber; // wallet balance
-    allowance: BigNumber; // ERC20 allowance
-    userETHBalance: BigNumber; // user ETH balance
-    onApprove: (amount: BigNumberish) => void;
+    balance: bigint; // wallet balance
+    allowance: bigint; // ERC20 allowance
+    userETHBalance: bigint; // user ETH balance
+    onApprove: (amount: bigint) => void;
 }
 
 const SHOW_STAKING_INSTRUCTIONS = 'showStakingInstructions';

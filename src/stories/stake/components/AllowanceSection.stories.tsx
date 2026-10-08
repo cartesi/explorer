@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { AllowanceSection } from '../../../components/stake/components/AllowanceSection';
-import { BigNumber } from 'ethers';
 
-const defaultValue = BigNumber.from('10000000000000000000000000000');
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/AllowanceSection',
@@ -39,7 +38,7 @@ export const Default: Story = {
 export const ZeroAllowance: Story = {
     args: {
         ...Default.args,
-        allowance: BigNumber.from(0),
+        allowance: 0n,
     },
     ...Template,
 };

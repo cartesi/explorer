@@ -9,41 +9,29 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    PoS,
-    PoSV2FactoryImpl,
-    PoSV2FactoryImpl__factory,
-    PoS__factory,
-    StakingImpl,
-    StakingImpl__factory,
-} from '@cartesi/pos';
-
-import mainnet from '@cartesi/pos/export/abi/mainnet.json';
-import sepolia from '@cartesi/pos/export/abi/sepolia.json';
-
-import localhost from './localhost.json';
-
-import { ChainMap, useContract } from '.';
 import useFlag from '../../hooks/useFlag';
+import { useContract } from '.';
+import {
+    posAbi,
+    posAddress,
+    posV2FactoryAbi,
+    posV2FactoryAddress,
+    stakingAbi,
+    stakingAddress,
+} from './generated';
 
-const abis: ChainMap = {
-    1: mainnet,
-    11155111: sepolia,
-    31337: localhost,
-};
+export const useStakingContract = () =>
+    useContract(stakingAbi, stakingAddress, 'StakingImpl');
 
-export const useStakingContract = (): StakingImpl => {
-    return useContract(StakingImpl__factory.connect, abis, 'StakingImpl');
-};
-
-export const usePoSContract = (): PoSV2FactoryImpl | PoS => {
+/** PoS v2 is behind the posV2Enabled flag; v1 PoS is the default. */
+export const usePoSContract = () => {
     const posV2Enabled = useFlag('posV2Enabled');
     const posV2FactoryImpl = useContract(
-        PoSV2FactoryImpl__factory.connect,
-        abis,
+        posV2FactoryAbi,
+        posV2FactoryAddress,
         'PoSV2FactoryImpl',
     );
 
-    const pos = useContract(PoS__factory.connect, abis, 'PoS');
+    const pos = useContract(posAbi, posAddress, 'PoS');
     return posV2Enabled ? posV2FactoryImpl : pos;
 };

@@ -9,8 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { constants, FixedNumber } from 'ethers';
-
 import {
     getEstimatedRewardRate,
     getRewardRate,
@@ -68,25 +66,21 @@ const handler = async ({ params }: Response) => {
     if (blocks && blocks.length > 0 && circulatingSupply && summary) {
         const { yearReturn } = getRewardRate(blocks, circulatingSupply);
 
-        participationRate = toCTSI(summary.totalStaked)
-            .divUnsafe(FixedNumber.from(circulatingSupply))
-            .mulUnsafe(FixedNumber.from(100))
-            .toUnsafeFloat();
+        participationRate =
+            (toCTSI(summary.totalStaked) / circulatingSupply) * 100;
 
-        projectedAnnualEarnings = yearReturn
-            .mulUnsafe(FixedNumber.from(100))
-            .toUnsafeFloat();
+        projectedAnnualEarnings = yearReturn * 100;
     }
 
-    const { activeStake } = getEstimatedRewardRate(blocks, constants.One, 0, 0);
+    const { activeStake } = getEstimatedRewardRate(blocks, 1n, 0, 0);
 
     return NextResponse.json({
         price: +marketData.market_data.current_price.usd.toFixed(4),
         circulatingSupply,
-        totalStaked: toCTSI(summary.totalStaked).toUnsafeFloat(),
+        totalStaked: toCTSI(summary.totalStaked),
         totalUsers: summary.totalUsers,
         totalStakers: summary.totalStakers,
-        effectiveTotalStaked: toCTSI(activeStake).toUnsafeFloat(),
+        effectiveTotalStaked: toCTSI(activeStake),
         hiredNodes: summary.totalNodes,
         projectedAnnualEarnings,
         participationRate,
@@ -96,7 +90,7 @@ const handler = async ({ params }: Response) => {
                       id: blocks[0].id,
                       number: blocks[0].number,
                       timestamp: blocks[0].timestamp,
-                      reward: toCTSI(blocks[0].reward).toUnsafeFloat(),
+                      reward: toCTSI(blocks[0].reward),
                       difficulty: blocks[0].difficulty,
                       chainNumber: blocks[0].chain.number,
                   }

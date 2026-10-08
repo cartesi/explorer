@@ -9,13 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { PoS } from '@cartesi/pos';
-import { PoS as PoS1 } from '@cartesi/pos-1.0';
-import { WorkerManagerAuthManagerImpl } from '@cartesi/util';
-import { isAddress } from '@ethersproject/address';
-import { Web3Provider } from '@ethersproject/providers';
 import { renderHook, waitFor } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { act } from 'react';
 import { WalletConnectionContextProps } from '../../src/components/wallet/definitions';
 import { useWallet } from '../../src/components/wallet/useWallet';
@@ -29,16 +23,9 @@ import { useNode } from '../../src/services/node';
 import { Transaction, useTransaction } from '../../src/services/transaction';
 
 jest.mock('../../src/components/wallet/useWallet');
-jest.mock('@ethersproject/address', () => {
-    const originalModule = jest.requireActual('@ethersproject/address');
-    return {
-        __esModule: true,
-        ...originalModule,
-        isAddress: jest.fn(),
-    };
-});
 
 jest.mock('../../src/services/contracts', () => ({
+    ...jest.requireActual('../../src/services/contracts'),
     useWorkerManagerContract: jest.fn(),
     usePoSContract: jest.fn(),
     usePoS1Contract: jest.fn(),
@@ -64,7 +51,6 @@ jest.mock('../../src/services/eth', () => {
 const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
-const mockedIsAddress = isAddress as jest.MockedFunction<typeof isAddress>;
 const mockedUseTransaction = useTransaction as jest.MockedFunction<
     typeof useTransaction
 >;
@@ -82,14 +68,12 @@ const mockedUsePoS1Contract = usePoS1Contract as jest.MockedFunction<
 const mockedUseBalance = useBalance as jest.MockedFunction<typeof useBalance>;
 
 const walletData = {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    library: {
-        getSigner: jest.fn(),
-        getBlockNumber: () => Promise.resolve(),
-        on: jest.fn(),
-        removeListener: jest.fn(),
-    } as unknown as Web3Provider,
+    publicClient: {
+        watchBlockNumber: jest.fn(() => jest.fn()),
+    },
+    walletClient: {
+        sendTransaction: jest.fn(),
+    },
     account: address,
     active: true,
     activate: jest.fn(),
@@ -100,17 +84,24 @@ const walletData = {
     },
 };
 
+type WorkerManager = ReturnType<typeof useWorkerManagerContract>;
+
 const workerManager = {
-    getUser: () => Promise.resolve(),
-    isAvailable: () => Promise.resolve(),
-    isPending: () => Promise.resolve(),
-    isOwned: () => Promise.resolve(),
-    isRetired: () => Promise.resolve(),
-    isAuthorized: () => Promise.resolve(),
-    authorize: jest.fn(),
-    hireAndAuthorize: jest.fn(),
-    cancelHire: jest.fn(),
-    retire: jest.fn(),
+    address,
+    read: {
+        getUser: () => Promise.resolve(),
+        isAvailable: () => Promise.resolve(),
+        isPending: () => Promise.resolve(),
+        isOwned: () => Promise.resolve(),
+        isRetired: () => Promise.resolve(),
+        isAuthorized: () => Promise.resolve(),
+    },
+    write: {
+        authorize: jest.fn(),
+        hireAndAuthorize: jest.fn(),
+        cancelHire: jest.fn(),
+        retire: jest.fn(),
+    },
 };
 
 const pos = {
@@ -123,19 +114,22 @@ const pos1 = {
 
 describe('node service', () => {
     beforeEach(() => {
-        mockedIsAddress.mockReturnValue(true);
         mockUseWallet.mockReturnValue(
             walletData as unknown as WalletConnectionContextProps,
         );
         mockedUseWorkerManagerContract.mockReturnValue(
-            workerManager as unknown as WorkerManagerAuthManagerImpl,
+            workerManager as unknown as WorkerManager,
         );
         mockedUseTransaction.mockReturnValue({
             set: jest.fn(),
         } as unknown as Transaction<any>);
-        mockedUsePoSContract.mockReturnValue(pos as PoS);
-        mockedUsePoS1Contract.mockReturnValue(pos1 as PoS1);
-        mockedUseBalance.mockReturnValue(BigNumber.from('10000'));
+        mockedUsePoSContract.mockReturnValue(
+            pos as ReturnType<typeof usePoSContract>,
+        );
+        mockedUsePoS1Contract.mockReturnValue(
+            pos1 as ReturnType<typeof usePoS1Contract>,
+        );
+        mockedUseBalance.mockReturnValue(10000n);
     });
 
     afterEach(() => {
@@ -147,12 +141,7 @@ describe('node service', () => {
             const mockedSendTransaction = jest.fn();
             mockUseWallet.mockReturnValue({
                 ...walletData,
-                library: {
-                    ...walletData.library,
-                    getSigner: () => ({
-                        sendTransaction: mockedSendTransaction,
-                    }),
-                } as unknown as Web3Provider,
+                walletClient: { sendTransaction: mockedSendTransaction },
             } as unknown as WalletConnectionContextProps);
 
             const mockedSet = jest.fn();
@@ -163,7 +152,7 @@ describe('node service', () => {
             const { result } = renderHook(() => useNode(address));
 
             await act(async () => {
-                result.current.transfer(1000);
+                result.current.transfer(1000n);
             });
 
             expect(mockedSendTransaction).toHaveBeenCalled();
@@ -173,9 +162,9 @@ describe('node service', () => {
         it('should trigger retire function', async () => {
             const mockedRetire = jest.fn();
             mockedUseWorkerManagerContract.mockReturnValue({
-                ...walletData,
-                retire: mockedRetire,
-            } as unknown as WorkerManagerAuthManagerImpl);
+                ...workerManager,
+                write: { ...workerManager.write, retire: mockedRetire },
+            } as unknown as WorkerManager);
 
             const mockedSet = jest.fn();
             mockedUseTransaction.mockReturnValue({
@@ -195,9 +184,9 @@ describe('node service', () => {
         it('should trigger cancelHire function', async () => {
             const mockedCancelHire = jest.fn();
             mockedUseWorkerManagerContract.mockReturnValue({
-                ...walletData,
-                cancelHire: mockedCancelHire,
-            } as unknown as WorkerManagerAuthManagerImpl);
+                ...workerManager,
+                write: { ...workerManager.write, cancelHire: mockedCancelHire },
+            } as unknown as WorkerManager);
 
             const mockedSet = jest.fn();
             mockedUseTransaction.mockReturnValue({
@@ -217,9 +206,12 @@ describe('node service', () => {
         it('should trigger hire function', async () => {
             const mockedHireAndAuthorize = jest.fn();
             mockedUseWorkerManagerContract.mockReturnValue({
-                ...walletData,
-                hireAndAuthorize: mockedHireAndAuthorize,
-            } as unknown as WorkerManagerAuthManagerImpl);
+                ...workerManager,
+                write: {
+                    ...workerManager.write,
+                    hireAndAuthorize: mockedHireAndAuthorize,
+                },
+            } as unknown as WorkerManager);
 
             const mockedSet = jest.fn();
             mockedUseTransaction.mockReturnValue({
@@ -229,7 +221,7 @@ describe('node service', () => {
             const { result } = renderHook(() => useNode(address));
 
             await act(async () => {
-                result.current.hire(10000);
+                result.current.hire(10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -239,9 +231,9 @@ describe('node service', () => {
         it('should trigger authorize function', async () => {
             const mockedAuthorize = jest.fn();
             mockedUseWorkerManagerContract.mockReturnValue({
-                ...walletData,
-                authorize: mockedAuthorize,
-            } as unknown as WorkerManagerAuthManagerImpl);
+                ...workerManager,
+                write: { ...workerManager.write, authorize: mockedAuthorize },
+            } as unknown as WorkerManager);
 
             const mockedSet = jest.fn();
             mockedUseTransaction.mockReturnValue({
@@ -265,14 +257,16 @@ describe('node service', () => {
             const retired = false;
             const authorized = true;
             mockedUseWorkerManagerContract.mockReturnValue({
-                ...walletData,
-                getUser: () => Promise.resolve(account),
-                isAvailable: () => Promise.resolve(available),
-                isPending: () => Promise.resolve(pending),
-                isOwned: () => Promise.resolve(owned),
-                isRetired: () => Promise.resolve(retired),
-                isAuthorized: () => Promise.resolve(authorized),
-            } as unknown as WorkerManagerAuthManagerImpl);
+                ...workerManager,
+                read: {
+                    getUser: () => Promise.resolve(account),
+                    isAvailable: () => Promise.resolve(available),
+                    isPending: () => Promise.resolve(pending),
+                    isOwned: () => Promise.resolve(owned),
+                    isRetired: () => Promise.resolve(retired),
+                    isAuthorized: () => Promise.resolve(authorized),
+                },
+            } as unknown as WorkerManager);
 
             const { result } = renderHook(() => useNode(address));
 

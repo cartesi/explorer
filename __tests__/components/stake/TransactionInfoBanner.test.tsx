@@ -13,7 +13,7 @@ import { render, screen } from '@testing-library/react';
 import { TransactionInfoBanner } from '../../../src/components/stake/TransactionInfoBanner';
 import { withChakraTheme } from '../../test-utilities';
 import { Transaction } from '../../../src/services/transaction';
-import { ContractReceipt, ContractTransaction } from 'ethers';
+import { TransactionReceipt } from 'viem';
 
 const defaultTransaction: Transaction<any> = {
     ack: jest.fn(),
@@ -23,17 +23,17 @@ const defaultTransaction: Transaction<any> = {
     result: undefined,
     set: jest.fn(),
     submitting: false,
+    confirmations: 0,
     transaction: {
         hash: '0x6200d8606aab695a7f730a3f7c60e399eb3bd10f',
         chainId: 1823981,
-    } as ContractTransaction,
+    },
 };
 
 const successTransaction: Transaction<any> = {
     ...defaultTransaction,
-    receipt: {
-        confirmations: 1,
-    } as ContractReceipt,
+    confirmations: 1,
+    receipt: { status: 'success', logs: [] } as unknown as TransactionReceipt,
 };
 
 const errorTransaction = {

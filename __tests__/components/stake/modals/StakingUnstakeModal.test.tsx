@@ -10,8 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { BigNumber } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'viem';
 import {
     IStakingUnstakeModalProps,
     StakingUnstakeModal,
@@ -22,7 +21,7 @@ import userEvent from '@testing-library/user-event';
 const defaultValue = '100000000000000000000000';
 
 const defaultProps = {
-    stakedBalance: BigNumber.from(defaultValue),
+    stakedBalance: BigInt(defaultValue),
     disclosure: {
         onClose: () => undefined,
     },

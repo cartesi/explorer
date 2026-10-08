@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ethers } from 'ethers';
+import { isAddress } from 'viem';
 import { NextRequest, NextResponse } from 'next/server';
 import AddressENSService from '../../../../../services/server/ens/AddressENSService';
 import handleResponse from '../../../../../services/server/handleResponse';
@@ -23,7 +23,7 @@ const handler = async ({ params }: Response) => {
     const chainName = (await params).chain;
     const address = (await params).address;
 
-    if (!ethers.utils.isAddress(address)) {
+    if (!isAddress(address, { strict: false })) {
         return NextResponse.json(
             { message: `${address} is not a valid address format.` },
             { status: 422 },

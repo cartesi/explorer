@@ -9,9 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumber, BigNumberish, constants, FixedNumber } from 'ethers';
 import { useEffect, useState } from 'react';
+import { ratio } from '../utils/bigint';
 import {
+    asAddress,
     useFeeContract,
     useFlatRateCommissionContract,
     useStakingPoolContract,
@@ -24,16 +25,16 @@ export interface StakingPoolCommission {
     loading: boolean;
 }
 
-type Amounts = [BigNumber, BigNumber, BigNumber] & {
-    stake: BigNumber;
-    unstake: BigNumber;
-    withdraw: BigNumber;
+export type Amounts = {
+    stake: bigint;
+    unstake: bigint;
+    withdraw: bigint;
 };
 
 export interface StakingPool {
     address: string;
-    shares: BigNumber;
-    amount: BigNumber;
+    shares: bigint;
+    amount: bigint;
     transaction: Transaction<any>;
     depositTransaction: Transaction<any>;
     stakeTransaction: Transaction<any>;
@@ -47,29 +48,29 @@ export interface StakingPool {
     retireTransaction: Transaction<any>;
     updateTransaction: Transaction<any>;
     rebalanceTransaction: Transaction<any>;
-    stakedShares: BigNumber;
-    balance: BigNumber;
-    withdrawBalance: BigNumber;
+    stakedShares: bigint;
+    balance: bigint;
+    withdrawBalance: bigint;
     depositTimestamp: Date;
     stakeTimestamp: Date;
     paused: boolean;
     amounts: Amounts;
-    lockTime: BigNumber;
+    lockTime: bigint;
     pos: string;
-    deposit: (amount: BigNumberish) => void;
-    stake: (amount: BigNumberish) => void;
-    unstake: (shares: BigNumberish) => void;
-    withdraw: (amount: BigNumberish) => void;
+    deposit: (amount: bigint) => void;
+    stake: (amount: bigint) => void;
+    unstake: (shares: bigint) => void;
+    withdraw: (amount: bigint) => void;
     setName: (name: string) => void;
     pause: () => void;
     unpause: () => void;
-    hire: (worker: string, amount: BigNumberish) => void;
+    hire: (worker: string, amount: bigint) => void;
     cancelHire: (worker: string) => void;
     retire: (worker: string) => void;
     rebalance: () => void;
     update: () => void;
-    sharesToAmount: (s: BigNumber) => BigNumber;
-    amountToShares: (a: BigNumber) => BigNumber;
+    sharesToAmount: (s: bigint) => bigint;
+    amountToShares: (a: bigint) => bigint;
 }
 
 export const useStakingPool = (
@@ -122,16 +123,16 @@ export const useStakingPool = (
     const rebalanceTransaction = useTransaction<void>();
 
     // user amount of shares staked
-    const [stakedShares, setStakedShares] = useState<BigNumber>(constants.Zero);
+    const [stakedShares, setStakedShares] = useState<bigint>(0n);
 
     // total number of shares of the pool
-    const [shares, setShares] = useState<BigNumber>(constants.Zero);
+    const [shares, setShares] = useState<bigint>(0n);
 
     // total amount of token "in" pool
-    const [amount, setAmount] = useState<BigNumber>(constants.Zero);
+    const [amount, setAmount] = useState<bigint>(0n);
 
     // period to wait before staking
-    const [lockTime, setLockTime] = useState<BigNumber>(constants.Zero);
+    const [lockTime, setLockTime] = useState<bigint>(0n);
 
     // instant when user can deposit
     const [depositTimestamp, setDepositTimestamp] = useState<Date>(null);
@@ -140,12 +141,10 @@ export const useStakingPool = (
     const [stakeTimestamp, setStakeTimestamp] = useState<Date>(null);
 
     // amount of tokens user holds free
-    const [balance, setBalance] = useState<BigNumber>(constants.Zero);
+    const [balance, setBalance] = useState<bigint>(0n);
 
     // amount of token user can withdraw
-    const [withdrawBalance, setWithdrawBalance] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [withdrawBalance, setWithdrawBalance] = useState<bigint>(0n);
 
     // The PoS setup in the staking pool;
     const [pos, setPoS] = useState<string>(null);
@@ -154,76 +153,77 @@ export const useStakingPool = (
     const [paused, setPaused] = useState<boolean>(false);
 
     // amounts of tokens to be moved to/from staking contract
-    const [amounts, setAmounts] = useState<
-        [BigNumber, BigNumber, BigNumber] & {
-            stake: BigNumber;
-            unstake: BigNumber;
-            withdraw: BigNumber;
-        }
-    >();
+    const [amounts, setAmounts] = useState<Amounts>();
 
     // convert from shares to amount of tokens
-    const sharesToAmount = (s: BigNumber) =>
-        shares.gt(0) ? s.mul(amount).div(shares) : BigNumber.from(0);
+    const sharesToAmount = (s: bigint) =>
+        shares > 0n ? (s * amount) / shares : 0n;
 
     // convert from amount of tokens to shares
-    const amountToShares = (a: BigNumber) =>
-        amount.gt(0) ? a.mul(shares).div(amount) : BigNumber.from(0);
+    const amountToShares = (a: bigint) =>
+        amount > 0n ? (a * shares) / amount : 0n;
 
     useEffect(() => {
         if (pool && account) {
-            pool.shares().then(setShares);
-            pool.amount().then(setAmount);
-            pool.pos().then(setPoS);
-            pool.userBalance(account).then((b) => {
-                setStakedShares(b.shares);
-                setDepositTimestamp(
-                    new Date(b.depositTimestamp.toNumber() * 1000),
-                );
-                pool.lockTime().then((t) => {
-                    setLockTime(t);
-                    setStakeTimestamp(
-                        new Date(b.depositTimestamp.add(t).toNumber() * 1000),
+            const user = asAddress(account);
+            pool.read.shares().then(setShares);
+            pool.read.amount().then(setAmount);
+            pool.read.pos().then(setPoS);
+            pool.read
+                .userBalance([user])
+                .then(([userBalance, userShares, userDepositTimestamp]) => {
+                    setStakedShares(userShares);
+                    setDepositTimestamp(
+                        new Date(Number(userDepositTimestamp) * 1000),
                     );
+                    pool.read.lockTime().then((t) => {
+                        setLockTime(t);
+                        setStakeTimestamp(
+                            new Date(Number(userDepositTimestamp + t) * 1000),
+                        );
+                    });
+                    setBalance(userBalance);
                 });
-                setBalance(b.balance);
-            });
-            pool.getWithdrawBalance().then(setWithdrawBalance);
-            pool.paused().then(setPaused);
-            pool.amounts().then(setAmounts);
+            pool.read.getWithdrawBalance().then(setWithdrawBalance);
+            pool.read.paused().then(setPaused);
+            pool.read
+                .amounts()
+                .then(([stake, unstake, withdraw]) =>
+                    setAmounts({ stake, unstake, withdraw }),
+                );
         }
     }, [pool, account, blockNumber]);
 
-    const deposit = (amount: BigNumberish) => {
+    const deposit = (amount: bigint) => {
         if (pool) {
-            const nextTransaction = pool.deposit(amount);
+            const nextTransaction = pool.write.deposit([amount]);
 
             transaction.set(nextTransaction);
             depositTransaction.set(nextTransaction);
         }
     };
 
-    const stake = (amount: BigNumberish) => {
+    const stake = (amount: bigint) => {
         if (pool) {
-            const nextTransaction = pool.stake(amount);
+            const nextTransaction = pool.write.stake([amount]);
 
             transaction.set(nextTransaction);
             stakeTransaction.set(nextTransaction);
         }
     };
 
-    const unstake = (shares: BigNumberish) => {
+    const unstake = (shares: bigint) => {
         if (pool) {
-            const nextTransaction = pool.unstake(shares);
+            const nextTransaction = pool.write.unstake([shares]);
 
             transaction.set(nextTransaction);
             unstakeTransaction.set(nextTransaction);
         }
     };
 
-    const withdraw = (amount: BigNumberish) => {
+    const withdraw = (amount: bigint) => {
         if (pool) {
-            const nextTransaction = pool.withdraw(amount);
+            const nextTransaction = pool.write.withdraw([amount]);
 
             transaction.set(nextTransaction);
             withdrawTransaction.set(nextTransaction);
@@ -232,7 +232,7 @@ export const useStakingPool = (
 
     const setName = (name: string) => {
         if (pool) {
-            const nextTransaction = pool.setName(name);
+            const nextTransaction = pool.write.setName([name]);
 
             transaction.set(nextTransaction);
             setNameTransaction.set(nextTransaction);
@@ -241,7 +241,7 @@ export const useStakingPool = (
 
     const pause = () => {
         if (pool) {
-            const nextTransaction = pool.pause();
+            const nextTransaction = pool.write.pause();
 
             transaction.set(nextTransaction);
             pauseTransaction.set(nextTransaction);
@@ -250,16 +250,18 @@ export const useStakingPool = (
 
     const unpause = () => {
         if (pool) {
-            const nextTransaction = pool.unpause();
+            const nextTransaction = pool.write.unpause();
 
             transaction.set(nextTransaction);
             unpauseTransaction.set(nextTransaction);
         }
     };
 
-    const hire = (worker: string, amount: BigNumberish) => {
+    const hire = (worker: string, amount: bigint) => {
         if (pool) {
-            const nextTransaction = pool.hire(worker, { value: amount });
+            const nextTransaction = pool.write.hire([asAddress(worker)], {
+                value: amount,
+            });
 
             transaction.set(nextTransaction);
             hireTransaction.set(nextTransaction);
@@ -268,7 +270,7 @@ export const useStakingPool = (
 
     const cancelHire = (worker: string) => {
         if (pool) {
-            const nextTransaction = pool.cancelHire(worker);
+            const nextTransaction = pool.write.cancelHire([asAddress(worker)]);
 
             transaction.set(nextTransaction);
             cancelHireTransaction.set(nextTransaction);
@@ -277,7 +279,7 @@ export const useStakingPool = (
 
     const retire = (worker: string) => {
         if (pool) {
-            const nextTransaction = pool.retire(worker);
+            const nextTransaction = pool.write.retire([asAddress(worker)]);
 
             transaction.set(nextTransaction);
             retireTransaction.set(nextTransaction);
@@ -286,7 +288,7 @@ export const useStakingPool = (
 
     const rebalance = () => {
         if (pool) {
-            const nextTransaction = pool.rebalance();
+            const nextTransaction = pool.write.rebalance();
 
             transaction.set(nextTransaction);
             rebalanceTransaction.set(nextTransaction);
@@ -295,7 +297,7 @@ export const useStakingPool = (
 
     const update = () => {
         if (pool) {
-            const t = pool.update();
+            const t = pool.write.update();
             transaction.set(t);
             updateTransaction.set(t);
         }
@@ -344,10 +346,7 @@ export const useStakingPool = (
     };
 };
 
-export const useStakingPoolCommission = (
-    address: string,
-    reward: BigNumberish,
-) => {
+export const useStakingPoolCommission = (address: string, reward: bigint) => {
     const fee = useFeeContract(address);
     const [commission, setCommission] = useState<StakingPoolCommission>({
         value: undefined,
@@ -360,12 +359,9 @@ export const useStakingPoolCommission = (
                 value: undefined,
                 loading: true,
             });
-            fee.getCommission(0, reward).then((value) => {
-                const percentage = FixedNumber.from(value)
-                    .divUnsafe(FixedNumber.from(reward))
-                    .toUnsafeFloat();
+            fee.read.getCommission([0n, reward]).then((value) => {
                 setCommission({
-                    value: percentage,
+                    value: ratio(value, reward),
                     loading: false,
                 });
             });
@@ -377,26 +373,26 @@ export const useStakingPoolCommission = (
 
 export const useFlatRateCommission = (address: string) => {
     const fee = useFlatRateCommissionContract(address);
-    const [rate, setRate] = useState<BigNumber>(undefined);
-    const [maxRaise, setMaxRaise] = useState<BigNumber>(undefined);
+    const [rate, setRate] = useState<bigint>(undefined);
+    const [maxRaise, setMaxRaise] = useState<bigint>(undefined);
     const [timeoutTimestamp, setTimeoutTimestamp] = useState<Date>(undefined);
-    const [raiseTimeout, setRaiseTimeout] = useState<BigNumber>(undefined);
+    const [raiseTimeout, setRaiseTimeout] = useState<bigint>(undefined);
     const transaction = useTransaction();
 
     useEffect(() => {
         if (fee) {
-            fee.rate().then(setRate);
-            fee.feeRaiseTimeout().then(setRaiseTimeout);
-            fee.maxRaise().then(setMaxRaise);
-            fee.timeoutTimestamp().then((ts) =>
-                setTimeoutTimestamp(new Date(ts.toNumber() * 1000)),
-            );
+            fee.read.rate().then(setRate);
+            fee.read.feeRaiseTimeout().then(setRaiseTimeout);
+            fee.read.maxRaise().then(setMaxRaise);
+            fee.read
+                .timeoutTimestamp()
+                .then((ts) => setTimeoutTimestamp(new Date(Number(ts) * 1000)));
         }
     }, [fee]);
 
     const changeRate = (rate: number) => {
         if (fee) {
-            transaction.set(fee.setRate(rate));
+            transaction.set(fee.write.setRate([BigInt(rate)]));
         }
     };
 

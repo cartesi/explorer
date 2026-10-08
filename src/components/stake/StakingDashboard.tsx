@@ -11,16 +11,15 @@
 
 import { Stack, useDisclosure, VStack, StackProps } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { BigNumber, BigNumberish } from 'ethers';
 import { StakingPoolAllowanceModal } from './modals/StakingPoolAllowanceModal';
 import { WalletBalanceSection } from './components/WalletBalanceSection';
 import { AllowanceSection } from './components/AllowanceSection';
 
 export interface StakingDashboardProps extends StackProps {
-    balance: BigNumber; // wallet balance
-    allowance: BigNumber; // ERC20 allowance
-    userETHBalance: BigNumber; // user ETH balance
-    onApprove: (amount: BigNumberish) => void;
+    balance: bigint; // wallet balance
+    allowance: bigint; // ERC20 allowance
+    userETHBalance: bigint; // user ETH balance
+    onApprove: (amount: bigint) => void;
 }
 
 export const StakingDashboard: FC<StakingDashboardProps> = ({

@@ -11,9 +11,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseEther } from 'viem';
 
 import { NodeMaturingSection } from '../../components/node/NodeMaturingSection';
-import { ethers } from 'ethers';
 
 export default {
     title: 'Node/NodeMaturingSection',
@@ -29,14 +29,14 @@ const Template: Story = {
 
 export const Basic: Story = {
     args: {
-        maturingBalance: ethers.utils.parseEther('2.345'),
+        maturingBalance: parseEther('2.345'),
     },
     ...Template,
 };
 
 export const NoBalance: Story = {
     args: {
-        maturingBalance: ethers.utils.parseEther('0'),
+        maturingBalance: parseEther('0'),
     },
     ...Template,
 };

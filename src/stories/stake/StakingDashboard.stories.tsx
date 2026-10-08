@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StakingDashboard } from '../../components/stake/StakingDashboard';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '1000000000000000000';
+const defaultValue = 1000000000000000000n;
 
 export default {
     title: 'Stake/StakingDashboard',
@@ -30,9 +29,9 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        balance: BigNumber.from(defaultValue),
-        allowance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(defaultValue),
+        balance: defaultValue,
+        allowance: defaultValue,
+        userETHBalance: defaultValue,
         onApprove: () => undefined,
     },
     ...Template,

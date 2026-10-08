@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import PoolStatsPanel from '../../components/stake/PoolStatsPanel';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '1000000000000000000000';
+const defaultValue = 1000000000000000000000n;
 
 const defaultStakingPoolFee = {
     id: '1231',
@@ -39,20 +38,20 @@ const Template: Story = {
 export const Default: Story = {
     args: {
         address: 'General Gurko 75 str',
-        stakedBalance: BigNumber.from(defaultValue),
+        stakedBalance: defaultValue,
         totalBlocks: 100,
         totalUsers: 50,
         productionInterval: 1000,
         totalReward: defaultValue,
         commissionPercentage: 15,
         fee: defaultStakingPoolFee,
-        pool: BigNumber.from(defaultValue),
-        stake: BigNumber.from(defaultValue),
-        withdraw: BigNumber.from(defaultValue),
-        stakingMature: BigNumber.from(defaultValue),
-        stakingMaturing: BigNumber.from(defaultValue),
-        stakingReleasing: BigNumber.from(defaultValue),
-        stakingReleased: BigNumber.from(defaultValue),
+        pool: defaultValue,
+        stake: defaultValue,
+        withdraw: defaultValue,
+        stakingMature: defaultValue,
+        stakingMaturing: defaultValue,
+        stakingReleasing: defaultValue,
+        stakingReleased: defaultValue,
         stakingMaturingTimestamp: new Date(),
         stakingReleasingTimestamp: new Date(),
         onRebalance: () => undefined,

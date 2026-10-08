@@ -9,7 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ethers } from 'ethers';
+import { isAddress } from 'viem';
 import {
     createContext,
     FC,
@@ -74,7 +74,7 @@ const useCachedEntry = (address: string, enabled: boolean) => {
     });
 
     useEffect(() => {
-        const isValidAddress = ethers.utils.isAddress(address ?? '');
+        const isValidAddress = isAddress(address ?? '', { strict: false });
         if (!isValidAddress || !enabled) {
             const entry = { address, hasEns: false, resolving: false };
             setEntry(entry);

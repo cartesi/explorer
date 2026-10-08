@@ -26,8 +26,7 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import React, { FC, useEffect, useState } from 'react';
 import { CheckCircleIcon, PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
@@ -38,12 +37,12 @@ import { TbHelp } from 'react-icons/tb';
 import CloseButton from '../../CloseButton';
 
 export interface IStakingDepositModalProps {
-    allowance: BigNumber;
-    balance: BigNumber;
+    allowance: bigint;
+    balance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (amount: BigNumber, where: string) => void;
+    onSave: (amount: bigint, where: string) => void;
 }
 
 export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
@@ -54,20 +53,17 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
     onClose,
     onSave,
 }) => {
-    const formatBigNumber = (value: BigNumber) =>
+    const formatBigNumber = (value: bigint) =>
         parseFloat(formatUnits(value, 18));
 
     const allowanceFormatted = parseFloat(formatUnits(allowance, 18));
     const balanceFormatted = parseFloat(formatUnits(balance, 18));
 
-    const [outputAllowance, setOutputAllowance] =
-        useState<BigNumber>(allowance);
+    const [outputAllowance, setOutputAllowance] = useState<bigint>(allowance);
 
     const [allowanceStep, setAllowanceStep] = useState<boolean>(false);
 
-    const [outputDeposit, setOutputDeposit] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [outputDeposit, setOutputDeposit] = useState<bigint>(0n);
     const formattedDepositValue = formatBigNumber(outputDeposit);
 
     const color = useColorModeValue('black', 'white');
@@ -83,7 +79,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
 
     useEffect(() => {
         if (!isOpen) {
-            setOutputDeposit(BigNumber.from(0));
+            setOutputDeposit(0n);
         }
     }, [isOpen]);
 
@@ -102,7 +98,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
             <Dialog.Backdrop />
             <Dialog.Positioner>
                 <Dialog.Content borderRadius="0" p={0} minH="610px">
-                    {allowance.isZero() || allowanceStep ? (
+                    {allowance === 0n || allowanceStep ? (
                         <>
                             <Dialog.CloseTrigger asChild>
                                 <CloseButton size="sm" />
@@ -396,9 +392,10 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                                     textTransform="uppercase"
                                                     p={0}
                                                     role="max-deposit-button"
-                                                    disabled={outputDeposit.eq(
-                                                        balance && allowance,
-                                                    )}
+                                                    disabled={
+                                                        outputDeposit ===
+                                                        allowance
+                                                    }
                                                     onClick={() => {
                                                         setOutputDeposit(
                                                             balanceFormatted <
@@ -445,7 +442,7 @@ export const StakingDepositModal: FC<IStakingDepositModalProps> = ({
                                         <Button
                                             width="full"
                                             colorPalette={colorScheme}
-                                            disabled={outputDeposit.isZero()}
+                                            disabled={outputDeposit === 0n}
                                             role="deposit-button"
                                             onClick={() => {
                                                 onSave(

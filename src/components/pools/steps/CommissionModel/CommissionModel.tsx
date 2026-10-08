@@ -36,6 +36,7 @@ const useOpaqueTransaction = (): Transaction<void> => {
         ack: () => setAck(true),
         set: () => null,
         submitting: false,
+        confirmations: 0,
     };
 
     return t;

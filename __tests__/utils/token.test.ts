@@ -10,12 +10,11 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { formatCTSI, toCTSI, toBigNumber } from '../../src/utils/token';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import { BigNumber, FixedNumber } from 'ethers';
+import { formatUnits, parseUnits } from 'viem';
 
 describe('token util', () => {
     it('should correctly format CTSI', () => {
-        const amount = BigNumber.from('100000000000000000');
+        const amount = 100000000000000000n;
         const decimals = 10;
         const numberFormat = new Intl.NumberFormat('en-US', {
             maximumFractionDigits: decimals,
@@ -27,17 +26,15 @@ describe('token util', () => {
     });
 
     it('should correctly convert to CTSI', () => {
-        const amount = BigNumber.from('100000000000000000');
-        expect(toCTSI(amount)).toStrictEqual(
-            FixedNumber.from(formatUnits(amount, 18)),
-        );
+        const amount = 100000000000000000n;
+        expect(toCTSI(amount)).toBe(Number(formatUnits(amount, 18)));
     });
 
     it('should correct convert to BigNumber', () => {
         const amount = 100000;
         const decimals = 10;
 
-        expect(toBigNumber(amount, decimals)).toStrictEqual(
+        expect(toBigNumber(amount, decimals)).toBe(
             parseUnits(amount.toString(), decimals),
         );
     });

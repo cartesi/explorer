@@ -11,8 +11,8 @@
 
 import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber';
-import { constants } from 'ethers';
+import { zeroAddress } from 'viem';
+import { mulDiv } from '../../utils/bigint';
 
 import { POOL_BALANCES } from '../queries';
 import { PoolBalancesData, PoolBalancesVars } from '../models';
@@ -21,10 +21,10 @@ export const POOLS_PER_PAGE = 50;
 
 const useTotalPoolBalance = (user: string) => {
     // filter by user. use address zero in case user is undefined so we get no balance
-    const filter = { user: user?.toLowerCase() || constants.AddressZero };
+    const filter = { user: user?.toLowerCase() || zeroAddress };
 
     // state for total balance
-    const [total, setTotal] = useState<BigNumber>(constants.Zero);
+    const [total, setTotal] = useState<bigint>(0n);
 
     // query all user balances
     const { data, refetch } = useQuery<PoolBalancesData, PoolBalancesVars>(
@@ -45,29 +45,16 @@ const useTotalPoolBalance = (user: string) => {
     useEffect(() => {
         if (data) {
             refetch();
-            // get user balance in all pools he is in
-            const amounts = data.poolBalances.map((b) => {
-                const userShares = FixedNumber.from(b.shares);
-                const poolShares = FixedNumber.from(b.pool.shares);
-                const poolAmount = FixedNumber.from(b.pool.amount);
-
-                if (poolShares.isZero()) {
-                    return FixedNumber.from(0);
-                }
-
-                // calculate user amount based on share value
-                const userAmount = userShares
-                    .divUnsafe(poolShares)
-                    .mulUnsafe(poolAmount);
-
-                return userAmount;
-            });
-            // sum up all amounts in all pools
-            const total = amounts.reduce(
-                (t, a) => t.addUnsafe(a),
-                FixedNumber.from(0),
+            // get user balance in all pools he is in, based on share value
+            const amounts = data.poolBalances.map((b) =>
+                mulDiv(
+                    BigInt(b.shares),
+                    BigInt(b.pool.amount),
+                    BigInt(b.pool.shares),
+                ),
             );
-            setTotal(BigNumber.from(total).div(constants.WeiPerEther));
+            // sum up all amounts in all pools
+            setTotal(amounts.reduce((t, a) => t + a, 0n));
         }
     }, [data]);
     return total;

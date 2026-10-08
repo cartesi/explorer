@@ -10,11 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { BigNumber } from 'ethers';
 import { WalletBalanceSection } from '../../../components/stake/components/WalletBalanceSection';
 import { WalletConnectionContext } from '../../../components/wallet';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/WalletBalanceSection',
@@ -30,24 +29,24 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        userCTSIBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(defaultValue),
+        userCTSIBalance: defaultValue,
+        userETHBalance: defaultValue,
     },
     ...Template,
 };
 
 export const ZeroETHBalance: Story = {
     args: {
-        userCTSIBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(0),
+        userCTSIBalance: defaultValue,
+        userETHBalance: 0n,
     },
     ...Template,
 };
 
 export const ZeroETHBalanceWhenUsingGnosisSafe: Story = {
     args: {
-        userCTSIBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(0),
+        userCTSIBalance: defaultValue,
+        userETHBalance: 0n,
     },
     decorators: [
         (Story) => (

@@ -22,8 +22,7 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import React, { FC, useRef, useState } from 'react';
 import { Operation } from '../../../types/stake';
 import { CTSINumberInput } from '../CTSINumberInput';
@@ -33,10 +32,10 @@ import CloseButton from '../../CloseButton';
 export type RemovalAction = 'full' | 'partial';
 export interface IStakingUnstakeModalProps {
     isOpen: boolean;
-    stakedBalance: BigNumber;
+    stakedBalance: bigint;
     disclosure: UseDisclosureProps;
     onClose: () => void;
-    onSave: (op: Operation, newUnstake?: BigNumber) => void;
+    onSave: (op: Operation, newUnstake?: bigint) => void;
 }
 
 export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
@@ -51,9 +50,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     const stakeBalanceFormatted = parseFloat(formatUnits(stakedBalance, 18));
-    const [outputUnstake, setOutputUnstake] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [outputUnstake, setOutputUnstake] = useState<bigint>(0n);
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
@@ -107,7 +104,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                         );
 
                                         if (value === 'full') {
-                                            setOutputUnstake(constants.Zero);
+                                            setOutputUnstake(0n);
                                         } else {
                                             inputRef.current?.focus();
                                         }
@@ -180,7 +177,7 @@ export const StakingUnstakeModal: FC<IStakingUnstakeModalProps> = ({
                                     colorPalette={colorScheme}
                                     role="unstake-button"
                                     disabled={
-                                        outputUnstake.isZero() &&
+                                        outputUnstake === 0n &&
                                         unstakeFullAmount !== 'full'
                                     }
                                     onClick={() => {

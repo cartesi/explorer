@@ -9,21 +9,20 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumberish, FixedNumber } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'viem';
+import { Numeric, toBigInt, toFloat } from './bigint';
 
-export const formatCTSI = (amount: BigNumberish, decimals = 18): string => {
+export const formatCTSI = (amount: Numeric, decimals = 18): string => {
     const numberFormat = new Intl.NumberFormat('en-US', {
         maximumFractionDigits: decimals,
     });
 
     // convert to string
-    return numberFormat.format(parseFloat(formatUnits(amount, 18)));
+    return numberFormat.format(parseFloat(formatUnits(toBigInt(amount), 18)));
 };
 
-export const toCTSI = (amount: BigNumberish): FixedNumber => {
-    return FixedNumber.from(formatUnits(amount, 18));
-};
+/** Amount in wei to CTSI as a float, for display. */
+export const toCTSI = (amount: Numeric): number => toFloat(amount, 18);
 
-export const toBigNumber = (value: number, decimals = 18) =>
+export const toBigNumber = (value: number, decimals = 18): bigint =>
     parseUnits(value.toString(), decimals);

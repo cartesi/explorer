@@ -12,7 +12,6 @@
 'use client';
 
 import { Box } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import Layout from '../Layout';
 import { PoolBreadcrumbs } from './PoolBreadcrumbs';
 import { PoolHeader } from './PoolHeader';
@@ -78,7 +77,7 @@ const PoolStake = () => {
     const sectionBg = useColorModeValue('white', 'dark.gray.quaternary');
     const sectionBoxShadow = useColorModeValue('md', 'none');
 
-    const onUnstake = (action: Operation, amount?: BigNumber) => {
+    const onUnstake = (action: Operation, amount?: bigint) => {
         if (action === 'partial' && amount) {
             // convert CTSI to shares
             unstake(amountToShares(amount));

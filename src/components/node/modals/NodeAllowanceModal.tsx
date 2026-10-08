@@ -19,20 +19,19 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { FC, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 interface INodeAllowanceModalProps {
-    allowance: BigNumber;
-    balance: BigNumber;
+    allowance: bigint;
+    balance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newAllowance: BigNumber) => void;
+    onSave: (newAllowance: bigint) => void;
 }
 
 export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
@@ -52,8 +51,7 @@ export const NodeAllowanceModal: FC<INodeAllowanceModalProps> = ({
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
     const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
 
-    const [outputAllowance, setOutputAllowance] =
-        useState<BigNumber>(allowance);
+    const [outputAllowance, setOutputAllowance] = useState<bigint>(allowance);
 
     return (
         <Dialog.Root

@@ -11,7 +11,6 @@
 
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BigNumber } from 'ethers';
 import StakedBalanceStat, {
     StakedBalanceStatProps,
 } from '../../../../src/components/stake/stats/StakedBalanceStat';
@@ -25,9 +24,7 @@ const EStakedBalanceStat =
 describe('Staked Balance Stat', () => {
     // a default configured component
     const renderComponent = () =>
-        render(
-            <EStakedBalanceStat stakedBalance={BigNumber.from(defaultValue)} />,
-        );
+        render(<EStakedBalanceStat stakedBalance={BigInt(defaultValue)} />);
 
     it('Should display staked balance label', () => {
         renderComponent();

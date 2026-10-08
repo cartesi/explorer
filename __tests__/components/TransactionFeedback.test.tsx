@@ -11,15 +11,18 @@
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import TransactionFeedback from '../../src/components/TransactionFeedback';
-import { Transaction } from '../../src/services/transaction';
+import {
+    SubmittedTransaction,
+    Transaction,
+} from '../../src/services/transaction';
 import { withChakraTheme } from '../test-utilities';
-import { ContractTransaction } from 'ethers';
 
 const Component = withChakraTheme(TransactionFeedback);
 const props = {
     transaction: {
         submitting: false,
         acknowledged: false,
+        confirmations: 0,
         set: jest.fn(),
         ack: jest.fn(),
     } as Transaction<string>,
@@ -65,7 +68,8 @@ describe('TransactionFeedback component', () => {
             ...props.transaction,
             transaction: {
                 hash: '0x6200d8606aab695a7f730a3f7c60e399eb3bd10f',
-            } as ContractTransaction,
+                chainId: 1,
+            } satisfies SubmittedTransaction,
         };
         render(<Component transaction={{ ...transaction }} />);
 

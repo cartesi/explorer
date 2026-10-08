@@ -11,6 +11,7 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Hash } from 'viem';
 
 import TransactionFeedback from '../components/TransactionFeedback';
 import { Transaction } from '../services/transaction';
@@ -33,8 +34,9 @@ export const NoHashYet: Story = {
     args: {
         transaction: {
             transaction: {
-                confirmations: 0,
+                chainId: 5,
             },
+            confirmations: 0,
         } as Transaction<string>,
     },
     ...Template,
@@ -45,9 +47,9 @@ export const WithHash: Story = {
         transaction: {
             transaction: {
                 chainId: 5,
-                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560',
-                confirmations: 0,
+                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560' as Hash,
             },
+            confirmations: 0,
         } as Transaction<string>,
     },
     ...Template,
@@ -58,11 +60,9 @@ export const Confirmations: Story = {
         transaction: {
             transaction: {
                 chainId: 5,
-                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560',
+                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560' as Hash,
             },
-            receipt: {
-                confirmations: 1 / 3,
-            },
+            confirmations: 1 / 3,
         } as Transaction<string>,
     },
     ...Template,
@@ -73,11 +73,9 @@ export const Done: Story = {
         transaction: {
             transaction: {
                 chainId: 5,
-                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560',
+                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560' as Hash,
             },
-            receipt: {
-                confirmations: 1,
-            },
+            confirmations: 1,
         } as Transaction<string>,
     },
     ...Template,
@@ -89,9 +87,7 @@ export const Error: Story = {
             transaction: {
                 chainId: 5,
             },
-            receipt: {
-                confirmations: 0,
-            },
+            confirmations: 0,
             error: 'Transaction not found',
         } as Transaction<string>,
     },
@@ -103,11 +99,9 @@ export const ErrorRevert: Story = {
         transaction: {
             transaction: {
                 chainId: 5,
-                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560',
+                hash: '0x06d88982458952d7e39e6ebd85ce6b9873b9721fd1fc656e0eb943e9afe75560' as Hash,
             },
-            receipt: {
-                confirmations: 0,
-            },
+            confirmations: 0,
             error: 'Invalid fee',
         } as Transaction<string>,
     },

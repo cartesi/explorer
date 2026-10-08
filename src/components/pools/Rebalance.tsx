@@ -10,21 +10,20 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { FC } from 'react';
-import { BigNumber } from 'ethers';
 import { HStack, IconButton, StackProps, Text } from '@chakra-ui/react';
 import { TbScale } from 'react-icons/tb';
 import { formatCTSI } from '../../utils/token';
 
 export interface RebalanceProps extends StackProps {
-    stake: BigNumber;
-    unstake: BigNumber;
-    withdraw: BigNumber;
+    stake: bigint;
+    unstake: bigint;
+    withdraw: bigint;
     onRebalance: () => void;
 }
 
 const Rebalance: FC<RebalanceProps> = (props) => {
     const { stake, unstake, withdraw, onRebalance, ...stackProps } = props;
-    const disabled = stake?.isZero() && unstake?.isZero() && withdraw?.isZero();
+    const disabled = stake === 0n && unstake === 0n && withdraw === 0n;
     return (
         <HStack {...stackProps}>
             <IconButton
@@ -38,11 +37,9 @@ const Rebalance: FC<RebalanceProps> = (props) => {
                 <TbScale />
             </IconButton>
 
-            {stake?.gt(0) && <Text>{formatCTSI(stake)} CTSI to stake</Text>}
-            {unstake?.gt(0) && (
-                <Text>{formatCTSI(unstake)} CTSI to unstake</Text>
-            )}
-            {withdraw?.gt(0) && (
+            {stake > 0n && <Text>{formatCTSI(stake)} CTSI to stake</Text>}
+            {unstake > 0n && <Text>{formatCTSI(unstake)} CTSI to unstake</Text>}
+            {withdraw > 0n && (
                 <Text>{formatCTSI(withdraw)} CTSI to withdraw</Text>
             )}
             {disabled && <Text>No need to rebalance</Text>}

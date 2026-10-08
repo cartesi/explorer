@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, HStack, Icon, StackProps, Text, VStack } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import BigNumberTextV2 from '../../BigNumberTextV2';
 import { PoolBalanceHexIcon } from '../../Icons';
@@ -19,7 +18,7 @@ import { Tooltip } from '../../Tooltip';
 import { TbHelp } from 'react-icons/tb';
 
 export interface PoolBalanceStatProps extends StackProps {
-    pool: BigNumber;
+    pool: bigint;
 }
 
 const PoolBalanceStat: FC<PoolBalanceStatProps> = (props) => {

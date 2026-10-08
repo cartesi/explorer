@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, Button, Flex, Stack, Text } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { isEmpty, omit } from 'lodash/fp';
 import { FC, useState } from 'react';
 import { useNode } from '../../services/node';
@@ -26,7 +25,7 @@ type Errors = Partial<MappedErrors<Validation>>;
 
 export interface NodeHireNodeSectionProps {
     isHiring?: boolean;
-    onHire: (nodeAddress: string, funds: BigNumber) => void;
+    onHire: (nodeAddress: string, funds: bigint) => void;
 }
 
 export const NodeHireNodeSection: FC<NodeHireNodeSectionProps> = (props) => {

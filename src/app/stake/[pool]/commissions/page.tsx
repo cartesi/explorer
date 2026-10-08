@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { notFound } from 'next/navigation';
 import StakePoolCommissions from '../../../../components/stake/StakePoolCommissions';
-import { ethers } from 'ethers';
+import { isAddress } from 'viem';
 import { getFormattedEnsName } from '../../../../services/server/utils';
 
 interface StakePoolPageProps {
@@ -12,7 +12,7 @@ export async function generateMetadata(props: StakePoolPageProps) {
     const params = await props.params;
     const address = params.pool;
 
-    if (!ethers.utils.isAddress(address)) {
+    if (!isAddress(address, { strict: false })) {
         notFound();
     }
 
@@ -27,7 +27,7 @@ export async function generateMetadata(props: StakePoolPageProps) {
 const StakePoolCommissionsPage: FC<StakePoolPageProps> = async (props) => {
     const params = await props.params;
 
-    if (!ethers.utils.isAddress(params.pool)) {
+    if (!isAddress(params.pool, { strict: false })) {
         notFound();
     }
 

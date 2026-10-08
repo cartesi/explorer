@@ -14,7 +14,7 @@ import CTSI, {
     numberFormat,
 } from '../../../../src/components/pools/staking/CTSI';
 import { withChakraTheme } from '../../../test-utilities';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 
 const Component = withChakraTheme(CTSI);
 const props = {
@@ -27,7 +27,9 @@ describe('CTSI component', () => {
 
         expect(
             screen.getByText(
-                numberFormat.format(parseFloat(formatUnits(props.value, 18))),
+                numberFormat.format(
+                    parseFloat(formatUnits(BigInt(props.value), 18)),
+                ),
             ),
         ).toBeInTheDocument();
     });

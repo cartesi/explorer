@@ -351,6 +351,7 @@ describe('Pool ENS step', () => {
                 // setting to have the contract transaction fulfilled
                 pool.transaction.acknowledged = false;
                 pool.transaction.receipt = buildContractReceipt();
+                pool.transaction.confirmations = 1;
                 pool.transaction.state = 'confirmed';
                 rerender(<Component inFocus stepNumber={1} />);
 

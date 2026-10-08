@@ -12,7 +12,7 @@
 import { useQuery } from '@apollo/client/react';
 import { NODES } from '../queries';
 import { NodesData, NodesVars } from '../models';
-import { constants } from 'ethers';
+import { zeroAddress } from 'viem';
 import { NodeStatus } from '../../services/node';
 
 export const NODES_PER_PAGE = 10;
@@ -51,7 +51,7 @@ export const useUserNodes = (
     sort = DEFAULT_SORT,
 ) => {
     // if no owner, use address zero, so no nodes are returned
-    owner = owner || constants.AddressZero;
+    owner = owner || zeroAddress;
 
     // convert to lowercase because backend is all lowercase
     owner = owner.toLowerCase();
@@ -68,7 +68,7 @@ export const useUserNodes = (
 
 export const useUserNode = (owner: string): string => {
     // if no owner, use address zero, so no nodes are returned
-    owner = owner || constants.AddressZero;
+    owner = owner || zeroAddress;
 
     // convert to lowercase because backend is all lowercase
     owner = owner.toLowerCase();

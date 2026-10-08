@@ -9,9 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { StakingImpl } from '@cartesi/pos';
 import { renderHook, waitFor } from '@testing-library/react';
-import { BigNumber, constants } from 'ethers';
 import { act } from 'react';
 import { useStakingContract } from '../../src/services/contracts';
 import { useStaking } from '../../src/services/staking';
@@ -43,15 +41,21 @@ const mockedUseTransaction = useTransaction as jest.MockedFunction<
     typeof useTransaction
 >;
 
+type StakingImpl = ReturnType<typeof useStakingContract>;
+
 const stakingContractData = {
-    stake: jest.fn(),
-    unstake: jest.fn(),
-    withdraw: jest.fn(),
-    getStakedBalance: () => Promise.resolve(BigNumber.from(0)),
-    getMaturingTimestamp: () => Promise.resolve(BigNumber.from(0)),
-    getReleasingTimestamp: () => Promise.resolve(BigNumber.from(0)),
-    getMaturingBalance: () => Promise.resolve(BigNumber.from(0)),
-    getReleasingBalance: () => Promise.resolve(BigNumber.from(0)),
+    read: {
+        getStakedBalance: () => Promise.resolve(0n),
+        getMaturingTimestamp: () => Promise.resolve(0n),
+        getReleasingTimestamp: () => Promise.resolve(0n),
+        getMaturingBalance: () => Promise.resolve(0n),
+        getReleasingBalance: () => Promise.resolve(0n),
+    },
+    write: {
+        stake: jest.fn(),
+        unstake: jest.fn(),
+        withdraw: jest.fn(),
+    },
 };
 
 describe('staking service', () => {
@@ -67,7 +71,7 @@ describe('staking service', () => {
 
     it('should correctly set stake amount', async () => {
         const mockedSet = jest.fn();
-        const stakeAmount = BigNumber.from('100000000000');
+        const stakeAmount = 100000000000n;
         mockedUseTransaction.mockReturnValue({
             set: mockedSet,
         } as unknown as Transaction<any>);
@@ -82,7 +86,7 @@ describe('staking service', () => {
 
     it('should correctly set unstake amount', async () => {
         const mockedSet = jest.fn();
-        const stakeAmount = BigNumber.from('100000000000');
+        const stakeAmount = 100000000000n;
         mockedUseTransaction.mockReturnValue({
             set: mockedSet,
         } as unknown as Transaction<any>);
@@ -97,7 +101,7 @@ describe('staking service', () => {
 
     it('should correctly set withdraw amount', async () => {
         const mockedSet = jest.fn();
-        const stakeAmount = BigNumber.from('100000000000');
+        const stakeAmount = 100000000000n;
         mockedUseTransaction.mockReturnValue({
             set: mockedSet,
         } as unknown as Transaction<any>);
@@ -115,45 +119,39 @@ describe('staking service', () => {
         const { result } = renderHook(() => useStaking(undefined));
 
         await waitFor(() => {
-            expect(result.current.stakedBalance).toStrictEqual(constants.Zero);
-            expect(result.current.releasingBalance).toStrictEqual(
-                constants.Zero,
-            );
-            expect(result.current.maturingBalance).toStrictEqual(
-                constants.Zero,
-            );
+            expect(result.current.stakedBalance).toBe(0n);
+            expect(result.current.releasingBalance).toBe(0n);
+            expect(result.current.maturingBalance).toBe(0n);
         });
     });
 
     it('should set correct balances when staking and user are defined', async () => {
-        const stakedBalance = BigNumber.from('1000000000');
-        const maturingBalance = BigNumber.from('100000000000000');
-        const releasingBalance = BigNumber.from('1000000000000000000');
-        const maturingValue = BigNumber.from('1000000000');
-        const releasingValue = BigNumber.from('1000000000');
+        const stakedBalance = 1000000000n;
+        const maturingBalance = 100000000000000n;
+        const releasingBalance = 1000000000000000000n;
+        const maturingValue = 1000000000n;
+        const releasingValue = 1000000000n;
         mockedUseStakingContract.mockReturnValue({
             ...stakingContractData,
-            getStakedBalance: () => Promise.resolve(stakedBalance),
-            getMaturingBalance: () => Promise.resolve(maturingBalance),
-            getReleasingBalance: () => Promise.resolve(releasingBalance),
-            getMaturingTimestamp: () => Promise.resolve(maturingValue),
-            getReleasingTimestamp: () => Promise.resolve(releasingValue),
+            read: {
+                getStakedBalance: () => Promise.resolve(stakedBalance),
+                getMaturingBalance: () => Promise.resolve(maturingBalance),
+                getReleasingBalance: () => Promise.resolve(releasingBalance),
+                getMaturingTimestamp: () => Promise.resolve(maturingValue),
+                getReleasingTimestamp: () => Promise.resolve(releasingValue),
+            },
         } as unknown as StakingImpl);
         const { result } = renderHook(() => useStaking(account));
 
         await waitFor(() => {
-            expect(result.current.stakedBalance).toStrictEqual(stakedBalance);
-            expect(result.current.maturingBalance).toStrictEqual(
-                maturingBalance,
-            );
-            expect(result.current.releasingBalance).toStrictEqual(
-                releasingBalance,
-            );
+            expect(result.current.stakedBalance).toBe(stakedBalance);
+            expect(result.current.maturingBalance).toBe(maturingBalance);
+            expect(result.current.releasingBalance).toBe(releasingBalance);
             expect(result.current.maturingTimestamp).toStrictEqual(
-                new Date(maturingValue.toNumber() * 1000),
+                new Date(Number(maturingValue) * 1000),
             );
             expect(result.current.releasingTimestamp).toStrictEqual(
-                new Date(releasingValue.toNumber() * 1000),
+                new Date(Number(releasingValue) * 1000),
             );
         });
     });

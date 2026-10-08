@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import PoolBalanceStat from '../../../components/stake/stats/PoolBalanceStat';
-import { BigNumber } from 'ethers';
 
-const defaultBigNumberValue = BigNumber.from('10000000000000000000000000000');
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Stats/PoolBalanceStat',
@@ -30,7 +29,7 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        pool: defaultBigNumberValue,
+        pool: defaultValue,
     },
     ...Template,
 };

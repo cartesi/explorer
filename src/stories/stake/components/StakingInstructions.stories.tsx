@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StakingInstructions } from '../../../components/stake/components/StakingInstructions';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/StakingInstructions',
@@ -30,7 +29,7 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        stakedBalance: BigNumber.from(defaultValue),
+        stakedBalance: defaultValue,
         onUnstakeClick: () => undefined,
     },
     ...Template,

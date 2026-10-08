@@ -9,15 +9,22 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { StakingPoolFactoryImpl } from '@cartesi/staking-pool';
-import { Web3Provider } from '@ethersproject/providers';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
+import {
+    encodeAbiParameters,
+    encodeEventTopics,
+    getAddress,
+    parseEther,
+    TransactionReceipt,
+} from 'viem';
 import { WalletConnectionContextProps } from '../../src/components/wallet/definitions';
 import { useWallet } from '../../src/components/wallet/useWallet';
 import { useStakingPoolFactoryContract } from '../../src/services/contracts';
+import { stakingPoolFactoryAbi } from '../../src/services/contracts/generated';
 import { useStakingPoolFactory } from '../../src/services/poolFactory';
 import { Transaction, useTransaction } from '../../src/services/transaction';
+import { buildContractReceipt } from './mocks';
 
 jest.mock('../../src/components/wallet/useWallet');
 
@@ -30,6 +37,7 @@ jest.mock('../../src/services/eth', () => ({
 }));
 
 jest.mock('../../src/services/contracts', () => ({
+    ...jest.requireActual('../../src/services/contracts'),
     useStakingPoolFactoryContract: jest.fn(),
 }));
 
@@ -44,11 +52,6 @@ const mockedUseStakingPoolFactoryContract =
     >;
 
 const walletData = {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    library: {
-        getSigner: jest.fn(),
-    } as unknown as Web3Provider,
     account: address,
     active: true,
     activate: jest.fn(),
@@ -59,11 +62,35 @@ const walletData = {
     },
 };
 
+type StakingPoolFactoryImpl = ReturnType<typeof useStakingPoolFactoryContract>;
+
 const stakingPoolFactoryContract = {
-    createFlatRateCommission: jest.fn(),
-    paused: () => Promise.resolve(),
-    referencePool: () => Promise.resolve(),
-    pos: () => Promise.resolve(),
+    read: {
+        paused: () => Promise.resolve(),
+        referencePool: () => Promise.resolve(),
+        pos: () => Promise.resolve(),
+    },
+    write: {
+        createFlatRateCommission: jest.fn(),
+    },
+};
+
+/** A receipt carrying the NewFlatRateCommissionStakingPool event. */
+const buildPoolCreatedReceipt = (
+    pool: `0x${string}`,
+    fee: `0x${string}`,
+): TransactionReceipt => {
+    const receipt = buildContractReceipt();
+    const log = {
+        ...receipt.logs[0],
+        topics: encodeEventTopics({
+            abi: stakingPoolFactoryAbi,
+            eventName: 'NewFlatRateCommissionStakingPool',
+            args: { pool },
+        }),
+        data: encodeAbiParameters([{ type: 'address' }], [fee]),
+    } as unknown as TransactionReceipt['logs'][number];
+    return { ...receipt, logs: [log] };
 };
 
 describe('poolFactory service', () => {
@@ -90,7 +117,7 @@ describe('poolFactory service', () => {
         const mockedCreateFlatRateCommission = jest.fn();
         mockedUseStakingPoolFactoryContract.mockReturnValue({
             ...stakingPoolFactoryContract,
-            createFlatRateCommission: mockedCreateFlatRateCommission,
+            write: { createFlatRateCommission: mockedCreateFlatRateCommission },
         } as unknown as StakingPoolFactoryImpl);
 
         const { result } = renderHook(() => useStakingPoolFactory());
@@ -99,7 +126,27 @@ describe('poolFactory service', () => {
         });
 
         expect(mockedSet).toHaveBeenCalled();
-        expect(mockedCreateFlatRateCommission).toHaveBeenCalled();
+        expect(mockedCreateFlatRateCommission).toHaveBeenCalledWith([1000n], {
+            value: parseEther('0.001'),
+        });
+    });
+
+    it('should resolve the created pool address from the transaction receipt', () => {
+        mockedUseTransaction.mockReturnValue({
+            set: jest.fn(),
+        } as unknown as Transaction<any>);
+        const pool = '0xe656584736b1efc14b4b6c785aa9c23bac8f41aa';
+        const fee = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
+
+        renderHook(() => useStakingPoolFactory());
+        const [resultResolver] = mockedUseTransaction.mock.calls[0];
+
+        expect(resultResolver(buildPoolCreatedReceipt(pool, fee))).toBe(
+            getAddress(pool),
+        );
+        expect(
+            resultResolver({ ...buildContractReceipt(), logs: [] }),
+        ).toBeUndefined();
     });
 
     it('should not set pos when poolFactory and account are undefined', () => {
@@ -112,8 +159,11 @@ describe('poolFactory service', () => {
         const paused = true;
         mockedUseStakingPoolFactoryContract.mockReturnValue({
             ...stakingPoolFactoryContract,
-            paused: () => Promise.resolve(paused),
-            referencePool: () => Promise.resolve(address),
+            read: {
+                ...stakingPoolFactoryContract.read,
+                paused: () => Promise.resolve(paused),
+                referencePool: () => Promise.resolve(address),
+            },
         } as unknown as StakingPoolFactoryImpl);
 
         const { result } = renderHook(() => useStakingPoolFactory());

@@ -21,14 +21,13 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
 
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { TbCurrencyDollar } from 'react-icons/tb';
 
 import CTSI from '../pools/staking/CTSI';
 
 export interface INodeReleasingSection {
-    releasingBalance: BigNumber;
+    releasingBalance: bigint;
     releasingLeftShort?: string;
     onWithdraw: () => void;
 }
@@ -48,9 +47,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
         'dark.secondary',
         'dark.primary',
     );
-    const iconColor = releasingBalance.isZero()
-        ? 'gray.450'
-        : iconColorModeColor;
+    const iconColor = releasingBalance === 0n ? 'gray.450' : iconColorModeColor;
 
     return (
         <Box
@@ -103,7 +100,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                     gap={4}
                     alignItems="center"
                 >
-                    {releasingBalance.gt(0) && releasingLeftShort && (
+                    {releasingBalance > 0n && releasingLeftShort && (
                         <Button
                             colorPalette="gray"
                             variant="ghost"
@@ -113,7 +110,7 @@ export const NodeReleasingSection: FC<INodeReleasingSection> = ({
                             WITHDRAW ({releasingLeftShort})
                         </Button>
                     )}
-                    {releasingBalance.gt(0) && !releasingLeftShort && (
+                    {releasingBalance > 0n && !releasingLeftShort && (
                         <Button
                             colorPalette={colorScheme}
                             mt={[8, 0]}

@@ -1,5 +1,5 @@
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
+import { Numeric, toBigInt } from './bigint';
 import humanizeDuration from 'humanize-duration';
 
 export type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
@@ -20,7 +20,7 @@ export const formatPercentNumber = (
 };
 
 export const formatPercent = (
-    value: BigNumberish,
+    value: Numeric,
     options?: Intl.NumberFormatOptions,
 ) => {
     if (typeof value === 'number') {
@@ -32,13 +32,13 @@ export const formatPercent = (
 
 /**
  *
- * @param value BigNumberish from ethers project
+ * @param value bigint | number | string
  * @param unit 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
  * @param options Intl.NumberFormat options
  * @returns a pair [valueAsString, unitAsString]
  */
 export const format = (
-    value: BigNumberish,
+    value: Numeric,
     unit: Unit,
     options: Intl.NumberFormatOptions,
 ): string[] => {
@@ -46,12 +46,16 @@ export const format = (
     switch (unit) {
         case 'eth':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(formatUnits(toBigInt(value), 18)),
+                ),
                 'ETH',
             ];
         case 'ctsi':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(formatUnits(toBigInt(value), 18)),
+                ),
                 'CTSI',
             ];
         case 'percent':
@@ -61,19 +65,19 @@ export const format = (
         case 'duration':
             return formatDuration(parseFloat(value.toString()));
         default:
-            return [numberFormat.format(BigNumber.from(value).toNumber()), ''];
+            return [numberFormat.format(Number(value)), ''];
     }
 };
 
 /**
  *
- * @param value BigNumberish from ethers project
+ * @param value bigint | number | string
  * @param unit 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
  * @param options Intl.NumberFormat options
  * @returns {String} value as string
  */
 export const formatValue = (
-    value: BigNumberish,
+    value: Numeric,
     unit: Unit,
     options: Intl.NumberFormatOptions,
 ): string => {

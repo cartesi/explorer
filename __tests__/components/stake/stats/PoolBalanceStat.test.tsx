@@ -11,7 +11,6 @@
 
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BigNumber } from 'ethers';
 import PoolBalanceStat, {
     PoolBalanceStatProps,
 } from '../../../../src/components/stake/stats/PoolBalanceStat';
@@ -24,7 +23,7 @@ const EPoolBalanceStat = withChakraTheme<PoolBalanceStatProps>(PoolBalanceStat);
 describe('Pool Balance Stat', () => {
     // a default configured component
     const renderComponent = () =>
-        render(<EPoolBalanceStat pool={BigNumber.from(defaultValue)} />);
+        render(<EPoolBalanceStat pool={BigInt(defaultValue)} />);
 
     it('Should display pool balance label', () => {
         renderComponent();

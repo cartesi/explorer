@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { NodeAllowanceSection } from '../../../src/components/node/NodeAllowanceSection';
 import { withChakraTheme } from '../../test-utilities';
 
@@ -21,7 +20,7 @@ describe('NodeAllowanceSection component', () => {
         const mockedOnAllowanceClick = jest.fn();
         const { container } = render(
             <Component
-                allowance={BigNumber.from('10000')}
+                allowance={10000n}
                 onAllowanceClick={mockedOnAllowanceClick}
             />,
         );
