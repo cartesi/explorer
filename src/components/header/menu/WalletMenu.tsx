@@ -93,7 +93,7 @@ const WalletMenuActionItem: FC<WalletMenuActionItemProps> = ({
 );
 
 const WalletMenu: FC = () => {
-    const { account, library, deactivate } = useWallet();
+    const { account, active, deactivate } = useWallet();
     const ens = useENS(account ?? '');
     const clipboard = useClipboard({ value: account ?? '' });
     const color = useColorModeValue('light.gray.primary', 'white');
@@ -103,7 +103,7 @@ const WalletMenu: FC = () => {
     const menuItems = useMemo(() => {
         const items = [];
 
-        if (account && library) {
+        if (account && active) {
             items.push({
                 title: 'Disconnect account',
                 Icon: DisconnectIcon,
@@ -112,7 +112,7 @@ const WalletMenu: FC = () => {
         }
 
         return items;
-    }, [account, library, deactivate]);
+    }, [account, active, deactivate]);
 
     return (
         <>

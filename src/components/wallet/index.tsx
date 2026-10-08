@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-export type { Web3Provider } from './definitions';
 export { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
 export { WalletConnectionContext, WalletConnectionProvider } from './provider';
 export { useWallet } from './useWallet';
