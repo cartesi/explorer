@@ -10,13 +10,14 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { PromisePool } from '@supercharge/promise-pool';
-import { ethers } from 'ethers';
 import defaultTo from 'lodash/fp/defaultTo';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
+import { normalize } from 'viem/ens';
 import {
     buildAliasedEnsDomainsQuery,
     GetAliasedEnsDomainsQuery,
 } from '../../../graphql/queries/ensDomains';
-import { Network } from '../../../utils/networks';
 import ensClient from '../../apolloENSClient';
 import { ENSAddressData, Entry, QueriedDomain, StaleEntry } from './types';
 
@@ -71,19 +72,13 @@ const getDomainsCounter = createCounter();
 const httpNodeRpc =
     process.env.HTTP_MAINNET_NODE_RPC ?? 'https://cloudflare-eth.com';
 
-const buildRpcClient = (nodeRpcEndpoint: string, network: number) => {
-    const provider = new ethers.providers.JsonRpcProvider(
-        {
-            url: nodeRpcEndpoint,
-            skipFetchSetup: true,
-        },
-        network,
-    );
+const buildRpcClient = (nodeRpcEndpoint: string) =>
+    createPublicClient({
+        chain: mainnet,
+        transport: http(nodeRpcEndpoint),
+    });
 
-    return provider;
-};
-
-const provider = buildRpcClient(httpNodeRpc, Network.MAINNET);
+const client = buildRpcClient(httpNodeRpc);
 
 const ACTION_NAME = {
     addAvatarUrl: 'ADD_AVATAR_URL',
@@ -93,12 +88,10 @@ const ACTION_NAME = {
     getFreshENSData: 'GET_FRESH_ENS_DATA',
 } as const;
 
+/** One eth_call through the ENS universal resolver; CCIP-read names are followed as before. */
 const getAvatarUrl = (name: string): Promise<string | null> => {
-    return provider
-        .getResolver(name)
-        .then((resolver) => {
-            return resolver.getText('avatar');
-        })
+    return Promise.resolve()
+        .then(() => client.getEnsText({ name: normalize(name), key: 'avatar' }))
         .catch((error) => {
             console.error(
                 `${ACTION_NAME.getAvatarUrl}: (${name}) => Fail to get avatar.\nReason: ${error.message}`,

@@ -8,7 +8,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { ObservableQuery } from '@apollo/client';
-import { ethers } from 'ethers';
 import {
     GetAliasedEnsDomainsQuery,
     getDomainAlias,
@@ -20,7 +19,20 @@ import {
 } from '../../../src/services/server/ens/functions';
 import { QueriedDomain } from '../../../src/services/server/ens/types';
 
-jest.mock('ethers');
+const mockGetEnsText = jest.fn();
+
+jest.mock('viem', () => {
+    const actual = jest.requireActual('viem');
+    return {
+        __esModule: true,
+        ...actual,
+        // resolved lazily: the factory runs while the module is imported,
+        // before `mockGetEnsText` is initialised
+        createPublicClient: jest.fn(() => ({
+            getEnsText: (...args: unknown[]) => mockGetEnsText(...args),
+        })),
+    };
+});
 jest.mock('../../../src/services/apolloENSClient', () => {
     return {
         __esModule: true,
@@ -30,32 +42,9 @@ jest.mock('../../../src/services/apolloENSClient', () => {
     };
 });
 
-const providerMock = jest.mocked(ethers.providers.JsonRpcProvider);
 const clientMock = jest.mocked(client, { shallow: true });
 
-const createAvatarUrlResolver = (url: string) => {
-    const address = '0x002';
-    const name = 'resolver';
-    const provider = new ethers.providers.BaseProvider(11155111);
-
-    return {
-        getText: async () => url,
-        name,
-        address,
-        provider,
-        _fetchBytes: async () => address,
-        _getAddress() {
-            return '';
-        },
-        getAddress: async () => address,
-        getContentHash: async () => '',
-        getAvatar: async () => null,
-        supportsWildcard: async () => false,
-        _resolvedAddress: '',
-        _supportsEip2544: Promise.resolve(false),
-        _fetch: async () => '',
-    } as ethers.providers.Resolver;
-};
+const setAvatarUrl = (url: string) => mockGetEnsText.mockResolvedValue(url);
 
 const buildENSResponse = () => [
     {
@@ -86,8 +75,7 @@ describe('ENS Functions', () => {
     const infoLog = jest.fn();
     const entry = { address: validAddress };
     beforeEach(() => {
-        const resolver = createAvatarUrlResolver('');
-        providerMock.prototype.getResolver.mockResolvedValue(resolver);
+        setAvatarUrl('');
         setENSQueryReturn([]);
 
         jest.spyOn(console, 'info').mockImplementation(infoLog);
@@ -128,10 +116,7 @@ describe('ENS Functions', () => {
 
         it('should search and update the avatar-url when the name is set', async () => {
             setENSQueryReturn(buildENSResponse());
-            const resolver = createAvatarUrlResolver(
-                'https://host.com/avatar.png',
-            );
-            providerMock.prototype.getResolver.mockResolvedValue(resolver);
+            setAvatarUrl('https://host.com/avatar.png');
 
             const {
                 data: [expectedData],
@@ -146,10 +131,6 @@ describe('ENS Functions', () => {
         });
 
         it('should skip the avatar lookup when ENS information is not available', async () => {
-            const resolver = createAvatarUrlResolver('');
-            resolver.getText = jest.fn();
-            providerMock.prototype.getResolver.mockResolvedValue(resolver);
-
             const {
                 state,
                 data: [expectedData],
@@ -160,7 +141,7 @@ describe('ENS Functions', () => {
                 hasEns: false,
                 address: validAddress,
             });
-            expect(resolver.getText).not.toHaveBeenCalled();
+            expect(mockGetEnsText).not.toHaveBeenCalled();
         });
 
         it('should handle any error when searching domains and skip avatar-url search', async () => {
@@ -183,13 +164,8 @@ describe('ENS Functions', () => {
         });
 
         it('should log and continue when an error occur when searching for an avatar-url', async () => {
-            const getText = jest
-                .fn()
-                .mockRejectedValue(new Error('no name found!'));
+            mockGetEnsText.mockRejectedValue(new Error('no name found!'));
             setENSQueryReturn(buildENSResponse());
-            const resolver = createAvatarUrlResolver('');
-            resolver.getText = getText;
-            providerMock.prototype.getResolver.mockResolvedValue(resolver);
 
             const {
                 state,
@@ -221,10 +197,7 @@ describe('ENS Functions', () => {
                     },
                 },
             ]);
-            const resolver = createAvatarUrlResolver(
-                'http://host.com/avatar.png',
-            );
-            providerMock.prototype.getResolver.mockResolvedValue(resolver);
+            setAvatarUrl('http://host.com/avatar.png');
 
             const dummyStaleEntry = { ...entry, hasEns: false };
 
