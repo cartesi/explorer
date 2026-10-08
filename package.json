@@ -4,11 +4,11 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf node_modules && rm -rf .next",
-        "dev": "run-s db:dev:migrate next:dev",
-        "build": "run-s db:prod:migrate next:build",
+        "dev": "run-s db:dev:migrate codegen next:dev",
+        "build": "run-s db:prod:migrate codegen next:build",
         "start": "next start",
-        "next:build": "npm run chakra-types && next build",
-        "next:dev": "npm run chakra-types && next dev",
+        "next:build": "next build",
+        "next:dev": "next dev",
         "test": "dotenv -c test -- jest",
         "test:ci": "dotenv -c test -- jest --runInBand --coverage",
         "db:generate": "drizzle-kit generate",
@@ -23,7 +23,9 @@
         "chromatic": "chromatic --exit-zero-on-changes",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "chakra-types": "chakra typegen ./src/styles/theme.ts"
+        "chakra-types": "chakra typegen ./src/styles/theme.ts",
+        "gen:abi": "wagmi generate",
+        "codegen": "run-p chakra-types gen:abi"
     },
     "dependencies": {
         "@apollo/client": "4.3.0",
@@ -94,6 +96,7 @@
         "@types/react-gtm-module": "^2.0.4",
         "@typescript-eslint/eslint-plugin": "^8.70.0",
         "@typescript-eslint/parser": "^8.70.0",
+        "@wagmi/cli": "^2.10.0",
         "babel-jest": "^30.5.1",
         "chromatic": "^18.8.1",
         "dotenv-cli": "11.0.0",
