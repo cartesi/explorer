@@ -26,12 +26,22 @@ allowBuilds:
 overrides:
   'elliptic': '^6.6.1'
   'pbkdf2': '^3.1.5'
-  'form-data': '^4.0.4'
+  'form-data': '^4.0.6'
   # eth-sig-util@1.4.2 declares ethereumjs-abi as an unpinned git URL, which
   # blockExoticSubdeps rejects. Pin the equivalent registry release instead.
   'ethereumjs-abi': '^0.6.8'
-  # RainbowKit pins cuer@0.0.3, which calls qr's encodeQR with border: 0;
-  # qr >=0.6 rejects that (RangeError: invalid border=0) and breaks the
-  # WalletConnect QR screen. cuer@0.0.4 fixes it; drop this once RainbowKit
-  # ships that version.
+  # cuer@0.0.3 (pinned by RainbowKit) passes border: 0, rejected since qr 0.6.
+  # Drop once RainbowKit ships cuer@0.0.4.
   'qr': '~0.5.5'
+  # Advisories reachable through the wagmi 2 connector tree (frozen upstream
+  # until RainbowKit supports wagmi 3); each pin is the patched minor.
+  'ws@7': '^7.5.11'
+  'ws@8': '^8.21.0'
+  'h3': '^1.15.9'
+  'picomatch@2': '^2.3.2'
+  'preact': '^10.27.3'
+  'defu': '^6.1.5'
+  'bn.js@5': '^5.2.3'
+  'decode-uri-component': '^0.5.0'
+  'uuid@8': '^11.1.1'
+  'uuid@9': '^11.1.1'

@@ -40,6 +40,33 @@ export default [
         },
 
         rules: {
+            // ethers and the @cartesi contract packages are devDependencies
+            // used only by the ABI generator; the app runs on viem and the
+            // generated ABIs. wagmi.config.ts is the one file exempted below.
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: ['ethers', 'ethers/*', '@ethersproject/*'],
+                            message:
+                                'ethers is a devDependency for ABI generation only; use viem.',
+                        },
+                        {
+                            group: [
+                                '@cartesi/pos',
+                                '@cartesi/pos-1.0',
+                                '@cartesi/staking-pool',
+                                '@cartesi/token',
+                                '@cartesi/util',
+                                '@cartesi/*/export/*',
+                            ],
+                            message:
+                                'Contract packages are devDependencies for ABI generation only; import from src/services/contracts/generated.',
+                        },
+                    ],
+                },
+            ],
             'prettier/prettier': 'error',
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -73,6 +100,12 @@ export default [
             'react-hooks/static-components': 'off',
             'react-hooks/unsupported-syntax': 'off',
             'react-hooks/use-memo': 'off',
+        },
+    },
+    {
+        files: ['wagmi.config.ts'],
+        rules: {
+            'no-restricted-imports': 'off',
         },
     },
     globalIgnores(['next-env.d.ts']),
