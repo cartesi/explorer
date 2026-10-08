@@ -34,7 +34,7 @@ export const WalletMobileModal = ({
     isOpen,
     onClose,
 }: IWalletMobileModalProps) => {
-    const { account, library, deactivate } = useWallet();
+    const { account, active, deactivate } = useWallet();
     const ens = useENS(account ?? '');
     const clipboard = useClipboard({ value: account ?? '' });
     const disconnect = flow([deactivate, onClose]);
@@ -99,7 +99,7 @@ export const WalletMobileModal = ({
                                 </Box>
                             </HStack>
                         </Dialog.Body>
-                        {account && library && (
+                        {account && active && (
                             <Dialog.Body
                                 borderBottom="1px"
                                 borderColor="gray.100"

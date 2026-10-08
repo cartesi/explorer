@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import type { Web3Provider } from '@ethersproject/providers';
 import type {
     Account,
     Chain,
@@ -22,12 +21,9 @@ export enum WalletType {
     SDK = 'sdk',
     INJECTED = 'injected',
 }
-export type { Web3Provider };
 export interface WalletConnectionContextProps {
     account?: string;
     chainId?: number;
-    /** @deprecated transitional ethers v5 provider; use publicClient/walletClient. */
-    library?: Web3Provider;
     publicClient?: PublicClient<Transport, Chain>;
     walletClient?: WalletClient<Transport, Chain, Account>;
     error?: Error;

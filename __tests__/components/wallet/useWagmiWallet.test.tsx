@@ -10,7 +10,6 @@ import {
 } from 'wagmi';
 import { WalletType } from '../../../src/components/wallet/definitions';
 import { UnsupportedNetworkError } from '../../../src/components/wallet/errors/UnsupportedNetworkError';
-import { useEthersLibrary } from '../../../src/components/wallet/ethersAdapter';
 import {
     checkNetwork,
     getWalletType,
@@ -34,10 +33,6 @@ jest.mock('@rainbow-me/rainbowkit', () => ({
     useConnectModal: jest.fn(),
 }));
 
-jest.mock('../../../src/components/wallet/ethersAdapter', () => ({
-    useEthersLibrary: jest.fn(),
-}));
-
 const useAccountMock = useAccount as jest.MockedFunction<typeof useAccount>;
 const useAccountEffectMock = useAccountEffect as jest.MockedFunction<
     typeof useAccountEffect
@@ -57,10 +52,6 @@ const useWalletClientMock = useWalletClient as jest.MockedFunction<
 const useConnectModalMock = useConnectModal as jest.MockedFunction<
     typeof useConnectModal
 >;
-const useEthersLibraryMock = useEthersLibrary as jest.MockedFunction<
-    typeof useEthersLibrary
->;
-
 const supported = Object.keys(networks).map(Number);
 const address = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const metaMask = {
@@ -70,7 +61,6 @@ const metaMask = {
 } as any;
 const safe = { id: 'safe', name: 'Safe', type: 'safe' } as any;
 
-const library = { getSigner: jest.fn() } as any;
 const publicClient = { chain: { id: 1 } } as any;
 const walletClient = { account: { address } } as any;
 
@@ -168,7 +158,6 @@ describe('useWagmiWallet', () => {
         useSwitchChainMock.mockReturnValue({ switchChainAsync } as any);
         usePublicClientMock.mockReturnValue(publicClient);
         useWalletClientMock.mockReturnValue({ data: walletClient } as any);
-        useEthersLibraryMock.mockReturnValue(library);
         useAccountEffectMock.mockImplementation(() => undefined);
         switchChainAsync.mockResolvedValue(undefined);
     });
@@ -179,7 +168,6 @@ describe('useWagmiWallet', () => {
 
     it('is inactive while disconnected and opens the connect modal on activate', async () => {
         useAccountMock.mockReturnValue(disconnected());
-        useEthersLibraryMock.mockReturnValue(undefined);
 
         const { result } = renderHook(() => useWagmiWallet());
 
@@ -199,7 +187,6 @@ describe('useWagmiWallet', () => {
         expect(result.current.active).toBe(true);
         expect(result.current.account).toEqual(address.toLowerCase());
         expect(result.current.chainId).toEqual(Network.MAINNET);
-        expect(result.current.library).toBe(library);
         expect(result.current.publicClient).toBe(publicClient);
         expect(result.current.walletClient).toBe(walletClient);
         expect(result.current.walletName).toEqual('MetaMask');
@@ -233,9 +220,9 @@ describe('useWagmiWallet', () => {
         expect(result.current.walletName).toEqual('Safe');
     });
 
-    it('stays inactive until the ethers provider is ready', () => {
+    it('stays inactive until the wallet client is ready', () => {
         useAccountMock.mockReturnValue(connected());
-        useEthersLibraryMock.mockReturnValue(undefined);
+        useWalletClientMock.mockReturnValue({ data: undefined } as any);
 
         const { result } = renderHook(() => useWagmiWallet());
 

@@ -9,7 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import type { Web3Provider } from '@ethersproject/providers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useCallback, useEffect, useMemo } from 'react';
 import type {
@@ -31,7 +30,6 @@ import { Network } from '../../utils/networks';
 import { supportedChainIds } from './chains';
 import { WalletType } from './definitions';
 import { UnsupportedNetworkError } from './errors/UnsupportedNetworkError';
-import { useEthersLibrary } from './ethersAdapter';
 
 /** Key used by the previous wallet library to remember the selected wallet. */
 const LEGACY_SELECTED_WALLETS = 'SELECTED_WALLETS_V2';
@@ -69,8 +67,6 @@ export interface WagmiWallet {
     error?: Error | null;
     chainId?: number;
     account?: string;
-    /** @deprecated transitional ethers v5 provider; use publicClient/walletClient. */
-    library?: Web3Provider;
     publicClient?: PublicClient<Transport, Chain>;
     walletClient?: WalletClient<Transport, Chain, Account>;
     active: boolean;
@@ -96,7 +92,6 @@ export const useWagmiWallet = (): WagmiWallet => {
         chainId: isSupported ? chainId : undefined,
     });
     const { data: walletClient } = useWalletClient();
-    const library = useEthersLibrary(connector);
 
     // Keep account info as lowercase to match how that is indexed on the-graph.
     const account = address?.toLowerCase();
@@ -106,7 +101,7 @@ export const useWagmiWallet = (): WagmiWallet => {
     const walletType = getWalletType(connector);
     const active =
         status === 'connected' &&
-        library !== undefined &&
+        walletClient !== undefined &&
         account !== undefined &&
         chainId !== undefined &&
         !error;
@@ -137,7 +132,6 @@ export const useWagmiWallet = (): WagmiWallet => {
         error,
         chainId,
         account,
-        library,
         publicClient,
         walletClient,
         active,

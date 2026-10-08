@@ -26,7 +26,6 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = ({
     children,
 }) => {
     const {
-        library,
         publicClient,
         walletClient,
         account,
@@ -51,7 +50,6 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = ({
     const defaults = { activate, active, deactivate, error };
     const value = active
         ? {
-              library,
               publicClient,
               walletClient,
               account,

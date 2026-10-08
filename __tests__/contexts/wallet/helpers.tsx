@@ -16,12 +16,10 @@ export const TestComponent = () => {
         chainId,
         walletName,
         error,
-        library,
     } = useWallet();
     return (
         <div>
             {active && <span>Wallet is connected</span>}
-            {library && <span>Ethers library is set</span>}
             {active && isFunction(deactivate) && (
                 <button type="button" onClick={deactivate}>
                     Disconnect Wallet
