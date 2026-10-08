@@ -30,3 +30,8 @@ overrides:
   # eth-sig-util@1.4.2 declares ethereumjs-abi as an unpinned git URL, which
   # blockExoticSubdeps rejects. Pin the equivalent registry release instead.
   'ethereumjs-abi': '^0.6.8'
+  # RainbowKit pins cuer@0.0.3, which calls qr's encodeQR with border: 0;
+  # qr >=0.6 rejects that (RangeError: invalid border=0) and breaks the
+  # WalletConnect QR screen. cuer@0.0.4 fixes it; drop this once RainbowKit
+  # ships that version.
+  'qr': '~0.5.5'
