@@ -9,34 +9,21 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { isAddress } from '@ethersproject/address';
-import { Web3Provider } from '@ethersproject/providers';
 import { renderHook, waitFor } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { WalletConnectionContextProps } from '../../src/components/wallet/definitions';
 import { useWallet } from '../../src/components/wallet/useWallet';
 import { useBalance, useBlockNumber } from '../../src/services/eth';
 
 jest.mock('../../src/components/wallet/useWallet');
-jest.mock('@ethersproject/address', () => {
-    const originalModule = jest.requireActual('@ethersproject/address');
-    return {
-        __esModule: true,
-        ...originalModule,
-        isAddress: jest.fn(),
-    };
-});
 
 const address = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
 const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
-const mockedIsAddress = isAddress as jest.MockedFunction<typeof isAddress>;
 
 const walletData = {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    library: {
-        getSigner: jest.fn(),
-    } as unknown as Web3Provider,
+    publicClient: {
+        getBalance: jest.fn(),
+        watchBlockNumber: jest.fn(),
+    },
     account: address,
     active: true,
     activate: jest.fn(),
@@ -62,7 +49,7 @@ describe('eth service', () => {
         it('should return undefined balance if library is not defined', async () => {
             mockUseWallet.mockReturnValue({
                 ...walletData,
-                library: undefined,
+                publicClient: undefined,
             } as unknown as WalletConnectionContextProps);
             const { result } = renderHook(() => useBalance(address));
 
@@ -75,8 +62,9 @@ describe('eth service', () => {
             mockUseWallet.mockReturnValue(
                 walletData as unknown as WalletConnectionContextProps,
             );
-            mockedIsAddress.mockReturnValue(false);
-            const { result } = renderHook(() => useBalance(address));
+            const { result } = renderHook(() => useBalance('not-an-address'));
+
+            expect(walletData.publicClient.getBalance).not.toHaveBeenCalled();
 
             await waitFor(() => {
                 expect(result.current).toBe(undefined);
@@ -84,21 +72,19 @@ describe('eth service', () => {
         });
 
         it('should return correct balance if address is valid', async () => {
-            const balance = BigNumber.from('10000000000');
+            const balance = 10000000000n;
+            const getBalance = jest.fn().mockResolvedValue(balance);
             mockUseWallet.mockReturnValue({
                 ...walletData,
-                library: {
-                    ...walletData.library,
-                    getBalance: () => Promise.resolve(balance),
-                },
+                publicClient: { ...walletData.publicClient, getBalance },
             } as unknown as WalletConnectionContextProps);
 
-            mockedIsAddress.mockReturnValue(true);
             const { result } = renderHook(() => useBalance(address));
 
             await waitFor(() => {
-                expect(result.current).toStrictEqual(balance);
+                expect(result.current).toBe(balance);
             });
+            expect(getBalance).toHaveBeenCalledWith({ address });
         });
     });
 
@@ -106,7 +92,7 @@ describe('eth service', () => {
         it('should return zero block number if library is not defined', async () => {
             mockUseWallet.mockReturnValue({
                 ...walletData,
-                library: undefined,
+                publicClient: undefined,
             } as unknown as WalletConnectionContextProps);
             const { result } = renderHook(() => useBlockNumber());
 
@@ -117,20 +103,26 @@ describe('eth service', () => {
 
         it('should return correct block number if library is defined', async () => {
             const blockNumber = 10;
+            const unwatch = jest.fn();
+            const watchBlockNumber = jest.fn(({ onBlockNumber }) => {
+                onBlockNumber(BigInt(blockNumber));
+                return unwatch;
+            });
             mockUseWallet.mockReturnValue({
                 ...walletData,
-                library: {
-                    ...walletData.library,
-                    getBlockNumber: () => Promise.resolve(blockNumber),
-                    on: jest.fn(),
-                    removeListener: jest.fn(),
-                },
+                publicClient: { ...walletData.publicClient, watchBlockNumber },
             } as unknown as WalletConnectionContextProps);
-            const { result } = renderHook(() => useBlockNumber());
+            const { result, unmount } = renderHook(() => useBlockNumber());
 
             await waitFor(() => {
                 expect(result.current).toStrictEqual(blockNumber);
             });
+            expect(watchBlockNumber).toHaveBeenCalledWith(
+                expect.objectContaining({ emitOnBegin: true }),
+            );
+
+            unmount();
+            expect(unwatch).toHaveBeenCalled();
         });
     });
 });

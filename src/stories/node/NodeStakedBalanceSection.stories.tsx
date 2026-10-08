@@ -11,9 +11,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseEther } from 'viem';
 
 import { NodeStakedBalanceSection } from '../../components/node/NodeStakedBalanceSection';
-import { ethers } from 'ethers';
 
 export default {
     title: 'Node/NodeStakedBalanceSection',
@@ -29,7 +29,7 @@ const Template: Story = {
 
 export const Basic: Story = {
     args: {
-        stakedBalance: ethers.utils.parseEther('0.0'),
+        stakedBalance: parseEther('0.0'),
     },
     ...Template,
 };

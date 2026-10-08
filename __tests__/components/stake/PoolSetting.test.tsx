@@ -18,7 +18,6 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import useFlag from '../../../src/hooks/useFlag';
-import { BigNumber } from 'ethers';
 import { PoolSetting } from '../../../src/components/stake/PoolSetting';
 import { useWallet } from '../../../src/components/wallet/useWallet';
 import useStakingPoolQuery from '../../../src/graphql/hooks/useStakingPool';
@@ -105,9 +104,7 @@ describe('PoolSetting', () => {
             buildUseStakingPoolFactoryReturn(),
         );
 
-        mockUseTotalPoolBalance.mockReturnValue(
-            BigNumber.from(totalPoolBalance),
-        );
+        mockUseTotalPoolBalance.mockReturnValue(BigInt(totalPoolBalance));
 
         mockUseStakingPoolQuery.mockReturnValue({
             id: '1231',

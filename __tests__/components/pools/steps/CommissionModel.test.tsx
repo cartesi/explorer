@@ -359,6 +359,7 @@ describe('CommissionModel step component', () => {
             const poolFactory = buildUseStakingPoolFactoryReturn();
             poolFactory.transaction.acknowledged = false;
             poolFactory.transaction.receipt = buildContractReceipt();
+            poolFactory.transaction.confirmations = 1;
             poolFactory.transaction.result =
                 '0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA';
             mockUseStakingPoolFactory.mockReturnValue(poolFactory);

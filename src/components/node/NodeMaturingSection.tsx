@@ -20,14 +20,13 @@ import {
     Icon,
 } from '@chakra-ui/react';
 
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { TimeIcon } from '../Icons';
 import CTSI from '../pools/staking/CTSI';
 import { useColorModeValue } from '../ui/color-mode';
 
 export interface INodeMaturingSection {
-    maturingBalance: BigNumber;
+    maturingBalance: bigint;
     maturingLeft?: string;
 }
 
@@ -44,9 +43,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
         'dark.secondary',
         'dark.primary',
     );
-    const iconColor = maturingBalance.isZero()
-        ? 'gray.450'
-        : iconColorModeColor;
+    const iconColor = maturingBalance === 0n ? 'gray.450' : iconColorModeColor;
 
     return (
         <Box
@@ -95,7 +92,7 @@ export const NodeMaturingSection: FC<INodeMaturingSection> = ({
                     gap={4}
                     alignItems="center"
                 >
-                    {maturingBalance.gt(0) && maturingLeft && (
+                    {maturingBalance > 0n && maturingLeft && (
                         <Button
                             colorPalette="gray"
                             variant="ghost"

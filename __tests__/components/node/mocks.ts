@@ -10,36 +10,34 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ContractReceipt } from 'ethers/lib';
 import { mock } from 'jest-mock-extended';
 import { cloneDeep, cond, constant, isEqual, stubTrue } from 'lodash/fp';
+import { TransactionReceipt } from 'viem';
 import { Node, NodeStatus } from '../../../src/services/node';
 import { useStaking } from '../../../src/services/staking';
 import { useCartesiToken } from '../../../src/services/token';
 import { Transaction } from '../../../src/services/transaction';
-import { toBigNumber } from '../../../src/utils/numberParser';
 import { ReturnOf } from '../../test-utilities';
 
 /**
  * Don't use this directly. Use the build function exported below
+ * (cast because viem's Log type only resolves `topics` with strictNullChecks)
  */
-const stubReceipt: ContractReceipt = {
+const stubReceipt = {
     blockHash:
         '0x8a179bc6cb299f936c4fd614995e62d597ec6108b579c23034fb220967ceaa94',
-    blockNumber: 12598244,
-    byzantium: true,
-    confirmations: 2083037,
+    blockNumber: 12598244n,
     contractAddress: '0x733aF852514e910E2f8af40d61E00530377889E9',
-    cumulativeGasUsed: toBigNumber('12102324'),
-    effectiveGasPrice: toBigNumber('10100000000'),
+    cumulativeGasUsed: 12102324n,
+    effectiveGasPrice: 10100000000n,
     from: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
-    gasUsed: toBigNumber('443560'),
+    gasUsed: 443560n,
     logs: [
         {
             address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
             blockHash:
                 '0x8a179bc6cb299f936c4fd614995e62d597ec6108b579c23034fb220967ceaa94',
-            blockNumber: 12598244,
+            blockNumber: 12598244n,
             data: '0x000000000000000000000000084b1c3c81545d370f3634392de611caabff8148',
             logIndex: 160,
             topics: [
@@ -56,7 +54,7 @@ const stubReceipt: ContractReceipt = {
             address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
             blockHash:
                 '0x8a179bc6cb299f936c4fd614995e62d597ec6108b579c23034fb220967ceaa94',
-            blockNumber: 12598244,
+            blockNumber: 12598244n,
             data: '0x000000000000000000000000a2c122be93b0074270ebee7f6b7292c7deb45047',
             logIndex: 161,
             topics: [
@@ -69,16 +67,15 @@ const stubReceipt: ContractReceipt = {
             removed: false,
         },
     ],
-    events: [],
     logsBloom:
         '0x00000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000004000000000000010000000000000020000000000000000000040000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000040000000000000000100004000000000000008000040000000000000000000000000000000000005000000000041000000000000000000000000000000000000000000000000100000000000000001000000000000000000000',
-    status: 1,
+    status: 'success',
     to: null,
     transactionHash:
         '0x5b73e239c55d790e3c9c3bbb84092652db01bb8dbf49ccc9e4a318470419d9a0',
     transactionIndex: 315,
-    type: 0,
-};
+    type: 'legacy',
+} as unknown as TransactionReceipt;
 
 const initialNodeState: Node = {
     address: undefined,
@@ -144,6 +141,7 @@ function buildTransaction(): Transaction<any> {
         result: undefined,
         set: jest.fn(),
         submitting: false,
+        confirmations: 0,
         transaction: undefined,
         isOngoing: false,
         state: 'acknowledged',

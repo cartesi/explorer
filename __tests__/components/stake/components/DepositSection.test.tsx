@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import {
     DepositSection,
     IDepositSection,
@@ -32,8 +31,8 @@ describe('Deposit Section', () => {
     const renderComponent = () =>
         render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={BigInt(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -72,8 +71,8 @@ describe('Deposit Section', () => {
     it('Should display add CTSI to deposit label', () => {
         render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(0)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userWalletBalance={0n}
+                userETHBalance={BigInt(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -86,8 +85,8 @@ describe('Deposit Section', () => {
     it('Should display add CTSI to deposit label', () => {
         render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(0)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={0n}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -102,8 +101,8 @@ describe('Deposit Section', () => {
     it('Should disable deposit button when userWalletBalance is zero', () => {
         const { getByText } = render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(0)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userWalletBalance={0n}
+                userETHBalance={BigInt(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -114,8 +113,8 @@ describe('Deposit Section', () => {
     it('Should disable deposit button when userETHBalance is zero', () => {
         const { getByText } = render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(0)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={0n}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -127,8 +126,8 @@ describe('Deposit Section', () => {
         useWalletMock.mockReturnValue({ ...dummyWallet, isGnosisSafe: true });
         render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(0)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={0n}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -139,8 +138,8 @@ describe('Deposit Section', () => {
     it('Should enable deposit button when userWalletBalance and userETHBalance are above zero', () => {
         const { getByText } = render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={BigInt(defaultValue)}
                 onDepositClick={defaultOnDepositClick}
             />,
         );
@@ -152,8 +151,8 @@ describe('Deposit Section', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
             <EDepositSection
-                userWalletBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userWalletBalance={BigInt(defaultValue)}
+                userETHBalance={BigInt(defaultValue)}
                 onDepositClick={mockOnClick()}
             />,
         );

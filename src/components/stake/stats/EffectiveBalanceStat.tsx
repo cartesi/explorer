@@ -21,7 +21,6 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
 import { FC } from 'react';
 import { useTimeLeft } from '../../../utils/react';
 import { formatCTSI } from '../../../utils/token';
@@ -32,13 +31,13 @@ import { Tooltip } from '../../Tooltip';
 import { TbHelp } from 'react-icons/tb';
 
 export interface EffectiveBalanceStatProps extends StackProps {
-    stake: BigNumber;
-    unstake: BigNumber;
-    withdraw: BigNumber;
-    stakingMature: BigNumber;
-    stakingMaturing: BigNumber;
-    stakingReleasing: BigNumber;
-    stakingReleased: BigNumber;
+    stake: bigint;
+    unstake: bigint;
+    withdraw: bigint;
+    stakingMature: bigint;
+    stakingMaturing: bigint;
+    stakingReleasing: bigint;
+    stakingReleased: bigint;
     stakingMaturingTimestamp: Date;
     stakingReleasingTimestamp: Date;
     onRebalance?: () => void;
@@ -59,19 +58,16 @@ const EffectiveBalanceStat: FC<EffectiveBalanceStatProps> = (props) => {
     } = props;
 
     // tells if an action needs to be done to move tokens around
-    const needRebalance =
-        stake?.gt(constants.Zero) ||
-        unstake?.gt(constants.Zero) ||
-        withdraw?.gt(constants.Zero);
+    const needRebalance = stake > 0n || unstake > 0n || withdraw > 0n;
 
     let rebalanceLabel = 'click to rebalance.';
-    if (stake?.gt(constants.Zero)) {
+    if (stake > 0n) {
         rebalanceLabel =
             `${formatCTSI(stake)} CTSI to stake, ` + rebalanceLabel;
-    } else if (unstake?.gt(constants.Zero)) {
+    } else if (unstake > 0n) {
         rebalanceLabel =
             `${formatCTSI(unstake)} CTSI to unstake, ` + rebalanceLabel;
-    } else if (withdraw?.gt(constants.Zero)) {
+    } else if (withdraw > 0n) {
         rebalanceLabel =
             `${formatCTSI(withdraw)} CTSI to withdraw, ` + rebalanceLabel;
     }

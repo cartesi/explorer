@@ -313,6 +313,7 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = false;
                 pool.transaction.receipt = buildContractReceipt();
+                pool.transaction.confirmations = 1;
                 rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
@@ -420,6 +421,7 @@ describe('HireNode Step', () => {
                 pool.transaction.acknowledged = false;
                 pool.transaction.submitting = false;
                 pool.transaction.receipt = buildContractReceipt();
+                pool.transaction.confirmations = 1;
                 rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');
@@ -547,6 +549,7 @@ describe('HireNode Step', () => {
                 // emulating transaction state change;
                 pool.transaction.acknowledged = false;
                 pool.transaction.receipt = buildContractReceipt();
+                pool.transaction.confirmations = 1;
                 rerender(<HireNodeE inFocus stepNumber={1} />);
 
                 const alert = screen.getByRole('alert');

@@ -15,13 +15,12 @@ import {
     IStakingPoolAllowanceModalProps,
 } from '../../../../src/components/stake/modals/StakingPoolAllowanceModal';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '100000000000000000000000';
 
 const defaultProps = {
-    allowance: BigNumber.from(defaultValue),
-    balance: BigNumber.from(defaultValue),
+    allowance: BigInt(defaultValue),
+    balance: BigInt(defaultValue),
     disclosure: {
         onClose: () => undefined,
     },

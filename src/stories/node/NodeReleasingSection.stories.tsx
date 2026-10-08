@@ -11,9 +11,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseEther } from 'viem';
 
 import { NodeReleasingSection } from '../../components/node/NodeReleasingSection';
-import { ethers } from 'ethers';
 
 export default {
     title: 'Node/NodeReleasingSection',
@@ -29,7 +29,7 @@ const Template: Story = {
 
 export const Basic: Story = {
     args: {
-        releasingBalance: ethers.utils.parseEther('3.34'),
+        releasingBalance: parseEther('3.34'),
         releasingLeftShort: '1 days, 4 hours',
     },
     ...Template,
@@ -37,7 +37,7 @@ export const Basic: Story = {
 
 export const NoBalance: Story = {
     args: {
-        releasingBalance: ethers.utils.parseEther('0'),
+        releasingBalance: parseEther('0'),
     },
     ...Template,
 };

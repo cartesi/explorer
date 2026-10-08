@@ -24,7 +24,6 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useRef, useState } from 'react';
@@ -93,9 +92,7 @@ const ManageNode: FC = () => {
 
     // use a state variable for the typed node address
     const [worker, setWorker] = useState<string>();
-    const [hiringFunds, setHiringFunds] = useState<BigNumber>(
-        BigNumber.from(0),
-    );
+    const [hiringFunds, setHiringFunds] = useState<bigint>(0n);
 
     // priority is the typed address (at state variable)
     const activeWorker = worker || existingNode || '';
@@ -147,12 +144,9 @@ const ManageNode: FC = () => {
     }, [hiredNewNode, activeWorker]);
 
     useEffect(() => {
-        if (
-            hiringFunds.gt(BigNumber.from(0)) &&
-            currentTransaction === 'hire'
-        ) {
+        if (hiringFunds > 0n && currentTransaction === 'hire') {
             node.hire(hiringFunds);
-            setHiringFunds(BigNumber.from(0));
+            setHiringFunds(0n);
         }
     }, [node, hiringFunds, currentTransaction]);
 

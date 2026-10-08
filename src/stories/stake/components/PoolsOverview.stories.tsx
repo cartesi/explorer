@@ -12,7 +12,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import PoolsOverview from '../../../components/stake/components/PoolsOverview';
-import { BigNumber } from 'ethers';
 
 export default {
     title: 'Stake/Components/PoolsOverview',
@@ -27,7 +26,7 @@ const Template: Story = {
 };
 
 const defaultProps = {
-    balance: BigNumber.from('10000000000000000000000'),
+    balance: 10000000000000000000000n,
     poolBalancesCount: 10,
     summary: {
         id: '1',

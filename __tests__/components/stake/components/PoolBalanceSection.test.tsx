@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import {
     IPoolBalanceSectionProps,
     PoolBalanceSection,
@@ -30,7 +29,7 @@ describe('Deposit Section', () => {
     const renderComponent = () =>
         render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -45,7 +44,7 @@ describe('Deposit Section', () => {
     it('Should display currently locked pool balance label', () => {
         render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -61,14 +60,14 @@ describe('Deposit Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue)),
+            parseCtsiValue(BigInt(defaultValue)),
         );
     });
 
     it('Should disable stake button when pool balance is locked', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -81,7 +80,7 @@ describe('Deposit Section', () => {
     it('Should disable stake button when userPoolBalance is zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(0)}
+                userPoolBalance={0n}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -94,7 +93,7 @@ describe('Deposit Section', () => {
     it('Should disable withdraw button when userPoolBalance is zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(0)}
+                userPoolBalance={0n}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -107,7 +106,7 @@ describe('Deposit Section', () => {
     it('Should enable stake button when userPoolBalance and userETHBalance are above zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -120,7 +119,7 @@ describe('Deposit Section', () => {
     it('Should enable withdraw button when userPoolBalance is above zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -134,7 +133,7 @@ describe('Deposit Section', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked={false}
                 onStakeClick={mockOnClick()}
                 onWithdrawClick={defaultOnWithdrawClick}
@@ -152,7 +151,7 @@ describe('Deposit Section', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
             <EPoolBalanceSection
-                userPoolBalance={BigNumber.from(defaultValue)}
+                userPoolBalance={BigInt(defaultValue)}
                 isPoolBalanceLocked={false}
                 onStakeClick={defaultOnStakeClick}
                 onWithdrawClick={mockOnClick()}

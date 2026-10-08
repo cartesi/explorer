@@ -15,14 +15,13 @@ import {
     StakingDashboardProps,
 } from '../../../src/components/stake/StakingDashboard';
 import { withChakraTheme } from '../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '10000000000000000000000';
 
 const defaultProps = {
-    balance: BigNumber.from(defaultValue),
-    allowance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(defaultValue),
+    balance: BigInt(defaultValue),
+    allowance: BigInt(defaultValue),
+    userETHBalance: BigInt(defaultValue),
     onApprove: () => undefined,
 };
 

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { parseCtsiValue } from '../../../../src/components/pools/staking/CTSI';
 import {
     IWalletBalanceSectionProps,
@@ -33,8 +32,8 @@ describe('Wallet Balance Section', () => {
     const renderComponent = () =>
         render(
             <EWalletBalanceSection
-                userCTSIBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userCTSIBalance={BigInt(defaultValue)}
+                userETHBalance={BigInt(defaultValue)}
             />,
         );
 
@@ -60,8 +59,8 @@ describe('Wallet Balance Section', () => {
     it('Should display not enough ETH when userETHBalance is zero', () => {
         const { getByText } = render(
             <EWalletBalanceSection
-                userCTSIBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(0)}
+                userCTSIBalance={BigInt(defaultValue)}
+                userETHBalance={0n}
             />,
         );
 
@@ -80,8 +79,8 @@ describe('Wallet Balance Section', () => {
 
         render(
             <EWalletBalanceSection
-                userCTSIBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(0)}
+                userCTSIBalance={BigInt(defaultValue)}
+                userETHBalance={0n}
             />,
         );
 
@@ -95,8 +94,8 @@ describe('Wallet Balance Section', () => {
     it('Should not display not enough ETH when userETHBalance is above zero', () => {
         const { getByText } = render(
             <EWalletBalanceSection
-                userCTSIBalance={BigNumber.from(defaultValue)}
-                userETHBalance={BigNumber.from(defaultValue)}
+                userCTSIBalance={BigInt(defaultValue)}
+                userETHBalance={BigInt(defaultValue)}
             />,
         );
 
@@ -111,7 +110,7 @@ describe('Wallet Balance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue)),
+            parseCtsiValue(BigInt(defaultValue)),
         );
     });
 });

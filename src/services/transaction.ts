@@ -9,9 +9,6 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { serializeError } from 'eth-rpc-errors';
-import { SerializedEthereumRpcError } from 'eth-rpc-errors/dist/classes';
-import { ContractReceipt, ContractTransaction } from 'ethers';
 import {
     allPass,
     anyPass,
@@ -25,16 +22,30 @@ import {
     T,
 } from 'lodash/fp';
 import { useEffect, useState } from 'react';
+import {
+    BaseError,
+    ContractFunctionRevertedError,
+    Hash,
+    TransactionReceipt,
+} from 'viem';
 import { useWallet } from '../components/wallet';
 import { confirmations } from '../utils/networks';
+
+/** The transaction as submitted by the wallet. */
+export interface SubmittedTransaction {
+    hash: Hash;
+    chainId: number;
+}
 
 export class Transaction<R> {
     submitting: boolean;
     acknowledged: boolean;
-    transaction?: ContractTransaction;
+    transaction?: SubmittedTransaction;
     error?: string;
-    receipt?: ContractReceipt;
-    set: (transaction: Promise<ContractTransaction>) => void;
+    receipt?: TransactionReceipt;
+    /** Confirmations waited for before `receipt` was set (0 until then). */
+    confirmations: number;
+    set: (transaction: Promise<Hash>) => void;
     ack: () => void;
     result?: R;
     /**
@@ -82,40 +93,46 @@ const deriveStateFrom = cond<Transaction<any>, TransactionState>([
     [T, () => 'unexpected'],
 ]);
 
-function extractError(error: SerializedEthereumRpcError): string {
-    if (error.data) {
-        const data: any = error.data as any;
-        if (data?.originalError?.error) {
-            return extractError(
-                data.originalError.error as SerializedEthereumRpcError,
-            );
-        }
+/**
+ * Revert reason when the contract gave one, else viem's short message
+ * (e.g. "User rejected the request."), else the error's message.
+ */
+export function extractErrorMessage(error: unknown): string {
+    if (error instanceof BaseError) {
+        const reverted = error.walk(
+            (e) => e instanceof ContractFunctionRevertedError,
+        ) as ContractFunctionRevertedError | null;
+        return reverted?.reason ?? reverted?.shortMessage ?? error.shortMessage;
     }
-    return error.message;
+    if (error instanceof Error) {
+        return error.message;
+    }
+    return String(error);
 }
 
 export function useTransaction<R>(
-    resultResolver?: (receipt: ContractReceipt) => R,
+    resultResolver?: (receipt: TransactionReceipt) => R,
 ): Transaction<R> {
-    const { chainId } = useWallet();
+    const { chainId, publicClient } = useWallet();
     const [acknowledged, setAcknowledged] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string>();
-    const [transaction, setTransaction] = useState<ContractTransaction>();
-    const [receipt, setReceipt] = useState<ContractReceipt>();
+    const [transaction, setTransaction] = useState<SubmittedTransaction>();
+    const [receipt, setReceipt] = useState<TransactionReceipt>();
+    const [confirmed, setConfirmed] = useState(0);
     const [result, setResult] = useState<R>();
 
-    const set = (transaction: Promise<ContractTransaction>) => {
+    const set = (pending: Promise<Hash>) => {
         setAcknowledged(false);
         setSubmitting(true);
         setReceipt(undefined);
+        setConfirmed(0);
         setResult(undefined);
         setError(undefined);
-        transaction
-            .then(setTransaction)
+        pending
+            .then((hash) => setTransaction({ hash, chainId }))
             .catch((e) => {
-                const error = serializeError(e);
-                setError(extractError(error));
+                setError(extractErrorMessage(e));
             })
             .finally(() => setSubmitting(false));
     };
@@ -126,18 +143,26 @@ export function useTransaction<R>(
             setError(null);
             try {
                 // wait for confirmations
-                const receipt = await transaction.wait(confirmations[chainId]);
+                const required = confirmations[transaction.chainId] ?? 1;
+                const receipt = await publicClient.waitForTransactionReceipt({
+                    hash: transaction.hash,
+                    confirmations: required,
+                });
+                if (receipt.status === 'reverted') {
+                    throw new Error('Transaction reverted');
+                }
                 setReceipt(receipt);
+                setConfirmed(required);
 
                 // resolve result from receipt (events?)
                 if (resultResolver) {
                     setResult(resultResolver(receipt));
                 }
             } catch (e) {
-                setError(e.message);
+                setError(extractErrorMessage(e));
             }
         };
-        if (transaction) {
+        if (transaction && publicClient) {
             update();
         }
     }, [transaction]);
@@ -148,6 +173,7 @@ export function useTransaction<R>(
         transaction,
         error,
         receipt,
+        confirmations: confirmed,
         set,
         ack,
         result,

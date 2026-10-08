@@ -9,11 +9,9 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { CartesiToken } from '@cartesi/token';
-import { formatUnits, parseUnits } from '@ethersproject/units';
 import { renderHook, waitFor } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { act } from 'react';
+import { formatUnits, parseUnits } from 'viem';
 import { useCartesiTokenContract } from '../../src/services/contracts';
 import { useCartesiToken } from '../../src/services/token';
 import { Transaction, useTransaction } from '../../src/services/transaction';
@@ -40,10 +38,16 @@ const mockedUseCartesiTokenContract =
         typeof useCartesiTokenContract
     >;
 
+type CartesiToken = ReturnType<typeof useCartesiTokenContract>;
+
 const cartesiTokenData = {
-    balanceOf: () => Promise.resolve(BigNumber.from(0)),
-    allowance: () => Promise.resolve(BigNumber.from(0)),
-    approve: jest.fn(),
+    read: {
+        balanceOf: () => Promise.resolve(0n),
+        allowance: () => Promise.resolve(0n),
+    },
+    write: {
+        approve: jest.fn(),
+    },
 } as unknown as CartesiToken;
 
 describe('token service', () => {
@@ -63,7 +67,7 @@ describe('token service', () => {
         const { result } = renderHook(() => useCartesiToken());
 
         await act(async () => {
-            await result.current.approve('spender', BigNumber.from('100000'));
+            await result.current.approve('spender', 100000n);
         });
 
         expect(mockedSet).toHaveBeenCalled();
@@ -72,25 +76,27 @@ describe('token service', () => {
     it('should set balance and allowance to zero when token and account are not defined', () => {
         const { result } = renderHook(() => useCartesiToken());
 
-        expect(result.current.balance).toStrictEqual(BigNumber.from(0));
-        expect(result.current.allowance).toStrictEqual(BigNumber.from(0));
+        expect(result.current.balance).toBe(0n);
+        expect(result.current.allowance).toBe(0n);
     });
 
     it('should correctly set balance and allowance when token and account are defined', async () => {
-        const balance = BigNumber.from('10000000');
-        const allowance = BigNumber.from('10000000000');
+        const balance = 10000000n;
+        const allowance = 10000000000n;
         const account = '0x51937974a767da96dc1c3f9a7b07742e256f0ffe';
         const spender = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
         mockedUseCartesiTokenContract.mockReturnValue({
             ...cartesiTokenData,
-            balanceOf: () => Promise.resolve(balance),
-            allowance: () => Promise.resolve(allowance),
+            read: {
+                balanceOf: () => Promise.resolve(balance),
+                allowance: () => Promise.resolve(allowance),
+            },
         } as unknown as CartesiToken);
         const { result } = renderHook(() => useCartesiToken(account, spender));
 
         await waitFor(() => {
-            expect(result.current.balance).toStrictEqual(balance);
-            expect(result.current.allowance).toStrictEqual(allowance);
+            expect(result.current.balance).toBe(balance);
+            expect(result.current.allowance).toBe(allowance);
         });
     });
 
@@ -98,7 +104,7 @@ describe('token service', () => {
         const { result } = renderHook(() => useCartesiToken());
 
         const amount = 100000;
-        expect(result.current.parseCTSI(amount)).toStrictEqual(
+        expect(result.current.parseCTSI(amount)).toBe(
             parseUnits((amount * 1000).toString(), 15),
         );
     });
@@ -106,7 +112,7 @@ describe('token service', () => {
     it('should correctly convert to CTSI', () => {
         const { result } = renderHook(() => useCartesiToken());
 
-        const amount = BigNumber.from('10000');
+        const amount = 10000n;
         expect(result.current.toCTSI(amount)).toStrictEqual(
             parseInt(formatUnits(amount, 18)),
         );
@@ -115,9 +121,9 @@ describe('token service', () => {
     it('should correctly convert to big CTSI', () => {
         const { result } = renderHook(() => useCartesiToken());
 
-        const amount = BigNumber.from('10000');
-        expect(result.current.toBigCTSI(amount)).toStrictEqual(
-            BigNumber.from(result.current.toCTSI(amount)),
+        const amount = 10000n;
+        expect(result.current.toBigCTSI(amount)).toBe(
+            BigInt(result.current.toCTSI(amount)),
         );
     });
 });

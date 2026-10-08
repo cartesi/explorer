@@ -11,10 +11,10 @@
 
 import React, { FC } from 'react';
 import { Flex, FlexProps, Heading, HStack, Text, Icon } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { IconType } from 'react-icons';
 import humanizeDuration from 'humanize-duration';
+import { Numeric, toBigInt } from '../utils/bigint';
 
 type Unit = 'eth' | 'ctsi' | 'percent' | 'usd' | 'duration';
 type Countdown = {
@@ -37,10 +37,7 @@ const formatPercentNumber = (
     return formatter.format(value * 100);
 };
 
-const formatPercent = (
-    value: BigNumberish,
-    options?: Intl.NumberFormatOptions,
-) => {
+const formatPercent = (value: Numeric, options?: Intl.NumberFormatOptions) => {
     if (typeof value === 'number') {
         return formatPercentNumber(value, options);
     } else {
@@ -49,7 +46,7 @@ const formatPercent = (
 };
 
 const format = (
-    value: BigNumberish,
+    value: Numeric,
     unit: Unit,
     options: Intl.NumberFormatOptions,
 ): string[] => {
@@ -57,12 +54,16 @@ const format = (
     switch (unit) {
         case 'eth':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(formatUnits(toBigInt(value), 18)),
+                ),
                 'ETH',
             ];
         case 'ctsi':
             return [
-                numberFormat.format(parseFloat(formatUnits(value, 18))),
+                numberFormat.format(
+                    parseFloat(formatUnits(toBigInt(value), 18)),
+                ),
                 'CTSI',
             ];
         case 'percent':
@@ -72,13 +73,13 @@ const format = (
         case 'duration':
             return formatDuration(parseFloat(value.toString()));
         default:
-            return [numberFormat.format(BigNumber.from(value).toNumber()), ''];
+            return [numberFormat.format(Number(toBigInt(value))), ''];
     }
 };
 
 export interface BigNumberTextV2Props extends FlexProps {
     icon?: IconType;
-    value: BigNumberish;
+    value: Numeric;
     nullLabel?: string;
     unit?: Unit;
     options?: Intl.NumberFormatOptions;

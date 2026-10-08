@@ -21,13 +21,12 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../../ui/color-mode';
 
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { useWallet } from '../../wallet';
 
 export interface IDepositSection {
-    userWalletBalance: BigNumber;
-    userETHBalance: BigNumber;
+    userWalletBalance: bigint;
+    userETHBalance: bigint;
     onDepositClick: () => void;
 }
 
@@ -37,7 +36,7 @@ export const DepositSection: FC<IDepositSection> = ({
     onDepositClick,
 }) => {
     const { isGnosisSafe } = useWallet();
-    const noEthAndIsNotASafe = userETHBalance?.isZero() && !isGnosisSafe;
+    const noEthAndIsNotASafe = userETHBalance === 0n && !isGnosisSafe;
     const warningIconColor = useColorModeValue(
         'light.support.warning',
         'dark.support.warning',
@@ -62,7 +61,7 @@ export const DepositSection: FC<IDepositSection> = ({
                     onClick={onDepositClick}
                     width="173px"
                     ml="auto"
-                    disabled={userWalletBalance.isZero() || noEthAndIsNotASafe}
+                    disabled={userWalletBalance === 0n || noEthAndIsNotASafe}
                 >
                     Deposit
                 </Button>
@@ -71,7 +70,7 @@ export const DepositSection: FC<IDepositSection> = ({
                         fontSize="xs"
                         textAlign={{ base: 'left', md: 'right' }}
                     >
-                        {userWalletBalance.isZero() ? (
+                        {userWalletBalance === 0n ? (
                             <>
                                 <Icon
                                     as={TbAlertCircleFilled}

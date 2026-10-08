@@ -11,7 +11,7 @@
 
 import { Text } from '@chakra-ui/react';
 import { Meta } from '@storybook/nextjs-vite';
-import { parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'viem';
 import {
     TbHistory,
     TbCoins,

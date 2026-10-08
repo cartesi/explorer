@@ -8,13 +8,14 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
-import { ethers, BigNumber } from 'ethers';
 
-const parse = (v: string, d: number) => ethers.utils.parseUnits(v, d);
+import { parseUnits } from 'viem';
 
-export function toBigNumber(v: string, decimals?: number): BigNumber;
-export function toBigNumber(v: number, decimals?: number): BigNumber;
-export function toBigNumber(v: unknown, decimals = 18): BigNumber {
+const parse = (v: string, d: number) => parseUnits(v, d);
+
+export function toBigNumber(v: string, decimals?: number): bigint;
+export function toBigNumber(v: number, decimals?: number): bigint;
+export function toBigNumber(v: unknown, decimals = 18): bigint {
     if (typeof v === 'string') return parse(v, decimals);
     else if (typeof v === 'number') return parse(v.toString(), decimals);
     else throw new Error(`Supported value types are [ string, number ]`);

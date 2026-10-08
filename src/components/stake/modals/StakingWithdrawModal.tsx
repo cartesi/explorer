@@ -22,8 +22,7 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import React, { FC, useRef, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
@@ -31,10 +30,10 @@ import CloseButton from '../../CloseButton';
 
 export interface IStakingWithdrawModalProps {
     isOpen: boolean;
-    userBalance: BigNumber;
+    userBalance: bigint;
     disclosure: UseDisclosureProps;
     onClose: () => void;
-    onSave: (newWithdraw: BigNumber) => void;
+    onSave: (newWithdraw: bigint) => void;
 }
 
 export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
@@ -49,9 +48,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     const userBalanceFormatted = parseFloat(formatUnits(userBalance, 18));
-    const [outputWithdraw, setOutputWithdraw] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [outputWithdraw, setOutputWithdraw] = useState<bigint>(0n);
     const radioColorScheme = useColorModeValue('teal', 'cyan');
     const colorScheme = useColorModeValue('teal', 'blue');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
@@ -106,9 +103,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                             setWithdrawFullAmount(value);
 
                                             if (value === 'partial') {
-                                                setOutputWithdraw(
-                                                    constants.Zero,
-                                                );
+                                                setOutputWithdraw(0n);
                                                 inputRef.current?.focus();
                                             }
                                         }}
@@ -181,7 +176,7 @@ export const StakingWithdrawModal: FC<IStakingWithdrawModalProps> = ({
                                         colorPalette={colorScheme}
                                         role="withdraw-button"
                                         disabled={
-                                            outputWithdraw.isZero() &&
+                                            outputWithdraw === 0n &&
                                             withdrawFullAmount !== 'full'
                                         }
                                         onClick={() => {

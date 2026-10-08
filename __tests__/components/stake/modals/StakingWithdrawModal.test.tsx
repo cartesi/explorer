@@ -15,12 +15,11 @@ import {
     IStakingWithdrawModalProps,
 } from '../../../../src/components/stake/modals/StakingWithdrawModal';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '100000000000000000000000';
 
 const defaultProps = {
-    userBalance: BigNumber.from(defaultValue),
+    userBalance: BigInt(defaultValue),
     disclosure: {
         onClose: () => undefined,
     },

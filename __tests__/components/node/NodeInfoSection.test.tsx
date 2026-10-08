@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { useMediaQuery } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { NodeInfoSection } from '../../../src/components/node/NodeInfoSection';
 import { useUserNodes } from '../../../src/graphql/hooks/useNodes';
 import { truncateString } from '../../../src/utils/stringUtils';
@@ -23,8 +22,8 @@ const NODE_BALANCE_ETH = '0.1868';
 const defaultProps = {
     account: '0xabe5271e041df23c9f7c0461df5d340a0c1c36f4',
     address: '0xb00299b573a9deee20e6a242416188d1033e325f',
-    userBalance: BigNumber.from('0x029799b68c5fbbd4'),
-    nodeBalance: BigNumber.from('0x029799b68c5fbbd4'),
+    userBalance: BigInt('0x029799b68c5fbbd4'),
+    nodeBalance: BigInt('0x029799b68c5fbbd4'),
     onRetire: null,
     onHire: null,
     onDeposit: null,

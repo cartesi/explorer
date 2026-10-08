@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import {
     AllowanceSection,
     IAllowanceSectionProps,
@@ -28,7 +27,7 @@ describe('Allowance Section', () => {
     const renderComponent = () =>
         render(
             <EAllowanceSection
-                allowance={BigNumber.from(defaultValue)}
+                allowance={BigInt(defaultValue)}
                 onAllowanceClick={() => {
                     console.log('onAllowanceClick::');
                 }}
@@ -44,7 +43,7 @@ describe('Allowance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue)),
+            parseCtsiValue(BigInt(defaultValue)),
         );
     });
 
@@ -52,7 +51,7 @@ describe('Allowance Section', () => {
         const mockOnClick = jest.fn();
         const { getByRole } = render(
             <EAllowanceSection
-                allowance={BigNumber.from(defaultValue)}
+                allowance={BigInt(defaultValue)}
                 onAllowanceClick={mockOnClick()}
             />,
         );

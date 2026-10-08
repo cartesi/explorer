@@ -9,13 +9,12 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { NodeReleasingSection } from '../../../src/components/node/NodeReleasingSection';
 import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(NodeReleasingSection);
 
-const TEST_RELEASING_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
+const TEST_RELEASING_BALANCE = BigInt('0x04b75e170de2fc0000');
 const TEST_RELEASING_BALANCE_CTSI = '87';
 const TEST_RELEASING_TIME = '1 hour, 20 minutes';
 const TEST_WITHDRAW_BUTTON = `WITHDRAW (${TEST_RELEASING_TIME})`;
@@ -66,7 +65,7 @@ describe('NodeReleasingSection component', () => {
     it(`Should be 'Released' with 0 CTSI, no Withdraw button`, () => {
         render(
             <Component
-                releasingBalance={BigNumber.from('0')}
+                releasingBalance={0n}
                 releasingLeftShort={null}
                 onWithdraw={null}
             />,

@@ -22,13 +22,12 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../../ui/color-mode';
 
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { StakedBalanceIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IStakedBalanceSection {
-    stakedBalance: BigNumber;
+    stakedBalance: bigint;
     onUnstakeClick: () => void;
 }
 
@@ -96,7 +95,7 @@ export const StakedBalanceSection: FC<IStakedBalanceSection> = ({
                         ml="auto"
                         onClick={onUnstakeClick}
                         colorPalette="gray"
-                        disabled={stakedBalance.isZero()}
+                        disabled={stakedBalance === 0n}
                     >
                         Unstake
                     </Button>

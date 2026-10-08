@@ -9,13 +9,7 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Fee,
-    FlatRateCommission,
-    StakingPoolImpl,
-} from '@cartesi/staking-pool';
 import { renderHook, waitFor } from '@testing-library/react';
-import { BigNumber, FixedNumber } from 'ethers';
 import { act } from 'react';
 import {
     useFeeContract,
@@ -40,6 +34,7 @@ jest.mock('../../src/services/eth', () => ({
 }));
 
 jest.mock('../../src/services/contracts', () => ({
+    ...jest.requireActual('../../src/services/contracts'),
     useFlatRateCommissionContract: jest.fn(),
     useFeeContract: jest.fn(),
     useStakingPoolContract: jest.fn(),
@@ -64,40 +59,55 @@ const mockUseFeeContract = useFeeContract as jest.MockedFunction<
     typeof useFeeContract
 >;
 
+type Fee = ReturnType<typeof useFeeContract>;
+type FlatRateCommission = ReturnType<typeof useFlatRateCommissionContract>;
+type StakingPoolImpl = ReturnType<typeof useStakingPoolContract>;
+
 const flatRateCommissionContract = {
-    setRate: jest.fn(),
-    rate: () => Promise.resolve(),
-    feeRaiseTimeout: () => Promise.resolve(),
-    maxRaise: () => Promise.resolve(),
-    timeoutTimestamp: () => Promise.resolve(BigNumber.from('10000')),
+    read: {
+        rate: () => Promise.resolve(),
+        feeRaiseTimeout: () => Promise.resolve(),
+        maxRaise: () => Promise.resolve(),
+        timeoutTimestamp: () => Promise.resolve(10000n),
+    },
+    write: {
+        setRate: jest.fn(),
+    },
 };
 
 const balance = {
-    shares: BigNumber.from('1000000'),
-    depositTimestamp: BigNumber.from('1000000'),
-    balance: BigNumber.from('1000000'),
+    shares: 1000000n,
+    depositTimestamp: 1000000n,
+    balance: 1000000n,
 };
 
+// userBalance() returns [balance, shares, depositTimestamp]
+const userBalance = [balance.balance, balance.shares, balance.depositTimestamp];
+
 const stakingPoolContract = {
-    shares: () => Promise.resolve(),
-    amount: () => Promise.resolve(),
-    pos: () => Promise.resolve(),
-    userBalance: () => Promise.resolve(balance),
-    lockTime: () => Promise.resolve(BigNumber.from('10000')),
-    getWithdrawBalance: () => Promise.resolve(),
-    paused: () => Promise.resolve(),
-    amounts: () => Promise.resolve(),
-    deposit: jest.fn(),
-    stake: jest.fn(),
-    unstake: jest.fn(),
-    withdraw: jest.fn(),
-    setName: jest.fn(),
-    pause: jest.fn(),
-    unpause: jest.fn(),
-    hire: jest.fn(),
-    retire: jest.fn(),
-    rebalance: jest.fn(),
-    update: jest.fn(),
+    read: {
+        shares: () => Promise.resolve(),
+        amount: () => Promise.resolve(),
+        pos: () => Promise.resolve(),
+        userBalance: () => Promise.resolve(userBalance),
+        lockTime: () => Promise.resolve(10000n),
+        getWithdrawBalance: () => Promise.resolve(),
+        paused: () => Promise.resolve(),
+        amounts: () => Promise.resolve([0n, 0n, 0n]),
+    },
+    write: {
+        deposit: jest.fn(),
+        stake: jest.fn(),
+        unstake: jest.fn(),
+        withdraw: jest.fn(),
+        setName: jest.fn(),
+        pause: jest.fn(),
+        unpause: jest.fn(),
+        hire: jest.fn(),
+        retire: jest.fn(),
+        rebalance: jest.fn(),
+        update: jest.fn(),
+    },
 };
 
 describe('pool service', () => {
@@ -129,26 +139,28 @@ describe('pool service', () => {
         });
 
         it('should set correct values when fee is defined', async () => {
-            const rate = BigNumber.from('1000');
-            const raiseTimeout = BigNumber.from('10000000');
-            const maxRaise = BigNumber.from('1000000000');
-            const timeoutTimestamp = BigNumber.from('10000');
+            const rate = 1000n;
+            const raiseTimeout = 10000000n;
+            const maxRaise = 1000000000n;
+            const timeoutTimestamp = 10000n;
             mockedUseFlatRateCommissionContract.mockReturnValue({
-                setRate: jest.fn(),
-                rate: () => Promise.resolve(rate),
-                feeRaiseTimeout: () => Promise.resolve(raiseTimeout),
-                maxRaise: () => Promise.resolve(maxRaise),
-                timeoutTimestamp: () => Promise.resolve(timeoutTimestamp),
+                ...flatRateCommissionContract,
+                read: {
+                    rate: () => Promise.resolve(rate),
+                    feeRaiseTimeout: () => Promise.resolve(raiseTimeout),
+                    maxRaise: () => Promise.resolve(maxRaise),
+                    timeoutTimestamp: () => Promise.resolve(timeoutTimestamp),
+                },
             } as unknown as FlatRateCommission);
 
             const { result } = renderHook(() => useFlatRateCommission(address));
 
             await waitFor(() => {
-                expect(result.current.rate).toStrictEqual(rate);
-                expect(result.current.raiseTimeout).toStrictEqual(raiseTimeout);
-                expect(result.current.maxRaise).toStrictEqual(maxRaise);
+                expect(result.current.rate).toBe(rate);
+                expect(result.current.raiseTimeout).toBe(raiseTimeout);
+                expect(result.current.maxRaise).toBe(maxRaise);
                 expect(result.current.timeoutTimestamp).toStrictEqual(
-                    new Date(timeoutTimestamp.toNumber() * 1000),
+                    new Date(Number(timeoutTimestamp) * 1000),
                 );
             });
         });
@@ -158,7 +170,7 @@ describe('pool service', () => {
         it('should return default initial values when fee is undefined', () => {
             mockUseFeeContract.mockReturnValue(undefined);
 
-            const reward = BigNumber.from('1000000');
+            const reward = 1000000n;
             const { result } = renderHook(() =>
                 useStakingPoolCommission(address, reward),
             );
@@ -168,24 +180,22 @@ describe('pool service', () => {
         });
 
         it('should return correct values when fee is defined', async () => {
-            const commission = BigNumber.from('1000000');
+            const commission = 250000n;
+            const getCommission = jest.fn().mockResolvedValue(commission);
             mockUseFeeContract.mockReturnValue({
-                getCommission: () => Promise.resolve(commission),
+                read: { getCommission },
             } as unknown as Fee);
 
-            const reward = BigNumber.from('1000000');
+            const reward = 1000000n;
             const { result } = renderHook(() =>
                 useStakingPoolCommission(address, reward),
             );
 
             await waitFor(() => {
-                expect(result.current.value).toStrictEqual(
-                    FixedNumber.from(commission)
-                        .divUnsafe(FixedNumber.from(reward))
-                        .toUnsafeFloat(),
-                );
+                expect(result.current.value).toStrictEqual(0.25);
                 expect(result.current.loading).toBe(false);
             });
+            expect(getCommission).toHaveBeenCalledWith([0n, reward]);
         });
     });
 
@@ -194,7 +204,7 @@ describe('pool service', () => {
             const mockedUpdate = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                update: mockedUpdate,
+                write: { ...stakingPoolContract.write, update: mockedUpdate },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -218,7 +228,10 @@ describe('pool service', () => {
             const mockedRebalance = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                rebalance: mockedRebalance,
+                write: {
+                    ...stakingPoolContract.write,
+                    rebalance: mockedRebalance,
+                },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -242,7 +255,7 @@ describe('pool service', () => {
             const mockedRetire = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                retire: mockedRetire,
+                write: { ...stakingPoolContract.write, retire: mockedRetire },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -266,7 +279,7 @@ describe('pool service', () => {
             const mockedHire = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                hire: mockedHire,
+                write: { ...stakingPoolContract.write, hire: mockedHire },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -279,7 +292,7 @@ describe('pool service', () => {
             );
 
             await act(async () => {
-                result.current.hire('worker-abc', BigNumber.from('10000'));
+                result.current.hire('worker-abc', 10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -290,7 +303,7 @@ describe('pool service', () => {
             const mockedUnpause = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                unpause: mockedUnpause,
+                write: { ...stakingPoolContract.write, unpause: mockedUnpause },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -314,7 +327,7 @@ describe('pool service', () => {
             const mockedPause = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                pause: mockedPause,
+                write: { ...stakingPoolContract.write, pause: mockedPause },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -338,7 +351,7 @@ describe('pool service', () => {
             const mockedSetName = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                setName: mockedSetName,
+                write: { ...stakingPoolContract.write, setName: mockedSetName },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -362,7 +375,10 @@ describe('pool service', () => {
             const mockedWithdraw = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                withdraw: mockedWithdraw,
+                write: {
+                    ...stakingPoolContract.write,
+                    withdraw: mockedWithdraw,
+                },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -375,7 +391,7 @@ describe('pool service', () => {
             );
 
             await act(async () => {
-                result.current.withdraw(BigNumber.from('10000'));
+                result.current.withdraw(10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -386,7 +402,7 @@ describe('pool service', () => {
             const mockedUnstake = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                unstake: mockedUnstake,
+                write: { ...stakingPoolContract.write, unstake: mockedUnstake },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -399,7 +415,7 @@ describe('pool service', () => {
             );
 
             await act(async () => {
-                result.current.unstake(BigNumber.from('10000'));
+                result.current.unstake(10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -410,7 +426,7 @@ describe('pool service', () => {
             const mockedStake = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                stake: mockedStake,
+                write: { ...stakingPoolContract.write, stake: mockedStake },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -423,7 +439,7 @@ describe('pool service', () => {
             );
 
             await act(async () => {
-                result.current.stake(BigNumber.from('10000'));
+                result.current.stake(10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -434,7 +450,7 @@ describe('pool service', () => {
             const mockedDeposit = jest.fn();
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                deposit: mockedDeposit,
+                write: { ...stakingPoolContract.write, deposit: mockedDeposit },
             } as unknown as StakingPoolImpl);
 
             const mockedSet = jest.fn();
@@ -447,7 +463,7 @@ describe('pool service', () => {
             );
 
             await act(async () => {
-                result.current.deposit(BigNumber.from('10000'));
+                result.current.deposit(10000n);
             });
 
             expect(mockedSet).toHaveBeenCalled();
@@ -455,27 +471,34 @@ describe('pool service', () => {
         });
 
         it('should set correct values when pool and account exist', async () => {
-            const shares = BigNumber.from('10000');
-            const amount = BigNumber.from('100000');
+            const shares = 10000n;
+            const amount = 100000n;
             const pos = 'pos-abc';
-            const lockTime = BigNumber.from('10000');
+            const lockTime = 10000n;
             const paused = false;
-            const withdrawBalance = BigNumber.from('1000000');
+            const withdrawBalance = 1000000n;
             const amounts = {
-                stake: BigNumber.from('10000'),
-                unstake: BigNumber.from('10000'),
-                withdraw: BigNumber.from('10000'),
+                stake: 10000n,
+                unstake: 10000n,
+                withdraw: 10000n,
             };
             mockedUseStakingPoolContract.mockReturnValue({
                 ...stakingPoolContract,
-                shares: () => Promise.resolve(shares),
-                amount: () => Promise.resolve(amount),
-                pos: () => Promise.resolve(pos),
-                userBalance: () => Promise.resolve(balance),
-                lockTime: () => Promise.resolve(lockTime),
-                getWithdrawBalance: () => Promise.resolve(withdrawBalance),
-                paused: () => Promise.resolve(paused),
-                amounts: () => Promise.resolve(amounts),
+                read: {
+                    shares: () => Promise.resolve(shares),
+                    amount: () => Promise.resolve(amount),
+                    pos: () => Promise.resolve(pos),
+                    userBalance: () => Promise.resolve(userBalance),
+                    lockTime: () => Promise.resolve(lockTime),
+                    getWithdrawBalance: () => Promise.resolve(withdrawBalance),
+                    paused: () => Promise.resolve(paused),
+                    amounts: () =>
+                        Promise.resolve([
+                            amounts.stake,
+                            amounts.unstake,
+                            amounts.withdraw,
+                        ]),
+                },
             } as unknown as StakingPoolImpl);
 
             const { result } = renderHook(() =>
@@ -483,23 +506,21 @@ describe('pool service', () => {
             );
 
             await waitFor(() => {
-                expect(result.current.shares).toStrictEqual(shares);
-                expect(result.current.amount).toStrictEqual(amount);
+                expect(result.current.shares).toBe(shares);
+                expect(result.current.amount).toBe(amount);
                 expect(result.current.pos).toStrictEqual(pos);
                 expect(result.current.depositTimestamp).toStrictEqual(
-                    new Date(balance.depositTimestamp.toNumber() * 1000),
+                    new Date(Number(balance.depositTimestamp) * 1000),
                 );
-                expect(result.current.withdrawBalance).toStrictEqual(
-                    withdrawBalance,
-                );
-                expect(result.current.lockTime).toStrictEqual(lockTime);
+                expect(result.current.withdrawBalance).toBe(withdrawBalance);
+                expect(result.current.lockTime).toBe(lockTime);
                 expect(result.current.stakeTimestamp).toStrictEqual(
                     new Date(
-                        balance.depositTimestamp.add(lockTime).toNumber() *
-                            1000,
+                        Number(balance.depositTimestamp + lockTime) * 1000,
                     ),
                 );
-                expect(result.current.balance).toStrictEqual(balance.balance);
+                expect(result.current.balance).toBe(balance.balance);
+                expect(result.current.stakedShares).toBe(balance.shares);
                 expect(result.current.paused).toBe(paused);
                 expect(result.current.amounts).toStrictEqual(amounts);
             });

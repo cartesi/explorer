@@ -9,19 +9,10 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ContractTransaction, Event } from 'ethers';
-import { mock } from 'jest-mock-extended';
+import { Hash } from 'viem';
 import { buildContractReceipt } from '../components/node/mocks';
 
-const contractTransactionFactory = () => mock<ContractTransaction>();
-const receiptEventFactory = () => mock<Event>();
+const buildTransactionHash = (): Hash =>
+    '0x5b73e239c55d790e3c9c3bbb84092652db01bb8dbf49ccc9e4a318470419d9a0';
 
-const buildContractTransaction = () => contractTransactionFactory();
-
-const buildContractReceiptEvent = () => receiptEventFactory();
-
-export {
-    buildContractReceipt,
-    buildContractTransaction,
-    buildContractReceiptEvent,
-};
+export { buildContractReceipt, buildTransactionHash };

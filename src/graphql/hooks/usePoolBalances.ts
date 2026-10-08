@@ -17,37 +17,13 @@ import {
     PoolBalanceSort,
     PoolBalance,
 } from '../models';
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber';
-import { constants } from 'ethers';
+import { ratio } from '../../utils/bigint';
 
 export const POOLS_PER_PAGE = 50;
 
 // return user pool share from 0 (0%) to 1 (100%)
-export const userShare = (b: PoolBalance): number => {
-    const userShares = FixedNumber.from(b.shares);
-    const poolShares = FixedNumber.from(b.pool.shares);
-    if (poolShares.isZero()) {
-        return 0;
-    }
-    const share = userShares.divUnsafe(poolShares);
-    return share.toUnsafeFloat();
-};
-
-// convert user shares to CTSI amount based on pool share value
-export const poolAmount = (b: PoolBalance): BigNumber => {
-    const userShares = FixedNumber.from(b.shares);
-    const poolShares = FixedNumber.from(b.pool.shares);
-    const poolAmount = FixedNumber.from(b.pool.amount);
-
-    if (poolShares.isZero) {
-        return constants.Zero;
-    }
-
-    // calculate user amount based on share value
-    const userAmount = userShares.divUnsafe(poolShares).mulUnsafe(poolAmount);
-
-    return BigNumber.from(userAmount).div(constants.WeiPerEther);
-};
+export const userShare = (b: PoolBalance): number =>
+    ratio(BigInt(b.shares), BigInt(b.pool.shares));
 
 const usePoolBalances = (
     user?: string,

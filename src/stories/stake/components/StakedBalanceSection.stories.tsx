@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StakedBalanceSection } from '../../../components/stake/components/StakedBalanceSection';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/StakedBalanceSection',
@@ -30,7 +29,7 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        stakedBalance: BigNumber.from(defaultValue),
+        stakedBalance: defaultValue,
         onUnstakeClick: () => undefined,
     },
     ...Template,
@@ -39,7 +38,7 @@ export const Default: Story = {
 export const ZeroStakedBalance: Story = {
     args: {
         ...Default.args,
-        stakedBalance: BigNumber.from(0),
+        stakedBalance: 0n,
     },
     ...Template,
 };

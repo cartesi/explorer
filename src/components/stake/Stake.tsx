@@ -12,7 +12,7 @@
 'use client';
 
 import { Box, Heading, HStack, VStack } from '@chakra-ui/react';
-import { constants } from 'ethers';
+import { zeroAddress } from 'viem';
 import { useState } from 'react';
 import Layout, { PageBody, PagePanel } from '..//Layout';
 import SearchInput from '../SearchInput';
@@ -29,7 +29,7 @@ import { useColorModeValue } from '../ui/color-mode';
 const StakeHomePage = () => {
     const { account, chainId, active } = useWallet();
     const summary = useSummary();
-    const balances = usePoolBalances(account || constants.AddressZero);
+    const balances = usePoolBalances(account || zeroAddress);
     const poolBalance = useTotalPoolBalance(account);
     const stakingPoolsBg = useColorModeValue('white', 'dark.gray.primary');
     const [search, setSearch] = useState<string>();

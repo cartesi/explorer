@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import { FixedNumber } from 'ethers';
 import useBlocks from '../../graphql/hooks/useBlocks';
 import useSummary from '../../graphql/hooks/useSummary';
 import { useMarketInformation } from '../../services/market';
@@ -45,9 +44,9 @@ const HomeStats = () => {
         blocks,
         marketInformation.circulatingSupply,
     );
-    const participationRate = toCTSI(summary?.totalStaked || 0).divUnsafe(
-        FixedNumber.from(marketInformation?.circulatingSupply || 1),
-    );
+    const participationRate =
+        toCTSI(summary?.totalStaked || 0) /
+        (marketInformation?.circulatingSupply || 1);
 
     const bannerIconColor = useColorModeValue('light.primary', 'dark.primary');
 
@@ -252,9 +251,7 @@ const HomeStats = () => {
                     <Box fontWeight={500} display="flex" alignItems="flex-end">
                         <span>
                             {formatNumberValue(
-                                toCTSI(
-                                    summary?.totalStaked || 0,
-                                ).toUnsafeFloat(),
+                                toCTSI(summary?.totalStaked || 0),
                             )}
                         </span>
                         <Text fontSize={14} ml={3} mb={0.5}>
@@ -295,7 +292,7 @@ const HomeStats = () => {
                     <Box fontWeight={500} display="flex" alignItems="flex-end">
                         <span>
                             {formatNumberValue(
-                                yearReturn.toUnsafeFloat(),
+                                yearReturn,
                                 1,
                                 'percent',
                             ).replace('%', '')}
@@ -338,7 +335,7 @@ const HomeStats = () => {
                     <Box fontWeight={500} display="flex" alignItems="flex-end">
                         <span>
                             {formatNumberValue(
-                                participationRate.toUnsafeFloat(),
+                                participationRate,
                                 1,
                                 'percent',
                             ).replace('%', '')}

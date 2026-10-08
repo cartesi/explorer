@@ -12,17 +12,14 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Staking } from '../../components/stake/Staking';
-import { BigNumber } from 'ethers';
 import { Transaction } from '../../services/transaction';
 
-const defaultValue = '1000000000000000000000';
+const defaultValue = 1000000000000000000000n;
 
 const defaultTransaction = {
     acknowledged: false,
     error: null,
-    receipt: {
-        confirmations: 1,
-    },
+    confirmations: 1,
     transaction: {
         hash: '0x6200d8606aab695a7f730a3f7c60e399eb3bd10f',
         chainId: '3124123',
@@ -43,11 +40,11 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        userWalletBalance: BigNumber.from(defaultValue),
-        allowance: BigNumber.from(defaultValue),
-        userPoolBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(defaultValue),
-        stakedBalance: BigNumber.from(defaultValue),
+        userWalletBalance: defaultValue,
+        allowance: defaultValue,
+        userPoolBalance: defaultValue,
+        userETHBalance: defaultValue,
+        stakedBalance: defaultValue,
         depositTimestamp: new Date(new Date().setFullYear(2023)),
         lockTime: 1000,
         tokenTransaction: defaultTransaction as unknown as Transaction<string>,

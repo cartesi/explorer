@@ -10,8 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Box, Icon, StackProps, useDisclosure, VStack } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { FC } from 'react';
 import { Transaction } from '../../services/transaction';
 import { Operation } from '../../types/stake';
@@ -30,18 +29,18 @@ import { StakingWithdrawModal } from './modals/StakingWithdrawModal';
 import { useColorModeValue } from '../ui/color-mode';
 
 export interface StakingProps extends StackProps {
-    userWalletBalance: BigNumber; // wallet balance
-    allowance: BigNumber; // ERC20 allowance
-    userPoolBalance: BigNumber; // user pool balance
-    userETHBalance: BigNumber; // user ETH balance
-    stakedBalance: BigNumber; // user stake balance
+    userWalletBalance: bigint; // wallet balance
+    allowance: bigint; // ERC20 allowance
+    userPoolBalance: bigint; // user pool balance
+    userETHBalance: bigint; // user ETH balance
+    stakedBalance: bigint; // user stake balance
     depositTimestamp: Date;
     lockTime: number;
-    onApprove: (amount: BigNumberish) => void;
-    onDeposit: (amount: BigNumberish) => void;
-    onWithdraw: (amount: BigNumberish) => void;
-    onStake: (amount: BigNumberish) => void;
-    onUnstake: (op: Operation, amount?: BigNumberish) => void;
+    onApprove: (amount: bigint) => void;
+    onDeposit: (amount: bigint) => void;
+    onWithdraw: (amount: bigint) => void;
+    onStake: (amount: bigint) => void;
+    onUnstake: (op: Operation, amount?: bigint) => void;
     tokenTransaction: Transaction<any>;
     depositTransaction: Transaction<any>;
     withdrawTransaction: Transaction<any>;
@@ -81,7 +80,7 @@ export const Staking: FC<StakingProps> = ({
     const stakeDisclosure = useDisclosure();
     const unstakeDisclosure = useDisclosure();
 
-    const toCTSI = (value: BigNumber) => {
+    const toCTSI = (value: bigint) => {
         // formatter for CTSI values
         const numberFormat = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,

@@ -11,9 +11,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseUnits } from 'viem';
 
 import Rebalance from '../../components/pools/Rebalance';
-import { ethers } from 'ethers';
 
 export default {
     title: 'Pools/Rebalance',
@@ -27,7 +27,7 @@ const Template: Story = {
     render: (args) => <Rebalance {...args} />,
 };
 
-const v = (n: string) => ethers.utils.parseUnits(n, 18);
+const v = (n: string) => parseUnits(n, 18);
 
 export const Zero: Story = {
     args: {

@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 'use client';
-import { constants } from 'ethers';
 import { useParams } from 'next/navigation';
 import Layout from '../../components/Layout';
 import { PoolBreadcrumbs } from './PoolBreadcrumbs';
@@ -150,13 +149,13 @@ const StakePool = () => {
                                     staking?.releasingTimestamp?.getTime() >
                                     Date.now()
                                         ? staking.releasingBalance
-                                        : constants.Zero
+                                        : 0n
                                 }
                                 stakingReleased={
                                     staking?.releasingTimestamp?.getTime() <=
                                     Date.now()
                                         ? staking.releasingBalance
-                                        : constants.Zero
+                                        : 0n
                                 }
                                 stakingMaturingTimestamp={
                                     staking?.maturingTimestamp

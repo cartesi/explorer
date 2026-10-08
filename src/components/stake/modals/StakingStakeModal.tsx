@@ -21,23 +21,21 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 export interface IStakingStakeModalProps {
-    balance: BigNumber;
-    userBalance: BigNumber;
+    balance: bigint;
+    userBalance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newStake: BigNumber) => void;
+    onSave: (newStake: bigint) => void;
 }
 
-const formatBigNumber = (value: BigNumber) =>
-    parseFloat(formatUnits(value, 18));
+const formatBigNumber = (value: bigint) => parseFloat(formatUnits(value, 18));
 
 export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     userBalance,
@@ -47,16 +45,14 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
     onSave,
 }) => {
     const userBalanceFormatted = formatBigNumber(userBalance);
-    const [stakedValue, setStakedValue] = useState<BigNumber>(
-        BigNumber.from(0),
-    );
+    const [stakedValue, setStakedValue] = useState<bigint>(0n);
     const formattedStakedValue = formatBigNumber(stakedValue);
     const maxStakeColor = useColorModeValue('dark.secondary', 'dark.primary');
     const helperTextColor = useColorModeValue('gray.600', 'white');
     const colorScheme = useColorModeValue('teal', 'blue');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
-    const toCTSI = (value: BigNumber) => {
+    const toCTSI = (value: bigint) => {
         // formatter for CTSI values
         const numberFormat = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
@@ -68,7 +64,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
 
     useEffect(() => {
         if (!isOpen) {
-            setStakedValue(BigNumber.from(0));
+            setStakedValue(0n);
         }
     }, [isOpen]);
 
@@ -123,9 +119,9 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                             textTransform="uppercase"
                                             p={0}
                                             data-testid="max-stake-button"
-                                            disabled={stakedValue.eq(
-                                                userBalance,
-                                            )}
+                                            disabled={
+                                                stakedValue === userBalance
+                                            }
                                             onClick={() => {
                                                 setStakedValue(userBalance);
                                             }}
@@ -150,7 +146,7 @@ export const StakingStakeModal: FC<IStakingStakeModalProps> = ({
                                 <Button
                                     width="full"
                                     colorPalette={colorScheme}
-                                    disabled={stakedValue.isZero()}
+                                    disabled={stakedValue === 0n}
                                     data-testid="stake-button"
                                     onClick={() => {
                                         onSave(stakedValue);

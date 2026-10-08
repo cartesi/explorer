@@ -27,7 +27,7 @@ const TransactionFeedback = <R extends unknown>(
 
     // TODO: take into account a higher number of confirmations
     // and calculate a percentage
-    const progress = transaction?.receipt?.confirmations || 0;
+    const progress = transaction?.confirmations || 0;
 
     const status = transaction?.error
         ? 'error'

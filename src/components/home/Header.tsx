@@ -72,7 +72,7 @@ const HomeHeader = () => {
                 </CTSIText>
 
                 <CTSIText
-                    value={stakedBalance.add(poolBalance)}
+                    value={stakedBalance + poolBalance}
                     pt={{ base: 4, md: 0 }}
                 >
                     <HStack mb={2} fontWeight={500}>

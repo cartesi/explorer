@@ -12,8 +12,7 @@
 import { Box, InputGroup, NumberInput } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
 
-import { BigNumber } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'viem';
 import { FC, useEffect, useState } from 'react';
 
 export interface ICTSINumberInputProps {
@@ -23,7 +22,7 @@ export interface ICTSINumberInputProps {
     maxPrecision?: number;
     setMaxOnOverflow?: boolean;
     onChange?: (
-        bigNumberValue: BigNumber,
+        bigNumberValue: bigint,
         numberValue: number,
         value: string,
     ) => void;

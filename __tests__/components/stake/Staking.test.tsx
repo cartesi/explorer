@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import { BigNumber, ContractTransaction } from 'ethers';
 import { Staking, StakingProps } from '../../../src/components/stake/Staking';
 import { Transaction } from '../../../src/services/transaction';
 import { withChakraTheme } from '../../test-utilities';
@@ -25,18 +24,19 @@ const defaultTransaction: Transaction<any> = {
     result: undefined,
     set: jest.fn(),
     submitting: false,
+    confirmations: 0,
     transaction: {
         hash: '0x6200d8606aab695a7f730a3f7c60e399eb3bd10f',
         chainId: 1823981,
-    } as ContractTransaction,
+    },
 };
 
 const defaultProps = {
-    userWalletBalance: BigNumber.from(defaultValue),
-    allowance: BigNumber.from(defaultValue),
-    userPoolBalance: BigNumber.from(defaultValue),
-    userETHBalance: BigNumber.from(defaultValue),
-    stakedBalance: BigNumber.from(defaultValue),
+    userWalletBalance: BigInt(defaultValue),
+    allowance: BigInt(defaultValue),
+    userPoolBalance: BigInt(defaultValue),
+    userETHBalance: BigInt(defaultValue),
+    stakedBalance: BigInt(defaultValue),
     depositTimestamp: new Date(),
     lockTime: 1000,
     onApprove: () => undefined,

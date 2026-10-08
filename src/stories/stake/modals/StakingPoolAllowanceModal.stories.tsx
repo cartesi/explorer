@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StakingPoolAllowanceModal } from '../../../components/stake/modals/StakingPoolAllowanceModal';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '100000000000000000000000';
+const defaultValue = 100000000000000000000000n;
 
 export default {
     title: 'Stake/Modals/StakingPoolAllowanceModal',
@@ -30,8 +29,8 @@ const Template: Story = {
 
 export const DefaultL: Story = {
     args: {
-        allowance: BigNumber.from(defaultValue),
-        balance: BigNumber.from(defaultValue),
+        allowance: defaultValue,
+        balance: defaultValue,
         disclosure: {
             onClose: () => undefined,
         },

@@ -9,19 +9,18 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 import { render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import { NodeMaturingSection } from '../../../src/components/node/NodeMaturingSection';
 import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(NodeMaturingSection);
 
-const TEST_MATURING_BALANCE = BigNumber.from('0x04b75e170de2fc0000');
+const TEST_MATURING_BALANCE = BigInt('0x04b75e170de2fc0000');
 const TEST_MATURING_BALANCE_CTSI = '87';
 const TEST_MATURING_TIME = '1 hour, 20 minutes';
 
 describe('NodeMaturingSection component', () => {
     it('Should be with 0 CTSI, 6 hours', () => {
-        render(<Component maturingBalance={BigNumber.from(0)} />);
+        render(<Component maturingBalance={0n} />);
 
         expect(
             screen.getByText(

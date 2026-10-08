@@ -19,7 +19,6 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { PencilIconWhite } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
@@ -28,7 +27,7 @@ import { Tooltip } from '../../Tooltip';
 import { TbHelp } from 'react-icons/tb';
 
 export interface IAllowanceSectionProps {
-    allowance: BigNumber;
+    allowance: bigint;
     onAllowanceClick: () => void;
 }
 

@@ -10,15 +10,22 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { ContractTransaction } from 'ethers';
-import { useWallet } from '../../src/components/wallet/useWallet';
-import { Transaction, useTransaction } from '../../src/services/transaction';
-import { confirmations, Network } from '../../src/utils/networks';
 import {
-    buildContractReceipt,
-    buildContractReceiptEvent,
-    buildContractTransaction,
-} from './mocks';
+    BaseError,
+    ContractFunctionRevertedError,
+    encodeErrorResult,
+    Hash,
+    TransactionReceipt,
+    UserRejectedRequestError,
+} from 'viem';
+import { useWallet } from '../../src/components/wallet/useWallet';
+import {
+    extractErrorMessage,
+    Transaction,
+    useTransaction,
+} from '../../src/services/transaction';
+import { confirmations, Network } from '../../src/utils/networks';
+import { buildContractReceipt, buildTransactionHash } from './mocks';
 
 const walletMod = '../../src/components/wallet/useWallet';
 
@@ -35,6 +42,11 @@ const mockUseWallet = useWallet as jest.MockedFunction<typeof useWallet>;
 
 describe('Transaction service', () => {
     const account = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
+    const waitForTransactionReceipt = jest.fn<
+        Promise<TransactionReceipt>,
+        [{ hash: Hash; confirmations: number }]
+    >();
+
     beforeEach(() => {
         // Partial filled Happy returns
         mockUseWallet.mockReturnValue({
@@ -43,7 +55,8 @@ describe('Transaction service', () => {
             activate: jest.fn(),
             deactivate: jest.fn(),
             chainId: 1,
-        });
+            publicClient: { waitForTransactionReceipt },
+        } as any);
     });
 
     afterEach(() => {
@@ -60,6 +73,7 @@ describe('Transaction service', () => {
             error: undefined,
             isOngoing: false,
             receipt: undefined,
+            confirmations: 0,
             result: undefined,
             state: 'acknowledged',
             submitting: false,
@@ -78,7 +92,7 @@ describe('Transaction service', () => {
             act(() => {
                 result.current.set(
                     //to be resolved promise.
-                    new Promise<ContractTransaction>(() => null),
+                    new Promise<Hash>(() => null),
                 );
             });
 
@@ -89,15 +103,18 @@ describe('Transaction service', () => {
         });
 
         it('should change state to waiting_confirmation when contract-transaction resolve (i.e. user signed the transaction)', async () => {
-            const contractTransaction = buildContractTransaction();
-            contractTransaction.confirmations = 0;
+            const hash = buildTransactionHash();
+            // receipt never arrives
+            waitForTransactionReceipt.mockReturnValue(
+                new Promise<TransactionReceipt>(() => null),
+            );
             const { result } = renderHook(() => useTransaction<string>());
 
             expect(result.current).toHaveProperty('state', 'acknowledged');
             expect(result.current).toHaveProperty('isOngoing', false);
 
-            const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction)),
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
             );
 
             act(() => {
@@ -117,18 +134,18 @@ describe('Transaction service', () => {
             );
             expect(result.current.isOngoing).toBe(true);
             expect(result.current.submitting).toBe(false);
-            expect(result.current.transaction).toBeDefined();
+            expect(result.current.transaction).toEqual({ hash, chainId: 1 });
+            expect(result.current.confirmations).toBe(0);
         });
 
         it('should change state to confirmed when contract-transaction reaches the expected confirmation number based on network', async () => {
-            const contractTransaction = buildContractTransaction();
-            contractTransaction.confirmations = confirmations[Network.MAINNET];
+            const hash = buildTransactionHash();
             // A closer to real dummy contract receipt
-            contractTransaction.wait.mockResolvedValue(buildContractReceipt());
+            waitForTransactionReceipt.mockResolvedValue(buildContractReceipt());
             const { result } = renderHook(() => useTransaction<string>());
 
-            const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction)),
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
             );
 
             act(() => {
@@ -141,6 +158,13 @@ describe('Transaction service', () => {
             expect(result.current.isOngoing).toBe(false);
             expect(result.current.transaction).toBeDefined();
             expect(result.current.receipt).toBeDefined();
+            expect(result.current.confirmations).toBe(
+                confirmations[Network.MAINNET],
+            );
+            expect(waitForTransactionReceipt).toHaveBeenCalledWith({
+                hash,
+                confirmations: confirmations[Network.MAINNET],
+            });
         });
     });
 
@@ -164,6 +188,19 @@ describe('Transaction service', () => {
             expect(result.current.error).toEqual('Metamask error goes here');
         });
 
+        it('should use the short message when the wallet rejects the request', async () => {
+            const { result } = renderHook(() => useTransaction<string>());
+            const promise = Promise.reject(
+                new UserRejectedRequestError(new Error('denied')),
+            );
+
+            act(() => result.current.set(promise));
+
+            await waitFor(() => expect(result.current.state).toBe('errored'));
+
+            expect(result.current.error).toEqual('User rejected the request.');
+        });
+
         it('should be able to acknowledge the transaction after an errored state', async () => {
             const { result } = renderHook(() => useTransaction<string>());
             const promise = Promise.reject(new Error('Random error'));
@@ -179,14 +216,14 @@ describe('Transaction service', () => {
         });
 
         it('should handle transaction failures when trying to wait for confirmations', async () => {
-            const contractTransaction = buildContractTransaction();
-            contractTransaction.wait.mockRejectedValue(
+            const hash = buildTransactionHash();
+            waitForTransactionReceipt.mockRejectedValue(
                 new Error('Network failure'),
             );
             const { result } = renderHook(() => useTransaction<string>());
 
-            const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction)),
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
             );
 
             act(() => {
@@ -203,24 +240,49 @@ describe('Transaction service', () => {
             expect(result.current.receipt).not.toBeDefined();
         });
 
+        it('should change its state to errored when the transaction is reverted', async () => {
+            const hash = buildTransactionHash();
+            waitForTransactionReceipt.mockResolvedValue({
+                ...buildContractReceipt(),
+                status: 'reverted',
+            });
+            const { result } = renderHook(() => useTransaction<string>());
+
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            await waitFor(() => expect(result.current.state).toBe('errored'));
+
+            expect(result.current.error).toEqual('Transaction reverted');
+            expect(result.current.receipt).not.toBeDefined();
+            expect(result.current.confirmations).toBe(0);
+        });
+
         it('should handle exceptions coming from the result resolver', async () => {
-            const contractTransaction = buildContractTransaction();
-            contractTransaction.confirmations = confirmations[Network.MAINNET];
-            // A closer to real dummy contract receipt but without any events.
-            contractTransaction.wait.mockResolvedValue(buildContractReceipt());
+            const hash = buildTransactionHash();
+            // A closer to real dummy contract receipt but without the expected log.
+            waitForTransactionReceipt.mockResolvedValue({
+                ...buildContractReceipt(),
+                logs: [],
+            });
             const { result } = renderHook(() =>
                 useTransaction<string>((receipt) => {
                     // naive resolver
-                    const event = receipt.events.find(
-                        ({ event }) => event == 'DummyEvent',
+                    const log = receipt.logs.find(
+                        ({ logIndex }) => logIndex == 160,
                     );
 
-                    return event.args[0];
+                    return log.data;
                 }),
             );
 
-            const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction)),
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
             );
 
             act(() => {
@@ -231,7 +293,7 @@ describe('Transaction service', () => {
 
             expect(result.current.state).toEqual('errored');
             expect(result.current.error).toEqual(
-                `Cannot read properties of undefined (reading 'args')`,
+                `Cannot read properties of undefined (reading 'data')`,
             );
             expect(result.current.result).not.toBeDefined();
         });
@@ -239,29 +301,22 @@ describe('Transaction service', () => {
 
     describe('Result resolver', () => {
         it('should be able to extract a result from a confirmed transaction', async () => {
-            const contractTransaction = buildContractTransaction();
-            contractTransaction.confirmations = confirmations[Network.MAINNET];
+            const hash = buildTransactionHash();
             // A closer to real dummy contract receipt
             const receipt = buildContractReceipt();
-            const receiptEvt = buildContractReceiptEvent();
-            receiptEvt.event = 'DummyEvent';
-            receiptEvt.args = ['my-result-goes-here'];
-            receipt.events = [receiptEvt];
-            contractTransaction.wait.mockResolvedValue(receipt);
+            waitForTransactionReceipt.mockResolvedValue(receipt);
             const { result } = renderHook(() =>
                 useTransaction<string>((receipt) => {
-                    if (receipt.events) {
-                        const event = receipt.events.find(
-                            ({ event }) => event == 'DummyEvent',
-                        );
+                    const log = receipt.logs.find(
+                        ({ logIndex }) => logIndex == 160,
+                    );
 
-                        return event.args[0];
-                    }
+                    return log?.data;
                 }),
             );
 
-            const promise = new Promise<ContractTransaction>((resolve) =>
-                act(() => resolve(contractTransaction)),
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
             );
 
             act(() => {
@@ -271,7 +326,44 @@ describe('Transaction service', () => {
             await waitFor(() => expect(result.current.state).toBe('confirmed'));
 
             expect(result.current).toHaveProperty('state', 'confirmed');
-            expect(result.current.result).toEqual('my-result-goes-here');
+            expect(result.current.result).toEqual(receipt.logs[0].data);
+        });
+    });
+
+    describe('extractErrorMessage', () => {
+        it('should use the message of plain errors', () => {
+            expect(extractErrorMessage(new Error('plain'))).toBe('plain');
+            expect(extractErrorMessage('text')).toBe('text');
+        });
+
+        it('should use the short message of viem errors', () => {
+            expect(
+                extractErrorMessage(
+                    new UserRejectedRequestError(new Error('denied')),
+                ),
+            ).toBe('User rejected the request.');
+        });
+
+        it('should use the revert reason when the contract call reverted', () => {
+            const reverted = new ContractFunctionRevertedError({
+                abi: [],
+                functionName: 'stake',
+                // revert data of a require(..., "Not enough balance")
+                data: encodeErrorResult({
+                    abi: [
+                        {
+                            type: 'error',
+                            name: 'Error',
+                            inputs: [{ name: 'message', type: 'string' }],
+                        },
+                    ],
+                    errorName: 'Error',
+                    args: ['Not enough balance'],
+                }),
+            });
+            const error = new BaseError('Call failed', { cause: reverted });
+
+            expect(extractErrorMessage(error)).toBe('Not enough balance');
         });
     });
 });

@@ -15,13 +15,12 @@ import {
     IStakingStakeModalProps,
 } from '../../../../src/components/stake/modals/StakingStakeModal';
 import { withChakraTheme } from '../../../test-utilities';
-import { BigNumber } from 'ethers';
 
 const defaultValue = '100000000000000000000000';
 
 const defaultProps = {
-    balance: BigNumber.from(defaultValue),
-    userBalance: BigNumber.from(defaultValue),
+    balance: BigInt(defaultValue),
+    userBalance: BigInt(defaultValue),
     disclosure: {
         onClose: () => undefined,
     },
@@ -90,10 +89,7 @@ describe('Staking Stake Modal', () => {
 
     it('Should disable stake button when stake is zero', () => {
         const { getByTestId } = render(
-            <EStakingStakeModal
-                {...defaultProps}
-                userBalance={BigNumber.from(0)}
-            />,
+            <EStakingStakeModal {...defaultProps} userBalance={0n} />,
         );
 
         expect(getByTestId('stake-button')).toBeDisabled();

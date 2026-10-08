@@ -10,7 +10,13 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import type { Web3Provider } from '@ethersproject/providers';
-import type { PublicClient, WalletClient } from 'viem';
+import type {
+    Account,
+    Chain,
+    PublicClient,
+    Transport,
+    WalletClient,
+} from 'viem';
 
 export enum WalletType {
     SDK = 'sdk',
@@ -22,8 +28,8 @@ export interface WalletConnectionContextProps {
     chainId?: number;
     /** @deprecated transitional ethers v5 provider; use publicClient/walletClient. */
     library?: Web3Provider;
-    publicClient?: PublicClient;
-    walletClient?: WalletClient;
+    publicClient?: PublicClient<Transport, Chain>;
+    walletClient?: WalletClient<Transport, Chain, Account>;
     error?: Error;
     active: boolean;
     activate: (...a: any) => Promise<void>;

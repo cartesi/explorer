@@ -9,10 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
+import { parseEther, parseEventLogs, zeroAddress } from 'viem';
 import { useWallet } from '../components/wallet';
 import { useStakingPoolFactoryContract } from './contracts';
+import { stakingPoolFactoryAbi } from './contracts/generated';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
 
@@ -24,14 +25,12 @@ export const useStakingPoolFactory = () => {
 
     const transaction = useTransaction<string>((receipt) => {
         // result is pool address taken from transaction event
-        if (receipt.events) {
-            const event = receipt.events.find(
-                (e) => e.event == 'NewFlatRateCommissionStakingPool',
-            );
-            if (event && event.args && event.args.length > 0) {
-                return event.args[0];
-            }
-        }
+        const [event] = parseEventLogs({
+            abi: stakingPoolFactoryAbi,
+            eventName: 'NewFlatRateCommissionStakingPool',
+            logs: receipt.logs,
+        });
+        return event?.args.pool;
     });
     const [paused, setPaused] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
@@ -41,9 +40,10 @@ export const useStakingPoolFactory = () => {
     const createFlatRateCommission = (commission: number) => {
         if (poolFactory) {
             transaction.set(
-                poolFactory.createFlatRateCommission(commission, {
-                    value: ethers.utils.parseEther('0.001'),
-                }),
+                poolFactory.write.createFlatRateCommission(
+                    [BigInt(commission)],
+                    { value: parseEther('0.001') },
+                ),
             );
         }
     };
@@ -52,12 +52,12 @@ export const useStakingPoolFactory = () => {
     useEffect(() => {
         if (poolFactory && account) {
             // read the paused flag
-            poolFactory.paused().then((paused) => {
+            poolFactory.read.paused().then((paused) => {
                 setPaused(paused);
 
                 // check if there is a reference pool set
-                poolFactory.referencePool().then((referencePool) => {
-                    setReady(referencePool != ethers.constants.AddressZero);
+                poolFactory.read.referencePool().then((referencePool) => {
+                    setReady(referencePool != zeroAddress);
 
                     // finish loading
                     setLoading(false);
@@ -65,7 +65,7 @@ export const useStakingPoolFactory = () => {
             });
 
             // Read the PoS address set up in the Factory.
-            poolFactory.pos().then((pos) => {
+            poolFactory.read.pos().then((pos) => {
                 setPoS(pos);
             });
         }

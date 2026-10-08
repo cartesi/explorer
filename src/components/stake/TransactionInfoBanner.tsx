@@ -53,7 +53,7 @@ export const TransactionInfoBanner: FC<ITransactionInfoBannerProps> = ({
 
     // TODO: take into account a higher number of confirmations
     // and calculate a percentage
-    const progress = innerTransaction?.receipt?.confirmations || 0;
+    const progress = innerTransaction?.confirmations || 0;
 
     const status = innerTransaction?.error
         ? 'error'

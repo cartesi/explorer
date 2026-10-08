@@ -1,5 +1,4 @@
 import { HStack, Icon, Stack, Text } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { Summary } from '../../../graphql/models';
 import Banner from '../../Banner';
@@ -10,7 +9,7 @@ import { Tooltip } from '../../Tooltip';
 import { TbHelp } from 'react-icons/tb';
 
 export interface PoolsOverviewProps {
-    balance: BigNumber;
+    balance: bigint;
     summary: Summary;
     poolBalancesCount: number;
 }

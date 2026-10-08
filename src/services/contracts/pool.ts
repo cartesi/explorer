@@ -9,72 +9,51 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import {
-    Fee,
-    Fee__factory,
-    FlatRateCommission,
-    FlatRateCommission__factory,
-    StakingPoolFactoryImpl,
-    StakingPoolFactoryImpl__factory,
-    StakingPoolImpl,
-    StakingPoolImpl__factory,
-} from '@cartesi/staking-pool';
 import { useEffect, useState } from 'react';
+import { Address } from 'viem';
+import { asAddress, useContract, useContractFromAddress } from '.';
+import {
+    feeAbi,
+    flatRateCommissionAbi,
+    stakingPoolAbi,
+    stakingPoolFactoryAbi,
+    stakingPoolFactoryAddress,
+} from './generated';
 
-import mainnet from '@cartesi/staking-pool/export/abi/mainnet.json';
-import sepolia from '@cartesi/staking-pool/export/abi/sepolia.json';
-
-import localhost from './localhost.json';
-
-import { ChainMap, useContract, useContractFromAddress } from '.';
-import { useWallet } from '../../components/wallet';
-
-const abis: ChainMap = {
-    1: mainnet,
-    11155111: sepolia,
-    31337: localhost,
-};
-
-export const useStakingPoolFactoryContract = (): StakingPoolFactoryImpl => {
-    return useContract(
-        StakingPoolFactoryImpl__factory.connect,
-        abis,
+export const useStakingPoolFactoryContract = () =>
+    useContract(
+        stakingPoolFactoryAbi,
+        stakingPoolFactoryAddress,
         'StakingPoolFactoryImpl',
     );
-};
 
-export const useStakingPoolContract = (address: string): StakingPoolImpl => {
-    return useContractFromAddress(StakingPoolImpl__factory.connect, address);
-};
+export const useStakingPoolContract = (address: string) =>
+    useContractFromAddress(stakingPoolAbi, asAddress(address));
 
-export const useFeeContract = (address: string): Fee => {
-    const [fee, setFee] = useState<Fee>();
+/** The fee contract address a pool was created with. */
+const useFeeAddress = (address: string): Address | undefined => {
     const pool = useStakingPoolContract(address);
-    const { library } = useWallet();
-    useEffect(() => {
-        if (pool && library) {
-            pool.fee().then((feeAddress) => {
-                setFee(Fee__factory.connect(feeAddress, library));
-            });
-        }
-    }, [address, pool, library]);
-    return fee;
-};
-
-export const useFlatRateCommissionContract = (
-    address: string,
-): FlatRateCommission => {
-    const [feeAddress, setFeeAddress] = useState<string>();
-    const pool = useStakingPoolContract(address);
+    const [feeAddress, setFeeAddress] = useState<Address>();
 
     useEffect(() => {
+        let cancelled = false;
         if (pool) {
-            pool.fee().then(setFeeAddress);
+            pool.read.fee().then((value) => {
+                if (!cancelled) setFeeAddress(value);
+            });
+        } else {
+            setFeeAddress(undefined);
         }
+        return () => {
+            cancelled = true;
+        };
     }, [address, pool]);
 
-    return useContractFromAddress(
-        FlatRateCommission__factory.connect,
-        feeAddress,
-    );
+    return feeAddress;
 };
+
+export const useFeeContract = (address: string) =>
+    useContractFromAddress(feeAbi, useFeeAddress(address));
+
+export const useFlatRateCommissionContract = (address: string) =>
+    useContractFromAddress(flatRateCommissionAbi, useFeeAddress(address));

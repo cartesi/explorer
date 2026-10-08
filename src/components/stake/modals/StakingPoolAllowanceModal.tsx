@@ -20,20 +20,19 @@ import {
     useToken,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import React, { FC, useState } from 'react';
 import { CTSINumberInput } from '../CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 export interface IStakingPoolAllowanceModalProps {
-    allowance: BigNumber;
-    balance: BigNumber;
+    allowance: bigint;
+    balance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newAllowance: BigNumber) => void;
+    onSave: (newAllowance: bigint) => void;
 }
 
 export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
@@ -51,8 +50,7 @@ export const StakingPoolAllowanceModal: FC<IStakingPoolAllowanceModalProps> = ({
     const helperTextColor = useColorModeValue(formControlColor, 'white');
     const separatorColor = useColorModeValue('gray.100', 'gray.600');
 
-    const [outputAllowance, setOutputAllowance] =
-        useState<BigNumber>(allowance);
+    const [outputAllowance, setOutputAllowance] = useState<bigint>(allowance);
 
     return (
         <Dialog.Root

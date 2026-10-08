@@ -9,17 +9,11 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumber } from 'ethers';
 import { Block } from '../../src/graphql/models';
 import { getEstimatedRewardRate, getRewardRate } from '../../src/utils/reward';
 
-/**
- * Characterization tests: the expected values below were captured from the
- * ethers v5 (BigNumber / FixedNumber) implementation and pin its behaviour so
- * the bigint port must reproduce the same numbers. Results are compared as
- * plain numbers and decimal strings so the assertions do not depend on the
- * numeric library in use.
- */
+// Baselines captured from the ethers v5 implementation, compared as plain numbers
+// and decimal strings so the bigint port must reproduce them.
 const asNumber = (value: unknown): number =>
     typeof value === 'number' ? value : Number(String(value));
 
@@ -96,8 +90,7 @@ const expectRatio = (actual: unknown, expected: number | string) =>
         ? expect(asNumber(actual)).toBe(0)
         : expect(asNumber(actual) / Number(expected)).toBeCloseTo(1, 9);
 
-/** The stake parameter is an ethers BigNumber today and a bigint after the port. */
-const toStake = (wei: string) => BigNumber.from(wei);
+const toStake = (wei: string) => BigInt(wei);
 
 describe('reward utils (characterization)', () => {
     describe('getRewardRate', () => {

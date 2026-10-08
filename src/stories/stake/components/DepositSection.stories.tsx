@@ -10,11 +10,10 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { BigNumber } from 'ethers';
 import { DepositSection } from '../../../components/stake/components/DepositSection';
 import { WalletConnectionContext } from '../../../components/wallet';
 
-const defaultValue = BigNumber.from('10000000000000000000000000000');
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Components/DepositSection',
@@ -30,8 +29,8 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        userWalletBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(defaultValue),
+        userWalletBalance: defaultValue,
+        userETHBalance: defaultValue,
         onDepositClick: () => undefined,
     },
     ...Template,
@@ -40,8 +39,8 @@ export const Default: Story = {
 export const ZeroUserWalletBalance: Story = {
     args: {
         ...Default.args,
-        userWalletBalance: BigNumber.from(0),
-        userETHBalance: BigNumber.from(defaultValue),
+        userWalletBalance: 0n,
+        userETHBalance: defaultValue,
     },
     ...Template,
 };
@@ -49,8 +48,8 @@ export const ZeroUserWalletBalance: Story = {
 export const ZeroUserETHBalance: Story = {
     args: {
         ...Default.args,
-        userWalletBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(0),
+        userWalletBalance: defaultValue,
+        userETHBalance: 0n,
     },
     ...Template,
 };
@@ -58,8 +57,8 @@ export const ZeroUserETHBalance: Story = {
 export const ZeroUserWalletBalanceAndZeroUserETHBalance: Story = {
     args: {
         ...Default.args,
-        userWalletBalance: BigNumber.from(0),
-        userETHBalance: BigNumber.from(0),
+        userWalletBalance: 0n,
+        userETHBalance: 0n,
     },
     ...Template,
 };
@@ -67,8 +66,8 @@ export const ZeroUserWalletBalanceAndZeroUserETHBalance: Story = {
 export const ZeroUserEthBalanceAndUsingGnosisSafe: Story = {
     args: {
         ...Default.args,
-        userWalletBalance: BigNumber.from(defaultValue),
-        userETHBalance: BigNumber.from(0),
+        userWalletBalance: defaultValue,
+        userETHBalance: 0n,
     },
     decorators: [
         (Story) => (

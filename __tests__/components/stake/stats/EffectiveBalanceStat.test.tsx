@@ -11,7 +11,6 @@
 
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BigNumber } from 'ethers';
 import EffectiveBalanceStat, {
     EffectiveBalanceStatProps,
 } from '../../../../src/components/stake/stats/EffectiveBalanceStat';
@@ -19,13 +18,13 @@ import { withChakraTheme } from '../../../test-utilities';
 
 const defaultValue = '10000000000000000000000000000';
 const defaultProps = {
-    stake: BigNumber.from(defaultValue),
-    unstake: BigNumber.from(defaultValue),
-    withdraw: BigNumber.from(defaultValue),
-    stakingMature: BigNumber.from(defaultValue),
-    stakingMaturing: BigNumber.from(defaultValue),
-    stakingReleasing: BigNumber.from(defaultValue),
-    stakingReleased: BigNumber.from(defaultValue),
+    stake: BigInt(defaultValue),
+    unstake: BigInt(defaultValue),
+    withdraw: BigInt(defaultValue),
+    stakingMature: BigInt(defaultValue),
+    stakingMaturing: BigInt(defaultValue),
+    stakingReleasing: BigInt(defaultValue),
+    stakingReleased: BigInt(defaultValue),
     stakingMaturingTimestamp: new Date(),
     stakingReleasingTimestamp: new Date(),
     hideZeros: false,
@@ -49,9 +48,9 @@ describe('Effective Balance Stat', () => {
         render(
             <EEffectiveBalanceStat
                 {...defaultProps}
-                stake={BigNumber.from(0)}
-                unstake={BigNumber.from(0)}
-                withdraw={BigNumber.from(0)}
+                stake={0n}
+                unstake={0n}
+                withdraw={0n}
             />,
         );
 

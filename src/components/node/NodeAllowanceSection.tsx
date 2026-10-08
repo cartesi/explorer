@@ -22,13 +22,12 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { Tooltip } from '../Tooltip';
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import CTSI from '../pools/staking/CTSI';
 import { useColorModeValue } from '../ui/color-mode';
 
 interface INodeAllowanceSectionProps {
-    allowance: BigNumber;
+    allowance: bigint;
     onAllowanceClick: () => void;
 }
 

@@ -10,9 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { useState, useEffect } from 'react';
-import { useCartesiTokenContract } from './contracts';
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits, parseUnits } from '@ethersproject/units';
+import { formatUnits, parseUnits } from 'viem';
+import { asAddress, useCartesiTokenContract } from './contracts';
 import { useTransaction } from './transaction';
 
 export const useCartesiToken = (
@@ -21,40 +20,42 @@ export const useCartesiToken = (
     blockNumber = 0,
 ) => {
     const token = useCartesiTokenContract();
-    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
-    const [allowance, setAllowance] = useState<BigNumber>(BigNumber.from(0));
+    const [balance, setBalance] = useState<bigint>(0n);
+    const [allowance, setAllowance] = useState<bigint>(0n);
     const transaction = useTransaction<void>();
 
     // balances
     useEffect(() => {
         if (token && account) {
-            token.balanceOf(account).then(setBalance);
+            token.read.balanceOf([asAddress(account)]).then(setBalance);
             if (spender) {
-                token.allowance(account, spender).then(setAllowance);
+                token.read
+                    .allowance([asAddress(account), asAddress(spender)])
+                    .then(setAllowance);
             }
         } else {
-            setBalance(BigNumber.from(0));
-            setAllowance(BigNumber.from(0));
+            setBalance(0n);
+            setAllowance(0n);
         }
     }, [token, account, spender, blockNumber]);
 
-    const approve = (spender: string, amount: BigNumberish) => {
+    const approve = (spender: string, amount: bigint) => {
         if (token) {
-            transaction.set(token.approve(spender, amount));
+            transaction.set(token.write.approve([asAddress(spender), amount]));
         }
     };
 
-    const parseCTSI = (amount: number): BigNumber => {
+    const parseCTSI = (amount: number): bigint => {
         amount = amount * 1000;
         return parseUnits(amount.toString(), 15);
     };
 
-    const toCTSI = (amount: BigNumberish): number => {
+    const toCTSI = (amount: bigint): number => {
         return parseInt(formatUnits(amount, 18));
     };
 
-    const toBigCTSI = (amount: BigNumberish): BigNumber => {
-        return BigNumber.from(toCTSI(amount));
+    const toBigCTSI = (amount: bigint): bigint => {
+        return BigInt(toCTSI(amount));
     };
 
     return {

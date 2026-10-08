@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import EffectiveBalanceStat from '../../../components/stake/stats/EffectiveBalanceStat';
-import { BigNumber } from 'ethers';
 
-const defaultValue = '10000000000000000000000000000';
+const defaultValue = 10000000000000000000000000000n;
 
 export default {
     title: 'Stake/Stats/EffectiveBalanceStat',
@@ -30,13 +29,13 @@ const Template: Story = {
 
 export const Default: Story = {
     args: {
-        stake: BigNumber.from(defaultValue),
-        unstake: BigNumber.from(defaultValue),
-        withdraw: BigNumber.from(defaultValue),
-        stakingMature: BigNumber.from(defaultValue),
-        stakingMaturing: BigNumber.from(defaultValue),
-        stakingReleasing: BigNumber.from(defaultValue),
-        stakingReleased: BigNumber.from(defaultValue),
+        stake: defaultValue,
+        unstake: defaultValue,
+        withdraw: defaultValue,
+        stakingMature: defaultValue,
+        stakingMaturing: defaultValue,
+        stakingReleasing: defaultValue,
+        stakingReleased: defaultValue,
         stakingMaturingTimestamp: new Date(),
         stakingReleasingTimestamp: new Date(),
         onRebalance: () => undefined,
@@ -47,9 +46,9 @@ export const Default: Story = {
 export const NeedRebalance: Story = {
     args: {
         ...Default.args,
-        stake: BigNumber.from(0),
-        unstake: BigNumber.from(0),
-        withdraw: BigNumber.from(0),
+        stake: 0n,
+        unstake: 0n,
+        withdraw: 0n,
     },
     ...Template,
 };

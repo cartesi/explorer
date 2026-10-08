@@ -10,12 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Text, TextProps } from '@chakra-ui/react';
-import { BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
+import { Numeric, toBigInt } from '../../../utils/bigint';
 import { FC } from 'react';
 
 export interface CTSIProps extends TextProps {
-    value: BigNumberish;
+    value: Numeric;
 }
 
 export const numberFormat = new Intl.NumberFormat('en-US', {
@@ -24,7 +24,7 @@ export const numberFormat = new Intl.NumberFormat('en-US', {
 });
 
 export const parseCtsiValue = (value) =>
-    numberFormat.format(parseFloat(formatUnits(value, 18)));
+    numberFormat.format(parseFloat(formatUnits(toBigInt(value), 18)));
 
 const CTSI: FC<CTSIProps> = ({ value, ...textProps }) => {
     return (

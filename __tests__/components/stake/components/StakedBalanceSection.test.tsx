@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import {
     IStakedBalanceSection,
     StakedBalanceSection,
@@ -29,7 +28,7 @@ describe('Staked Balance Section', () => {
     const renderComponent = () =>
         render(
             <EPoolBalanceSection
-                stakedBalance={BigNumber.from(defaultValue)}
+                stakedBalance={BigInt(defaultValue)}
                 onUnstakeClick={defaultOnUnstakeClick}
             />,
         );
@@ -43,14 +42,14 @@ describe('Staked Balance Section', () => {
         renderComponent();
 
         expect(screen.getByRole('ctsi-text')).toHaveTextContent(
-            parseCtsiValue(BigNumber.from(defaultValue)),
+            parseCtsiValue(BigInt(defaultValue)),
         );
     });
 
     it('Should disable unstake button when stakedBalance is zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                stakedBalance={BigNumber.from(0)}
+                stakedBalance={0n}
                 onUnstakeClick={defaultOnUnstakeClick}
             />,
         );
@@ -61,7 +60,7 @@ describe('Staked Balance Section', () => {
     it('Should enable unstake button when stakedBalance is above zero', () => {
         const { getByText } = render(
             <EPoolBalanceSection
-                stakedBalance={BigNumber.from(defaultValue)}
+                stakedBalance={BigInt(defaultValue)}
                 onUnstakeClick={defaultOnUnstakeClick}
             />,
         );
@@ -73,7 +72,7 @@ describe('Staked Balance Section', () => {
         const mockOnClick = jest.fn();
         const { getByText } = render(
             <EPoolBalanceSection
-                stakedBalance={BigNumber.from(defaultValue)}
+                stakedBalance={BigInt(defaultValue)}
                 onUnstakeClick={mockOnClick()}
             />,
         );

@@ -21,19 +21,18 @@ import {
     UseDisclosureProps,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber, constants } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { FC, useEffect, useState } from 'react';
 import { CTSINumberInput } from '../../stake/CTSINumberInput';
 import { useColorModeValue } from '../../ui/color-mode';
 import CloseButton from '../../CloseButton';
 
 interface INodeStakeModalProps {
-    allowance: BigNumber;
+    allowance: bigint;
     disclosure: UseDisclosureProps;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (newStake: BigNumber) => void;
+    onSave: (newStake: bigint) => void;
 }
 
 export const NodeStakeModal: FC<INodeStakeModalProps> = ({
@@ -46,11 +45,11 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
     if (!allowance) return null;
 
     const maxAllowanceFormatted = parseFloat(formatUnits(allowance, 18));
-    const [outputStake, setOutputStake] = useState<BigNumber>(allowance);
+    const [outputStake, setOutputStake] = useState<bigint>(allowance);
     const [stakedValue, setStakedValue] = useState<any>(0);
     const colorScheme = useColorModeValue('teal', 'cyan');
 
-    const toCTSI = (value: BigNumber) => {
+    const toCTSI = (value: bigint) => {
         // formatter for CTSI values
         const numberFormat = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
@@ -68,7 +67,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
     useEffect(() => {
         if (!isOpen) {
             setStakedValue(0);
-            setOutputStake(constants.Zero);
+            setOutputStake(0n);
         }
     }, [isOpen]);
 
@@ -156,7 +155,7 @@ export const NodeStakeModal: FC<INodeStakeModalProps> = ({
                                     <Button
                                         width="full"
                                         colorPalette={colorScheme}
-                                        disabled={outputStake.isZero()}
+                                        disabled={outputStake === 0n}
                                         onClick={() => {
                                             onSave(outputStake);
                                             disclosure.onClose();

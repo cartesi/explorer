@@ -26,7 +26,6 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { BigNumber } from 'ethers';
 import { allPass, equals, pipe, size } from 'lodash/fp';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -121,11 +120,11 @@ export const PoolSetting: FC<PoolSettingsProps> = ({ address }) => {
     );
     const linkColor = useColorModeValue('teal', 'cyan');
     const inputHelperTextColor = useColorModeValue(undefined, 'gray.300');
-    const progress = pool.transaction?.receipt?.confirmations || 0;
+    const progress = pool.transaction?.confirmations || 0;
     const isRebalanceEnabled =
-        pool.amounts?.stake > BigNumber.from(0) ||
-        pool.amounts?.unstake > BigNumber.from(0) ||
-        pool.amounts?.withdraw > BigNumber.from(0);
+        pool.amounts?.stake > 0n ||
+        pool.amounts?.unstake > 0n ||
+        pool.amounts?.withdraw > 0n;
     const isRebalancing = pool.rebalanceTransaction?.isOngoing;
     const isRebalanceButtonDisabled = !isRebalanceEnabled || isRebalancing;
     const hasSamePoS = isSamePoS(pool.pos, poolFactory.pos);

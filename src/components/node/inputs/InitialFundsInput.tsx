@@ -56,7 +56,7 @@ const InitialFundsInput = ({
     } = useForm<{ deposit: number }>();
 
     const validate = (value: number) => {
-        if (toBigNumber(value.toString()).gt(userBalance)) {
+        if (toBigNumber(value.toString()) > userBalance) {
             return 'Insufficient ETH balance';
         }
         return true;

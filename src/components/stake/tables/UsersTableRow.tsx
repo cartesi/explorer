@@ -10,7 +10,6 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { Flex, Icon, Table, TableCellProps, Text } from '@chakra-ui/react';
-import { BigNumber } from '@ethersproject/bignumber';
 import { FC } from 'react';
 import { PoolBalanceWithAccumulatedShares } from '../../../graphql/models';
 import { formatCTSI } from '../../../utils/token';
@@ -18,6 +17,7 @@ import Address from '../../Address';
 import { useColorModeValue } from '../../ui/color-mode';
 import { TbHelp } from 'react-icons/tb';
 import { Tooltip } from '../../Tooltip';
+import { mulDiv } from '../../../utils/bigint';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     hourCycle: 'h23',
@@ -32,12 +32,12 @@ export interface UsersTableRowProps {
 
 const calculateStakedCTSI = (
     balance: PoolBalanceWithAccumulatedShares,
-): BigNumber => {
-    const uShares = BigNumber.from(balance.shares ?? 0);
-    const pAmount = BigNumber.from(balance.pool.amount ?? 0);
-    const pShares = BigNumber.from(balance.pool.shares ?? 1);
+): bigint => {
+    const uShares = BigInt(balance.shares ?? 0);
+    const pAmount = BigInt(balance.pool.amount ?? 0);
+    const pShares = BigInt(balance.pool.shares ?? 1);
 
-    return uShares.mul(pAmount).div(pShares);
+    return mulDiv(uShares, pAmount, pShares);
 };
 
 const UsersTableRow: FC<UsersTableRowProps> = ({ chainId, balance }) => {

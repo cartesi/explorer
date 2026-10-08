@@ -17,9 +17,7 @@ import { Transaction } from '../../services/transaction';
 const defaultTransaction = {
     acknowledged: false,
     error: null,
-    receipt: {
-        confirmations: 1,
-    },
+    confirmations: 1,
     transaction: {
         hash: '0x6200d8606aab695a7f730a3f7c60e399eb3bd10f',
         chainId: '3124123',

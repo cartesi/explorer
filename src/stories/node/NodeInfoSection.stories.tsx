@@ -11,9 +11,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseEther } from 'viem';
 
 import { NodeInfoSection } from '../../components/node/NodeInfoSection';
-import { ethers } from 'ethers';
 
 export default {
     title: 'Node/NodeInfoSection',
@@ -29,8 +29,8 @@ const Template: Story = {
 
 const defaultProps = {
     address: '0xb00299b573a9deee20e6a242416188d1033e325f',
-    userBalance: ethers.utils.parseEther('5.345'),
-    nodeBalance: ethers.utils.parseEther('2.345'),
+    userBalance: parseEther('5.345'),
+    nodeBalance: parseEther('2.345'),
 };
 
 export const NodeHire: Story = {

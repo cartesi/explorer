@@ -9,9 +9,8 @@
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-import { BigNumber, BigNumberish, constants } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useStakingContract } from './contracts';
+import { asAddress, useStakingContract } from './contracts';
 import { useBlockNumber } from './eth';
 import { useTransaction } from './transaction';
 
@@ -21,55 +20,52 @@ export const useStaking = (user: string) => {
     const stakeTransaction = useTransaction();
     const unstakeTransaction = useTransaction();
     const withdrawTransaction = useTransaction();
-    const [stakedBalance, setStakedBalance] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [stakedBalance, setStakedBalance] = useState<bigint>(0n);
     const [maturingTimestamp, setMaturingTimestamp] = useState<Date>(null);
     const [releasingTimestamp, setReleasingTimestamp] = useState<Date>(null);
-    const [maturingBalance, setMaturingBalance] = useState<BigNumber>(
-        constants.Zero,
-    );
-    const [releasingBalance, setReleasingBalance] = useState<BigNumber>(
-        constants.Zero,
-    );
+    const [maturingBalance, setMaturingBalance] = useState<bigint>(0n);
+    const [releasingBalance, setReleasingBalance] = useState<bigint>(0n);
 
     useEffect(() => {
         if (staking && user) {
-            staking.getStakedBalance(user).then(setStakedBalance);
-            staking
-                .getMaturingTimestamp(user)
+            const address = asAddress(user);
+            staking.read.getStakedBalance([address]).then(setStakedBalance);
+            staking.read
+                .getMaturingTimestamp([address])
                 .then((value) =>
-                    setMaturingTimestamp(new Date(value.toNumber() * 1000)),
+                    setMaturingTimestamp(new Date(Number(value) * 1000)),
                 );
-            staking
-                .getReleasingTimestamp(user)
+            staking.read
+                .getReleasingTimestamp([address])
                 .then((value) =>
-                    setReleasingTimestamp(new Date(value.toNumber() * 1000)),
+                    setReleasingTimestamp(new Date(Number(value) * 1000)),
                 );
-            staking.getMaturingBalance(user).then(setMaturingBalance);
-            staking.getReleasingBalance(user).then(setReleasingBalance);
+            staking.read.getMaturingBalance([address]).then(setMaturingBalance);
+            staking.read
+                .getReleasingBalance([address])
+                .then(setReleasingBalance);
         } else if (!staking && !user) {
-            setStakedBalance(constants.Zero);
-            setReleasingBalance(constants.Zero);
-            setMaturingBalance(constants.Zero);
+            setStakedBalance(0n);
+            setReleasingBalance(0n);
+            setMaturingBalance(0n);
         }
     }, [staking, user, blockNumber]);
 
-    const stake = (amount: BigNumberish) => {
+    const stake = (amount: bigint) => {
         if (staking) {
-            stakeTransaction.set(staking.stake(amount));
+            stakeTransaction.set(staking.write.stake([amount]));
         }
     };
 
-    const unstake = (amount: BigNumberish) => {
+    const unstake = (amount: bigint) => {
         if (staking) {
-            unstakeTransaction.set(staking.unstake(amount));
+            unstakeTransaction.set(staking.write.unstake([amount]));
         }
     };
 
-    const withdraw = (amount: BigNumberish) => {
+    const withdraw = (amount: bigint) => {
         if (staking) {
-            withdrawTransaction.set(staking.withdraw(amount));
+            withdrawTransaction.set(staking.write.withdraw([amount]));
         }
     };
 

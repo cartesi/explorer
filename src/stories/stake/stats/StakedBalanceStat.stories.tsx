@@ -12,9 +12,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import StakedBalanceStat from '../../../components/stake/stats/StakedBalanceStat';
-import { BigNumber } from 'ethers';
 
-const defaultValue = BigNumber.from('100000000000000000000');
+const defaultValue = 100000000000000000000n;
 
 export default {
     title: 'Stake/Stats/StakedBalanceStat',

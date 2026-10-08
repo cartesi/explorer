@@ -22,13 +22,12 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '../../ui/color-mode';
 
-import { BigNumber } from 'ethers';
 import { FC } from 'react';
 import { PoolBalanceIcon } from '../../Icons';
 import CTSI from '../../pools/staking/CTSI';
 
 export interface IPoolBalanceSectionProps {
-    userPoolBalance: BigNumber;
+    userPoolBalance: bigint;
     isPoolBalanceLocked: boolean;
     onStakeClick: () => void;
     onWithdrawClick: () => void;
@@ -102,9 +101,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         ml="auto"
                         onClick={onStakeClick}
                         colorPalette={colorScheme}
-                        disabled={
-                            isPoolBalanceLocked || userPoolBalance.isZero()
-                        }
+                        disabled={isPoolBalanceLocked || userPoolBalance === 0n}
                     >
                         Stake
                     </Button>
@@ -114,7 +111,7 @@ export const PoolBalanceSection: FC<IPoolBalanceSectionProps> = ({
                         width="173px"
                         ml="auto"
                         onClick={onWithdrawClick}
-                        disabled={userPoolBalance.isZero()}
+                        disabled={userPoolBalance === 0n}
                     >
                         Withdraw
                     </Button>

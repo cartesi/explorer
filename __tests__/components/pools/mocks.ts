@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { mock } from 'jest-mock-extended';
 import { useStakingPool } from '../../../src/services/pool';
 import { useStakingPoolFactory } from '../../../src/services/poolFactory';
@@ -24,7 +23,7 @@ function buildUseStakingPoolReturn() {
     const mock = buildMockStakingPool();
     mock.paused = false;
     mock.transaction = buildTransaction();
-    mock.amount = BigNumber.from(0);
+    mock.amount = 0n;
     return mock;
 }
 

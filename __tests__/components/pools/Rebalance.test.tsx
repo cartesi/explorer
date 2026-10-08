@@ -10,16 +10,15 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BigNumber } from 'ethers';
 import Rebalance from '../../../src/components/pools/Rebalance';
 import { formatCTSI } from '../../../src/utils/token';
 import { withChakraTheme } from '../../test-utilities';
 
 const Component = withChakraTheme(Rebalance);
 const props = {
-    stake: BigNumber.from('10000000000000000000'),
-    unstake: BigNumber.from('10000000000000000000'),
-    withdraw: BigNumber.from('10000000000000000000'),
+    stake: 10000000000000000000n,
+    unstake: 10000000000000000000n,
+    withdraw: 10000000000000000000n,
     onRebalance: jest.fn(),
 };
 
@@ -56,14 +55,7 @@ describe('Rebalance component', () => {
     });
 
     it('should display CTSI to withdraw label when unstake is greater than zero', () => {
-        render(
-            <Component
-                {...props}
-                stake={BigNumber.from(0)}
-                unstake={BigNumber.from(0)}
-                withdraw={BigNumber.from(0)}
-            />,
-        );
+        render(<Component {...props} stake={0n} unstake={0n} withdraw={0n} />);
         expect(screen.getByText('No need to rebalance')).toBeInTheDocument();
     });
 });

@@ -25,8 +25,7 @@ import {
 import { Tooltip } from '../Tooltip';
 import { useColorModeValue } from '../ui/color-mode';
 
-import { BigNumber } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'viem';
 import { isEmpty } from 'lodash';
 import { FC } from 'react';
 import { truncateString } from '../../utils/stringUtils';
@@ -38,16 +37,16 @@ import { NodeRetireModal } from './modals/NodeRetireModal';
 export interface INodeInfoSection {
     ownerAccount?: string;
     address: string;
-    userBalance: BigNumber;
-    nodeBalance: BigNumber;
+    userBalance: bigint;
+    nodeBalance: bigint;
     isHiring?: boolean;
     isRetired?: boolean;
     isRetiring?: boolean;
     isAuthorizing?: boolean;
     isAuthorized?: boolean;
     onRetire: (nodeAddress: string) => void;
-    onDeposit: (funds: BigNumber) => void;
-    onHire: (nodeAddress: string, funds: BigNumber) => void;
+    onDeposit: (funds: bigint) => void;
+    onHire: (nodeAddress: string, funds: bigint) => void;
     onAuthorize?: () => void;
 }
 
@@ -81,7 +80,7 @@ export const NodeInfoSection: FC<INodeInfoSection> = ({
         ? address
         : truncateString(address);
 
-    const toETH = (value: BigNumber) => {
+    const toETH = (value: bigint) => {
         const options: Intl.NumberFormatOptions = {
             minimumFractionDigits: 0,
             maximumFractionDigits: 4,

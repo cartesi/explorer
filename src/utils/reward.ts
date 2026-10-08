@@ -10,28 +10,46 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import _ from 'lodash';
-import { BigNumber, constants, FixedNumber } from 'ethers';
 import { Block } from '../graphql/models';
+import { ratio, WAD } from './bigint';
 
 const BLOCK_INTERVAL = 13;
+const YEAR_SECONDS = 365n * 24n * 60n * 60n;
+
+const average = (values: bigint[]): bigint =>
+    values.length > 0
+        ? values.reduce((sum, value) => sum + value, 0n) / BigInt(values.length)
+        : 0n;
+
+const groupByChain = (blocks: Block[]) =>
+    _.groupBy(
+        blocks,
+        (block) => `${block.chain.protocol.version}-${block.chain.number}`,
+    );
+
+/** protocol 1 interval is in seconds, 2 is in blocks */
+const targetIntervalSeconds = (protocol: number, targetInterval: number) =>
+    protocol == 1 ? targetInterval : targetInterval * BLOCK_INTERVAL;
+
+/** formula depends on protocol version */
+const activeStakeOf = (
+    protocol: number,
+    difficulty: bigint,
+    targetInterval: number,
+) =>
+    protocol == 1
+        ? difficulty / BigInt(targetInterval)
+        : (difficulty / BigInt(targetInterval)) * BigInt(10 ** 6);
 
 export const getRewardRate = (
     blocks: Block[],
     rawCirculatingSupply: number,
 ) => {
-    let participationRate = FixedNumber.from(0);
-    let yearReturn = FixedNumber.from(0);
+    let participationRate = 0;
+    let yearReturn = 0;
 
     if (blocks && blocks.length > 0 && rawCirculatingSupply) {
-        const blocksPerChain = _.groupBy(
-            blocks,
-            (block) => `${block.chain.protocol.version}-${block.chain.number}`,
-        );
-
-        const yearSeconds = constants.One.mul(60) // minute
-            .mul(60) // hour
-            .mul(24) // day
-            .mul(365); // year
+        const blocksPerChain = groupByChain(blocks);
 
         const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
             const blocks: Array<Block> = blocksPerChain[chainId];
@@ -39,49 +57,33 @@ export const getRewardRate = (
             const targetInterval = blocks[0].chain.targetInterval || 1;
 
             // take average difficulty of all blocks in array
-            const difficulty = blocks
-                .map((t) => BigNumber.from(t.difficulty))
-                .reduce((sum, d) => sum.add(d), constants.Zero)
-                .div(blocks.length);
-
-            // protocol 1 interval is in seconds, 2 is in blocks
-            const targetIntervalSeconds =
-                protocol == 1
-                    ? targetInterval
-                    : targetInterval * BLOCK_INTERVAL;
-
-            // formula depends on protocol version
-            const activeStake =
-                protocol == 1
-                    ? difficulty.div(targetInterval)
-                    : difficulty.div(targetInterval).mul(10 ** 6);
-
-            // convert circulation supply to BigNumber and multiple by 1e18
-            const circulationSupply = BigNumber.from(rawCirculatingSupply).mul(
-                constants.WeiPerEther,
+            const difficulty = average(
+                blocks.map((block) => BigInt(block.difficulty)),
             );
+
+            const activeStake = activeStakeOf(
+                protocol,
+                difficulty,
+                targetInterval,
+            );
+
+            // circulation supply in wei
+            const circulationSupply = BigInt(rawCirculatingSupply) * WAD;
 
             // participation rate is a percentage of circulation supply
-            // must use FixedNumber because BigNumber is only for integer
-            const participationRate = FixedNumber.fromValue(
-                activeStake,
-            ).divUnsafe(FixedNumber.fromValue(circulationSupply));
+            const participationRate = ratio(activeStake, circulationSupply);
 
             // calculate average prize
-            const reward = blocks
-                .map((block) => BigNumber.from(block.reward))
-                .reduce((sum, prize) => sum.add(prize), constants.Zero)
-                .div(blocks.length);
+            const reward = average(blocks.map((block) => BigInt(block.reward)));
 
             // total prize paid in one year
-            const yearPrize = yearSeconds
-                .div(targetIntervalSeconds)
-                .mul(reward);
+            const yearPrize =
+                (YEAR_SECONDS /
+                    BigInt(targetIntervalSeconds(protocol, targetInterval))) *
+                reward;
 
             // calculate year return
-            const yearReturn = FixedNumber.fromValue(yearPrize).divUnsafe(
-                FixedNumber.fromValue(activeStake),
-            );
+            const yearReturn = ratio(yearPrize, activeStake);
 
             return {
                 participationRate,
@@ -90,17 +92,16 @@ export const getRewardRate = (
         });
 
         // Average participation rate
-        participationRate = ratesPerChain
-            .reduce(
-                (prev, cur) => prev.addUnsafe(cur.participationRate),
-                FixedNumber.from(0),
-            )
-            .divUnsafe(FixedNumber.from(ratesPerChain.length));
+        participationRate =
+            ratesPerChain.reduce(
+                (prev, cur) => prev + cur.participationRate,
+                0,
+            ) / ratesPerChain.length;
 
         // Sum up yearReturn
         yearReturn = ratesPerChain.reduce(
-            (prev, cur) => prev.addUnsafe(cur.yearReturn),
-            FixedNumber.from(0),
+            (prev, cur) => prev + cur.yearReturn,
+            0,
         );
     }
 
@@ -112,92 +113,68 @@ export const getRewardRate = (
 
 export const getEstimatedRewardRate = (
     blocks: Block[],
-    stake: BigNumber,
+    stake: bigint,
     totalStaked: number,
     period: number,
 ) => {
-    let reward = constants.Zero;
-    let apr = FixedNumber.from(0);
-    let activeStake = constants.Zero;
+    let reward = 0n;
+    let apr = 0;
+    let activeStake = 0n;
 
     if (blocks && blocks.length > 0) {
-        const blocksPerChain = _.groupBy(
-            blocks,
-            (block) => `${block.chain.protocol.version}-${block.chain.number}`,
-        );
+        const blocksPerChain = groupByChain(blocks);
 
         const ratesPerChain = Object.keys(blocksPerChain).map((chainId) => {
             const blocks: Array<Block> = blocksPerChain[chainId];
             const protocol = blocks[0].chain.protocol.version;
             const targetInterval = blocks[0].chain.targetInterval;
 
-            const avgPrize = blocks
-                .reduce(
-                    (prev, cur) => prev.add(BigNumber.from(cur.reward)),
-                    constants.Zero,
-                )
-                .div(BigNumber.from(blocks.length));
+            const avgPrize = average(
+                blocks.map((block) => BigInt(block.reward)),
+            );
 
             // take average difficulty of all blocks in array
-            const difficulty = blocks
-                .map((t) => BigNumber.from(t.difficulty))
-                .reduce((sum, d) => sum.add(d), constants.Zero)
-                .div(blocks.length);
+            const difficulty = average(
+                blocks.map((block) => BigInt(block.difficulty)),
+            );
 
-            // protocol 1 interval is in seconds, 2 is in blocks
-            const targetIntervalSeconds =
-                protocol == 1
-                    ? targetInterval
-                    : targetInterval * BLOCK_INTERVAL;
+            const intervalSeconds = BigInt(
+                targetIntervalSeconds(protocol, targetInterval),
+            );
 
-            // formula depends on protocol version
-            const activeStake =
-                protocol == 1
-                    ? difficulty.div(targetInterval)
-                    : difficulty.div(targetInterval).mul(10 ** 6);
+            const activeStake = activeStakeOf(
+                protocol,
+                difficulty,
+                targetInterval,
+            );
 
             // user stake share
-            const stakePercentage = FixedNumber.fromValue(stake).divUnsafe(
-                FixedNumber.fromValue(
-                    constants.One.mul(totalStaked)
-                        .mul(constants.WeiPerEther)
-                        .add(stake),
-                ),
+            const stakePercentage = ratio(
+                stake,
+                BigInt(totalStaked) * WAD + stake,
             );
 
             // investment period in seconds
-            const periodSeconds = BigNumber.from(period)
-                .mul(24)
-                .mul(60)
-                .mul(60);
+            const periodSeconds = BigInt(period) * 24n * 60n * 60n;
 
             // number of block drawn in that period
-            const totalBlocks = periodSeconds.div(targetIntervalSeconds);
+            const totalBlocks = periodSeconds / intervalSeconds;
 
             // number of block claimed by the user (statistically)
-            const blocksClaimed = stakePercentage.mulUnsafe(
-                FixedNumber.fromValue(totalBlocks),
+            const blocksClaimed = Math.floor(
+                stakePercentage * Number(totalBlocks),
             );
 
             // total reward
-            const reward = avgPrize.mul(blocksClaimed.floor().toUnsafeFloat());
+            const reward = avgPrize * BigInt(blocksClaimed);
 
             // APR
-            const yearSeconds = constants.One.mul(365).mul(24).mul(60).mul(60);
-            const yearBlocks = yearSeconds.div(targetIntervalSeconds);
-
-            const yearClaimed = stakePercentage.mulUnsafe(
-                FixedNumber.fromValue(yearBlocks),
+            const yearBlocks = YEAR_SECONDS / intervalSeconds;
+            const yearClaimed = Math.floor(
+                stakePercentage * Number(yearBlocks),
             );
-
-            const yearReward = avgPrize.mul(
-                yearClaimed.floor().toUnsafeFloat(),
-            );
-            const apr = stake.eq(0)
-                ? FixedNumber.from(0)
-                : FixedNumber.fromValue(yearReward).divUnsafe(
-                      FixedNumber.fromValue(stake),
-                  );
+            const yearReward = avgPrize * BigInt(yearClaimed);
+            const apr = stake === 0n ? 0 : ratio(yearReward, stake);
 
             return {
                 reward,
@@ -207,21 +184,13 @@ export const getEstimatedRewardRate = (
         });
 
         // Sum up rewards
-        reward = ratesPerChain.reduce(
-            (prev, cur) => prev.add(cur.reward),
-            constants.Zero,
-        );
+        reward = ratesPerChain.reduce((prev, cur) => prev + cur.reward, 0n);
 
         // Sum up aprs
-        apr = ratesPerChain.reduce(
-            (prev, cur) => prev.addUnsafe(cur.apr),
-            FixedNumber.from(0),
-        );
+        apr = ratesPerChain.reduce((prev, cur) => prev + cur.apr, 0);
 
         // Average active stake
-        activeStake = ratesPerChain
-            .reduce((prev, cur) => prev.add(cur.activeStake), constants.Zero)
-            .div(ratesPerChain.length);
+        activeStake = average(ratesPerChain.map((cur) => cur.activeStake));
     }
 
     return {

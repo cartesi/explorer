@@ -11,14 +11,13 @@
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BigNumber } from 'ethers';
 import { act } from 'react';
 import PoolsOverview from '../../../../src/components/stake/components/PoolsOverview';
 import { withChakraTheme } from '../../../test-utilities';
 
 const Component = withChakraTheme(PoolsOverview);
 const props = {
-    balance: BigNumber.from('10000'),
+    balance: 10000n,
     poolBalancesCount: 10,
     summary: {
         id: '1',

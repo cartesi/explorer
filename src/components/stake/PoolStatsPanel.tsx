@@ -10,8 +10,8 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { SimpleGrid, StackProps } from '@chakra-ui/react';
-import { BigNumber, BigNumberish } from 'ethers';
 import { FC } from 'react';
+import { Numeric } from '../../utils/bigint';
 import { StakingPoolFee } from '../../graphql/models';
 import CommissionStat from './stats/CommissionStat';
 import EffectiveBalanceStat from './stats/EffectiveBalanceStat';
@@ -24,21 +24,21 @@ import type { Route } from 'next';
 
 export interface PoolStatsPanelProps extends StackProps {
     address: string;
-    stakedBalance: BigNumber;
+    stakedBalance: bigint;
     totalBlocks: number;
     totalUsers: number;
     productionInterval: number; // average number of milliseconds between blocks considering the last 10 produced blocks
-    totalReward: BigNumberish;
+    totalReward: Numeric;
     commissionPercentage: number;
     fee: StakingPoolFee;
-    pool: BigNumber;
-    stake: BigNumber;
-    unstake: BigNumber;
-    withdraw: BigNumber;
-    stakingMature: BigNumber;
-    stakingMaturing: BigNumber;
-    stakingReleasing: BigNumber;
-    stakingReleased: BigNumber;
+    pool: bigint;
+    stake: bigint;
+    unstake: bigint;
+    withdraw: bigint;
+    stakingMature: bigint;
+    stakingMaturing: bigint;
+    stakingReleasing: bigint;
+    stakingReleased: bigint;
     stakingMaturingTimestamp: Date;
     stakingReleasingTimestamp: Date;
     onRebalance?: () => void;

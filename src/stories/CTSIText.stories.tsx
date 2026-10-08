@@ -11,11 +11,11 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { parseUnits } from 'viem';
 import { TbCoins, TbWallet } from 'react-icons/tb';
 
 import CTSIText from '../components/CTSIText';
 import { Text, Icon } from '@chakra-ui/react';
-import { ethers } from 'ethers';
 
 export default {
     title: 'CTSI Text',
@@ -52,14 +52,14 @@ export const Horizontal: Story = {
 
 export const FractionalAmount: Story = {
     args: {
-        value: ethers.utils.parseUnits('0.0001', 18),
+        value: parseUnits('0.0001', 18),
     },
     ...Template,
 };
 
 export const HugeAmount: Story = {
     args: {
-        value: ethers.utils.parseUnits('345812800.12', 18),
+        value: parseUnits('345812800.12', 18),
         options: {
             notation: 'compact',
             minimumFractionDigits: 1,
