@@ -33,7 +33,7 @@ const messages = {
         retired: () => 'This node is already retired.',
         authorize: {
             authorizing: () => 'Authorizing node to use new PoS...',
-            success: () => 'Node authorized with success!',
+            success: () => 'Node authorized successfully!',
             fail: () => 'Node authorization failed!',
             pos: {
                 steps: {
@@ -102,7 +102,7 @@ const messages = {
         },
         set: {
             ens: {
-                success: () => 'Pool ENS updated with success!',
+                success: () => 'Pool ENS updated successfully!',
                 fail: () => 'Pool ENS update failed!',
                 update: () => 'Updating pool ENS...',
             },
@@ -113,7 +113,7 @@ const messages = {
         },
         update: {
             v2: {
-                success: () => 'Pool updated to use PoS v2 with success!',
+                success: () => 'Pool updated to use PoS v2 successfully!',
                 fail: () => 'Pool update failed!',
                 update: () => 'Updating pool to use PoS v2...',
             },

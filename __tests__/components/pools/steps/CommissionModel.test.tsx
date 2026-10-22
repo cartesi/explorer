@@ -377,7 +377,7 @@ describe('CommissionModel step component', () => {
             ).toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'Pool 0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA created! moving to the next step...',
+                    'Pool 0xE656584736b1EFC14b4b6c785AA9C23BAc8f41AA created! Moving to the next step...',
                 ),
             ).toBeInTheDocument();
         });

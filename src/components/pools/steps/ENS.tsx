@@ -188,7 +188,7 @@ const EthereumNameServer = ({
     return (
         <Step
             title="Pool ENS"
-            subtitle="Registering a ENS domain and setting it up."
+            subtitle="Registering an ENS domain and setting it up."
             stepNumber={stepNumber}
             status={stepState.status}
             onActive={onStepActive}

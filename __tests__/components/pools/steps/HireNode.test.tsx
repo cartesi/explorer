@@ -559,7 +559,7 @@ describe('HireNode Step', () => {
                 expect(
                     await findByText(
                         alert,
-                        'Node hired! moving to the next step...',
+                        'Node hired! Moving to the next step...',
                     ),
                 ).toBeInTheDocument();
             });

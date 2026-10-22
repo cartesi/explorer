@@ -150,7 +150,7 @@ export const Staking: FC<StakingProps> = ({
                 <TransactionBanner
                     title="Withdrawing..."
                     failTitle="Error withdrawing"
-                    successDescription="Withdrawed successfully."
+                    successDescription="Withdrawn successfully."
                     transaction={withdrawTransaction}
                 />
 
@@ -164,7 +164,7 @@ export const Staking: FC<StakingProps> = ({
                 <TransactionBanner
                     title="Staking..."
                     failTitle="Error staking"
-                    successDescription="Stake set successfully."
+                    successDescription="Staked successfully."
                     transaction={stakeTransaction}
                 />
 
