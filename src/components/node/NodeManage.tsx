@@ -412,7 +412,7 @@ const ManageNode: FC = () => {
                             <TransactionInfoBanner
                                 title="Withdrawing..."
                                 failTitle="Error withdrawing"
-                                successDescription="Withdrawed successfully."
+                                successDescription="Withdrawn successfully."
                                 transaction={withdrawTransaction}
                                 onClose={() => setWithdrawAlertActive(false)}
                             />
@@ -422,7 +422,7 @@ const ManageNode: FC = () => {
                             <TransactionInfoBanner
                                 title="Staking..."
                                 failTitle="Error staking"
-                                successDescription="Stake set successfully."
+                                successDescription="Staked successfully."
                                 transaction={stakeTransaction}
                                 onClose={() => setStakeAlertActive(false)}
                             />

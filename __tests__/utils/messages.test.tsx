@@ -73,7 +73,7 @@ describe('useMessages hook', () => {
             const { result } = renderHook(() =>
                 useMessages('node.authorize.success'),
             );
-            expect(result.current).toEqual('Node authorized with success!');
+            expect(result.current).toEqual('Node authorized successfully!');
         });
 
         describe('PoS v2 migration steps', () => {
@@ -296,7 +296,7 @@ describe('useMessages hook', () => {
                     useMessages('pool.update.v2.success'),
                 );
                 expect(result.current).toEqual(
-                    'Pool updated to use PoS v2 with success!',
+                    'Pool updated to use PoS v2 successfully!',
                 );
             });
 

@@ -64,7 +64,7 @@ const wordingFor = {
     hire: {
         title: 'Hiring node...',
         failTitle: 'Hiring the node failed',
-        successDescription: 'Node hired! moving to the next step...',
+        successDescription: 'Node hired! Moving to the next step...',
     },
 };
 

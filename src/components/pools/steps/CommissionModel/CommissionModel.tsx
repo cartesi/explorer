@@ -153,7 +153,7 @@ const CommissionModel = ({
                 <TransactionBanner
                     title="Creating the pool..."
                     failTitle="The pool creation failed!"
-                    successDescription={`Pool ${poolFactory.transaction?.result} created! moving to the next step...`}
+                    successDescription={`Pool ${poolFactory.transaction?.result} created! Moving to the next step...`}
                     transaction={poolFactory.transaction}
                     mb={2}
                 />

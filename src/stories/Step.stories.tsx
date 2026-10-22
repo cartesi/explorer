@@ -132,7 +132,7 @@ export const Optional: Story = {
     args: {
         stepNumber: 1,
         title: 'Pool ENS',
-        subtitle: 'Registering a ENS domain and setting it up.',
+        subtitle: 'Registering an ENS domain and setting it up.',
         status: StepStatus.ACTIVE,
         optionalText: 'This step could be skipped.',
     },

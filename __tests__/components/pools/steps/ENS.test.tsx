@@ -128,7 +128,9 @@ describe('Pool ENS step', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Pool ENS')).toBeInTheDocument();
             expect(
-                screen.getByText('Registering a ENS domain and setting it up.'),
+                screen.getByText(
+                    'Registering an ENS domain and setting it up.',
+                ),
             ).toBeInTheDocument();
 
             expect(
@@ -147,7 +149,9 @@ describe('Pool ENS step', () => {
             expect(screen.getByText('1')).toBeInTheDocument();
             expect(screen.getByText('Pool ENS')).toBeInTheDocument();
             expect(
-                screen.getByText('Registering a ENS domain and setting it up.'),
+                screen.getByText(
+                    'Registering an ENS domain and setting it up.',
+                ),
             ).toBeInTheDocument();
 
             expect(
@@ -360,7 +364,7 @@ describe('Pool ENS step', () => {
                 ).toBeInTheDocument();
 
                 expect(
-                    await screen.findByText('Pool ENS updated with success!'),
+                    await screen.findByText('Pool ENS updated successfully!'),
                 ).toBeInTheDocument();
 
                 // Checking even though the step-state router is controlled the router is still called
