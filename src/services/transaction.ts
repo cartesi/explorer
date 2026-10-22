@@ -21,11 +21,13 @@ import {
     propEq,
     T,
 } from 'lodash/fp';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     BaseError,
     ContractFunctionRevertedError,
     Hash,
+    PublicClient,
+    publicActions,
     TransactionReceipt,
 } from 'viem';
 import { useWallet } from '../components/wallet';
@@ -110,10 +112,24 @@ export function extractErrorMessage(error: unknown): string {
     return String(error);
 }
 
+type ReceiptClient = Pick<PublicClient, 'waitForTransactionReceipt'>;
+
 export function useTransaction<R>(
     resultResolver?: (receipt: TransactionReceipt) => R,
 ): Transaction<R> {
-    const { chainId, publicClient } = useWallet();
+    const { chainId, publicClient, walletClient, isGnosisSafe } = useWallet();
+    // Inside a Safe App the wallet returns the Safe transaction hash, which only
+    // the Safe provider (the wallet client's transport) can map to the receipt
+    // once the multisig executes it. Poll through it in that case.
+    const receiptClient = useMemo<ReceiptClient | undefined>(
+        () =>
+            isGnosisSafe && walletClient
+                ? (walletClient.extend(
+                      publicActions,
+                  ) as unknown as ReceiptClient)
+                : publicClient,
+        [isGnosisSafe, walletClient, publicClient],
+    );
     const [acknowledged, setAcknowledged] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string>();
@@ -142,11 +158,16 @@ export function useTransaction<R>(
         const update = async () => {
             setError(null);
             try {
-                // wait for confirmations
+                // wait for confirmations, with no deadline (a Safe can take
+                // hours to execute). The Safe provider answers
+                // eth_getTransactionByHash with a placeholder, so viem's
+                // replaced-transaction check is pointless there.
                 const required = confirmations[transaction.chainId] ?? 1;
-                const receipt = await publicClient.waitForTransactionReceipt({
+                const receipt = await receiptClient.waitForTransactionReceipt({
                     hash: transaction.hash,
                     confirmations: required,
+                    timeout: 0,
+                    checkReplacement: !isGnosisSafe,
                 });
                 if (receipt.status === 'reverted') {
                     throw new Error('Transaction reverted');
@@ -162,7 +183,7 @@ export function useTransaction<R>(
                 setError(extractErrorMessage(e));
             }
         };
-        if (transaction && publicClient) {
+        if (transaction && receiptClient) {
             update();
         }
     }, [transaction]);
