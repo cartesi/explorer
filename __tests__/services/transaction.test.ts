@@ -164,7 +164,87 @@ describe('Transaction service', () => {
             expect(waitForTransactionReceipt).toHaveBeenCalledWith({
                 hash,
                 confirmations: confirmations[Network.MAINNET],
+                timeout: 0,
+                checkReplacement: true,
             });
+        });
+    });
+
+    describe('Safe App', () => {
+        const safeWaitForTransactionReceipt = jest.fn<
+            Promise<TransactionReceipt>,
+            [{ hash: Hash; confirmations: number }]
+        >();
+        const extend = jest.fn(() => ({
+            waitForTransactionReceipt: safeWaitForTransactionReceipt,
+        }));
+
+        it('should wait for the receipt through the Safe provider when connected as a Safe', async () => {
+            mockUseWallet.mockReturnValue({
+                account,
+                active: true,
+                activate: jest.fn(),
+                deactivate: jest.fn(),
+                chainId: 1,
+                isGnosisSafe: true,
+                publicClient: { waitForTransactionReceipt },
+                walletClient: { extend },
+            } as any);
+            const hash = buildTransactionHash();
+            safeWaitForTransactionReceipt.mockResolvedValue(
+                buildContractReceipt(),
+            );
+            const { result } = renderHook(() => useTransaction<string>());
+
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            await waitFor(() => expect(result.current.state).toBe('confirmed'));
+
+            expect(result.current.receipt).toBeDefined();
+            expect(waitForTransactionReceipt).not.toHaveBeenCalled();
+            expect(safeWaitForTransactionReceipt).toHaveBeenCalledWith({
+                hash,
+                confirmations: confirmations[Network.MAINNET],
+                timeout: 0,
+                checkReplacement: false,
+            });
+        });
+
+        it('should fall back to the public client when the Safe wallet client is not ready', async () => {
+            mockUseWallet.mockReturnValue({
+                account,
+                active: true,
+                activate: jest.fn(),
+                deactivate: jest.fn(),
+                chainId: 1,
+                isGnosisSafe: true,
+                publicClient: { waitForTransactionReceipt },
+                walletClient: undefined,
+            } as any);
+            const hash = buildTransactionHash();
+            waitForTransactionReceipt.mockResolvedValue(buildContractReceipt());
+            const { result } = renderHook(() => useTransaction<string>());
+
+            const promise = new Promise<Hash>((resolve) =>
+                act(() => resolve(hash)),
+            );
+
+            act(() => {
+                result.current.set(promise);
+            });
+
+            await waitFor(() => expect(result.current.state).toBe('confirmed'));
+
+            expect(extend).not.toHaveBeenCalled();
+            expect(waitForTransactionReceipt).toHaveBeenCalledWith(
+                expect.objectContaining({ hash, checkReplacement: false }),
+            );
         });
     });
 
