@@ -5,15 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v6.1.0
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
         with:
           package_json_file: 'package.json'
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24.22.1
           cache: 'pnpm'
@@ -37,7 +37,7 @@ jobs:
         run: pnpm exec dotenv -c development -- next build
 
       - name: Publish coveralls report
-        uses: coverallsapp/github-action@v2.3.8
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           path-to-lcov: 'coverage/lcov.info'
           github-token: ${{ secrets.GITHUB_TOKEN }}
