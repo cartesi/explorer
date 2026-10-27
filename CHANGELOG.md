@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.13.1] - 2026-10-27
+
+- Upgrade Next.js to 16.4.2 to patch the remote code execution, SSRF and cache-poisoning advisories in 16.3.x.
+- Upgrade Storybook to 10.6.3 and Vite to 8.3.4 to patch dev-server advisories.
+- Upgrade runtime, lint and test dependencies to their latest patch and minor releases, and framer-motion to 14.
+- Refresh vulnerable transitive dependencies (shell-quote, undici, js-yaml, source-map-js) within their existing ranges.
+- Upgrade Node.js to 24.22.1 (LTS) in CI and pnpm to 11.28.6.
+- Pin GitHub Actions to commit SHAs.
+
 ## [3.13.0] - 2026-10-22
 
 - Replace the unmaintained web3-onboard wallet library with RainbowKit on wagmi 2 and viem.
@@ -495,7 +504,8 @@ Staking Pools
 
 - First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.13.0...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/HEAD...v3.13.1
+[3.13.1]: https://github.com/cartesi/explorer/compare/v3.13.0...v3.13.1
 [3.13.0]: https://github.com/cartesi/explorer/compare/v3.13.0...v3.12.8
 [3.12.8]: https://github.com/cartesi/explorer/compare/v3.12.8...v3.12.7
 [3.12.7]: https://github.com/cartesi/explorer/compare/v3.12.7...v3.12.6
