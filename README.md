@@ -72,6 +72,15 @@ Swapping the wallet library again means changing that folder only.
 - RainbowKit 2 pins wagmi to the 2.x line, which froze when wagmi 3 shipped. The
   bundled WalletConnect and MetaMask SDK versions move only when RainbowKit adds
   wagmi 3 support; this is a known, accepted trade-off.
+- In development builds (`next dev`; production bundles carry none of its code),
+  append `?walletDebug=1` to any explorer URL to open a diagnostics overlay
+  (`src/components/wallet/debug/`): wagmi status, the chain wagmi recorded
+  against the chain the connector and the injected provider report, the wallet
+  client error, RainbowKit modal state, injected provider flags and recent
+  console errors, as a copyable JSON snapshot, plus buttons that ask the wallet
+  to switch chain. Made for wallet in-app browsers, which have no devtools.
+  Minimize collapses it to a corner pill that brings it back; the flag and the
+  minimized state are remembered until `?walletDebug=0` or the Hide button.
 
 Contracts are called through [viem](https://viem.sh) using ABIs and deployment
 addresses generated into `src/services/contracts/generated.ts` (gitignored) by
