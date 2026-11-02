@@ -15,6 +15,10 @@ module.exports = {
     coverageReporters: ['lcov', 'text-summary'],
     coverageDirectory: '<rootDir>/coverage',
     moduleNameMapper: {
+        // wagmi's baseAccount connector imports the Base Account SDK lazily; the
+        // real SDK fetches on creation and is not resolvable from the project root.
+        '^@base-org/account$': '<rootDir>/__tests__/stubs/baseAccountSdk.ts',
+
         // Handle CSS imports (with CSS modules)
         // https://jestjs.io/docs/webpack#mocking-css-modules
         '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
