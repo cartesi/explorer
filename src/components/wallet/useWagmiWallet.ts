@@ -90,10 +90,14 @@ export const useWagmiWallet = (): WagmiWallet => {
     const { switchChainAsync } = useSwitchChain();
     const isSupported =
         chainId !== undefined && supportedChainIds.includes(chainId);
-    const publicClient = usePublicClient({
-        chainId: isSupported ? chainId : undefined,
+    const supportedChainId = isSupported ? chainId : undefined;
+    const publicClient = usePublicClient({ chainId: supportedChainId });
+    // Ask for the client on the wallet's own chain, so a network switch in the
+    // wallet refetches it and an unsupported chain never caches an error.
+    const { data: walletClient, error: walletClientError } = useWalletClient({
+        chainId: supportedChainId,
+        query: { enabled: isSupported },
     });
-    const { data: walletClient, error: walletClientError } = useWalletClient();
 
     // Keep account info as lowercase to match how that is indexed on the-graph.
     const account = address?.toLowerCase();

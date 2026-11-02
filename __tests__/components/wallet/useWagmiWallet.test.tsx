@@ -196,6 +196,10 @@ describe('useWagmiWallet', () => {
         expect(usePublicClientMock).toHaveBeenCalledWith({
             chainId: Network.MAINNET,
         });
+        expect(useWalletClientMock).toHaveBeenCalledWith({
+            chainId: Network.MAINNET,
+            query: { enabled: true },
+        });
     });
 
     it('flags an unsupported network and stays inactive', () => {
@@ -207,6 +211,10 @@ describe('useWagmiWallet', () => {
         expect(result.current.active).toBe(false);
         expect(usePublicClientMock).toHaveBeenCalledWith({
             chainId: undefined,
+        });
+        expect(useWalletClientMock).toHaveBeenCalledWith({
+            chainId: undefined,
+            query: { enabled: false },
         });
     });
 
