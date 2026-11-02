@@ -27,6 +27,8 @@ export interface WalletConnectionContextProps {
     publicClient?: PublicClient<Transport, Chain>;
     walletClient?: WalletClient<Transport, Chain, Account>;
     error?: Error;
+    /** Why wagmi could not build the wallet client while connected, if so. */
+    walletClientError?: Error | null;
     active: boolean;
     activate: (...a: any) => Promise<void>;
     deactivate: () => void;

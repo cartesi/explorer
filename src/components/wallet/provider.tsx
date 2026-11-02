@@ -31,6 +31,7 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = ({
         account,
         chainId,
         error,
+        walletClientError,
         active,
         isGnosisSafe,
         walletName,
@@ -47,7 +48,7 @@ export const WalletConnectionProvider: FC<PropsWithChildren> = ({
         disconnectWallet();
     };
 
-    const defaults = { activate, active, deactivate, error };
+    const defaults = { activate, active, deactivate, error, walletClientError };
     const value = active
         ? {
               publicClient,
