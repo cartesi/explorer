@@ -65,6 +65,8 @@ export const shouldSwitchToMainnet = (
 
 export interface WagmiWallet {
     error?: Error | null;
+    /** Why wagmi could not build the wallet client while connected, if so. */
+    walletClientError?: Error | null;
     chainId?: number;
     account?: string;
     publicClient?: PublicClient<Transport, Chain>;
@@ -91,7 +93,7 @@ export const useWagmiWallet = (): WagmiWallet => {
     const publicClient = usePublicClient({
         chainId: isSupported ? chainId : undefined,
     });
-    const { data: walletClient } = useWalletClient();
+    const { data: walletClient, error: walletClientError } = useWalletClient();
 
     // Keep account info as lowercase to match how that is indexed on the-graph.
     const account = address?.toLowerCase();
@@ -120,6 +122,16 @@ export const useWagmiWallet = (): WagmiWallet => {
         window.localStorage.removeItem(LEGACY_SELECTED_WALLETS);
     }, []);
 
+    useEffect(() => {
+        if (walletClientError) {
+            console.warn(
+                '[wallet] wallet client unavailable:',
+                walletClientError.name,
+                walletClientError.message,
+            );
+        }
+    }, [walletClientError]);
+
     const connectWallet = useCallback(async () => {
         openConnectModal?.();
     }, [openConnectModal]);
@@ -130,6 +142,7 @@ export const useWagmiWallet = (): WagmiWallet => {
 
     return {
         error,
+        walletClientError,
         chainId,
         account,
         publicClient,

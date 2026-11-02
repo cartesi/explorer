@@ -227,6 +227,28 @@ describe('useWagmiWallet', () => {
         const { result } = renderHook(() => useWagmiWallet());
 
         expect(result.current.active).toBe(false);
+        expect(result.current.walletClientError).toBeUndefined();
+    });
+
+    it('exposes the wallet client error and warns about it once', () => {
+        const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const error = new Error('chain mismatch');
+        error.name = 'ConnectorChainMismatchError';
+        useAccountMock.mockReturnValue(connected());
+        useWalletClientMock.mockReturnValue({ data: undefined, error } as any);
+
+        const { result, rerender } = renderHook(() => useWagmiWallet());
+        rerender();
+
+        expect(result.current.active).toBe(false);
+        expect(result.current.walletClientError).toBe(error);
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(warn).toHaveBeenCalledWith(
+            '[wallet] wallet client unavailable:',
+            'ConnectorChainMismatchError',
+            'chain mismatch',
+        );
+        warn.mockRestore();
     });
 
     it('asks the wallet to switch to mainnet after connecting elsewhere', () => {
