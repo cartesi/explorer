@@ -17,12 +17,28 @@ import {
     RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { FC, ReactNode, useMemo, useState } from 'react';
 import { type Config, WagmiProvider } from 'wagmi';
 import theme from '../styles/theme';
 import { useColorMode } from './ui/color-mode';
 import { WalletConnectionProvider } from './wallet';
 import { appMetadata, getWagmiConfig } from './wallet/config';
+import {
+    installWalletDebugCapture,
+    isWalletDebugEnabled,
+} from './wallet/debug';
+
+// Development builds only (the condition folds at build time, so production
+// bundles carry no overlay code); loaded when ?walletDebug=1 is set.
+const WalletDebugPanel =
+    process.env.NODE_ENV === 'production'
+        ? null
+        : dynamic(() => import('./wallet/debug/WalletDebugPanel'), {
+              ssr: false,
+          });
+// Capture errors thrown during reconnectOnMount, before the panel mounts.
+if (WalletDebugPanel && isWalletDebugEnabled()) installWalletDebugCapture();
 
 interface Web3ContainerProps {
     children: ReactNode;
@@ -62,6 +78,7 @@ const Web3Container: FC<Web3ContainerProps> = ({ children, config }) => {
                 >
                     <WalletConnectionProvider>
                         {children}
+                        {WalletDebugPanel && <WalletDebugPanel />}
                     </WalletConnectionProvider>
                 </RainbowKitProvider>
             </QueryClientProvider>
