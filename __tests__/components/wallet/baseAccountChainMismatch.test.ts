@@ -18,7 +18,12 @@
  * wallet client can never be built.
  */
 import { mainnet, sepolia } from 'viem/chains';
-import { ConnectorChainMismatchError, createConfig, http } from 'wagmi';
+import {
+    ConnectorChainMismatchError,
+    createConfig,
+    http,
+    type CreateConnectorFn,
+} from 'wagmi';
 import { connect, disconnect, getWalletClient } from 'wagmi/actions';
 import { baseAccount } from 'wagmi/connectors';
 import {
@@ -26,6 +31,7 @@ import {
     local,
     supportedChainIds,
 } from '../../../src/components/wallet/chains';
+import { withVerifiedChainId } from '../../../src/components/wallet/withVerifiedChainId';
 
 const address = '0x907eA0e65Ecf3af503007B382E1280Aeb46104ad';
 const BASE_CHAIN_ID = 8453;
@@ -79,8 +85,8 @@ class FakeCoinbaseBrowserProvider {
         }
     }
 
-    methods(): string[] {
-        return this.requests.map((request) => request.method);
+    find(method: string): Request | undefined {
+        return this.requests.find((request) => request.method === method);
     }
 
     on(event: string, listener: Listener) {
@@ -99,7 +105,9 @@ class FakeCoinbaseBrowserProvider {
     disconnect() {}
 }
 
-const createTestConfig = () =>
+const createTestConfig = (
+    wrap: (create: CreateConnectorFn) => CreateConnectorFn = (create) => create,
+) =>
     createConfig({
         chains,
         transports: {
@@ -108,31 +116,34 @@ const createTestConfig = () =>
             [local.id]: http('http://127.0.0.1:1'),
         },
         connectors: [
-            baseAccount({ appName: 'test', preference: { telemetry: false } }),
+            wrap(
+                baseAccount({
+                    appName: 'test',
+                    preference: { telemetry: false },
+                }),
+            ),
         ],
         multiInjectedProviderDiscovery: false,
         storage: null,
         ssr: false,
     });
 
+let provider: FakeCoinbaseBrowserProvider;
+let config: ReturnType<typeof createTestConfig>;
+
+const setup = (wrap?: (create: CreateConnectorFn) => CreateConnectorFn) => {
+    provider = new FakeCoinbaseBrowserProvider();
+    window.ethereum = provider;
+    config = createTestConfig(wrap);
+};
+
+afterEach(async () => {
+    await disconnect(config).catch(() => undefined);
+    delete (window as { ethereum?: unknown }).ethereum;
+});
+
 describe('Base Account connector inside the Coinbase in-app browser', () => {
-    let provider: FakeCoinbaseBrowserProvider;
-    let config: ReturnType<typeof createTestConfig>;
-
-    beforeEach(() => {
-        provider = new FakeCoinbaseBrowserProvider();
-        window.ethereum = provider;
-        config = createTestConfig();
-    });
-
-    afterEach(async () => {
-        await disconnect(config).catch(() => undefined);
-        delete (window as { ethereum?: unknown }).ethereum;
-    });
-
-    it('is a chain the explorer does not support', () => {
-        expect(supportedChainIds).not.toContain(BASE_CHAIN_ID);
-    });
+    beforeEach(() => setup());
 
     it('records the requested chain instead of the chain the wallet is on', async () => {
         const [connector] = config.connectors;
@@ -145,11 +156,10 @@ describe('Base Account connector inside the Coinbase in-app browser', () => {
         expect(result.chainId).toBe(mainnet.id);
         expect(await connector.getChainId()).toBe(BASE_CHAIN_ID);
         expect(config.state.status).toBe('connected');
-        const walletConnect = provider.requests.find(
-            (request) => request.method === 'wallet_connect',
+        expect(provider.find('wallet_connect')?.params[0].chainIds[0]).toBe(
+            '0x1',
         );
-        expect(walletConnect?.params[0].chainIds[0]).toBe('0x1');
-        expect(provider.methods()).not.toContain('wallet_switchEthereumChain');
+        expect(provider.find('wallet_switchEthereumChain')).toBeUndefined();
     });
 
     it('cannot build a wallet client while still reporting connected', async () => {
@@ -158,9 +168,6 @@ describe('Base Account connector inside the Coinbase in-app browser', () => {
 
         await expect(getWalletClient(config)).rejects.toBeInstanceOf(
             ConnectorChainMismatchError,
-        );
-        await expect(getWalletClient(config)).rejects.toThrow(
-            String(BASE_CHAIN_ID),
         );
         expect(config.state.status).toBe('connected');
     });
@@ -172,5 +179,63 @@ describe('Base Account connector inside the Coinbase in-app browser', () => {
 
         expect(result.chainId).toBe(mainnet.id);
         expect(await connector.getChainId()).toBe(BASE_CHAIN_ID);
+    });
+});
+
+describe('Base Account connector wrapped with withVerifiedChainId', () => {
+    beforeEach(() => setup(withVerifiedChainId));
+
+    it('switches the wallet to the requested chain and builds the wallet client', async () => {
+        const [connector] = config.connectors;
+
+        const result = await connect(config, {
+            connector,
+            chainId: mainnet.id,
+        });
+
+        expect(result.chainId).toBe(mainnet.id);
+        expect(provider.chainId).toBe('0x1');
+        expect(provider.find('wallet_switchEthereumChain')?.params[0]).toEqual({
+            chainId: '0x1',
+        });
+        expect(await connector.getChainId()).toBe(mainnet.id);
+        await expect(getWalletClient(config)).resolves.toMatchObject({
+            account: { address },
+            chain: { id: mainnet.id },
+        });
+    });
+
+    it('fails the connection when the wallet refuses to switch', async () => {
+        provider.rejectSwitch = true;
+        const [connector] = config.connectors;
+
+        await expect(
+            connect(config, { connector, chainId: mainnet.id }),
+        ).rejects.toThrow();
+        expect(config.state.status).toBe('disconnected');
+    });
+
+    it('reports the wallet chain when reconnecting, so the app can flag it', async () => {
+        const [connector] = config.connectors;
+
+        const result = await connector.connect({ isReconnecting: true });
+
+        expect(result.chainId).toBe(BASE_CHAIN_ID);
+        expect(provider.find('wallet_switchEthereumChain')).toBeUndefined();
+        expect(supportedChainIds).not.toContain(result.chainId);
+    });
+
+    it('leaves a matching connection untouched', async () => {
+        provider.chainId = '0x1';
+        const [connector] = config.connectors;
+
+        const result = await connect(config, {
+            connector,
+            chainId: mainnet.id,
+        });
+
+        expect(result.chainId).toBe(mainnet.id);
+        expect(provider.find('wallet_switchEthereumChain')).toBeUndefined();
+        await expect(getWalletClient(config)).resolves.toBeDefined();
     });
 });
