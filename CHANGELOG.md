@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.13.2] - 2026-11-02
+
+- Fix connecting from the Coinbase Wallet in-app browser: wagmi's Base Account connector reported the chain it asked for instead of the chain the wallet was on, which left a connection the explorer could not use and a "Connect To Wallet" button that did nothing. The connector now checks the wallet's chain after connecting and switches to the requested one when they differ.
+- Request the wallet client for the chain the wallet is on, so switching networks in the wallet takes effect without reloading the page.
+- Add a wallet diagnostics overlay to development builds, for browsers without devtools such as wallet in-app browsers.
+
 ## [3.13.1] - 2026-10-27
 
 - Upgrade Next.js to 16.4.2 to patch the remote code execution, SSRF and cache-poisoning advisories in 16.3.x.
@@ -504,7 +510,8 @@ Staking Pools
 
 - First release
 
-[unreleased]: https://github.com/cartesi/explorer/compare/v3.13.1...HEAD
+[unreleased]: https://github.com/cartesi/explorer/compare/v3.13.2...HEAD
+[3.13.2]: https://github.com/cartesi/explorer/compare/v3.13.1...v3.13.2
 [3.13.1]: https://github.com/cartesi/explorer/compare/v3.13.0...v3.13.1
 [3.13.0]: https://github.com/cartesi/explorer/compare/v3.12.8...v3.13.0
 [3.12.8]: https://github.com/cartesi/explorer/compare/v3.12.7...v3.12.8
