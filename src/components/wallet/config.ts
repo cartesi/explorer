@@ -23,6 +23,7 @@ import { mainnet, sepolia } from 'viem/chains';
 import { createConfig, http, type Config, type CreateConnectorFn } from 'wagmi';
 import { Network } from '../../utils/networks';
 import { chains, local } from './chains';
+import { withVerifiedChainId } from './withVerifiedChainId';
 
 const dappUrl = process.env.NEXT_PUBLIC_DAPP_URL;
 const ankrEnabled = process.env.NEXT_PUBLIC_FLAG_ANKR_ENABLED === 'true';
@@ -45,6 +46,18 @@ export const rpcUrls: Record<Network, string> = {
         process.env.NEXT_PUBLIC_RPC_URL_31337 || 'http://localhost:8545',
 };
 
+/** RainbowKit's Base wallet, with its connection chain checked against the wallet. */
+const baseWallet = (
+    params: Parameters<typeof base>[0],
+): ReturnType<typeof base> => {
+    const wallet = base(params);
+    return {
+        ...wallet,
+        createConnector: (details) =>
+            withVerifiedChainId(wallet.createConnector(details)),
+    };
+};
+
 /**
  * RainbowKit shows exactly this list (also on mobile). Safe only appears
  * inside the Safe web interface and connects automatically.
@@ -58,7 +71,7 @@ export const createConnectors = (): CreateConnectorFn[] =>
                     metaMaskWallet,
                     walletConnectWallet,
                     safeWallet,
-                    base,
+                    baseWallet,
                 ],
             },
             {
