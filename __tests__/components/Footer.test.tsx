@@ -101,4 +101,17 @@ describe('Footer component', () => {
             expect(link).toHaveTextContent(label);
         });
     });
+
+    it('should display the copyright for the current year', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2031-03-01'));
+        try {
+            render(<Component {...defaultProps} />);
+
+            expect(
+                screen.getByText('© 2031 The Cartesi Foundation.'),
+            ).toBeInTheDocument();
+        } finally {
+            jest.useRealTimers();
+        }
+    });
 });
