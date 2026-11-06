@@ -22,15 +22,21 @@ import {
     VisuallyHidden,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
+import { IconType } from 'react-icons';
 import {
-    TbBrandDiscord,
-    TbBrandGithub,
-    TbBrandTwitter,
-    TbBrandYoutube,
+    TbBrandDiscordFilled,
+    TbBrandGithubFilled,
+    TbBrandInstagram,
+    TbBrandLinkedin,
+    TbBrandReddit,
+    TbBrandTelegram,
+    TbBrandTiktok,
+    TbBrandX,
+    TbBrandYoutubeFilled,
 } from 'react-icons/tb';
 import theme from '../styles/theme';
 import Address from './Address';
-import { CartesiTranparent } from './Icons';
+import { CartesiBlack } from './Icons';
 import { useWallet } from './wallet/useWallet';
 import { useColorModeValue } from './ui/color-mode';
 
@@ -112,6 +118,55 @@ const LinkColumn = ({
     </GridItem>
 );
 
+/** Community channels, in the order cartesi.io lists them. */
+export const socialLinks: (FooterLink & { icon: IconType })[] = [
+    {
+        label: 'Discord',
+        href: 'https://discord.gg/pfXMwXDDfW',
+        icon: TbBrandDiscordFilled,
+    },
+    {
+        label: 'GitHub',
+        href: 'https://github.com/cartesi',
+        icon: TbBrandGithubFilled,
+    },
+    {
+        label: 'Telegram',
+        href: 'https://t.me/CartesiProject',
+        icon: TbBrandTelegram,
+    },
+    {
+        label: 'X',
+        href: 'https://www.twitter.com/cartesiproject',
+        icon: TbBrandX,
+    },
+    {
+        label: 'YouTube',
+        href: 'https://www.youtube.com/@Cartesiproject/featured',
+        icon: TbBrandYoutubeFilled,
+    },
+    {
+        label: 'Reddit',
+        href: 'https://www.reddit.com/r/cartesi/',
+        icon: TbBrandReddit,
+    },
+    {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/company/cartesi/',
+        icon: TbBrandLinkedin,
+    },
+    {
+        label: 'Instagram',
+        href: 'https://www.instagram.com/cartesiproject/',
+        icon: TbBrandInstagram,
+    },
+    {
+        label: 'TikTok',
+        href: 'https://www.tiktok.com/@cartesiproject',
+        icon: TbBrandTiktok,
+    },
+];
+
 export type FooterProps = {
     links: FooterLink[];
     support: FooterLink[];
@@ -157,74 +212,17 @@ const Footer: FC<FooterProps> = (props) => {
                 </Grid>
             </Container>
 
-            <Grid
-                templateColumns={{
-                    base: 'repeat(1, 1fr)',
-                    lg: 'repeat(12, minmax(0, 1fr))',
-                }}
-                gap={4}
-            >
-                <GridItem colStart={10} colEnd={-1}>
-                    <Stack direction={'row'} gap={6}>
-                        <SocialButton
-                            label="Cartesi"
-                            href="https://cartesi.io/"
-                        >
-                            <Icon
-                                as={CartesiTranparent}
-                                color="white"
-                                w={6}
-                                h={6}
-                            />
-                        </SocialButton>
-                        <SocialButton
-                            label="Github"
-                            href="https://github.com/cartesi"
-                        >
-                            <Icon
-                                as={TbBrandGithub}
-                                color="white"
-                                w={6}
-                                h={6}
-                            />
-                        </SocialButton>
-                        <SocialButton
-                            label="Discord"
-                            href="https://discord.gg/pfXMwXDDfW"
-                        >
-                            <Icon
-                                as={TbBrandDiscord}
-                                color="white"
-                                w={6}
-                                h={6}
-                            />
-                        </SocialButton>
-                        <SocialButton
-                            label="Youtube"
-                            href="https://www.youtube.com/@cartesiproject/featured"
-                        >
-                            <Icon
-                                as={TbBrandYoutube}
-                                color="white"
-                                w={6}
-                                h={6}
-                            />
-                        </SocialButton>
-                        <SocialButton
-                            label="Twitter"
-                            href="https://twitter.com/cartesiproject"
-                        >
-                            <Icon
-                                as={TbBrandTwitter}
-                                color="white"
-                                w={6}
-                                h={6}
-                            />
-                        </SocialButton>
-                    </Stack>
-                </GridItem>
-            </Grid>
-            <Box py={4}>
+            <Flex wrap="wrap" gap={4} px={4}>
+                <SocialButton label="Cartesi" href="https://cartesi.io/">
+                    <Icon as={CartesiBlack} color="white" w={5} h={5} />
+                </SocialButton>
+                {socialLinks.map(({ label, href, icon }) => (
+                    <SocialButton key={label} label={label} href={href}>
+                        <Icon as={icon} color="white" w={6} h={6} />
+                    </SocialButton>
+                ))}
+            </Flex>
+            <Box py={4} px={4}>
                 <Text opacity={0.6}>
                     (c) Cartesi and individual authors (see{' '}
                     <Link
