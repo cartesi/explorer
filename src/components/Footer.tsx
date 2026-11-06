@@ -224,33 +224,7 @@ const Footer: FC<FooterProps> = (props) => {
             </Flex>
             <Box py={4} px={4}>
                 <Text opacity={0.6}>
-                    (c) Cartesi and individual authors (see{' '}
-                    <Link
-                        href="https://github.com/cartesi/explorer/blob/main/AUTHORS"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        color="white"
-                        _hover={{
-                            color: linkHoverColor,
-                        }}
-                    >
-                        AUTHORS
-                    </Link>
-                    )
-                    <br />
-                    SPDX-License-Identifier: Apache-2.0 (see{' '}
-                    <Link
-                        href="https://github.com/cartesi/explorer/blob/main/LICENSE"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        color="white"
-                        _hover={{
-                            color: linkHoverColor,
-                        }}
-                    >
-                        LICENSE
-                    </Link>
-                    )
+                    © {new Date().getFullYear()} The Cartesi Foundation.
                 </Text>
             </Box>
         </Box>
