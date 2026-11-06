@@ -10,7 +10,7 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import Footer from '../../src/components/Footer';
+import Footer, { socialLinks } from '../../src/components/Footer';
 import { withChakraTheme } from '../test-utilities';
 
 const Component = withChakraTheme(Footer);
@@ -92,14 +92,13 @@ describe('Footer component', () => {
         expect(screen.queryByText('Contract A')).not.toBeInTheDocument();
     });
 
-    it('should display Cartesi twitter link', () => {
+    it('should display the Cartesi social channels', () => {
         const { container } = render(<Component {...defaultProps} />);
-        const twitterLink = container.querySelector(
-            `a[href="https://twitter.com/cartesiproject"]`,
-        );
-        const isLinkInDom =
-            typeof twitterLink === 'object' && twitterLink !== null;
 
-        expect(isLinkInDom).toBe(true);
+        socialLinks.forEach(({ label, href }) => {
+            const link = container.querySelector(`a[href="${href}"]`);
+            expect(link).toBeInTheDocument();
+            expect(link).toHaveTextContent(label);
+        });
     });
 });
