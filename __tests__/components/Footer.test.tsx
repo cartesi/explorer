@@ -19,25 +19,13 @@ const defaultProps = {
         { label: 'Google', href: 'https://google.com' },
         { label: 'Amazon', href: 'https://amazon.com' },
     ],
-    general: [
-        {
-            label: 'About Us',
-            href: 'https://cartesi.io/about/',
-        },
-        {
-            label: 'Docs',
-            href: 'https://docs.cartesi.io/',
-        },
-    ],
     support: [
-        {
-            label: 'About Us',
-            href: 'https://cartesi.io/about/',
-        },
-        {
-            label: 'Docs',
-            href: 'https://docs.cartesi.io/',
-        },
+        { label: 'Discord', href: 'https://discord.com' },
+        { label: 'FAQ', href: 'https://faq.example' },
+    ],
+    general: [
+        { label: 'About Us', href: 'https://cartesi.io/about/' },
+        { label: 'Docs', href: 'https://docs.cartesi.io/' },
     ],
     contracts: [
         {
@@ -52,14 +40,35 @@ const defaultProps = {
 };
 
 describe('Footer component', () => {
-    it('should display links', () => {
+    it('should display the links of every column', () => {
         const { container } = render(<Component {...defaultProps} />);
 
-        defaultProps.links.forEach((link) => {
-            const domLink = container.querySelector(`a[href="${link.href}"]`);
-            const isLinkInDom = typeof domLink === 'object' && domLink !== null;
+        [
+            ...defaultProps.links,
+            ...defaultProps.support,
+            ...defaultProps.general,
+        ].forEach((link) => {
+            expect(
+                container.querySelector(`a[href="${link.href}"]`),
+            ).toBeInTheDocument();
+        });
+    });
 
-            expect(isLinkInDom).toBe(true);
+    it('should place the Contracts column last', () => {
+        render(<Component {...defaultProps} />);
+
+        const headers = [
+            'Resources & Security',
+            'Support Center',
+            'General',
+            'Contracts',
+        ].map((title) => screen.getByText(title));
+
+        headers.slice(1).forEach((header, index) => {
+            expect(
+                headers[index].compareDocumentPosition(header) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            ).toBeTruthy();
         });
     });
 

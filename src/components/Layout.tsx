@@ -121,7 +121,7 @@ export const headerLinks: HeaderLink[] = [
 
 export const footerLinks = [
     {
-        label: 'Governance & Grants',
+        label: 'Governance',
         href: 'https://cartesi.io/governance/',
     },
     {
@@ -137,7 +137,7 @@ export const footerLinks = [
 export const footerSupport = [
     {
         label: `What's New`,
-        href: 'https://cartesi.io/blog/',
+        href: 'https://blog.cartesi.io',
     },
     {
         label: 'Support on Discord',
@@ -146,10 +146,6 @@ export const footerSupport = [
     {
         label: 'FAQ',
         href: 'https://docs.cartesi.io/earn-ctsi/staking-faq/',
-    },
-    {
-        label: 'Governance Forum',
-        href: 'https://governance.cartesi.io/',
     },
 ];
 
@@ -161,6 +157,10 @@ export const footerGeneral = [
     {
         label: 'Docs',
         href: 'https://docs.cartesi.io/',
+    },
+    {
+        label: 'Governance Forum',
+        href: 'https://governance.cartesi.io/',
     },
 ];
 
