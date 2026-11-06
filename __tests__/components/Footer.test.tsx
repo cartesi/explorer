@@ -80,6 +80,18 @@ describe('Footer component', () => {
         });
     });
 
+    it('should keep the Contracts title when no contract has an address', () => {
+        render(
+            <Component
+                {...defaultProps}
+                contracts={[{ name: 'Contract A' }]}
+            />,
+        );
+
+        expect(screen.getByText('Contracts')).toBeInTheDocument();
+        expect(screen.queryByText('Contract A')).not.toBeInTheDocument();
+    });
+
     it('should display Cartesi twitter link', () => {
         const { container } = render(<Component {...defaultProps} />);
         const twitterLink = container.querySelector(

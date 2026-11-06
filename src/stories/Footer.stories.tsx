@@ -65,6 +65,7 @@ export const Standard: Story = {
     render: withChain(1),
 };
 
+/** Disconnected wallets see the mainnet contracts, the explorer's default network. */
 export const NotConnected: Story = {
     args,
     render: withChain(),
