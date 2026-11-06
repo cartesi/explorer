@@ -16,30 +16,20 @@ import Layout, {
     footerSupport,
     headerLinks,
 } from '../../src/components/Layout';
+import {
+    UnsupportedNetworkError,
+    WalletConnectionContext,
+} from '../../src/components/wallet';
+import { supportedChainIds } from '../../src/components/wallet/chains';
 import useMeta from '../../src/graphql/hooks/useMeta';
 import {
-    useCartesiTokenContract,
-    usePoSContract,
-    useSimpleFaucetContract,
-    useStakingContract,
-    useStakingPoolFactoryContract,
-    useWorkerManagerContract,
-} from '../../src/services/contracts';
+    cartesiTokenAddress,
+    posAddress,
+    stakingAddress,
+    stakingPoolFactoryAddress,
+    workerManagerAuthManagerAddress,
+} from '../../src/services/contracts/generated';
 import { withChakraTheme } from '../test-utilities';
-
-jest.mock('../../src/services/contracts', () => {
-    const original = jest.requireActual('../../src/services/contracts');
-    return {
-        __esModule: true,
-        ...original,
-        useCartesiTokenContract: jest.fn(),
-        usePoSContract: jest.fn(),
-        useSimpleFaucetContract: jest.fn(),
-        useStakingContract: jest.fn(),
-        useStakingPoolFactoryContract: jest.fn(),
-        useWorkerManagerContract: jest.fn(),
-    };
-});
 
 jest.mock('../../src/graphql/hooks/useMeta');
 jest.mock('next/navigation', () => {
@@ -51,52 +41,29 @@ jest.mock('next/navigation', () => {
     };
 });
 
-const address = '0x2942aa4356783892c624125acfbbb80d29629a9d';
-const mockedUseCartesiTokenContract =
-    useCartesiTokenContract as jest.MockedFunction<
-        typeof useCartesiTokenContract
-    >;
-const mockedUsePoSContract = usePoSContract as jest.MockedFunction<
-    typeof usePoSContract
->;
-const mockedUseSimpleFaucetContract =
-    useSimpleFaucetContract as jest.MockedFunction<
-        typeof useSimpleFaucetContract
-    >;
-const mockedUseStakingContract = useStakingContract as jest.MockedFunction<
-    typeof useStakingContract
->;
-const mockedUseStakingPoolFactoryContract =
-    useStakingPoolFactoryContract as jest.MockedFunction<
-        typeof useStakingPoolFactoryContract
-    >;
-const mockedUseWorkerManagerContract =
-    useWorkerManagerContract as jest.MockedFunction<
-        typeof useWorkerManagerContract
-    >;
 const mockedUseMeta = useMeta as jest.MockedFunction<typeof useMeta>;
 const Component = withChakraTheme(Layout);
 
+const renderWithChain = (chainId?: number, error?: Error) =>
+    render(
+        <WalletConnectionContext.Provider
+            value={{
+                active: chainId !== undefined,
+                chainId,
+                error,
+                activate: async () => undefined,
+                deactivate: () => undefined,
+            }}
+        >
+            <Component>Footer</Component>
+        </WalletConnectionContext.Provider>,
+    );
+
+const etherscanLink = (host: string, address: string) =>
+    `a[href="https://${host}/address/${address}"]`;
+
 describe('Layout component', () => {
     beforeEach(() => {
-        mockedUsePoSContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof usePoSContract>);
-        mockedUseCartesiTokenContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof useCartesiTokenContract>);
-        mockedUseSimpleFaucetContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof useSimpleFaucetContract>);
-        mockedUseStakingContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof useStakingContract>);
-        mockedUseStakingPoolFactoryContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof useStakingPoolFactoryContract>);
-        mockedUseWorkerManagerContract.mockReturnValue({
-            address,
-        } as unknown as ReturnType<typeof useWorkerManagerContract>);
         mockedUseMeta.mockReturnValue(undefined);
     });
 
@@ -118,5 +85,52 @@ describe('Layout component', () => {
         [...footerLinks, ...footerSupport, ...footerGeneral].forEach((link) => {
             expect(screen.getByText(link.label)).toBeInTheDocument();
         });
+    });
+
+    it('should display the mainnet contracts while the wallet is disconnected', () => {
+        const { container } = renderWithChain();
+
+        [
+            cartesiTokenAddress,
+            posAddress,
+            stakingAddress,
+            workerManagerAuthManagerAddress,
+            stakingPoolFactoryAddress,
+        ].forEach((addresses) => {
+            expect(
+                container.querySelector(
+                    etherscanLink('etherscan.io', addresses[1]),
+                ),
+            ).toBeInTheDocument();
+        });
+        // The faucet has no mainnet deployment.
+        expect(screen.queryByText('Faucet')).not.toBeInTheDocument();
+    });
+
+    it('should display the contracts of the connected chain', () => {
+        const { container } = renderWithChain(11155111);
+
+        expect(
+            container.querySelector(
+                etherscanLink(
+                    'sepolia.etherscan.io',
+                    cartesiTokenAddress[11155111],
+                ),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Faucet')).toBeInTheDocument();
+    });
+
+    it('should hide the contracts on an unsupported network', () => {
+        // The provider leaves chainId out while the network is unsupported.
+        const { container } = renderWithChain(
+            undefined,
+            new UnsupportedNetworkError(8453, supportedChainIds),
+        );
+
+        expect(screen.getByText('Contracts')).toBeInTheDocument();
+        expect(
+            container.querySelector('a[href*="etherscan.io/address/"]'),
+        ).not.toBeInTheDocument();
     });
 });

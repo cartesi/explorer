@@ -20,18 +20,23 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React, { FC } from 'react';
+import useFlag from '../hooks/useFlag';
+import type { AddressMap } from '../services/contracts';
 import {
-    useCartesiTokenContract,
-    usePoSContract,
-    useSimpleFaucetContract,
-    useStakingContract,
-    useStakingPoolFactoryContract,
-    useWorkerManagerContract,
-} from '../services/contracts';
+    cartesiTokenAddress,
+    posAddress,
+    posV2FactoryAddress,
+    simpleFaucetAddress,
+    stakingAddress,
+    stakingPoolFactoryAddress,
+    workerManagerAuthManagerAddress,
+} from '../services/contracts/generated';
+import { Network } from '../utils/networks';
 import Footer from './Footer';
 import { Header } from './header';
 import SyncStatus from './SyncStatus';
 import { useColorModeValue } from './ui/color-mode';
+import { UnsupportedNetworkError, useWallet } from './wallet';
 import type { Route } from 'next';
 
 interface ComponentProps {
@@ -164,42 +169,39 @@ export const footerGeneral = [
     },
 ];
 
+/**
+ * Footer contract addresses for the connected chain, or for mainnet while the
+ * wallet is disconnected (the network the explorer shows by default). Read from
+ * the deployment address maps, since the contract hooks need a wallet client.
+ * None on an unsupported network, where these contracts are not deployed.
+ */
+const useFooterContracts = () => {
+    const { chainId = Network.MAINNET, error } = useWallet();
+    const posV2Enabled = useFlag('posV2Enabled');
+    const unsupported = error instanceof UnsupportedNetworkError;
+    const addressOn = (addresses: AddressMap) =>
+        unsupported ? undefined : addresses[chainId];
+
+    return [
+        { name: 'Token', address: addressOn(cartesiTokenAddress) },
+        { name: 'Faucet', address: addressOn(simpleFaucetAddress) },
+        {
+            name: 'PoS',
+            address: addressOn(posV2Enabled ? posV2FactoryAddress : posAddress),
+        },
+        { name: 'Staking', address: addressOn(stakingAddress) },
+        {
+            name: 'Worker Manager',
+            address: addressOn(workerManagerAuthManagerAddress),
+        },
+        { name: 'Pool Factory', address: addressOn(stakingPoolFactoryAddress) },
+    ];
+};
+
 const PageLayout: FC<PageLayoutProps> = ({ children, ...restProps }) => {
     const bg = useColorModeValue('white', 'dark.gray.primary');
     const contentBg = useColorModeValue('white', 'dark.gray.quaternary');
-    const pos = usePoSContract();
-    const token = useCartesiTokenContract();
-    const faucet = useSimpleFaucetContract();
-    const staking = useStakingContract();
-    const workerManager = useWorkerManagerContract();
-    const poolFactory = useStakingPoolFactoryContract();
-
-    const footerContracts = [
-        {
-            name: 'Token',
-            address: token?.address,
-        },
-        {
-            name: 'Faucet',
-            address: faucet?.address,
-        },
-        {
-            name: 'PoS',
-            address: pos?.address,
-        },
-        {
-            name: 'Staking',
-            address: staking?.address,
-        },
-        {
-            name: 'Worker Manager',
-            address: workerManager?.address,
-        },
-        {
-            name: 'Pool Factory',
-            address: poolFactory?.address,
-        },
-    ];
+    const footerContracts = useFooterContracts();
 
     return (
         <Flex
