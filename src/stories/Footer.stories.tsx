@@ -11,6 +11,11 @@
 
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Footer from '../components/Footer';
+import {
+    footerGeneral,
+    footerLinks,
+    footerSupport,
+} from '../components/Layout';
 import { WalletConnectionContext } from '../components/wallet';
 
 export default {
@@ -19,46 +24,23 @@ export default {
     argTypes: {},
 } as Meta<typeof Footer>;
 
-const initialContextState = {
-    active: false,
-    activate: async () => Promise.resolve(),
-    deactivate: () => Promise.resolve(),
-};
-
 type Story = StoryObj<typeof Footer>;
 
-const Template: Story = {
-    render: (args) => {
-        const hasContracts = args.contracts.length > 0;
-        const chainId = hasContracts ? 1 : undefined;
-        return (
-            <WalletConnectionContext.Provider
-                value={{ chainId, ...initialContextState }}
-            >
-                <Footer {...args} />
-            </WalletConnectionContext.Provider>
-        );
-    },
+const withChain = (chainId?: number): Story['render'] => {
+    const FooterWithChain: Story['render'] = (args) => (
+        <WalletConnectionContext.Provider
+            value={{
+                chainId,
+                active: chainId !== undefined,
+                activate: async () => Promise.resolve(),
+                deactivate: () => Promise.resolve(),
+            }}
+        >
+            <Footer {...args} />
+        </WalletConnectionContext.Provider>
+    );
+    return FooterWithChain;
 };
-
-const links = [
-    {
-        label: 'Audit Report',
-        href: 'https://github.com/cartesi/pos-dlib/raw/develop/Smart%20Contract%20Security%20Audit%20Report%20-%20Staking.pdf',
-    },
-    {
-        label: 'CTSI Reserve Mining',
-        href: 'https://cartesi.io/en/mine/',
-    },
-    {
-        label: 'How to Run a Node',
-        href: 'https://medium.com/cartesi/running-a-node-and-staking-42523863970e',
-    },
-    {
-        label: 'FAQ',
-        href: 'https://github.com/cartesi/noether/wiki/FAQ',
-    },
-];
 
 const contracts = [
     {
@@ -71,18 +53,25 @@ const contracts = [
     },
 ];
 
+const args = {
+    links: footerLinks,
+    support: footerSupport,
+    general: footerGeneral,
+    contracts,
+};
+
 export const Standard: Story = {
-    args: {
-        links,
-        contracts,
-    },
-    ...Template,
+    args,
+    render: withChain(1),
 };
 
 export const NotConnected: Story = {
-    args: {
-        links,
-        contracts: [],
-    },
-    ...Template,
+    args,
+    render: withChain(),
+};
+
+/** Connected to a chain without deployments: the Contracts title stays, without rows. */
+export const NoContracts: Story = {
+    args: { ...args, contracts: [] },
+    render: withChain(1),
 };

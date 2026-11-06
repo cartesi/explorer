@@ -10,7 +10,12 @@
 // PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 import { render, screen } from '@testing-library/react';
-import Layout, { footerLinks, headerLinks } from '../../src/components/Layout';
+import Layout, {
+    footerGeneral,
+    footerLinks,
+    footerSupport,
+    headerLinks,
+} from '../../src/components/Layout';
 import useMeta from '../../src/graphql/hooks/useMeta';
 import {
     useCartesiTokenContract,
@@ -110,7 +115,7 @@ describe('Layout component', () => {
     it('should display correct footer links', () => {
         render(<Component>Footer</Component>);
 
-        footerLinks.forEach((link) => {
+        [...footerLinks, ...footerSupport, ...footerGeneral].forEach((link) => {
             expect(screen.getByText(link.label)).toBeInTheDocument();
         });
     });

@@ -17,7 +17,6 @@ import {
     GridItem,
     Icon,
     Link,
-    SimpleGrid,
     Stack,
     Text,
     VisuallyHidden,
@@ -34,6 +33,8 @@ import Address from './Address';
 import { CartesiTranparent } from './Icons';
 import { useWallet } from './wallet/useWallet';
 import { useColorModeValue } from './ui/color-mode';
+
+const linkHoverColor = 'dark.primary';
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
@@ -85,6 +86,32 @@ const SocialButton = ({
 export type FooterLink = { label: string; href: string };
 export type FooterContract = { name: string; address?: string };
 
+const LinkColumn = ({
+    title,
+    links,
+}: {
+    title: string;
+    links: FooterLink[];
+}) => (
+    <GridItem>
+        <ListHeader>{title}</ListHeader>
+        <Flex direction="column" marginTop={4} gap={2}>
+            {links.map(({ label, href }) => (
+                <Link
+                    href={href}
+                    key={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="white"
+                    _hover={{ color: linkHoverColor }}
+                >
+                    {label}
+                </Link>
+            ))}
+        </Flex>
+    </GridItem>
+);
+
 export type FooterProps = {
     links: FooterLink[];
     support: FooterLink[];
@@ -95,7 +122,6 @@ export type FooterProps = {
 const Footer: FC<FooterProps> = (props) => {
     const { links = [], support = [], general = [], contracts = [] } = props;
     const { chainId } = useWallet();
-    const linkHoverColor = 'dark.primary';
 
     return (
         <Box bg="footerBg" color="white" w="100%" p="0 6vw" mt="auto">
@@ -104,59 +130,23 @@ const Footer: FC<FooterProps> = (props) => {
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
                         md: 'repeat(2, minmax(0, 1fr))',
-                        lg: 'repeat(12, minmax(0, 1fr))',
+                        lg: 'repeat(4, auto)',
                     }}
+                    justifyContent="space-between"
                     gap={6}
                 >
-                    <GridItem colSpan={2}>
-                        <ListHeader>Resources & Security</ListHeader>
-                        <Flex direction="column" marginTop={4} gap={2}>
-                            {links.map(({ label, href }, index) => (
-                                <Link
-                                    href={href}
-                                    key={index}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    color="white"
-                                    _hover={{ color: linkHoverColor }}
-                                >
-                                    {label}
-                                </Link>
-                            ))}
-                        </Flex>
-                    </GridItem>
-
-                    <GridItem colSpan={4} pl={{ base: 0, lg: 4 }}>
-                        <ListHeader>Support Center</ListHeader>
-                        <SimpleGrid
-                            columns={{ base: 1, md: 2 }}
-                            marginTop={4}
-                            gap={2}
-                        >
-                            {support.map(({ label, href }, index) => (
-                                <Link
-                                    href={href}
-                                    key={index}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    color="white"
-                                    _hover={{ color: linkHoverColor }}
-                                >
-                                    {label}
-                                </Link>
-                            ))}
-                        </SimpleGrid>
-                    </GridItem>
-                    <GridItem colSpan={{ base: 4, lg: 3 }}>
+                    <LinkColumn title="Resources & Security" links={links} />
+                    <LinkColumn title="Support Center" links={support} />
+                    <LinkColumn title="General" links={general} />
+                    <GridItem>
                         <ListHeader>Contracts</ListHeader>
                         {contracts
                             .filter(({ address }) => address)
-                            .map(({ name, address }, index) => (
-                                <Box mt={4} mb="-2" key={index}>
+                            .map(({ name, address }) => (
+                                <Box mt={4} mb="-2" key={name}>
                                     <Address
                                         address={address ?? ''}
                                         name={name}
-                                        key={index}
                                         chainId={chainId}
                                         truncated
                                         iconColor="white"
@@ -164,21 +154,6 @@ const Footer: FC<FooterProps> = (props) => {
                                 </Box>
                             ))}
                     </GridItem>
-                    <Stack align="flex-start">
-                        <ListHeader>General</ListHeader>
-                        {general.map(({ label, href }, index) => (
-                            <Link
-                                href={href}
-                                key={index}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                color="white"
-                                _hover={{ color: linkHoverColor }}
-                            >
-                                {label}
-                            </Link>
-                        ))}
-                    </Stack>
                 </Grid>
             </Container>
 
